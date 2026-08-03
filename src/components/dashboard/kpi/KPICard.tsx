@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MotionCard } from '@/components/shared/motion/MotionCard';
 import { cn } from '@/lib/utils';
@@ -15,7 +16,7 @@ interface KPICardProps {
   color?: string;
 }
 
-export function KPICard({ title, value, icon, description, trend, className, color }: KPICardProps) {
+export const KPICard = React.memo(function KPICard({ title, value, icon, description, trend, className, color }: KPICardProps) {
   const trendIcon = trend
     ? trend.value > 0
       ? <TrendingUp className="h-3 w-3 text-green-500" />
@@ -54,4 +55,4 @@ export function KPICard({ title, value, icon, description, trend, className, col
       </Card>
     </MotionCard>
   );
-}
+});

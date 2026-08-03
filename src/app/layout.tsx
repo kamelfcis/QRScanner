@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import './globals.css';
 
 const inter = Inter({
@@ -88,7 +89,9 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-background focus:text-foreground">
           Skip to main content
         </a>
-        <TooltipProvider delay={0}>{children}</TooltipProvider>
+        <ErrorBoundary>
+          <TooltipProvider delay={0}>{children}</TooltipProvider>
+        </ErrorBoundary>
         <InstallPrompt />
         <OfflineIndicator />
       </body>

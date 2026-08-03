@@ -18,7 +18,9 @@ import { useAnalyticsSummary } from '@/hooks/useAnalytics';
 import { useRealtimeAnalytics } from '@/hooks/useRealtime';
 import { KPICard } from '@/components/dashboard/kpi';
 import { LineAreaChart, PieDonutChart, ChartCard } from '@/components/dashboard/charts';
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import dynamic from 'next/dynamic';
+
+const ActivityFeed = dynamic(() => import('@/components/dashboard/ActivityFeed').then(m => ({ default: m.ActivityFeed })), { ssr: false });
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 

@@ -1,16 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { DateRangePicker, type Period } from '@/components/dashboard/DateRangePicker';
-import { TrendingDishes } from '@/components/dashboard/analytics/TrendingDishes';
-import { NeverViewedProducts } from '@/components/dashboard/analytics/NeverViewedProducts';
-import { FavoriteProducts } from '@/components/dashboard/analytics/FavoriteProducts';
-import { TopProductsChart } from '@/components/dashboard/analytics/TopProductsChart';
 import { useTopProducts } from '@/hooks/useAnalytics';
-import { LineAreaChart } from '@/components/dashboard/charts/LineAreaChart';
-import { ChartCard } from '@/components/dashboard/charts/ChartCard';
+import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+
+const TrendingDishes = dynamic(() => import('@/components/dashboard/analytics/TrendingDishes').then(m => ({ default: m.TrendingDishes })), { ssr: false });
+const NeverViewedProducts = dynamic(() => import('@/components/dashboard/analytics/NeverViewedProducts').then(m => ({ default: m.NeverViewedProducts })), { ssr: false });
+const FavoriteProducts = dynamic(() => import('@/components/dashboard/analytics/FavoriteProducts').then(m => ({ default: m.FavoriteProducts })), { ssr: false });
+const TopProductsChart = dynamic(() => import('@/components/dashboard/analytics/TopProductsChart').then(m => ({ default: m.TopProductsChart })), { ssr: false });
+const LineAreaChart = dynamic(() => import('@/components/dashboard/charts/LineAreaChart').then(m => ({ default: m.LineAreaChart })), { ssr: false });
+const ChartCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.ChartCard })), { ssr: false });
 
 const supabase = createClient();
 
@@ -27,12 +30,20 @@ export default function InsightsPage() {
       <DateRangePicker value={period} onChange={setPeriod} />
 
       <div className="grid gap-6 md:grid-cols-3">
-        <TrendingDishes period={period} />
-        <NeverViewedProducts />
-        <FavoriteProducts />
+        <Suspense fallback={<LoadingPage />}>
+          <TrendingDishes period={period} />
+        </Suspense>
+        <Suspense fallback={<LoadingPage />}>
+          <NeverViewedProducts />
+        </Suspense>
+        <Suspense fallback={<LoadingPage />}>
+          <FavoriteProducts />
+        </Suspense>
       </div>
 
-      <RecentPopularityChart period={period} />
+      <Suspense fallback={<LoadingPage />}>
+        <RecentPopularityChart period={period} />
+      </Suspense>
     </div>
   );
 }

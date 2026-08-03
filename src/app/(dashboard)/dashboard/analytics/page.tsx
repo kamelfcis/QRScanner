@@ -1,18 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { useRealtimeAnalytics } from '@/hooks/useRealtime';
 import { DateRangePicker, type Period } from '@/components/dashboard/DateRangePicker';
-import { VisitorsChart } from '@/components/dashboard/analytics/VisitorsChart';
-import { DiningTakeawayChart } from '@/components/dashboard/analytics/DiningTakeawayChart';
-import { PeakHoursChart } from '@/components/dashboard/analytics/PeakHoursChart';
-import { TopProductsChart } from '@/components/dashboard/analytics/TopProductsChart';
-import { TopCategoriesChart } from '@/components/dashboard/analytics/TopCategoriesChart';
-import { SearchTermsChart } from '@/components/dashboard/analytics/SearchTermsChart';
-import { DeviceBreakdown } from '@/components/dashboard/analytics/DeviceBreakdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { BarChart3, Package, Layers, Search, Monitor } from 'lucide-react';
+import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
+
+const VisitorsChart = dynamic(() => import('@/components/dashboard/analytics/VisitorsChart').then(m => ({ default: m.VisitorsChart })), { ssr: false });
+const QRScansChart = dynamic(() => import('@/components/dashboard/analytics/QRScansChart').then(m => ({ default: m.QRScansChart })), { ssr: false });
+const DiningTakeawayChart = dynamic(() => import('@/components/dashboard/analytics/DiningTakeawayChart').then(m => ({ default: m.DiningTakeawayChart })), { ssr: false });
+const PeakHoursChart = dynamic(() => import('@/components/dashboard/analytics/PeakHoursChart').then(m => ({ default: m.PeakHoursChart })), { ssr: false });
+const TopProductsChart = dynamic(() => import('@/components/dashboard/analytics/TopProductsChart').then(m => ({ default: m.TopProductsChart })), { ssr: false });
+const TopCategoriesChart = dynamic(() => import('@/components/dashboard/analytics/TopCategoriesChart').then(m => ({ default: m.TopCategoriesChart })), { ssr: false });
+const SearchTermsChart = dynamic(() => import('@/components/dashboard/analytics/SearchTermsChart').then(m => ({ default: m.SearchTermsChart })), { ssr: false });
+const DeviceBreakdown = dynamic(() => import('@/components/dashboard/analytics/DeviceBreakdown').then(m => ({ default: m.DeviceBreakdown })), { ssr: false });
 
 export default function AnalyticsPage() {
   const [period, setPeriod] = useState<Period>('week');
@@ -45,28 +49,38 @@ export default function AnalyticsPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <DateRangePicker value={period} onChange={setPeriod} />
-          <div className="grid gap-6 md:grid-cols-2">
-            <VisitorsChart period={period} />
-            <DiningTakeawayChart period={period} />
-          </div>
-          <PeakHoursChart period={period} />
+          <Suspense fallback={<LoadingPage />}>
+            <DateRangePicker value={period} onChange={setPeriod} />
+            <div className="grid gap-6 md:grid-cols-2">
+              <VisitorsChart period={period} />
+              <DiningTakeawayChart period={period} />
+            </div>
+            <PeakHoursChart period={period} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="products">
-          <TopProductsChart period={period} />
+          <Suspense fallback={<LoadingPage />}>
+            <TopProductsChart period={period} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="categories">
-          <TopCategoriesChart period={period} />
+          <Suspense fallback={<LoadingPage />}>
+            <TopCategoriesChart period={period} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="search">
-          <SearchTermsChart period={period} />
+          <Suspense fallback={<LoadingPage />}>
+            <SearchTermsChart period={period} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="devices">
-          <DeviceBreakdown period={period} />
+          <Suspense fallback={<LoadingPage />}>
+            <DeviceBreakdown period={period} />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>

@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { DateRangePicker, type Period } from '@/components/dashboard/DateRangePicker';
-import { PeakHoursChart } from '@/components/dashboard/analytics/PeakHoursChart';
-import { PeakDaysChart } from '@/components/dashboard/analytics/PeakDaysChart';
-import { TableHeatmap } from '@/components/dashboard/analytics/TableHeatmap';
 import { useTableUsage } from '@/hooks/useAnalytics';
 import { Badge } from '@/components/ui/badge';
+import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
+
+const PeakHoursChart = dynamic(() => import('@/components/dashboard/analytics/PeakHoursChart').then(m => ({ default: m.PeakHoursChart })), { ssr: false });
+const PeakDaysChart = dynamic(() => import('@/components/dashboard/analytics/PeakDaysChart').then(m => ({ default: m.PeakDaysChart })), { ssr: false });
+const TableHeatmap = dynamic(() => import('@/components/dashboard/analytics/TableHeatmap').then(m => ({ default: m.TableHeatmap })), { ssr: false });
 
 export default function HeatmapsPage() {
   const [period, setPeriod] = useState<Period>('month');
@@ -26,11 +29,17 @@ export default function HeatmapsPage() {
       <DateRangePicker value={period} onChange={setPeriod} />
 
       <div className="grid gap-6 md:grid-cols-2">
-        <PeakHoursChart period={period} />
-        <PeakDaysChart period={period} />
+        <Suspense fallback={<LoadingPage />}>
+          <PeakHoursChart period={period} />
+        </Suspense>
+        <Suspense fallback={<LoadingPage />}>
+          <PeakDaysChart period={period} />
+        </Suspense>
       </div>
 
-      <TableHeatmap />
+      <Suspense fallback={<LoadingPage />}>
+        <TableHeatmap />
+      </Suspense>
 
       {sorted.length > 0 && (
         <div className="flex flex-wrap gap-3">

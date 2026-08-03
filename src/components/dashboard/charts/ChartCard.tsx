@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +12,7 @@ interface ChartCardProps {
   action?: React.ReactNode;
 }
 
-export function ChartCard({ title, description, children, className, action }: ChartCardProps) {
+export const ChartCard = React.memo(function ChartCard({ title, description, children, className, action }: ChartCardProps) {
   return (
     <Card className={cn(className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -24,4 +25,4 @@ export function ChartCard({ title, description, children, className, action }: C
       <CardContent>{children}</CardContent>
     </Card>
   );
-}
+});
