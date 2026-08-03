@@ -2,7 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Menu, Settings, LogOut, QrCode, Table, FileUp, MessageSquareQuote } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Menu,
+  Settings,
+  LogOut,
+  QrCode,
+  Table,
+  FileUp,
+  MessageSquareQuote,
+  BarChart3,
+  FileText,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -10,6 +21,8 @@ import { useAuth } from '@/hooks/useAuth';
 
 const sidebarItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+  { name: 'Reports', href: '/dashboard/reports', icon: FileText },
   { name: 'Menu', href: '/dashboard/menu', icon: Menu },
   { name: 'Import', href: '/dashboard/import', icon: FileUp },
   { name: 'Testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
@@ -59,7 +72,13 @@ export function DashboardSidebar() {
           <Button
             variant="ghost"
             className="w-full justify-start"
-            onClick={async () => { try { await signOut(); } catch { /* handled by useAuth */ } }}
+            onClick={async () => {
+              try {
+                await signOut();
+              } catch {
+                /* handled by useAuth */
+              }
+            }}
             aria-label="Logout"
           >
             <LogOut className="mr-2 h-4 w-4" />

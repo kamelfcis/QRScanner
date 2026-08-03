@@ -92,6 +92,26 @@ export const testimonialSchema = z.object({
 
 export type TestimonialInput = z.infer<typeof testimonialSchema>;
 
+export const searchAnalyticSchema = z.object({
+  search_term: z.string().min(1),
+  results_count: z.number().int().min(0).default(0),
+  category_id: z.string().uuid().nullable().optional(),
+  user_agent: z.string().nullable().optional(),
+  ip_address: z.string().nullable().optional(),
+});
+
+export type SearchAnalyticInput = z.input<typeof searchAnalyticSchema>;
+
+export const notificationSchema = z.object({
+  type: z.string().min(1),
+  title: z.string().min(1),
+  message: z.string().nullable().optional(),
+  data: z.record(z.string(), z.unknown()).nullable().optional(),
+  is_read: z.boolean().default(false),
+});
+
+export type NotificationInput = z.input<typeof notificationSchema>;
+
 export const qrCodeSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255),
   url: z.string().url('URL is required'),

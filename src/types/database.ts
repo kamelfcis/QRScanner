@@ -258,6 +258,79 @@ export interface ImportImageClassification {
   associated_with?: string;
 }
 
+export interface SearchAnalytic {
+  id: string;
+  search_term: string;
+  results_count: number;
+  category_id: string | null;
+  user_agent: string | null;
+  ip_address: string | null;
+  created_at: string;
+}
+
+export interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string | null;
+  data: Record<string, unknown> | null;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface DashboardStats {
+  totalProducts: number;
+  totalCategories: number;
+  totalQRCodes: number;
+  totalOffers: number;
+  totalGallery: number;
+  totalTestimonials: number;
+  totalTables: number;
+  todaysScans: number;
+  todaysVisitors: number;
+  activeUsers: number;
+  diningPercent: number;
+  takeawayPercent: number;
+}
+
+export interface AnalyticsSummary {
+  date: string;
+  visitors: number;
+  scans: number;
+  dining: number;
+  takeaway: number;
+}
+
+export interface TopItem {
+  id: string;
+  name: string;
+  name_ar: string | null;
+  views: number;
+}
+
+export interface SearchTerm {
+  term: string;
+  count: number;
+  avgResults: number;
+}
+
+export interface PeakHour {
+  hour: number;
+  count: number;
+}
+
+export interface TableUsage {
+  table_number: number;
+  scans: number;
+  name: string;
+}
+
+export interface ExportData {
+  headers: string[];
+  rows: (string | number)[][];
+  filename: string;
+}
+
 export interface MenuData {
   categories: CategoryWithProducts[];
 }

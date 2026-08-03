@@ -10,6 +10,7 @@ import { useSearchProducts } from '@/hooks/useProducts';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { cn } from '@/lib/utils';
+import { trackSearch } from '@/lib/analytics';
 import type { Product } from '@/types/database';
 
 interface SearchOverlayProps {
@@ -34,6 +35,12 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
     }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (query.length >= 2 && results !== undefined) {
+      trackSearch(query, results.length);
+    }
+  }, [query, results]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

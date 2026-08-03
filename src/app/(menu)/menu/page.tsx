@@ -19,6 +19,7 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import type { Product } from '@/types/database';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
+import { trackPageView, trackProductView, trackCategoryView, trackQRScan } from '@/lib/analytics';
 
 export default function PublicMenuPage() {
   const searchParams = useSearchParams();
@@ -34,12 +35,25 @@ export default function PublicMenuPage() {
   const { addRecent } = useRecentlyViewed();
 
   useEffect(() => {
+    trackPageView('menu');
+  }, []);
+
+  useEffect(() => {
+    if (activeCategory && categories) {
+      const cat = categories.find(c => c.id === activeCategory);
+      if (cat) trackCategoryView(cat.id, cat.name_en, cat.name_ar);
+    }
+  }, [activeCategory, categories]);
+
+  useEffect(() => {
     if (tableParam) {
       sessionStorage.setItem('warda-table', tableParam);
+      trackQRScan(parseInt(tableParam, 10));
     }
   }, [tableParam]);
 
   const handleProductClick = useCallback((product: Product) => {
+    trackProductView(product.id, product.name_en, product.name_ar, product.category_id, undefined);
     addRecent(product);
     setLightboxProduct(product);
   }, [addRecent]);

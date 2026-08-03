@@ -81,3 +81,9 @@ export {
 export { useReducedMotion } from './useReducedMotion';
 export { useLocalStorage } from './useLocalStorage';
 export { useIntersectionObserver } from './useIntersectionObserver';
+export { useAnalyticsSummary, useTopProducts, useTopCategories, useSearchTerms, usePeakHours, usePeakDays, useTableUsage, useDiningTakeaway, useDeviceBreakdown, analyticsKeys } from './useAnalytics';
+export { useDashboardStats, dashboardKeys } from './useDashboardStats';
+export { useRealtimeAnalytics } from './useRealtime';
+export { useNotifications, useUnreadNotifications, useMarkNotificationRead, useMarkAllNotificationsRead, useCreateNotification, useDeleteNotification, notificationKeys } from './useNotifications';
+export { useExport } from './useExport';
+export { useSearchTracking } from './useSearchTracking';

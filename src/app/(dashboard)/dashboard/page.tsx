@@ -1,82 +1,115 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@/lib/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LayoutDashboard, Menu, QrCode, Settings } from 'lucide-react';
-
-const supabase = createClient();
-
-function useStats() {
-  return useQuery({
-    queryKey: ['dashboard-stats'],
-    queryFn: async () => {
-      const [products, categories, qrCodes] = await Promise.all([
-        supabase.from('products').select('id', { count: 'exact', head: true }),
-        supabase.from('categories').select('id', { count: 'exact', head: true }),
-        supabase.from('qr_codes').select('id', { count: 'exact', head: true }),
-      ]);
-      return {
-        products: products.count ?? 0,
-        categories: categories.count ?? 0,
-        qrCodes: qrCodes.count ?? 0,
-      };
-    },
-  });
-}
+import { format } from 'date-fns';
+import {
+  QrCode,
+  Users,
+  Activity,
+  UtensilsCrossed,
+  ShoppingBag,
+  Menu,
+  LayoutDashboard,
+  Tag,
+  ImageIcon,
+  MessageSquareQuote,
+} from 'lucide-react';
+import { useDashboardStats } from '@/hooks/useDashboardStats';
+import { useAnalyticsSummary } from '@/hooks/useAnalytics';
+import { useRealtimeAnalytics } from '@/hooks/useRealtime';
+import { KPICard } from '@/components/dashboard/kpi';
+import { LineAreaChart, PieDonutChart, ChartCard } from '@/components/dashboard/charts';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState } from '@/components/shared/feedback/ErrorState';
 
 export default function DashboardPage() {
-  const { data: stats } = useStats();
+  useRealtimeAnalytics();
+  const { data: stats, isLoading: statsLoading, error: statsError, refetch: statsRefetch } = useDashboardStats();
+  const { data: todaySummary, isLoading: summaryLoading } = useAnalyticsSummary('today');
 
-  const statItems = [
-    {
-      title: 'Total Products',
-      value: stats?.products ?? '—',
-      icon: Menu,
-      description: 'Menu items',
-    },
-    {
-      title: 'Active QR Codes',
-      value: stats?.qrCodes ?? '—',
-      icon: QrCode,
-      description: 'QR codes created',
-    },
-    {
-      title: 'Categories',
-      value: stats?.categories ?? '—',
-      icon: LayoutDashboard,
-      description: 'Menu categories',
-    },
-    {
-      title: 'Settings',
-      value: '—',
-      icon: Settings,
-      description: 'Configure restaurant',
-    },
-  ];
+  if (statsError) {
+    return <ErrorState error={statsError} retry={statsRefetch} />;
+  }
+
+  const kpis = stats
+    ? [
+        { title: "Today's Scans", value: stats.todaysScans, icon: QrCode, color: 'bg-blue-500/10 text-blue-500' },
+        { title: "Today's Visitors", value: stats.todaysVisitors, icon: Users, color: 'bg-green-500/10 text-green-500' },
+        { title: 'Active Users', value: stats.activeUsers, icon: Activity, color: 'bg-purple-500/10 text-purple-500' },
+        { title: 'Dining %', value: stats.diningPercent + '%', icon: UtensilsCrossed, color: 'bg-brand-primary/10 text-brand-primary' },
+        { title: 'Takeaway %', value: stats.takeawayPercent + '%', icon: ShoppingBag, color: 'bg-brand-secondary/10 text-brand-secondary' },
+        { title: 'Total Products', value: stats.totalProducts, icon: Menu, color: 'bg-orange-500/10 text-orange-500' },
+        { title: 'Total Categories', value: stats.totalCategories, icon: LayoutDashboard, color: 'bg-teal-500/10 text-teal-500' },
+        { title: 'Active Offers', value: stats.totalOffers, icon: Tag, color: 'bg-red-500/10 text-red-500' },
+        { title: 'Gallery Images', value: stats.totalGallery, icon: ImageIcon, color: 'bg-brand-accent/10 text-brand-accent' },
+        { title: 'Testimonials', value: stats.totalTestimonials, icon: MessageSquareQuote, color: 'bg-indigo-500/10 text-indigo-500' },
+      ]
+    : [];
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome to Warda Shamya admin dashboard.
+          {format(new Date(), 'EEEE, MMMM d, yyyy')}
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {statItems.map((stat) => (
-          <Card key={stat.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        {statsLoading
+          ? Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="rounded-lg border p-4 space-y-3">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-8 w-16" />
+                <Skeleton className="h-2 w-20" />
+              </div>
+            ))
+          : kpis.map((kpi) => (
+              <KPICard
+                key={kpi.title}
+                title={kpi.title}
+                value={kpi.value}
+                icon={<kpi.icon className="h-5 w-5" />}
+                color={kpi.color}
+              />
+            ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <ChartCard title="Today's Activity" description="Visitors over time today">
+            {summaryLoading ? (
+              <Skeleton className="h-[300px] w-full" />
+            ) : (
+              <LineAreaChart
+                data={todaySummary?.map((s) => ({ time: s.date, visitors: s.visitors })) || []}
+                xKey="time"
+                yKey="visitors"
+                type="area"
+              />
+            )}
+          </ChartCard>
+        </div>
+
+        <div>
+          <ActivityFeed />
+        </div>
+      </div>
+
+      <div>
+        <ChartCard title="Dining vs Takeaway" description="Today's order breakdown">
+          {summaryLoading ? (
+            <Skeleton className="h-[300px] w-full" />
+          ) : (
+            <PieDonutChart
+              data={[
+                { name: 'Dining', value: stats?.diningPercent || 0, color: '#B8860B' },
+                { name: 'Takeaway', value: stats?.takeawayPercent || 0, color: '#8B0000' },
+              ]}
+              donut
+            />
+          )}
+        </ChartCard>
       </div>
     </div>
   );
