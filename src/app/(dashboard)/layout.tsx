@@ -9,11 +9,11 @@ export default function DashboardLayout({
 }) {
   return (
     <Providers>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen overflow-x-hidden">
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">
           <DashboardHeader />
-          <main id="main-content" className="flex-1 p-6">{children}</main>
+          <main id="main-content" className="flex-1 p-4 sm:p-6">{children}</main>
         </div>
       </div>
     </Providers>

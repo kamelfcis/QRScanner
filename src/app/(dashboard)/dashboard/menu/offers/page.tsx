@@ -35,7 +35,7 @@ export default function OffersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Offers</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Offers</h1>
           <p className="text-muted-foreground">Manage promotional offers and discounts.</p>
         </div>
         <Button>

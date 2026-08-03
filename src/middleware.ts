@@ -1,8 +1,19 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { locales } from '@/i18n/config';
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
+
+  // Handle locale cookie
+  const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
+  if (!localeCookie || !locales.includes(localeCookie as typeof locales[number])) {
+    const acceptLang = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0];
+    const detected = acceptLang && locales.includes(acceptLang as typeof locales[number])
+      ? acceptLang
+      : 'en';
+    response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -28,15 +39,17 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const pathname = request.nextUrl.pathname;
+
   // Protected dashboard routes
-  const isDashboardRoute = request.nextUrl.pathname.startsWith('/dashboard');
+  const isDashboardRoute = pathname.startsWith('/dashboard');
 
   if (isDashboardRoute && !user) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   // Auth routes - redirect to dashboard if already logged in
-  const isAuthRoute = request.nextUrl.pathname === '/login';
+  const isAuthRoute = pathname === '/login';
 
   if (isAuthRoute && user) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
@@ -47,7 +60,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/login',
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|sw.js|icon.svg|favicon.svg).*)',
   ],
 };

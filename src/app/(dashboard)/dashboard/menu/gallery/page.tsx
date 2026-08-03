@@ -33,7 +33,7 @@ export default function GalleryPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gallery</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Gallery</h1>
           <p className="text-muted-foreground">Manage restaurant gallery images.</p>
         </div>
         <Button>

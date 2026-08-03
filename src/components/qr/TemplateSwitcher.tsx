@@ -14,7 +14,7 @@ export function TemplateSwitcher({ value, onChange, className }: TemplateSwitche
   return (
     <div className={cn('space-y-2', className)}>
       <Label>Template</Label>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-5 gap-2 sm:grid-cols-5">
         {Object.values(QR_TEMPLATES).map((tmpl) => {
           const isActive = value === tmpl.name;
           const preview = getTemplate(tmpl.name);

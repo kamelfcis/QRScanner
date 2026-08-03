@@ -51,12 +51,12 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Settings</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Settings</h1>
           <p className="text-muted-foreground">Configure your restaurant details.</p>
         </div>
-        <Button onClick={handleSave} disabled={saving}>
+        <Button onClick={handleSave} disabled={saving} className="self-start">
           <Save className="mr-2 h-4 w-4" />
           {saving ? 'Saving...' : 'Save Changes'}
         </Button>

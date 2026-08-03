@@ -61,18 +61,18 @@ export default function QRManagementPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">QR Codes</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">QR Codes</h1>
           <p className="text-muted-foreground">Create and manage QR codes for your restaurant</p>
         </div>
-        <Button onClick={() => setShowForm(true)}>
+        <Button onClick={() => setShowForm(true)} className="self-start">
           <Plus className="mr-2 h-4 w-4" />
           Create QR Code
         </Button>
       </div>
 
-      <div className="relative max-w-sm">
+      <div className="relative w-full max-w-sm">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search QR codes..."
@@ -104,9 +104,9 @@ export default function QRManagementPage() {
       )}
 
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>Create QR Code</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">Create QR Code</DialogTitle>
           </DialogHeader>
           <QRForm
             tables={tables}
@@ -118,9 +118,9 @@ export default function QRManagementPage() {
       </Dialog>
 
       <Dialog open={!!editingQR} onOpenChange={() => setEditingQR(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>Edit QR Code</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">Edit QR Code</DialogTitle>
           </DialogHeader>
           {editingQR && (
             <QRForm

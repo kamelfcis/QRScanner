@@ -19,7 +19,7 @@ export default function MenuPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Menu Management</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Menu Management</h1>
         <p className="text-muted-foreground">
           Organize your menu with categories and products.
         </p>

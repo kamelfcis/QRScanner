@@ -25,12 +25,12 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Analytics</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Analytics</h1>
         <p className="text-muted-foreground">Track visitor behavior and performance metrics.</p>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList>
+        <TabsList className="overflow-x-auto">
           <TabsTrigger value="overview" className="gap-1">
             <BarChart3 className="h-4 w-4" /> Overview
           </TabsTrigger>

@@ -29,9 +29,10 @@ export default function LoginPage() {
   };
 
   return (
+    <div className="flex min-h-screen items-center justify-center p-4">
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold text-primary">Warda Shamya</CardTitle>
+        <h1 className="text-2xl font-bold text-primary">Warda Shamya</h1>
         <CardDescription>Sign in to the admin dashboard</CardDescription>
       </CardHeader>
       <CardContent>
@@ -71,5 +72,6 @@ export default function LoginPage() {
         </form>
       </CardContent>
     </Card>
+    </div>
   );
 }

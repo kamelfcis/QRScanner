@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Playfair_Display, Noto_Sans_Arabic } from 'next/font/google';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import './globals.css';
 
 const inter = Inter({
@@ -15,6 +16,12 @@ const inter = Inter({
 const playfairDisplay = Playfair_Display({
   variable: '--font-heading',
   subsets: ['latin'],
+  display: 'swap',
+});
+
+const notoArabic = Noto_Sans_Arabic({
+  variable: '--font-ar',
+  subsets: ['arabic'],
   display: 'swap',
 });
 
@@ -75,7 +82,7 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
-      className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfairDisplay.variable} ${notoArabic.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -90,7 +97,9 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ErrorBoundary>
-          <TooltipProvider delay={0}>{children}</TooltipProvider>
+          <RootI18nProvider>
+            <TooltipProvider delay={0}>{children}</TooltipProvider>
+          </RootI18nProvider>
         </ErrorBoundary>
         <InstallPrompt />
         <OfflineIndicator />

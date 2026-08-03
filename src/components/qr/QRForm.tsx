@@ -90,8 +90,8 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
   }, [watched.template, tmpl, initialData, setValue]);
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data as QrCodeInput))} className="grid gap-6 lg:grid-cols-2">
-      <div className="space-y-4">
+    <form onSubmit={handleSubmit((data) => onSubmit(data as QrCodeInput))} className="flex flex-col gap-6 lg:grid lg:grid-cols-2">
+      <div className="order-2 space-y-4 lg:order-1">
         <div className="space-y-2">
           <Label htmlFor="name">QR Code Name *</Label>
           <Input id="name" {...register('name')} placeholder="e.g., Main Entrance QR" />
@@ -129,7 +129,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
           onChange={(t) => setValue('template', t as z.input<typeof qrCodeSchema>['template'])}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="foreground_color">Foreground</Label>
             <div className="flex gap-2">
@@ -156,7 +156,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="rounded_style">Rounded Style</Label>
             <Select
@@ -257,7 +257,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
         </div>
       </div>
 
-      <div className="flex items-start justify-center">
+      <div className="order-1 flex justify-center lg:order-2 lg:sticky lg:top-24 lg:items-start">
         <QRPreview
           url={watched.url || 'https://wardashamya.com/menu'}
           template={watched.template}
@@ -272,7 +272,6 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
           errorCorrection={watched.error_correction}
           logoUrl={watched.logo_url ?? undefined}
           showTemplateLabel
-          className="sticky top-24"
         />
       </div>
     </form>

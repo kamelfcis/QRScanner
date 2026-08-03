@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
 import { useUnreadNotifications, useNotifications, useMarkAllNotificationsRead } from '@/hooks/useNotifications';
@@ -100,7 +101,8 @@ export function DashboardHeader() {
         <span className="text-lg font-semibold">Dashboard</span>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
+        <LanguageSwitcher />
         <div className="relative">
           <Button
             variant="ghost"

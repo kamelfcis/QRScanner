@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -66,7 +67,14 @@ export function PublicHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher
+            variant="ghost"
+            size="icon-sm"
+            className={cn(
+              scrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10'
+            )}
+          />
           <Button
             variant="ghost"
             size="icon-sm"

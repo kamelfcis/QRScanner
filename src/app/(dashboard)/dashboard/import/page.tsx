@@ -74,9 +74,9 @@ export default function ImportPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Menu Import</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Menu Import</h1>
           <p className="text-muted-foreground">Upload a menu PDF or image to automatically extract menu data</p>
         </div>
         {view === 'list' && (

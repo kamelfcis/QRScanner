@@ -63,9 +63,9 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Reports</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Reports</h1>
           <p className="text-muted-foreground">Generate and export restaurant reports</p>
         </div>
         <DateRangePicker value={period} onChange={setPeriod} />
@@ -73,9 +73,9 @@ export default function ReportsPage() {
 
       <div id="report-content" className="space-y-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle>Report Summary</CardTitle>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm" onClick={handleExportCSV}>
                 <Download className="mr-1 h-3 w-3" /> CSV
               </Button>
