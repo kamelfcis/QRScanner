@@ -123,8 +123,13 @@ export function DashboardHeader() {
               <div
                 className="fixed inset-0 z-40"
                 onClick={() => setShowNotifications(false)}
+                onKeyDown={(e) => e.key === 'Escape' && setShowNotifications(false)}
               />
-              <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-background shadow-lg">
+              <div
+                role="dialog"
+                aria-label="Notifications"
+                className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-background shadow-lg"
+              >
                 <div className="flex items-center justify-between border-b px-4 py-2">
                   <span className="text-sm font-medium">Notifications</span>
                   {unreadCount != null && unreadCount > 0 && (

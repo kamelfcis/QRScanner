@@ -54,7 +54,7 @@ export function DashboardSidebar() {
                   href={item.href}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    'flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
                     isActive
                       ? 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:bg-muted hover:text-foreground'

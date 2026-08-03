@@ -18,6 +18,14 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -152,7 +160,7 @@ export default function TestimonialsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Testimonials</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Testimonials</h1>
           <p className="text-muted-foreground">Manage customer reviews and testimonials.</p>
         </div>
         <Button onClick={openCreateDialog}>
@@ -261,18 +269,21 @@ export default function TestimonialsPage() {
 
             <div className="space-y-2">
               <Label htmlFor="rating">Rating</Label>
-              <select
-                id="rating"
-                value={form.rating}
-                onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              <Select
+                value={String(form.rating)}
+                onValueChange={(val) => setForm({ ...form, rating: Number(val) })}
               >
-                {[1, 2, 3, 4, 5].map((v) => (
-                  <option key={v} value={v}>
-                    {v} Star{v > 1 ? 's' : ''}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger id="rating">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 4, 5].map((v) => (
+                    <SelectItem key={v} value={String(v)}>
+                      {v} Star{v > 1 ? 's' : ''}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
@@ -322,25 +333,23 @@ export default function TestimonialsPage() {
               />
             </div>
 
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="is_featured"
                   checked={form.is_featured}
-                  onChange={(e) => setForm({ ...form, is_featured: e.target.checked })}
-                  className="rounded border-input"
+                  onCheckedChange={(val) => setForm({ ...form, is_featured: val })}
                 />
-                Featured
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
+                <Label htmlFor="is_featured">Featured</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="is_visible"
                   checked={form.is_visible}
-                  onChange={(e) => setForm({ ...form, is_visible: e.target.checked })}
-                  className="rounded border-input"
+                  onCheckedChange={(val) => setForm({ ...form, is_visible: val })}
                 />
-                Visible
-              </label>
+                <Label htmlFor="is_visible">Visible</Label>
+              </div>
             </div>
           </div>
           <DialogFooter>

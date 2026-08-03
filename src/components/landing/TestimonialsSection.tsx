@@ -77,14 +77,14 @@ export function TestimonialsSection() {
             >
               {items.map((testimonial) => (
                 <div key={testimonial.id} className="w-full flex-shrink-0 px-4">
-                  <div className="rounded-xl bg-card p-8 text-center ring-1 ring-foreground/10">
+                  <div className="rounded-xl bg-card p-6 text-center ring-1 ring-foreground/10 md:p-8">
                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                       <span className="text-xl font-bold text-primary font-heading">
                         {getInitials(testimonial.customer_name)}
                       </span>
                     </div>
                     <StarRating rating={testimonial.rating} />
-                    <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
+                    <p className="mx-auto mt-4 max-w-lg text-muted-foreground" dir={testimonial.review_en ? 'ltr' : 'rtl'}>
                       &ldquo;{testimonial.review_en || testimonial.review_ar}&rdquo;
                     </p>
                     <p className="mt-4 font-heading text-sm font-semibold">
@@ -103,7 +103,7 @@ export function TestimonialsSection() {
                   key={index}
                   onClick={() => setCurrentIndex(index)}
                   className={cn(
-                    'h-2 rounded-full transition-all',
+                    'h-2 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2',
                     index === currentIndex
                       ? 'w-6 bg-primary'
                       : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'

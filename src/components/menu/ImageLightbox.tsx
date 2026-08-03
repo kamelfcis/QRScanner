@@ -99,9 +99,9 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
           <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               onClick={(e) => { e.stopPropagation(); zoomOut(); }}
-              className="text-white hover:text-white/80"
+              className="text-white hover:text-white/80 h-10 w-10"
               aria-label="Zoom out"
             >
               <ZoomOut className="h-5 w-5" />
@@ -111,9 +111,9 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
             </span>
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               onClick={(e) => { e.stopPropagation(); zoomIn(); }}
-              className="text-white hover:text-white/80"
+              className="text-white hover:text-white/80 h-10 w-10"
               aria-label="Zoom in"
             >
               <ZoomIn className="h-5 w-5" />
