@@ -1,0 +1,21 @@
+{
+  "name": "Warda Shamya - Restaurant",
+  "short_name": "Warda Shamya",
+  "description": "Premium Lebanese & Syrian restaurant in Riyadh. Browse our menu, view offers, and order online.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFAF0",
+  "theme_color": "#B8860B",
+  "orientation": "portrait-primary",
+  "categories": ["food", "restaurant", "business"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

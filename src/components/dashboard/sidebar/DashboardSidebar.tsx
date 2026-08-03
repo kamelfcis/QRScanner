@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Menu, Settings, LogOut, QrCode, Table, FileUp } from 'lucide-react';
+import { LayoutDashboard, Menu, Settings, LogOut, QrCode, Table, FileUp, MessageSquareQuote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -12,6 +12,7 @@ const sidebarItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Menu', href: '/dashboard/menu', icon: Menu },
   { name: 'Import', href: '/dashboard/import', icon: FileUp },
+  { name: 'Testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
   { name: 'QR Codes', href: '/dashboard/qr', icon: QrCode },
   { name: 'Tables', href: '/dashboard/tables', icon: Table },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },

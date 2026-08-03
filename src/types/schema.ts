@@ -79,6 +79,19 @@ export const gallerySchema = z.object({
 
 export type GalleryInput = z.infer<typeof gallerySchema>;
 
+export const testimonialSchema = z.object({
+  customer_name: z.string().min(1, 'Customer name is required').max(200),
+  customer_avatar_url: z.string().url('Invalid URL').nullable().optional(),
+  rating: z.number().int().min(1).max(5).default(5),
+  review_ar: z.string().nullable().optional(),
+  review_en: z.string().nullable().optional(),
+  is_featured: z.boolean().default(false),
+  is_visible: z.boolean().default(true),
+  sort_order: z.number().int().min(0).default(0),
+});
+
+export type TestimonialInput = z.infer<typeof testimonialSchema>;
+
 export const qrCodeSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255),
   url: z.string().url('URL is required'),

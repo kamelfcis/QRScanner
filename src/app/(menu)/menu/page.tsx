@@ -1,23 +1,37 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
-import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Image } from '@/components/shared/Image';
-import { Flame, Star, Sparkles, Utensils, ShoppingBag } from 'lucide-react';
+import { MotionSection } from '@/components/shared/motion';
+import { MenuHeader } from '@/components/menu/MenuHeader';
+import { CategoryNav } from '@/components/menu/CategoryNav';
+import { ProductGrid } from '@/components/menu/ProductGrid';
+import { OffersSection } from '@/components/menu/OffersSection';
+import { RecentlyViewed } from '@/components/menu/RecentlyViewed';
+import { RecommendedDishes } from '@/components/menu/RecommendedDishes';
+import { SearchOverlay } from '@/components/menu/SearchOverlay';
+import { ImageLightbox } from '@/components/menu/ImageLightbox';
+import { MenuSkeleton } from '@/components/menu/MenuSkeleton';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
+import type { Product } from '@/types/database';
+import { generateMenuSchema } from '@/lib/seo/structuredData';
 
 export default function PublicMenuPage() {
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
+
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>('dining');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
+
+  const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
+  const { addRecent } = useRecentlyViewed();
 
   useEffect(() => {
     if (tableParam) {
@@ -25,8 +39,32 @@ export default function PublicMenuPage() {
     }
   }, [tableParam]);
 
-  if (isLoading) return <LoadingPage />;
-  if (error) return <ErrorState error={error} retry={refetch} />;
+  const handleProductClick = useCallback((product: Product) => {
+    addRecent(product);
+    setLightboxProduct(product);
+  }, [addRecent]);
+
+  const handleImageClick = useCallback((product: Product) => {
+    setLightboxProduct(product);
+  }, []);
+
+  const handleRecentlyViewedClick = useCallback((productId: string) => {
+    if (!categories) return;
+    for (const cat of categories) {
+      const found = cat.products.find((p) => p.id === productId);
+      if (found) {
+        handleProductClick(found);
+        break;
+      }
+    }
+  }, [categories, handleProductClick]);
+
+  if (isLoading) return <MenuSkeleton />;
+  if (error) return (
+    <div className="container mx-auto px-4 py-16">
+      <ErrorState error={error} retry={refetch} />
+    </div>
+  );
   if (!categories?.length) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -44,167 +82,71 @@ export default function PublicMenuPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-primary">Warda Shamya Menu</h1>
-              {tableParam && (
-                <Badge variant="secondary" className="text-sm">
-                  Table {tableParam}
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-center gap-2" role="group" aria-label="Dining mode">
-              <Button
-                variant={diningMode === 'dining' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setDiningMode('dining')}
-                aria-pressed={diningMode === 'dining'}
-              >
-                <Utensils className="mr-2 h-4 w-4" />
-                Dine In
-              </Button>
-              <Button
-                variant={diningMode === 'takeaway' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setDiningMode('takeaway')}
-                aria-pressed={diningMode === 'takeaway'}
-              >
-                <ShoppingBag className="mr-2 h-4 w-4" />
-                Takeaway
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MenuHeader
+        tableParam={tableParam}
+        diningMode={diningMode}
+        onDiningModeChange={setDiningMode}
+        onSearchOpen={() => setSearchOpen(true)}
+        favoriteCount={favoriteCount}
+      />
 
-      <div className="sticky top-[72px] z-30 border-b bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4">
-          <div
-            className="flex gap-2 overflow-x-auto py-3 scrollbar-none"
-            role="tablist"
-            aria-label="Menu categories"
+      <CategoryNav
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+      />
+
+      {activeCategory === null && <OffersSection />}
+
+      <div className="container mx-auto px-4 py-6">
+        {filteredCategories.map((category) => (
+          <MotionSection
+            key={category.id}
+            className="mb-8"
           >
-            <Button
-              variant={activeCategory === null ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveCategory(null)}
-              className="whitespace-nowrap"
-              role="tab"
-              aria-selected={activeCategory === null}
-              aria-controls="menu-content"
-            >
-              All
-            </Button>
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={activeCategory === category.id ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setActiveCategory(category.id)}
-                className="whitespace-nowrap"
-                role="tab"
-                aria-selected={activeCategory === category.id}
-                aria-controls="menu-content"
+            <div className="mb-4">
+              <h2
+                id={`category-${category.id}`}
+                className="text-xl font-bold"
               >
                 {category.name_en}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div id="menu-content" role="tabpanel" className="container mx-auto px-4 py-6">
-        {filteredCategories.map((category) => (
-          <section key={category.id} className="mb-8" aria-labelledby={`category-${category.id}`}>
-            <div className="mb-4">
-              <h2 id={`category-${category.id}`} className="text-xl font-bold">{category.name_en}</h2>
+              </h2>
               {category.description_en && (
-                <p className="text-sm text-muted-foreground">{category.description_en}</p>
+                <p className="text-sm text-muted-foreground">
+                  {category.description_en}
+                </p>
               )}
             </div>
 
-            {category.banner_url && (
-              <div className="relative mb-4 aspect-[21/9] w-full overflow-hidden rounded-lg">
-                <Image
-                  src={category.banner_url}
-                  alt={category.name_en}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {category.products.map((product) => (
-                <Card key={product.id} className="overflow-hidden transition-shadow hover:shadow-md">
-                  {product.image_url && (
-                    <div className="relative aspect-[4/3] w-full overflow-hidden">
-                      <Image
-                        src={product.image_url}
-                        alt={product.name_en}
-                        fill
-                        className="object-cover transition-transform duration-300 hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                      <div className="absolute left-2 top-2 flex gap-1">
-                        {product.is_popular && (
-                          <Badge className="bg-orange-500">
-                            <Star className="mr-1 h-3 w-3" />
-                            Popular
-                          </Badge>
-                        )}
-                        {product.is_new && (
-                          <Badge className="bg-blue-500">
-                            <Sparkles className="mr-1 h-3 w-3" />
-                            New
-                          </Badge>
-                        )}
-                        {product.is_bestseller && (
-                          <Badge className="bg-purple-500">
-                            <Star className="mr-1 h-3 w-3" />
-                            Bestseller
-                          </Badge>
-                        )}
-                        {product.is_spicy && (
-                          <Badge className="bg-red-500">
-                            <Flame className="mr-1 h-3 w-3" />
-                            Spicy
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  <CardContent className="p-4">
-                    <div className="mb-2 flex items-start justify-between">
-                      <div>
-                        <h3 className="font-semibold">{product.name_en}</h3>
-                        <p className="text-sm text-muted-foreground" dir="rtl">
-                          {product.name_ar}
-                        </p>
-                      </div>
-                    </div>
-                    {product.description_en && (
-                      <p className="mb-3 text-sm text-muted-foreground line-clamp-2">
-                        {product.description_en}
-                      </p>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <p className="text-lg font-bold text-primary">
-                        {diningMode === 'dining' ? product.dining_price : product.takeaway_price} SAR
-                      </p>
-                      {!product.is_available && (
-                        <Badge variant="secondary" aria-label="Currently unavailable">Unavailable</Badge>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
+            <ProductGrid
+              products={category.products}
+              diningMode={diningMode}
+              isFavorite={isFavorite}
+              onToggleFavorite={toggleFavorite}
+              onImageClick={handleImageClick}
+            />
+          </MotionSection>
         ))}
       </div>
+
+      <RecentlyViewed onSelectProduct={handleRecentlyViewedClick} />
+      <RecommendedDishes onSelectProduct={handleRecentlyViewedClick} />
+
+      <SearchOverlay
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSelectProduct={handleProductClick}
+      />
+
+      <ImageLightbox
+        product={lightboxProduct}
+        onClose={() => setLightboxProduct(null)}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema()) }}
+      />
     </div>
   );
 }

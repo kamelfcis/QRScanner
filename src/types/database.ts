@@ -177,6 +177,20 @@ export interface ProductWithGallery extends Product {
   subcategory?: Subcategory;
 }
 
+export interface Testimonial {
+  id: string;
+  customer_name: string;
+  customer_avatar_url: string | null;
+  rating: number;
+  review_ar: string | null;
+  review_en: string | null;
+  is_featured: boolean;
+  is_visible: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ImportJob {
   id: string;
   status: 'uploading' | 'processing' | 'parsing' | 'preview' | 'importing' | 'completed' | 'failed';

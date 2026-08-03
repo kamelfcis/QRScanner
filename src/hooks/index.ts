@@ -69,3 +69,15 @@ export {
   useImportJob,
   useDeleteImportJob,
 } from './useImportJobs';
+export {
+  useTestimonials,
+  useFeaturedTestimonials,
+  useAllTestimonials,
+  useTestimonial,
+  useCreateTestimonial,
+  useUpdateTestimonial,
+  useDeleteTestimonial,
+} from './useTestimonials';
+export { useReducedMotion } from './useReducedMotion';
+export { useLocalStorage } from './useLocalStorage';
+export { useIntersectionObserver } from './useIntersectionObserver';
