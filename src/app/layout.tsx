@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display, Noto_Sans_Arabic } from 'next/font/google';
+import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
@@ -73,15 +74,14 @@ export const viewport: Viewport = {
   ],
 };
 
-export const dynamic = 'force-dynamic';
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = 'en';
-  const dir = 'ltr';
+  const headerStore = await headers();
+  const locale = headerStore.get('x-locale') || 'en';
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
     <html

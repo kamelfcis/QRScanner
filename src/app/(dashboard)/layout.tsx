@@ -3,8 +3,6 @@ import { DashboardHeader } from '@/components/dashboard/header/DashboardHeader';
 import { Providers } from '@/components/providers/Providers';
 import { Toaster } from 'sonner';
 
-export const dynamic = 'force-dynamic';
-
 export default function DashboardLayout({
   children,
 }: {
