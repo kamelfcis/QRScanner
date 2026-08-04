@@ -1,6 +1,13 @@
-import { createClient } from '@/lib/supabase/client';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-const supabase = createClient();
+let _supabase: SupabaseClient | null = null;
+
+function getSupabase(): SupabaseClient {
+  if (_supabase) return _supabase;
+  const { createClient } = require('@/lib/supabase/client');
+  _supabase = createClient();
+  return _supabase!;
+}
 
 type EventType = 'page_view' | 'product_view' | 'category_view' | 'qr_scan' | 'dining_order' | 'takeaway_order' | 'search' | 'offer_click' | 'favorite_toggle';
 
@@ -19,7 +26,7 @@ function getDeviceType(): string {
 
 export async function trackEvent({ eventType, eventData }: TrackEventOptions): Promise<void> {
   try {
-    await supabase.from('analytics').insert({
+    await getSupabase().from('analytics').insert({
       event_type: eventType,
       event_data: eventData || {},
       user_agent: navigator.userAgent,
@@ -54,7 +61,7 @@ export function trackSearch(searchTerm: string, resultsCount: number, categoryId
     eventData: { search_term: searchTerm, results_count: resultsCount, category_id: categoryId },
   });
   try {
-    supabase.from('search_analytics').insert({
+    getSupabase().from('search_analytics').insert({
       search_term: searchTerm,
       results_count: resultsCount,
       category_id: categoryId || null,
