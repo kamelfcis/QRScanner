@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display, Noto_Sans_Arabic } from 'next/font/google';
-import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
@@ -81,14 +80,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let locale = 'en';
-  try {
-    const headerStore = await headers();
-    locale = headerStore.get('x-locale') || 'en';
-  } catch {
-    // headers() may fail in edge runtime or static generation
-  }
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const locale = 'en';
+  const dir = 'ltr';
 
   return (
     <html
