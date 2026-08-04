@@ -74,13 +74,20 @@ export const viewport: Viewport = {
   ],
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerStore = await headers();
-  const locale = headerStore.get('x-locale') || 'en';
+  let locale = 'en';
+  try {
+    const headerStore = await headers();
+    locale = headerStore.get('x-locale') || 'en';
+  } catch {
+    // headers() may fail in edge runtime or static generation
+  }
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
