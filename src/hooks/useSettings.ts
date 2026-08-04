@@ -133,6 +133,38 @@ export function useUpdateRestaurantSettings() {
   });
 }
 
+export function useUpdateHoursSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: Partial<HoursSettings>) => {
+      const { data: existing, error: readError } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'hours')
+        .single();
+
+      if (readError) throw new Error('Failed to read current hours settings');
+
+      const currentSettings = (existing?.value as unknown as HoursSettings) || {};
+      const updatedSettings = { ...currentSettings, ...input };
+
+      const { data, error } = await supabase
+        .from('settings')
+        .update({ value: updatedSettings, updated_at: new Date().toISOString() })
+        .eq('key', 'hours')
+        .select()
+        .single();
+
+      if (error) throw error;
+      return (data.value as unknown as HoursSettings);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+    },
+  });
+}
+
 export function useUpdateThemeSettings() {
   const queryClient = useQueryClient();
 

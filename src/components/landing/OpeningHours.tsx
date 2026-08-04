@@ -60,7 +60,9 @@ export function OpeningHours() {
                         isClosed ? 'font-medium text-secondary' : 'text-muted-foreground'
                       )}
                     >
-                      {isClosed ? 'Closed' : `${dayHours?.open} - ${dayHours?.close}`}
+                      {isClosed || !dayHours?.open || !dayHours?.close
+                        ? 'Closed'
+                        : `${dayHours.open} - ${dayHours.close}`}
                     </span>
                   </div>
                 );

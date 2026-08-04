@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { FileUpload } from '@/components/import/FileUpload';
 import { ImportStatus } from '@/components/import/ImportStatus';
@@ -45,6 +45,7 @@ describe('ImportStatus', () => {
     extracted_data: null,
     raw_text: null,
     error_message: null,
+    created_by: null,
     created_at: '2025-01-01T00:00:00Z',
     updated_at: '2025-01-01T00:00:00Z',
   };

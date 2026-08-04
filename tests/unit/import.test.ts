@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 describe('Import text extraction', () => {
   it('extractTextFromFile is exported', async () => {
@@ -46,8 +46,7 @@ describe('Import pipeline', () => {
 describe('Import types', () => {
   it('has correct ImportJob status values', async () => {
     const statuses = ['uploading', 'processing', 'parsing', 'preview', 'importing', 'completed', 'failed'];
-    const { ImportJob } = await import('@/types/database');
-    // Just verify the type exists
+    // ImportJob is a type-only export
     expect(statuses).toHaveLength(7);
   });
 

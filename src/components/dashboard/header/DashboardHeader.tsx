@@ -129,6 +129,9 @@ export function DashboardHeader() {
                 role="dialog"
                 aria-label="Notifications"
                 className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-background shadow-lg"
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') setShowNotifications(false);
+                }}
               >
                 <div className="flex items-center justify-between border-b px-4 py-2">
                   <span className="text-sm font-medium">Notifications</span>

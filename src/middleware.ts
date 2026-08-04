@@ -7,13 +7,17 @@ export async function middleware(request: NextRequest) {
 
   // Handle locale cookie
   const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
-  if (!localeCookie || !locales.includes(localeCookie as typeof locales[number])) {
+  let detected = 'en';
+  if (localeCookie && locales.includes(localeCookie as typeof locales[number])) {
+    detected = localeCookie;
+  } else {
     const acceptLang = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0];
-    const detected = acceptLang && locales.includes(acceptLang as typeof locales[number])
+    detected = acceptLang && locales.includes(acceptLang as typeof locales[number])
       ? acceptLang
       : 'en';
     response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
   }
+  response.headers.set('x-locale', detected);
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

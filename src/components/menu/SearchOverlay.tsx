@@ -9,7 +9,8 @@ import { Image } from '@/components/shared/Image';
 import { useSearchProducts } from '@/hooks/useProducts';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { cn } from '@/lib/utils';
+import { useI18n } from '@/components/providers/RootI18nProvider';
+import { cn, getName } from '@/lib/utils';
 import { trackSearch } from '@/lib/analytics';
 import type { Product } from '@/types/database';
 
@@ -25,6 +26,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
   const [recentSearches, setRecentSearches] = useLocalStorage<string[]>('warda-recent-searches', []);
   const { data: results } = useSearchProducts(query);
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
 
   useEffect(() => {
     if (isOpen) {
@@ -136,7 +138,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                       )}
                       <div className="p-2">
                         <h4 className="line-clamp-1 text-sm font-medium">
-                          {product.name_en}
+                          {getName(locale, product.name_en, product.name_ar)}
                         </h4>
                         <p className="text-xs text-muted-foreground">
                           {product.dining_price} SAR

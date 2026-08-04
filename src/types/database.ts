@@ -76,6 +76,7 @@ export interface Gallery {
   image_url: string;
   caption_ar: string | null;
   caption_en: string | null;
+  is_featured: boolean;
   sort_order: number;
   is_visible: boolean;
   created_at: string;
@@ -149,6 +150,12 @@ export interface RestaurantSettings {
   currency: string;
   tax_rate: number;
   service_charge_rate: number;
+  logo_url: string | null;
+  hero_headline: string | null;
+  hero_subtitle: string | null;
+  tagline: string | null;
+  email: string | null;
+  google_maps_url: string | null;
 }
 
 export interface ThemeSettings {

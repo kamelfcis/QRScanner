@@ -21,10 +21,13 @@ import { LineAreaChart, PieDonutChart, ChartCard } from '@/components/dashboard/
 import dynamic from 'next/dynamic';
 
 const ActivityFeed = dynamic(() => import('@/components/dashboard/ActivityFeed').then(m => ({ default: m.ActivityFeed })), { ssr: false });
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 
 export default function DashboardPage() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   useRealtimeAnalytics();
   const { data: stats, isLoading: statsLoading, error: statsError, refetch: statsRefetch } = useDashboardStats();
   const { data: todaySummary, isLoading: summaryLoading } = useAnalyticsSummary('today');
@@ -105,8 +108,8 @@ export default function DashboardPage() {
           ) : (
             <PieDonutChart
               data={[
-                { name: 'Dining', value: stats?.diningPercent || 0, color: '#B8860B' },
-                { name: 'Takeaway', value: stats?.takeawayPercent || 0, color: '#8B0000' },
+                { name: 'Dining', value: stats?.diningPercent || 0, color: isDark ? '#DAA520' : '#B8860B' },
+                { name: 'Takeaway', value: stats?.takeawayPercent || 0, color: isDark ? '#A52A2A' : '#8B0000' },
               ]}
               donut
             />

@@ -23,7 +23,7 @@ export default function InsightsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Customer Insights</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Customer Insights</h1>
         <p className="text-muted-foreground">Understand what customers love and discover untapped opportunities.</p>
       </div>
 

@@ -73,6 +73,7 @@ export const gallerySchema = z.object({
   image_url: z.string().url('Image URL is required'),
   caption_ar: z.string().max(500).optional(),
   caption_en: z.string().max(500).optional(),
+  is_featured: z.boolean().default(false),
   sort_order: z.number().int().min(0).default(0),
   is_visible: z.boolean().default(true),
 });

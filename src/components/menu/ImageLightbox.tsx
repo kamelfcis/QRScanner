@@ -6,6 +6,8 @@ import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/shared/Image';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useI18n } from '@/components/providers/RootI18nProvider';
+import { getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
 
 interface ImageLightboxProps {
@@ -18,6 +20,7 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [touchDistance, setTouchDistance] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
 
   const handleEscape = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
@@ -144,8 +147,15 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
           </motion.div>
 
           <div className="absolute bottom-4 left-4 z-10 max-w-xs">
-            <h3 className="text-lg font-semibold text-white">{product.name_en}</h3>
-            <p className="text-sm text-white/70" dir="rtl">{product.name_ar}</p>
+            <h3 className="text-lg font-semibold text-white">
+              {getName(locale, product.name_en, product.name_ar)}
+            </h3>
+            {locale !== 'ar' && product.name_ar && (
+              <p className="text-sm text-white/70" dir="rtl">{product.name_ar}</p>
+            )}
+            {locale === 'ar' && product.name_en && (
+              <p className="text-sm text-white/70" dir="ltr">{product.name_en}</p>
+            )}
           </div>
         </motion.div>
       )}

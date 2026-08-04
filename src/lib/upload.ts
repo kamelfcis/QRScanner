@@ -68,7 +68,7 @@ export function generateStoragePath(bucket: StorageBucket, filename: string): st
   const random = Math.random().toString(36).substring(2, 8);
   const safeName = filename.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 50);
   const ext = safeName.split('.').pop() || 'jpg';
-  return `${bucket}/${timestamp}-${random}.${ext}`;
+  return `${timestamp}-${random}.${ext}`;
 }
 
 export function getImageDimensions(file: File): Promise<{ width: number; height: number }> {

@@ -18,7 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Image } from '@/components/shared/Image';
-import { Pencil, Trash2, GripVertical, Eye, EyeOff } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import type { Category, CategoryInput } from '@/types';
 
 interface CategoryCardProps {
@@ -29,7 +29,6 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps) {
   const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const [editForm, setEditForm] = useState<Partial<CategoryInput>>({
     name_en: category.name_en,
     name_ar: category.name_ar,
@@ -66,7 +65,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
           </div>
           <div className="flex items-center gap-1">
             {category.is_visible ? (
-              <Badge variant="default" className="bg-green-500">Visible</Badge>
+              <Badge variant="default" className="bg-green-500 text-white">Visible</Badge>
             ) : (
               <Badge variant="secondary">Hidden</Badge>
             )}
@@ -177,34 +176,14 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
               </DialogContent>
             </Dialog>
 
-            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-              <DialogTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" />}>
-                <Trash2 className="h-4 w-4" />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Delete Category</DialogTitle>
-                  <DialogDescription>
-                    Are you sure you want to delete this category? This action cannot be undone.
-                    All products in this category will also be deleted.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setDeleteOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => {
-                      onDelete();
-                      setDeleteOpen(false);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-destructive"
+              onClick={onDelete}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </CardContent>

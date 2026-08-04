@@ -16,13 +16,13 @@ export function TopProductsChart({ period }: TopProductsChartProps) {
   if (isLoading) return <div className="h-[400px] bg-muted animate-pulse rounded-lg" />;
 
   const chartData = (data || []).map((prod) => ({
-    name: prod.name_ar || prod.name,
+    name: prod.name || prod.id,
     views: prod.views,
   }));
 
   const tableRows = (data || []).map((prod, i) => [
     i + 1,
-    prod.name_ar || prod.name,
+    prod.name || prod.id,
     prod.views,
   ]);
 

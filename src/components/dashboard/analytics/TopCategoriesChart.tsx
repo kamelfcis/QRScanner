@@ -16,13 +16,13 @@ export function TopCategoriesChart({ period }: TopCategoriesChartProps) {
   if (isLoading) return <div className="h-[400px] bg-muted animate-pulse rounded-lg" />;
 
   const chartData = (data || []).map((cat) => ({
-    name: cat.name_ar || cat.name,
+    name: cat.name || cat.id,
     views: cat.views,
   }));
 
   const tableRows = (data || []).map((cat, i) => [
     i + 1,
-    cat.name_ar || cat.name,
+    cat.name || cat.id,
     cat.views,
   ]);
 

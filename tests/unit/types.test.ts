@@ -10,7 +10,7 @@ import type {
   ImportExtractedProduct,
   ImportExtractedCategory,
   Offer,
-  GalleryItem,
+  Gallery,
 } from '@/types/database';
 
 describe('Category type', () => {
@@ -88,14 +88,15 @@ describe('QrCode type', () => {
       template: 'golden',
       primary_color: '#B8860B',
       secondary_color: '#8B0000',
-      bg_color: '#FFFFFF',
-      fg_color: '#000000',
+      background_color: '#FFFFFF',
+      foreground_color: '#000000',
       size: 300,
       rounded_style: 'rounded',
       eye_style: 'circle',
       margin: 4,
       error_correction: 'M',
       logo_url: null,
+      image_url: null,
       table_id: null,
       is_active: true,
       created_at: '',
@@ -170,9 +171,9 @@ describe('ImportExtractedData type', () => {
         products: 0.8,
       },
     };
-    expect(data.categories).toHaveLength(1);
-    expect(data.categories[0].products).toHaveLength(1);
-    expect(data.confidence.overall).toBeGreaterThan(0.8);
+    expect(data.categories!).toHaveLength(1);
+    expect(data.categories![0].products).toHaveLength(1);
+    expect(data.confidence!.overall).toBeGreaterThan(0.8);
   });
 });
 
@@ -184,10 +185,9 @@ describe('Offer type', () => {
       title_ar: 'ساعة سعيدة',
       description_en: '20% off',
       description_ar: 'خصم 20٪',
+      image_url: null,
       discount_type: 'percentage',
       discount_value: 20,
-      min_order: 50,
-      max_discount: 100,
       start_date: null,
       end_date: null,
       is_active: true,
@@ -199,16 +199,17 @@ describe('Offer type', () => {
   });
 });
 
-describe('GalleryItem type', () => {
+describe('Gallery type', () => {
   it('has image fields', () => {
-    const item: GalleryItem = {
+    const item: Gallery = {
       id: '123e4567-e89b-12d3-a456-426614174000',
       image_url: 'https://example.com/photo.jpg',
       caption_en: 'Our restaurant',
       caption_ar: 'مطعمنا',
+      is_featured: true,
       sort_order: 1,
+      is_visible: true,
       created_at: '',
-      updated_at: '',
     };
     expect(item.image_url).toContain('photo.jpg');
   });
@@ -217,7 +218,6 @@ describe('GalleryItem type', () => {
 describe('RestaurantSettings type', () => {
   it('has business fields', () => {
     const settings: RestaurantSettings = {
-      id: '123e4567-e89b-12d3-a456-426614174000',
       name_en: 'Warda Shamya',
       name_ar: 'وردة شميا',
       phone: '+966500000000',
@@ -228,14 +228,14 @@ describe('RestaurantSettings type', () => {
       facebook: 'warda',
       tiktok: 'warda',
       logo_url: null,
-      cover_url: null,
-      primary_color: '#B8860B',
-      secondary_color: '#8B0000',
+      hero_headline: null,
+      hero_subtitle: null,
+      tagline: null,
+      email: null,
+      google_maps_url: null,
       currency: 'SAR',
       tax_rate: 15,
       service_charge_rate: 10,
-      created_at: '',
-      updated_at: '',
     };
     expect(settings.currency).toBe('SAR');
     expect(settings.tax_rate).toBe(15);

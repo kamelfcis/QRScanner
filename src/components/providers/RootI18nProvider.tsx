@@ -25,20 +25,20 @@ export function useI18n() {
   return useContext(I18nContext);
 }
 
-export function RootI18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+export function RootI18nProvider({ children, initialLocale }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
 
   useEffect(() => {
     const saved = document.cookie
       .split('; ')
       .find((row) => row.startsWith('NEXT_LOCALE='))
       ?.split('=')[1] as Locale | undefined;
-    if (saved && locales.includes(saved)) {
+    if (saved && locales.includes(saved) && saved !== locale) {
       setLocaleState(saved);
       document.documentElement.dir = saved === 'ar' ? 'rtl' : 'ltr';
       document.documentElement.lang = saved;
     }
-  }, []);
+  }, [locale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${365 * 24 * 60 * 60}`;

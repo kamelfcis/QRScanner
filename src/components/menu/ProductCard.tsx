@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
 import { MotionCard } from '@/components/shared/motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { cn } from '@/lib/utils';
+import { useI18n } from '@/components/providers/RootI18nProvider';
+import { cn, getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -26,6 +27,7 @@ export function ProductCard({
   onImageClick,
 }: ProductCardProps) {
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
   const price = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
 
   return (
@@ -98,14 +100,23 @@ export function ProductCard({
         >
           <CardContent className="p-4">
             <div className="mb-2">
-              <h3 className="font-semibold">{product.name_en}</h3>
-              <p className="text-sm text-muted-foreground" dir="rtl">
-                {product.name_ar}
-              </p>
+              <h3 className="font-semibold">
+                {getName(locale, product.name_en, product.name_ar)}
+              </h3>
+              {locale !== 'ar' && product.name_ar && (
+                <p className="text-sm text-muted-foreground" dir="rtl">
+                  {product.name_ar}
+                </p>
+              )}
+              {locale === 'ar' && product.name_en && (
+                <p className="text-sm text-muted-foreground" dir="ltr">
+                  {product.name_en}
+                </p>
+              )}
             </div>
             {product.description_en && (
               <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">
-                {product.description_en}
+                {getName(locale, product.description_en, product.description_ar)}
               </p>
             )}
             <div className="flex items-center justify-between">

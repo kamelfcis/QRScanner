@@ -42,6 +42,13 @@ export function PublicHeader() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
+          {settings?.logo_url ? (
+            <img
+              src={settings.logo_url}
+              alt={name}
+              className="h-8 w-auto object-contain"
+            />
+          ) : null}
           <span
             className={cn(
               'text-xl font-bold font-heading transition-colors',
@@ -105,7 +112,7 @@ export function PublicHeader() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               className={cn(
-                'md:hidden',
+                'md:hidden min-h-[44px] min-w-[44px] flex items-center justify-center',
                 scrolled ? 'text-foreground' : 'text-white'
               )}
             >

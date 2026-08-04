@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
+import { useI18n } from '@/components/providers/RootI18nProvider';
+import { getName } from '@/lib/utils';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { MotionSection } from '@/components/shared/motion';
@@ -22,6 +24,14 @@ import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackQRScan } from '@/lib/analytics';
 
 export default function PublicMenuPage() {
+  return (
+    <Suspense fallback={<MenuSkeleton />}>
+      <MenuContent />
+    </Suspense>
+  );
+}
+
+function MenuContent() {
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
@@ -30,6 +40,7 @@ export default function PublicMenuPage() {
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>('dining');
   const [searchOpen, setSearchOpen] = useState(false);
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
+  const { locale } = useI18n();
 
   const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
   const { addRecent } = useRecentlyViewed();
@@ -123,11 +134,11 @@ export default function PublicMenuPage() {
                 id={`category-${category.id}`}
                 className="text-xl font-bold"
               >
-                {category.name_en}
+                {getName(locale, category.name_en, category.name_ar)}
               </h2>
               {category.description_en && (
                 <p className="text-sm text-muted-foreground">
-                  {category.description_en}
+                  {getName(locale, category.description_en, category.description_ar)}
                 </p>
               )}
             </div>

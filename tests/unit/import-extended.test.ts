@@ -8,7 +8,7 @@ describe('Import pipeline data structures', () => {
       categories: [],
       confidence: { overall: 0, restaurant: 0, categories: 0, products: 0 },
     };
-    expect(data.categories).toHaveLength(0);
+    expect(data.categories!).toHaveLength(0);
   });
 
   it('extracted data can have multiple categories with products', () => {
@@ -35,9 +35,9 @@ describe('Import pipeline data structures', () => {
       ],
       confidence: { overall: 0.9, restaurant: 0.95, categories: 0.9, products: 0.88 },
     };
-    expect(data.categories).toHaveLength(2);
-    expect(data.categories[0].products).toHaveLength(2);
-    expect(data.categories[1].products).toHaveLength(1);
+    expect(data.categories!).toHaveLength(2);
+    expect(data.categories![0].products).toHaveLength(2);
+    expect(data.categories![1].products).toHaveLength(1);
   });
 
   it('extracted product can have all optional fields', () => {

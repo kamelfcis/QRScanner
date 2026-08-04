@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { qrCodeSchema, type QrCodeInput } from '@/types/schema';
@@ -20,7 +20,39 @@ import {
 import { TemplateSwitcher } from './TemplateSwitcher';
 import { QRPreview } from './QRPreview';
 import { getTemplate } from '@/lib/qr/templates';
-import { Loader2 } from 'lucide-react';
+import { Loader2, RefreshCw } from 'lucide-react';
+
+function getSiteUrl(): string {
+  if (typeof window !== 'undefined') {
+    return (
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      window.location.origin
+    );
+  }
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    'https://engzqrmenu.vercel.app'
+  );
+}
+
+function generateMenuUrl(tableNumber?: number | null): string {
+  const base = getSiteUrl();
+  const url = `${base}/menu`;
+  if (tableNumber != null) {
+    return `${url}?table=${tableNumber}`;
+  }
+  return url;
+}
+
+function getTableNumberByValue(
+  tables: RestaurantTable[],
+  value: string
+): number | null {
+  const table = tables.find((t) => t.id === value);
+  return table?.table_number ?? null;
+}
 
 interface QRFormProps {
   initialData?: QrCode;
@@ -30,7 +62,13 @@ interface QRFormProps {
   isLoading?: boolean;
 }
 
-export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: QRFormProps) {
+export function QRForm({
+  initialData,
+  tables,
+  onSubmit,
+  onCancel,
+  isLoading,
+}: QRFormProps) {
   const {
     register,
     handleSubmit,
@@ -46,20 +84,32 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
           foreground_color: initialData.foreground_color,
           background_color: initialData.background_color,
           logo_url: initialData.logo_url,
-          template: initialData.template as z.input<typeof qrCodeSchema>['template'],
+          template: initialData.template as z.input<
+            typeof qrCodeSchema
+          >['template'],
           size: initialData.size,
           primary_color: initialData.primary_color,
           secondary_color: initialData.secondary_color,
-          rounded_style: initialData.rounded_style as 'square' | 'rounded' | 'circle',
-          eye_style: initialData.eye_style as 'square' | 'rounded' | 'circle',
+          rounded_style: initialData.rounded_style as
+            | 'square'
+            | 'rounded'
+            | 'circle',
+          eye_style: initialData.eye_style as
+            | 'square'
+            | 'rounded'
+            | 'circle',
           margin: initialData.margin,
-          error_correction: initialData.error_correction as 'L' | 'M' | 'Q' | 'H',
+          error_correction: initialData.error_correction as
+            | 'L'
+            | 'M'
+            | 'Q'
+            | 'H',
           table_id: initialData.table_id,
           is_active: initialData.is_active,
         }
       : {
           name: '',
-          url: '',
+          url: generateMenuUrl(),
           template: 'classic',
           size: 300,
           primary_color: '#000000',
@@ -75,6 +125,8 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
   });
 
   const watched = watch();
+  const watchedTableId = watched.table_id;
+  const watchedUrl = watched.url;
 
   const tmpl = getTemplate(watched.template || 'classic');
 
@@ -89,26 +141,103 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
     }
   }, [watched.template, tmpl, initialData, setValue]);
 
+  const autoUrl = useMemo(() => {
+    if (watchedTableId && watchedTableId !== 'none') {
+      const tableNum = getTableNumberByValue(tables, watchedTableId);
+      if (tableNum != null) {
+        return generateMenuUrl(tableNum);
+      }
+    }
+    return generateMenuUrl();
+  }, [watchedTableId, tables]);
+
+  const handleResetUrl = () => {
+    setValue('url', autoUrl, { shouldValidate: true });
+  };
+
+  useEffect(() => {
+    if (watchedTableId && watchedTableId !== 'none') {
+      const tableNum = getTableNumberByValue(tables, watchedTableId);
+      if (tableNum != null) {
+        const newUrl = generateMenuUrl(tableNum);
+        if (watchedUrl !== newUrl) {
+          setValue('url', newUrl, { shouldValidate: true });
+        }
+      }
+    } else {
+      const baseUrl = generateMenuUrl();
+      if (watchedUrl !== baseUrl) {
+        setValue('url', baseUrl, { shouldValidate: true });
+      }
+    }
+  }, [watchedTableId, tables, setValue, watchedUrl]);
+
+  const previewUrl = watchedUrl || autoUrl;
+
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data as QrCodeInput))} className="flex flex-col gap-6 lg:grid lg:grid-cols-2">
+    <form
+      onSubmit={handleSubmit((data) => onSubmit(data as QrCodeInput))}
+      className="flex flex-col gap-6 lg:grid lg:grid-cols-2"
+    >
       <div className="order-2 space-y-4 lg:order-1">
         <div className="space-y-2">
           <Label htmlFor="name">QR Code Name *</Label>
-          <Input id="name" {...register('name')} placeholder="e.g., Main Entrance QR" />
-          {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+          <Input
+            id="name"
+            {...register('name')}
+            placeholder="e.g., Main Entrance QR"
+          />
+          {errors.name && (
+            <p className="text-sm text-destructive">{errors.name.message}</p>
+          )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="url">Menu URL *</Label>
-          <Input id="url" {...register('url')} placeholder="https://wardashamya.com/menu" />
-          {errors.url && <p className="text-sm text-destructive">{errors.url.message}</p>}
+          <div className="flex items-center justify-between">
+            <Label htmlFor="url">Menu URL (Auto-generated) *</Label>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleResetUrl}
+              className="h-7 gap-1 text-xs"
+            >
+              <RefreshCw className="h-3 w-3" />
+              Auto
+            </Button>
+          </div>
+          <Input
+            id="url"
+            value={autoUrl}
+            readOnly
+            className="bg-muted font-mono text-sm"
+          />
+          <input type="hidden" {...register('url')} />
+          {errors.url && (
+            <p className="text-sm text-destructive">{errors.url.message}</p>
+          )}
+          {watchedTableId && watchedTableId !== 'none' && (
+            <p className="text-xs text-muted-foreground">
+              Includes table parameter:{' '}
+              <span className="font-mono">?table={getTableNumberByValue(tables, watchedTableId)}</span>
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="table_id">Table (Optional)</Label>
           <Select
-            value={watched.table_id || ''}
-            onValueChange={(val) => setValue('table_id', val || null)}
+            value={watchedTableId || ''}
+            onValueChange={(val) => {
+              const newTableId = val === 'none' ? null : val;
+              setValue('table_id', newTableId, { shouldValidate: true });
+              const tableNum =
+                newTableId && newTableId !== 'none'
+                  ? getTableNumberByValue(tables, newTableId)
+                  : null;
+              const newUrl = generateMenuUrl(tableNum);
+              setValue('url', newUrl, { shouldValidate: true });
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder="No table" />
@@ -117,7 +246,8 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
               <SelectItem value="none">No table</SelectItem>
               {tables.map((t) => (
                 <SelectItem key={t.id} value={t.id}>
-                  Table {t.table_number}{t.internal_name ? ` - ${t.internal_name}` : ''}
+                  Table {t.table_number}
+                  {t.internal_name ? ` - ${t.internal_name}` : ''}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -126,7 +256,12 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
 
         <TemplateSwitcher
           value={watched.template || 'classic'}
-          onChange={(t) => setValue('template', t as z.input<typeof qrCodeSchema>['template'])}
+          onChange={(t) =>
+            setValue(
+              'template',
+              t as z.input<typeof qrCodeSchema>['template']
+            )
+          }
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -139,7 +274,10 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
                 {...register('foreground_color')}
                 className="h-10 w-14 cursor-pointer p-1"
               />
-              <Input {...register('foreground_color')} className="font-mono" />
+              <Input
+                {...register('foreground_color')}
+                className="font-mono"
+              />
             </div>
           </div>
           <div className="space-y-2">
@@ -151,7 +289,10 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
                 {...register('background_color')}
                 className="h-10 w-14 cursor-pointer p-1"
               />
-              <Input {...register('background_color')} className="font-mono" />
+              <Input
+                {...register('background_color')}
+                className="font-mono"
+              />
             </div>
           </div>
         </div>
@@ -161,7 +302,12 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
             <Label htmlFor="rounded_style">Rounded Style</Label>
             <Select
               value={watched.rounded_style}
-              onValueChange={(val) => setValue('rounded_style', val as 'square' | 'rounded' | 'circle')}
+              onValueChange={(val) =>
+                setValue(
+                  'rounded_style',
+                  val as 'square' | 'rounded' | 'circle'
+                )
+              }
             >
               <SelectTrigger id="rounded_style">
                 <SelectValue />
@@ -177,7 +323,12 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
             <Label htmlFor="eye_style">Eye Style</Label>
             <Select
               value={watched.eye_style}
-              onValueChange={(val) => setValue('eye_style', val as 'square' | 'rounded' | 'circle')}
+              onValueChange={(val) =>
+                setValue(
+                  'eye_style',
+                  val as 'square' | 'rounded' | 'circle'
+                )
+              }
             >
               <SelectTrigger id="eye_style">
                 <SelectValue />
@@ -206,7 +357,12 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
             <Label htmlFor="error_correction">Error Correction</Label>
             <Select
               value={watched.error_correction}
-              onValueChange={(val) => setValue('error_correction', val as 'L' | 'M' | 'Q' | 'H')}
+              onValueChange={(val) =>
+                setValue(
+                  'error_correction',
+                  val as 'L' | 'M' | 'Q' | 'H'
+                )
+              }
             >
               <SelectTrigger id="error_correction">
                 <SelectValue />
@@ -234,7 +390,11 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
 
         <div className="space-y-2">
           <Label htmlFor="logo_url">Logo URL (Optional)</Label>
-          <Input id="logo_url" {...register('logo_url')} placeholder="https://..." />
+          <Input
+            id="logo_url"
+            {...register('logo_url')}
+            placeholder="https://..."
+          />
         </div>
 
         <div className="flex items-center gap-2">
@@ -248,7 +408,9 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
 
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
             {initialData ? 'Update QR Code' : 'Create QR Code'}
           </Button>
           <Button type="button" variant="outline" onClick={onCancel}>
@@ -259,7 +421,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
 
       <div className="order-1 flex justify-center lg:order-2 lg:sticky lg:top-24 lg:items-start">
         <QRPreview
-          url={watched.url || 'https://wardashamya.com/menu'}
+          url={previewUrl}
           template={watched.template}
           fgColor={watched.foreground_color}
           bgColor={watched.background_color}

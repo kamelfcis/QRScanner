@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display, Noto_Sans_Arabic } from 'next/font/google';
+import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
@@ -73,19 +74,24 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const locale = headerStore.get('x-locale') || 'en';
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
   return (
     <html
-      lang="en"
-      dir="ltr"
+      lang={locale}
+      dir={dir}
       className={`${inter.variable} ${playfairDisplay.variable} ${notoArabic.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
+        <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#B8860B" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -97,7 +103,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ErrorBoundary>
-          <RootI18nProvider>
+          <RootI18nProvider initialLocale={locale as 'en' | 'ar'}>
             <TooltipProvider delay={0}>{children}</TooltipProvider>
           </RootI18nProvider>
         </ErrorBoundary>

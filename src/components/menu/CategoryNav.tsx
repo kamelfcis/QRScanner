@@ -3,6 +3,8 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useI18n } from '@/components/providers/RootI18nProvider';
+import { getName } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import type { CategoryWithProducts } from '@/types/database';
 
@@ -19,6 +21,7 @@ export function CategoryNav({
 }: CategoryNavProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
 
   const handleClick = (categoryId: string | null) => {
     onCategoryChange(categoryId);
@@ -51,7 +54,7 @@ export function CategoryNav({
             aria-selected={activeCategory === null}
             onClick={() => handleClick(null)}
             className={cn(
-              'relative whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors',
+              'relative whitespace-nowrap px-3 py-2.5 text-sm min-h-[44px] font-medium transition-colors',
               activeCategory === null
                 ? 'text-primary'
                 : 'text-muted-foreground hover:text-foreground'
@@ -73,13 +76,13 @@ export function CategoryNav({
               aria-selected={activeCategory === category.id}
               onClick={() => handleClick(category.id)}
               className={cn(
-                'relative whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors',
+                'relative whitespace-nowrap px-3 py-2.5 text-sm min-h-[44px] font-medium transition-colors',
                 activeCategory === category.id
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              {category.name_en}
+              {getName(locale, category.name_en, category.name_ar)}
               {activeCategory === category.id && (
                 <motion.div
                   layoutId="category-indicator"

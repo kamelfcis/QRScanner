@@ -1,7 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { useAllProducts, useDeleteProduct, useUpdateProduct } from '@/hooks/useProducts';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { productSchema } from '@/types/schema';
+import type { ProductInput } from '@/types/schema';
+import type { z } from 'zod';
+import {
+  useAllProducts,
+  useCreateProduct,
+  useUpdateProduct,
+  useDeleteProduct,
+  useToggleProductAvailability,
+} from '@/hooks/useProducts';
 import { useAllCategories } from '@/hooks/useCategories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,18 +36,50 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import type { Product } from '@/types';
+
+type ProductForm = z.input<typeof productSchema>;
+
+const defaultFormValues: ProductForm = {
+  name_en: '',
+  name_ar: '',
+  description_en: '',
+  description_ar: '',
+  category_id: '',
+  dining_price: 0,
+  takeaway_price: 0,
+  is_available: true,
+  is_popular: false,
+  is_new: false,
+  is_bestseller: false,
+  is_spicy: false,
+  sort_order: 0,
+};
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
-  const [editForm, setEditForm] = useState({ name_en: '', name_ar: '', description_en: '', description_ar: '', dining_price: 0, takeaway_price: 0, category_id: '' });
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+
   const { data: products, isLoading, error, refetch } = useAllProducts();
   const { data: categories } = useAllCategories();
   const deleteProduct = useDeleteProduct();
   const updateProduct = useUpdateProduct();
+  const createProduct = useCreateProduct();
+  const toggleAvailability = useToggleProductAvailability();
+
+  const createForm = useForm<ProductForm>({
+    resolver: zodResolver(productSchema),
+    defaultValues: defaultFormValues,
+  });
+
+  const editForm = useForm<ProductForm>({
+    resolver: zodResolver(productSchema),
+    defaultValues: defaultFormValues,
+  });
 
   const filteredProducts = products?.filter((product) => {
     const matchesSearch =
@@ -49,29 +93,79 @@ export default function ProductsPage() {
   const handleDelete = () => {
     if (deleteId) {
       deleteProduct.mutate(deleteId, {
-        onSuccess: () => setDeleteId(null),
+        onSuccess: () => {
+          setDeleteId(null);
+          toast.success('Product deleted successfully');
+        },
+        onError: (error) => {
+          toast.error(error.message || 'Failed to delete product');
+        },
       });
     }
   };
 
+  const openCreateDialog = () => {
+    createForm.reset(defaultFormValues);
+    setShowCreateDialog(true);
+  };
+
   const openEditDialog = (product: Product) => {
     setEditProduct(product);
-    setEditForm({
+    editForm.reset({
       name_en: product.name_en,
       name_ar: product.name_ar,
       description_en: product.description_en ?? '',
       description_ar: product.description_ar ?? '',
+      category_id: product.category_id,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
-      category_id: product.category_id,
+      is_available: product.is_available,
+      is_popular: product.is_popular,
+      is_new: product.is_new,
+      is_bestseller: product.is_bestseller,
+      is_spicy: product.is_spicy,
+      sort_order: product.sort_order,
     });
   };
 
-  const handleEditSave = () => {
+  const handleCreate = async (data: ProductForm) => {
+    createProduct.mutate(data as ProductInput, {
+      onSuccess: () => {
+        setShowCreateDialog(false);
+        createForm.reset(defaultFormValues);
+        toast.success('Product created successfully');
+      },
+      onError: (error) => {
+        toast.error(error.message || 'Failed to create product');
+      },
+    });
+  };
+
+  const handleEditSave = async (data: ProductForm) => {
     if (!editProduct) return;
     updateProduct.mutate(
-      { id: editProduct.id, input: editForm },
-      { onSuccess: () => setEditProduct(null) }
+      { id: editProduct.id, input: data as Partial<ProductInput> },
+      {
+        onSuccess: () => {
+          setEditProduct(null);
+          editForm.reset(defaultFormValues);
+          toast.success('Product updated successfully');
+        },
+        onError: (error) => {
+          toast.error(error.message || 'Failed to update product');
+        },
+      }
+    );
+  };
+
+  const handleToggleAvailability = (product: Product) => {
+    toggleAvailability.mutate(
+      { id: product.id, is_available: !product.is_available },
+      {
+        onError: (error) => {
+          toast.error(error.message || 'Failed to update availability');
+        },
+      }
     );
   };
 
@@ -85,7 +179,7 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold md:text-3xl">Products</h1>
           <p className="text-muted-foreground">Manage your menu products.</p>
         </div>
-        <Button>
+        <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
           Add Product
         </Button>
@@ -124,7 +218,7 @@ export default function ProductsPage() {
         <EmptyState
           title="No products found"
           description={searchQuery ? 'Try a different search term.' : 'Create your first product to get started.'}
-          action={!searchQuery ? { label: 'Add Product', onClick: () => {} } : undefined}
+          action={!searchQuery ? { label: 'Add Product', onClick: openCreateDialog } : undefined}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -137,7 +231,7 @@ export default function ProductsPage() {
                     alt={product.name_en}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024) 50vw, 33vw"
                   />
                 </div>
               )}
@@ -150,9 +244,9 @@ export default function ProductsPage() {
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    {product.is_popular && <Badge variant="default" className="bg-orange-500">Popular</Badge>}
-                    {product.is_new && <Badge variant="default" className="bg-blue-500">New</Badge>}
-                    {product.is_bestseller && <Badge variant="default" className="bg-purple-500">Bestseller</Badge>}
+                    {product.is_popular && <Badge variant="default" className="bg-orange-500 text-white dark:bg-orange-600">Popular</Badge>}
+                    {product.is_new && <Badge variant="default" className="bg-blue-500 text-white dark:bg-blue-600">New</Badge>}
+                    {product.is_bestseller && <Badge variant="default" className="bg-purple-500 text-white dark:bg-purple-600">Bestseller</Badge>}
                   </div>
                 </div>
               </CardHeader>
@@ -174,6 +268,11 @@ export default function ProductsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <Switch
+                      checked={product.is_available}
+                      onCheckedChange={() => handleToggleAvailability(product)}
+                      aria-label={`Toggle availability for ${product.name_en}`}
+                    />
                     <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={`Edit ${product.name_en}`} onClick={() => openEditDialog(product)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
@@ -197,35 +296,186 @@ export default function ProductsPage() {
         </div>
       )}
 
+      <Dialog open={showCreateDialog} onOpenChange={(open) => { if (!open) setShowCreateDialog(false); }}>
+        <DialogContent className="max-w-full sm:max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add Product</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={createForm.handleSubmit(handleCreate)} className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label htmlFor="create-name-en">Name (English) *</Label>
+              <Input
+                id="create-name-en"
+                {...createForm.register('name_en')}
+              />
+              {createForm.formState.errors.name_en && (
+                <p className="text-sm text-destructive">{createForm.formState.errors.name_en.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-name-ar">Name (Arabic) *</Label>
+              <Input
+                id="create-name-ar"
+                dir="rtl"
+                {...createForm.register('name_ar')}
+              />
+              {createForm.formState.errors.name_ar && (
+                <p className="text-sm text-destructive">{createForm.formState.errors.name_ar.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-desc-en">Description (English)</Label>
+              <Textarea
+                id="create-desc-en"
+                {...createForm.register('description_en')}
+                rows={2}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-desc-ar">Description (Arabic)</Label>
+              <Textarea
+                id="create-desc-ar"
+                dir="rtl"
+                {...createForm.register('description_ar')}
+                rows={2}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-category">Category *</Label>
+              <Select
+                value={createForm.watch('category_id')}
+                onValueChange={(val) => createForm.setValue('category_id', val ?? '', { shouldValidate: true })}
+              >
+                <SelectTrigger id="create-category"><SelectValue placeholder="Select category" /></SelectTrigger>
+                <SelectContent>
+                  {categories?.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>{c.name_en}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {createForm.formState.errors.category_id && (
+                <p className="text-sm text-destructive">{createForm.formState.errors.category_id.message}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="create-dining">Dining Price (SAR) *</Label>
+                <Input
+                  id="create-dining"
+                  type="number"
+                  min={0}
+                  {...createForm.register('dining_price', { valueAsNumber: true })}
+                />
+                {createForm.formState.errors.dining_price && (
+                  <p className="text-sm text-destructive">{createForm.formState.errors.dining_price.message}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="create-takeaway">Takeaway Price (SAR) *</Label>
+                <Input
+                  id="create-takeaway"
+                  type="number"
+                  min={0}
+                  {...createForm.register('takeaway_price', { valueAsNumber: true })}
+                />
+                {createForm.formState.errors.takeaway_price && (
+                  <p className="text-sm text-destructive">{createForm.formState.errors.takeaway_price.message}</p>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={createForm.watch('is_available')}
+                  onCheckedChange={(checked) => createForm.setValue('is_available', checked)}
+                  id="create-available"
+                />
+                <Label htmlFor="create-available">Available</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={createForm.watch('is_popular')}
+                  onCheckedChange={(checked) => createForm.setValue('is_popular', checked)}
+                  id="create-popular"
+                />
+                <Label htmlFor="create-popular">Popular</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={createForm.watch('is_new')}
+                  onCheckedChange={(checked) => createForm.setValue('is_new', checked)}
+                  id="create-new"
+                />
+                <Label htmlFor="create-new">New</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={createForm.watch('is_bestseller')}
+                  onCheckedChange={(checked) => createForm.setValue('is_bestseller', checked)}
+                  id="create-bestseller"
+                />
+                <Label htmlFor="create-bestseller">Bestseller</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={createForm.watch('is_spicy')}
+                  onCheckedChange={(checked) => createForm.setValue('is_spicy', checked)}
+                  id="create-spicy"
+                />
+                <Label htmlFor="create-spicy">Spicy</Label>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="create-sort">Sort Order</Label>
+                <Input
+                  id="create-sort"
+                  type="number"
+                  min={0}
+                  {...createForm.register('sort_order', { valueAsNumber: true })}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>Cancel</Button>
+              <Button type="submit" disabled={createProduct.isPending}>
+                {createProduct.isPending ? 'Creating...' : 'Create Product'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={!!editProduct} onOpenChange={(open) => { if (!open) setEditProduct(null); }}>
         <DialogContent className="max-w-full sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <form onSubmit={editForm.handleSubmit(handleEditSave)} className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="edit-name-en">Name (English)</Label>
+              <Label htmlFor="edit-name-en">Name (English) *</Label>
               <Input
                 id="edit-name-en"
-                value={editForm.name_en}
-                onChange={(e) => setEditForm({ ...editForm, name_en: e.target.value })}
+                {...editForm.register('name_en')}
               />
+              {editForm.formState.errors.name_en && (
+                <p className="text-sm text-destructive">{editForm.formState.errors.name_en.message}</p>
+              )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-name-ar">Name (Arabic)</Label>
+              <Label htmlFor="edit-name-ar">Name (Arabic) *</Label>
               <Input
                 id="edit-name-ar"
                 dir="rtl"
-                value={editForm.name_ar}
-                onChange={(e) => setEditForm({ ...editForm, name_ar: e.target.value })}
+                {...editForm.register('name_ar')}
               />
+              {editForm.formState.errors.name_ar && (
+                <p className="text-sm text-destructive">{editForm.formState.errors.name_ar.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-desc-en">Description (English)</Label>
               <Textarea
                 id="edit-desc-en"
-                value={editForm.description_en}
-                onChange={(e) => setEditForm({ ...editForm, description_en: e.target.value })}
+                {...editForm.register('description_en')}
                 rows={2}
               />
             </div>
@@ -234,14 +484,16 @@ export default function ProductsPage() {
               <Textarea
                 id="edit-desc-ar"
                 dir="rtl"
-                value={editForm.description_ar}
-                onChange={(e) => setEditForm({ ...editForm, description_ar: e.target.value })}
+                {...editForm.register('description_ar')}
                 rows={2}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-category">Category</Label>
-              <Select value={editForm.category_id} onValueChange={(val) => setEditForm({ ...editForm, category_id: val ?? '' })}>
+              <Label htmlFor="edit-category">Category *</Label>
+              <Select
+                value={editForm.watch('category_id')}
+                onValueChange={(val) => editForm.setValue('category_id', val ?? '', { shouldValidate: true })}
+              >
                 <SelectTrigger id="edit-category"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
@@ -249,36 +501,94 @@ export default function ProductsPage() {
                   ))}
                 </SelectContent>
               </Select>
+              {editForm.formState.errors.category_id && (
+                <p className="text-sm text-destructive">{editForm.formState.errors.category_id.message}</p>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-dining">Dining Price (SAR)</Label>
+                <Label htmlFor="edit-dining">Dining Price (SAR) *</Label>
                 <Input
                   id="edit-dining"
                   type="number"
                   min={0}
-                  value={editForm.dining_price}
-                  onChange={(e) => setEditForm({ ...editForm, dining_price: parseFloat(e.target.value) || 0 })}
+                  {...editForm.register('dining_price', { valueAsNumber: true })}
                 />
+                {editForm.formState.errors.dining_price && (
+                  <p className="text-sm text-destructive">{editForm.formState.errors.dining_price.message}</p>
+                )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-takeaway">Takeaway Price (SAR)</Label>
+                <Label htmlFor="edit-takeaway">Takeaway Price (SAR) *</Label>
                 <Input
                   id="edit-takeaway"
                   type="number"
                   min={0}
-                  value={editForm.takeaway_price}
-                  onChange={(e) => setEditForm({ ...editForm, takeaway_price: parseFloat(e.target.value) || 0 })}
+                  {...editForm.register('takeaway_price', { valueAsNumber: true })}
+                />
+                {editForm.formState.errors.takeaway_price && (
+                  <p className="text-sm text-destructive">{editForm.formState.errors.takeaway_price.message}</p>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editForm.watch('is_available')}
+                  onCheckedChange={(checked) => editForm.setValue('is_available', checked)}
+                  id="edit-available"
+                />
+                <Label htmlFor="edit-available">Available</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editForm.watch('is_popular')}
+                  onCheckedChange={(checked) => editForm.setValue('is_popular', checked)}
+                  id="edit-popular"
+                />
+                <Label htmlFor="edit-popular">Popular</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editForm.watch('is_new')}
+                  onCheckedChange={(checked) => editForm.setValue('is_new', checked)}
+                  id="edit-new"
+                />
+                <Label htmlFor="edit-new">New</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editForm.watch('is_bestseller')}
+                  onCheckedChange={(checked) => editForm.setValue('is_bestseller', checked)}
+                  id="edit-bestseller"
+                />
+                <Label htmlFor="edit-bestseller">Bestseller</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={editForm.watch('is_spicy')}
+                  onCheckedChange={(checked) => editForm.setValue('is_spicy', checked)}
+                  id="edit-spicy"
+                />
+                <Label htmlFor="edit-spicy">Spicy</Label>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-sort">Sort Order</Label>
+                <Input
+                  id="edit-sort"
+                  type="number"
+                  min={0}
+                  {...editForm.register('sort_order', { valueAsNumber: true })}
                 />
               </div>
             </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditProduct(null)}>Cancel</Button>
-            <Button onClick={handleEditSave} disabled={updateProduct.isPending}>
-              {updateProduct.isPending ? 'Saving...' : 'Save Changes'}
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setEditProduct(null)}>Cancel</Button>
+              <Button type="submit" disabled={updateProduct.isPending}>
+                {updateProduct.isPending ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
 

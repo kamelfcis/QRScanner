@@ -14,7 +14,16 @@ export function PublicFooter() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-1">
-            <h3 className="text-lg font-bold text-primary font-heading">{name}</h3>
+            <div className="flex items-center gap-2">
+              {settings?.logo_url && (
+                <img
+                  src={settings.logo_url}
+                  alt={name}
+                  className="h-8 w-auto object-contain"
+                />
+              )}
+              <h3 className="text-lg font-bold text-primary font-heading">{name}</h3>
+            </div>
             <p className="mt-2 text-sm text-muted-foreground">
               Premium dining experience celebrating Lebanese and Syrian culinary traditions.
             </p>

@@ -22,7 +22,7 @@ export default function HeatmapsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Heatmaps</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Heatmaps</h1>
         <p className="text-muted-foreground">Visualize activity patterns and table popularity.</p>
       </div>
 
