@@ -15,6 +15,7 @@ import { QRForm } from '@/components/qr/QRForm';
 import type { QrCodeWithTable } from '@/types';
 import type { QrCodeInput } from '@/types/schema';
 import { Plus, QrCode, Search } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function QRManagementPage() {
   const { data: qrCodes, isLoading, error, refetch } = useQRCodes();
@@ -23,6 +24,8 @@ export default function QRManagementPage() {
   const updateMutation = useUpdateQRCode();
   const deleteMutation = useDeleteQRCode();
   const duplicateMutation = useDuplicateQRCode();
+  const t = useTranslations('qr');
+  const tCommon = useTranslations('common');
 
   const [showForm, setShowForm] = useState(false);
   const [editingQR, setEditingQR] = useState<QrCodeWithTable | null>(null);
@@ -63,19 +66,19 @@ export default function QRManagementPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">QR Codes</h1>
-          <p className="text-muted-foreground">Create and manage QR codes for your restaurant</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <Button onClick={() => setShowForm(true)} className="self-start">
           <Plus className="mr-2 h-4 w-4" />
-          Create QR Code
+          {t('createQR')}
         </Button>
       </div>
 
       <div className="relative w-full max-w-sm">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Search QR codes..."
+          placeholder={t('searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-9"
@@ -85,9 +88,9 @@ export default function QRManagementPage() {
       {!filtered?.length ? (
         <EmptyState
           icon={<QrCode className="h-12 w-12 text-muted-foreground/50" />}
-          title={search ? 'No QR codes found' : 'No QR codes yet'}
-          description={search ? 'Try a different search term' : 'Create your first QR code to get started'}
-          action={!search ? { label: 'Create QR Code', onClick: () => setShowForm(true) } : undefined}
+          title={search ? t('noQRCodesFound') : t('noQRCodes')}
+          description={search ? t('tryDifferentSearch') : t('createFirst')}
+          action={!search ? { label: t('createQR'), onClick: () => setShowForm(true) } : undefined}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -106,7 +109,7 @@ export default function QRManagementPage() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-lg sm:text-xl">Create QR Code</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">{t('createQR')}</DialogTitle>
           </DialogHeader>
           <QRForm
             tables={tables}
@@ -120,7 +123,7 @@ export default function QRManagementPage() {
       <Dialog open={!!editingQR} onOpenChange={() => setEditingQR(null)}>
         <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-lg sm:text-xl">Edit QR Code</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">{t('editQR')}</DialogTitle>
           </DialogHeader>
           {editingQR && (
             <QRForm
@@ -137,9 +140,9 @@ export default function QRManagementPage() {
       <ConfirmDialog
         open={!!deletingQR}
         onOpenChange={() => setDeletingQR(null)}
-        title="Delete QR Code"
-        description={`Are you sure you want to delete "${deletingQR?.name}"? This cannot be undone.`}
-        confirmLabel="Delete"
+        title={t('deleteQR')}
+        description={t('confirmDelete', { name: deletingQR?.name || '' })}
+        confirmLabel={tCommon('delete')}
         variant="destructive"
         onConfirm={handleDelete}
       />

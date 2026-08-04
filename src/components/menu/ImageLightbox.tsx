@@ -6,7 +6,7 @@ import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/shared/Image';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
 
@@ -21,6 +21,7 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
   const [touchDistance, setTouchDistance] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
+  const t = useTranslations('menu');
 
   const handleEscape = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
@@ -94,7 +95,7 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
             size="icon"
             onClick={onClose}
             className="absolute right-4 top-4 z-10 text-white hover:text-white/80"
-            aria-label="Close lightbox"
+            aria-label={t('closeLightbox')}
           >
             <X className="h-6 w-6" />
           </Button>
@@ -105,7 +106,7 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
               size="icon"
               onClick={(e) => { e.stopPropagation(); zoomOut(); }}
               className="text-white hover:text-white/80 h-10 w-10"
-              aria-label="Zoom out"
+              aria-label={t('zoomOut')}
             >
               <ZoomOut className="h-5 w-5" />
             </Button>
@@ -117,7 +118,7 @@ export function ImageLightbox({ product, onClose }: ImageLightboxProps) {
               size="icon"
               onClick={(e) => { e.stopPropagation(); zoomIn(); }}
               className="text-white hover:text-white/80 h-10 w-10"
-              aria-label="Zoom in"
+              aria-label={t('zoomIn')}
             >
               <ZoomIn className="h-5 w-5" />
             </Button>

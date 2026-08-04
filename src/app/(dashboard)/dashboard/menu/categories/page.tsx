@@ -24,6 +24,7 @@ import { Plus, Search } from 'lucide-react';
 import { CategoryCard } from '@/features/categories/components/CategoryCard';
 import { toast } from 'sonner';
 import type { CategoryInput } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const defaultForm: CategoryInput = {
   name_en: '',
@@ -40,6 +41,8 @@ export default function CategoriesPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [createForm, setCreateForm] = useState<CategoryInput>(defaultForm);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const t = useTranslations('categories');
+  const tCommon = useTranslations('common');
 
   const { data: categories, isLoading, error, refetch } = useAllCategories();
   const createCategory = useCreateCategory();
@@ -122,12 +125,12 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Categories</h1>
-          <p className="text-muted-foreground">Manage your menu categories.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('updateCategoryDetails')}</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Category
+          {t('addCategory')}
         </Button>
       </div>
 
@@ -135,20 +138,20 @@ export default function CategoriesPage() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search categories..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
-            aria-label="Search categories"
+            aria-label={t('searchCategories')}
           />
         </div>
       </div>
 
       {!filteredCategories?.length ? (
         <EmptyState
-          title="No categories found"
-          description={searchQuery ? 'Try a different search term.' : 'Create your first category to get started.'}
-          action={!searchQuery ? { label: 'Add Category', onClick: openCreateDialog } : undefined}
+          title={t('noCategories')}
+          description={searchQuery ? tCommon('tryAgain') : t('addCategory')}
+          action={!searchQuery ? { label: t('addCategory'), onClick: openCreateDialog } : undefined}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -166,12 +169,12 @@ export default function CategoriesPage() {
       <Dialog open={createOpen} onOpenChange={(open) => { if (!open) { setCreateOpen(false); resetCreateForm(); } }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add Category</DialogTitle>
-            <DialogDescription>Create a new menu category.</DialogDescription>
+            <DialogTitle>{t('addCategory')}</DialogTitle>
+            <DialogDescription>{t('updateCategoryDetails')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="create-name_en">Name (English)</Label>
+              <Label htmlFor="create-name_en">{t('nameEn')}</Label>
               <Input
                 id="create-name_en"
                 value={createForm.name_en}
@@ -180,7 +183,7 @@ export default function CategoriesPage() {
               {formErrors.name_en && <p className="text-sm text-destructive">{formErrors.name_en}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-name_ar">Name (Arabic)</Label>
+              <Label htmlFor="create-name_ar">{t('nameAr')}</Label>
               <Input
                 id="create-name_ar"
                 dir="rtl"
@@ -190,7 +193,7 @@ export default function CategoriesPage() {
               {formErrors.name_ar && <p className="text-sm text-destructive">{formErrors.name_ar}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-description_en">Description (English)</Label>
+              <Label htmlFor="create-description_en">{t('descriptionEn')}</Label>
               <Textarea
                 id="create-description_en"
                 value={createForm.description_en || ''}
@@ -198,7 +201,7 @@ export default function CategoriesPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-description_ar">Description (Arabic)</Label>
+              <Label htmlFor="create-description_ar">{t('descriptionAr')}</Label>
               <Textarea
                 id="create-description_ar"
                 dir="rtl"
@@ -207,7 +210,7 @@ export default function CategoriesPage() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="create-is_visible">Visible</Label>
+              <Label htmlFor="create-is_visible">{t('visible')}</Label>
               <Switch
                 id="create-is_visible"
                 checked={createForm.is_visible}
@@ -215,7 +218,7 @@ export default function CategoriesPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-sort_order">Sort Order</Label>
+              <Label htmlFor="create-sort_order">{t('sortOrder')}</Label>
               <Input
                 id="create-sort_order"
                 type="number"
@@ -229,10 +232,10 @@ export default function CategoriesPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => { setCreateOpen(false); resetCreateForm(); }}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button onClick={handleCreate} disabled={createCategory.isPending}>
-              {createCategory.isPending ? 'Creating...' : 'Create Category'}
+              {createCategory.isPending ? tCommon('processing') : t('addCategory')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -241,9 +244,9 @@ export default function CategoriesPage() {
       <ConfirmDialog
         open={deleteId !== null}
         onOpenChange={(open) => { if (!open) setDeleteId(null); }}
-        title="Delete Category"
-        description="Are you sure? All products in this category will also be deleted. This action cannot be undone."
-        confirmLabel="Delete"
+        title={t('deleteCategory')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteCategory.isPending}
       />

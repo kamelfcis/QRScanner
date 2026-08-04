@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
 import { MotionCard } from '@/components/shared/motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
 
@@ -28,6 +28,8 @@ export function ProductCard({
 }: ProductCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
+  const t = useTranslations('menu');
+  const tCommon = useTranslations('common');
   const price = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
 
   return (
@@ -48,19 +50,19 @@ export function ProductCard({
             {product.is_popular && (
               <Badge className="bg-primary text-primary-foreground">
                 <Star className="mr-1 h-3 w-3" />
-                Popular
+                {t('popular')}
               </Badge>
             )}
             {product.is_new && (
               <Badge className="bg-green-600 text-white">
                 <Sparkles className="mr-1 h-3 w-3" />
-                New
+                {t('new')}
               </Badge>
             )}
             {product.is_bestseller && (
               <Badge className="bg-purple-600 text-white">
                 <Star className="mr-1 h-3 w-3" />
-                Bestseller
+                {t('bestseller')}
               </Badge>
             )}
             {product.is_spicy && (
@@ -121,11 +123,11 @@ export function ProductCard({
             )}
             <div className="flex items-center justify-between">
               <p className="text-lg font-bold text-primary">
-                {price} SAR
+                {price} {tCommon('sar')}
               </p>
               {!product.is_available && (
-                <Badge variant="secondary" aria-label="Currently unavailable">
-                  Unavailable
+                <Badge variant="secondary" aria-label={t('currentlyUnavailable')}>
+                  {t('currentlyUnavailable')}
                 </Badge>
               )}
             </div>

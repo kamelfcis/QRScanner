@@ -20,6 +20,7 @@ import { Switch } from '@/components/ui/switch';
 import { Image } from '@/components/shared/Image';
 import { Pencil, Trash2 } from 'lucide-react';
 import type { Category, CategoryInput } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface CategoryCardProps {
   category: Category;
@@ -37,6 +38,8 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
     is_visible: category.is_visible,
     sort_order: category.sort_order,
   });
+  const t = useTranslations('categories');
+  const tCommon = useTranslations('common');
 
   const handleUpdate = () => {
     onUpdate?.(category.id, editForm);
@@ -65,9 +68,9 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
           </div>
           <div className="flex items-center gap-1">
             {category.is_visible ? (
-              <Badge variant="default" className="bg-green-500 text-white">Visible</Badge>
+              <Badge variant="default" className="bg-green-500 text-white">{t('visible')}</Badge>
             ) : (
-              <Badge variant="secondary">Hidden</Badge>
+              <Badge variant="secondary">{tCommon('hidden')}</Badge>
             )}
           </div>
         </div>
@@ -80,7 +83,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
         )}
         <div className="mt-4 flex items-center justify-between">
           <span className="text-xs text-muted-foreground">
-            Order: {category.sort_order}
+            {t('order', { order: String(category.sort_order) })}
           </span>
           <div className="flex items-center gap-2">
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
@@ -89,12 +92,12 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Edit Category</DialogTitle>
-                  <DialogDescription>Update the category details.</DialogDescription>
+                  <DialogTitle>{t('editCategory')}</DialogTitle>
+                  <DialogDescription>{t('updateCategoryDetails')}</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name_en">Name (English)</Label>
+                    <Label htmlFor="name_en">{t('nameEn')}</Label>
                     <Input
                       id="name_en"
                       value={editForm.name_en || ''}
@@ -104,7 +107,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name_ar">Name (Arabic)</Label>
+                    <Label htmlFor="name_ar">{t('nameAr')}</Label>
                     <Input
                       id="name_ar"
                       dir="rtl"
@@ -115,7 +118,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="description_en">Description (English)</Label>
+                    <Label htmlFor="description_en">{t('descriptionEn')}</Label>
                     <Textarea
                       id="description_en"
                       value={editForm.description_en || ''}
@@ -128,7 +131,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="description_ar">Description (Arabic)</Label>
+                    <Label htmlFor="description_ar">{t('descriptionAr')}</Label>
                     <Textarea
                       id="description_ar"
                       dir="rtl"
@@ -142,7 +145,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="is_visible">Visible</Label>
+                    <Label htmlFor="is_visible">{t('visible')}</Label>
                     <Switch
                       id="is_visible"
                       checked={editForm.is_visible ?? true}
@@ -152,7 +155,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sort_order">Sort Order</Label>
+                    <Label htmlFor="sort_order">{t('sortOrder')}</Label>
                     <Input
                       id="sort_order"
                       type="number"
@@ -169,9 +172,9 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                 </div>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setEditOpen(false)}>
-                    Cancel
+                    {tCommon('cancel')}
                   </Button>
-                  <Button onClick={handleUpdate}>Save Changes</Button>
+                  <Button onClick={handleUpdate}>{tCommon('saveChanges')}</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

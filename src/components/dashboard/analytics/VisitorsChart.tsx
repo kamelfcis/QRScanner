@@ -4,6 +4,7 @@ import { useAnalyticsSummary } from '@/hooks/useAnalytics';
 import { LineAreaChart } from '@/components/dashboard/charts/LineAreaChart';
 import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import type { Period } from '@/components/dashboard/DateRangePicker';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface VisitorsChartProps {
   period: Period;
@@ -11,11 +12,12 @@ interface VisitorsChartProps {
 
 export function VisitorsChart({ period }: VisitorsChartProps) {
   const { data, isLoading } = useAnalyticsSummary(period);
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[300px] bg-muted animate-pulse rounded-lg" />;
 
   return (
-    <ChartCard title="Visitors & Scans" description="Daily traffic over time">
+    <ChartCard title={t('visitorsAndScans')} description={t('dailyTrafficOverTime')}>
       <LineAreaChart
         data={(data || []) as unknown as Record<string, unknown>[]}
         xKey="date"

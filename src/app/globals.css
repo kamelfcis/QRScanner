@@ -165,6 +165,74 @@
   text-align: left;
 }
 
+/* Arabic Font Switching */
+[dir="rtl"] body {
+  font-family: var(--font-ar), var(--font-sans), 'Noto Sans Arabic', sans-serif;
+  line-height: 1.8;
+  font-size: 1.05em;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+  font-family: var(--font-ar), var(--font-sans), 'Noto Sans Arabic', sans-serif;
+}
+
+/* RTL Layout Adjustments */
+[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .space-x-1 > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-1\.5 > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* RTL Flex gap adjustments */
+[dir="rtl"] .gap-1, [dir="rtl"] .gap-2, [dir="rtl"] .gap-3, [dir="rtl"] .gap-4, [dir="rtl"] .gap-6, [dir="rtl"] .gap-8 {
+  /* gaps are direction-agnostic, no change needed */
+}
+
+/* RTL margin/padding logical properties */
+[dir="rtl"] .ml-auto { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .mr-auto { margin-right: 0; margin-left: auto; }
+[dir="rtl"] .pl-4 { padding-left: 0; padding-right: 1rem; }
+[dir="rtl"] .pr-4 { padding-right: 0; padding-left: 1rem; }
+
+/* RTL Border Radius Mirroring */
+[dir="rtl"] .rounded-l-lg { border-top-left-radius: 0; border-top-right-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); border-bottom-left-radius: 0; }
+[dir="rtl"] .rounded-r-lg { border-top-right-radius: 0; border-top-left-radius: var(--radius-lg); border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: 0; }
+
+/* Sidebar RTL flip */
+[dir="rtl"] aside { direction: rtl; }
+[dir="rtl"] [data-sidebar="sidebar"] { border-left: none; border-right: 1px solid var(--border); }
+
+/* Chart legend alignment */
+[dir="rtl"] .recharts-legend-item-text { padding-right: 0; padding-left: 8px; }
+
+/* Table RTL */
+[dir="rtl"] table { direction: rtl; }
+[dir="rtl"] th, [dir="rtl"] td { text-align: right; }
+[dir="rtl"] th:first-child, [dir="rtl"] td:first-child { text-align: right; }
+[dir="rtl"] th:last-child, [dir="rtl"] td:last-child { text-align: left; }
+
+/* Form inputs RTL */
+[dir="rtl"] input[type="text"], [dir="rtl"] input[type="email"], [dir="rtl"] input[type="password"], [dir="rtl"] input[type="number"], [dir="rtl"] input[type="url"], [dir="rtl"] textarea, [dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="rtl"] input[type="color"] {
+  direction: ltr;
+}
+
+/* Checkbox/Radio RTL */
+[dir="rtl"] input[type="checkbox"], [dir="rtl"] input[type="radio"] {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
 /* Selection Color */
 ::selection {
   background-color: var(--primary);

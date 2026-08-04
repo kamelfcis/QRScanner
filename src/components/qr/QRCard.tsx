@@ -20,6 +20,7 @@ import {
 import { QRPreview } from './QRPreview';
 import { MoreVertical, Eye, Pencil, Copy, Trash2, QrCode, Table } from 'lucide-react';
 import { getTemplate } from '@/lib/qr/templates';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface QRCardProps {
   qr: QrCodeWithTable;
@@ -31,6 +32,8 @@ interface QRCardProps {
 export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
   const [showPreview, setShowPreview] = useState(false);
   const tmpl = getTemplate(qr.template);
+  const t = useTranslations('qr');
+  const tCommon = useTranslations('common');
 
   return (
     <>
@@ -59,28 +62,28 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
               <p className="text-xs text-muted-foreground line-clamp-1">{qr.url}</p>
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" aria-label="QR actions" />}>
+              <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" aria-label={t('qrActions')} />}>
                 <MoreVertical className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setShowPreview(true)}>
                   <Eye className="mr-2 h-4 w-4" />
-                  Preview & Download
+                  {t('previewDownload')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onEdit(qr)}>
                   <Pencil className="mr-2 h-4 w-4" />
-                  Edit
+                  {tCommon('edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onDuplicate(qr)}>
                   <Copy className="mr-2 h-4 w-4" />
-                  Duplicate
+                  {tCommon('duplicate')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => onDelete(qr)}
                   className="text-destructive"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  {tCommon('delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -101,7 +104,7 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
               </Badge>
             )}
             {!qr.is_active && (
-              <Badge variant="destructive" className="text-xs">Inactive</Badge>
+              <Badge variant="destructive" className="text-xs">{tCommon('inactive')}</Badge>
             )}
           </div>
         </CardContent>

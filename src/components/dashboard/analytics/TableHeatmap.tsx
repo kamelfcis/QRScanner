@@ -3,9 +3,11 @@
 import { useTableUsage } from '@/hooks/useAnalytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function TableHeatmap() {
   const { data: tables, isLoading } = useTableUsage();
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[200px] bg-muted animate-pulse rounded-lg" />;
 
@@ -13,10 +15,10 @@ export function TableHeatmap() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Table Usage</CardTitle>
+          <CardTitle className="text-sm font-medium">{t('tableUsage')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground text-center py-4">No QR scan data yet</p>
+          <p className="text-sm text-muted-foreground text-center py-4">{t('noQRScanData')}</p>
         </CardContent>
       </Card>
     );
@@ -35,7 +37,7 @@ export function TableHeatmap() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Table Usage Heatmap</CardTitle>
+        <CardTitle className="text-sm font-medium">{t('tableUsageHeatmap')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">

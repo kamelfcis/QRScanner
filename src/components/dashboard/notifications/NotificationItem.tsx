@@ -4,6 +4,7 @@ import { QrCode, FileUp, AlertCircle, Info, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import type { Notification } from '@/types/database';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   qr_scan: QrCode,
@@ -20,6 +21,7 @@ interface NotificationItemProps {
 
 export function NotificationItem({ notification, onMarkRead, onDelete }: NotificationItemProps) {
   const Icon = iconMap[notification.type] || Info;
+  const t = useTranslations('dashboard');
 
   return (
     <div
@@ -52,7 +54,7 @@ export function NotificationItem({ notification, onMarkRead, onDelete }: Notific
         <button
           onClick={() => onMarkRead(notification.id)}
           className="shrink-0 p-1 text-muted-foreground hover:text-foreground"
-          aria-label="Mark as read"
+          aria-label={t('markAsRead')}
         >
           <Check className="h-3 w-3" />
         </button>

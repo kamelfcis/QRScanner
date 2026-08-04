@@ -6,9 +6,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { MotionSection, MotionCard } from '@/components/shared/motion';
 import { Image } from '@/components/shared/Image';
 import { usePopularProducts } from '@/hooks/useProducts';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function FeaturedDishes() {
   const { data: products, isLoading } = usePopularProducts();
+  const t = useTranslations('landing');
+  const menuT = useTranslations('menu');
 
   return (
     <section className="py-20 md:py-28">
@@ -16,7 +19,7 @@ export function FeaturedDishes() {
         <MotionSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              Signature Dishes
+              {t('signatureDishes')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>
@@ -33,7 +36,7 @@ export function FeaturedDishes() {
             ))}
           </div>
         ) : !products || products.length === 0 ? (
-          <p className="text-center text-muted-foreground">No featured dishes available yet.</p>
+          <p className="text-center text-muted-foreground">{t('noFeaturedDishes')}</p>
         ) : (
           <div className="relative">
             <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
@@ -61,7 +64,7 @@ export function FeaturedDishes() {
                         </div>
                       )}
                       <div className="absolute left-3 top-3">
-                        <Badge className="bg-brand-accent text-black">Popular</Badge>
+                        <Badge className="bg-brand-accent text-black">{menuT('popular')}</Badge>
                       </div>
                     </div>
                     <div className="p-4">
@@ -84,7 +87,7 @@ export function FeaturedDishes() {
               href="/menu"
               className="inline-flex items-center text-sm font-medium text-primary hover:underline"
             >
-              View Full Menu
+              {t('viewFullMenu')}
             </Link>
           </div>
         </MotionSection>

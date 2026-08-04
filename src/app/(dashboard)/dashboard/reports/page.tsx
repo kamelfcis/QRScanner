@@ -12,6 +12,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Download, Table, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import type { ExportData } from '@/types/database';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function ReportsPage() {
   const [period, setPeriod] = useState<Period>('month');
@@ -21,6 +22,8 @@ export default function ReportsPage() {
   const { data: topCategories, isLoading: categoriesLoading } = useTopCategories(period);
   const { data: diningTakeaway } = useDiningTakeaway(period);
   const { exportCSV, exportExcel, printPage } = useExport();
+  const t = useTranslations('reports');
+  const tDashboard = useTranslations('dashboard');
 
   const isLoading = statsLoading || summaryLoading || productsLoading || categoriesLoading;
 
@@ -40,10 +43,10 @@ export default function ReportsPage() {
       ['Gallery Images', stats?.totalGallery || 0],
       ['Testimonials', stats?.totalTestimonials || 0],
       ['---', '---'],
-      ['Today\'s Scans', stats?.todaysScans || 0],
-      ['Today\'s Visitors', stats?.todaysVisitors || 0],
-      ['Dining %', `${stats?.diningPercent || 0}%`],
-      ['Takeaway %', `${stats?.takeawayPercent || 0}%`],
+      [tDashboard('todaysScans'), stats?.todaysScans || 0],
+      [tDashboard('todaysVisitors'), stats?.todaysVisitors || 0],
+      [tDashboard('diningPercent'), `${stats?.diningPercent || 0}%`],
+      [tDashboard('takeawayPercent'), `${stats?.takeawayPercent || 0}%`],
       ['---', '---'],
       ['Total Visitors (Period)', summary?.reduce((a, b) => a + b.visitors, 0) || 0],
       ['Total Scans (Period)', summary?.reduce((a, b) => a + b.scans, 0) || 0],
@@ -65,8 +68,8 @@ export default function ReportsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Reports</h1>
-          <p className="text-muted-foreground">Generate and export restaurant reports</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('generate')}</p>
         </div>
         <DateRangePicker value={period} onChange={setPeriod} />
       </div>
@@ -74,35 +77,35 @@ export default function ReportsPage() {
       <div id="report-content" className="space-y-6">
         <Card>
           <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle>Report Summary</CardTitle>
+            <CardTitle>{t('summary')}</CardTitle>
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm" onClick={handleExportCSV}>
-                <Download className="mr-1 h-3 w-3" /> CSV
+                <Download className="mr-1 h-3 w-3" /> {t('csv')}
               </Button>
               <Button variant="outline" size="sm" onClick={handleExportExcel}>
-                <Table className="mr-1 h-3 w-3" /> Excel
+                <Table className="mr-1 h-3 w-3" /> {t('excel')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => printPage('report-content')}>
-                <Printer className="mr-1 h-3 w-3" /> Print
+                <Printer className="mr-1 h-3 w-3" /> {t('print')}
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">Total Products</p>
+                <p className="text-sm text-muted-foreground">{t('totalProducts')}</p>
                 <p className="text-2xl font-bold">{stats?.totalProducts || 0}</p>
               </div>
               <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">Total Categories</p>
+                <p className="text-sm text-muted-foreground">{t('totalCategories')}</p>
                 <p className="text-2xl font-bold">{stats?.totalCategories || 0}</p>
               </div>
               <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">Today&apos;s Scans</p>
+                <p className="text-sm text-muted-foreground">{t('todaysScans')}</p>
                 <p className="text-2xl font-bold">{stats?.todaysScans || 0}</p>
               </div>
               <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">Active Offers</p>
+                <p className="text-sm text-muted-foreground">{t('activeOffers')}</p>
                 <p className="text-2xl font-bold">{stats?.totalOffers || 0}</p>
               </div>
             </div>

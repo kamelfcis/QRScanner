@@ -8,6 +8,7 @@ import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/motion';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface RecentlyViewedProps {
   onSelectProduct: (productId: string) => void;
@@ -16,6 +17,8 @@ interface RecentlyViewedProps {
 export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
   const { recent, clearRecent } = useRecentlyViewed();
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations('menu');
+  const tCommon = useTranslations('common');
 
   if (!recent.length) return null;
 
@@ -24,7 +27,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-lg font-bold">Recently Viewed</h2>
+          <h2 className="text-lg font-bold">{t('recentlyViewed')}</h2>
         </div>
         <Button
           variant="ghost"
@@ -33,7 +36,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
           className="text-muted-foreground"
         >
           <X className="mr-1 h-3 w-3" />
-          Clear
+          {t('clear')}
         </Button>
       </div>
       <motion.div
@@ -63,7 +66,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
             )}
             <div className="flex flex-col justify-center p-2">
               <h4 className="line-clamp-1 text-sm font-medium">{product.name_en}</h4>
-              <p className="text-xs text-primary">{product.dining_price} SAR</p>
+              <p className="text-xs text-primary">{product.dining_price} {tCommon('sar')}</p>
             </div>
           </motion.button>
         ))}

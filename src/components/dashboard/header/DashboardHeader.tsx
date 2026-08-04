@@ -26,28 +26,33 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUnreadNotifications, useNotifications, useMarkAllNotificationsRead } from '@/hooks/useNotifications';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-
-const navItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Reports', href: '/dashboard/reports', icon: FileText },
-  { name: 'Menu', href: '/dashboard/menu', icon: Menu },
-  { name: 'Import', href: '/dashboard/import', icon: FileUp },
-  { name: 'Testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
-  { name: 'QR Codes', href: '/dashboard/qr', icon: QrCode },
-  { name: 'Tables', href: '/dashboard/tables', icon: Table },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
   const { signOut } = useAuth();
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
+  const tNav = useTranslations('nav');
+  const tSidebar = useTranslations('sidebar');
+  const tCommon = useTranslations('common');
+  const tDashboard = useTranslations('dashboard');
 
   const { data: unreadCount } = useUnreadNotifications();
   const { data: notifications } = useNotifications(5);
   const markAllRead = useMarkAllNotificationsRead();
+
+  const navItems = [
+    { name: tNav('dashboard'), href: '/dashboard', icon: LayoutDashboard },
+    { name: tNav('analytics'), href: '/dashboard/analytics', icon: BarChart3 },
+    { name: tNav('reports'), href: '/dashboard/reports', icon: FileText },
+    { name: tNav('menu'), href: '/dashboard/menu', icon: Menu },
+    { name: tNav('import'), href: '/dashboard/import', icon: FileUp },
+    { name: tNav('testimonials'), href: '/dashboard/testimonials', icon: MessageSquareQuote },
+    { name: tNav('qrCodes'), href: '/dashboard/qr', icon: QrCode },
+    { name: tNav('tables'), href: '/dashboard/tables', icon: Table },
+    { name: tNav('settings'), href: '/dashboard/settings', icon: Settings },
+  ];
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-background px-6">
@@ -58,8 +63,8 @@ export function DashboardHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px] sm:w-[400px]">
             <div className="py-4">
-              <h2 className="text-lg font-bold text-primary">Warda Shamya</h2>
-              <p className="text-sm text-muted-foreground">Admin Dashboard</p>
+              <h2 className="text-lg font-bold text-primary">{tCommon('appName')}</h2>
+              <p className="text-sm text-muted-foreground">{tDashboard('adminDashboard')}</p>
             </div>
             <nav className="space-y-1" aria-label="Mobile dashboard navigation">
               {navItems.map((item) => {
@@ -87,10 +92,10 @@ export function DashboardHeader() {
                 variant="ghost"
                 className="w-full justify-start"
                 onClick={() => signOut()}
-                aria-label="Logout"
+                aria-label={tSidebar('logout')}
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                Logout
+                {tSidebar('logout')}
               </Button>
             </div>
           </SheetContent>
@@ -98,7 +103,7 @@ export function DashboardHeader() {
       </div>
 
       <div className="hidden md:block">
-        <span className="text-lg font-semibold">Dashboard</span>
+        <span className="text-lg font-semibold">{tNav('dashboard')}</span>
       </div>
 
       <div className="flex items-center space-x-2">
@@ -107,7 +112,7 @@ export function DashboardHeader() {
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Notifications"
+            aria-label={tDashboard('notifications')}
             onClick={() => setShowNotifications(!showNotifications)}
           >
             <Bell className="h-5 w-5" />
@@ -127,14 +132,14 @@ export function DashboardHeader() {
               />
               <div
                 role="dialog"
-                aria-label="Notifications"
+                aria-label={tDashboard('notifications')}
                 className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-background shadow-lg"
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') setShowNotifications(false);
                 }}
               >
                 <div className="flex items-center justify-between border-b px-4 py-2">
-                  <span className="text-sm font-medium">Notifications</span>
+                  <span className="text-sm font-medium">{tDashboard('notifications')}</span>
                   {unreadCount != null && unreadCount > 0 && (
                     <Button
                       variant="ghost"
@@ -142,14 +147,14 @@ export function DashboardHeader() {
                       className="text-xs h-7"
                       onClick={() => markAllRead.mutate()}
                     >
-                      Mark all read
+                      {tDashboard('markAllRead')}
                     </Button>
                   )}
                 </div>
                 <div className="max-h-80 overflow-y-auto">
                   {!notifications?.length ? (
                     <p className="py-6 text-center text-sm text-muted-foreground">
-                      No notifications
+                      {tDashboard('noNotifications')}
                     </p>
                   ) : (
                     notifications.map((notif) => (

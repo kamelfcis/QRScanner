@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -12,6 +13,25 @@ interface ErrorBoundaryState {
 interface ErrorBoundaryProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
+}
+
+function ErrorFallback({ error, onRetry }: { error: Error | null; onRetry: () => void }) {
+  const t = useTranslations('errors');
+  return (
+    <div className="flex min-h-[400px] flex-col items-center justify-center p-8 text-center">
+      <AlertCircle className="mb-4 h-12 w-12 text-red-500" />
+      <h2 className="mb-2 text-xl font-semibold">{t('somethingWentWrong')}</h2>
+      <p className="mb-4 max-w-md text-muted-foreground">
+        {t('unexpectedErrorDetail')}
+      </p>
+      <p className="mb-4 text-xs text-muted-foreground font-mono">
+        {error?.message}
+      </p>
+      <Button onClick={onRetry}>
+        {t('tryAgain')}
+      </Button>
+    </div>
+  );
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -36,19 +56,10 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       if (this.props.fallback) return this.props.fallback;
       
       return (
-        <div className="flex min-h-[400px] flex-col items-center justify-center p-8 text-center">
-          <AlertCircle className="mb-4 h-12 w-12 text-red-500" />
-          <h2 className="mb-2 text-xl font-semibold">Something went wrong</h2>
-          <p className="mb-4 max-w-md text-muted-foreground">
-            An unexpected error occurred. Please try again or contact support if the problem persists.
-          </p>
-          <p className="mb-4 text-xs text-muted-foreground font-mono">
-            {this.state.error?.message}
-          </p>
-          <Button onClick={() => this.setState({ hasError: false, error: null })}>
-            Try Again
-          </Button>
-        </div>
+        <ErrorFallback
+          error={this.state.error}
+          onRetry={() => this.setState({ hasError: false, error: null })}
+        />
       );
     }
 

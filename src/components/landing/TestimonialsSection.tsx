@@ -6,6 +6,7 @@ import { MotionSection } from '@/components/shared/motion';
 import { useFeaturedTestimonials } from '@/hooks/useTestimonials';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -37,6 +38,7 @@ export function TestimonialsSection() {
   const prefersReducedMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const t = useTranslations('landing');
 
   const items = testimonials || [];
 
@@ -59,7 +61,7 @@ export function TestimonialsSection() {
         <MotionSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              What Our Guests Say
+              {t('whatOurGuestsSay')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>
@@ -108,7 +110,7 @@ export function TestimonialsSection() {
                       ? 'w-6 bg-primary'
                       : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
                   )}
-                  aria-label={`Go to testimonial ${index + 1}`}
+                  aria-label={t('goToTestimonial', { number: index + 1 })}
                 />
               ))}
             </div>

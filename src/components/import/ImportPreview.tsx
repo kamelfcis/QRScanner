@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Check, AlertTriangle, Plus, Trash2 } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface ImportPreviewProps {
   data: ImportExtractedData;
@@ -33,19 +34,21 @@ function ConfidenceBadge({ value }: { value: number }) {
 export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPreviewProps) {
   const [editedData, setEditedData] = useState<ImportExtractedData>({ ...data });
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const t = useTranslations('import');
+  const tCommon = useTranslations('common');
 
   const validateData = (): string[] => {
     const errors: string[] = [];
     if (!editedData.categories?.length) {
-      errors.push('At least one category is required.');
+      errors.push(t('atLeastOneCategory'));
     }
     editedData.categories?.forEach((cat, i) => {
       if (!cat.name_en?.trim()) {
-        errors.push(`Category ${i + 1}: English name is required.`);
+        errors.push(t('englishNameRequired'));
       }
       cat.products?.forEach((prod, j) => {
         if (!prod.name_en?.trim()) {
-          errors.push(`Category ${i + 1}, Product ${j + 1}: English name is required.`);
+          errors.push(t('englishNameRequired'));
         }
       });
     });
@@ -120,24 +123,24 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold">Extracted Data Preview</h2>
-          <p className="text-sm text-muted-foreground">Review and edit the extracted menu data before importing</p>
+          <h2 className="text-xl font-bold">{t('extractedDataPreview')}</h2>
+          <p className="text-sm text-muted-foreground">{t('reviewBeforeImport')}</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button variant="outline" onClick={onCancel}>{tCommon('cancel')}</Button>
           <Button onClick={() => {
             const errors = validateData();
             setValidationErrors(errors);
             if (errors.length === 0) onConfirm(editedData);
           }} disabled={isLoading}>
-            {isLoading ? 'Importing...' : 'Confirm Import'}
+            {isLoading ? t('importing') : t('confirmImport')}
           </Button>
         </div>
       </div>
 
       {validationErrors.length > 0 && (
         <div role="alert" className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          <p className="font-medium">Please fix the following:</p>
+          <p className="font-medium">{t('pleaseFix')}</p>
           <ul className="mt-1 list-disc list-inside">
             {validationErrors.map((err, i) => <li key={i}>{err}</li>)}
           </ul>
@@ -148,19 +151,19 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
         <Card>
           <CardContent className="flex gap-4 p-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm">Overall:</span>
+              <span className="text-sm">{t('overall')}</span>
               <ConfidenceBadge value={editedData.confidence.overall} />
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm">Restaurant:</span>
+              <span className="text-sm">{t('restaurant')}</span>
               <ConfidenceBadge value={editedData.confidence.restaurant} />
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm">Categories:</span>
+              <span className="text-sm">{t('categories')}</span>
               <ConfidenceBadge value={editedData.confidence.categories} />
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm">Products:</span>
+              <span className="text-sm">{t('products')}</span>
               <ConfidenceBadge value={editedData.confidence.products} />
             </div>
           </CardContent>
@@ -169,20 +172,20 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
 
       <Tabs defaultValue="restaurant" className="w-full">
         <TabsList>
-          <TabsTrigger value="restaurant">Restaurant Info</TabsTrigger>
+          <TabsTrigger value="restaurant">{t('restaurantInfo')}</TabsTrigger>
           <TabsTrigger value="categories">
-            Categories ({editedData.categories?.length || 0})
+            {t('categories')} ({editedData.categories?.length || 0})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="restaurant" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Restaurant Details</CardTitle>
+              <CardTitle>{t('restaurantDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name_en">Name (English)</Label>
+                <Label htmlFor="name_en">{tCommon('optional')} - Name (English)</Label>
                 <Input
                   id="name_en"
                   value={editedData.restaurant?.name_en || ''}
@@ -248,7 +251,7 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="primary_color">Primary Color</Label>
+                <Label htmlFor="primary_color">{t('primaryColor')}</Label>
                 <div className="flex gap-2">
                   <Input
                     id="primary_color"
@@ -265,7 +268,7 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="secondary_color">Secondary Color</Label>
+                <Label htmlFor="secondary_color">{t('secondaryColor')}</Label>
                 <div className="flex gap-2">
                   <Input
                     id="secondary_color"
@@ -289,7 +292,7 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
           <div className="flex justify-end">
             <Button variant="outline" size="sm" onClick={addCategory}>
               <Plus className="mr-1 h-4 w-4" />
-              Add Category
+              {t('addCategory')}
             </Button>
           </div>
 
@@ -297,12 +300,12 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
             <Card key={catIndex}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  Category {catIndex + 1}
+                  {t('categoryNumber', { number: String(catIndex + 1) })}
                   {category.confidence !== undefined && (
                     <ConfidenceBadge value={category.confidence} />
                   )}
                 </CardTitle>
-                <Button variant="ghost" size="icon" onClick={() => removeCategory(catIndex)} aria-label="Remove category">
+                <Button variant="ghost" size="icon" onClick={() => removeCategory(catIndex)} aria-label={t('removeCategory')}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </CardHeader>
@@ -331,10 +334,10 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
                 <Separator />
 
                 <div className="flex items-center justify-between">
-                  <h4 className="font-medium">Products ({category.products.length})</h4>
+                  <h4 className="font-medium">{t('products')} ({category.products.length})</h4>
                   <Button variant="outline" size="sm" onClick={() => addProduct(catIndex)}>
                     <Plus className="mr-1 h-3 w-3" />
-                    Add Product
+                    {t('addProduct')}
                   </Button>
                 </div>
 
@@ -342,34 +345,34 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
                   {category.products.map((product, prodIndex) => (
                     <div key={prodIndex} className="rounded-lg border p-3">
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium">Product {prodIndex + 1}</span>
+                        <span className="text-sm font-medium">{t('productNumber', { number: String(prodIndex + 1) })}</span>
                         <div className="flex items-center gap-2">
                           {product.confidence !== undefined && (
                             <ConfidenceBadge value={product.confidence} />
                           )}
-                          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeProduct(catIndex, prodIndex)} aria-label="Remove product">
+                          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeProduct(catIndex, prodIndex)} aria-label={t('removeProduct')}>
                             <Trash2 className="h-3 w-3" />
                           </Button>
                         </div>
                       </div>
                       <div className="grid gap-3 md:grid-cols-2">
                         <Input
-                          placeholder="Product name (English)"
-                          aria-label="Product name (English)"
+                          placeholder={t('productNameEn')}
+                          aria-label={t('productNameEn')}
                           value={product.name_en}
                           onChange={(e) => updateProduct(catIndex, prodIndex, 'name_en', e.target.value)}
                         />
                         <Input
-                          placeholder="Product name (Arabic)"
-                          aria-label="Product name (Arabic)"
+                          placeholder={t('productNameAr')}
+                          aria-label={t('productNameAr')}
                           dir="rtl"
                           value={product.name_ar || ''}
                           onChange={(e) => updateProduct(catIndex, prodIndex, 'name_ar', e.target.value)}
                         />
                         <Input
                           type="number"
-                          placeholder="Dining price"
-                          aria-label="Dining price"
+                          placeholder={t('diningPrice')}
+                          aria-label={t('diningPrice')}
                           value={product.dining_price || ''}
                           onChange={(e) =>
                             updateProduct(catIndex, prodIndex, 'dining_price', parseFloat(e.target.value) || 0)
@@ -377,8 +380,8 @@ export function ImportPreview({ data, onConfirm, onCancel, isLoading }: ImportPr
                         />
                         <Input
                           type="number"
-                          placeholder="Takeaway price"
-                          aria-label="Takeaway price"
+                          placeholder={t('takeawayPrice')}
+                          aria-label={t('takeawayPrice')}
                           value={product.takeaway_price || ''}
                           onChange={(e) =>
                             updateProduct(catIndex, prodIndex, 'takeaway_price', parseFloat(e.target.value) || 0)

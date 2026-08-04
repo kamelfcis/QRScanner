@@ -3,11 +3,15 @@
 import Link from 'next/link';
 import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle } from 'lucide-react';
 import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function PublicFooter() {
   const { data: settings } = useRestaurantSettings();
+  const t = useTranslations('landing');
+  const navT = useTranslations('nav');
+  const commonT = useTranslations('common');
 
-  const name = settings?.name_en || 'Warda Shamya';
+  const name = settings?.name_en || commonT('appName');
 
   return (
     <footer className="border-t bg-muted/50">
@@ -25,38 +29,38 @@ export function PublicFooter() {
               <h3 className="text-lg font-bold text-primary font-heading">{name}</h3>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
-              Premium dining experience celebrating Lebanese and Syrian culinary traditions.
+              {t('premiumDining')}
             </p>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Quick Links</h4>
+            <h4 className="text-sm font-semibold">{t('quickLinks')}</h4>
             <ul className="mt-3 space-y-2">
               <li>
                 <Link href="/" className="text-sm text-muted-foreground hover:text-primary">
-                  Home
+                  {navT('home')}
                 </Link>
               </li>
               <li>
                 <Link href="/menu" className="text-sm text-muted-foreground hover:text-primary">
-                  Menu
+                  {navT('menu')}
                 </Link>
               </li>
               <li>
                 <Link href="#story" className="text-sm text-muted-foreground hover:text-primary">
-                  Our Story
+                  {t('ourStory')}
                 </Link>
               </li>
               <li>
                 <Link href="#contact" className="text-sm text-muted-foreground hover:text-primary">
-                  Contact
+                  {navT('contact')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Contact Info</h4>
+            <h4 className="text-sm font-semibold">{t('contactInfo')}</h4>
             <ul className="mt-3 space-y-2">
               {settings?.phone && (
                 <li>
@@ -79,7 +83,7 @@ export function PublicFooter() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Follow Us</h4>
+            <h4 className="text-sm font-semibold">{t('followUs')}</h4>
             <div className="mt-3 flex gap-3">
               {settings?.instagram && (
                 <a
@@ -87,7 +91,7 @@ export function PublicFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="Instagram"
+                  aria-label={t('instagram')}
                 >
                   <Camera className="h-5 w-5" />
                 </a>
@@ -98,7 +102,7 @@ export function PublicFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="Facebook"
+                  aria-label={t('facebook')}
                 >
                   <Globe className="h-5 w-5" />
                 </a>
@@ -109,7 +113,7 @@ export function PublicFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="TikTok"
+                  aria-label={t('tiktok')}
                 >
                   <Smartphone className="h-5 w-5" />
                 </a>
@@ -120,7 +124,7 @@ export function PublicFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary"
-                  aria-label="WhatsApp"
+                  aria-label={t('whatsapp')}
                 >
                   <MessageCircle className="h-5 w-5" />
                 </a>
@@ -131,7 +135,7 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} {name}. All rights reserved.
+            {t('copyright', { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

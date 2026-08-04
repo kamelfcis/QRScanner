@@ -21,6 +21,7 @@ import { TemplateSwitcher } from './TemplateSwitcher';
 import { QRPreview } from './QRPreview';
 import { getTemplate } from '@/lib/qr/templates';
 import { Loader2, RefreshCw } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 function getSiteUrl(): string {
   if (typeof window !== 'undefined') {
@@ -129,6 +130,8 @@ export function QRForm({
   const watchedUrl = watched.url;
 
   const tmpl = getTemplate(watched.template || 'classic');
+  const t = useTranslations('qr');
+  const tCommon = useTranslations('common');
 
   useEffect(() => {
     if (!initialData) {
@@ -181,11 +184,11 @@ export function QRForm({
     >
       <div className="order-2 space-y-4 lg:order-1">
         <div className="space-y-2">
-          <Label htmlFor="name">QR Code Name *</Label>
+          <Label htmlFor="name">{t('qrName')} *</Label>
           <Input
             id="name"
             {...register('name')}
-            placeholder="e.g., Main Entrance QR"
+            placeholder={t('qrNamePlaceholder')}
           />
           {errors.name && (
             <p className="text-sm text-destructive">{errors.name.message}</p>
@@ -194,7 +197,7 @@ export function QRForm({
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="url">Menu URL (Auto-generated) *</Label>
+            <Label htmlFor="url">{t('menuUrl')} *</Label>
             <Button
               type="button"
               variant="ghost"
@@ -203,7 +206,7 @@ export function QRForm({
               className="h-7 gap-1 text-xs"
             >
               <RefreshCw className="h-3 w-3" />
-              Auto
+              {t('auto')}
             </Button>
           </div>
           <Input
@@ -218,14 +221,14 @@ export function QRForm({
           )}
           {watchedTableId && watchedTableId !== 'none' && (
             <p className="text-xs text-muted-foreground">
-              Includes table parameter:{' '}
+              {t('includesTable')}{' '}
               <span className="font-mono">?table={getTableNumberByValue(tables, watchedTableId)}</span>
             </p>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="table_id">Table (Optional)</Label>
+          <Label htmlFor="table_id">{tCommon('optional')} ({t('table')})</Label>
           <Select
             value={watchedTableId || ''}
             onValueChange={(val) => {
@@ -240,14 +243,14 @@ export function QRForm({
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="No table" />
+              <SelectValue placeholder={t('noTableSelected')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="none">No table</SelectItem>
-              {tables.map((t) => (
-                <SelectItem key={t.id} value={t.id}>
-                  Table {t.table_number}
-                  {t.internal_name ? ` - ${t.internal_name}` : ''}
+              <SelectItem value="none">{t('noTable')}</SelectItem>
+              {tables.map((table) => (
+                <SelectItem key={table.id} value={table.id}>
+                  {t('tableNumber', { number: table.table_number })}
+                  {table.internal_name ? ` - ${table.internal_name}` : ''}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -256,17 +259,17 @@ export function QRForm({
 
         <TemplateSwitcher
           value={watched.template || 'classic'}
-          onChange={(t) =>
+          onChange={(tmpl) =>
             setValue(
               'template',
-              t as z.input<typeof qrCodeSchema>['template']
+              tmpl as z.input<typeof qrCodeSchema>['template']
             )
           }
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="foreground_color">Foreground</Label>
+            <Label htmlFor="foreground_color">{t('foreground')}</Label>
             <div className="flex gap-2">
               <Input
                 id="foreground_color"
@@ -281,7 +284,7 @@ export function QRForm({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="background_color">Background</Label>
+            <Label htmlFor="background_color">{t('background')}</Label>
             <div className="flex gap-2">
               <Input
                 id="background_color"
@@ -299,7 +302,7 @@ export function QRForm({
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="rounded_style">Rounded Style</Label>
+            <Label htmlFor="rounded_style">{t('roundedStyle')}</Label>
             <Select
               value={watched.rounded_style}
               onValueChange={(val) =>
@@ -313,14 +316,14 @@ export function QRForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="square">Square</SelectItem>
-                <SelectItem value="rounded">Rounded</SelectItem>
-                <SelectItem value="circle">Circle</SelectItem>
+                <SelectItem value="square">{t('square')}</SelectItem>
+                <SelectItem value="rounded">{t('rounded')}</SelectItem>
+                <SelectItem value="circle">{t('circle')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="eye_style">Eye Style</Label>
+            <Label htmlFor="eye_style">{t('eyeStyle')}</Label>
             <Select
               value={watched.eye_style}
               onValueChange={(val) =>
@@ -334,9 +337,9 @@ export function QRForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="square">Square</SelectItem>
-                <SelectItem value="rounded">Rounded</SelectItem>
-                <SelectItem value="circle">Circle</SelectItem>
+                <SelectItem value="square">{t('square')}</SelectItem>
+                <SelectItem value="rounded">{t('rounded')}</SelectItem>
+                <SelectItem value="circle">{t('circle')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -344,7 +347,7 @@ export function QRForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="margin">Margin</Label>
+            <Label htmlFor="margin">{t('margin')}</Label>
             <Input
               id="margin"
               type="number"
@@ -354,7 +357,7 @@ export function QRForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="error_correction">Error Correction</Label>
+            <Label htmlFor="error_correction">{t('errorCorrection')}</Label>
             <Select
               value={watched.error_correction}
               onValueChange={(val) =>
@@ -368,17 +371,17 @@ export function QRForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="L">Low (7%)</SelectItem>
-                <SelectItem value="M">Medium (15%)</SelectItem>
-                <SelectItem value="Q">Quartile (25%)</SelectItem>
-                <SelectItem value="H">High (30%)</SelectItem>
+                <SelectItem value="L">{t('low')}</SelectItem>
+                <SelectItem value="M">{t('medium')}</SelectItem>
+                <SelectItem value="Q">{t('quartile')}</SelectItem>
+                <SelectItem value="H">{t('high')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="size">Size (px)</Label>
+          <Label htmlFor="size">{t('size')}</Label>
           <Input
             id="size"
             type="number"
@@ -389,7 +392,7 @@ export function QRForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="logo_url">Logo URL (Optional)</Label>
+          <Label htmlFor="logo_url">{t('logoUrl')}</Label>
           <Input
             id="logo_url"
             {...register('logo_url')}
@@ -403,7 +406,7 @@ export function QRForm({
             checked={watched.is_active}
             onCheckedChange={(val) => setValue('is_active', val)}
           />
-          <Label htmlFor="is_active">Active</Label>
+          <Label htmlFor="is_active">{tCommon('active')}</Label>
         </div>
 
         <div className="flex gap-2 pt-4">
@@ -411,10 +414,10 @@ export function QRForm({
             {isLoading && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
-            {initialData ? 'Update QR Code' : 'Create QR Code'}
+            {initialData ? t('editQR') : t('createQR')}
           </Button>
           <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+            {tCommon('cancel')}
           </Button>
         </div>
       </div>

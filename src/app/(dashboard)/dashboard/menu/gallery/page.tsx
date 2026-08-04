@@ -26,6 +26,7 @@ import { Image } from '@/components/shared/Image';
 import { toast } from 'sonner';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import type { Gallery, GalleryInput } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const defaultFormData: GalleryInput = {
   image_url: '',
@@ -43,6 +44,8 @@ export default function GalleryPage() {
   const [formData, setFormData] = useState<GalleryInput>(defaultFormData);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('gallery');
+  const tCommon = useTranslations('common');
 
   const { data: galleryItems, isLoading, error, refetch } = useAllGallery();
   const createGalleryItem = useCreateGalleryItem();
@@ -131,20 +134,20 @@ export default function GalleryPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Gallery</h1>
-          <p className="text-muted-foreground">Manage restaurant gallery images.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('searchPlaceholder')}</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Image
+          {t('addImage')}
         </Button>
       </div>
 
       {!galleryItems?.length ? (
         <EmptyState
-          title="No images found"
-          description="Add images to showcase your restaurant."
-          action={{ label: 'Add Image', onClick: openCreateDialog }}
+          title={t('noImages')}
+          description={t('searchPlaceholder')}
+          action={{ label: t('addImage'), onClick: openCreateDialog }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -164,7 +167,7 @@ export default function GalleryPage() {
                   variant="secondary"
                   size="icon"
                   onClick={() => openEditDialog(item)}
-                  aria-label={`Edit gallery image${item.caption_en ? `: ${item.caption_en}` : ''}`}
+                  aria-label={`${tCommon('edit')} ${item.caption_en ? `: ${item.caption_en}` : ''}`}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -172,7 +175,7 @@ export default function GalleryPage() {
                   variant="destructive"
                   size="icon"
                   onClick={() => setDeleteId(item.id)}
-                  aria-label={`Delete gallery image${item.caption_en ? `: ${item.caption_en}` : ''}`}
+                  aria-label={`${tCommon('delete')} ${item.caption_en ? `: ${item.caption_en}` : ''}`}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -183,11 +186,11 @@ export default function GalleryPage() {
                     {item.is_featured && (
                       <Badge variant="default" className="bg-amber-500 text-white text-xs">
                         <Star className="mr-1 h-3 w-3" />
-                        Featured
+                        {tCommon('active')}
                       </Badge>
                     )}
                     {!item.is_visible && (
-                      <Badge variant="secondary" className="text-xs">Hidden</Badge>
+                      <Badge variant="secondary" className="text-xs">{tCommon('hidden')}</Badge>
                     )}
                   </div>
                   {item.caption_en && (
@@ -200,13 +203,12 @@ export default function GalleryPage() {
         </div>
       )}
 
-      {/* Create / Edit Gallery Item Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingItem ? 'Edit Image' : 'Add Image'}</DialogTitle>
+            <DialogTitle>{editingItem ? t('editImage') : t('addImage')}</DialogTitle>
             <DialogDescription>
-              {editingItem ? 'Update the image details.' : 'Add a new image to the gallery.'}
+              {editingItem ? t('editImage') : t('addImage')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
@@ -220,7 +222,7 @@ export default function GalleryPage() {
                   disabled={uploading}
                 >
                   <Upload className="mr-2 h-4 w-4" />
-                  {uploading ? 'Uploading...' : 'Upload Image'}
+                  {uploading ? tCommon('uploading') : t('addImage')}
                 </Button>
                 <input
                   ref={fileInputRef}
@@ -230,7 +232,7 @@ export default function GalleryPage() {
                   onChange={handleImageUpload}
                 />
                 {formData.image_url && (
-                  <span className="text-xs text-muted-foreground">Image uploaded</span>
+                  <span className="text-xs text-muted-foreground">{tCommon('upload')}</span>
                 )}
               </div>
               {formData.image_url && (
@@ -245,7 +247,7 @@ export default function GalleryPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="caption_en">Caption (English)</Label>
+              <Label htmlFor="caption_en">{t('captionEn')}</Label>
               <Input
                 id="caption_en"
                 value={formData.caption_en || ''}
@@ -253,7 +255,7 @@ export default function GalleryPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="caption_ar">Caption (Arabic)</Label>
+              <Label htmlFor="caption_ar">{t('captionAr')}</Label>
               <Input
                 id="caption_ar"
                 dir="rtl"
@@ -262,7 +264,7 @@ export default function GalleryPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sort_order">Sort Order</Label>
+              <Label htmlFor="sort_order">{t('sortOrder')}</Label>
               <Input
                 id="sort_order"
                 type="number"
@@ -274,7 +276,7 @@ export default function GalleryPage() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="is_featured">Featured (Hero Carousel)</Label>
+              <Label htmlFor="is_featured">{t('isFeatured')}</Label>
               <Switch
                 id="is_featured"
                 checked={formData.is_featured}
@@ -282,7 +284,7 @@ export default function GalleryPage() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="is_visible">Visible</Label>
+              <Label htmlFor="is_visible">{tCommon('visible')}</Label>
               <Switch
                 id="is_visible"
                 checked={formData.is_visible}
@@ -292,13 +294,13 @@ export default function GalleryPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={createGalleryItem.isPending || updateGalleryItem.isPending || uploading}
             >
-              {editingItem ? 'Save Changes' : 'Add Image'}
+              {editingItem ? tCommon('saveChanges') : t('addImage')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -307,9 +309,9 @@ export default function GalleryPage() {
       <ConfirmDialog
         open={deleteId !== null}
         onOpenChange={(open) => { if (!open) setDeleteId(null); }}
-        title="Delete Image"
-        description="Are you sure you want to delete this image? This action cannot be undone."
-        confirmLabel="Delete"
+        title={t('deleteImage')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteGalleryItem.isPending}
       />

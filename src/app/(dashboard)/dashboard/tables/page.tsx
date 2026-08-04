@@ -18,12 +18,15 @@ import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { RestaurantTable } from '@/types';
 import { Plus, Table, Pencil, Trash2, Loader2 } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function TablesPage() {
   const { data: tables, isLoading, error, refetch } = useRestaurantTables();
   const createMutation = useCreateTable();
   const updateMutation = useUpdateTable();
   const deleteMutation = useDeleteTable();
+  const t = useTranslations('tables');
+  const tCommon = useTranslations('common');
 
   const [showForm, setShowForm] = useState(false);
   const [editingTable, setEditingTable] = useState<RestaurantTable | null>(null);
@@ -85,21 +88,21 @@ export default function TablesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Tables</h1>
-          <p className="text-muted-foreground">Manage restaurant tables for QR code association</p>
+          <h1 className="text-2xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Table
+          {t('addTable')}
         </Button>
       </div>
 
       {!tables?.length ? (
         <EmptyState
           icon={<Table className="h-12 w-12 text-muted-foreground/50" />}
-          title="No tables yet"
-          description="Add tables to associate with QR codes"
-          action={{ label: 'Add Table', onClick: openCreate }}
+          title={t('noTables')}
+          description={t('noTablesDescription')}
+          action={{ label: t('addTable'), onClick: openCreate }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -107,13 +110,13 @@ export default function TablesPage() {
             <Card key={table.id}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-lg font-semibold">
-                  Table {table.table_number}
+                  {t('tableNumber', { number: table.table_number })}
                 </CardTitle>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(table)} aria-label="Edit table">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(table)} aria-label={t('editTableAria')}>
                     <Pencil className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDeletingTable(table)} aria-label="Delete table">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDeletingTable(table)} aria-label={t('deleteTableAria')}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
@@ -126,7 +129,7 @@ export default function TablesPage() {
                   <p className="text-sm text-muted-foreground">{table.description}</p>
                 )}
                 <p className="mt-2 text-xs text-muted-foreground">
-                  {table.is_active ? 'Active' : 'Inactive'}
+                  {table.is_active ? tCommon('active') : tCommon('inactive')}
                 </p>
               </CardContent>
             </Card>
@@ -137,11 +140,11 @@ export default function TablesPage() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingTable ? 'Edit Table' : 'Add Table'}</DialogTitle>
+            <DialogTitle>{editingTable ? t('editTable') : t('addTable')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="table_number">Table Number *</Label>
+              <Label htmlFor="table_number">{t('tableNumberLabel')}</Label>
               <Input
                 id="table_number"
                 type="number"
@@ -154,13 +157,13 @@ export default function TablesPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="internal_name">Internal Name</Label>
-              <Input id="internal_name" {...register('internal_name')} placeholder="e.g., VIP Corner" />
+              <Label htmlFor="internal_name">{t('internalName')}</Label>
+              <Input id="internal_name" {...register('internal_name')} placeholder={t('internalNamePlaceholder')} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Input id="description" {...register('description')} placeholder="Optional notes" />
+              <Label htmlFor="description">{t('description')}</Label>
+              <Input id="description" {...register('description')} placeholder={t('descriptionPlaceholder')} />
             </div>
 
             <div className="flex items-center gap-2">
@@ -169,16 +172,16 @@ export default function TablesPage() {
                 checked={watch('is_active')}
                 onCheckedChange={(val) => setValue('is_active', val)}
               />
-              <Label htmlFor="is_active">Active</Label>
+              <Label htmlFor="is_active">{t('active')}</Label>
             </div>
 
             <div className="flex gap-2 pt-4">
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {editingTable ? 'Update' : 'Create'}
+                {editingTable ? tCommon('update') : tCommon('create')}
               </Button>
               <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-                Cancel
+                {tCommon('cancel')}
               </Button>
             </div>
           </form>
@@ -188,9 +191,9 @@ export default function TablesPage() {
       <ConfirmDialog
         open={!!deletingTable}
         onOpenChange={() => setDeletingTable(null)}
-        title="Delete Table"
-        description={`Delete Table ${deletingTable?.table_number}? QR codes using this table will be unlinked.`}
-        confirmLabel="Delete"
+        title={t('deleteTable')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         variant="destructive"
         onConfirm={handleDelete}
       />

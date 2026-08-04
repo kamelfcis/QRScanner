@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { WifiOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true);
   const [showBanner, setShowBanner] = useState(false);
+  const t = useTranslations('offline');
 
   useEffect(() => {
     setIsOnline(navigator.onLine);
@@ -45,7 +47,7 @@ export function OfflineIndicator() {
           role="alert"
         >
           <WifiOff className="h-4 w-4" />
-          <span>You are offline. Some features may be unavailable.</span>
+          <span>{t('youAreOffline')}</span>
         </motion.div>
       )}
     </AnimatePresence>

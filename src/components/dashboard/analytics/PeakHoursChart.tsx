@@ -4,6 +4,7 @@ import { usePeakHours } from '@/hooks/useAnalytics';
 import { BarChart } from '@/components/dashboard/charts/BarChart';
 import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import type { Period } from '@/components/dashboard/DateRangePicker';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface PeakHoursChartProps {
   period: Period;
@@ -11,6 +12,7 @@ interface PeakHoursChartProps {
 
 export function PeakHoursChart({ period }: PeakHoursChartProps) {
   const { data, isLoading } = usePeakHours(period);
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[300px] bg-muted animate-pulse rounded-lg" />;
 
@@ -20,7 +22,7 @@ export function PeakHoursChart({ period }: PeakHoursChartProps) {
   }));
 
   return (
-    <ChartCard title="Peak Hours" description="Activity by hour of day">
+    <ChartCard title={t('peakHours')} description={t('activityByHour')}>
       <BarChart
         data={chartData}
         xKey="hour"

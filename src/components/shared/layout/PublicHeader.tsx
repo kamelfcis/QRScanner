@@ -9,19 +9,16 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { cn } from '@/lib/utils';
-
-const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Menu', href: '/menu' },
-  { name: 'About', href: '#story' },
-  { name: 'Contact', href: '#contact' },
-];
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function PublicHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { data: settings } = useRestaurantSettings();
   const { resolvedTheme, setTheme } = useTheme();
+  const t = useTranslations('nav');
+  const commonT = useTranslations('common');
+  const accessibilityT = useTranslations('accessibility');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -29,7 +26,14 @@ export function PublicHeader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const name = settings?.name_en || 'Warda Shamya';
+  const name = settings?.name_en || commonT('appName');
+
+  const navLinks = [
+    { name: t('home'), href: '/' },
+    { name: t('menu'), href: '/menu' },
+    { name: t('about'), href: '#story' },
+    { name: t('contact'), href: '#contact' },
+  ];
 
   return (
     <header
@@ -92,7 +96,7 @@ export function PublicHeader() {
                 ? 'text-foreground hover:bg-muted'
                 : 'text-white hover:bg-white/10'
             )}
-            aria-label="Toggle theme"
+            aria-label={accessibilityT('toggleTheme')}
           >
             {resolvedTheme === 'dark' ? (
               <Sun className="h-4 w-4" />
@@ -106,7 +110,7 @@ export function PublicHeader() {
             size="sm"
             className="hidden bg-brand-accent text-black hover:bg-brand-accent/90 md:inline-flex"
           >
-            Order Now
+            {t('orderNow')}
           </Button>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -117,7 +121,7 @@ export function PublicHeader() {
               )}
             >
               <Menu className="h-5 w-5" />
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">{accessibilityT('openMenu')}</span>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <nav className="mt-8 flex flex-col space-y-4" aria-label="Mobile navigation">
@@ -135,7 +139,7 @@ export function PublicHeader() {
                   render={<Link href="/menu" onClick={() => setOpen(false)} />}
                   className="mt-4 bg-brand-accent text-black hover:bg-brand-accent/90"
                 >
-                  Order Now
+                  {t('orderNow')}
                 </Button>
               </nav>
             </SheetContent>

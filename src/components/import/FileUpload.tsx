@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Upload, FileText, Image, X, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface FileUploadProps {
   onUpload: (file: File) => Promise<void>;
@@ -30,18 +31,20 @@ export function FileUpload({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('import');
+  const tCommon = useTranslations('common');
 
   const validateFile = useCallback(
     (file: File): string | null => {
       if (!ACCEPTED_TYPES.includes(file.type)) {
-        return 'Unsupported file type. Please upload PDF, PNG, JPEG, or WebP.';
+        return t('unsupportedFile');
       }
       if (file.size > maxSizeMB * 1024 * 1024) {
-        return `File too large. Maximum size is ${maxSizeMB}MB.`;
+        return t('fileTooLarge', { maxSize: String(maxSizeMB) });
       }
       return null;
     },
-    [maxSizeMB]
+    [maxSizeMB, t]
   );
 
   const handleFile = useCallback(
@@ -120,7 +123,7 @@ export function FileUpload({
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
         role="button"
         tabIndex={0}
-        aria-label="Upload menu file. Click or drag and drop."
+        aria-label={t('uploadFile')}
       >
         <input
           ref={inputRef}
@@ -128,7 +131,7 @@ export function FileUpload({
           accept={accept}
           onChange={handleInputChange}
           className="hidden"
-          aria-label="Upload menu file"
+          aria-label={t('uploadFile')}
         />
 
         {selectedFile ? (
@@ -148,7 +151,7 @@ export function FileUpload({
                   e.stopPropagation();
                   handleClear();
                 }}
-                aria-label="Remove file"
+                aria-label={t('removeFile')}
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -158,9 +161,9 @@ export function FileUpload({
           <div className="flex flex-col items-center gap-3">
             <Upload className="h-12 w-12 text-muted-foreground/50" />
             <div>
-              <p className="font-medium">Drop your menu file here</p>
+              <p className="font-medium">{t('dropFile')}</p>
               <p className="text-sm text-muted-foreground">
-                PDF, PNG, JPEG, or WebP (max {maxSizeMB}MB)
+                {t('fileFormats', { maxSize: String(maxSizeMB) })}
               </p>
             </div>
           </div>
@@ -176,10 +179,10 @@ export function FileUpload({
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
+              {tCommon('processing')}
             </>
           ) : (
-            'Start Import'
+            t('startImport')
           )}
         </Button>
       )}

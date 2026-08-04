@@ -7,6 +7,7 @@ import { useTopProducts } from '@/hooks/useAnalytics';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const TrendingDishes = dynamic(() => import('@/components/dashboard/analytics/TrendingDishes').then(m => ({ default: m.TrendingDishes })), { ssr: false });
 const NeverViewedProducts = dynamic(() => import('@/components/dashboard/analytics/NeverViewedProducts').then(m => ({ default: m.NeverViewedProducts })), { ssr: false });
@@ -19,12 +20,13 @@ const supabase = createClient();
 
 export default function InsightsPage() {
   const [period, setPeriod] = useState<Period>('month');
+  const tAnalytics = useTranslations('analytics');
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Customer Insights</h1>
-        <p className="text-muted-foreground">Understand what customers love and discover untapped opportunities.</p>
+        <h1 className="text-2xl font-bold md:text-3xl">{tAnalytics('title')}</h1>
+        <p className="text-muted-foreground">{tAnalytics('description')}</p>
       </div>
 
       <DateRangePicker value={period} onChange={setPeriod} />

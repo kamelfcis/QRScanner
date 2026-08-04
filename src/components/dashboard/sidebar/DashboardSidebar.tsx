@@ -18,29 +18,32 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
-
-const sidebarItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Reports', href: '/dashboard/reports', icon: FileText },
-  { name: 'Menu', href: '/dashboard/menu', icon: Menu },
-  { name: 'Import', href: '/dashboard/import', icon: FileUp },
-  { name: 'Testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
-  { name: 'QR Codes', href: '/dashboard/qr', icon: QrCode },
-  { name: 'Tables', href: '/dashboard/tables', icon: Table },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { signOut } = useAuth();
+  const tSidebar = useTranslations('sidebar');
+  const tCommon = useTranslations('common');
+
+  const sidebarItems = [
+    { name: tSidebar('dashboard'), href: '/dashboard', icon: LayoutDashboard },
+    { name: tSidebar('analytics'), href: '/dashboard/analytics', icon: BarChart3 },
+    { name: tSidebar('reports'), href: '/dashboard/reports', icon: FileText },
+    { name: tSidebar('menu'), href: '/dashboard/menu', icon: Menu },
+    { name: tSidebar('import'), href: '/dashboard/import', icon: FileUp },
+    { name: tSidebar('testimonials'), href: '/dashboard/testimonials', icon: MessageSquareQuote },
+    { name: tSidebar('qrCodes'), href: '/dashboard/qr', icon: QrCode },
+    { name: tSidebar('tables'), href: '/dashboard/tables', icon: Table },
+    { name: tSidebar('settings'), href: '/dashboard/settings', icon: Settings },
+  ];
 
   return (
     <aside className="hidden w-64 border-r bg-muted/40 md:block">
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center border-b px-6">
           <Link href="/dashboard" className="text-lg font-bold text-primary">
-            Warda Shamya
+            {tCommon('appName')}
           </Link>
         </div>
 
@@ -79,10 +82,10 @@ export function DashboardSidebar() {
                 /* handled by useAuth */
               }
             }}
-            aria-label="Logout"
+            aria-label={tSidebar('logout')}
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Logout
+            {tSidebar('logout')}
           </Button>
         </div>
       </div>

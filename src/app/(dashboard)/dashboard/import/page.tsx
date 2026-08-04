@@ -13,12 +13,15 @@ import { ImportStatus } from '@/components/import/ImportStatus';
 import type { ImportJob, ImportExtractedData } from '@/types/database';
 import { FileUp, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 type View = 'list' | 'upload' | 'preview';
 
 export default function ImportPage() {
   const { data: jobs, isLoading, error, refetch } = useImportJobs();
   const deleteMutation = useDeleteImportJob();
+  const t = useTranslations('import');
+  const tCommon = useTranslations('common');
 
   const [view, setView] = useState<View>('list');
   const [isUploading, setIsUploading] = useState(false);
@@ -76,13 +79,13 @@ export default function ImportPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Menu Import</h1>
-          <p className="text-muted-foreground">Upload a menu PDF or image to automatically extract menu data</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         {view === 'list' && (
           <Button onClick={() => setView('upload')}>
             <FileUp className="mr-2 h-4 w-4" />
-            New Import
+            {t('newImport')}
           </Button>
         )}
         {view !== 'list' && (
@@ -91,7 +94,7 @@ export default function ImportPage() {
             onClick={() => { setView('list'); setSelectedJob(null); }}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to List
+            {t('backToList')}
           </Button>
         )}
       </div>
@@ -101,9 +104,9 @@ export default function ImportPage() {
           {!jobs?.length ? (
             <EmptyState
               icon={<FileUp className="h-12 w-12 text-muted-foreground/50" />}
-              title="No imports yet"
-              description="Upload a menu PDF or image to get started"
-              action={{ label: 'New Import', onClick: () => setView('upload') }}
+              title={t('noImports')}
+              description={t('uploadDescription')}
+              action={{ label: t('newImport'), onClick: () => setView('upload') }}
             />
           ) : (
             <div className="space-y-3">
@@ -138,9 +141,9 @@ export default function ImportPage() {
           ) : (
             <div className="flex flex-col items-center gap-4 py-12">
               <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-              <p className="text-muted-foreground">Processing your menu file...</p>
+              <p className="text-muted-foreground">{t('processing')}</p>
               <p className="text-sm text-muted-foreground">
-                This may take a few minutes depending on file size.
+                {t('processingHint')}
               </p>
             </div>
           )}
@@ -150,9 +153,9 @@ export default function ImportPage() {
       <ConfirmDialog
         open={!!deletingJob}
         onOpenChange={() => setDeletingJob(null)}
-        title="Delete Import"
-        description={`Delete import "${deletingJob?.file_name}"? This cannot be undone.`}
-        confirmLabel="Delete"
+        title={t('deleteImport')}
+        description={t('confirmDelete', { name: deletingJob?.file_name || '' })}
+        confirmLabel={tCommon('delete')}
         variant="destructive"
         onConfirm={handleDelete}
       />

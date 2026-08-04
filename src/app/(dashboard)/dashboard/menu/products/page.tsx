@@ -38,6 +38,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import type { Product } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 type ProductForm = z.input<typeof productSchema>;
 
@@ -63,6 +64,9 @@ export default function ProductsPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const t = useTranslations('products');
+  const tCommon = useTranslations('common');
+  const tMenu = useTranslations('menu');
 
   const { data: products, isLoading, error, refetch } = useAllProducts();
   const { data: categories } = useAllCategories();
@@ -176,12 +180,12 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Products</h1>
-          <p className="text-muted-foreground">Manage your menu products.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('searchProducts')}</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Product
+          {t('addProduct')}
         </Button>
       </div>
 
@@ -189,21 +193,21 @@ export default function ProductsPage() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search products..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
-            aria-label="Search products"
+            aria-label={t('searchProducts')}
           />
         </div>
         <div>
-          <Label htmlFor="category-filter" className="sr-only">Filter by category</Label>
+          <Label htmlFor="category-filter" className="sr-only">{t('filterByCategory')}</Label>
           <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value ?? 'all')}>
-            <SelectTrigger id="category-filter" className="w-full sm:w-[180px]" aria-label="Filter by category">
-              <SelectValue placeholder="All Categories" />
+            <SelectTrigger id="category-filter" className="w-full sm:w-[180px]" aria-label={t('filterByCategory')}>
+              <SelectValue placeholder={t('allCategories')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="all">{t('allCategories')}</SelectItem>
               {categories?.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name_en}
@@ -216,9 +220,9 @@ export default function ProductsPage() {
 
       {!filteredProducts?.length ? (
         <EmptyState
-          title="No products found"
-          description={searchQuery ? 'Try a different search term.' : 'Create your first product to get started.'}
-          action={!searchQuery ? { label: 'Add Product', onClick: openCreateDialog } : undefined}
+          title={t('noProducts')}
+          description={searchQuery ? tCommon('tryAgain') : t('addProduct')}
+          action={!searchQuery ? { label: t('addProduct'), onClick: openCreateDialog } : undefined}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -244,9 +248,9 @@ export default function ProductsPage() {
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    {product.is_popular && <Badge variant="default" className="bg-orange-500 text-white dark:bg-orange-600">Popular</Badge>}
-                    {product.is_new && <Badge variant="default" className="bg-blue-500 text-white dark:bg-blue-600">New</Badge>}
-                    {product.is_bestseller && <Badge variant="default" className="bg-purple-500 text-white dark:bg-purple-600">Bestseller</Badge>}
+                    {product.is_popular && <Badge variant="default" className="bg-orange-500 text-white dark:bg-orange-600">{tMenu('popular')}</Badge>}
+                    {product.is_new && <Badge variant="default" className="bg-blue-500 text-white dark:bg-blue-600">{tMenu('new')}</Badge>}
+                    {product.is_bestseller && <Badge variant="default" className="bg-purple-500 text-white dark:bg-purple-600">{tMenu('bestseller')}</Badge>}
                   </div>
                 </div>
               </CardHeader>
@@ -259,11 +263,11 @@ export default function ProductsPage() {
                 <div className="mt-4 flex items-center justify-between">
                   <div className="flex gap-4">
                     <div>
-                      <p className="text-xs text-muted-foreground">Dining</p>
+                      <p className="text-xs text-muted-foreground">{tMenu('dining')}</p>
                       <p className="font-semibold">{product.dining_price} SAR</p>
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Takeaway</p>
+                      <p className="text-xs text-muted-foreground">{tMenu('takeaway')}</p>
                       <p className="font-semibold">{product.takeaway_price} SAR</p>
                     </div>
                   </div>
@@ -271,9 +275,9 @@ export default function ProductsPage() {
                     <Switch
                       checked={product.is_available}
                       onCheckedChange={() => handleToggleAvailability(product)}
-                      aria-label={`Toggle availability for ${product.name_en}`}
+                      aria-label={`${tCommon('edit')} ${product.name_en}`}
                     />
-                    <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={`Edit ${product.name_en}`} onClick={() => openEditDialog(product)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={`${tCommon('edit')} ${product.name_en}`} onClick={() => openEditDialog(product)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
@@ -281,14 +285,14 @@ export default function ProductsPage() {
                       size="icon"
                       className="h-8 w-8 text-destructive"
                       onClick={() => setDeleteId(product.id)}
-                      aria-label={`Delete ${product.name_en}`}
+                      aria-label={`${tCommon('delete')} ${product.name_en}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
                 {!product.is_available && (
-                  <Badge variant="secondary" className="mt-2">Unavailable</Badge>
+                  <Badge variant="secondary" className="mt-2">{t('unavailable')}</Badge>
                 )}
               </CardContent>
             </Card>
@@ -299,11 +303,11 @@ export default function ProductsPage() {
       <Dialog open={showCreateDialog} onOpenChange={(open) => { if (!open) setShowCreateDialog(false); }}>
         <DialogContent className="max-w-full sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add Product</DialogTitle>
+            <DialogTitle>{t('addProduct')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={createForm.handleSubmit(handleCreate)} className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="create-name-en">Name (English) *</Label>
+              <Label htmlFor="create-name-en">{t('productNameEn')} *</Label>
               <Input
                 id="create-name-en"
                 {...createForm.register('name_en')}
@@ -313,7 +317,7 @@ export default function ProductsPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-name-ar">Name (Arabic) *</Label>
+              <Label htmlFor="create-name-ar">{t('productNameAr')} *</Label>
               <Input
                 id="create-name-ar"
                 dir="rtl"
@@ -324,7 +328,7 @@ export default function ProductsPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-desc-en">Description (English)</Label>
+              <Label htmlFor="create-desc-en">{t('descriptionEn')}</Label>
               <Textarea
                 id="create-desc-en"
                 {...createForm.register('description_en')}
@@ -332,7 +336,7 @@ export default function ProductsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-desc-ar">Description (Arabic)</Label>
+              <Label htmlFor="create-desc-ar">{t('descriptionAr')}</Label>
               <Textarea
                 id="create-desc-ar"
                 dir="rtl"
@@ -341,12 +345,12 @@ export default function ProductsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="create-category">Category *</Label>
+              <Label htmlFor="create-category">{t('category')} *</Label>
               <Select
                 value={createForm.watch('category_id')}
                 onValueChange={(val) => createForm.setValue('category_id', val ?? '', { shouldValidate: true })}
               >
-                <SelectTrigger id="create-category"><SelectValue placeholder="Select category" /></SelectTrigger>
+                <SelectTrigger id="create-category"><SelectValue placeholder={t('selectCategory')} /></SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
                     <SelectItem key={c.id} value={c.id}>{c.name_en}</SelectItem>
@@ -359,7 +363,7 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="create-dining">Dining Price (SAR) *</Label>
+                <Label htmlFor="create-dining">{t('diningPrice')} (SAR) *</Label>
                 <Input
                   id="create-dining"
                   type="number"
@@ -371,7 +375,7 @@ export default function ProductsPage() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="create-takeaway">Takeaway Price (SAR) *</Label>
+                <Label htmlFor="create-takeaway">{t('takeawayPrice')} (SAR) *</Label>
                 <Input
                   id="create-takeaway"
                   type="number"
@@ -390,7 +394,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => createForm.setValue('is_available', checked)}
                   id="create-available"
                 />
-                <Label htmlFor="create-available">Available</Label>
+                <Label htmlFor="create-available">{t('available')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -398,7 +402,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => createForm.setValue('is_popular', checked)}
                   id="create-popular"
                 />
-                <Label htmlFor="create-popular">Popular</Label>
+                <Label htmlFor="create-popular">{tMenu('popular')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -406,7 +410,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => createForm.setValue('is_new', checked)}
                   id="create-new"
                 />
-                <Label htmlFor="create-new">New</Label>
+                <Label htmlFor="create-new">{tMenu('new')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -414,7 +418,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => createForm.setValue('is_bestseller', checked)}
                   id="create-bestseller"
                 />
-                <Label htmlFor="create-bestseller">Bestseller</Label>
+                <Label htmlFor="create-bestseller">{tMenu('bestseller')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -425,7 +429,7 @@ export default function ProductsPage() {
                 <Label htmlFor="create-spicy">Spicy</Label>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="create-sort">Sort Order</Label>
+                <Label htmlFor="create-sort">{t('sortOrder')}</Label>
                 <Input
                   id="create-sort"
                   type="number"
@@ -435,9 +439,9 @@ export default function ProductsPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>{tCommon('cancel')}</Button>
               <Button type="submit" disabled={createProduct.isPending}>
-                {createProduct.isPending ? 'Creating...' : 'Create Product'}
+                {createProduct.isPending ? tCommon('processing') : t('addProduct')}
               </Button>
             </DialogFooter>
           </form>
@@ -447,11 +451,11 @@ export default function ProductsPage() {
       <Dialog open={!!editProduct} onOpenChange={(open) => { if (!open) setEditProduct(null); }}>
         <DialogContent className="max-w-full sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Edit Product</DialogTitle>
+            <DialogTitle>{t('editProduct')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={editForm.handleSubmit(handleEditSave)} className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="edit-name-en">Name (English) *</Label>
+              <Label htmlFor="edit-name-en">{t('productNameEn')} *</Label>
               <Input
                 id="edit-name-en"
                 {...editForm.register('name_en')}
@@ -461,7 +465,7 @@ export default function ProductsPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-name-ar">Name (Arabic) *</Label>
+              <Label htmlFor="edit-name-ar">{t('productNameAr')} *</Label>
               <Input
                 id="edit-name-ar"
                 dir="rtl"
@@ -472,7 +476,7 @@ export default function ProductsPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-desc-en">Description (English)</Label>
+              <Label htmlFor="edit-desc-en">{t('descriptionEn')}</Label>
               <Textarea
                 id="edit-desc-en"
                 {...editForm.register('description_en')}
@@ -480,7 +484,7 @@ export default function ProductsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-desc-ar">Description (Arabic)</Label>
+              <Label htmlFor="edit-desc-ar">{t('descriptionAr')}</Label>
               <Textarea
                 id="edit-desc-ar"
                 dir="rtl"
@@ -489,7 +493,7 @@ export default function ProductsPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-category">Category *</Label>
+              <Label htmlFor="edit-category">{t('category')} *</Label>
               <Select
                 value={editForm.watch('category_id')}
                 onValueChange={(val) => editForm.setValue('category_id', val ?? '', { shouldValidate: true })}
@@ -507,7 +511,7 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-dining">Dining Price (SAR) *</Label>
+                <Label htmlFor="edit-dining">{t('diningPrice')} (SAR) *</Label>
                 <Input
                   id="edit-dining"
                   type="number"
@@ -519,7 +523,7 @@ export default function ProductsPage() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-takeaway">Takeaway Price (SAR) *</Label>
+                <Label htmlFor="edit-takeaway">{t('takeawayPrice')} (SAR) *</Label>
                 <Input
                   id="edit-takeaway"
                   type="number"
@@ -538,7 +542,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => editForm.setValue('is_available', checked)}
                   id="edit-available"
                 />
-                <Label htmlFor="edit-available">Available</Label>
+                <Label htmlFor="edit-available">{t('available')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -546,7 +550,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => editForm.setValue('is_popular', checked)}
                   id="edit-popular"
                 />
-                <Label htmlFor="edit-popular">Popular</Label>
+                <Label htmlFor="edit-popular">{tMenu('popular')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -554,7 +558,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => editForm.setValue('is_new', checked)}
                   id="edit-new"
                 />
-                <Label htmlFor="edit-new">New</Label>
+                <Label htmlFor="edit-new">{tMenu('new')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -562,7 +566,7 @@ export default function ProductsPage() {
                   onCheckedChange={(checked) => editForm.setValue('is_bestseller', checked)}
                   id="edit-bestseller"
                 />
-                <Label htmlFor="edit-bestseller">Bestseller</Label>
+                <Label htmlFor="edit-bestseller">{tMenu('bestseller')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -573,7 +577,7 @@ export default function ProductsPage() {
                 <Label htmlFor="edit-spicy">Spicy</Label>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-sort">Sort Order</Label>
+                <Label htmlFor="edit-sort">{t('sortOrder')}</Label>
                 <Input
                   id="edit-sort"
                   type="number"
@@ -583,9 +587,9 @@ export default function ProductsPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setEditProduct(null)}>Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => setEditProduct(null)}>{tCommon('cancel')}</Button>
               <Button type="submit" disabled={updateProduct.isPending}>
-                {updateProduct.isPending ? 'Saving...' : 'Save Changes'}
+                {updateProduct.isPending ? tCommon('saving') : tCommon('saveChanges')}
               </Button>
             </DialogFooter>
           </form>
@@ -595,9 +599,9 @@ export default function ProductsPage() {
       <ConfirmDialog
         open={deleteId !== null}
         onOpenChange={(open) => { if (!open) setDeleteId(null); }}
-        title="Delete Product"
-        description="Are you sure you want to delete this product? This action cannot be undone."
-        confirmLabel="Delete"
+        title={t('deleteProduct')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteProduct.isPending}
       />

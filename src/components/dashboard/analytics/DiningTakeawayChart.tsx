@@ -5,6 +5,7 @@ import { PieDonutChart } from '@/components/dashboard/charts/PieDonutChart';
 import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import type { Period } from '@/components/dashboard/DateRangePicker';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface DiningTakeawayChartProps {
   period: Period;
@@ -14,6 +15,7 @@ export function DiningTakeawayChart({ period }: DiningTakeawayChartProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   const { data, isLoading } = useDiningTakeaway(period);
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[300px] bg-muted animate-pulse rounded-lg" />;
 
@@ -23,7 +25,7 @@ export function DiningTakeawayChart({ period }: DiningTakeawayChartProps) {
   ];
 
   return (
-    <ChartCard title="Dining vs Takeaway" description="Order type breakdown">
+    <ChartCard title={t('diningVsTakeaway')} description={t('orderTypeBreakdown')}>
       <PieDonutChart data={chartData} donut height={300} />
     </ChartCard>
   );

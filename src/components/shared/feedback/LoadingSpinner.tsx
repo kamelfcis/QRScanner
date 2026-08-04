@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -15,11 +16,12 @@ const sizeClasses = {
 };
 
 export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
+  const t = useTranslations('accessibility');
   return (
     <div role="status" aria-live="polite">
       <Loader2
         className={cn('animate-spin text-primary', sizeClasses[size], className)}
-        aria-label="Loading"
+        aria-label={t('loading')}
       />
     </div>
   );

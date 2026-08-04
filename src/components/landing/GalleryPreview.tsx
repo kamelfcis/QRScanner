@@ -6,9 +6,11 @@ import { MotionSection, MotionCard } from '@/components/shared/motion';
 import { Image } from '@/components/shared/Image';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function GalleryPreview() {
   const { data: gallery, isLoading } = useVisibleGallery();
+  const t = useTranslations('landing');
 
   const displayItems = gallery?.slice(0, 8) || [];
 
@@ -18,7 +20,7 @@ export function GalleryPreview() {
         <MotionSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              A Taste of Excellence
+              {t('aTasteOfExcellence')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>
@@ -31,7 +33,7 @@ export function GalleryPreview() {
             ))}
           </div>
         ) : displayItems.length === 0 ? (
-          <p className="text-center text-muted-foreground">Gallery coming soon.</p>
+          <p className="text-center text-muted-foreground">{t('galleryComingSoon')}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {displayItems.map((item, index) => (
@@ -45,7 +47,7 @@ export function GalleryPreview() {
               >
                 <Image
                   src={item.image_url}
-                  alt={item.caption_en || 'Gallery image'}
+                  alt={item.caption_en || t('galleryComingSoon')}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -67,7 +69,7 @@ export function GalleryPreview() {
               href="/menu#gallery"
               className="inline-flex items-center text-sm font-medium text-primary hover:underline"
             >
-              View Gallery
+              {t('viewGallery')}
             </Link>
           </div>
         </MotionSection>

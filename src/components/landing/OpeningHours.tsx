@@ -3,6 +3,7 @@
 import { MotionSection } from '@/components/shared/motion';
 import { useHoursSettings } from '@/hooks/useSettings';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -14,6 +15,8 @@ function getCurrentDay(): string {
 export function OpeningHours() {
   const { data: hours } = useHoursSettings();
   const currentDay = getCurrentDay();
+  const t = useTranslations('landing');
+  const daysT = useTranslations('days');
 
   return (
     <section className="py-20 md:py-28">
@@ -21,7 +24,7 @@ export function OpeningHours() {
         <MotionSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              Visit Us
+              {t('visitUs')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>
@@ -49,9 +52,9 @@ export function OpeningHours() {
                         isToday ? 'text-primary' : 'text-foreground'
                       )}
                     >
-                      {day}
+                      {daysT(day)}
                       {isToday && (
-                        <span className="ml-2 text-xs text-primary">(Today)</span>
+                        <span className="ml-2 text-xs text-primary">({t('today')})</span>
                       )}
                     </span>
                     <span
@@ -61,7 +64,7 @@ export function OpeningHours() {
                       )}
                     >
                       {isClosed || !dayHours?.open || !dayHours?.close
-                        ? 'Closed'
+                        ? t('closed')
                         : `${dayHours.open} - ${dayHours.close}`}
                     </span>
                   </div>

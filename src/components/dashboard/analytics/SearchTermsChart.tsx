@@ -5,6 +5,7 @@ import { BarChart } from '@/components/dashboard/charts/BarChart';
 import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import { DataTable } from '@/components/dashboard/DataTable';
 import type { Period } from '@/components/dashboard/DateRangePicker';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface SearchTermsChartProps {
   period: Period;
@@ -12,6 +13,7 @@ interface SearchTermsChartProps {
 
 export function SearchTermsChart({ period }: SearchTermsChartProps) {
   const { data, isLoading } = useSearchTerms(period);
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[400px] bg-muted animate-pulse rounded-lg" />;
 
@@ -29,7 +31,7 @@ export function SearchTermsChart({ period }: SearchTermsChartProps) {
 
   return (
     <div className="space-y-4">
-      <ChartCard title="Top Search Terms" description="Most searched terms">
+      <ChartCard title={t('topSearchTerms')} description={t('mostSearchedTerms')}>
         <BarChart
           data={chartData}
           xKey="name"

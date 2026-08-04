@@ -7,6 +7,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -25,6 +26,8 @@ export function MenuHeader({
 }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations('menu');
+  const tCommon = useTranslations('common');
 
   return (
     <motion.header
@@ -38,11 +41,11 @@ export function MenuHeader({
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-3">
           <h1 className="text-lg font-bold text-primary sm:text-xl">
-            {settings?.name_en || 'Warda Shamya'}
+            {settings?.name_en || tCommon('appName')}
           </h1>
           {tableParam && (
             <Badge variant="secondary" className="text-xs">
-              Table {tableParam}
+              {t('tableNumber', { number: tableParam })}
             </Badge>
           )}
         </div>
@@ -52,7 +55,7 @@ export function MenuHeader({
             variant="ghost"
             size="icon-sm"
             onClick={onSearchOpen}
-            aria-label="Search menu"
+            aria-label={t('searchMenu')}
           >
             <Search className="h-5 w-5" />
           </Button>
@@ -71,7 +74,7 @@ export function MenuHeader({
             )}
           </Button>
 
-          <div className="flex items-center rounded-lg border" role="group" aria-label="Dining mode">
+          <div className="flex items-center rounded-lg border" role="group" aria-label={t('diningMode')}>
             <Button
               variant={diningMode === 'dining' ? 'default' : 'ghost'}
               size="icon-sm"

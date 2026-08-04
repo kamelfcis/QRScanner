@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Check, Trash2, QrCode, FileUp, AlertCircle, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   qr_scan: QrCode,
@@ -22,11 +23,12 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
   const { data: notifications, isLoading } = useNotifications(20);
   const markAllRead = useMarkAllNotificationsRead();
   const deleteNotification = useDeleteNotification();
+  const t = useTranslations('dashboard');
 
   return (
     <Card className="w-80 max-h-96 overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Notifications</CardTitle>
+        <CardTitle className="text-sm font-medium">{t('notifications')}</CardTitle>
         <Button
           variant="ghost"
           size="sm"
@@ -34,7 +36,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
           onClick={() => markAllRead.mutate()}
           disabled={markAllRead.isPending}
         >
-          <Check className="mr-1 h-3 w-3" /> Mark all read
+          <Check className="mr-1 h-3 w-3" /> {t('markAllRead')}
         </Button>
       </CardHeader>
       <CardContent className="p-0 overflow-y-auto max-h-72">
@@ -45,7 +47,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
             ))}
           </div>
         ) : !notifications?.length ? (
-          <p className="text-sm text-muted-foreground text-center py-8">No notifications</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('noNotifications')}</p>
         ) : (
           <div className="divide-y">
             {notifications.map((notif) => {

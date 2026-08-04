@@ -4,9 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { MotionSection } from '@/components/shared/motion';
 import { Image } from '@/components/shared/Image';
 import { useActiveOffers } from '@/hooks/useOffers';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function OffersBanner() {
   const { data: offers, isLoading } = useActiveOffers();
+  const t = useTranslations('landing');
 
   if (isLoading || !offers || offers.length === 0) return null;
 
@@ -16,7 +18,7 @@ export function OffersBanner() {
         <MotionSection>
           <div className="mb-10 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              Special Offers
+              {t('specialOffers')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>

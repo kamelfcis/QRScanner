@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import type { CategoryWithProducts } from '@/types/database';
@@ -22,6 +22,7 @@ export function CategoryNav({
   const scrollRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
+  const t = useTranslations('menu');
 
   const handleClick = (categoryId: string | null) => {
     onCategoryChange(categoryId);
@@ -47,7 +48,7 @@ export function CategoryNav({
           ref={scrollRef}
           className="scrollbar-none flex gap-1 overflow-x-auto py-3"
           role="tablist"
-          aria-label="Menu categories"
+          aria-label={t('menuCategories')}
         >
           <button
             role="tab"
@@ -60,7 +61,7 @@ export function CategoryNav({
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            All
+            {t('allCategories')}
             {activeCategory === null && (
               <motion.div
                 layoutId="category-indicator"

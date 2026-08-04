@@ -7,6 +7,7 @@ import { usePopularProducts } from '@/hooks/useProducts';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/motion';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface RecommendedDishesProps {
   onSelectProduct: (productId: string) => void;
@@ -15,6 +16,8 @@ interface RecommendedDishesProps {
 export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
   const { data: products, isLoading } = usePopularProducts();
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations('menu');
+  const tCommon = useTranslations('common');
 
   if (isLoading || !products?.length) return null;
 
@@ -22,7 +25,7 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
     <MotionSection className="container mx-auto px-4 py-6">
       <div className="mb-3 flex items-center gap-2">
         <Sparkles className="h-4 w-4 text-accent" />
-        <h2 className="text-lg font-bold">Recommended for You</h2>
+        <h2 className="text-lg font-bold">{t('recommended')}</h2>
       </div>
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
@@ -55,7 +58,7 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
                 {product.name_ar}
               </p>
               <p className="mt-1 text-sm font-bold text-primary">
-                {product.dining_price} SAR
+                {product.dining_price} {tCommon('sar')}
               </p>
             </div>
           </motion.button>

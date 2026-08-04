@@ -5,6 +5,7 @@ import { BarChart } from '@/components/dashboard/charts/BarChart';
 import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import { DataTable } from '@/components/dashboard/DataTable';
 import type { Period } from '@/components/dashboard/DateRangePicker';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface TopProductsChartProps {
   period: Period;
@@ -12,6 +13,7 @@ interface TopProductsChartProps {
 
 export function TopProductsChart({ period }: TopProductsChartProps) {
   const { data, isLoading } = useTopProducts(period);
+  const t = useTranslations('analytics');
 
   if (isLoading) return <div className="h-[400px] bg-muted animate-pulse rounded-lg" />;
 
@@ -28,7 +30,7 @@ export function TopProductsChart({ period }: TopProductsChartProps) {
 
   return (
     <div className="space-y-4">
-      <ChartCard title="Most Viewed Products" description="Top products by views">
+      <ChartCard title={t('mostViewedProducts')} description={t('topProductsByViews')}>
         <BarChart
           data={chartData}
           xKey="name"

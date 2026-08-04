@@ -24,6 +24,7 @@ const ActivityFeed = dynamic(() => import('@/components/dashboard/ActivityFeed')
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function DashboardPage() {
   const { resolvedTheme } = useTheme();
@@ -31,6 +32,7 @@ export default function DashboardPage() {
   useRealtimeAnalytics();
   const { data: stats, isLoading: statsLoading, error: statsError, refetch: statsRefetch } = useDashboardStats();
   const { data: todaySummary, isLoading: summaryLoading } = useAnalyticsSummary('today');
+  const t = useTranslations('dashboard');
 
   if (statsError) {
     return <ErrorState error={statsError} retry={statsRefetch} />;
@@ -38,23 +40,23 @@ export default function DashboardPage() {
 
   const kpis = stats
     ? [
-        { title: "Today's Scans", value: stats.todaysScans, icon: QrCode, color: 'bg-blue-500/10 text-blue-500' },
-        { title: "Today's Visitors", value: stats.todaysVisitors, icon: Users, color: 'bg-green-500/10 text-green-500' },
-        { title: 'Active Users', value: stats.activeUsers, icon: Activity, color: 'bg-purple-500/10 text-purple-500' },
-        { title: 'Dining %', value: stats.diningPercent + '%', icon: UtensilsCrossed, color: 'bg-brand-primary/10 text-brand-primary' },
-        { title: 'Takeaway %', value: stats.takeawayPercent + '%', icon: ShoppingBag, color: 'bg-brand-secondary/10 text-brand-secondary' },
-        { title: 'Total Products', value: stats.totalProducts, icon: Menu, color: 'bg-orange-500/10 text-orange-500' },
-        { title: 'Total Categories', value: stats.totalCategories, icon: LayoutDashboard, color: 'bg-teal-500/10 text-teal-500' },
-        { title: 'Active Offers', value: stats.totalOffers, icon: Tag, color: 'bg-red-500/10 text-red-500' },
-        { title: 'Gallery Images', value: stats.totalGallery, icon: ImageIcon, color: 'bg-brand-accent/10 text-brand-accent' },
-        { title: 'Testimonials', value: stats.totalTestimonials, icon: MessageSquareQuote, color: 'bg-indigo-500/10 text-indigo-500' },
+        { title: t('todaysScans'), value: stats.todaysScans, icon: QrCode, color: 'bg-blue-500/10 text-blue-500' },
+        { title: t('todaysVisitors'), value: stats.todaysVisitors, icon: Users, color: 'bg-green-500/10 text-green-500' },
+        { title: t('activeUsers'), value: stats.activeUsers, icon: Activity, color: 'bg-purple-500/10 text-purple-500' },
+        { title: t('diningPercent'), value: stats.diningPercent + '%', icon: UtensilsCrossed, color: 'bg-brand-primary/10 text-brand-primary' },
+        { title: t('takeawayPercent'), value: stats.takeawayPercent + '%', icon: ShoppingBag, color: 'bg-brand-secondary/10 text-brand-secondary' },
+        { title: t('totalProducts'), value: stats.totalProducts, icon: Menu, color: 'bg-orange-500/10 text-orange-500' },
+        { title: t('totalCategories'), value: stats.totalCategories, icon: LayoutDashboard, color: 'bg-teal-500/10 text-teal-500' },
+        { title: t('activeOffers'), value: stats.totalOffers, icon: Tag, color: 'bg-red-500/10 text-red-500' },
+        { title: t('galleryImages'), value: stats.totalGallery, icon: ImageIcon, color: 'bg-brand-accent/10 text-brand-accent' },
+        { title: t('testimonials'), value: stats.totalTestimonials, icon: MessageSquareQuote, color: 'bg-indigo-500/10 text-indigo-500' },
       ]
     : [];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Dashboard</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
         <p className="text-muted-foreground">
           {format(new Date(), 'EEEE, MMMM d, yyyy')}
         </p>
@@ -82,7 +84,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ChartCard title="Today's Activity" description="Visitors over time today">
+          <ChartCard title={t('todayActivity')} description={t('visitorsOverTimeToday')}>
             {summaryLoading ? (
               <Skeleton className="h-[300px] w-full" />
             ) : (
@@ -102,14 +104,14 @@ export default function DashboardPage() {
       </div>
 
       <div>
-        <ChartCard title="Dining vs Takeaway" description="Today's order breakdown">
+        <ChartCard title={t('diningVsTakeaway')} description={t('todayOrderBreakdown')}>
           {summaryLoading ? (
             <Skeleton className="h-[300px] w-full" />
           ) : (
             <PieDonutChart
               data={[
-                { name: 'Dining', value: stats?.diningPercent || 0, color: isDark ? '#DAA520' : '#B8860B' },
-                { name: 'Takeaway', value: stats?.takeawayPercent || 0, color: isDark ? '#A52A2A' : '#8B0000' },
+                { name: t('dining'), value: stats?.diningPercent || 0, color: isDark ? '#DAA520' : '#B8860B' },
+                { name: t('takeaway'), value: stats?.takeawayPercent || 0, color: isDark ? '#A52A2A' : '#8B0000' },
               ]}
               donut
             />

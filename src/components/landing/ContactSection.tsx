@@ -3,9 +3,11 @@
 import { Phone, MapPin, MessageCircle, Globe, Camera, Smartphone } from 'lucide-react';
 import { MotionSection } from '@/components/shared/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export function ContactSection() {
   const { data: settings } = useRestaurantSettings();
+  const t = useTranslations('landing');
 
   return (
     <section id="contact" className="py-20 md:py-28">
@@ -13,7 +15,7 @@ export function ContactSection() {
         <MotionSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
-              Contact Us
+              {t('contactUs')}
             </h2>
             <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
           </div>
@@ -22,7 +24,7 @@ export function ContactSection() {
         <div className="grid gap-8 md:grid-cols-3">
           <MotionSection delay={0.1}>
             <div className="space-y-6 rounded-xl bg-card p-6 ring-1 ring-foreground/10">
-              <h3 className="font-heading text-xl font-semibold">Get in Touch</h3>
+              <h3 className="font-heading text-xl font-semibold">{t('getInTouch')}</h3>
               <div className="space-y-4">
                 {settings?.phone && (
                   <a
@@ -41,7 +43,7 @@ export function ContactSection() {
                     className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     <MessageCircle className="h-4 w-4 flex-shrink-0" />
-                    WhatsApp
+                    {t('whatsapp')}
                   </a>
                 )}
                 {settings?.address_en && (
@@ -60,7 +62,7 @@ export function ContactSection() {
                 <div className="text-center">
                   <MapPin className="mx-auto h-8 w-8 text-muted-foreground/50" />
                   <p className="mt-2 text-sm text-muted-foreground">
-                    {settings?.address_en || 'Riyadh, Saudi Arabia'}
+                    {settings?.address_en || t('riyadhSaudiArabia')}
                   </p>
                 </div>
               </div>
@@ -69,7 +71,7 @@ export function ContactSection() {
 
           <MotionSection delay={0.3}>
             <div className="space-y-6 rounded-xl bg-card p-6 ring-1 ring-foreground/10">
-              <h3 className="font-heading text-xl font-semibold">Follow Us</h3>
+              <h3 className="font-heading text-xl font-semibold">{t('followUs')}</h3>
               <div className="flex flex-col gap-3">
                 {settings?.instagram && (
                   <a
@@ -90,7 +92,7 @@ export function ContactSection() {
                     className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     <Globe className="h-4 w-4" />
-                    Facebook
+                    {t('facebook')}
                   </a>
                 )}
                 {settings?.tiktok && (
@@ -101,11 +103,13 @@ export function ContactSection() {
                     className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     <Smartphone className="h-4 w-4" />
-                    TikTok
+                    {t('tiktok')}
                   </a>
                 )}
                 {!settings?.instagram && !settings?.facebook && !settings?.tiktok && (
-                  <p className="text-sm text-muted-foreground">Social links coming soon.</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('socialLinks')}
+                  </p>
                 )}
               </div>
             </div>

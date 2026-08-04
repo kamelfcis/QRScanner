@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -17,6 +18,7 @@ export function InstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations('pwa');
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -78,23 +80,23 @@ export function InstallPrompt() {
               <Download className="h-5 w-5 text-brand-primary" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-foreground">Install Warda Shamya</p>
+              <p className="font-semibold text-foreground">{t('installTitle')}</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Add to your home screen for quick access to our menu and offers.
+                {t('installDescription')}
               </p>
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={handleInstall}>
-                  Install
+                  {t('install')}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={handleDismiss}>
-                  Not now
+                  {t('notNow')}
                 </Button>
               </div>
             </div>
             <button
               onClick={handleDismiss}
               className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground"
-              aria-label="Dismiss install prompt"
+              aria-label={t('dismiss')}
             >
               <X className="h-4 w-4" />
             </button>

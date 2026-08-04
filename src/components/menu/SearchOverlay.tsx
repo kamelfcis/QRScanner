@@ -9,7 +9,7 @@ import { Image } from '@/components/shared/Image';
 import { useSearchProducts } from '@/hooks/useProducts';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import { trackSearch } from '@/lib/analytics';
 import type { Product } from '@/types/database';
@@ -27,6 +27,8 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
   const { data: results } = useSearchProducts(query);
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
+  const t = useTranslations('menu');
+  const tCommon = useTranslations('common');
 
   useEffect(() => {
     if (isOpen) {
@@ -79,16 +81,16 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                   ref={inputRef}
                   value={query}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="Search menu..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-10"
-                  aria-label="Search menu items"
+                  aria-label={t('searchMenuItems')}
                 />
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                aria-label="Close search"
+                aria-label={t('closeSearch')}
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -98,7 +100,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
               {query.length < 2 && recentSearches.length > 0 && (
                 <div className="mb-6">
                   <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-                    Recent Searches
+                    {t('recentSearches')}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {recentSearches.map((term) => (
@@ -141,7 +143,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                           {getName(locale, product.name_en, product.name_ar)}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                          {product.dining_price} SAR
+                          {product.dining_price} {tCommon('sar')}
                         </p>
                       </div>
                     </button>
@@ -151,7 +153,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
 
               {query.length >= 2 && results && results.length === 0 && (
                 <div className="py-12 text-center">
-                  <p className="text-muted-foreground">No results found for &ldquo;{query}&rdquo;</p>
+                  <p className="text-muted-foreground">{t('noResultsFor', { query })}</p>
                 </div>
               )}
             </div>

@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/dialog';
 import { testimonialSchema, type TestimonialInput } from '@/types';
 import type { Testimonial } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function TestimonialsPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -61,6 +62,9 @@ export default function TestimonialsPage() {
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  const t = useTranslations('testimonials');
+  const tCommon = useTranslations('common');
+
   const { data: testimonials, isLoading, error, refetch } = useAllTestimonials();
   const createTestimonial = useCreateTestimonial();
   const updateTestimonial = useUpdateTestimonial();
@@ -86,17 +90,17 @@ export default function TestimonialsPage() {
     setDialogOpen(true);
   };
 
-  const openEditDialog = (t: Testimonial) => {
-    setEditingId(t.id);
+  const openEditDialog = (testimonial: Testimonial) => {
+    setEditingId(testimonial.id);
     setForm({
-      customer_name: t.customer_name,
-      customer_avatar_url: t.customer_avatar_url ?? '',
-      rating: t.rating,
-      review_ar: t.review_ar ?? '',
-      review_en: t.review_en ?? '',
-      is_featured: t.is_featured,
-      is_visible: t.is_visible,
-      sort_order: t.sort_order,
+      customer_name: testimonial.customer_name,
+      customer_avatar_url: testimonial.customer_avatar_url ?? '',
+      rating: testimonial.rating,
+      review_ar: testimonial.review_ar ?? '',
+      review_en: testimonial.review_en ?? '',
+      is_featured: testimonial.is_featured,
+      is_visible: testimonial.is_visible,
+      sort_order: testimonial.sort_order,
     });
     setFormErrors({});
     setDialogOpen(true);
@@ -146,10 +150,10 @@ export default function TestimonialsPage() {
     }
   };
 
-  const toggleVisibility = (t: Testimonial) => {
+  const toggleVisibility = (testimonial: Testimonial) => {
     updateTestimonial.mutate({
-      id: t.id,
-      input: { is_visible: !t.is_visible },
+      id: testimonial.id,
+      input: { is_visible: !testimonial.is_visible },
     });
   };
 
@@ -160,53 +164,53 @@ export default function TestimonialsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Testimonials</h1>
-          <p className="text-muted-foreground">Manage customer reviews and testimonials.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Testimonial
+          {t('addTestimonial')}
         </Button>
       </div>
 
       {!testimonials?.length ? (
         <EmptyState
-          title="No testimonials found"
-          description="Add customer testimonials to build trust."
-          action={{ label: 'Add Testimonial', onClick: openCreateDialog }}
+          title={t('noTestimonials')}
+          description={t('noTestimonialsDescription')}
+          action={{ label: t('addTestimonial'), onClick: openCreateDialog }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <Card key={t.id} className="overflow-hidden">
+          {testimonials.map((testimonial) => (
+            <Card key={testimonial.id} className="overflow-hidden">
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <CardTitle className="text-lg">{t.customer_name}</CardTitle>
+                    <CardTitle className="text-lg">{testimonial.customer_name}</CardTitle>
                     <div className="flex gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < t.rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
+                          className={`h-4 w-4 ${i < testimonial.rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
                         />
                       ))}
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    {t.is_featured && <Badge variant="default">Featured</Badge>}
-                    <Badge variant={t.is_visible ? 'default' : 'secondary'}>
-                      {t.is_visible ? 'Visible' : 'Hidden'}
+                    {testimonial.is_featured && <Badge variant="default">{t('featured')}</Badge>}
+                    <Badge variant={testimonial.is_visible ? 'default' : 'secondary'}>
+                      {testimonial.is_visible ? tCommon('visible') : tCommon('hidden')}
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                {t.review_en && (
-                  <p className="mb-2 text-sm text-muted-foreground line-clamp-3">{t.review_en}</p>
+                {testimonial.review_en && (
+                  <p className="mb-2 text-sm text-muted-foreground line-clamp-3">{testimonial.review_en}</p>
                 )}
-                {t.review_ar && (
+                {testimonial.review_ar && (
                   <p className="mb-3 text-sm text-muted-foreground line-clamp-2" dir="rtl">
-                    {t.review_ar}
+                    {testimonial.review_ar}
                   </p>
                 )}
                 <div className="flex items-center justify-end gap-2">
@@ -214,10 +218,10 @@ export default function TestimonialsPage() {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={() => toggleVisibility(t)}
-                    aria-label={t.is_visible ? `Hide ${t.customer_name}` : `Show ${t.customer_name}`}
+                    onClick={() => toggleVisibility(testimonial)}
+                    aria-label={testimonial.is_visible ? `Hide ${testimonial.customer_name}` : `Show ${testimonial.customer_name}`}
                   >
-                    {t.is_visible ? (
+                    {testimonial.is_visible ? (
                       <ToggleRight className="h-4 w-4 text-green-500" />
                     ) : (
                       <ToggleLeft className="h-4 w-4 text-muted-foreground" />
@@ -227,8 +231,8 @@ export default function TestimonialsPage() {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={() => openEditDialog(t)}
-                    aria-label={`Edit ${t.customer_name}`}
+                    onClick={() => openEditDialog(testimonial)}
+                    aria-label={`Edit ${testimonial.customer_name}`}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -236,8 +240,8 @@ export default function TestimonialsPage() {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-destructive"
-                    onClick={() => setDeleteId(t.id)}
-                    aria-label={`Delete ${t.customer_name}`}
+                    onClick={() => setDeleteId(testimonial.id)}
+                    aria-label={`Delete ${testimonial.customer_name}`}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -251,16 +255,16 @@ export default function TestimonialsPage() {
       <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) { setDialogOpen(false); resetForm(); } }}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingId ? 'Edit Testimonial' : 'Add Testimonial'}</DialogTitle>
+            <DialogTitle>{editingId ? t('editTestimonial') : t('addTestimonial')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="customer_name">Customer Name</Label>
+              <Label htmlFor="customer_name">{t('customerName')}</Label>
               <Input
                 id="customer_name"
                 value={form.customer_name}
                 onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
-                placeholder="Enter customer name"
+                placeholder={t('customerNamePlaceholder')}
               />
               {formErrors.customer_name && (
                 <p className="text-sm text-destructive">{formErrors.customer_name}</p>
@@ -268,7 +272,7 @@ export default function TestimonialsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="rating">Rating</Label>
+              <Label htmlFor="rating">{t('rating')}</Label>
               <Select
                 value={String(form.rating)}
                 onValueChange={(val) => setForm({ ...form, rating: Number(val) })}
@@ -279,7 +283,7 @@ export default function TestimonialsPage() {
                 <SelectContent>
                   {[1, 2, 3, 4, 5].map((v) => (
                     <SelectItem key={v} value={String(v)}>
-                      {v} Star{v > 1 ? 's' : ''}
+                      {v} {v > 1 ? tCommon('stars') : tCommon('star')}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -287,35 +291,35 @@ export default function TestimonialsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="review_en">Review (English)</Label>
+              <Label htmlFor="review_en">{t('reviewEn')}</Label>
               <Textarea
                 id="review_en"
                 value={form.review_en}
                 onChange={(e) => setForm({ ...form, review_en: e.target.value })}
-                placeholder="Enter review in English"
+                placeholder={t('reviewEnPlaceholder')}
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="review_ar">Review (Arabic)</Label>
+              <Label htmlFor="review_ar">{t('reviewAr')}</Label>
               <Textarea
                 id="review_ar"
                 value={form.review_ar}
                 onChange={(e) => setForm({ ...form, review_ar: e.target.value })}
-                placeholder="Enter review in Arabic"
+                placeholder={t('reviewArPlaceholder')}
                 dir="rtl"
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="avatar_url">Avatar URL (optional)</Label>
+              <Label htmlFor="avatar_url">{t('avatarUrl')}</Label>
               <Input
                 id="avatar_url"
                 value={form.customer_avatar_url}
                 onChange={(e) => setForm({ ...form, customer_avatar_url: e.target.value })}
-                placeholder="https://example.com/avatar.jpg"
+                placeholder={t('avatarUrlPlaceholder')}
               />
               {formErrors.customer_avatar_url && (
                 <p className="text-sm text-destructive">{formErrors.customer_avatar_url}</p>
@@ -323,7 +327,7 @@ export default function TestimonialsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="sort_order">Sort Order</Label>
+              <Label htmlFor="sort_order">{t('sortOrder')}</Label>
               <Input
                 id="sort_order"
                 type="number"
@@ -340,7 +344,7 @@ export default function TestimonialsPage() {
                   checked={form.is_featured}
                   onCheckedChange={(val) => setForm({ ...form, is_featured: val })}
                 />
-                <Label htmlFor="is_featured">Featured</Label>
+                <Label htmlFor="is_featured">{t('featured')}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch
@@ -348,16 +352,16 @@ export default function TestimonialsPage() {
                   checked={form.is_visible}
                   onCheckedChange={(val) => setForm({ ...form, is_visible: val })}
                 />
-                <Label htmlFor="is_visible">Visible</Label>
+                <Label htmlFor="is_visible">{tCommon('visible')}</Label>
               </div>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => { setDialogOpen(false); resetForm(); }}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={createTestimonial.isPending || updateTestimonial.isPending}>
-              {editingId ? 'Update' : 'Create'}
+              {editingId ? tCommon('update') : tCommon('create')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -366,9 +370,9 @@ export default function TestimonialsPage() {
       <ConfirmDialog
         open={deleteId !== null}
         onOpenChange={(open) => { if (!open) setDeleteId(null); }}
-        title="Delete Testimonial"
-        description="Are you sure you want to delete this testimonial? This action cannot be undone."
-        confirmLabel="Delete"
+        title={t('deleteTestimonial')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteTestimonial.isPending}
       />

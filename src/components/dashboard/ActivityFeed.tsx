@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bell, QrCode, FileUp, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   qr_scan: QrCode,
@@ -16,11 +17,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export function ActivityFeed() {
   const { data: notifications, isLoading } = useNotifications(10);
+  const t = useTranslations('dashboard');
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
+        <CardTitle className="text-sm font-medium">{t('recentActivity')}</CardTitle>
         <Bell className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
@@ -37,7 +39,7 @@ export function ActivityFeed() {
             ))}
           </div>
         ) : !notifications?.length ? (
-          <p className="text-sm text-muted-foreground text-center py-4">No recent activity</p>
+          <p className="text-sm text-muted-foreground text-center py-4">{t('noRecentActivity')}</p>
         ) : (
           <div className="space-y-3">
             {notifications.map((notif) => {

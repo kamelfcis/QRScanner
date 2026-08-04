@@ -20,6 +20,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Save, Upload, X } from 'lucide-react';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
 
@@ -47,6 +48,9 @@ export default function SettingsPage() {
   const updateSettings = useUpdateRestaurantSettings();
   const updateHours = useUpdateHoursSettings();
   const updateTheme = useUpdateThemeSettings();
+  const t = useTranslations('settings');
+  const tCommon = useTranslations('common');
+  const tDays = useTranslations('days');
 
   const [form, setForm] = useState<Partial<RestaurantSettings>>({});
   const [hoursForm, setHoursForm] = useState<HoursSettings>(DEFAULT_HOURS);
@@ -70,14 +74,14 @@ export default function SettingsPage() {
 
   const validate = (): string[] => {
     const errs: string[] = [];
-    if (!form.name_en?.trim()) errs.push('Restaurant name (English) is required.');
-    if (!form.name_ar?.trim()) errs.push('Restaurant name (Arabic) is required.');
+    if (!form.name_en?.trim()) errs.push(t('validation.nameEnRequired'));
+    if (!form.name_ar?.trim()) errs.push(t('validation.nameArRequired'));
     if (form.tax_rate !== undefined && (form.tax_rate < 0 || form.tax_rate > 100))
-      errs.push('Tax rate must be between 0 and 100.');
+      errs.push(t('validation.taxRateRange'));
     if (form.service_charge_rate !== undefined && (form.service_charge_rate < 0 || form.service_charge_rate > 100))
-      errs.push('Service charge must be between 0 and 100.');
+      errs.push(t('validation.serviceChargeRange'));
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      errs.push('Please enter a valid email address.');
+      errs.push(t('validation.invalidEmail'));
     return errs;
   };
 
@@ -108,7 +112,7 @@ export default function SettingsPage() {
       const result = await uploadImage({ bucket: 'logos', path, file });
       setForm((prev) => ({ ...prev, logo_url: result.url }));
     } catch (err) {
-      setErrors([err instanceof Error ? err.message : 'Failed to upload logo']);
+      setErrors([err instanceof Error ? err.message : t('uploadFailed')]);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -136,12 +140,12 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Settings</h1>
-          <p className="text-muted-foreground">Configure your restaurant details.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <Button onClick={handleSave} disabled={saving} className="self-start">
           <Save className="mr-2 h-4 w-4" />
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? t('saving') : t('saveChanges')}
         </Button>
       </div>
 
@@ -157,37 +161,37 @@ export default function SettingsPage() {
 
       <Tabs defaultValue="general">
         <TabsList className="flex-wrap">
-          <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="hero">Hero</TabsTrigger>
-          <TabsTrigger value="contact">Contact</TabsTrigger>
-          <TabsTrigger value="hours">Hours</TabsTrigger>
-          <TabsTrigger value="theme">Theme</TabsTrigger>
-          <TabsTrigger value="business">Business</TabsTrigger>
+          <TabsTrigger value="general">{t('general')}</TabsTrigger>
+          <TabsTrigger value="hero">{t('hero')}</TabsTrigger>
+          <TabsTrigger value="contact">{t('contact')}</TabsTrigger>
+          <TabsTrigger value="hours">{t('hours')}</TabsTrigger>
+          <TabsTrigger value="theme">{t('theme')}</TabsTrigger>
+          <TabsTrigger value="business">{t('business')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Restaurant Information</CardTitle>
-              <CardDescription>Basic information about your restaurant.</CardDescription>
+              <CardTitle>{t('restaurantInfo')}</CardTitle>
+              <CardDescription>{t('basicInfo')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col items-start gap-4 sm:flex-row">
                 <div className="space-y-2">
-                  <Label>Logo</Label>
+                  <Label>{t('logo')}</Label>
                   <div className="flex items-center gap-3">
                     {form.logo_url ? (
                       <div className="relative h-20 w-20 overflow-hidden rounded-lg border bg-muted">
                         <img
                           src={form.logo_url}
-                          alt="Restaurant logo"
+                          alt={t('restaurantLogo')}
                           className="h-full w-full object-contain"
                         />
                         <button
                           type="button"
                           onClick={handleLogoRemove}
                           className="absolute right-1 top-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
-                          aria-label="Remove logo"
+                          aria-label={t('removeLogo')}
                         >
                           <X className="h-3 w-3" />
                         </button>
@@ -200,7 +204,7 @@ export default function SettingsPage() {
                         className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed bg-muted/50 text-muted-foreground transition-colors hover:border-primary/50 hover:bg-muted"
                       >
                         <Upload className="mb-1 h-5 w-5" />
-                        <span className="text-xs">{uploading ? '...' : 'Upload'}</span>
+                        <span className="text-xs">{uploading ? '...' : t('uploadLogo')}</span>
                       </button>
                     )}
                     <input
@@ -217,7 +221,7 @@ export default function SettingsPage() {
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
                       >
-                        {uploading ? 'Uploading...' : 'Change Logo'}
+                        {uploading ? tCommon('uploading') : t('changeLogo')}
                       </Button>
                     )}
                   </div>
@@ -226,7 +230,7 @@ export default function SettingsPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name_en">Name (English)</Label>
+                  <Label htmlFor="name_en">{t('nameEn')}</Label>
                   <Input
                     id="name_en"
                     value={form.name_en || ''}
@@ -234,7 +238,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="name_ar">Name (Arabic)</Label>
+                  <Label htmlFor="name_ar">{t('nameAr')}</Label>
                   <Input
                     id="name_ar"
                     dir="rtl"
@@ -246,21 +250,21 @@ export default function SettingsPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="tagline">Tagline</Label>
+                  <Label htmlFor="tagline">{t('tagline')}</Label>
                   <Input
                     id="tagline"
                     value={form.tagline || ''}
-                    placeholder="e.g. A culinary journey through traditions"
+                    placeholder={t('taglinePlaceholder')}
                     onChange={(e) => setForm((prev) => ({ ...prev, tagline: e.target.value }))}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('email')}</Label>
                   <Input
                     id="email"
                     type="email"
                     value={form.email || ''}
-                    placeholder="restaurant@example.com"
+                    placeholder={t('emailPlaceholder')}
                     onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
                   />
                 </div>
@@ -272,25 +276,25 @@ export default function SettingsPage() {
         <TabsContent value="hero" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Hero Section</CardTitle>
-              <CardDescription>Customize the headline and subtitle displayed on the landing page hero section.</CardDescription>
+              <CardTitle>{t('heroSection')}</CardTitle>
+              <CardDescription>{t('heroDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="hero_headline">Headline</Label>
+                <Label htmlFor="hero_headline">{t('headline')}</Label>
                 <Input
                   id="hero_headline"
                   value={form.hero_headline || ''}
-                  placeholder="e.g. Welcome to Warda Shamya"
+                  placeholder={t('headlinePlaceholder')}
                   onChange={(e) => setForm((prev) => ({ ...prev, hero_headline: e.target.value }))}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hero_subtitle">Subtitle</Label>
+                <Label htmlFor="hero_subtitle">{t('subtitle')}</Label>
                 <Input
                   id="hero_subtitle"
                   value={form.hero_subtitle || ''}
-                  placeholder="e.g. A culinary journey through Lebanese & Syrian traditions"
+                  placeholder={t('subtitlePlaceholder')}
                   onChange={(e) => setForm((prev) => ({ ...prev, hero_subtitle: e.target.value }))}
                 />
               </div>
@@ -301,13 +305,13 @@ export default function SettingsPage() {
         <TabsContent value="contact" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
-              <CardDescription>How customers can reach you.</CardDescription>
+              <CardTitle>{t('contactInfo')}</CardTitle>
+              <CardDescription>{t('contactDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">{t('phone')}</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -316,7 +320,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
+                  <Label htmlFor="whatsapp">{t('whatsapp')}</Label>
                   <Input
                     id="whatsapp"
                     type="tel"
@@ -327,7 +331,7 @@ export default function SettingsPage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="address_en">Address (English)</Label>
+                  <Label htmlFor="address_en">{t('addressEn')}</Label>
                   <Input
                     id="address_en"
                     value={form.address_en || ''}
@@ -335,7 +339,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="address_ar">Address (Arabic)</Label>
+                  <Label htmlFor="address_ar">{t('addressAr')}</Label>
                   <Input
                     id="address_ar"
                     dir="rtl"
@@ -345,7 +349,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="google_maps_url">Google Maps URL</Label>
+                <Label htmlFor="google_maps_url">{t('googleMapsUrl')}</Label>
                 <Input
                   id="google_maps_url"
                   value={form.google_maps_url || ''}
@@ -355,7 +359,7 @@ export default function SettingsPage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="space-y-2">
-                  <Label htmlFor="instagram">Instagram</Label>
+                  <Label htmlFor="instagram">{t('instagram')}</Label>
                   <Input
                     id="instagram"
                     value={form.instagram || ''}
@@ -363,7 +367,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="facebook">Facebook</Label>
+                  <Label htmlFor="facebook">{t('facebook')}</Label>
                   <Input
                     id="facebook"
                     value={form.facebook || ''}
@@ -371,7 +375,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tiktok">TikTok</Label>
+                  <Label htmlFor="tiktok">{t('tiktok')}</Label>
                   <Input
                     id="tiktok"
                     value={form.tiktok || ''}
@@ -386,8 +390,8 @@ export default function SettingsPage() {
         <TabsContent value="hours" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Opening Hours</CardTitle>
-              <CardDescription>Set your restaurant&apos;s opening and closing times for each day.</CardDescription>
+              <CardTitle>{t('openingHours')}</CardTitle>
+              <CardDescription>{t('openingHoursDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {DAYS.map((day) => {
@@ -395,7 +399,7 @@ export default function SettingsPage() {
                 const isClosed = dayHours.closed ?? false;
                 return (
                   <div key={day} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                    <span className="w-28 capitalize font-medium text-sm">{day}</span>
+                    <span className="w-28 capitalize font-medium text-sm">{tDays(day)}</span>
                     <Switch
                       checked={!isClosed}
                       onCheckedChange={(checked) => handleHoursChange(day, 'closed', !checked)}
@@ -411,7 +415,7 @@ export default function SettingsPage() {
                           className="w-32"
                           aria-label={`${day} opening time`}
                         />
-                        <span className="text-muted-foreground">to</span>
+                        <span className="text-muted-foreground">{tCommon('to')}</span>
                         <Input
                           type="time"
                           value={dayHours.close || '23:00'}
@@ -422,7 +426,7 @@ export default function SettingsPage() {
                       </div>
                     )}
                     {isClosed && (
-                      <span className="text-sm text-muted-foreground italic">Closed</span>
+                      <span className="text-sm text-muted-foreground italic">{tCommon('disabled')}</span>
                     )}
                   </div>
                 );
@@ -434,13 +438,13 @@ export default function SettingsPage() {
         <TabsContent value="theme" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Theme Colors</CardTitle>
-              <CardDescription>Customize the look and feel of your restaurant website.</CardDescription>
+              <CardTitle>{t('themeColors')}</CardTitle>
+              <CardDescription>{t('themeDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="primary_color">Primary Color</Label>
+                  <Label htmlFor="primary_color">{t('primaryColor')}</Label>
                   <div className="flex items-center gap-2">
                     <input
                       id="primary_color"
@@ -457,7 +461,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="secondary_color">Secondary Color</Label>
+                  <Label htmlFor="secondary_color">{t('secondaryColor')}</Label>
                   <div className="flex items-center gap-2">
                     <input
                       id="secondary_color"
@@ -474,7 +478,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="accent_color">Accent Color</Label>
+                  <Label htmlFor="accent_color">{t('accentColor')}</Label>
                   <div className="flex items-center gap-2">
                     <input
                       id="accent_color"
@@ -491,7 +495,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="background_color">Background Color</Label>
+                  <Label htmlFor="background_color">{t('backgroundColor')}</Label>
                   <div className="flex items-center gap-2">
                     <input
                       id="background_color"
@@ -515,13 +519,13 @@ export default function SettingsPage() {
         <TabsContent value="business" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Business Settings</CardTitle>
-              <CardDescription>Tax rates and currency settings.</CardDescription>
+              <CardTitle>{t('businessSettings')}</CardTitle>
+              <CardDescription>{t('taxAndCurrency')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="space-y-2">
-                  <Label htmlFor="currency">Currency</Label>
+                  <Label htmlFor="currency">{t('currency')}</Label>
                   <Input
                     id="currency"
                     value={form.currency || 'SAR'}
@@ -529,7 +533,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tax_rate">Tax Rate (%)</Label>
+                  <Label htmlFor="tax_rate">{t('taxRate')}</Label>
                   <Input
                     id="tax_rate"
                     type="number"
@@ -545,7 +549,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="service_charge">Service Charge (%)</Label>
+                  <Label htmlFor="service_charge">{t('serviceCharge')}</Label>
                   <Input
                     id="service_charge"
                     type="number"

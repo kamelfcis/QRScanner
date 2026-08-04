@@ -27,6 +27,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import type { Offer, OfferInput } from '@/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const defaultFormData: OfferInput = {
   title_en: '',
@@ -48,6 +49,8 @@ export default function OffersPage() {
   const [formData, setFormData] = useState<OfferInput>(defaultFormData);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('offers');
+  const tCommon = useTranslations('common');
 
   const { data: offers, isLoading, error, refetch } = useAllOffers();
   const createOffer = useCreateOffer();
@@ -141,20 +144,20 @@ export default function OffersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Offers</h1>
-          <p className="text-muted-foreground">Manage promotional offers and discounts.</p>
+          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('searchPlaceholder')}</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Offer
+          {t('addOffer')}
         </Button>
       </div>
 
       {!offers?.length ? (
         <EmptyState
-          title="No offers found"
-          description="Create promotional offers to attract customers."
-          action={{ label: 'Add Offer', onClick: openCreateDialog }}
+          title={t('noOffers')}
+          description={t('searchPlaceholder')}
+          action={{ label: t('addOffer'), onClick: openCreateDialog }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -180,7 +183,7 @@ export default function OffersPage() {
                     </p>
                   </div>
                   <Badge variant={offer.is_active ? 'default' : 'secondary'}>
-                    {offer.is_active ? 'Active' : 'Inactive'}
+                    {offer.is_active ? tCommon('active') : tCommon('inactive')}
                   </Badge>
                 </div>
               </CardHeader>
@@ -192,7 +195,7 @@ export default function OffersPage() {
                 )}
                 <div className="mb-4 flex items-center gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground">Discount</p>
+                    <p className="text-xs text-muted-foreground">{tCommon('discount')}</p>
                     <p className="font-semibold text-primary">
                       {offer.discount_type === 'percentage'
                         ? `${offer.discount_value}%`
@@ -201,13 +204,13 @@ export default function OffersPage() {
                   </div>
                   {offer.start_date && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Valid from</p>
+                      <p className="text-xs text-muted-foreground">{t('validFrom')}</p>
                       <p className="text-sm">{format(new Date(offer.start_date), 'MMM d, yyyy')}</p>
                     </div>
                   )}
                   {offer.end_date && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Valid until</p>
+                      <p className="text-xs text-muted-foreground">{t('validUntil')}</p>
                       <p className="text-sm">{format(new Date(offer.end_date), 'MMM d, yyyy')}</p>
                     </div>
                   )}
@@ -233,7 +236,7 @@ export default function OffersPage() {
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => openEditDialog(offer)}
-                    aria-label={`Edit ${offer.title_en}`}
+                    aria-label={`${tCommon('edit')} ${offer.title_en}`}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -242,7 +245,7 @@ export default function OffersPage() {
                     size="icon"
                     className="h-8 w-8 text-destructive"
                     onClick={() => setDeleteId(offer.id)}
-                    aria-label={`Delete ${offer.title_en}`}
+                    aria-label={`${tCommon('delete')} ${offer.title_en}`}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -253,18 +256,17 @@ export default function OffersPage() {
         </div>
       )}
 
-      {/* Create / Edit Offer Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingOffer ? 'Edit Offer' : 'Create Offer'}</DialogTitle>
+            <DialogTitle>{editingOffer ? t('editOffer') : t('addOffer')}</DialogTitle>
             <DialogDescription>
-              {editingOffer ? 'Update the offer details.' : 'Add a new promotional offer.'}
+              {editingOffer ? t('editOffer') : t('addOffer')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
             <div className="space-y-2">
-              <Label htmlFor="title_en">Title (English) *</Label>
+              <Label htmlFor="title_en">{t('titleEn')} *</Label>
               <Input
                 id="title_en"
                 value={formData.title_en}
@@ -272,7 +274,7 @@ export default function OffersPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="title_ar">Title (Arabic) *</Label>
+              <Label htmlFor="title_ar">{t('titleAr')} *</Label>
               <Input
                 id="title_ar"
                 dir="rtl"
@@ -281,7 +283,7 @@ export default function OffersPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description_en">Description (English)</Label>
+              <Label htmlFor="description_en">{t('descriptionEn')}</Label>
               <Textarea
                 id="description_en"
                 value={formData.description_en || ''}
@@ -289,7 +291,7 @@ export default function OffersPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description_ar">Description (Arabic)</Label>
+              <Label htmlFor="description_ar">{t('descriptionAr')}</Label>
               <Textarea
                 id="description_ar"
                 dir="rtl"
@@ -307,7 +309,7 @@ export default function OffersPage() {
                   disabled={uploading}
                 >
                   <Upload className="mr-2 h-4 w-4" />
-                  {uploading ? 'Uploading...' : 'Upload Image'}
+                  {uploading ? tCommon('uploading') : t('addImage')}
                 </Button>
                 <input
                   ref={fileInputRef}
@@ -317,7 +319,7 @@ export default function OffersPage() {
                   onChange={handleImageUpload}
                 />
                 {formData.image_url && (
-                  <span className="text-xs text-muted-foreground">Image uploaded</span>
+                  <span className="text-xs text-muted-foreground">{tCommon('upload')}</span>
                 )}
               </div>
             </div>
@@ -344,7 +346,7 @@ export default function OffersPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="discount_value">Discount Value *</Label>
+                <Label htmlFor="discount_value">{t('discountPercent')} *</Label>
                 <Input
                   id="discount_value"
                   type="number"
@@ -359,7 +361,7 @@ export default function OffersPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="start_date">Start Date</Label>
+                <Label htmlFor="start_date">{t('validFrom')}</Label>
                 <Input
                   id="start_date"
                   type="date"
@@ -368,7 +370,7 @@ export default function OffersPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="end_date">End Date</Label>
+                <Label htmlFor="end_date">{t('validUntil')}</Label>
                 <Input
                   id="end_date"
                   type="date"
@@ -378,7 +380,7 @@ export default function OffersPage() {
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="is_active">Active</Label>
+              <Label htmlFor="is_active">{t('active')}</Label>
               <Switch
                 id="is_active"
                 checked={formData.is_active}
@@ -388,13 +390,13 @@ export default function OffersPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={createOffer.isPending || updateOffer.isPending || uploading}
             >
-              {editingOffer ? 'Save Changes' : 'Create Offer'}
+              {editingOffer ? tCommon('saveChanges') : t('addOffer')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -403,9 +405,9 @@ export default function OffersPage() {
       <ConfirmDialog
         open={deleteId !== null}
         onOpenChange={(open) => { if (!open) setDeleteId(null); }}
-        title="Delete Offer"
-        description="Are you sure you want to delete this offer? This action cannot be undone."
-        confirmLabel="Delete"
+        title={t('deleteOffer')}
+        description={t('confirmDelete')}
+        confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteOffer.isPending}
       />

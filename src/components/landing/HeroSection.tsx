@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -28,6 +29,7 @@ export function HeroSection() {
   const { data: settings } = useRestaurantSettings();
   const { data: gallery } = useVisibleGallery();
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations('landing');
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -36,12 +38,12 @@ export function HeroSection() {
     gallery?.filter((item) => item.is_featured && item.image_url) || [];
   const hasCarousel = featuredImages.length > 0;
 
-  const name = settings?.name_en || 'Warda Shamya';
+  const name = settings?.name_en || t('heroTitle');
   const headline = settings?.hero_headline || name;
   const subtitle =
     settings?.hero_subtitle ||
     settings?.tagline ||
-    'A culinary journey through Lebanese & Syrian traditions';
+    t('heroSubtitle');
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -158,7 +160,7 @@ export function HeroSection() {
               size="lg"
               className="bg-brand-accent text-black hover:bg-brand-accent/90 px-8"
             >
-              View Menu
+              {t('viewMenu')}
             </Button>
             <Button
               render={<Link href="#story" />}
@@ -166,7 +168,7 @@ export function HeroSection() {
               variant="outline"
               className="border-brand-accent/50 text-brand-accent hover:bg-brand-accent/10 px-8"
             >
-              Our Story
+              {t('ourStory')}
             </Button>
           </motion.div>
         </motion.div>
@@ -186,7 +188,7 @@ export function HeroSection() {
     <section
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
       role="region"
-      aria-label="Hero carousel"
+      aria-label={t('heroCarousel')}
     >
       <div className="absolute inset-0">
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -209,7 +211,7 @@ export function HeroSection() {
               alt={
                 featuredImages[currentIndex].caption_en ||
                 featuredImages[currentIndex].caption_ar ||
-                `Slide ${currentIndex + 1}`
+                t('slideNumber', { number: currentIndex + 1 })
               }
               loading="lazy"
               className="h-full w-full object-cover"
@@ -264,7 +266,7 @@ export function HeroSection() {
             size="lg"
             className="bg-brand-accent text-black hover:bg-brand-accent/90 px-8"
           >
-            View Menu
+            {t('viewMenu')}
           </Button>
           <Button
             render={<Link href="#story" />}
@@ -272,7 +274,7 @@ export function HeroSection() {
             variant="outline"
             className="border-brand-accent/50 text-brand-accent hover:bg-brand-accent/10 px-8"
           >
-            Our Story
+            {t('ourStory')}
           </Button>
         </motion.div>
       </motion.div>
@@ -282,14 +284,14 @@ export function HeroSection() {
           <button
             onClick={goPrev}
             className="absolute left-4 z-20 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60 md:left-6"
-            aria-label="Previous slide"
+            aria-label={t('previousSlide')}
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             onClick={goNext}
             className="absolute right-4 z-20 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60 md:right-6"
-            aria-label="Next slide"
+            aria-label={t('nextSlide')}
           >
             <ChevronRight className="h-6 w-6" />
           </button>
@@ -297,14 +299,14 @@ export function HeroSection() {
           <div
             className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2"
             role="tablist"
-            aria-label="Carousel slides"
+            aria-label={t('carouselSlides')}
           >
             {featuredImages.map((_, i) => (
               <button
                 key={i}
                 role="tab"
                 aria-selected={i === currentIndex}
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={t('goToSlide', { number: i + 1 })}
                 onClick={() => goToSlide(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   i === currentIndex ? 'w-8 bg-brand-accent' : 'w-2 bg-white/50 hover:bg-white/80'
