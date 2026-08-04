@@ -565,5 +565,17 @@
     "maxLength": "Must be at most {max} characters",
     "mustBeNumber": "Must be a number",
     "mustBePositive": "Must be a positive number"
+  },
+  "welcome": {
+    "title": "Welcome to Warda Shamya",
+    "subtitle": "How would you like to enjoy your meal?",
+    "dineIn": "Dine In",
+    "dineInDesc": "Relax and enjoy your meal in our elegant dining area",
+    "takeaway": "Takeaway",
+    "takeawayDesc": "Quick and convenient — take your favorites to go",
+    "tableLabel": "Table",
+    "continue": "Continue to Menu",
+    "orChangeLater": "You can change this anytime from the menu",
+    "tagline": "A culinary journey through Lebanese & Syrian traditions"
   }
 }

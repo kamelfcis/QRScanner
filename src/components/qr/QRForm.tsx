@@ -40,7 +40,7 @@ function getSiteUrl(): string {
 
 function generateMenuUrl(tableNumber?: number | null): string {
   const base = getSiteUrl();
-  const url = `${base}/menu`;
+  const url = `${base}/welcome`;
   if (tableNumber != null) {
     return `${url}?table=${tableNumber}`;
   }

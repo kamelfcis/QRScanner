@@ -34,13 +34,22 @@ export default function PublicMenuPage() {
 function MenuContent() {
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
+  const modeParam = searchParams.get('mode') as 'dining' | 'takeaway' | null;
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>('dining');
   const [searchOpen, setSearchOpen] = useState(false);
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
   const { locale } = useI18n();
+
+  const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
+    if (modeParam === 'dining' || modeParam === 'takeaway') return modeParam;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('warda-dining-mode');
+      if (saved === 'dining' || saved === 'takeaway') return saved;
+    }
+    return 'dining';
+  });
 
   const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
   const { addRecent } = useRecentlyViewed();
@@ -58,10 +67,15 @@ function MenuContent() {
 
   useEffect(() => {
     if (tableParam) {
-      sessionStorage.setItem('warda-table', tableParam);
+      localStorage.setItem('warda-table', tableParam);
       trackQRScan(parseInt(tableParam, 10));
     }
   }, [tableParam]);
+
+  const handleDiningModeChange = useCallback((mode: 'dining' | 'takeaway') => {
+    setDiningMode(mode);
+    localStorage.setItem('warda-dining-mode', mode);
+  }, []);
 
   const handleProductClick = useCallback((product: Product) => {
     trackProductView(product.id, product.name_en, product.name_ar, product.category_id, undefined);
@@ -110,7 +124,7 @@ function MenuContent() {
       <MenuHeader
         tableParam={tableParam}
         diningMode={diningMode}
-        onDiningModeChange={setDiningMode}
+        onDiningModeChange={handleDiningModeChange}
         onSearchOpen={() => setSearchOpen(true)}
         favoriteCount={favoriteCount}
       />
