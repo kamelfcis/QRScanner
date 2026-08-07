@@ -2,14 +2,32 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
-import { format, subDays, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
-import type { AnalyticsSummary, TopItem, SearchTerm, PeakHour, TableUsage } from '@/types/database';
-
-const supabase = createClient();
+import {
+  format,
+  subDays,
+  startOfDay,
+  endOfDay,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+} from 'date-fns';
+import type {
+  AnalyticsSummary,
+  HourlyVisitors,
+  RecentActivityItem,
+  TopItem,
+  SearchTerm,
+  PeakHour,
+  TableUsage,
+} from '@/types/database';
+import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 
 export const analyticsKeys = {
   all: ['analytics'] as const,
   summary: (period: string) => [...analyticsKeys.all, 'summary', period] as const,
+  hourlyToday: () => [...analyticsKeys.all, 'hourly-today'] as const,
+  recentActivity: (limit: number) => [...analyticsKeys.all, 'recent-activity', limit] as const,
   topProducts: (period: string) => [...analyticsKeys.all, 'top-products', period] as const,
   topCategories: (period: string) => [...analyticsKeys.all, 'top-categories', period] as const,
   searchTerms: (period: string) => [...analyticsKeys.all, 'search-terms', period] as const,
@@ -19,6 +37,38 @@ export const analyticsKeys = {
   diningTakeaway: (period: string) => [...analyticsKeys.all, 'dining-takeaway', period] as const,
   devices: (period: string) => [...analyticsKeys.all, 'devices', period] as const,
 };
+
+function formatActivityTitle(eventType: string, eventData: Record<string, unknown> | null): string {
+  const ed = eventData ?? {};
+  switch (eventType) {
+    case 'qr_scan':
+      return ed.table_number ? `QR scan at table ${ed.table_number}` : 'QR code scanned';
+    case 'page_view':
+      return ed.page ? `Page viewed: ${ed.page}` : 'Page viewed';
+    case 'product_view':
+      return ed.product_name ? `Product viewed: ${ed.product_name}` : 'Product viewed';
+    case 'category_view':
+      return ed.category_name ? `Category viewed: ${ed.category_name}` : 'Category viewed';
+    case 'dining_order':
+      return 'Dining order';
+    case 'takeaway_order':
+      return 'Takeaway order';
+    case 'order_whatsapp':
+      return 'WhatsApp order sent';
+    case 'add_to_cart':
+      return 'Item added to cart';
+    case 'checkout_start':
+      return 'Checkout started';
+    case 'search':
+      return ed.search_term ? `Search: "${ed.search_term}"` : 'Menu search';
+    case 'offer_click':
+      return ed.offer_title ? `Offer clicked: ${ed.offer_title}` : 'Offer clicked';
+    case 'favorite_toggle':
+      return 'Favorite updated';
+    default:
+      return eventType.replace(/_/g, ' ');
+  }
+}
 
 function getDateRange(period: string) {
   const now = new Date();
@@ -37,9 +87,13 @@ function getDateRange(period: string) {
 }
 
 export function useAnalyticsSummary(period: string = 'week') {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.summary(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -69,10 +123,86 @@ export function useAnalyticsSummary(period: string = 'week') {
   });
 }
 
+export function useTodayHourlyVisitors() {
+  const enabled = useAdminQueryEnabled();
+
+  return useQuery({
+    queryKey: analyticsKeys.hourlyToday(),
+    enabled,
+    queryFn: async () => {
+      const supabase = createClient();
+      const start = startOfDay(new Date());
+      const end = endOfDay(new Date());
+
+      const { data, error } = await supabase
+        .from('analytics')
+        .select('created_at')
+        .eq('event_type', 'page_view')
+        .gte('created_at', start.toISOString())
+        .lte('created_at', end.toISOString())
+        .order('created_at');
+
+      if (error) throw error;
+
+      const hours: HourlyVisitors[] = Array.from({ length: 24 }, (_, hour) => {
+        const slot = new Date(start);
+        slot.setHours(hour, 0, 0, 0);
+        return {
+          hour,
+          time: format(slot, 'ha'),
+          visitors: 0,
+        };
+      });
+
+      (data || []).forEach((item) => {
+        const hour = new Date(item.created_at).getHours();
+        hours[hour].visitors++;
+      });
+
+      return hours;
+    },
+    staleTime: 30 * 1000,
+  });
+}
+
+export function useRecentActivity(limit: number = 10) {
+  const enabled = useAdminQueryEnabled();
+
+  return useQuery({
+    queryKey: analyticsKeys.recentActivity(limit),
+    enabled,
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('analytics')
+        .select('id, event_type, event_data, created_at')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+
+      return (data || []).map((row): RecentActivityItem => ({
+        id: row.id,
+        type: row.event_type,
+        title: formatActivityTitle(
+          row.event_type,
+          row.event_data as Record<string, unknown> | null
+        ),
+        created_at: row.created_at,
+      }));
+    },
+    staleTime: 15 * 1000,
+  });
+}
+
 export function useTopProducts(period: string = 'month', limit: number = 10) {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.topProducts(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -111,9 +241,13 @@ export function useTopProducts(period: string = 'month', limit: number = 10) {
 }
 
 export function useTopCategories(period: string = 'month', limit: number = 10) {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.topCategories(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -152,9 +286,13 @@ export function useTopCategories(period: string = 'month', limit: number = 10) {
 }
 
 export function useSearchTerms(period: string = 'month', limit: number = 20) {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.searchTerms(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('search_analytics')
@@ -190,9 +328,13 @@ export function useSearchTerms(period: string = 'month', limit: number = 20) {
 }
 
 export function usePeakHours(period: string = 'month') {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.peakHours(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -215,9 +357,13 @@ export function usePeakHours(period: string = 'month') {
 }
 
 export function usePeakDays(period: string = 'month') {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.peakDays(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -227,7 +373,15 @@ export function usePeakDays(period: string = 'month') {
 
       if (error) throw error;
 
-      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayNames = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
       const dayCounts = dayNames.map((name, i) => ({ day: name, dayIndex: i, count: 0 }));
       (data || []).forEach((item) => {
         const dayIndex = new Date(item.created_at).getDay();
@@ -241,9 +395,13 @@ export function usePeakDays(period: string = 'month') {
 }
 
 export function useTableUsage() {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.tableUsage(),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from('analytics')
         .select('event_data, created_at')
@@ -276,9 +434,13 @@ export function useTableUsage() {
 }
 
 export function useDiningTakeaway(period: string = 'month') {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.diningTakeaway(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')
@@ -303,9 +465,13 @@ export function useDiningTakeaway(period: string = 'month') {
 }
 
 export function useDeviceBreakdown(period: string = 'month') {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: analyticsKeys.devices(period),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { start, end } = getDateRange(period);
       const { data, error } = await supabase
         .from('analytics')

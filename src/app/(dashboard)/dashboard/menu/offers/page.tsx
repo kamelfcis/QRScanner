@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useAllOffers, useCreateOffer, useUpdateOffer, useDeleteOffer, useToggleOfferActive } from '@/hooks/useOffers';
+import {
+  useAllOffers,
+  useCreateOffer,
+  useUpdateOffer,
+  useDeleteOffer,
+  useToggleOfferActive,
+} from '@/hooks/useOffers';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,6 +34,8 @@ import { toast } from 'sonner';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import type { Offer, OfferInput } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 
 const defaultFormData: OfferInput = {
   title_en: '',
@@ -53,6 +61,8 @@ export default function OffersPage() {
   const tCommon = useTranslations('common');
 
   const { data: offers, isLoading, error, refetch } = useAllOffers();
+  const { data: settings } = useRestaurantSettings();
+  const currency = getRestaurantCurrency(settings?.currency);
   const createOffer = useCreateOffer();
   const updateOffer = useUpdateOffer();
   const deleteOffer = useDeleteOffer();
@@ -178,7 +188,7 @@ export default function OffersPage() {
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
                     <CardTitle className="text-lg">{offer.title_en}</CardTitle>
-                    <p className="text-sm text-muted-foreground" dir="rtl">
+                    <p className="text-muted-foreground text-sm" dir="rtl">
                       {offer.title_ar}
                     </p>
                   </div>
@@ -189,28 +199,28 @@ export default function OffersPage() {
               </CardHeader>
               <CardContent>
                 {offer.description_en && (
-                  <p className="mb-3 text-sm text-muted-foreground line-clamp-2">
+                  <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">
                     {offer.description_en}
                   </p>
                 )}
                 <div className="mb-4 flex items-center gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground">{tCommon('discount')}</p>
-                    <p className="font-semibold text-primary">
+                    <p className="text-muted-foreground text-xs">{tCommon('discount')}</p>
+                    <p className="text-primary font-semibold">
                       {offer.discount_type === 'percentage'
                         ? `${offer.discount_value}%`
-                        : `${offer.discount_value} SAR`}
+                        : formatCurrencyAmount(offer.discount_value, currency, { plain: true })}
                     </p>
                   </div>
                   {offer.start_date && (
                     <div>
-                      <p className="text-xs text-muted-foreground">{t('validFrom')}</p>
+                      <p className="text-muted-foreground text-xs">{t('validFrom')}</p>
                       <p className="text-sm">{format(new Date(offer.start_date), 'MMM d, yyyy')}</p>
                     </div>
                   )}
                   {offer.end_date && (
                     <div>
-                      <p className="text-xs text-muted-foreground">{t('validUntil')}</p>
+                      <p className="text-muted-foreground text-xs">{t('validUntil')}</p>
                       <p className="text-sm">{format(new Date(offer.end_date), 'MMM d, yyyy')}</p>
                     </div>
                   )}
@@ -223,12 +233,16 @@ export default function OffersPage() {
                     onClick={() =>
                       toggleOffer.mutate({ id: offer.id, is_active: !offer.is_active })
                     }
-                    aria-label={offer.is_active ? `Deactivate ${offer.title_en}` : `Activate ${offer.title_en}`}
+                    aria-label={
+                      offer.is_active
+                        ? `Deactivate ${offer.title_en}`
+                        : `Activate ${offer.title_en}`
+                    }
                   >
                     {offer.is_active ? (
                       <ToggleRight className="h-4 w-4 text-green-500" />
                     ) : (
-                      <ToggleLeft className="h-4 w-4 text-muted-foreground" />
+                      <ToggleLeft className="text-muted-foreground h-4 w-4" />
                     )}
                   </Button>
                   <Button
@@ -243,7 +257,7 @@ export default function OffersPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-destructive"
+                    className="text-destructive h-8 w-8"
                     onClick={() => setDeleteId(offer.id)}
                     aria-label={`${tCommon('delete')} ${offer.title_en}`}
                   >
@@ -260,11 +274,9 @@ export default function OffersPage() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{editingOffer ? t('editOffer') : t('addOffer')}</DialogTitle>
-            <DialogDescription>
-              {editingOffer ? t('editOffer') : t('addOffer')}
-            </DialogDescription>
+            <DialogDescription>{editingOffer ? t('editOffer') : t('addOffer')}</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+          <div className="max-h-[60vh] space-y-4 overflow-y-auto pr-2">
             <div className="space-y-2">
               <Label htmlFor="title_en">{t('titleEn')} *</Label>
               <Input
@@ -287,7 +299,9 @@ export default function OffersPage() {
               <Textarea
                 id="description_en"
                 value={formData.description_en || ''}
-                onChange={(e) => setFormData((prev) => ({ ...prev, description_en: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, description_en: e.target.value }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -296,7 +310,9 @@ export default function OffersPage() {
                 id="description_ar"
                 dir="rtl"
                 value={formData.description_ar || ''}
-                onChange={(e) => setFormData((prev) => ({ ...prev, description_ar: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, description_ar: e.target.value }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -319,7 +335,7 @@ export default function OffersPage() {
                   onChange={handleImageUpload}
                 />
                 {formData.image_url && (
-                  <span className="text-xs text-muted-foreground">{tCommon('upload')}</span>
+                  <span className="text-muted-foreground text-xs">{tCommon('upload')}</span>
                 )}
               </div>
             </div>
@@ -331,7 +347,9 @@ export default function OffersPage() {
                     type="button"
                     variant={formData.discount_type === 'percentage' ? 'default' : 'outline'}
                     size="sm"
-                    onClick={() => setFormData((prev) => ({ ...prev, discount_type: 'percentage' }))}
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, discount_type: 'percentage' }))
+                    }
                   >
                     Percentage
                   </Button>
@@ -341,7 +359,7 @@ export default function OffersPage() {
                     size="sm"
                     onClick={() => setFormData((prev) => ({ ...prev, discount_type: 'fixed' }))}
                   >
-                    Fixed (SAR)
+                    Fixed ({currency})
                   </Button>
                 </div>
               </div>
@@ -354,7 +372,10 @@ export default function OffersPage() {
                   max={formData.discount_type === 'percentage' ? 100 : undefined}
                   value={formData.discount_value}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, discount_value: parseFloat(e.target.value) || 0 }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      discount_value: parseFloat(e.target.value) || 0,
+                    }))
                   }
                 />
               </div>
@@ -366,7 +387,9 @@ export default function OffersPage() {
                   id="start_date"
                   type="date"
                   value={formData.start_date || ''}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, start_date: e.target.value || null }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, start_date: e.target.value || null }))
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -375,7 +398,9 @@ export default function OffersPage() {
                   id="end_date"
                   type="date"
                   value={formData.end_date || ''}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, end_date: e.target.value || null }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, end_date: e.target.value || null }))
+                  }
                 />
               </div>
             </div>
@@ -384,7 +409,9 @@ export default function OffersPage() {
               <Switch
                 id="is_active"
                 checked={formData.is_active}
-                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, is_active: checked }))}
+                onCheckedChange={(checked) =>
+                  setFormData((prev) => ({ ...prev, is_active: checked }))
+                }
               />
             </div>
           </div>
@@ -404,7 +431,9 @@ export default function OffersPage() {
 
       <ConfirmDialog
         open={deleteId !== null}
-        onOpenChange={(open) => { if (!open) setDeleteId(null); }}
+        onOpenChange={(open) => {
+          if (!open) setDeleteId(null);
+        }}
         title={t('deleteOffer')}
         description={t('confirmDelete')}
         confirmLabel={tCommon('delete')}

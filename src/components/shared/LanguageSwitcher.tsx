@@ -12,7 +12,11 @@ interface LanguageSwitcherProps {
   size?: 'default' | 'sm' | 'icon' | 'icon-sm';
 }
 
-export function LanguageSwitcher({ className, variant = 'ghost', size = 'sm' }: LanguageSwitcherProps) {
+export function LanguageSwitcher({
+  className,
+  variant = 'ghost',
+  size = 'sm',
+}: LanguageSwitcherProps) {
   const { locale, setLocale } = useI18n();
 
   const toggleLocale = () => {
@@ -27,7 +31,7 @@ export function LanguageSwitcher({ className, variant = 'ghost', size = 'sm' }: 
       variant={variant}
       size={size}
       onClick={toggleLocale}
-      className={cn('gap-1.5', className)}
+      className={cn('size-9 shrink-0 gap-0 px-0 sm:size-auto sm:h-7 sm:gap-2 sm:px-2.5', className)}
       aria-label={`${locale === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'} (current: ${localeNames[locale]})`}
     >
       <Globe className="h-4 w-4" />

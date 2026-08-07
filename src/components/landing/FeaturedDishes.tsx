@@ -1,91 +1,162 @@
 'use client';
 
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MotionSection, MotionCard } from '@/components/shared/motion';
 import { Image } from '@/components/shared/Image';
 import { usePopularProducts } from '@/hooks/useProducts';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { cn, getName } from '@/lib/utils';
+import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import type { Product } from '@/types/database';
+
+function preferImageUrl(products: Product[]): Product[] {
+  const withImage: Product[] = [];
+  const withoutImage: Product[] = [];
+  for (const product of products) {
+    if (product.image_url) withImage.push(product);
+    else withoutImage.push(product);
+  }
+  return [...withImage, ...withoutImage];
+}
+
+function pickBadge(product: Product): 'bestseller' | 'popular' | 'new' | null {
+  if (product.is_bestseller) return 'bestseller';
+  if (product.is_popular) return 'popular';
+  if (product.is_new) return 'new';
+  return null;
+}
 
 export function FeaturedDishes() {
   const { data: products, isLoading } = usePopularProducts();
   const t = useTranslations('landing');
   const menuT = useTranslations('menu');
+  const { locale } = useI18n();
+  const { data: settings } = useRestaurantSettings();
+  const currency = getRestaurantCurrency(settings?.currency);
+  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+
+  const sortedProducts = useMemo(() => (products ? preferImageUrl(products) : []), [products]);
+
+  const badgeLabel = (badge: 'bestseller' | 'popular' | 'new') => {
+    if (badge === 'bestseller') return menuT('bestseller');
+    if (badge === 'new') return menuT('new');
+    return menuT('popular');
+  };
 
   return (
-    <section className="py-20 md:py-28">
-      <div className="container mx-auto px-4">
+    <section className="relative overflow-hidden py-20 md:py-28">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,183,0,0.08),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.04),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(255,183,0,0.1),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.02),transparent_50%)]"
+      />
+
+      <div className="container relative mx-auto px-4">
         <MotionSection>
-          <div className="mb-12 text-center">
-            <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
+          <div className="mb-10 text-center md:mb-12">
+            <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
               {t('signatureDishes')}
             </h2>
-            <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
+            <div className="bg-brand-accent mx-auto mt-4 h-1 w-20 rounded" />
+            <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-sm md:text-base">
+              {t('signatureDishesSubtitle')}
+            </p>
           </div>
         </MotionSection>
 
         {isLoading ? (
-          <div className="flex gap-6 overflow-hidden">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="min-w-[280px] flex-shrink-0">
-                <Skeleton className="aspect-[4/3] rounded-xl" />
-                <Skeleton className="mt-3 h-5 w-3/4" />
-                <Skeleton className="mt-2 h-4 w-1/4" />
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="border-border/50 bg-card/80 overflow-hidden rounded-2xl border shadow-sm"
+              >
+                <Skeleton className="aspect-square w-full rounded-none" />
+                <div className="space-y-2 p-3">
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/3" />
+                </div>
               </div>
             ))}
           </div>
-        ) : !products || products.length === 0 ? (
-          <p className="text-center text-muted-foreground">{t('noFeaturedDishes')}</p>
+        ) : sortedProducts.length === 0 ? (
+          <p className="text-muted-foreground text-center">{t('noFeaturedDishes')}</p>
         ) : (
-          <div className="relative">
-            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
-              {products.map((product, index) => (
-                <MotionCard
-                  key={product.id}
-                  delay={index * 0.1}
-                  className="min-w-[280px] flex-shrink-0 snap-start"
-                >
-                  <div className="group overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
-                    <div className="relative aspect-[4/3] overflow-hidden">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+            {sortedProducts.map((product, index) => {
+              const name = getName(locale, product.name_en, product.name_ar);
+              const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
+              const badge = pickBadge(product);
+
+              return (
+                <MotionCard key={product.id} delay={index * 0.05}>
+                  <Link
+                    href="/welcome"
+                    className="border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors"
+                  >
+                    <div className="relative aspect-square overflow-hidden">
                       {product.image_url ? (
                         <Image
                           src={product.image_url}
-                          alt={product.name_en}
+                          alt={name}
                           fill
-                          sizes="280px"
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                          containerClassName="absolute inset-0 h-full w-full"
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center bg-muted">
-                          <span className="text-3xl font-bold text-muted-foreground/30 font-heading">
-                            {product.name_en.charAt(0)}
+                        <div className="bg-muted flex h-full items-center justify-center">
+                          <span className="font-heading text-muted-foreground/30 text-3xl font-bold">
+                            {name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <div className="absolute left-3 top-3">
-                        <Badge className="bg-brand-accent text-black">{menuT('popular')}</Badge>
-                      </div>
+                      {badge && (
+                        <div className="absolute start-2 top-2 z-[1]">
+                          <Badge className="bg-brand-accent/90 px-1.5 py-0.5 text-[10px] text-black sm:text-xs">
+                            {badgeLabel(badge)}
+                          </Badge>
+                        </div>
+                      )}
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-heading text-lg font-semibold">{product.name_en}</h3>
-                      <p className="mt-1 text-sm font-medium text-primary">
-                        {product.dining_price.toFixed(2)}
+
+                    <div className="space-y-1 p-3">
+                      <h3 className="font-heading text-foreground line-clamp-2 text-sm font-bold md:text-base">
+                        {name}
+                      </h3>
+                      {secondaryName ? (
+                        <p
+                          className="text-muted-foreground hidden truncate text-xs sm:block"
+                          dir={locale === 'ar' ? 'ltr' : 'rtl'}
+                        >
+                          {secondaryName}
+                        </p>
+                      ) : null}
+                      <p className="text-brand-accent text-sm font-medium tabular-nums">
+                        {formatCurrencyAmount(product.dining_price, currency, {
+                          locale: currencyLocale,
+                        })}
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 </MotionCard>
-              ))}
-            </div>
-            <div className="pointer-events-none absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-background to-transparent" />
+              );
+            })}
           </div>
         )}
 
         <MotionSection delay={0.3}>
-          <div className="mt-8 text-center">
+          <div className="mt-10 text-center">
             <Link
-              href="/menu"
-              className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+              href="/welcome"
+              className={cn(
+                buttonVariants({ size: 'lg' }),
+                'bg-brand-accent hover:bg-brand-accent/90 rounded-full px-8 text-base font-semibold text-black'
+              )}
             >
               {t('viewFullMenu')}
             </Link>

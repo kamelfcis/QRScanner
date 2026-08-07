@@ -53,7 +53,7 @@ test.describe('Accessibility', () => {
   test('menu page should have proper tab roles', async ({ page }) => {
     await page.goto('/menu');
     const tablist = page.locator('[role="tablist"]');
-    if (await tablist.count() > 0) {
+    if ((await tablist.count()) > 0) {
       await expect(tablist.first()).toBeVisible();
     }
   });
@@ -78,5 +78,20 @@ test.describe('Accessibility', () => {
       const color = await heading.evaluate((el) => getComputedStyle(el).color);
       expect(color).not.toBe('rgba(0, 0, 0, 0)');
     }
+  });
+
+  test('menu favorite buttons should have accessible names', async ({ page }) => {
+    await page.goto('/menu');
+    await page.waitForLoadState('networkidle');
+    const favBtn = page.getByRole('button', { name: /favorite|مفضلة/i });
+    if ((await favBtn.count()) > 0) {
+      await expect(favBtn.first()).toBeVisible();
+    }
+  });
+
+  test('should respect prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
   });
 });

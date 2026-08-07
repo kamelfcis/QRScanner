@@ -1,15 +1,17 @@
 import { describe, it, expect, vi } from 'vitest';
 
-describe('Import text extraction', () => {
-  it('extractTextFromFile is exported', async () => {
-    const { extractTextFromFile } = await import('@/lib/import/text-extraction');
-    expect(typeof extractTextFromFile).toBe('function');
+describe('Import text extraction (server-side)', () => {
+  it('extractTextFromBuffer is exported', async () => {
+    const { extractTextFromBuffer } = await import('@/lib/import/text-extraction-server');
+    expect(typeof extractTextFromBuffer).toBe('function');
   });
 
   it('rejects unsupported file types', async () => {
-    const { extractTextFromFile } = await import('@/lib/import/text-extraction');
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    await expect(extractTextFromFile(file)).rejects.toThrow('Unsupported file type');
+    const { extractTextFromBuffer } = await import('@/lib/import/text-extraction-server');
+    const buffer = Buffer.from('test');
+    await expect(extractTextFromBuffer(buffer, 'text/plain')).rejects.toThrow(
+      'Unsupported file type'
+    );
   });
 });
 
@@ -24,8 +26,15 @@ describe('Import pipeline', () => {
   it('exports startImportPipeline', async () => {
     vi.mock('@/lib/supabase/client', () => ({
       createClient: () => ({
-        from: () => ({ insert: () => ({ select: () => ({ single: () => ({ data: null, error: null }) }) }) }),
-        storage: { from: () => ({ upload: () => ({ data: null, error: null }), getPublicUrl: () => ({ data: { publicUrl: '' } }) }) },
+        from: () => ({
+          insert: () => ({ select: () => ({ single: () => ({ data: null, error: null }) }) }),
+        }),
+        storage: {
+          from: () => ({
+            upload: () => ({ data: null, error: null }),
+            getPublicUrl: () => ({ data: { publicUrl: '' } }),
+          }),
+        },
       }),
     }));
     const mod = await import('@/lib/import/pipeline');
@@ -45,7 +54,15 @@ describe('Import pipeline', () => {
 
 describe('Import types', () => {
   it('has correct ImportJob status values', async () => {
-    const statuses = ['uploading', 'processing', 'parsing', 'preview', 'importing', 'completed', 'failed'];
+    const statuses = [
+      'uploading',
+      'processing',
+      'parsing',
+      'preview',
+      'importing',
+      'completed',
+      'failed',
+    ];
     // ImportJob is a type-only export
     expect(statuses).toHaveLength(7);
   });

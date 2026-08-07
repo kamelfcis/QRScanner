@@ -7,10 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/shared/Image';
 import { useSearchProducts } from '@/hooks/useProducts';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { trackSearch } from '@/lib/analytics';
 import type { Product } from '@/types/database';
 
@@ -23,12 +25,17 @@ interface SearchOverlayProps {
 export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverlayProps) {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const [recentSearches, setRecentSearches] = useLocalStorage<string[]>('warda-recent-searches', []);
+  const [recentSearches, setRecentSearches] = useLocalStorage<string[]>(
+    'warda-recent-searches',
+    []
+  );
   const { data: results } = useSearchProducts(query);
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
-  const tCommon = useTranslations('common');
+  const { data: settings } = useRestaurantSettings();
+  const currency = getRestaurantCurrency(settings?.currency);
+  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
 
   useEffect(() => {
     if (isOpen) {
@@ -37,7 +44,9 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -56,12 +65,15 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
     }
   }, [isOpen, onClose]);
 
-  const handleSearch = useCallback((value: string) => {
-    setQuery(value);
-    if (value.length >= 2 && !recentSearches.includes(value)) {
-      setRecentSearches((prev) => [value, ...prev].slice(0, 5));
-    }
-  }, [recentSearches, setRecentSearches]);
+  const handleSearch = useCallback(
+    (value: string) => {
+      setQuery(value);
+      if (value.length >= 2 && !recentSearches.includes(value)) {
+        setRecentSearches((prev) => [value, ...prev].slice(0, 5));
+      }
+    },
+    [recentSearches, setRecentSearches]
+  );
 
   return (
     <AnimatePresence>
@@ -71,12 +83,12 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 bg-background"
+          className="bg-background fixed inset-0 z-50"
         >
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 py-4">
               <div className="relative flex-1">
-                <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <SearchIcon className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                 <Input
                   ref={inputRef}
                   value={query}
@@ -86,12 +98,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                   aria-label={t('searchMenuItems')}
                 />
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                aria-label={t('closeSearch')}
-              >
+              <Button variant="ghost" size="icon" onClick={onClose} aria-label={t('closeSearch')}>
                 <X className="h-5 w-5" />
               </Button>
             </div>
@@ -99,7 +106,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
             <div className="mt-4 max-h-[70vh] overflow-y-auto">
               {query.length < 2 && recentSearches.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                  <h3 className="text-muted-foreground mb-2 text-sm font-medium">
                     {t('recentSearches')}
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -107,7 +114,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                       <button
                         key={term}
                         onClick={() => handleSearch(term)}
-                        className="rounded-full border px-3 py-1 text-sm transition-colors hover:bg-muted"
+                        className="hover:bg-muted rounded-full border px-3 py-1 text-sm transition-colors"
                       >
                         {term}
                       </button>
@@ -142,8 +149,10 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                         <h4 className="line-clamp-1 text-sm font-medium">
                           {getName(locale, product.name_en, product.name_ar)}
                         </h4>
-                        <p className="text-xs text-muted-foreground">
-                          {product.dining_price} {tCommon('sar')}
+                        <p className="text-muted-foreground text-xs">
+                          {formatCurrencyAmount(product.dining_price, currency, {
+                            locale: currencyLocale,
+                          })}
                         </p>
                       </div>
                     </button>

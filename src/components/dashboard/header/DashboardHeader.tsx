@@ -2,92 +2,97 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
-import {
-  Menu,
-  Bell,
-  Moon,
-  Sun,
-  LayoutDashboard,
-  Settings,
-  LogOut,
-  QrCode,
-  Table,
-  FileUp,
-  BarChart3,
-  FileText,
-  MessageSquareQuote,
-} from 'lucide-react';
+import { Menu, Bell, Moon, Sun, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
-import { useUnreadNotifications, useNotifications, useMarkAllNotificationsRead } from '@/hooks/useNotifications';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import {
+  useUnreadNotifications,
+  useNotifications,
+  useMarkAllNotificationsRead,
+} from '@/hooks/useNotifications';
+import { cn, getName } from '@/lib/utils';
+import { formatLocaleDate } from '@/lib/dateLocale';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
 
 export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
   const { signOut } = useAuth();
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
+  const { data: settings } = useRestaurantSettings();
+  const { locale } = useI18n();
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');
   const tCommon = useTranslations('common');
   const tDashboard = useTranslations('dashboard');
 
+  const name = getName(
+    locale,
+    settings?.name_en || tCommon('appName'),
+    settings?.name_ar || tCommon('appName')
+  );
+
   const { data: unreadCount } = useUnreadNotifications();
   const { data: notifications } = useNotifications(5);
   const markAllRead = useMarkAllNotificationsRead();
 
-  const navItems = [
-    { name: tNav('dashboard'), href: '/dashboard', icon: LayoutDashboard },
-    { name: tNav('analytics'), href: '/dashboard/analytics', icon: BarChart3 },
-    { name: tNav('reports'), href: '/dashboard/reports', icon: FileText },
-    { name: tNav('menu'), href: '/dashboard/menu', icon: Menu },
-    { name: tNav('import'), href: '/dashboard/import', icon: FileUp },
-    { name: tNav('testimonials'), href: '/dashboard/testimonials', icon: MessageSquareQuote },
-    { name: tNav('qrCodes'), href: '/dashboard/qr', icon: QrCode },
-    { name: tNav('tables'), href: '/dashboard/tables', icon: Table },
-    { name: tNav('settings'), href: '/dashboard/settings', icon: Settings },
-  ];
-
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-background px-6">
+    <header className="bg-background sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 pt-[env(safe-area-inset-top)] sm:px-6">
       <div className="md:hidden">
         <Sheet>
-          <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open navigation menu" />}>
+          <SheetTrigger
+            render={
+              <Button variant="ghost" size="icon" aria-label={tNav('menu')} className="h-11 w-11" />
+            }
+          >
             <Menu className="h-5 w-5" />
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-            <div className="py-4">
-              <h2 className="text-lg font-bold text-primary">{tCommon('appName')}</h2>
-              <p className="text-sm text-muted-foreground">{tDashboard('adminDashboard')}</p>
+            <div className="flex items-center gap-2.5 py-4">
+              {settings?.logo_url ? (
+                <NextImage
+                  src={settings.logo_url}
+                  alt={name}
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 shrink-0 object-contain"
+                />
+              ) : null}
+              <div className="min-w-0">
+                <h2 className="text-primary font-heading truncate text-lg font-bold">{name}</h2>
+                <p className="text-muted-foreground text-sm">{tDashboard('adminDashboard')}</p>
+              </div>
             </div>
-            <nav className="space-y-1" aria-label="Mobile dashboard navigation">
-              {navItems.map((item) => {
+            <nav className="space-y-1" aria-label={tDashboard('adminDashboard')}>
+              {DASHBOARD_NAV.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                const label = tSidebar(item.key);
                 return (
                   <Link
-                    key={item.name}
+                    key={item.href}
                     href={item.href}
                     aria-current={isActive ? 'page' : undefined}
                     className={cn(
-                      'flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                      'flex items-center space-x-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
                       isActive
                         ? 'bg-primary/10 text-primary'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     )}
                   >
                     <item.icon className="h-5 w-5" aria-hidden="true" />
-                    <span>{item.name}</span>
+                    <span>{label}</span>
                   </Link>
                 );
               })}
             </nav>
-            <div className="border-t pt-4 mt-4">
+            <div className="mt-4 border-t pt-4">
               <Button
                 variant="ghost"
                 className="w-full justify-start"
@@ -106,18 +111,20 @@ export function DashboardHeader() {
         <span className="text-lg font-semibold">{tNav('dashboard')}</span>
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-1 sm:space-x-2">
         <LanguageSwitcher />
         <div className="relative">
           <Button
             variant="ghost"
             size="icon"
+            className="h-11 w-11"
             aria-label={tDashboard('notifications')}
+            aria-expanded={showNotifications}
             onClick={() => setShowNotifications(!showNotifications)}
           >
             <Bell className="h-5 w-5" />
             {unreadCount != null && unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-secondary text-[10px] font-bold text-white">
+              <span className="bg-brand-secondary absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -133,10 +140,7 @@ export function DashboardHeader() {
               <div
                 role="dialog"
                 aria-label={tDashboard('notifications')}
-                className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-background shadow-lg"
-                onKeyDown={(e) => {
-                  if (e.key === 'Escape') setShowNotifications(false);
-                }}
+                className="bg-background absolute end-0 top-full z-50 mt-2 w-80 rounded-lg border shadow-lg"
               >
                 <div className="flex items-center justify-between border-b px-4 py-2">
                   <span className="text-sm font-medium">{tDashboard('notifications')}</span>
@@ -144,16 +148,16 @@ export function DashboardHeader() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs h-7"
+                      className="h-7 text-xs"
                       onClick={() => markAllRead.mutate()}
                     >
                       {tDashboard('markAllRead')}
                     </Button>
                   )}
                 </div>
-                <div className="max-h-80 overflow-y-auto">
+                <div className="max-h-80 overflow-y-auto" aria-live="polite">
                   {!notifications?.length ? (
-                    <p className="py-6 text-center text-sm text-muted-foreground">
+                    <p className="text-muted-foreground py-6 text-center text-sm">
                       {tDashboard('noNotifications')}
                     </p>
                   ) : (
@@ -167,12 +171,10 @@ export function DashboardHeader() {
                       >
                         <p className="text-sm font-medium">{notif.title}</p>
                         {notif.message && (
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {notif.message}
-                          </p>
+                          <p className="text-muted-foreground mt-0.5 text-xs">{notif.message}</p>
                         )}
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {format(new Date(notif.created_at), 'MMM d, h:mm a')}
+                        <p className="text-muted-foreground mt-1 text-xs">
+                          {formatLocaleDate(notif.created_at, 'MMM d, h:mm a', locale)}
                         </p>
                       </div>
                     ))
@@ -186,7 +188,8 @@ export function DashboardHeader() {
         <Button
           variant="ghost"
           size="icon"
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          className="h-11 w-11"
+          aria-label={theme === 'dark' ? tDashboard('switchToLight') : tDashboard('switchToDark')}
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         >
           {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}

@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { FileText, Image, Clock, CheckCircle, XCircle, Loader2, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatLocaleDate } from '@/lib/dateLocale';
+import { useI18n } from '@/components/providers/RootI18nProvider';
 
 interface ImportStatusProps {
   job: ImportJob;
@@ -26,14 +28,22 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.
 
 function getProgress(status: ImportJob['status']): number {
   switch (status) {
-    case 'uploading': return 10;
-    case 'processing': return 30;
-    case 'parsing': return 60;
-    case 'preview': return 80;
-    case 'importing': return 90;
-    case 'completed': return 100;
-    case 'failed': return 0;
-    default: return 0;
+    case 'uploading':
+      return 10;
+    case 'processing':
+      return 30;
+    case 'parsing':
+      return 60;
+    case 'preview':
+      return 80;
+    case 'importing':
+      return 90;
+    case 'completed':
+      return 100;
+    case 'failed':
+      return 0;
+    default:
+      return 0;
   }
 }
 
@@ -41,39 +51,49 @@ export function ImportStatus({ job, onView, onDelete }: ImportStatusProps) {
   const config = STATUS_CONFIG[job.status] || STATUS_CONFIG.uploading;
   const Icon = config.icon;
   const progress = getProgress(job.status);
+  const { locale } = useI18n();
 
   return (
     <Card>
       <CardContent className="flex items-center gap-4 p-4">
         <div className="flex-shrink-0">
           {job.file_type === 'pdf' ? (
-            <FileText className="h-10 w-10 text-muted-foreground" />
+            <FileText className="text-muted-foreground h-10 w-10" />
           ) : (
-            <Image className="h-10 w-10 text-muted-foreground" />
+            <Image className="text-muted-foreground h-10 w-10" />
           )}
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <p className="font-medium truncate">{job.file_name}</p>
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 flex items-center gap-2">
+            <p className="truncate font-medium">{job.file_name}</p>
             <Badge className={config.color}>
-              <Icon className={cn("mr-1 h-3 w-3", (job.status === 'uploading' || job.status === 'processing' || job.status === 'parsing' || job.status === 'importing') && "animate-spin")} />
+              <Icon
+                className={cn(
+                  'mr-1 h-3 w-3',
+                  (job.status === 'uploading' ||
+                    job.status === 'processing' ||
+                    job.status === 'parsing' ||
+                    job.status === 'importing') &&
+                    'animate-spin'
+                )}
+              />
               {config.label}
             </Badge>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-2 text-sm">
             <Clock className="h-3 w-3" />
-            {new Date(job.created_at).toLocaleString()}
-            {job.file_size && (
-              <span>• {(job.file_size / 1024 / 1024).toFixed(2)} MB</span>
-            )}
+            <span suppressHydrationWarning>
+              {formatLocaleDate(job.created_at, 'MMM d, yyyy h:mm a', locale)}
+            </span>
+            {job.file_size && <span>• {(job.file_size / 1024 / 1024).toFixed(2)} MB</span>}
           </div>
           {job.error_message && (
-            <p className="mt-1 text-sm text-destructive">{job.error_message}</p>
+            <p className="text-destructive mt-1 text-sm">{job.error_message}</p>
           )}
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex flex-shrink-0 items-center gap-2">
           <Progress value={progress} className="w-20" />
           {(job.status === 'preview' || job.status === 'completed') && (
             <Button variant="outline" size="sm" onClick={onView}>

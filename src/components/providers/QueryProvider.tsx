@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CATALOG_STALE_TIME } from '@/lib/catalog/keys';
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -9,8 +10,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 30 * 1000, // 30 seconds
-            gcTime: 5 * 60 * 1000, // 5 minutes garbage collection
+            staleTime: CATALOG_STALE_TIME, // 5 min — better for public catalog CWV
+            gcTime: 30 * 60 * 1000,
             refetchOnWindowFocus: false,
             retry: 1,
             refetchOnReconnect: 'always',

@@ -126,7 +126,13 @@ describe('RestaurantTable type', () => {
 describe('ImportJob type', () => {
   it('has all status values', () => {
     const statuses: ImportJob['status'][] = [
-      'uploading', 'processing', 'parsing', 'preview', 'importing', 'completed', 'failed',
+      'uploading',
+      'processing',
+      'parsing',
+      'preview',
+      'importing',
+      'completed',
+      'failed',
     ];
     expect(statuses).toHaveLength(7);
     expect(statuses).toContain('preview');
@@ -228,6 +234,8 @@ describe('RestaurantSettings type', () => {
       facebook: 'warda',
       tiktok: 'warda',
       logo_url: null,
+      hero_image_url: null,
+      story_image_url: null,
       hero_headline: null,
       hero_subtitle: null,
       tagline: null,
@@ -236,8 +244,15 @@ describe('RestaurantSettings type', () => {
       currency: 'SAR',
       tax_rate: 15,
       service_charge_rate: 10,
+      prep_time_minutes: 25,
+      minimum_order: 0,
+      max_order_notes_length: 200,
+      apply_tax: true,
+      apply_service_charge: true,
     };
     expect(settings.currency).toBe('SAR');
     expect(settings.tax_rate).toBe(15);
+    expect(settings.prep_time_minutes).toBe(25);
+    expect(settings.apply_tax).toBe(true);
   });
 });

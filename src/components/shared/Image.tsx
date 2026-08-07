@@ -33,24 +33,25 @@ export function Image({
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const fillWrapperClass = fill ? 'absolute inset-0 h-full w-full' : undefined;
+
   if (error && showFallback) {
     return (
       <div
         className={cn(
-          'flex items-center justify-center bg-muted',
+          'bg-muted flex items-center justify-center',
+          fillWrapperClass,
           containerClassName
         )}
       >
-        <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
+        <ImageIcon className="text-muted-foreground/50 h-8 w-8" />
       </div>
     );
   }
 
   return (
-    <div className={cn('relative overflow-hidden', containerClassName)}>
-      {loading && (
-        <div className="absolute inset-0 animate-pulse bg-muted" />
-      )}
+    <div className={cn('relative overflow-hidden', fillWrapperClass, containerClassName)}>
+      {loading && <div className="bg-muted absolute inset-0 animate-pulse" />}
       <NextImage
         src={src}
         alt={alt}

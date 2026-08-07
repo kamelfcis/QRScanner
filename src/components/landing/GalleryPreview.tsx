@@ -19,21 +19,24 @@ export function GalleryPreview() {
       <div className="container mx-auto px-4">
         <MotionSection>
           <div className="mb-12 text-center">
-            <h2 className="font-heading text-4xl font-bold text-primary md:text-5xl">
+            <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
               {t('aTasteOfExcellence')}
             </h2>
-            <div className="mx-auto mt-4 h-1 w-20 rounded bg-brand-accent" />
+            <div className="bg-brand-accent mx-auto mt-4 h-1 w-20 rounded" />
           </div>
         </MotionSection>
 
         {isLoading ? (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {[...Array(8)].map((_, i) => (
-              <Skeleton key={i} className={cn('rounded-xl', i % 3 === 0 ? 'aspect-square' : 'aspect-[4/3]')} />
+              <Skeleton
+                key={i}
+                className={cn('rounded-xl', i % 3 === 0 ? 'aspect-square' : 'aspect-[4/3]')}
+              />
             ))}
           </div>
         ) : displayItems.length === 0 ? (
-          <p className="text-center text-muted-foreground">{t('galleryComingSoon')}</p>
+          <p className="text-muted-foreground text-center">{t('galleryComingSoon')}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {displayItems.map((item, index) => (
@@ -41,7 +44,7 @@ export function GalleryPreview() {
                 key={item.id}
                 delay={index * 0.05}
                 className={cn(
-                  'group relative overflow-hidden rounded-xl',
+                  'group relative overflow-hidden',
                   index % 5 === 0 ? 'row-span-2 aspect-square' : 'aspect-[4/3]'
                 )}
               >
@@ -67,7 +70,7 @@ export function GalleryPreview() {
           <div className="mt-8 text-center">
             <Link
               href="/menu#gallery"
-              className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+              className="text-primary inline-flex items-center text-sm font-medium hover:underline"
             >
               {t('viewGallery')}
             </Link>

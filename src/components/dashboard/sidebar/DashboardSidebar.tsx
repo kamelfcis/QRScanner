@@ -1,70 +1,68 @@
 'use client';
 
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
-import {
-  LayoutDashboard,
-  Menu,
-  Settings,
-  LogOut,
-  QrCode,
-  Table,
-  FileUp,
-  MessageSquareQuote,
-  BarChart3,
-  FileText,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { LogOut } from 'lucide-react';
+import { cn, getName } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { signOut } = useAuth();
+  const { data: settings } = useRestaurantSettings();
+  const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
   const tCommon = useTranslations('common');
 
-  const sidebarItems = [
-    { name: tSidebar('dashboard'), href: '/dashboard', icon: LayoutDashboard },
-    { name: tSidebar('analytics'), href: '/dashboard/analytics', icon: BarChart3 },
-    { name: tSidebar('reports'), href: '/dashboard/reports', icon: FileText },
-    { name: tSidebar('menu'), href: '/dashboard/menu', icon: Menu },
-    { name: tSidebar('import'), href: '/dashboard/import', icon: FileUp },
-    { name: tSidebar('testimonials'), href: '/dashboard/testimonials', icon: MessageSquareQuote },
-    { name: tSidebar('qrCodes'), href: '/dashboard/qr', icon: QrCode },
-    { name: tSidebar('tables'), href: '/dashboard/tables', icon: Table },
-    { name: tSidebar('settings'), href: '/dashboard/settings', icon: Settings },
-  ];
+  const name = getName(
+    locale,
+    settings?.name_en || tCommon('appName'),
+    settings?.name_ar || tCommon('appName')
+  );
 
   return (
-    <aside className="hidden w-64 border-r bg-muted/40 md:block">
+    <aside className="bg-muted/40 hidden w-64 border-r md:block">
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center border-b px-6">
-          <Link href="/dashboard" className="text-lg font-bold text-primary">
-            {tCommon('appName')}
+          <Link href="/dashboard" className="flex min-w-0 items-center gap-2.5">
+            {settings?.logo_url ? (
+              <NextImage
+                src={settings.logo_url}
+                alt={name}
+                width={36}
+                height={36}
+                className="h-9 w-9 shrink-0 object-contain"
+              />
+            ) : null}
+            <span className="text-primary font-heading truncate text-lg font-bold">{name}</span>
           </Link>
         </div>
 
         <ScrollArea className="flex-1 px-3 py-4">
-          <nav className="space-y-1" aria-label="Dashboard navigation">
-            {sidebarItems.map((item) => {
+          <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
+            {DASHBOARD_NAV.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const label = tSidebar(item.key);
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    'flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
+                    'flex items-center space-x-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
                     isActive
                       ? 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
                   <item.icon className="h-5 w-5" aria-hidden="true" />
-                  <span>{item.name}</span>
+                  <span>{label}</span>
                 </Link>
               );
             })}

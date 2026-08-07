@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/client';
-import { extractTextFromFile } from './text-extraction';
-import { extractMenuData } from './ai-extraction';
+import type { TextExtractionResult } from './text-extraction';
 import type { ImportJob, ImportExtractedData } from '@/types/database';
 import type { StorageBucket } from '@/lib/upload';
 
@@ -53,18 +52,28 @@ export async function startImportPipeline(file: File): Promise<ImportJob> {
 async function processImportJob(jobId: string, file: File): Promise<void> {
   await updateJobStatus(jobId, 'processing');
 
-  const extractionResult = await extractTextFromFile(file);
+  const extractionResult = await extractTextViaApi(file);
 
-  await supabase
-    .from('import_jobs')
-    .update({ raw_text: extractionResult.text })
-    .eq('id', jobId);
+  await supabase.from('import_jobs').update({ raw_text: extractionResult.text }).eq('id', jobId);
 
   await updateJobStatus(jobId, 'parsing');
 
   let extractedData: ImportExtractedData;
   try {
-    extractedData = await extractMenuData(extractionResult.text);
+    const response = await fetch('/api/import/extract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rawText: extractionResult.text }),
+    });
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => ({}));
+      const message =
+        typeof errBody?.error === 'string' ? errBody.error : `HTTP ${response.status}`;
+      throw new Error(message);
+    }
+
+    extractedData = (await response.json()) as ImportExtractedData;
   } catch (err) {
     extractedData = {
       restaurant: {},
@@ -88,26 +97,14 @@ async function processImportJob(jobId: string, file: File): Promise<void> {
     .eq('id', jobId);
 }
 
-export async function updateJobStatus(
-  jobId: string,
-  status: ImportJob['status']
-): Promise<void> {
-  const { error } = await supabase
-    .from('import_jobs')
-    .update({ status })
-    .eq('id', jobId);
+export async function updateJobStatus(jobId: string, status: ImportJob['status']): Promise<void> {
+  const { error } = await supabase.from('import_jobs').update({ status }).eq('id', jobId);
 
   if (error) throw error;
 }
 
-export async function updateJobData(
-  jobId: string,
-  data: Partial<ImportJob>
-): Promise<void> {
-  const { error } = await supabase
-    .from('import_jobs')
-    .update(data)
-    .eq('id', jobId);
+export async function updateJobData(jobId: string, data: Partial<ImportJob>): Promise<void> {
+  const { error } = await supabase.from('import_jobs').update(data).eq('id', jobId);
 
   if (error) throw error;
 }
@@ -177,6 +174,24 @@ export async function confirmImport(jobId: string): Promise<void> {
 export async function deleteImportJob(jobId: string): Promise<void> {
   const { error } = await supabase.from('import_jobs').delete().eq('id', jobId);
   if (error) throw error;
+}
+
+async function extractTextViaApi(file: File): Promise<TextExtractionResult> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch('/api/import/extract-text', {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errBody = await response.json().catch(() => ({}));
+    const message = typeof errBody?.error === 'string' ? errBody.error : `HTTP ${response.status}`;
+    throw new Error(message);
+  }
+
+  return (await response.json()) as TextExtractionResult;
 }
 
 function getFileType(file: File): ImportJob['file_type'] {

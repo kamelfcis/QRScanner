@@ -1,0 +1,1806 @@
+{
+  "restaurant": {
+    "name_ar": "وردة شامية",
+    "name_en": "Warda Shamya",
+    "phone": "01111211331",
+    "whatsapp": "01127796677",
+    "instagram": null,
+    "facebook": "Warda Shamya Restaurant",
+    "address_ar": null,
+    "address_en": null,
+    "primary_color": "#c5a059",
+    "secondary_color": "#1a1a1a"
+  },
+  "categories": [
+    {
+      "name_en": "Grilled Chicken",
+      "name_ar": "فراخ شواية",
+      "description_en": "Served with rice, fries, garlic sauce, pickles, and bread",
+      "description_ar": "أرز - بطاطس - ثومية - مخلل - عيش",
+      "products": [
+        {
+          "name_en": "Half Grilled Chicken",
+          "name_ar": "نصف فرخة شواية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Quarter Grilled Chicken Breast",
+          "name_ar": "ربع فرخة شواية صدر",
+          "description_en": null,
+          "description_ar": "حسب المتاح",
+          "dining_price": 140,
+          "takeaway_price": 140
+        },
+        {
+          "name_en": "Quarter Grilled Chicken Thigh",
+          "name_ar": "ربع فرخة شواية ورك",
+          "description_en": null,
+          "description_ar": "حسب المتاح",
+          "dining_price": 130,
+          "takeaway_price": 130
+        }
+      ]
+    },
+    {
+      "name_en": "Broasted Chicken",
+      "name_ar": "فراخ بروستد",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Half Broasted Chicken",
+          "name_ar": "نصف فرخة بروستد",
+          "description_en": "Rice, fries, garlic sauce, pickles, bread",
+          "description_ar": "أرز - بطاطس - ثومية - مخلل - عيش",
+          "dining_price": 260,
+          "takeaway_price": 260
+        },
+        {
+          "name_en": "Broasted Drumstick Meal (3 pcs)",
+          "name_ar": "وجبة دبوس بروستد ٣ قطع",
+          "description_en": "Rice, fries, garlic sauce, pickles, bread",
+          "description_ar": "أرز - بطاطس - ثومية - مخلل - عيش",
+          "dining_price": 180,
+          "takeaway_price": 180
+        },
+        {
+          "name_en": "Wings Meal (5 pcs)",
+          "name_ar": "وجبة جوانح ٥ قطع",
+          "description_en": "Fries, garlic sauce, pickles, coleslaw",
+          "description_ar": "بطاطس - ثومية - مخلل - كول سلو",
+          "dining_price": 175,
+          "takeaway_price": 175
+        }
+      ]
+    },
+    {
+      "name_en": "Chicken Shawarma Sandwiches",
+      "name_ar": "شاورما فراخ سندوتشات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Large Chicken Shawarma",
+          "name_ar": "شاورما فراخ كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 110,
+          "takeaway_price": 110
+        },
+        {
+          "name_en": "Double Chicken Shawarma",
+          "name_ar": "شاورما فراخ دبل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "French Chicken Shawarma",
+          "name_ar": "شاورما فراخ فرنساوي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Kaiser Chicken Shawarma",
+          "name_ar": "شاورما فراخ كايزر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 85,
+          "takeaway_price": 85
+        },
+        {
+          "name_en": "Extra Chicken Shawarma",
+          "name_ar": "شاورما فراخ إكسترا",
+          "description_en": "Mozzarella + Mushroom",
+          "description_ar": "موتزاريللا + مشروم",
+          "dining_price": 135,
+          "takeaway_price": 135
+        },
+        {
+          "name_en": "Shami Bread Shawarma",
+          "name_ar": "شاورما عيش شامي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 110,
+          "takeaway_price": 110
+        }
+      ]
+    },
+    {
+      "name_en": "Shawarma Fatteh",
+      "name_ar": "فتة شاورما",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Large Chicken Shawarma Fatteh",
+          "name_ar": "فتة شاورما فراخ كبير",
+          "description_en": "Pickles, garlic sauce, fries",
+          "description_ar": "مخلل + ثومية + بطاطس",
+          "dining_price": 200,
+          "takeaway_price": 200
+        },
+        {
+          "name_en": "Extra Chicken Shawarma Fatteh",
+          "name_ar": "فتة شاورما فراخ إكسترا",
+          "description_en": "Pickles, garlic sauce, fries, mozzarella, mushroom",
+          "description_ar": "مخلل + ثومية + بطاطس + موتزاريللا + مشروم",
+          "dining_price": 225,
+          "takeaway_price": 225
+        }
+      ]
+    },
+    {
+      "name_en": "Shawarma by Weight",
+      "name_ar": "أوزان",
+      "description_en": "Served with garlic sauce, pickles, bread, and fries",
+      "description_ar": "ثومية + مخلل + عيش + بطاطس",
+      "products": [
+        {
+          "name_en": "1kg Chicken Shawarma",
+          "name_ar": "كيلو شاورما فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 800,
+          "takeaway_price": 800
+        },
+        {
+          "name_en": "0.5kg Chicken Shawarma",
+          "name_ar": "نصف كيلو شاورما فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 400,
+          "takeaway_price": 400
+        },
+        {
+          "name_en": "0.25kg Chicken Shawarma",
+          "name_ar": "ربع كيلو شاورما فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 200,
+          "takeaway_price": 200
+        }
+      ]
+    },
+    {
+      "name_en": "Shawarma Meals",
+      "name_ar": "وجبات",
+      "description_en": "All meals served with fries, coleslaw, garlic sauce, and pickles",
+      "description_ar": "جميع الوجبات تقدم معها بطاطس + كول سلو + ثومية + مخلل",
+      "products": [
+        {
+          "name_en": "Maria",
+          "name_ar": "ماريا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 225,
+          "takeaway_price": 225
+        },
+        {
+          "name_en": "Arabic Chicken Shawarma (1 Person)",
+          "name_ar": "شاورما فراخ عربي شخص واحد",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 190,
+          "takeaway_price": 190
+        },
+        {
+          "name_en": "Arabic Chicken Shawarma (2 Persons)",
+          "name_ar": "شاورما فراخ عربي شخصين",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 375,
+          "takeaway_price": 375
+        },
+        {
+          "name_en": "Arabic Chicken Shawarma (3 Persons)",
+          "name_ar": "شاورما فراخ عربي ثلاثة أشخاص",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 550,
+          "takeaway_price": 550
+        },
+        {
+          "name_en": "Arabic Chicken Shawarma (Family)",
+          "name_ar": "شاورما فراخ عربي عائلية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 710,
+          "takeaway_price": 710
+        },
+        {
+          "name_en": "Extra Arabic Shawarma",
+          "name_ar": "شاورما عربي إكسترا",
+          "description_en": "Mozzarella + Mushroom",
+          "description_ar": "موتزاريللا + مشروم",
+          "dining_price": 225,
+          "takeaway_price": 225
+        }
+      ]
+    },
+    {
+      "name_en": "Western Meals",
+      "name_ar": "وجبات غربي",
+      "description_en": "Served with fries, garlic sauce, pickles, bread, and coleslaw",
+      "description_ar": "جميع هذه الوجبات تقدم مع بطاطس + ثومية + مخلل + عيش + كول سلو",
+      "products": [
+        {
+          "name_en": "Cordon Bleu",
+          "name_ar": "كوردن بلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 325,
+          "takeaway_price": 325
+        },
+        {
+          "name_en": "Chicken Roll Supreme",
+          "name_ar": "تشيكن رول سوبريم",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 300,
+          "takeaway_price": 300
+        },
+        {
+          "name_en": "Shish Tawook",
+          "name_ar": "شيش طاووق",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Crispy",
+          "name_ar": "كريسبي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Zinger with Cheddar",
+          "name_ar": "زنجر مع شيدر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 275,
+          "takeaway_price": 275
+        },
+        {
+          "name_en": "Mexicano",
+          "name_ar": "مكسيكانو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Warda Shamya",
+          "name_ar": "وردة شامية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Chicken Sub",
+          "name_ar": "تشيكن ساب",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Francisco",
+          "name_ar": "فرانسيسكو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Escalope",
+          "name_ar": "إسكالوب",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        },
+        {
+          "name_en": "Fajita",
+          "name_ar": "فاهيتا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 275,
+          "takeaway_price": 275
+        },
+        {
+          "name_en": "Beef Philadelphia",
+          "name_ar": "فيلادلفيا لحمة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 300,
+          "takeaway_price": 300
+        },
+        {
+          "name_en": "Nuggeto",
+          "name_ar": "ناغيتو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 220,
+          "takeaway_price": 220
+        },
+        {
+          "name_en": "Mix Meal",
+          "name_ar": "ميكس",
+          "description_en": "2 Crispy + 4 Shish",
+          "description_ar": "قطعتين كريسبي + أربع قطع شيش",
+          "dining_price": 300,
+          "takeaway_price": 300
+        },
+        {
+          "name_en": "Chicken Roll + Kibbeh + Rice",
+          "name_ar": "تشيكن رول + كبيبة + أرز",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 225,
+          "takeaway_price": 225
+        },
+        {
+          "name_en": "Chicken Burger",
+          "name_ar": "برجر فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 225,
+          "takeaway_price": 225
+        },
+        {
+          "name_en": "Beef Burger",
+          "name_ar": "برجر لحمة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 250,
+          "takeaway_price": 250
+        }
+      ]
+    },
+    {
+      "name_en": "Western Sandwiches",
+      "name_ar": "سندوتشات غربي",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Chicken Sub",
+          "name_ar": "تشيكن ساب",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 120,
+          "takeaway_price": 120
+        },
+        {
+          "name_en": "Francisco",
+          "name_ar": "فرانسيسكو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Shish Tawook",
+          "name_ar": "شيش طاووق",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Crispy",
+          "name_ar": "كريسبي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Zinger",
+          "name_ar": "زنجر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 130,
+          "takeaway_price": 130
+        },
+        {
+          "name_en": "Fajita",
+          "name_ar": "فاهيتا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 140,
+          "takeaway_price": 140
+        },
+        {
+          "name_en": "Mexicano",
+          "name_ar": "مكسيكانو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 130,
+          "takeaway_price": 130
+        },
+        {
+          "name_en": "Chicken Roll Supreme",
+          "name_ar": "تشيكن رول سوبريم",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 140,
+          "takeaway_price": 140
+        },
+        {
+          "name_en": "Escalope Pane",
+          "name_ar": "إسكالوب بانية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 130,
+          "takeaway_price": 130
+        },
+        {
+          "name_en": "Lemon Chicken Slices",
+          "name_ar": "شرحات فراخ بالليمون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Chicken Burger",
+          "name_ar": "برجر فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Local Beef Burger",
+          "name_ar": "برجر لحمة بلدي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 150,
+          "takeaway_price": 150
+        },
+        {
+          "name_en": "Beef Philadelphia",
+          "name_ar": "فيلادلفيا لحمة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 160,
+          "takeaway_price": 160
+        },
+        {
+          "name_en": "Nuggeto",
+          "name_ar": "ناغيتو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 120,
+          "takeaway_price": 120
+        },
+        {
+          "name_en": "Saj Fries",
+          "name_ar": "بطاطس صاج",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Saj Fries Mozzarella",
+          "name_ar": "بطاطس صاج موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "French Fries",
+          "name_ar": "بطاطس فرنساوي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "French Fries Mozzarella",
+          "name_ar": "بطاطس فرنساوي موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Cheddar Cheese Fries",
+          "name_ar": "بطاطس جبنة شيدر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "French Fries Cheddar",
+          "name_ar": "بطاطس فرنساوي جبنة شيدر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        }
+      ]
+    },
+    {
+      "name_en": "Pizza",
+      "name_ar": "بيتزا",
+      "description_en": "Available in Medium (M) and Large (L)",
+      "description_ar": "متوفرة بحجم وسط وكبير",
+      "products": [
+        {
+          "name_en": "Four Seasons Pizza (M)",
+          "name_ar": "بيتزا فصول أربعة وسط",
+          "description_en": "Sauce, cheese, mushroom, pepper, olives, tomato",
+          "description_ar": "صوص - جبنة - مشروم - فلفل - زيتون - طماطم",
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Four Seasons Pizza (L)",
+          "name_ar": "بيتزا فصول أربعة كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 150,
+          "takeaway_price": 150
+        },
+        {
+          "name_en": "Margherita Pizza (M)",
+          "name_ar": "بيتزا مارجريتا وسط",
+          "description_en": "Sauce, cheese",
+          "description_ar": "صوص - جبنة",
+          "dining_price": 115,
+          "takeaway_price": 115
+        },
+        {
+          "name_en": "Margherita Pizza (L)",
+          "name_ar": "بيتزا مارجريتا كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 135,
+          "takeaway_price": 135
+        },
+        {
+          "name_en": "Mushroom Pizza (M)",
+          "name_ar": "بيتزا مشروم وسط",
+          "description_en": "Sauce, cheese, mushroom",
+          "description_ar": "صوص - جبنة - مشروم",
+          "dining_price": 130,
+          "takeaway_price": 130
+        },
+        {
+          "name_en": "Mushroom Pizza (L)",
+          "name_ar": "بيتزا مشروم كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 150,
+          "takeaway_price": 150
+        },
+        {
+          "name_en": "Smoked Turkey Pizza (M)",
+          "name_ar": "بيتزا تركي مدخن وسط",
+          "description_en": "Sauce, cheese, mushroom, smoked turkey, pepper",
+          "description_ar": "صوص - جبنة - مشروم - تركي مدخن - فلفل",
+          "dining_price": 160,
+          "takeaway_price": 160
+        },
+        {
+          "name_en": "Smoked Turkey Pizza (L)",
+          "name_ar": "بيتزا تركي مدخن كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 190,
+          "takeaway_price": 190
+        },
+        {
+          "name_en": "Chicken Shawarma Pizza (M)",
+          "name_ar": "بيتزا شاورما فراخ وسط",
+          "description_en": "Sauce, cheese, mushroom, chicken, pepper",
+          "description_ar": "صوص - جبنة - مشروم - فراخ - فلفل",
+          "dining_price": 170,
+          "takeaway_price": 170
+        },
+        {
+          "name_en": "Chicken Shawarma Pizza (L)",
+          "name_ar": "بيتزا شاورما فراخ كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 190,
+          "takeaway_price": 190
+        },
+        {
+          "name_en": "Sausage Pizza (M)",
+          "name_ar": "بيتزا سجق وسط",
+          "description_en": "Sauce, cheese, mushroom, sausage, pepper",
+          "description_ar": "صوص - جبنة - مشروم - سجق - فلفل",
+          "dining_price": 175,
+          "takeaway_price": 175
+        },
+        {
+          "name_en": "Sausage Pizza (L)",
+          "name_ar": "بيتزا سجق كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 195,
+          "takeaway_price": 195
+        },
+        {
+          "name_en": "Minced Meat Pizza (M)",
+          "name_ar": "بيتزا لحمة مفرومة وسط",
+          "description_en": "Sauce, cheese, mushroom, minced meat, pepper",
+          "description_ar": "صوص - جبنة - مشروم - لحمة مفرومة - فلفل",
+          "dining_price": 175,
+          "takeaway_price": 175
+        },
+        {
+          "name_en": "Minced Meat Pizza (L)",
+          "name_ar": "بيتزا لحمة مفرومة كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 195,
+          "takeaway_price": 195
+        },
+        {
+          "name_en": "Chicken Pizza (M)",
+          "name_ar": "بيتزا فراخ وسط",
+          "description_en": "Sauce, cheese, chicken, pepper, mushroom",
+          "description_ar": "صوص - جبنة - فراخ - فلفل - مشروم",
+          "dining_price": 160,
+          "takeaway_price": 160
+        },
+        {
+          "name_en": "Chicken Pizza (L)",
+          "name_ar": "بيتزا فراخ كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 185,
+          "takeaway_price": 185
+        },
+        {
+          "name_en": "Pepperoni Pizza (M)",
+          "name_ar": "بيتزا بيبيروني وسط",
+          "description_en": "Sauce, cheese, mushroom, pepper, pepperoni",
+          "description_ar": "صوص - جبنة - مشروم - فلفل - بيبيروني",
+          "dining_price": 160,
+          "takeaway_price": 160
+        },
+        {
+          "name_en": "Pepperoni Pizza (L)",
+          "name_ar": "بيتزا بيبيروني كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 180,
+          "takeaway_price": 180
+        },
+        {
+          "name_en": "Mixed Cheese Pizza (M)",
+          "name_ar": "بيتزا مشكل جبن وسط",
+          "description_en": "Sauce, cheese, mozzarella, roumy, cheddar",
+          "description_ar": "صوص - جبنة موتزاريللا - جبنة رومي - جبنة شيدر",
+          "dining_price": 150,
+          "takeaway_price": 150
+        },
+        {
+          "name_en": "Mixed Cheese Pizza (L)",
+          "name_ar": "بيتزا مشكل جبن كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 170,
+          "takeaway_price": 170
+        },
+        {
+          "name_en": "Hot Dog Pizza (M)",
+          "name_ar": "بيتزا سوسيس وسط",
+          "description_en": "Sauce, cheese, mushroom, hot dog, pepper",
+          "description_ar": "صوص - جبنة - مشروم - سوسيس - فلفل",
+          "dining_price": 140,
+          "takeaway_price": 140
+        },
+        {
+          "name_en": "Hot Dog Pizza (L)",
+          "name_ar": "بيتزا سوسيس كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 175,
+          "takeaway_price": 175
+        },
+        {
+          "name_en": "BBQ Chicken Pizza (M)",
+          "name_ar": "بيتزا فراخ باربيكيو وسط",
+          "description_en": "Sauce, cheese, mushroom, BBQ, chicken, pepper",
+          "description_ar": "صوص - جبنة - مشروم - باربيكيو - فراخ - فلفل",
+          "dining_price": 170,
+          "takeaway_price": 170
+        },
+        {
+          "name_en": "BBQ Chicken Pizza (L)",
+          "name_ar": "بيتزا فراخ باربيكيو كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 195,
+          "takeaway_price": 195
+        },
+        {
+          "name_en": "Warda Shamya Pizza (M)",
+          "name_ar": "بيتزا وردة شامية وسط",
+          "description_en": "Sauce, cheese, mushroom, sausage, turkey, hot dog, chicken, pepper",
+          "description_ar": "صوص - جبنة - مشروم - سجق - تركي - سوسيس - فراخ - فلفل",
+          "dining_price": 200,
+          "takeaway_price": 200
+        },
+        {
+          "name_en": "Warda Shamya Pizza (L)",
+          "name_ar": "بيتزا وردة شامية كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 230,
+          "takeaway_price": 230
+        },
+        {
+          "name_en": "Ranch Pizza (M)",
+          "name_ar": "بيتزا رانش وسط",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 170,
+          "takeaway_price": 170
+        },
+        {
+          "name_en": "Ranch Pizza (L)",
+          "name_ar": "بيتزا رانش كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 195,
+          "takeaway_price": 195
+        }
+      ]
+    },
+    {
+      "name_en": "Sfiha",
+      "name_ar": "صفيحة",
+      "description_en": "Available by 1kg, 0.5kg, and 0.25kg",
+      "description_ar": "كيلو - نصف كيلو - ربع كيلو",
+      "products": [
+        {
+          "name_en": "Vegetable Sfiha (1kg)",
+          "name_ar": "صفيحة خضار كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 900,
+          "takeaway_price": 900
+        },
+        {
+          "name_en": "Vegetable Sfiha (0.5kg)",
+          "name_ar": "صفيحة خضار نصف كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 450,
+          "takeaway_price": 450
+        },
+        {
+          "name_en": "Vegetable Sfiha (0.25kg)",
+          "name_ar": "صفيحة خضار ربع كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 225,
+          "takeaway_price": 225
+        },
+        {
+          "name_en": "Meat Sfiha (1kg)",
+          "name_ar": "صفيحة كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 900,
+          "takeaway_price": 900
+        },
+        {
+          "name_en": "Meat Sfiha (0.5kg)",
+          "name_ar": "صفيحة نصف كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 450,
+          "takeaway_price": 450
+        },
+        {
+          "name_en": "Meat Sfiha (0.25kg)",
+          "name_ar": "صفيحة ربع كيلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 225,
+          "takeaway_price": 225
+        }
+      ]
+    },
+    {
+      "name_en": "Meat Manakish",
+      "name_ar": "مناقيش لحوم",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Alexandrian Sausage Medium",
+          "name_ar": "سجق اسكندراني وسط",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 120,
+          "takeaway_price": 120
+        },
+        {
+          "name_en": "Alexandrian Sausage Large",
+          "name_ar": "سجق اسكندراني كبير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 150,
+          "takeaway_price": 150
+        },
+        {
+          "name_en": "Meat with Dough",
+          "name_ar": "لحمة بعجين",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Meat with Mozzarella",
+          "name_ar": "لحمة بالموتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 65,
+          "takeaway_price": 65
+        },
+        {
+          "name_en": "Sausage Mozzarella",
+          "name_ar": "سجق موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 65,
+          "takeaway_price": 65
+        },
+        {
+          "name_en": "Shish Tawook Mozzarella",
+          "name_ar": "شيش طاووق موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 65,
+          "takeaway_price": 65
+        },
+        {
+          "name_en": "Shawarma Mozzarella",
+          "name_ar": "شاورما موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Hot Dog Mozzarella",
+          "name_ar": "سوسيس موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Salami Mozzarella",
+          "name_ar": "سلامي موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Smoked Turkey Mozzarella",
+          "name_ar": "تركي مدخن موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 65,
+          "takeaway_price": 65
+        }
+      ]
+    },
+    {
+      "name_en": "Mix Manakish",
+      "name_ar": "مكس",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Hot Dog Kraft",
+          "name_ar": "سوسيس كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Salami Kraft",
+          "name_ar": "سلامي كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Smoked Turkey Kraft",
+          "name_ar": "تركي مدخن كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Luncheon Kraft",
+          "name_ar": "لانشون كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Mixed Cheese",
+          "name_ar": "مكس جبن",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Halloumi with Thyme & Veg",
+          "name_ar": "حلوم مع زعتر بالخضراوات",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Halloumi with Thyme",
+          "name_ar": "حلوم مع زعتر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 45,
+          "takeaway_price": 45
+        },
+        {
+          "name_en": "Halloumi with Olives",
+          "name_ar": "حلوم مع زيتون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 45,
+          "takeaway_price": 45
+        },
+        {
+          "name_en": "Labneh with Thyme",
+          "name_ar": "لبنة مع زعتر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Labneh Olives",
+          "name_ar": "لبنة زيتون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Labneh with Veg",
+          "name_ar": "لبنة بالخضراوات",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Kiri with Luncheon",
+          "name_ar": "كيري مع لانشون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Muhammara with Mozzarella",
+          "name_ar": "محمرة مع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Thyme with Mozzarella",
+          "name_ar": "زعتر مع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Thyme with Muhammara",
+          "name_ar": "زعتر مع محمرة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Luncheon with Mozzarella",
+          "name_ar": "لانشون مع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Spinach with Mozzarella",
+          "name_ar": "سبانخ مع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Cheddar with Mozzarella",
+          "name_ar": "شيدر مع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 45,
+          "takeaway_price": 45
+        }
+      ]
+    },
+    {
+      "name_en": "Plain Manakish",
+      "name_ar": "سادة",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Kraft",
+          "name_ar": "كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Labneh",
+          "name_ar": "لبنة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Kiri",
+          "name_ar": "كيري",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Mozzarella",
+          "name_ar": "موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Halloumi",
+          "name_ar": "حلوم",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Akkawi Cheese",
+          "name_ar": "جبنة عكاوي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Cheddar",
+          "name_ar": "شيدر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Shamya",
+          "name_ar": "شامية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        },
+        {
+          "name_en": "Thyme",
+          "name_ar": "زعتر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 30,
+          "takeaway_price": 30
+        },
+        {
+          "name_en": "Muhammara",
+          "name_ar": "محمرة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Spinach",
+          "name_ar": "سبانخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 35,
+          "takeaway_price": 35
+        }
+      ]
+    },
+    {
+      "name_en": "Appetizers",
+      "name_ar": "مقبلات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Mozzarella Sticks",
+          "name_ar": "أصابع موتزاريللا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "Hummus with Tahini",
+          "name_ar": "حمص بالطحينة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Baba Ghanoush",
+          "name_ar": "بابا غنوج",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Muhammara with Walnuts",
+          "name_ar": "محمرة عين جمل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 100,
+          "takeaway_price": 100
+        },
+        {
+          "name_en": "Mutabal",
+          "name_ar": "متبل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Beetroot Mutabal",
+          "name_ar": "متبل بنجر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 100,
+          "takeaway_price": 100
+        },
+        {
+          "name_en": "Shami Kibbeh",
+          "name_ar": "كبيبة شامية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Cheese Sambousek",
+          "name_ar": "سمبوسك جبنة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 30,
+          "takeaway_price": 30
+        },
+        {
+          "name_en": "Pickles",
+          "name_ar": "مخلل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Garlic Sauce",
+          "name_ar": "ثومية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Spicy Garlic Sauce",
+          "name_ar": "ثومية سبايسي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Fries Packet",
+          "name_ar": "باكيت بطاطس",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Rice Plate",
+          "name_ar": "طبق أرز",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Yalanji",
+          "name_ar": "يالنجي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        }
+      ]
+    },
+    {
+      "name_en": "Salads",
+      "name_ar": "سلطات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Tabbouleh",
+          "name_ar": "تبولة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 90,
+          "takeaway_price": 90
+        },
+        {
+          "name_en": "Arugula Salad",
+          "name_ar": "جرجير",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Fattoush",
+          "name_ar": "فتوش",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 80,
+          "takeaway_price": 80
+        },
+        {
+          "name_en": "Green Salad",
+          "name_ar": "سلطة خضراء",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Coleslaw",
+          "name_ar": "كول سلو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        }
+      ]
+    },
+    {
+      "name_en": "Borek",
+      "name_ar": "البرك",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Sausage Borek",
+          "name_ar": "برك سجق",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Kiri Borek",
+          "name_ar": "برك كيري",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Luncheon Borek",
+          "name_ar": "برك لانشون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Cheese Borek",
+          "name_ar": "برك جبنة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Olive Borek",
+          "name_ar": "برك زيتون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Spinach Borek",
+          "name_ar": "برك سبانخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        }
+      ]
+    },
+    {
+      "name_en": "Pasta",
+      "name_ar": "المكرونة",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Bechamel Pasta",
+          "name_ar": "مكرونة بالبشاميل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 100,
+          "takeaway_price": 100
+        },
+        {
+          "name_en": "Fettuccine Pasta",
+          "name_ar": "مكرونة فوت تشيني",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 120,
+          "takeaway_price": 120
+        }
+      ]
+    },
+    {
+      "name_en": "Soups",
+      "name_ar": "شوربات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Lentil Soup",
+          "name_ar": "شوربة عدس",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 95,
+          "takeaway_price": 95
+        },
+        {
+          "name_en": "Plain Cream Soup",
+          "name_ar": "شوربة كريمة سادة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 100,
+          "takeaway_price": 100
+        },
+        {
+          "name_en": "Mushroom Cream Soup",
+          "name_ar": "شوربة كريمة مشروم",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 120,
+          "takeaway_price": 120
+        },
+        {
+          "name_en": "Chicken Cream Soup",
+          "name_ar": "شوربة كريمة فراخ",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 140,
+          "takeaway_price": 140
+        },
+        {
+          "name_en": "Alfredo Soup",
+          "name_ar": "شوربة الفريدو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 160,
+          "takeaway_price": 160
+        },
+        {
+          "name_en": "Mix Soup",
+          "name_ar": "شوربة مكس",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 140,
+          "takeaway_price": 140
+        }
+      ]
+    },
+    {
+      "name_en": "Hot Drinks",
+      "name_ar": "مشروبات ساخنة",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Single Espresso",
+          "name_ar": "اسبريسو سنجل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Double Espresso",
+          "name_ar": "اسبريسو دبل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "Single Turkish Coffee",
+          "name_ar": "قهوة تركي سنجل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Double Turkish Coffee",
+          "name_ar": "قهوة تركي دبل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Hot Chocolate",
+          "name_ar": "هوت شوكلت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Mocha",
+          "name_ar": "موكا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 70,
+          "takeaway_price": 70
+        },
+        {
+          "name_en": "Cappuccino",
+          "name_ar": "كابتشينو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Hot Cider",
+          "name_ar": "هوت سيدر",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Single French Coffee",
+          "name_ar": "قهوة فرنساوي سنجل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 45,
+          "takeaway_price": 45
+        },
+        {
+          "name_en": "Double French Coffee",
+          "name_ar": "قهوة فرنساوي دبل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Black Nescafe",
+          "name_ar": "نيسكافية بلاك",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 40,
+          "takeaway_price": 40
+        },
+        {
+          "name_en": "Nescafe with Milk",
+          "name_ar": "نيسكافية وحليب",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        }
+      ]
+    },
+    {
+      "name_en": "Fresh Juices",
+      "name_ar": "عصائر فريش",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Orange",
+          "name_ar": "برتقال",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Lemon",
+          "name_ar": "ليمون",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        },
+        {
+          "name_en": "Lemon Mint",
+          "name_ar": "ليمون نعناع",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Mango",
+          "name_ar": "مانجو",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Strawberry",
+          "name_ar": "فراولة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Guava",
+          "name_ar": "جوافة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 55,
+          "takeaway_price": 55
+        },
+        {
+          "name_en": "Kiwi",
+          "name_ar": "كيوي",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Banana with Milk",
+          "name_ar": "موز ولبن",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        }
+      ]
+    },
+    {
+      "name_en": "Cocktails",
+      "name_ar": "كوكتيلات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Tropical Fruit Cocktail",
+          "name_ar": "كوكتيل فواكه تروبيكال",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Warda Shamya Cocktail",
+          "name_ar": "كوكتيل وردة شامية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 75,
+          "takeaway_price": 75
+        },
+        {
+          "name_en": "Special Cocktail",
+          "name_ar": "سبيشال كوكتيل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 80,
+          "takeaway_price": 80
+        }
+      ]
+    },
+    {
+      "name_en": "Drinks",
+      "name_ar": "مشروبات",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Soft Drinks",
+          "name_ar": "مشروبات غازية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        },
+        {
+          "name_en": "Mineral Water",
+          "name_ar": "مياه معدنية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 10,
+          "takeaway_price": 10
+        },
+        {
+          "name_en": "Ayran / Rayeb Milk",
+          "name_ar": "لبن عيران - رايب",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 25,
+          "takeaway_price": 25
+        }
+      ]
+    },
+    {
+      "name_en": "Desserts",
+      "name_ar": "الحلو",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Nutella with Kraft",
+          "name_ar": "نوتيلا مع كرافت",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Nutella with Banana",
+          "name_ar": "نوتيلا مع موز",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Kiri with Honey",
+          "name_ar": "كيري مع عسل",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 60,
+          "takeaway_price": 60
+        },
+        {
+          "name_en": "Plain Nutella",
+          "name_ar": "نوتيلا سادة",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 50,
+          "takeaway_price": 50
+        }
+      ]
+    },
+    {
+      "name_en": "Waffles",
+      "name_ar": "وافل",
+      "description_en": null,
+      "description_ar": null,
+      "products": [
+        {
+          "name_en": "Nutella Waffle",
+          "name_ar": "نوتيلا",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 110,
+          "takeaway_price": 110
+        },
+        {
+          "name_en": "Banana Waffle",
+          "name_ar": "موز",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 125,
+          "takeaway_price": 125
+        },
+        {
+          "name_en": "Warda Shamya Waffle",
+          "name_ar": "وردة الشامية",
+          "description_en": null,
+          "description_ar": null,
+          "dining_price": 150,
+          "takeaway_price": 150
+        }
+      ]
+    }
+  ],
+  "confidence": {
+    "overall": 0.98,
+    "restaurant": 1,
+    "categories": 0.98,
+    "products": 0.97
+  }
+}

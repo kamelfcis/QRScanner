@@ -1,14 +1,18 @@
 import type { ImportExtractedData } from '@/types/database';
 
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const DEFAULT_GEMINI_MODEL = 'gemini-3-flash-preview';
 
 function getApiKey(): string {
   if (typeof window !== 'undefined') {
     throw new Error('AI extraction must run on the server');
   }
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) throw new Error('OPENAI_API_KEY is not configured');
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) throw new Error('GEMINI_API_KEY is not configured');
   return key;
+}
+
+function getModel(): string {
+  return process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
 }
 
 const EXTRACTION_PROMPT = `You are a restaurant menu data extractor. Analyze the following text extracted from a restaurant menu PDF or image.
@@ -63,30 +67,43 @@ Rules:
 - Return ONLY valid JSON, no markdown or explanation
 - For Arabic text, preserve the original Arabic characters`;
 
+function extractJsonText(content: string): string {
+  const trimmed = content.trim();
+  if (trimmed.startsWith('```')) {
+    return trimmed
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/, '')
+      .trim();
+  }
+  return trimmed;
+}
+
 export async function extractMenuData(rawText: string): Promise<ImportExtractedData> {
   const apiKey = getApiKey();
+  const model = getModel();
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
-  const response = await fetch(OPENAI_API_URL, {
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: EXTRACTION_PROMPT,
-        },
+      contents: [
         {
           role: 'user',
-          content: `Extract menu data from this text:\n\n${rawText.substring(0, 8000)}`,
+          parts: [
+            {
+              text: `${EXTRACTION_PROMPT}\n\nExtract menu data from this text:\n\n${rawText.substring(0, 8000)}`,
+            },
+          ],
         },
       ],
-      temperature: 0.1,
-      max_tokens: 4000,
-      response_format: { type: 'json_object' },
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 4000,
+        responseMimeType: 'application/json',
+      },
     }),
   });
 
@@ -96,14 +113,16 @@ export async function extractMenuData(rawText: string): Promise<ImportExtractedD
   }
 
   const result = await response.json();
-  const content = result.choices?.[0]?.message?.content;
+  const content = result.candidates?.[0]?.content?.parts
+    ?.map((part: { text?: string }) => part.text ?? '')
+    .join('');
 
   if (!content) {
     throw new Error('No content in AI response');
   }
 
   try {
-    const parsed = JSON.parse(content) as ImportExtractedData;
+    const parsed = JSON.parse(extractJsonText(content)) as ImportExtractedData;
     return validateExtractedData(parsed);
   } catch {
     throw new Error('Failed to parse AI response as JSON');

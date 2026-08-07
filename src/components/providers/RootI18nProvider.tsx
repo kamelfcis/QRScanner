@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, createContext, useContext, useCallback } from 'react';
+import { useState, createContext, useContext, useCallback } from 'react';
 import { NextIntlClientProvider, useTranslations as useNextTranslations } from 'next-intl';
-import { type Locale, locales, defaultLocale, isRtl } from '@/i18n/config';
+import { type Locale, defaultLocale, isRtl } from '@/i18n/config';
 import enMessages from '@/messages/en.json';
 import arMessages from '@/messages/ar.json';
 
@@ -20,7 +20,7 @@ interface I18nContextValue {
 const I18nContext = createContext<I18nContextValue>({
   locale: defaultLocale,
   setLocale: () => {},
-  dir: 'ltr',
+  dir: isRtl(defaultLocale) ? 'rtl' : 'ltr',
 });
 
 export function useI18n() {
@@ -31,21 +31,16 @@ export function useTranslations(namespace?: string) {
   return useNextTranslations(namespace);
 }
 
-export function RootI18nProvider({ children, initialLocale }: { children: React.ReactNode; initialLocale?: Locale }) {
+export function RootI18nProvider({
+  children,
+  initialLocale,
+}: {
+  children: React.ReactNode;
+  initialLocale?: Locale;
+}) {
+  // Trust SSR locale from middleware/headers only — no client cookie re-sync (avoids hydration #418)
   const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
   const dir = isRtl(locale) ? 'rtl' : 'ltr';
-
-  useEffect(() => {
-    const saved = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('NEXT_LOCALE='))
-      ?.split('=')[1] as Locale | undefined;
-    if (saved && locales.includes(saved) && saved !== locale) {
-      setLocaleState(saved);
-      document.documentElement.dir = isRtl(saved) ? 'rtl' : 'ltr';
-      document.documentElement.lang = saved;
-    }
-  }, [locale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${365 * 24 * 60 * 60}`;

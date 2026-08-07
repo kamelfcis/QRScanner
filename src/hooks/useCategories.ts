@@ -3,16 +3,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Category, CategoryInput, CategoryWithProducts } from '@/types';
+import { categoryKeys, CATALOG_STALE_TIME, CATALOG_GC_TIME } from '@/lib/catalog/keys';
+import { fetchCategoriesWithProducts } from '@/lib/catalog/fetchCatalog';
+
+export { categoryKeys };
 
 const supabase = createClient();
-
-export const categoryKeys = {
-  all: ['categories'] as const,
-  visible: () => [...categoryKeys.all, 'visible'] as const,
-  allList: () => [...categoryKeys.all, 'allList'] as const,
-  detail: (id: string) => [...categoryKeys.all, 'detail', id] as const,
-  withProducts: () => [...categoryKeys.all, 'withProducts'] as const,
-};
 
 export function useCategories() {
   return useQuery({
@@ -20,13 +16,17 @@ export function useCategories() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('categories')
-        .select('*')
+        .select(
+          'id, name_ar, name_en, description_ar, description_en, image_url, banner_url, sort_order, is_visible'
+        )
         .eq('is_visible', true)
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
       return data as Category[];
     },
+    staleTime: CATALOG_STALE_TIME,
+    gcTime: CATALOG_GC_TIME,
   });
 }
 
@@ -49,11 +49,7 @@ export function useCategory(id: string) {
   return useQuery({
     queryKey: categoryKeys.detail(id),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('categories').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data as Category;
@@ -65,36 +61,9 @@ export function useCategory(id: string) {
 export function useCategoriesWithProducts() {
   return useQuery({
     queryKey: categoryKeys.withProducts(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select(`
-          *,
-          subcategories:subcategories!category_id(
-            *
-          ),
-          products:products!category_id(
-            *,
-            gallery:product_gallery(*)
-          )
-        `)
-        .eq('is_visible', true)
-        .order('sort_order', { ascending: true });
-
-      if (error) throw error;
-
-      const categories = data.map((category) => ({
-        ...category,
-        products: (category.products || [])
-          .filter((p: { is_available: boolean }) => p.is_available)
-          .sort((a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order),
-        subcategories: (category.subcategories || []).sort(
-          (a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order
-        ),
-      })) as CategoryWithProducts[];
-
-      return categories;
-    },
+    queryFn: () => fetchCategoriesWithProducts(supabase),
+    staleTime: CATALOG_STALE_TIME,
+    gcTime: CATALOG_GC_TIME,
   });
 }
 
@@ -103,11 +72,7 @@ export function useCreateCategory() {
 
   return useMutation({
     mutationFn: async (input: CategoryInput) => {
-      const { data, error } = await supabase
-        .from('categories')
-        .insert(input)
-        .select()
-        .single();
+      const { data, error } = await supabase.from('categories').insert(input).select().single();
 
       if (error) throw error;
       return data as Category;
@@ -133,7 +98,7 @@ export function useUpdateCategory() {
       if (error) throw error;
       return data as Category;
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
     },
   });

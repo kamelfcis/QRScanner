@@ -13,9 +13,9 @@ test.describe('Landing Page', () => {
     await expect(page.getByRole('link', { name: /menu/i })).toBeVisible();
   });
 
-  test('should navigate to menu page', async ({ page }) => {
+  test('should navigate to welcome page', async ({ page }) => {
     await page.getByRole('link', { name: /menu/i }).first().click();
-    await expect(page).toHaveURL(/.*menu/);
+    await expect(page).toHaveURL(/.*welcome/);
   });
 
   test('should display restaurant name', async ({ page }) => {
@@ -37,14 +37,16 @@ test.describe('Landing Page', () => {
 
   test('should have contact section with phone number', async ({ page }) => {
     const phoneLink = page.locator('a[href^="tel:"]');
-    if (await phoneLink.count() > 0) {
+    if ((await phoneLink.count()) > 0) {
       await expect(phoneLink.first()).toBeVisible();
     }
   });
 
   test('should have social media links', async ({ page }) => {
-    const socialLinks = page.locator('a[href*="instagram"], a[href*="facebook"], a[href*="tiktok"]');
-    if (await socialLinks.count() > 0) {
+    const socialLinks = page.locator(
+      'a[href*="instagram"], a[href*="facebook"], a[href*="tiktok"]'
+    );
+    if ((await socialLinks.count()) > 0) {
       await expect(socialLinks.first()).toBeVisible();
     }
   });

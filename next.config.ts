@@ -1,6 +1,12 @@
+import path from 'node:path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['pdf-parse', '@napi-rs/canvas'],
+  // Prevent Turbopack from mis-inferring workspace root (can crash long-running `next dev`)
+  turbopack: {
+    root: path.join(__dirname),
+  },
   images: {
     remotePatterns: [
       {

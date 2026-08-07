@@ -7,7 +7,7 @@ type Theme = 'light' | 'dark' | 'system';
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
+  defaultTheme = 'light',
   storageKey = 'warda-shamya-theme',
 }: {
   children: React.ReactNode;
@@ -31,6 +31,8 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Client-only gate for next-themes hydration
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional mount flag
     setMounted(true);
   }, []);
 
@@ -44,7 +46,7 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const { theme, setTheme, resolvedTheme } = useNextTheme();
   return {
-    theme: (theme ?? 'system') as Theme,
+    theme: (theme ?? 'light') as Theme,
     setTheme: setTheme as (theme: Theme) => void,
     resolvedTheme: (resolvedTheme ?? 'light') as 'light' | 'dark',
   };

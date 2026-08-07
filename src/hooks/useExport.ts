@@ -1,9 +1,6 @@
 'use client';
 
 import { useCallback } from 'react';
-import * as XLSX from 'xlsx';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import type { ExportData } from '@/types/database';
 
 export function useExport() {
@@ -11,13 +8,15 @@ export function useExport() {
     const csvContent = [
       data.headers.join(','),
       ...data.rows.map((row) =>
-        row.map((cell) => {
-          const str = String(cell);
-          if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-            return `"${str.replace(/"/g, '""')}"`;
-          }
-          return str;
-        }).join(',')
+        row
+          .map((cell) => {
+            const str = String(cell);
+            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+              return `"${str.replace(/"/g, '""')}"`;
+            }
+            return str;
+          })
+          .join(',')
       ),
     ].join('\n');
 
@@ -29,7 +28,8 @@ export function useExport() {
     URL.revokeObjectURL(link.href);
   }, []);
 
-  const exportExcel = useCallback((data: ExportData) => {
+  const exportExcel = useCallback(async (data: ExportData) => {
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.aoa_to_sheet([data.headers, ...data.rows]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Data');
@@ -39,6 +39,11 @@ export function useExport() {
   const exportPDF = useCallback(async (elementId: string, filename: string) => {
     const element = document.getElementById(elementId);
     if (!element) return;
+
+    const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf'),
+    ]);
 
     const canvas = await html2canvas(element, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL('image/png');

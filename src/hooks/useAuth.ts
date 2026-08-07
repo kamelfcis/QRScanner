@@ -26,7 +26,10 @@ export function useAuth() {
 
     const getUser = async () => {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
         if (mounted) {
           setState({ user, loading: false, error });
         }
@@ -39,17 +42,17 @@ export function useAuth() {
 
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (mounted) {
-          setState((prev) => ({
-            ...prev,
-            user: session?.user ?? null,
-            loading: false,
-          }));
-        }
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) {
+        setState((prev) => ({
+          ...prev,
+          user: session?.user ?? null,
+          loading: false,
+        }));
       }
-    );
+    });
 
     return () => {
       mounted = false;
@@ -57,22 +60,27 @@ export function useAuth() {
     };
   }, []);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    setState((prev) => ({ ...prev, loading: true, error: null }));
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const signIn = useCallback(
+    async (email: string, password: string) => {
+      setState((prev) => ({ ...prev, loading: true, error: null }));
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setState((prev) => ({ ...prev, loading: false, error }));
-      throw error;
-    }
+      if (error) {
+        setState((prev) => ({ ...prev, loading: false, error }));
+        throw error;
+      }
 
-    setState({ user: data.user, loading: false, error: null });
-    router.push('/dashboard');
-    return data;
-  }, [router]);
+      setState({ user: data.user, loading: false, error: null });
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      router.push(redirect && redirect.startsWith('/dashboard') ? redirect : '/dashboard');
+      return data;
+    },
+    [router]
+  );
 
   const signOut = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));

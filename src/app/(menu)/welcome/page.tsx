@@ -2,15 +2,25 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Utensils, ShoppingBag, ChevronRight, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import NextImage from 'next/image';
+import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { cn } from '@/lib/utils';
+import { cn, getName } from '@/lib/utils';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useCartStore, type CartDiningMode } from '@/stores/cart-store';
+import { buildMenuUrl, persistDiningMode, readStoredDiningMode } from '@/lib/dining-mode';
+import {
+  fadeInUp,
+  scaleIn,
+  staggerContainer,
+  staggerItem,
+  hoverScale,
+  tapScale,
+} from '@/lib/motion';
 
-type Mode = 'dining' | 'takeaway';
+const WELCOME_HERO = '/hero/warda-storefront.jpg';
 
 export default function WelcomePage() {
   return (
@@ -24,158 +34,181 @@ function WelcomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
+  const skipParam = searchParams.get('skip') === '1';
   const { data: settings } = useRestaurantSettings();
   const { locale } = useI18n();
   const t = useTranslations('welcome');
+  const prefersReducedMotion = useReducedMotion();
+  const setMeta = useCartStore((s) => s.setMeta);
 
-  const [selected, setSelected] = useState<Mode | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [ready, setReady] = useState(() => !skipParam);
+  const [redirecting] = useState(() => Boolean(skipParam));
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    // Testing escape hatch only - QR table scans always show mode picker
+    if (skipParam) {
+      const mode = readStoredDiningMode();
+      if (tableParam) localStorage.setItem('warda-table', tableParam);
+      router.replace(buildMenuUrl(mode, tableParam));
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reveal UI after client hydration
+    setReady(true);
+  }, [skipParam, tableParam, router]);
 
   const isArabic = locale === 'ar';
+  const restaurantName = getName(
+    locale,
+    settings?.name_en || 'Warda Shamya',
+    settings?.name_ar || 'وردة الشامية'
+  );
 
-  const handleContinue = () => {
-    if (!selected) return;
-    localStorage.setItem('warda-dining-mode', selected);
+  const goToMenu = (mode: CartDiningMode) => {
+    persistDiningMode(mode);
     if (tableParam) {
       localStorage.setItem('warda-table', tableParam);
     }
-    const params = new URLSearchParams({ mode: selected });
-    if (tableParam) params.set('table', tableParam);
-    router.push(`/menu?${params.toString()}`);
+    setMeta({
+      diningMode: mode,
+      tableNumber: tableParam,
+    });
+    router.push(buildMenuUrl(mode, tableParam));
   };
 
+  if (!ready || redirecting) {
+    return <WelcomeSkeleton />;
+  }
+
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4">
-      {/* Decorative background blobs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-secondary/5 blur-3xl" />
-        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/5 blur-3xl" />
+    <div className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]">
+      {/* Storefront hero — full bleed with subtle ken-burns */}
+      <div className="pointer-events-none absolute inset-0">
+        <motion.div
+          className="absolute inset-0"
+          initial={false}
+          animate={
+            prefersReducedMotion ? undefined : { scale: [1, 1.06], x: [0, '-1%'], y: [0, '-0.5%'] }
+          }
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }
+          }
+        >
+          <NextImage
+            src={WELCOME_HERO}
+            alt={t('heroAlt')}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+
+        {/* Layered overlays for readability + night-kitchen mood */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
+        <div className="via-brand-accent/30 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
       </div>
 
       <motion.div
-        initial={mounted ? { opacity: 0, y: 30 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 flex w-full max-w-md flex-col items-center text-center"
+        variants={prefersReducedMotion ? undefined : staggerContainer}
+        initial={prefersReducedMotion ? undefined : 'hidden'}
+        animate="visible"
+        className="relative z-10 flex w-full max-w-xl flex-col items-center px-4 py-6 text-center sm:max-w-2xl sm:px-6"
       >
-        {/* Restaurant name */}
+        {/* Logo — gold ring + glass frame */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="mb-2"
+          variants={prefersReducedMotion ? undefined : scaleIn}
+          className="border-brand-accent/35 mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_rgba(255,183,0,0.15)] backdrop-blur-xl sm:mb-6 sm:h-32 sm:w-32"
         >
-          <h1 className="text-3xl font-bold text-primary sm:text-4xl">
-            {settings?.name_en || 'Warda Shamya'}
-          </h1>
+          {settings?.logo_url ? (
+            <NextImage
+              src={settings.logo_url}
+              alt={restaurantName}
+              width={96}
+              height={96}
+              className="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(255,183,0,0.25)]"
+              priority
+            />
+          ) : (
+            <span className="font-heading text-brand-accent text-5xl font-bold drop-shadow-[0_0_20px_rgba(255,183,0,0.4)]">
+              W
+            </span>
+          )}
         </motion.div>
 
-        {/* Tagline */}
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35, duration: 0.5 }}
-          className="mb-1 text-sm text-muted-foreground"
+          variants={prefersReducedMotion ? undefined : fadeInUp}
+          className="font-heading text-brand-accent mb-2 text-xs font-medium uppercase tracking-[0.28em] sm:text-sm"
+        >
+          {restaurantName}
+        </motion.p>
+
+        <motion.h1
+          variants={prefersReducedMotion ? undefined : fadeInUp}
+          className="font-heading mb-2 max-w-md text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-lg sm:text-4xl"
+        >
+          {t('welcomeTo', { name: restaurantName })}
+        </motion.h1>
+
+        <motion.p
+          variants={prefersReducedMotion ? undefined : fadeInUp}
+          className="mb-1 max-w-sm text-sm leading-relaxed text-white/70"
         >
           {t('tagline')}
         </motion.p>
 
-        {/* Table badge */}
         {tableParam && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.4 }}
-            className="mb-6"
-          >
-            <Badge variant="secondary" className="mt-1 text-sm">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
+            <Badge
+              variant="secondary"
+              className="border-brand-accent/25 text-brand-accent mb-4 mt-3 border bg-black/50 px-4 py-1.5 text-sm backdrop-blur-md"
+            >
               {t('tableLabel')} {tableParam}
             </Badge>
           </motion.div>
         )}
+        {!tableParam && <div className="mb-4" />}
 
-        {!tableParam && <div className="mb-6" />}
-
-        {/* Title */}
         <motion.h2
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.5 }}
-          className="mb-2 text-xl font-semibold sm:text-2xl"
+          variants={prefersReducedMotion ? undefined : fadeInUp}
+          className="mb-6 text-base font-medium text-white/80 sm:mb-8 sm:text-lg"
         >
-          {t('title')}
+          {t('chooseOrderType')}
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55, duration: 0.5 }}
-          className="mb-8 text-sm text-muted-foreground"
+        <motion.div
+          variants={prefersReducedMotion ? undefined : staggerContainer}
+          className="mb-5 grid w-full grid-cols-1 gap-4 sm:grid-cols-2"
         >
-          {t('subtitle')}
-        </motion.p>
-
-        {/* Mode selection cards */}
-        <div className="mb-8 grid w-full grid-cols-2 gap-4">
           <ModeCard
-            mode="dining"
-            icon={<Utensils className="h-8 w-8" />}
-            label={t('dineIn')}
-            description={t('dineInDesc')}
-            selected={selected === 'dining'}
-            onClick={() => setSelected('dining')}
-            delay={0.5}
-            isArabic={isArabic}
+            emoji="🍽️"
+            labelEn={t('dineInEn')}
+            labelAr={t('dineInAr')}
+            subtitle={t('dineInDesc')}
+            testId="welcome-dine-in"
+            onSelect={() => goToMenu('dining')}
+            prefersReducedMotion={prefersReducedMotion}
+            isRtl={isArabic}
           />
           <ModeCard
-            mode="takeaway"
-            icon={<ShoppingBag className="h-8 w-8" />}
-            label={t('takeaway')}
-            description={t('takeawayDesc')}
-            selected={selected === 'takeaway'}
-            onClick={() => setSelected('takeaway')}
-            delay={0.6}
-            isArabic={isArabic}
+            emoji="🛍️"
+            labelEn={t('takeawayEn')}
+            labelAr={t('takeawayAr')}
+            subtitle={t('takeawayDesc')}
+            testId="welcome-takeaway"
+            onSelect={() => goToMenu('takeaway')}
+            prefersReducedMotion={prefersReducedMotion}
+            isRtl={isArabic}
           />
-        </div>
+        </motion.div>
 
-        {/* Continue button */}
-        <AnimatePresence>
-          {selected && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full"
-            >
-              <Button
-                size="lg"
-                className="group h-14 w-full text-base font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
-                onClick={handleContinue}
-              >
-                <Sparkles className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
-                {t('continue')}
-                <ChevronRight
-                  className={cn(
-                    'ml-2 h-5 w-5 transition-transform group-hover:translate-x-1',
-                    isArabic && 'rotate-180 group-hover:-translate-x-1'
-                  )}
-                />
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Hint */}
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-6 text-xs text-muted-foreground/60"
+          variants={prefersReducedMotion ? undefined : staggerItem}
+          className="text-xs text-white/50"
         >
           {t('orChangeLater')}
         </motion.p>
@@ -185,70 +218,100 @@ function WelcomeContent() {
 }
 
 function ModeCard({
-  mode,
-  icon,
-  label,
-  description,
-  selected,
-  onClick,
-  delay,
-  isArabic,
+  emoji,
+  labelEn,
+  labelAr,
+  subtitle,
+  testId,
+  onSelect,
+  prefersReducedMotion,
+  isRtl,
 }: {
-  mode: Mode;
-  icon: React.ReactNode;
-  label: string;
-  description: string;
-  selected: boolean;
-  onClick: () => void;
-  delay: number;
-  isArabic: boolean;
+  emoji: string;
+  labelEn: string;
+  labelAr: string;
+  subtitle: string;
+  testId: string;
+  onSelect: () => void;
+  prefersReducedMotion: boolean;
+  isRtl: boolean;
 }) {
+  const ariaLabel = `${labelEn} / ${labelAr}`;
+
   return (
     <motion.button
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      onClick={onClick}
+      type="button"
+      variants={prefersReducedMotion ? undefined : staggerItem}
+      whileHover={prefersReducedMotion ? undefined : hoverScale}
+      whileTap={prefersReducedMotion ? undefined : tapScale}
+      onClick={onSelect}
+      data-testid={testId}
+      aria-label={ariaLabel}
       className={cn(
-        'group relative flex flex-col items-center rounded-2xl border-2 p-6 text-center transition-all duration-300',
-        'hover:border-primary/50 hover:shadow-lg',
-        selected
-          ? 'border-primary bg-primary/5 shadow-md ring-2 ring-primary/20'
-          : 'border-border bg-card/50 hover:bg-card'
+        'group relative flex min-h-[172px] flex-col items-center justify-center overflow-hidden rounded-3xl',
+        'border border-white/15 bg-black/45 p-6 text-center shadow-lg backdrop-blur-xl',
+        'transition-[border-color,box-shadow,background-color] duration-300',
+        'hover:border-brand-accent/50 hover:bg-black/55 hover:shadow-[0_0_32px_rgba(255,183,0,0.18)]',
+        'focus-visible:ring-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black'
       )}
     >
-      {/* Glow effect on selected */}
-      {selected && (
-        <motion.div
-          layoutId="glow"
-          className="absolute inset-0 rounded-2xl bg-primary/5"
-          transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+      {/* Animated gold edge glow */}
+      <span
+        className={cn(
+          'via-brand-accent/60 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent',
+          !prefersReducedMotion &&
+            'opacity-60 transition-opacity duration-300 group-hover:opacity-100'
+        )}
+        aria-hidden
+      />
+
+      {!prefersReducedMotion && (
+        <motion.span
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0"
+          aria-hidden
+          initial={false}
+          whileHover={{
+            opacity: 1,
+            boxShadow: '0 0 24px rgba(255, 183, 0, 0.12), inset 0 1px 0 rgba(255, 183, 0, 0.2)',
+          }}
+          transition={{ duration: 0.3 }}
         />
       )}
 
-      <div
-        className={cn(
-          'relative mb-3 flex h-16 w-16 items-center justify-center rounded-xl transition-all duration-300',
-          selected
-            ? 'bg-primary text-primary-foreground shadow-md'
-            : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
-        )}
-      >
-        {icon}
+      <span className="mb-3 text-4xl drop-shadow-md" role="img" aria-hidden>
+        {emoji}
+      </span>
+      <div className={cn('mb-1 flex flex-col gap-0.5', isRtl ? 'items-center' : 'items-center')}>
+        <span className="text-lg font-bold leading-tight text-white">{labelEn}</span>
+        <span className="font-arabic text-brand-accent text-base font-semibold">{labelAr}</span>
       </div>
+      <p className="max-w-[200px] text-xs leading-relaxed text-white/60">{subtitle}</p>
 
-      <h3 className="relative mb-1 text-lg font-bold">{label}</h3>
-      <p className="relative text-xs leading-relaxed text-muted-foreground">
-        {description}
-      </p>
+      <div
+        className="from-brand-accent/10 pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        aria-hidden
+      />
     </motion.button>
   );
 }
 
 function WelcomeSkeleton() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="h-8 w-48 animate-pulse rounded bg-muted" />
+    <div className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-black px-4">
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40"
+        aria-hidden
+      />
+      <div className="relative z-10 flex w-full max-w-xl flex-col items-center gap-4">
+        <div className="h-28 w-28 animate-pulse rounded-[1.75rem] bg-white/10" />
+        <div className="h-4 w-32 animate-pulse rounded bg-white/10" />
+        <div className="h-8 w-56 animate-pulse rounded-lg bg-white/10" />
+        <div className="h-4 w-40 animate-pulse rounded bg-white/10" />
+        <div className="mt-4 grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="h-44 animate-pulse rounded-3xl bg-white/10" />
+          <div className="h-44 animate-pulse rounded-3xl bg-white/10" />
+        </div>
+      </div>
     </div>
   );
 }

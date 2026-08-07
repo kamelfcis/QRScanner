@@ -19,10 +19,19 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Save, Upload, X } from 'lucide-react';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
+import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 
-const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+const DAYS = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+] as const;
 
 const DEFAULT_HOURS: HoursSettings = {
   monday: { open: '09:00', close: '23:00', closed: false },
@@ -35,10 +44,10 @@ const DEFAULT_HOURS: HoursSettings = {
 };
 
 const DEFAULT_THEME: ThemeSettings = {
-  primary_color: '#C8963E',
-  secondary_color: '#1a1a1a',
-  accent_color: '#FFD700',
-  background_color: '#ffffff',
+  primary_color: '#FFB700',
+  secondary_color: '#6B0F1A',
+  accent_color: '#FFB700',
+  background_color: '#FAF8F5',
 };
 
 export default function SettingsPage() {
@@ -58,18 +67,31 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadingHero, setUploadingHero] = useState(false);
+  const [uploadingStory, setUploadingStory] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const heroFileInputRef = useRef<HTMLInputElement>(null);
+  const storyFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (settings) setForm(settings);
+    if (settings) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate form from query
+      setForm(settings);
+    }
   }, [settings]);
 
   useEffect(() => {
-    if (hours) setHoursForm(hours);
+    if (hours) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate hours from query
+      setHoursForm(hours);
+    }
   }, [hours]);
 
   useEffect(() => {
-    if (theme) setThemeForm(theme);
+    if (theme) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate theme from query
+      setThemeForm(theme);
+    }
   }, [theme]);
 
   const validate = (): string[] => {
@@ -78,10 +100,45 @@ export default function SettingsPage() {
     if (!form.name_ar?.trim()) errs.push(t('validation.nameArRequired'));
     if (form.tax_rate !== undefined && (form.tax_rate < 0 || form.tax_rate > 100))
       errs.push(t('validation.taxRateRange'));
-    if (form.service_charge_rate !== undefined && (form.service_charge_rate < 0 || form.service_charge_rate > 100))
+    if (
+      form.service_charge_rate !== undefined &&
+      (form.service_charge_rate < 0 || form.service_charge_rate > 100)
+    )
       errs.push(t('validation.serviceChargeRange'));
+    if (
+      form.prep_time_minutes !== undefined &&
+      (form.prep_time_minutes < 0 || form.prep_time_minutes > 240)
+    )
+      errs.push(t('validation.prepTimeRange'));
+    if (form.minimum_order !== undefined && form.minimum_order < 0)
+      errs.push(t('validation.minimumOrderRange'));
+    if (
+      form.max_order_notes_length !== undefined &&
+      (form.max_order_notes_length < 0 || form.max_order_notes_length > 1000)
+    )
+      errs.push(t('validation.maxNotesRange'));
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.push(t('validation.invalidEmail'));
+    (['primary_color', 'secondary_color', 'accent_color', 'background_color'] as const).forEach(
+      (key) => {
+        const color = themeForm[key];
+        if (color && !isValidHexColor(color)) {
+          errs.push(
+            t('validation.invalidColor', {
+              field: t(
+                key === 'primary_color'
+                  ? 'primaryColor'
+                  : key === 'secondary_color'
+                    ? 'secondaryColor'
+                    : key === 'accent_color'
+                      ? 'accentColor'
+                      : 'backgroundColor'
+              ),
+            })
+          );
+        }
+      }
+    );
     return errs;
   };
 
@@ -123,7 +180,59 @@ export default function SettingsPage() {
     setForm((prev) => ({ ...prev, logo_url: null }));
   };
 
-  const handleHoursChange = (day: string, field: 'open' | 'close' | 'closed', value: string | boolean) => {
+  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHero(true);
+    try {
+      if (form.hero_image_url) {
+        const oldPath = form.hero_image_url.split('/covers/')[1];
+        if (oldPath) await deleteImage('covers', oldPath).catch(() => {});
+      }
+      const path = generateStoragePath('covers', file.name);
+      const result = await uploadImage({ bucket: 'covers', path, file });
+      setForm((prev) => ({ ...prev, hero_image_url: result.url }));
+    } catch (err) {
+      setErrors([err instanceof Error ? err.message : t('heroUploadFailed')]);
+    } finally {
+      setUploadingHero(false);
+      if (heroFileInputRef.current) heroFileInputRef.current.value = '';
+    }
+  };
+
+  const handleHeroRemove = () => {
+    setForm((prev) => ({ ...prev, hero_image_url: null }));
+  };
+
+  const handleStoryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingStory(true);
+    try {
+      if (form.story_image_url) {
+        const oldPath = form.story_image_url.split('/covers/')[1];
+        if (oldPath) await deleteImage('covers', oldPath).catch(() => {});
+      }
+      const path = generateStoragePath('covers', file.name);
+      const result = await uploadImage({ bucket: 'covers', path, file });
+      setForm((prev) => ({ ...prev, story_image_url: result.url }));
+    } catch (err) {
+      setErrors([err instanceof Error ? err.message : t('storyUploadFailed')]);
+    } finally {
+      setUploadingStory(false);
+      if (storyFileInputRef.current) storyFileInputRef.current.value = '';
+    }
+  };
+
+  const handleStoryRemove = () => {
+    setForm((prev) => ({ ...prev, story_image_url: null }));
+  };
+
+  const handleHoursChange = (
+    day: string,
+    field: 'open' | 'close' | 'closed',
+    value: string | boolean
+  ) => {
     setHoursForm((prev) => ({
       ...prev,
       [day]: {
@@ -150,8 +259,8 @@ export default function SettingsPage() {
       </div>
 
       {errors.length > 0 && (
-        <div role="alert" className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          <ul className="list-disc list-inside">
+        <div role="alert" className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
+          <ul className="list-inside list-disc">
             {errors.map((err, i) => (
               <li key={i}>{err}</li>
             ))}
@@ -181,7 +290,7 @@ export default function SettingsPage() {
                   <Label>{t('logo')}</Label>
                   <div className="flex items-center gap-3">
                     {form.logo_url ? (
-                      <div className="relative h-20 w-20 overflow-hidden rounded-lg border bg-muted">
+                      <div className="bg-muted relative h-20 w-20 overflow-hidden rounded-lg border">
                         <img
                           src={form.logo_url}
                           alt={t('restaurantLogo')}
@@ -190,7 +299,7 @@ export default function SettingsPage() {
                         <button
                           type="button"
                           onClick={handleLogoRemove}
-                          className="absolute right-1 top-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
+                          className="bg-destructive text-destructive-foreground absolute right-1 top-1 rounded-full p-0.5"
                           aria-label={t('removeLogo')}
                         >
                           <X className="h-3 w-3" />
@@ -201,7 +310,7 @@ export default function SettingsPage() {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed bg-muted/50 text-muted-foreground transition-colors hover:border-primary/50 hover:bg-muted"
+                        className="bg-muted/50 text-muted-foreground hover:border-primary/50 hover:bg-muted flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors"
                       >
                         <Upload className="mb-1 h-5 w-5" />
                         <span className="text-xs">{uploading ? '...' : t('uploadLogo')}</span>
@@ -258,16 +367,6 @@ export default function SettingsPage() {
                     onChange={(e) => setForm((prev) => ({ ...prev, tagline: e.target.value }))}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t('email')}</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={form.email || ''}
-                    placeholder={t('emailPlaceholder')}
-                    onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
-                  />
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -280,6 +379,59 @@ export default function SettingsPage() {
               <CardDescription>{t('heroDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>{t('heroImage')}</Label>
+                <p className="text-muted-foreground text-sm">{t('heroImageDescription')}</p>
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+                  {form.hero_image_url ? (
+                    <div className="bg-muted relative h-32 w-full max-w-md overflow-hidden rounded-lg border sm:h-28">
+                      <img
+                        src={form.hero_image_url}
+                        alt={t('heroImageAlt')}
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleHeroRemove}
+                        className="bg-destructive text-destructive-foreground absolute right-2 top-2 rounded-full p-1"
+                        aria-label={t('removeHeroImage')}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => heroFileInputRef.current?.click()}
+                      disabled={uploadingHero}
+                      className="bg-muted/50 text-muted-foreground hover:border-primary/50 hover:bg-muted flex h-32 w-full max-w-md flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors"
+                    >
+                      <Upload className="mb-1 h-5 w-5" />
+                      <span className="text-xs">
+                        {uploadingHero ? '...' : t('uploadHeroImage')}
+                      </span>
+                    </button>
+                  )}
+                  <input
+                    ref={heroFileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleHeroUpload}
+                    className="hidden"
+                  />
+                  {form.hero_image_url && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => heroFileInputRef.current?.click()}
+                      disabled={uploadingHero}
+                    >
+                      {uploadingHero ? tCommon('uploading') : t('changeHeroImage')}
+                    </Button>
+                  )}
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="hero_headline">{t('headline')}</Label>
                 <Input
@@ -300,6 +452,66 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('storySection')}</CardTitle>
+              <CardDescription>{t('storyImageDescription')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>{t('storyImage')}</Label>
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+                  {form.story_image_url ? (
+                    <div className="bg-muted relative aspect-[4/3] w-full max-w-md overflow-hidden rounded-lg border">
+                      <img
+                        src={form.story_image_url}
+                        alt={t('storyImageAlt')}
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleStoryRemove}
+                        className="bg-destructive text-destructive-foreground absolute right-2 top-2 rounded-full p-1"
+                        aria-label={t('removeStoryImage')}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => storyFileInputRef.current?.click()}
+                      disabled={uploadingStory}
+                      className="bg-muted/50 text-muted-foreground hover:border-primary/50 hover:bg-muted flex aspect-[4/3] w-full max-w-md flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors"
+                    >
+                      <Upload className="mb-1 h-5 w-5" />
+                      <span className="text-xs">
+                        {uploadingStory ? '...' : t('uploadStoryImage')}
+                      </span>
+                    </button>
+                  )}
+                  <input
+                    ref={storyFileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleStoryUpload}
+                    className="hidden"
+                  />
+                  {form.story_image_url && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => storyFileInputRef.current?.click()}
+                      disabled={uploadingStory}
+                    >
+                      {uploadingStory ? tCommon('uploading') : t('changeStoryImage')}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="contact" className="space-y-4">
@@ -315,7 +527,10 @@ export default function SettingsPage() {
                   <Input
                     id="phone"
                     type="tel"
+                    dir="ltr"
+                    className="unicode-bidi-plaintext"
                     value={form.phone || ''}
+                    placeholder="+20 ..."
                     onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
                   />
                 </div>
@@ -324,10 +539,25 @@ export default function SettingsPage() {
                   <Input
                     id="whatsapp"
                     type="tel"
+                    dir="ltr"
+                    className="unicode-bidi-plaintext"
                     value={form.whatsapp || ''}
+                    placeholder="+20 ..."
                     onChange={(e) => setForm((prev) => ({ ...prev, whatsapp: e.target.value }))}
                   />
                 </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact_email">{t('email')}</Label>
+                <Input
+                  id="contact_email"
+                  type="email"
+                  dir="ltr"
+                  className="unicode-bidi-plaintext"
+                  value={form.email || ''}
+                  placeholder={t('emailPlaceholder')}
+                  onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -335,6 +565,7 @@ export default function SettingsPage() {
                   <Input
                     id="address_en"
                     value={form.address_en || ''}
+                    placeholder={t('addressEnPlaceholder')}
                     onChange={(e) => setForm((prev) => ({ ...prev, address_en: e.target.value }))}
                   />
                 </div>
@@ -344,6 +575,7 @@ export default function SettingsPage() {
                     id="address_ar"
                     dir="rtl"
                     value={form.address_ar || ''}
+                    placeholder={t('addressArPlaceholder')}
                     onChange={(e) => setForm((prev) => ({ ...prev, address_ar: e.target.value }))}
                   />
                 </div>
@@ -354,7 +586,9 @@ export default function SettingsPage() {
                   id="google_maps_url"
                   value={form.google_maps_url || ''}
                   placeholder="https://maps.google.com/..."
-                  onChange={(e) => setForm((prev) => ({ ...prev, google_maps_url: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, google_maps_url: e.target.value }))
+                  }
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
@@ -398,8 +632,11 @@ export default function SettingsPage() {
                 const dayHours = hoursForm[day] || { open: '09:00', close: '23:00', closed: false };
                 const isClosed = dayHours.closed ?? false;
                 return (
-                  <div key={day} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                    <span className="w-28 capitalize font-medium text-sm">{tDays(day)}</span>
+                  <div
+                    key={day}
+                    className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+                  >
+                    <span className="w-28 text-sm font-medium capitalize">{tDays(day)}</span>
                     <Switch
                       checked={!isClosed}
                       onCheckedChange={(checked) => handleHoursChange(day, 'closed', !checked)}
@@ -426,7 +663,9 @@ export default function SettingsPage() {
                       </div>
                     )}
                     {isClosed && (
-                      <span className="text-sm text-muted-foreground italic">{tCommon('disabled')}</span>
+                      <span className="text-muted-foreground text-sm italic">
+                        {tCommon('disabled')}
+                      </span>
                     )}
                   </div>
                 );
@@ -438,10 +677,36 @@ export default function SettingsPage() {
         <TabsContent value="theme" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('themeColors')}</CardTitle>
+              <CardTitle>{t('brandingTheme')}</CardTitle>
               <CardDescription>{t('themeDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              <div className="rounded-lg border p-4">
+                <p className="mb-3 text-sm font-medium">{t('themePreview')}</p>
+                <div className="flex flex-wrap gap-3">
+                  {(
+                    [
+                      { key: 'primary_color', label: t('primaryColor') },
+                      { key: 'secondary_color', label: t('secondaryColor') },
+                      { key: 'accent_color', label: t('accentColor') },
+                      { key: 'background_color', label: t('backgroundColor') },
+                    ] as const
+                  ).map(({ key, label }) => (
+                    <div key={key} className="flex items-center gap-2">
+                      <span
+                        className="h-10 w-10 rounded-md border shadow-sm"
+                        style={{ backgroundColor: themeForm[key] || DEFAULT_THEME[key] }}
+                        aria-hidden
+                      />
+                      <div>
+                        <p className="text-muted-foreground text-xs">{label}</p>
+                        <p className="font-mono text-xs">{themeForm[key] || DEFAULT_THEME[key]}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="primary_color">{t('primaryColor')}</Label>
@@ -449,13 +714,17 @@ export default function SettingsPage() {
                     <input
                       id="primary_color"
                       type="color"
-                      value={themeForm.primary_color || '#C8963E'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, primary_color: e.target.value }))}
+                      value={themeForm.primary_color || '#FFB700'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, primary_color: e.target.value }))
+                      }
                       className="h-10 w-10 cursor-pointer rounded border"
                     />
                     <Input
-                      value={themeForm.primary_color || '#C8963E'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, primary_color: e.target.value }))}
+                      value={themeForm.primary_color || '#FFB700'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, primary_color: e.target.value }))
+                      }
                       className="flex-1"
                     />
                   </div>
@@ -466,13 +735,17 @@ export default function SettingsPage() {
                     <input
                       id="secondary_color"
                       type="color"
-                      value={themeForm.secondary_color || '#1a1a1a'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, secondary_color: e.target.value }))}
+                      value={themeForm.secondary_color || '#6B0F1A'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, secondary_color: e.target.value }))
+                      }
                       className="h-10 w-10 cursor-pointer rounded border"
                     />
                     <Input
-                      value={themeForm.secondary_color || '#1a1a1a'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, secondary_color: e.target.value }))}
+                      value={themeForm.secondary_color || '#6B0F1A'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, secondary_color: e.target.value }))
+                      }
                       className="flex-1"
                     />
                   </div>
@@ -483,13 +756,17 @@ export default function SettingsPage() {
                     <input
                       id="accent_color"
                       type="color"
-                      value={themeForm.accent_color || '#FFD700'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, accent_color: e.target.value }))}
+                      value={themeForm.accent_color || '#FFB700'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, accent_color: e.target.value }))
+                      }
                       className="h-10 w-10 cursor-pointer rounded border"
                     />
                     <Input
-                      value={themeForm.accent_color || '#FFD700'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, accent_color: e.target.value }))}
+                      value={themeForm.accent_color || '#FFB700'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, accent_color: e.target.value }))
+                      }
                       className="flex-1"
                     />
                   </div>
@@ -500,13 +777,17 @@ export default function SettingsPage() {
                     <input
                       id="background_color"
                       type="color"
-                      value={themeForm.background_color || '#ffffff'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, background_color: e.target.value }))}
+                      value={themeForm.background_color || '#FAF8F5'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, background_color: e.target.value }))
+                      }
                       className="h-10 w-10 cursor-pointer rounded border"
                     />
                     <Input
-                      value={themeForm.background_color || '#ffffff'}
-                      onChange={(e) => setThemeForm((prev) => ({ ...prev, background_color: e.target.value }))}
+                      value={themeForm.background_color || '#FAF8F5'}
+                      onChange={(e) =>
+                        setThemeForm((prev) => ({ ...prev, background_color: e.target.value }))
+                      }
                       className="flex-1"
                     />
                   </div>
@@ -563,6 +844,80 @@ export default function SettingsPage() {
                       }))
                     }
                   />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="space-y-2">
+                  <Label htmlFor="prep_time_minutes">{t('prepTime')}</Label>
+                  <Input
+                    id="prep_time_minutes"
+                    type="number"
+                    min="0"
+                    max="240"
+                    value={form.prep_time_minutes ?? 25}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        prep_time_minutes: parseInt(e.target.value, 10) || 0,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="minimum_order">{t('minimumOrder')}</Label>
+                  <Input
+                    id="minimum_order"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.minimum_order ?? 0}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        minimum_order: parseFloat(e.target.value) || 0,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="max_order_notes_length">{t('maxOrderNotes')}</Label>
+                  <Input
+                    id="max_order_notes_length"
+                    type="number"
+                    min="0"
+                    max="1000"
+                    value={form.max_order_notes_length ?? 200}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        max_order_notes_length: parseInt(e.target.value, 10) || 0,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+                <div className="flex items-center gap-3">
+                  <Switch
+                    id="apply_tax"
+                    checked={form.apply_tax !== false}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => ({ ...prev, apply_tax: checked }))
+                    }
+                  />
+                  <Label htmlFor="apply_tax">{t('applyTax')}</Label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Switch
+                    id="apply_service_charge"
+                    checked={form.apply_service_charge !== false}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => ({ ...prev, apply_service_charge: checked }))
+                    }
+                  />
+                  <Label htmlFor="apply_service_charge">{t('applyServiceCharge')}</Label>
                 </div>
               </div>
             </CardContent>

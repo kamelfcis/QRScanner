@@ -1,17 +1,14 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z
-    .string()
-    .min(1, 'NEXT_PUBLIC_SUPABASE_URL is required'),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z
-    .string()
-    .min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required'),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_URL is required'),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required'),
   NEXT_PUBLIC_APP_URL: z.string().default('http://localhost:3000'),
   NEXT_PUBLIC_APP_NAME: z.string().default('Warda Shamya'),
   NEXT_PUBLIC_SITE_URL: z.string().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  OPENAI_API_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL: z.string().optional(),
 });
 
 function validateEnv() {
@@ -30,7 +27,8 @@ function validateEnv() {
       NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'Warda Shamya',
       NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
-      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+      GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+      GEMINI_MODEL: process.env.GEMINI_MODEL,
     };
   }
   return parsed.data;

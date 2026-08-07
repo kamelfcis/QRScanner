@@ -19,8 +19,7 @@ test.describe('Menu Experience', () => {
 
   test('should display dining/takeaway toggle', async ({ page }) => {
     const diningBtn = page.getByRole('button', { name: /dining/i });
-    const takeawayBtn = page.getByRole('button', { name: /takeaway/i });
-    await expect(diningBtn.or(takeawayBtn)).toBeVisible();
+    await expect(diningBtn.first()).toBeVisible();
   });
 
   test('should toggle between dining and takeaway mode', async ({ page }) => {
@@ -60,10 +59,34 @@ test.describe('Menu Experience', () => {
     await expect(page).toHaveURL(/table=5/);
   });
 
+  test('should deep-link with mode=dine_in', async ({ page }) => {
+    await page.goto('/menu?table=3&mode=dine_in');
+    await expect(page).toHaveURL(/mode=dine_in/);
+    await expect(page).toHaveURL(/table=3/);
+    const diningBtn = page.getByRole('button', { name: /dining|مطاعم/i });
+    if (await diningBtn.count()) {
+      await expect(diningBtn.first()).toHaveAttribute('aria-pressed', 'true');
+    }
+  });
+
+  test('welcome with table should show mode picker', async ({ page }) => {
+    await page.goto('/welcome?table=7');
+    await expect(page).toHaveURL(/welcome/);
+    await expect(page.getByText(/7/)).toBeVisible();
+    await expect(page.getByTestId('welcome-dine-in')).toBeVisible();
+    await expect(page.getByTestId('welcome-takeaway')).toBeVisible();
+  });
+
+  test('welcome skip=1 with table redirects to menu', async ({ page }) => {
+    await page.goto('/welcome?table=7&skip=1');
+    await page.waitForURL(/\/menu/, { timeout: 10000 });
+    await expect(page).toHaveURL(/table=7/);
+  });
+
   test('should have favorites button on product cards', async ({ page }) => {
     await page.waitForLoadState('networkidle');
     const favBtn = page.getByRole('button', { name: /favorite|heart|save/i });
-    if (await favBtn.count() > 0) {
+    if ((await favBtn.count()) > 0) {
       await expect(favBtn.first()).toBeVisible();
     }
   });

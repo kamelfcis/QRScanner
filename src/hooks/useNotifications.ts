@@ -4,8 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Notification } from '@/types/database';
 import type { NotificationInput } from '@/types/schema';
-
-const supabase = createClient();
+import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 
 export const notificationKeys = {
   all: ['notifications'] as const,
@@ -14,9 +13,13 @@ export const notificationKeys = {
 };
 
 export function useNotifications(limit: number = 20) {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: notificationKeys.lists(),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -30,9 +33,13 @@ export function useNotifications(limit: number = 20) {
 }
 
 export function useUnreadNotifications() {
+  const enabled = useAdminQueryEnabled();
+
   return useQuery({
     queryKey: notificationKeys.unread(),
+    enabled,
     queryFn: async () => {
+      const supabase = createClient();
       const { count, error } = await supabase
         .from('notifications')
         .select('*', { count: 'exact', head: true })
@@ -48,10 +55,8 @@ export function useMarkNotificationRead() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ is_read: true })
-        .eq('id', id);
+      const supabase = createClient();
+      const { error } = await supabase.from('notifications').update({ is_read: true }).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -64,6 +69,7 @@ export function useMarkAllNotificationsRead() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
+      const supabase = createClient();
       const { error } = await supabase
         .from('notifications')
         .update({ is_read: true })
@@ -80,11 +86,8 @@ export function useCreateNotification() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: NotificationInput) => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .insert(input)
-        .select()
-        .single();
+      const supabase = createClient();
+      const { data, error } = await supabase.from('notifications').insert(input).select().single();
       if (error) throw error;
       return data as Notification;
     },
@@ -98,10 +101,8 @@ export function useDeleteNotification() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('notifications')
-        .delete()
-        .eq('id', id);
+      const supabase = createClient();
+      const { error } = await supabase.from('notifications').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {

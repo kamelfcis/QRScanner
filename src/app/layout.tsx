@@ -1,45 +1,63 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Playfair_Display, Noto_Sans_Arabic } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans, Tajawal } from 'next/font/google';
 import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
+import { defaultLocale, type Locale } from '@/i18n/config';
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-sans',
+const dmSans = DM_Sans({
+  variable: '--font-body-family',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
+  preload: true,
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: '--font-heading',
+const cormorant = Cormorant_Garamond({
+  variable: '--font-heading-family',
   subsets: ['latin'],
+  weight: ['500', '600', '700'],
   display: 'swap',
+  preload: true,
 });
 
-const notoArabic = Noto_Sans_Arabic({
-  variable: '--font-ar',
+const tajawal = Tajawal({
+  variable: '--font-ar-family',
   subsets: ['arabic'],
+  weight: ['400', '500', '700'],
   display: 'swap',
+  preload: true,
 });
 
-export const metadata: Metadata = {
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+
+const baseMetadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Warda Shamya | Digital Restaurant Menu',
     template: '%s | Warda Shamya',
   },
   description:
     'Warda Shamya Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.',
-  keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', 'Warda Shamya'],
+  keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', 'Warda Shamya', 'وردة الشامية'],
   authors: [{ name: 'Warda Shamya' }],
   creator: 'Warda Shamya',
+  alternates: {
+    languages: {
+      en: SITE_URL,
+      ar: SITE_URL,
+      'x-default': SITE_URL,
+    },
+  },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    url: 'https://wardashamya.com',
+    locale: 'ar_SA',
+    alternateLocale: ['en_US'],
+    url: SITE_URL,
     siteName: 'Warda Shamya',
     title: 'Warda Shamya | Digital Restaurant Menu',
     description: 'Premium dining experience with digital menu.',
@@ -64,13 +82,18 @@ export const metadata: Metadata = {
   },
 };
 
+export function generateMetadata(): Metadata {
+  return baseMetadata;
+}
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#B8860B' },
-    { media: '(prefers-color-scheme: dark)', color: '#DAA520' },
+    { media: '(prefers-color-scheme: light)', color: '#FAF8F5' },
+    { media: '(prefers-color-scheme: dark)', color: '#0A0A0A' },
   ],
 };
 
@@ -80,35 +103,36 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headerStore = await headers();
-  const locale = headerStore.get('x-locale') || 'en';
+  const locale = (headerStore.get('x-locale') || defaultLocale) as Locale;
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
     <html
       lang={locale}
       dir={dir}
-      className={`${inter.variable} ${playfairDisplay.variable} ${notoArabic.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >
       <head>
-        <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#B8860B" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/icons/icon.svg" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className="min-h-full flex flex-col">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4 focus:bg-background focus:text-foreground">
+      <body className="flex min-h-full w-full flex-col overflow-x-clip">
+        <a
+          href="#main-content"
+          className="focus:bg-background focus:text-foreground sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-4"
+        >
           Skip to main content
         </a>
         <ErrorBoundary>
-          <RootI18nProvider initialLocale={locale as 'en' | 'ar'}>
-            <TooltipProvider delay={0}>{children}</TooltipProvider>
+          <RootI18nProvider initialLocale={locale}>
+            <TooltipProvider delay={0}>
+              {children}
+              <InstallPrompt />
+              <OfflineIndicator />
+            </TooltipProvider>
           </RootI18nProvider>
         </ErrorBoundary>
-        <InstallPrompt />
-        <OfflineIndicator />
       </body>
     </html>
   );

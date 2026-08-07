@@ -7,9 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-heading);
+  --font-heading: var(--font-heading-family), ui-serif, Georgia, "Times New Roman", serif;
+  --font-ar: var(--font-ar-family), ui-sans-serif, sans-serif;
+  --font-arabic: var(--font-ar-family), ui-sans-serif, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,111 +50,112 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   
-  /* Warda Shamya Brand Colors */
-  --color-brand-primary: #B8860B;
-  --color-brand-primary-light: #DAA520;
-  --color-brand-primary-dark: #8B6914;
-  --color-brand-secondary: #8B0000;
-  --color-brand-secondary-light: #A52A2A;
-  --color-brand-secondary-dark: #5C0000;
-  --color-brand-accent: #FFD700;
-  --color-brand-background: #FFFAF0;
+  /* Night Levantine street kitchen — charcoal + neon gold */
+  --color-brand-primary: #FFB700;
+  --color-brand-primary-light: #FFC933;
+  --color-brand-primary-dark: #C48A00;
+  --color-brand-secondary: #6B0F1A;
+  --color-brand-secondary-light: #8B1A2B;
+  --color-brand-secondary-dark: #3D0810;
+  --color-brand-accent: #FFB700;
+  --color-brand-background: #0E0E0E;
 }
 
 :root {
-  /* Warda Shamya Light Theme */
-  --background: #FFFAF0;
-  --foreground: #1A1A1A;
+  /* Warm light — readable contrast for public pages */
+  --background: #FAF8F5;
+  --foreground: #1A1814;
   --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --card-foreground: #1A1814;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  --primary: #B8860B;
+  --popover-foreground: #1A1814;
+  --primary: #C48A00;
   --primary-foreground: #FFFFFF;
-  --secondary: #8B0000;
+  --secondary: #6B0F1A;
   --secondary-foreground: #FFFFFF;
-  --muted: #F5F5F5;
-  --muted-foreground: #737373;
-  --accent: #FFD700;
-  --accent-foreground: #1A1A1A;
-  --destructive: #EF4444;
-  --border: #E5E5E5;
-  --input: #E5E5E5;
-  --ring: #B8860B;
-  --chart-1: #B8860B;
-  --chart-2: #8B0000;
-  --chart-3: #FFD700;
+  --muted: #F0EBE3;
+  --muted-foreground: #6B6560;
+  --accent: #FFB700;
+  --accent-foreground: #1A1814;
+  --destructive: #DC2626;
+  --border: #E5DFD6;
+  --input: #E5DFD6;
+  --ring: #C48A00;
+  --chart-1: #FFB700;
+  --chart-2: #6B0F1A;
+  --chart-3: #E8C547;
   --chart-4: #22C55E;
   --chart-5: #3B82F6;
   --radius: 0.625rem;
-  
-  /* Sidebar */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #B8860B;
+
+  /* Sidebar (light admin shell) */
+  --sidebar: #F5F0E8;
+  --sidebar-foreground: #1A1814;
+  --sidebar-primary: #C48A00;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F5F5;
-  --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: #E5E5E5;
-  --sidebar-ring: #B8860B;
+  --sidebar-accent: #EBE4DA;
+  --sidebar-accent-foreground: #1A1814;
+  --sidebar-border: #E5DFD6;
+  --sidebar-ring: #C48A00;
 }
 
 .dark {
-  /* Warda Shamya Dark Theme */
+  /* Explicit dark — same night kitchen */
   --background: #0A0A0A;
   --foreground: #FAFAFA;
-  --card: #1A1A1A;
+  --card: #141414;
   --card-foreground: #FAFAFA;
-  --popover: #1A1A1A;
+  --popover: #141414;
   --popover-foreground: #FAFAFA;
-  --primary: #DAA520;
-  --primary-foreground: #1A1A1A;
-  --secondary: #A52A2A;
+  --primary: #FFB700;
+  --primary-foreground: #0A0A0A;
+  --secondary: #8B1A2B;
   --secondary-foreground: #FFFFFF;
-  --muted: #1F1F1F;
+  --muted: #1A1A1A;
   --muted-foreground: #A3A3A3;
-  --accent: #FFD700;
-  --accent-foreground: #1A1A1A;
+  --accent: #FFB700;
+  --accent-foreground: #0A0A0A;
   --destructive: #DC2626;
   --border: #2A2A2A;
   --input: #2A2A2A;
-  --ring: #DAA520;
-  --chart-1: #DAA520;
-  --chart-2: #A52A2A;
-  --chart-3: #FFD700;
+  --ring: #FFB700;
+  --chart-1: #FFB700;
+  --chart-2: #8B1A2B;
+  --chart-3: #E8C547;
   --chart-4: #22C55E;
   --chart-5: #3B82F6;
   
   /* Sidebar Dark */
-  --sidebar: #1A1A1A;
+  --sidebar: #121212;
   --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #DAA520;
-  --sidebar-primary-foreground: #1A1A1A;
-  --sidebar-accent: #2A2A2A;
+  --sidebar-primary: #FFB700;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #1F1F1F;
   --sidebar-accent-foreground: #FAFAFA;
   --sidebar-border: #2A2A2A;
-  --sidebar-ring: #DAA520;
+  --sidebar-ring: #FFB700;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-body scroll-smooth;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: clip;
+    min-height: 100%;
   }
-  html {
-    @apply font-sans scroll-smooth;
-  }
-}
-
-/* Arabic Font Support */
-@font-face {
-  font-family: 'Noto Sans Arabic';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfyGyvuQ.woff2') format('woff2');
 }
 
 /* RTL Support */
@@ -167,13 +171,19 @@
 
 /* Arabic Font Switching */
 [dir="rtl"] body {
-  font-family: var(--font-ar), var(--font-sans), 'Noto Sans Arabic', sans-serif;
+  font-family: var(--font-ar), var(--font-body), ui-sans-serif, sans-serif;
   line-height: 1.8;
   font-size: 1.05em;
 }
 
-[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
-  font-family: var(--font-ar), var(--font-sans), 'Noto Sans Arabic', sans-serif;
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+[dir="rtl"] .font-heading {
+  font-family: var(--font-ar), var(--font-body), ui-sans-serif, sans-serif;
 }
 
 /* RTL Layout Adjustments */
@@ -290,6 +300,14 @@ textarea,
   transition-property: color, background-color, border-color, box-shadow, opacity, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Safe area helpers for notch / home indicator devices */
+.safe-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.safe-pt {
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* Reduced motion */

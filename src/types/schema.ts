@@ -46,26 +46,28 @@ export const productSchema = z.object({
 
 export type ProductInput = z.infer<typeof productSchema>;
 
-export const offerSchema = z.object({
-  title_ar: z.string().min(1, 'Arabic title is required').max(255),
-  title_en: z.string().min(1, 'English title is required').max(255),
-  description_ar: z.string().optional(),
-  description_en: z.string().optional(),
-  image_url: z.string().url().optional().nullable(),
-  discount_type: z.enum(['percentage', 'fixed']).default('percentage'),
-  discount_value: z.number().min(0, 'Discount must be positive'),
-  start_date: z.string().optional().nullable(),
-  end_date: z.string().optional().nullable(),
-  is_active: z.boolean().default(true),
-}).refine(
-  (data) => {
-    if (data.discount_type === 'percentage' && data.discount_value > 100) {
-      return false;
-    }
-    return true;
-  },
-  { message: 'Percentage discount cannot exceed 100%', path: ['discount_value'] }
-);
+export const offerSchema = z
+  .object({
+    title_ar: z.string().min(1, 'Arabic title is required').max(255),
+    title_en: z.string().min(1, 'English title is required').max(255),
+    description_ar: z.string().optional(),
+    description_en: z.string().optional(),
+    image_url: z.string().url().optional().nullable(),
+    discount_type: z.enum(['percentage', 'fixed']).default('percentage'),
+    discount_value: z.number().min(0, 'Discount must be positive'),
+    start_date: z.string().optional().nullable(),
+    end_date: z.string().optional().nullable(),
+    is_active: z.boolean().default(true),
+  })
+  .refine(
+    (data) => {
+      if (data.discount_type === 'percentage' && data.discount_value > 100) {
+        return false;
+      }
+      return true;
+    },
+    { message: 'Percentage discount cannot exceed 100%', path: ['discount_value'] }
+  );
 
 export type OfferInput = z.infer<typeof offerSchema>;
 
@@ -116,13 +118,25 @@ export type NotificationInput = z.input<typeof notificationSchema>;
 export const qrCodeSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255),
   url: z.string().url('URL is required'),
-  foreground_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color').default('#000000'),
-  background_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color').default('#FFFFFF'),
+  foreground_color: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color')
+    .default('#000000'),
+  background_color: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color')
+    .default('#FFFFFF'),
   logo_url: z.string().url().optional().nullable(),
   template: z.enum(['classic', 'luxury', 'minimal', 'golden', 'dark']).default('classic'),
   size: z.number().int().min(100).max(1000).default(300),
-  primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color').default('#000000'),
-  secondary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color').default('#B8860B'),
+  primary_color: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color')
+    .default('#000000'),
+  secondary_color: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color')
+    .default('#B8860B'),
   rounded_style: z.enum(['square', 'rounded', 'circle']).default('square'),
   eye_style: z.enum(['square', 'rounded', 'circle']).default('square'),
   margin: z.number().int().min(0).max(10).default(4),
@@ -163,6 +177,13 @@ export const settingsSchema = z.object({
     currency: z.string().default('SAR'),
     tax_rate: z.number().min(0).max(100).default(15),
     service_charge_rate: z.number().min(0).max(100).default(10),
+    prep_time_minutes: z.number().int().min(0).max(240).default(25),
+    minimum_order: z.number().min(0).default(0),
+    max_order_notes_length: z.number().int().min(0).max(1000).default(200),
+    apply_tax: z.boolean().default(true),
+    apply_service_charge: z.boolean().default(true),
+    hero_image_url: z.string().url().optional().nullable(),
+    story_image_url: z.string().url().optional().nullable(),
   }),
   theme: z.object({
     primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/),

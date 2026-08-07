@@ -11,15 +11,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { QRPreview } from './QRPreview';
 import { MoreVertical, Eye, Pencil, Copy, Trash2, QrCode, Table } from 'lucide-react';
 import { getTemplate } from '@/lib/qr/templates';
+import { buildQRFilename } from '@/lib/qr/logo-overlay';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface QRCardProps {
@@ -34,6 +31,13 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
   const tmpl = getTemplate(qr.template);
   const t = useTranslations('qr');
   const tCommon = useTranslations('common');
+  const { data: settings } = useRestaurantSettings();
+
+  const downloadFilename = buildQRFilename({
+    restaurantName: settings?.name_en,
+    qrName: qr.name,
+    tableNumber: qr.table?.table_number ?? null,
+  });
 
   return (
     <>
@@ -59,10 +63,19 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <h3 className="font-semibold">{qr.name}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-1">{qr.url}</p>
+              <p className="text-muted-foreground line-clamp-1 text-xs">{qr.url}</p>
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" aria-label={t('qrActions')} />}>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    aria-label={t('qrActions')}
+                  />
+                }
+              >
                 <MoreVertical className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -78,10 +91,7 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
                   <Copy className="mr-2 h-4 w-4" />
                   {tCommon('duplicate')}
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => onDelete(qr)}
-                  className="text-destructive"
-                >
+                <DropdownMenuItem onClick={() => onDelete(qr)} className="text-destructive">
                   <Trash2 className="mr-2 h-4 w-4" />
                   {tCommon('delete')}
                 </DropdownMenuItem>
@@ -99,12 +109,13 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
             </Badge>
             {qr.table && (
               <Badge variant="secondary" className="text-xs">
-                <Table className="mr-1 h-3 w-3" />
-                T{qr.table.table_number}
+                <Table className="mr-1 h-3 w-3" />T{qr.table.table_number}
               </Badge>
             )}
             {!qr.is_active && (
-              <Badge variant="destructive" className="text-xs">{tCommon('inactive')}</Badge>
+              <Badge variant="destructive" className="text-xs">
+                {tCommon('inactive')}
+              </Badge>
             )}
           </div>
         </CardContent>
@@ -126,7 +137,7 @@ export function QRCard({ qr, onEdit, onDelete, onDuplicate }: QRCardProps) {
             margin={qr.margin}
             errorCorrection={qr.error_correction as 'L' | 'M' | 'Q' | 'H'}
             logoUrl={qr.logo_url ?? undefined}
-            filename={qr.name.replace(/\s+/g, '-').toLowerCase()}
+            filename={downloadFilename}
             showDownload
             showTemplateLabel
           />

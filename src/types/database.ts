@@ -150,7 +150,14 @@ export interface RestaurantSettings {
   currency: string;
   tax_rate: number;
   service_charge_rate: number;
+  prep_time_minutes: number;
+  minimum_order: number;
+  max_order_notes_length: number;
+  apply_tax: boolean;
+  apply_service_charge: boolean;
   logo_url: string | null;
+  hero_image_url: string | null;
+  story_image_url: string | null;
   hero_headline: string | null;
   hero_subtitle: string | null;
   tagline: string | null;
@@ -306,6 +313,19 @@ export interface AnalyticsSummary {
   scans: number;
   dining: number;
   takeaway: number;
+}
+
+export interface HourlyVisitors {
+  time: string;
+  hour: number;
+  visitors: number;
+}
+
+export interface RecentActivityItem {
+  id: string;
+  type: string;
+  title: string;
+  created_at: string;
 }
 
 export interface TopItem {

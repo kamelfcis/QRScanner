@@ -1,0 +1,26 @@
+{
+  "dryRun": true,
+  "before": {
+    "categories": 24,
+    "products": 199,
+    "subcategories": 0,
+    "product_gallery": 0
+  },
+  "after": {
+    "categories": 24,
+    "products": 199,
+    "subcategories": 0,
+    "product_gallery": 0
+  },
+  "categories": {
+    "groupsFound": 0,
+    "rowsRemoved": 0,
+    "removed": []
+  },
+  "products": {
+    "groupsFound": 0,
+    "rowsRemoved": 0,
+    "removed": []
+  },
+  "errors": []
+}

@@ -65,12 +65,14 @@ export function useProduct(id: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select(`
+        .select(
+          `
           *,
           category:categories(id, name_en, name_ar),
           subcategory:subcategories(id, name_en, name_ar),
           gallery:product_gallery(*)
-        `)
+        `
+        )
         .eq('id', id)
         .single();
 
@@ -105,14 +107,18 @@ export function usePopularProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(
+          'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at'
+        )
         .eq('is_popular', true)
         .eq('is_available', true)
-        .order('sort_order', { ascending: true });
+        .order('sort_order', { ascending: true })
+        .limit(12);
 
       if (error) throw error;
-      return data as ProductWithGallery[];
+      return data as Product[];
     },
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -124,7 +130,9 @@ export function useSearchProducts(query: string) {
       const { data, error } = await supabase
         .from('products')
         .select('*, category:categories(id, name_en, name_ar)')
-        .or(`name_en.ilike.%${sanitized}%,name_ar.ilike.%${sanitized}%,description_en.ilike.%${sanitized}%`)
+        .or(
+          `name_en.ilike.%${sanitized}%,name_ar.ilike.%${sanitized}%,description_en.ilike.%${sanitized}%`
+        )
         .eq('is_available', true)
         .order('sort_order', { ascending: true });
 
@@ -140,11 +148,7 @@ export function useCreateProduct() {
 
   return useMutation({
     mutationFn: async (input: ProductInput) => {
-      const { data, error } = await supabase
-        .from('products')
-        .insert(input)
-        .select()
-        .single();
+      const { data, error } = await supabase.from('products').insert(input).select().single();
 
       if (error) throw error;
       return data as Product;

@@ -5,6 +5,7 @@ import {
   downloadQRAsPDF,
   downloadQRPrint,
 } from '@/lib/qr/download';
+import { DEFAULT_QR_DOWNLOAD_SIZE } from '@/lib/qr/logo-overlay';
 
 describe('QR download utilities', () => {
   it('exports all download functions', () => {
@@ -12,6 +13,10 @@ describe('QR download utilities', () => {
     expect(typeof downloadQRAsPNG).toBe('function');
     expect(typeof downloadQRAsPDF).toBe('function');
     expect(typeof downloadQRPrint).toBe('function');
+  });
+
+  it('uses high-resolution PNG export by default', () => {
+    expect(DEFAULT_QR_DOWNLOAD_SIZE).toBe(1024);
   });
 
   it('downloadQRAsSVG throws when no element', () => {
