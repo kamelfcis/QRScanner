@@ -1,4 +1,4 @@
--- Warda Shamya Digital Restaurant Platform
+-- Aklet Gambary Digital Restaurant Platform
 -- Seed Data
 -- Version: 003
 -- Date: 2025-08-03
@@ -8,8 +8,8 @@
 -- ============================================================
 INSERT INTO public.settings (key, value) VALUES
   ('restaurant', '{
-    "name_ar": "وردة الشامية",
-    "name_en": "Warda Shamya",
+    "name_ar": "أكلة جمبري أنا",
+    "name_en": "Aklet Gambary",
     "phone": "",
     "whatsapp": "",
     "instagram": "",
@@ -17,15 +17,15 @@ INSERT INTO public.settings (key, value) VALUES
     "tiktok": "",
     "address_ar": "",
     "address_en": "",
-    "currency": "SAR",
-    "tax_rate": 15,
-    "service_charge_rate": 10
+    "currency": "EGP",
+    "tax_rate": 0,
+    "service_charge_rate": 0
   }'::jsonb),
   ('theme', '{
-    "primary_color": "#B8860B",
-    "secondary_color": "#8B0000",
-    "accent_color": "#FFD700",
-    "background_color": "#FFFAF0"
+    "primary_color": "#0E7490",
+    "secondary_color": "#155E75",
+    "accent_color": "#F97316",
+    "background_color": "#F0FDFA"
   }'::jsonb),
   ('hours', '{
     "saturday": {"open": "09:00", "close": "23:00"},
@@ -57,19 +57,19 @@ INSERT INTO public.products (
 ) VALUES
   (
     (SELECT id FROM public.categories WHERE name_en = 'Appetizers' LIMIT 1),
-    'فتوش', 'Fattoush',
+    'فتوش', 'Grilled Shrimp',
     'سلطة تقليدية مع خبز مقرمش', 'Traditional salad with crispy bread',
     25.00, 22.00, true, true
   ),
   (
     (SELECT id FROM public.categories WHERE name_en = 'Main Courses' LIMIT 1),
-    'كبسة لحم', 'Lamb Kabsa',
+    'كبسة لحم', 'Seafood Tagine',
     'أرز مع لحم مطهو على الطريقة التقليدية', 'Rice with traditionally cooked lamb',
     65.00, 58.00, true, true
   ),
   (
     (SELECT id FROM public.categories WHERE name_en = 'Beverages' LIMIT 1),
-    'شاي بالنعناع', 'Mint Tea',
+    'شاي بالنعناع', 'Lemonade',
     'شاي أخضر مع نعناع طازج', 'Green tea with fresh mint',
     8.00, 7.00, true, false
   );

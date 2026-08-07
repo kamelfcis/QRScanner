@@ -48,7 +48,7 @@ function WelcomeContent() {
     // Testing escape hatch only - QR table scans always show mode picker
     if (skipParam) {
       const mode = readStoredDiningMode();
-      if (tableParam) localStorage.setItem('warda-table', tableParam);
+      if (tableParam) localStorage.setItem('aklet-table', tableParam);
       router.replace(buildMenuUrl(mode, tableParam));
       return;
     }
@@ -60,14 +60,14 @@ function WelcomeContent() {
   const isArabic = locale === 'ar';
   const restaurantName = getName(
     locale,
-    settings?.name_en || 'Warda Shamya',
-    settings?.name_ar || 'وردة الشامية'
+    settings?.name_en || 'Aklet Gambary',
+    settings?.name_ar || 'أكلة جمبري أنا'
   );
 
   const goToMenu = (mode: CartDiningMode) => {
     persistDiningMode(mode);
     if (tableParam) {
-      localStorage.setItem('warda-table', tableParam);
+      localStorage.setItem('aklet-table', tableParam);
     }
     setMeta({
       diningMode: mode,

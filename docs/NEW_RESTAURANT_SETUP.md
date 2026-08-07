@@ -24,12 +24,34 @@ This playbook is for a **separate clone**. Do not reuse Warda's live Supabase pr
 
 ---
 
+---
+
+## Two-branch GitHub layout (Warda + Aklet Gambary)
+
+One repo — [kamelfcis/QRScanner](https://github.com/kamelfcis/QRScanner) — two long-lived branches. **Runtime data never mixes**: each restaurant has its own Supabase project and Vercel project.
+
+| Branch            | Restaurant                     | Supabase                 | Vercel                                                                  |
+| ----------------- | ------------------------------ | ------------------------ | ----------------------------------------------------------------------- |
+| `warda` (default) | Warda Shamya                   | Existing Warda project   | Existing Warda deploy (e.g. engaz-qr-menu); Production Branch = `warda` |
+| `aklet-gambary`   | أكلة جمبري أنا / Aklet Gambary | **New** Supabase project | **New** Vercel project; Production Branch = `aklet-gambary`             |
+
+### Checklist
+
+1. **Akla Supabase** — create a new project → run migrations `001`–`013` → apply [`supabase/templates/new_restaurant_settings.sql`](../supabase/templates/new_restaurant_settings.sql) (or use branch `aklet-gambary` seed `003`) → create admin user.
+2. **Akla Vercel** — import `QRScanner` → set **Production Branch = `aklet-gambary`** → env vars from Akla Supabase only (`NEXT_PUBLIC_APP_NAME`, URLs, keys).
+3. **Warda Vercel** — keep Production Branch = `warda` with Warda env; reconnect Git to `QRScanner` if it still points at the old repo.
+4. **Domains + QR** — separate production domains; regenerate table QR codes per site URL.
+5. **Never copy** Warda `.env` / `.env.local` into the Akla project.
+
+After the fork point, branding defaults (app name, SEO, cart/theme localStorage keys, seed) may diverge on each branch. Shared product fixes can still be cherry-picked or merged carefully.
+
 ## 1. Copy / fork the repo
 
 Choose one:
 
-- **New GitHub repo** -- fork or copy this repo (recommended for a separate restaurant brand).
-- **Same monorepo folder** -- only if you intentionally keep one codebase and deploy two Vercel projects from it.
+- **Dual-branch (this repo)** -- use `aklet-gambary` for Akla and `warda` for Warda (see [Two-branch GitHub layout](#two-branch-github-layout-warda--aklet-gambary)).
+- **New GitHub repo** -- fork/copy only if you want a fully separate repository.
+- **Same folder, two Vercel projects** -- only if you intentionally share one working tree.
 
 ```bash
 git clone <your-new-or-existing-repo-url>

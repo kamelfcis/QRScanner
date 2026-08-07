@@ -154,7 +154,7 @@ export const useCartStore = create<CartState>()(
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
     }),
     {
-      name: 'warda-cart-v1',
+      name: 'aklet-cart-v1',
       partialize: (state) => ({
         items: state.items,
         diningMode: state.diningMode,

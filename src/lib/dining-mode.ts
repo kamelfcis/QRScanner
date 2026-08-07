@@ -3,7 +3,7 @@ import type { CartDiningMode } from '@/stores/cart-store';
 /** URL query values accepted for order type */
 export type DiningModeParam = 'dining' | 'dine_in' | 'takeaway';
 
-const STORAGE_KEY = 'warda-dining-mode';
+const STORAGE_KEY = 'aklet-dining-mode';
 
 /** Parse `mode` query param (supports legacy `dining` and spec `dine_in`). */
 export function parseDiningModeParam(param: string | null): CartDiningMode | null {

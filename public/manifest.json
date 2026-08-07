@@ -1,13 +1,17 @@
 {
-  "name": "Warda Shamya - Restaurant",
-  "short_name": "Warda Shamya",
-  "description": "Premium Lebanese & Syrian restaurant in Riyadh. Browse our menu, view offers, and order online.",
+  "name": "Aklet Gambary - Restaurant",
+  "short_name": "Aklet Gambary",
+  "description": "Seafood restaurant digital menu. Browse dishes, view offers, and order online.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0E0E0E",
   "theme_color": "#FFB700",
   "orientation": "portrait-primary",
-  "categories": ["food", "restaurant", "business"],
+  "categories": [
+    "food",
+    "restaurant",
+    "business"
+  ],
   "lang": "en",
   "dir": "ltr",
   "icons": [

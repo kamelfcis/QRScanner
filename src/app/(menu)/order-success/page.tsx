@@ -37,7 +37,7 @@ function OrderSuccessContent() {
   const [waUrl] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
     try {
-      return sessionStorage.getItem('warda-last-wa-url');
+      return sessionStorage.getItem('aklet-last-wa-url');
     } catch {
       return null;
     }
@@ -74,7 +74,7 @@ function OrderSuccessContent() {
   const clearCart = () => {
     clear();
     try {
-      sessionStorage.removeItem('warda-last-wa-url');
+      sessionStorage.removeItem('aklet-last-wa-url');
     } catch {
       // ignore
     }

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
-const SITE_NAME = 'Warda Shamya';
-const SITE_NAME_AR = 'وردة الشامية';
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const SITE_NAME = 'Aklet Gambary';
+const SITE_NAME_AR = 'أكلة جمبري أنا';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aklet-gambary.example.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const DESCRIPTIONS = {
-  en: 'Warda Shamya — Premium Lebanese & Syrian restaurant in Riyadh. Explore our authentic menu with traditional dishes crafted with love.',
-  ar: 'وردة الشامية — مطعم لبناني وسوري فاخر في الرياض. استكشف قائمتنا الأصيلة بأطباق تقليدية مُعدّة بحب.',
+  en: 'Aklet Gambary — Seafood restaurant. Explore our digital menu and order via WhatsApp.',
+  ar: 'أكلة جمبري أنا — مطعم مأكولات بحرية. تصفح قائمتنا الرقمية واطلب عبر واتساب.',
 } as const;
 
 export function generateSiteMetadata(
@@ -27,12 +27,12 @@ export function generateSiteMetadata(
     description,
     keywords: [
       'restaurant',
-      'Lebanese food',
-      'Syrian food',
-      'Riyadh',
-      'Warda Shamya',
-      'وردة الشامية',
-      'Middle Eastern cuisine',
+      'seafood',
+      'Egypt',
+      'Aklet Gambary',
+      'أكلة جمبري أنا',
+      'digital menu',
+      'QR menu',
       'halal restaurant',
     ],
     authors: [{ name: SITE_NAME }],
@@ -45,8 +45,8 @@ export function generateSiteMetadata(
     },
     openGraph: {
       type: 'website',
-      locale: locale === 'ar' ? 'ar_SA' : 'en_US',
-      alternateLocale: locale === 'ar' ? ['en_US'] : ['ar_SA'],
+      locale: locale === 'ar' ? 'ar_EG' : 'en_US',
+      alternateLocale: locale === 'ar' ? ['en_US'] : ['ar_EG'],
       url: SITE_URL,
       siteName,
       title: siteName,
@@ -65,7 +65,7 @@ export function generateSiteMetadata(
       title: siteName,
       description,
       images: [DEFAULT_OG_IMAGE],
-      creator: '@wardashamya',
+      creator: '@akletgambary',
     },
     robots: {
       index: true,
@@ -96,15 +96,15 @@ export function generateMenuMetadata(locale: Locale = defaultLocale): Metadata {
       title: locale === 'ar' ? 'القائمة' : 'Menu',
       description:
         locale === 'ar'
-          ? 'استكشف نكهات وردة الشامية الأصيلة. تصفح قائمتنا الكاملة.'
-          : 'Explore the authentic flavors of Warda Shamya. Browse our complete menu featuring traditional Lebanese and Syrian dishes.',
+          ? 'استكشف نكهات أكلة جمبري أنا. تصفح قائمتنا الكاملة لمأكولات البحر.'
+          : 'Explore the flavors of Aklet Gambary. Browse our complete seafood menu.',
       openGraph: {
         title: locale === 'ar' ? `القائمة | ${SITE_NAME_AR}` : `Menu | ${SITE_NAME}`,
         description:
           locale === 'ar'
-            ? 'استكشف نكهات وردة الشامية الأصيلة.'
-            : 'Explore the authentic flavors of Warda Shamya.',
-        images: [{ url: '/og-menu.png', width: 1200, height: 630, alt: 'Warda Shamya Menu' }],
+            ? `استكشف نكهات ${SITE_NAME_AR}.`
+            : 'Explore the authentic flavors of Aklet Gambary.',
+        images: [{ url: '/og-menu.png', width: 1200, height: 630, alt: 'Aklet Gambary Menu' }],
       },
     },
     locale

@@ -33,19 +33,28 @@ const tajawal = Tajawal({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aklet-gambary.example.com';
 
 const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Warda Shamya | Digital Restaurant Menu',
-    template: '%s | Warda Shamya',
+    default: 'Aklet Gambary | Digital Restaurant Menu',
+    template: '%s | Aklet Gambary',
   },
   description:
-    'Warda Shamya Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.',
-  keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', 'Warda Shamya', 'وردة الشامية'],
-  authors: [{ name: 'Warda Shamya' }],
-  creator: 'Warda Shamya',
+    'Aklet Gambary Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.',
+  keywords: [
+    'restaurant',
+    'menu',
+    'QR code',
+    'seafood',
+    'dining',
+    'food',
+    'Aklet Gambary',
+    'أكلة جمبري أنا',
+  ],
+  authors: [{ name: 'Aklet Gambary' }],
+  creator: 'Aklet Gambary',
   alternates: {
     languages: {
       en: SITE_URL,
@@ -58,21 +67,21 @@ const baseMetadata: Metadata = {
     locale: 'ar_SA',
     alternateLocale: ['en_US'],
     url: SITE_URL,
-    siteName: 'Warda Shamya',
-    title: 'Warda Shamya | Digital Restaurant Menu',
+    siteName: 'Aklet Gambary',
+    title: 'Aklet Gambary | Digital Restaurant Menu',
     description: 'Premium dining experience with digital menu.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Warda Shamya',
+        alt: 'Aklet Gambary',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Warda Shamya | Digital Restaurant Menu',
+    title: 'Aklet Gambary | Digital Restaurant Menu',
     description: 'Premium dining experience with digital menu.',
     images: ['/og-image.png'],
   },

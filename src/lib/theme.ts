@@ -1,10 +1,10 @@
 import type { ThemeSettings } from '@/types';
 
 export const DEFAULT_THEME: ThemeSettings = {
-  primary_color: '#FFB700',
-  secondary_color: '#6B0F1A',
-  accent_color: '#FFB700',
-  background_color: '#FAF8F5',
+  primary_color: '#0E7490',
+  secondary_color: '#155E75',
+  accent_color: '#F97316',
+  background_color: '#F0FDFA',
 };
 
 const HEX_COLOR = /^#[0-9A-Fa-f]{6}$/;

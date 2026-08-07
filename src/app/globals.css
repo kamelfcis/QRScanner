@@ -57,7 +57,7 @@
   --color-brand-secondary: #6B0F1A;
   --color-brand-secondary-light: #8B1A2B;
   --color-brand-secondary-dark: #3D0810;
-  --color-brand-accent: #FFB700;
+  --color-brand-accent: #F97316;
   --color-brand-background: #0E0E0E;
 }
 
@@ -69,13 +69,13 @@
   --card-foreground: #1A1814;
   --popover: #FFFFFF;
   --popover-foreground: #1A1814;
-  --primary: #C48A00;
+  --primary: #0E7490;
   --primary-foreground: #FFFFFF;
   --secondary: #6B0F1A;
   --secondary-foreground: #FFFFFF;
   --muted: #F0EBE3;
   --muted-foreground: #6B6560;
-  --accent: #FFB700;
+  --accent: #F97316;
   --accent-foreground: #1A1814;
   --destructive: #DC2626;
   --border: #E5DFD6;

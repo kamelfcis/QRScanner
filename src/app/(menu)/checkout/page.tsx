@@ -161,7 +161,7 @@ export default function CheckoutPage() {
       );
 
       try {
-        sessionStorage.setItem('warda-last-wa-url', built.whatsappUrl);
+        sessionStorage.setItem('aklet-last-wa-url', built.whatsappUrl);
       } catch {
         // ignore
       }

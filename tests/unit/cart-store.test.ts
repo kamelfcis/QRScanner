@@ -66,10 +66,10 @@ describe('useCartStore', () => {
     expect(useCartStore.getState().orderNotes).toBe('');
   });
 
-  it('persists to localStorage under warda-cart-v1', () => {
+  it('persists to localStorage under aklet-cart-v1', () => {
     useCartStore.getState().addItem({ ...sample, quantity: 1 });
     useCartStore.getState().setMeta({ diningMode: 'takeaway', tableNumber: '3' });
-    const raw = localStorage.getItem('warda-cart-v1');
+    const raw = localStorage.getItem('aklet-cart-v1');
     expect(raw).toBeTruthy();
     const parsed = JSON.parse(raw!);
     expect(parsed.state.items).toHaveLength(1);
