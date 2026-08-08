@@ -82,7 +82,9 @@
       "key": "meals",
       "name_ar": "وجبات",
       "name_en": "Meals",
-      "sort_order": 14
+      "sort_order": 14,
+      "description_ar": "مع الوجبات فقط — يُضاف مع كل وجبة: أرز وسلطة خضراء وطحينة وخبز. الوجبة ثمنها بالكيلو",
+      "description_en": "Meals only — Each meal includes rice, green salad, tahini, and bread. Price is per kilo."
     },
     {
       "key": "salads",
@@ -358,24 +360,24 @@
         "name_en": "Shrimp Meal Medium",
         "price": 170,
         "sort_order": 1,
-        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
-        "description_en": "Includes rice, salad, tahini, and bread"
+        "description_ar": "مع الوجبات فقط — يُضاف مع كل وجبة: أرز وسلطة خضراء وطحينة وخبز. الوجبة ثمنها بالكيلو",
+        "description_en": "Meals only — Each meal includes rice, green salad, tahini, and bread. Price is per kilo."
       },
       {
         "name_ar": "وجبة جمبري كبير",
         "name_en": "Shrimp Meal Large",
         "price": 200,
         "sort_order": 2,
-        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
-        "description_en": "Includes rice, salad, tahini, and bread"
+        "description_ar": "مع الوجبات فقط — يُضاف مع كل وجبة: أرز وسلطة خضراء وطحينة وخبز. الوجبة ثمنها بالكيلو",
+        "description_en": "Meals only — Each meal includes rice, green salad, tahini, and bread. Price is per kilo."
       },
       {
         "name_ar": "وجبة فيليه",
         "name_en": "Fillet Meal",
         "price": 100,
         "sort_order": 3,
-        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
-        "description_en": "Includes rice, salad, tahini, and bread"
+        "description_ar": "مع الوجبات فقط — يُضاف مع كل وجبة: أرز وسلطة خضراء وطحينة وخبز. الوجبة ثمنها بالكيلو",
+        "description_en": "Meals only — Each meal includes rice, green salad, tahini, and bread. Price is per kilo."
       }
     ],
     "salads": [

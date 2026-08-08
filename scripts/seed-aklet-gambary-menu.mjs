@@ -99,10 +99,12 @@ async function main() {
   const { data: insertedCats, error: catErr } = await supabase
     .from('categories')
     .insert(
-      categories.map(({ name_ar, name_en, sort_order }) => ({
+      categories.map(({ name_ar, name_en, sort_order, description_ar, description_en }) => ({
         name_ar,
         name_en,
         sort_order,
+        description_ar: description_ar ?? null,
+        description_en: description_en ?? null,
         is_visible: true,
       })),
     )

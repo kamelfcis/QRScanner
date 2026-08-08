@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outPath = join(__dirname, 'data', 'aklet-gambary-menu.json');
 
-const mealDescAr = '\u064a\u0634\u0645\u0644 \u0623\u0631\u0632 \u0648\u0633\u0644\u0637\u0629 \u0648\u0637\u062d\u064a\u0646\u0629 \u0648\u062e\u0628\u0632';
-const mealDescEn = 'Includes rice, salad, tahini, and bread';
+const mealDescAr = 'مع الوجبات فقط — يُضاف مع كل وجبة: أرز وسلطة خضراء وطحينة وخبز. الوجبة ثمنها بالكيلو';
+const mealDescEn = 'Meals only — Each meal includes rice, green salad, tahini, and bread. Price is per kilo.';
 
 const menu = {
   categories: [
@@ -23,7 +23,7 @@ const menu = {
     { key: 'rice', name_ar: '\u0623\u0631\u0632', name_en: 'Rice', sort_order: 11 },
     { key: 'sandwiches', name_ar: '\u0633\u0646\u062f\u0648\u062a\u0634\u0627\u062a', name_en: 'Sandwiches', sort_order: 12 },
     { key: 'rice_plates', name_ar: '\u0623\u0637\u0628\u0627\u0642 \u0623\u0631\u0632', name_en: 'Rice Plates', sort_order: 13 },
-    { key: 'meals', name_ar: '\u0648\u062c\u0628\u0627\u062a', name_en: 'Meals', sort_order: 14 },
+    { key: 'meals', name_ar: '\u0648\u062c\u0628\u0627\u062a', name_en: 'Meals', sort_order: 14, description_ar: mealDescAr, description_en: mealDescEn },
     { key: 'salads', name_ar: '\u0633\u0644\u0637\u0627\u062a', name_en: 'Salads', sort_order: 15 },
     { key: 'cooking', name_ar: '\u062a\u0633\u0648\u064a\u0629', name_en: 'Cooking', sort_order: 16 },
   ],
