@@ -509,6 +509,8 @@
     "statusColumn": "Status",
     "actionsColumn": "Actions",
     "showingCount": "Showing {count} of {total}",
+    "showingFilteredCount": "Showing {count} of {total} · {category}",
+    "clearFilters": "Clear filters",
     "noProductsFiltered": "No products match your filters. Try adjusting search or category."
   },
   "categories": {

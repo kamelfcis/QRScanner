@@ -509,6 +509,8 @@
     "statusColumn": "الحالة",
     "actionsColumn": "إجراءات",
     "showingCount": "عرض {count} من {total}",
+    "showingFilteredCount": "عرض {count} من {total} · {category}",
+    "clearFilters": "مسح التصفية",
     "noProductsFiltered": "لا توجد أطباق تطابق التصفية. جرّب تعديل البحث أو التصنيف."
   },
   "categories": {
