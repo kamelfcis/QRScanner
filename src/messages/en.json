@@ -86,14 +86,14 @@
     "orderNow": "Order Now"
   },
   "landing": {
-    "heroTitle": "Warda Shamya",
+    "heroTitle": "Aklet Gambary",
     "heroWelcome": "Welcome to",
-    "heroSubtitle": "A culinary journey through Lebanese & Syrian traditions",
+    "heroSubtitle": "Fresh seafood crafted with passion and quality",
     "viewMenu": "View Menu",
     "ourStory": "Our Story",
     "storyTitle": "Our Story",
-    "storyP1": "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.",
-    "storyP2": "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home.",
+    "storyP1": "Aklet Gambary is your destination for the freshest seafood in New Cairo. We handpick the finest fish, shrimp, and catch of the day, preparing each dish with care to deliver authentic flavors that reflect our passion for quality.",
+    "storyP2": "From our warm hospitality to our carefully crafted recipes, we welcome you to a relaxed atmosphere that feels like home — and a memorable seafood experience with every visit.",
     "signatureDishes": "Signature Dishes",
     "signatureDishesSubtitle": "A taste of our freshest seafood favorites — browse the menu and order with ease.",
     "noFeaturedDishes": "No featured dishes available yet.",
@@ -118,7 +118,7 @@
     "followUs": "Follow Us",
     "socialLinks": "Social links coming soon.",
     "copyright": "© {year} {name}. All rights reserved.",
-    "premiumDining": "Premium dining experience celebrating Lebanese and Syrian culinary traditions.",
+    "premiumDining": "Premium seafood dining with exceptional quality and warm hospitality.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Info",
     "heroCarousel": "Hero carousel",
@@ -708,7 +708,7 @@
   "welcome": {
     "welcomeTo": "Welcome to {name}",
     "chooseOrderType": "Please choose your order type",
-    "title": "Welcome to Warda Shamya",
+    "title": "Welcome",
     "subtitle": "Please choose your order type",
     "dineIn": "Dine In",
     "dineInEn": "Dine In",
@@ -721,7 +721,7 @@
     "tableLabel": "Table",
     "continue": "Continue to Menu",
     "orChangeLater": "You can change this anytime from the menu",
-    "tagline": "A culinary journey through Lebanese & Syrian traditions",
-    "heroAlt": "Warda Shamya restaurant storefront at night with golden neon signage"
+    "tagline": "Fresh seafood in New Cairo",
+    "heroAlt": "Restaurant hero background"
   }
 }
