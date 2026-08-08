@@ -220,12 +220,12 @@ export default function CheckoutPage() {
             </Link>
             <div className="flex min-w-0 items-center gap-3">
               {logo ? (
-                <div className="bg-muted relative h-10 w-10 overflow-hidden rounded-lg">
+                <div className="bg-muted relative h-12 w-12 overflow-hidden rounded-lg">
                   <Image
                     src={logo}
                     alt={restaurantName}
                     fill
-                    sizes="40px"
+                    sizes="48px"
                     className="object-contain"
                     containerClassName="absolute inset-0"
                   />

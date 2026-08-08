@@ -123,14 +123,14 @@ function WelcomeContent() {
         {/* Logo — gold ring + glass frame */}
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="border-brand-accent/35 mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_color-mix(in_srgb,var(--brand-accent)_15%,transparent)] backdrop-blur-xl sm:mb-6 sm:h-32 sm:w-32"
+          className="border-brand-accent/35 mb-5 flex h-36 w-36 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_color-mix(in_srgb,var(--brand-accent)_15%,transparent)] backdrop-blur-xl sm:mb-6 sm:h-40 sm:w-40"
         >
           {settings?.logo_url ? (
             <NextImage
               src={settings.logo_url}
               alt={restaurantName}
-              width={96}
-              height={96}
+              width={128}
+              height={128}
               className="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(255,183,0,0.25)]"
               priority
             />

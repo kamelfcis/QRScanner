@@ -56,9 +56,9 @@ export function DashboardHeader() {
                 <NextImage
                   src={settings.logo_url}
                   alt={name}
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 shrink-0 object-contain"
+                  width={44}
+                  height={44}
+                  className="h-11 w-11 shrink-0 object-contain"
                 />
               ) : null}
               <div className="min-w-0">

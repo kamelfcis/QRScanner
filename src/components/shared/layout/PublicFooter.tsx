@@ -23,7 +23,7 @@ export function PublicFooter() {
           <div className="md:col-span-1">
             <div className="flex items-center gap-2">
               {settings?.logo_url && (
-                <img src={settings.logo_url} alt={name} className="h-8 w-auto object-contain" />
+                <img src={settings.logo_url} alt={name} className="h-10 w-auto object-contain" />
               )}
               <h3 className="text-primary font-heading text-lg font-bold">{name}</h3>
             </div>

@@ -154,10 +154,10 @@ export function HeroSection() {
             <NextImage
               src={settings.logo_url}
               alt={name}
-              width={96}
-              height={96}
+              width={144}
+              height={144}
               priority
-              className="h-20 w-20 object-contain drop-shadow-lg md:h-24 md:w-24"
+              className="h-28 w-28 object-contain drop-shadow-lg md:h-36 md:w-36"
             />
           </motion.div>
         )}

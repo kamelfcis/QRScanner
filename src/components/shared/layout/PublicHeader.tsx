@@ -105,7 +105,7 @@ export function PublicHeader() {
             <img
               src={settings.logo_url}
               alt={name}
-              className="h-6 w-auto shrink-0 object-contain sm:h-8"
+              className="h-8 w-auto shrink-0 object-contain sm:h-10"
             />
           ) : null}
           <span
@@ -191,11 +191,11 @@ export function PublicHeader() {
                   <img
                     src={settings.logo_url}
                     alt={name}
-                    className="ring-brand-accent/30 h-11 w-11 shrink-0 rounded-full object-contain ring-2"
+                    className="ring-brand-accent/30 h-14 w-14 shrink-0 rounded-full object-contain ring-2"
                   />
                 ) : (
-                  <div className="bg-brand-accent/15 ring-brand-accent/30 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ring-2">
-                    <UtensilsCrossed className="text-brand-accent h-5 w-5" />
+                  <div className="bg-brand-accent/15 ring-brand-accent/30 flex h-14 w-14 shrink-0 items-center justify-center rounded-full ring-2">
+                    <UtensilsCrossed className="text-brand-accent h-6 w-6" />
                   </div>
                 )}
                 <div className="min-w-0">

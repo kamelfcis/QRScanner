@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import NextImage from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +40,17 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
+          {settings?.logo_url && (
+            <div className="mb-2 flex justify-center">
+              <NextImage
+                src={settings.logo_url}
+                alt={appName}
+                width={80}
+                height={80}
+                className="h-20 w-20 object-contain"
+              />
+            </div>
+          )}
           <h1 className="text-primary text-2xl font-bold">{appName}</h1>
           <CardDescription>{t('loginTitle')}</CardDescription>
         </CardHeader>

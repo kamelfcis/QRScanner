@@ -66,9 +66,9 @@ export function MenuHeader({
             <NextImage
               src={settings.logo_url}
               alt={name}
-              width={32}
-              height={32}
-              className="h-8 w-8 shrink-0 object-contain"
+              width={40}
+              height={40}
+              className="h-10 w-10 shrink-0 object-contain"
             />
           ) : null}
           <h1 className="font-heading text-primary truncate text-lg font-bold sm:text-xl">
