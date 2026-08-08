@@ -4,7 +4,8 @@ import Link from 'next/link';
 import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LogOut } from 'lucide-react';
-import { cn, getName } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { getRestaurantDisplayName } from '@/lib/appName';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,13 +19,7 @@ export function DashboardSidebar() {
   const { data: settings } = useRestaurantSettings();
   const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
-  const tCommon = useTranslations('common');
-
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getRestaurantDisplayName(locale, settings);
 
   return (
     <aside className="bg-muted/40 hidden w-64 border-r md:block">

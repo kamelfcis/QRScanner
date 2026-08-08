@@ -16,7 +16,8 @@ import {
   useNotifications,
   useMarkAllNotificationsRead,
 } from '@/hooks/useNotifications';
-import { cn, getName } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { getRestaurantDisplayName } from '@/lib/appName';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
@@ -30,14 +31,9 @@ export function DashboardHeader() {
   const { locale } = useI18n();
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');
-  const tCommon = useTranslations('common');
   const tDashboard = useTranslations('dashboard');
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getRestaurantDisplayName(locale, settings);
 
   const { data: unreadCount } = useUnreadNotifications();
   const { data: notifications } = useNotifications(5);

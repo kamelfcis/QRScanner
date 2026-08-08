@@ -3,12 +3,24 @@
 import { useState, createContext, useContext, useCallback } from 'react';
 import { NextIntlClientProvider, useTranslations as useNextTranslations } from 'next-intl';
 import { type Locale, defaultLocale, isRtl } from '@/i18n/config';
+import { getAppNameFallback } from '@/lib/appName';
 import enMessages from '@/messages/en.json';
 import arMessages from '@/messages/ar.json';
 
+function withAppNameOverride(localeMessages: typeof enMessages): typeof enMessages {
+  const appName = getAppNameFallback();
+  return {
+    ...localeMessages,
+    common: {
+      ...localeMessages.common,
+      appName,
+    },
+  };
+}
+
 const messages: Record<Locale, typeof enMessages> = {
-  en: enMessages,
-  ar: arMessages,
+  en: withAppNameOverride(enMessages),
+  ar: withAppNameOverride(arMessages),
 };
 
 interface I18nContextValue {

@@ -5,7 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DateRangePicker, type Period } from '@/components/dashboard/DateRangePicker';
 import { useDashboardStats } from '@/hooks/useDashboardStats';
-import { useAnalyticsSummary, useTopProducts, useTopCategories, useDiningTakeaway } from '@/hooks/useAnalytics';
+import {
+  useAnalyticsSummary,
+  useTopProducts,
+  useTopCategories,
+  useDiningTakeaway,
+} from '@/hooks/useAnalytics';
 import { useExport } from '@/hooks/useExport';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
@@ -13,10 +18,18 @@ import { Download, Table, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import type { ExportData } from '@/types/database';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { getAppNameFallback } from '@/lib/appName';
+import { slugify } from '@/lib/qr/logo-overlay';
 
 export default function ReportsPage() {
   const [period, setPeriod] = useState<Period>('month');
-  const { data: stats, isLoading: statsLoading, error: statsError, refetch: statsRefetch } = useDashboardStats();
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+    refetch: statsRefetch,
+  } = useDashboardStats();
   const { data: summary, isLoading: summaryLoading } = useAnalyticsSummary(period);
   const { data: topProducts, isLoading: productsLoading } = useTopProducts(period);
   const { data: topCategories, isLoading: categoriesLoading } = useTopCategories(period);
@@ -24,6 +37,8 @@ export default function ReportsPage() {
   const { exportCSV, exportExcel, printPage } = useExport();
   const t = useTranslations('reports');
   const tDashboard = useTranslations('dashboard');
+  const { data: settings } = useRestaurantSettings();
+  const reportPrefix = slugify(settings?.name_en || getAppNameFallback());
 
   const isLoading = statsLoading || summaryLoading || productsLoading || categoriesLoading;
 
@@ -57,7 +72,7 @@ export default function ReportsPage() {
     return {
       headers,
       rows,
-      filename: `warda-report-${period}-${format(new Date(), 'yyyy-MM-dd')}`,
+      filename: `${reportPrefix}-report-${period}-${format(new Date(), 'yyyy-MM-dd')}`,
     };
   };
 
@@ -92,20 +107,20 @@ export default function ReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('totalProducts')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('totalProducts')}</p>
                 <p className="text-2xl font-bold">{stats?.totalProducts || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('totalCategories')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('totalCategories')}</p>
                 <p className="text-2xl font-bold">{stats?.totalCategories || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('todaysScans')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('todaysScans')}</p>
                 <p className="text-2xl font-bold">{stats?.todaysScans || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('activeOffers')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('activeOffers')}</p>
                 <p className="text-2xl font-bold">{stats?.totalOffers || 0}</p>
               </div>
             </div>
