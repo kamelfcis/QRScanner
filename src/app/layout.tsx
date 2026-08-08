@@ -127,7 +127,6 @@ export default async function RootLayout({
     >
       <head>
         <style id="brand-theme-vars" dangerouslySetInnerHTML={{ __html: brandThemeCss }} />
-        <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="flex min-h-full w-full flex-col overflow-x-clip">
