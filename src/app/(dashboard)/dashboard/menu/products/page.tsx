@@ -22,7 +22,8 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
-import { Plus, Search, Upload, X, Images } from 'lucide-react';
+import { Plus, Search, Upload, X, Images, FilterX } from 'lucide-react';
+import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import { Label } from '@/components/ui/label';
 import {
@@ -216,6 +217,16 @@ export default function ProductsPage() {
   const hasActiveFilters = searchQuery.length > 0 || categoryFilter !== 'all';
   const totalProducts = products?.length ?? 0;
   const visibleCount = filteredProducts?.length ?? 0;
+  const activeCategory =
+    categoryFilter === 'all' ? null : categories?.find((c) => c.id === categoryFilter);
+  const activeCategoryLabel = activeCategory
+    ? getName(locale, activeCategory.name_en, activeCategory.name_ar)
+    : t('allCategories');
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setCategoryFilter('all');
+  };
 
   const handleDelete = () => {
     if (deleteId) {
@@ -381,7 +392,7 @@ export default function ProductsPage() {
         </Button>
       </div>
 
-      <div className="space-y-4">
+      <div className="bg-background/95 border-border/60 sticky top-16 z-20 -mx-4 space-y-3 border-b px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
         <div className="relative">
           <Search className="text-muted-foreground absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2" />
           <Input
@@ -393,19 +404,28 @@ export default function ProductsPage() {
           />
         </div>
 
-        <div className="space-y-2">
-          <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+        <div className="space-y-1.5">
+          <p
+            id="products-category-filter-label"
+            className="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+          >
             {t('filterByCategory')}
           </p>
-          <div
-            className="scrollbar-none flex gap-2 overflow-x-auto pb-1"
-            role="tablist"
-            aria-label={t('filterByCategory')}
+          <ScrollableChipRow
+            ariaLabel={t('filterByCategory')}
+            scrollPrevLabel={tMenu('scrollCategoriesPrev')}
+            scrollNextLabel={tMenu('scrollCategoriesNext')}
+            activeChipId={categoryFilter}
+            chipIdAttribute="data-category-filter-id"
+            scrollClassName="pb-0.5"
+            fadeFromClassName="from-background/95"
+            itemCount={categories?.length ?? 0}
           >
             <button
               type="button"
               role="tab"
               aria-selected={categoryFilter === 'all'}
+              data-category-filter-id="all"
               onClick={() => setCategoryFilter('all')}
               className={categoryChipClassName(categoryFilter === 'all')}
             >
@@ -420,6 +440,7 @@ export default function ProductsPage() {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
+                  data-category-filter-id={category.id}
                   onClick={() => setCategoryFilter(category.id)}
                   className={categoryChipClassName(isActive)}
                 >
@@ -427,14 +448,34 @@ export default function ProductsPage() {
                 </button>
               );
             })}
-          </div>
+          </ScrollableChipRow>
         </div>
 
-        {totalProducts > 0 && (
-          <p className="text-muted-foreground text-xs tabular-nums">
-            {t('showingCount', { count: visibleCount, total: totalProducts })}
-          </p>
-        )}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          {totalProducts > 0 && (
+            <p className="text-muted-foreground text-xs tabular-nums">
+              {hasActiveFilters
+                ? t('showingFilteredCount', {
+                    count: visibleCount,
+                    total: totalProducts,
+                    category: activeCategoryLabel,
+                  })
+                : t('showingCount', { count: visibleCount, total: totalProducts })}
+            </p>
+          )}
+          {hasActiveFilters && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="text-muted-foreground hover:text-foreground h-8 shrink-0 px-2 text-xs"
+            >
+              <FilterX className="me-1.5 h-3.5 w-3.5" aria-hidden />
+              {t('clearFilters')}
+            </Button>
+          )}
+        </div>
       </div>
 
       {!filteredProducts?.length ? (
