@@ -20,7 +20,8 @@ import {
   tapScale,
 } from '@/lib/motion';
 
-const WELCOME_HERO = '/hero/warda-storefront.jpg';
+const WELCOME_HERO =
+  'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2400&q=80';
 
 export default function WelcomePage() {
   return (

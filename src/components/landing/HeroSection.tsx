@@ -12,7 +12,8 @@ import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 
-const DEFAULT_HERO = '/hero/warda-storefront.jpg';
+const DEFAULT_HERO =
+  'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2400&q=80';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
