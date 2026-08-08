@@ -4,6 +4,16 @@ import type { CartDiningMode } from '@/stores/cart-store';
 export type DiningModeParam = 'dining' | 'dine_in' | 'takeaway';
 
 const STORAGE_KEY = 'warda-dining-mode';
+const TABLE_STORAGE_KEY = 'warda-table';
+
+export function persistTableNumber(table: string): void {
+  localStorage.setItem(TABLE_STORAGE_KEY, table);
+}
+
+export function readStoredTableNumber(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(TABLE_STORAGE_KEY);
+}
 
 /** Parse `mode` query param (supports legacy `dining` and spec `dine_in`). */
 export function parseDiningModeParam(param: string | null): CartDiningMode | null {

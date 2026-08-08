@@ -3,7 +3,9 @@ import {
   buildMenuUrl,
   parseDiningModeParam,
   persistDiningMode,
+  persistTableNumber,
   readStoredDiningMode,
+  readStoredTableNumber,
   toDiningModeParam,
 } from '@/lib/dining-mode';
 import { buildWelcomeUrl } from '@/lib/qr/welcome-url';
@@ -54,6 +56,12 @@ describe('dining mode persistence', () => {
     expect(readStoredDiningMode()).toBe('dining');
     persistDiningMode('takeaway');
     expect(readStoredDiningMode()).toBe('takeaway');
+  });
+
+  it('persists table number for QR flows', () => {
+    expect(readStoredTableNumber()).toBeNull();
+    persistTableNumber('7');
+    expect(readStoredTableNumber()).toBe('7');
   });
 });
 
