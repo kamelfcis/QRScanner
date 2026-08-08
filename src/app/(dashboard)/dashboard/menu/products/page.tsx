@@ -22,7 +22,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
-import { Plus, Search, Upload, X } from 'lucide-react';
+import { Plus, Search, Upload, X, Images } from 'lucide-react';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import { Label } from '@/components/ui/label';
 import {
@@ -49,6 +49,7 @@ import type { Product } from '@/types';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { cn, getName } from '@/lib/utils';
+import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
 
 type ProductForm = z.input<typeof productSchema>;
 
@@ -73,6 +74,7 @@ function ProductImageField({
   form,
   uploading,
   onUploadClick,
+  onChooseFromStorage,
   onRemove,
   t,
   tCommon,
@@ -80,6 +82,7 @@ function ProductImageField({
   form: UseFormReturn<ProductForm>;
   uploading: boolean;
   onUploadClick: () => void;
+  onChooseFromStorage: () => void;
   onRemove: () => void;
   t: (key: string) => string;
   tCommon: (key: string) => string;
@@ -88,11 +91,16 @@ function ProductImageField({
 
   return (
     <div className="space-y-2">
+      <input type="hidden" {...form.register('image_url')} />
       <Label>{t('productImage')}</Label>
       <div className="flex flex-wrap items-center gap-2">
         <Button type="button" variant="outline" onClick={onUploadClick} disabled={uploading}>
           <Upload className="mr-2 h-4 w-4" />
           {uploading ? tCommon('uploading') : imageUrl ? t('changeImage') : t('addImage')}
+        </Button>
+        <Button type="button" variant="outline" onClick={onChooseFromStorage} disabled={uploading}>
+          <Images className="mr-2 h-4 w-4" />
+          {t('chooseFromStorage')}
         </Button>
         {imageUrl && (
           <Button type="button" variant="ghost" size="sm" onClick={onRemove} disabled={uploading}>
@@ -168,6 +176,9 @@ export default function ProductsPage() {
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [storagePickerOpen, setStoragePickerOpen] = useState(false);
+  const [storagePickerFormType, setStoragePickerFormType] = useState<'create' | 'edit'>('create');
+  const [storagePickerSession, setStoragePickerSession] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeFormRef = useRef<'create' | 'edit'>('create');
   const t = useTranslations('products');
@@ -249,12 +260,19 @@ export default function ProductsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const form = activeFormRef.current === 'create' ? createForm : editForm;
+    const formType = activeFormRef.current;
+    const form = formType === 'create' ? createForm : editForm;
+    const productId = formType === 'edit' ? editProduct?.id : undefined;
     setUploading(true);
     try {
       const path = generateStoragePath('products', file.name);
       const result = await uploadImage({ bucket: 'products', path, file });
-      form.setValue('image_url', result.url, { shouldValidate: true });
+      form.setValue('image_url', result.url, { shouldValidate: true, shouldDirty: true });
+
+      if (productId) {
+        await updateProduct.mutateAsync({ id: productId, input: { image_url: result.url } });
+        toast.success(t('imageSaved'));
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t('uploadFailed'));
     } finally {
@@ -268,8 +286,42 @@ export default function ProductsPage() {
     fileInputRef.current?.click();
   };
 
-  const removeImage = (form: UseFormReturn<ProductForm>) => {
-    form.setValue('image_url', null, { shouldValidate: true });
+  const openStoragePicker = (formType: 'create' | 'edit') => {
+    activeFormRef.current = formType;
+    setStoragePickerFormType(formType);
+    setStoragePickerSession((session) => session + 1);
+    setStoragePickerOpen(true);
+  };
+
+  const handleStorageImageSelect = async (url: string) => {
+    const formType = activeFormRef.current;
+    const form = formType === 'create' ? createForm : editForm;
+    const productId = formType === 'edit' ? editProduct?.id : undefined;
+
+    form.setValue('image_url', url, { shouldValidate: true, shouldDirty: true });
+
+    if (productId) {
+      try {
+        await updateProduct.mutateAsync({ id: productId, input: { image_url: url } });
+        toast.success(t('imageSaved'));
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : t('uploadFailed'));
+      }
+    }
+  };
+
+  const storagePickerForm = storagePickerFormType === 'edit' ? editForm : createForm;
+
+  const removeImage = async (form: UseFormReturn<ProductForm>) => {
+    form.setValue('image_url', null, { shouldValidate: true, shouldDirty: true });
+    if (editProduct) {
+      try {
+        await updateProduct.mutateAsync({ id: editProduct.id, input: { image_url: null } });
+        toast.success(t('imageRemoved'));
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : t('uploadFailed'));
+      }
+    }
   };
 
   const handleCreate = async (data: ProductForm) => {
@@ -594,6 +646,7 @@ export default function ProductsPage() {
               form={createForm}
               uploading={uploading}
               onUploadClick={() => openImagePicker('create')}
+              onChooseFromStorage={() => openStoragePicker('create')}
               onRemove={() => removeImage(createForm)}
               t={t}
               tCommon={tCommon}
@@ -774,6 +827,7 @@ export default function ProductsPage() {
               form={editForm}
               uploading={uploading}
               onUploadClick={() => openImagePicker('edit')}
+              onChooseFromStorage={() => openStoragePicker('edit')}
               onRemove={() => removeImage(editForm)}
               t={t}
               tCommon={tCommon}
@@ -910,6 +964,20 @@ export default function ProductsPage() {
         confirmLabel={tCommon('delete')}
         onConfirm={handleDelete}
         loading={deleteProduct.isPending}
+      />
+
+      <StorageImagePickerDialog
+        key={storagePickerSession}
+        open={storagePickerOpen}
+        onOpenChange={setStoragePickerOpen}
+        onSelect={handleStorageImageSelect}
+        selectedUrl={storagePickerForm.watch('image_url')}
+        title={t('chooseFromStorageTitle')}
+        emptyLabel={t('storageEmpty')}
+        loadMoreLabel={t('loadMoreImages')}
+        loadingLabel={tCommon('loading')}
+        selectLabel={t('selectStorageImage')}
+        cancelLabel={tCommon('cancel')}
       />
     </div>
   );

@@ -2,7 +2,8 @@
 
 import { createClient } from '@/lib/supabase/client';
 
-export type StorageBucket = 'logos' | 'covers' | 'categories' | 'products' | 'gallery' | 'qr' | 'pdfs' | 'assets';
+export type StorageBucket =
+  'logos' | 'covers' | 'categories' | 'products' | 'gallery' | 'qr' | 'pdfs' | 'assets';
 
 interface UploadOptions {
   bucket: StorageBucket;
@@ -19,11 +20,13 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 const MAX_SIZE_MB = 5;
 
 export function validateImageFile(file: File, maxSizeMB: number = MAX_SIZE_MB): void {
-  if (!ALLOWED_TYPES.includes(file.type as typeof ALLOWED_TYPES[number])) {
+  if (!ALLOWED_TYPES.includes(file.type as (typeof ALLOWED_TYPES)[number])) {
     throw new Error(`Invalid file type "${file.type}". Allowed: JPEG, PNG, WebP.`);
   }
   if (file.size > maxSizeMB * 1024 * 1024) {
-    throw new Error(`File size ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds limit of ${maxSizeMB}MB.`);
+    throw new Error(
+      `File size ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds limit of ${maxSizeMB}MB.`
+    );
   }
 }
 
@@ -69,6 +72,51 @@ export function generateStoragePath(bucket: StorageBucket, filename: string): st
   const safeName = filename.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 50);
   const ext = safeName.split('.').pop() || 'jpg';
   return `${timestamp}-${random}.${ext}`;
+}
+
+export interface StorageImageItem {
+  name: string;
+  url: string;
+  createdAt: string | null;
+}
+
+const STORAGE_LIST_PAGE_SIZE = 24;
+
+export async function listStorageImages(
+  bucket: StorageBucket,
+  options: { limit?: number; offset?: number } = {}
+): Promise<{ items: StorageImageItem[]; hasMore: boolean }> {
+  const limit = options.limit ?? STORAGE_LIST_PAGE_SIZE;
+  const offset = options.offset ?? 0;
+  const supabase = createClient();
+
+  const { data, error } = await supabase.storage.from(bucket).list('', {
+    limit: limit + 1,
+    offset,
+    sortBy: { column: 'created_at', order: 'desc' },
+  });
+
+  if (error) throw new Error(error.message);
+
+  const files = (data ?? []).filter(
+    (file) =>
+      file.metadata &&
+      (file.metadata.mimetype?.startsWith('image/') || /\.(jpe?g|png|webp|gif)$/i.test(file.name))
+  );
+
+  const hasMore = files.length > limit;
+  const page = hasMore ? files.slice(0, limit) : files;
+
+  const items = page.map((file) => {
+    const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(file.name);
+    return {
+      name: file.name,
+      url: urlData.publicUrl,
+      createdAt: file.created_at ?? null,
+    };
+  });
+
+  return { items, hasMore };
 }
 
 export function getImageDimensions(file: File): Promise<{ width: number; height: number }> {
