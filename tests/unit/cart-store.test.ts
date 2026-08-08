@@ -29,6 +29,8 @@ describe('useCartStore', () => {
       items: [],
       diningMode: 'dining',
       tableNumber: null,
+      fulfillmentType: 'pickup',
+      deliveryAddress: '',
       customerName: '',
       customerPhone: '',
       orderNotes: '',
@@ -64,6 +66,19 @@ describe('useCartStore', () => {
     expect(useCartStore.getState().items).toHaveLength(0);
     expect(useCartStore.getState().customerName).toBe('');
     expect(useCartStore.getState().orderNotes).toBe('');
+    expect(useCartStore.getState().deliveryAddress).toBe('');
+    expect(useCartStore.getState().fulfillmentType).toBe('pickup');
+  });
+
+  it('persists fulfillment fields to localStorage', () => {
+    useCartStore.getState().setMeta({
+      fulfillmentType: 'delivery',
+      deliveryAddress: '123 Main St',
+    });
+    const raw = localStorage.getItem('aklet-cart-v1');
+    const parsed = JSON.parse(raw!);
+    expect(parsed.state.fulfillmentType).toBe('delivery');
+    expect(parsed.state.deliveryAddress).toBe('123 Main St');
   });
 
   it('persists to localStorage under aklet-cart-v1', () => {

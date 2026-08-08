@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Truck, Store } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
-import { useCartStore } from '@/stores/cart-store';
+import { useCartStore, type FulfillmentType } from '@/stores/cart-store';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -44,6 +44,8 @@ export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
   const diningMode = useCartStore((s) => s.diningMode);
   const tableNumber = useCartStore((s) => s.tableNumber);
+  const fulfillmentType = useCartStore((s) => s.fulfillmentType);
+  const deliveryAddress = useCartStore((s) => s.deliveryAddress);
   const customerName = useCartStore((s) => s.customerName);
   const customerPhone = useCartStore((s) => s.customerPhone);
   const orderNotes = useCartStore((s) => s.orderNotes);
@@ -57,6 +59,8 @@ export default function CheckoutPage() {
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const whatsappConfigured = Boolean(normalizeWhatsAppPhone(settings?.whatsapp || ''));
+  const isTakeaway = diningMode === 'takeaway';
+  const requiresDeliveryAddress = isTakeaway && fulfillmentType === 'delivery';
 
   const pricedItems = useMemo(
     () =>
@@ -96,6 +100,8 @@ export default function CheckoutPage() {
           return t('whatsappMissing');
         case 'name_required':
           return t('nameRequired');
+        case 'address_required':
+          return t('addressRequired');
         case 'min_order':
           return t('minOrder', {
             amount: formatCurrencyNumber(settings?.minimum_order ?? 0, currencyLocale),
@@ -119,6 +125,8 @@ export default function CheckoutPage() {
       maxOrderNotesLength: maxNotes,
       whatsappConfigured,
       hasItems: items.length > 0,
+      requiresDeliveryAddress,
+      deliveryAddress,
     });
 
     if (!result.valid) {
@@ -136,6 +144,8 @@ export default function CheckoutPage() {
         items,
         diningMode,
         tableNumber,
+        fulfillmentType: isTakeaway ? fulfillmentType : null,
+        deliveryAddress: requiresDeliveryAddress ? deliveryAddress : null,
         customerName,
         customerPhone,
         orderNotes,
@@ -330,6 +340,67 @@ export default function CheckoutPage() {
           </section>
 
           <section className="space-y-4">
+            {isTakeaway && (
+              <div className="space-y-3">
+                <Label>{t('fulfillmentType')}</Label>
+                <div
+                  className="grid grid-cols-2 gap-3"
+                  role="radiogroup"
+                  aria-label={t('fulfillmentType')}
+                >
+                  {(
+                    [
+                      { value: 'pickup', icon: Store, label: t('pickup') },
+                      { value: 'delivery', icon: Truck, label: t('delivery') },
+                    ] as const
+                  ).map(({ value, icon: Icon, label }) => {
+                    const selected = fulfillmentType === value;
+                    return (
+                      <button
+                        key={value}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        data-testid={`checkout-fulfillment-${value}`}
+                        onClick={() =>
+                          setMeta({
+                            fulfillmentType: value as FulfillmentType,
+                            ...(value === 'pickup' ? { deliveryAddress: '' } : {}),
+                          })
+                        }
+                        className={cn(
+                          'flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-3 text-sm font-medium transition-colors',
+                          selected
+                            ? 'border-primary bg-primary/5 text-primary'
+                            : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                        )}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span>{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {requiresDeliveryAddress && (
+              <div className="space-y-2">
+                <Label htmlFor="delivery-address">
+                  {t('deliveryAddress')} <span className="text-destructive">*</span>
+                </Label>
+                <Textarea
+                  id="delivery-address"
+                  required
+                  value={deliveryAddress}
+                  placeholder={t('deliveryAddressPlaceholder')}
+                  onChange={(e) => setMeta({ deliveryAddress: e.target.value })}
+                  rows={3}
+                  data-testid="checkout-address"
+                />
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="customer-name">
                 {t('customerName')} <span className="text-destructive">*</span>
