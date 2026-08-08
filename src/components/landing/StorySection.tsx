@@ -22,7 +22,7 @@ export function StorySection() {
   const logoInitial = (settings?.name_en || settings?.name_ar || 'W').charAt(0).toUpperCase();
 
   return (
-    <section id="story" className="relative py-20 md:py-28">
+    <section id="story" className="section-stripe relative py-20 md:py-28">
       <div className="container mx-auto px-4">
         <div className="grid items-center gap-12 md:grid-cols-2">
           <MotionSection variants={fadeInLeft}>

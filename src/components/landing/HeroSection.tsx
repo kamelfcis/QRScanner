@@ -180,7 +180,7 @@ export function HeroSection() {
             href="/welcome"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-brand-accent hover:bg-brand-accent/90 px-10 text-base font-semibold text-black'
+              'bg-brand-accent hover:bg-brand-accent/90 text-on-accent px-10 text-base font-semibold'
             )}
           >
             {t('viewMenu')}

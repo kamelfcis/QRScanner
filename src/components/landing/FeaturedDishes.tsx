@@ -96,7 +96,7 @@ export function FeaturedDishes() {
                 <MotionCard key={product.id} delay={index * 0.05}>
                   <Link
                     href="/welcome"
-                    className="border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors"
+                    className="border-border/50 bg-card/80 card-chrome hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors dark:shadow-none"
                   >
                     <div className="relative aspect-square overflow-hidden">
                       {product.image_url ? (
@@ -117,7 +117,7 @@ export function FeaturedDishes() {
                       )}
                       {badge && (
                         <div className="absolute start-2 top-2 z-[1]">
-                          <Badge className="bg-brand-accent/90 px-1.5 py-0.5 text-[10px] text-black sm:text-xs">
+                          <Badge className="bg-brand-accent/90 text-on-accent px-1.5 py-0.5 text-[10px] sm:text-xs">
                             {badgeLabel(badge)}
                           </Badge>
                         </div>
@@ -155,7 +155,7 @@ export function FeaturedDishes() {
               href="/welcome"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-brand-accent hover:bg-brand-accent/90 rounded-full px-8 text-base font-semibold text-black'
+                'bg-brand-accent hover:bg-brand-accent/90 text-on-accent rounded-full px-8 text-base font-semibold'
               )}
             >
               {t('viewFullMenu')}

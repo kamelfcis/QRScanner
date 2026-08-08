@@ -250,7 +250,7 @@ export function ProductCard({
                 e.stopPropagation();
                 handleMobileAddClick();
               }}
-              className="bg-brand-accent absolute bottom-2 end-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full text-black shadow-md sm:hidden"
+              className="bg-brand-accent text-on-accent absolute bottom-2 end-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full shadow-md sm:hidden"
               aria-label={tCart('addToCart')}
               data-testid="add-to-cart-mobile"
             >
@@ -342,7 +342,7 @@ export function ProductCard({
                 >
                   <Button
                     type="button"
-                    className="bg-brand-accent hover:bg-brand-accent/90 h-11 w-full text-black"
+                    className="bg-brand-accent hover:bg-brand-accent/90 text-on-accent h-11 w-full"
                     onClick={() => handleAdd('')}
                     data-testid="add-to-cart"
                     aria-label={tCart('addToCart')}

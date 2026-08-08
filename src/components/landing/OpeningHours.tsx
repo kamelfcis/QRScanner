@@ -37,7 +37,7 @@ export function OpeningHours() {
         </MotionSection>
 
         <MotionSection delay={0.2}>
-          <div className="bg-card ring-foreground/10 mx-auto max-w-2xl overflow-hidden rounded-xl ring-1">
+          <div className="bg-card card-chrome ring-border/60 dark:ring-border/40 mx-auto max-w-2xl overflow-hidden rounded-xl ring-1">
             <div className="divide-border divide-y">
               {dayOrder.map((day) => {
                 const dayHours = hours?.[day];

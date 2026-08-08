@@ -123,7 +123,7 @@ function WelcomeContent() {
         {/* Logo — gold ring + glass frame */}
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="border-brand-accent/35 mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_rgba(255,183,0,0.15)] backdrop-blur-xl sm:mb-6 sm:h-32 sm:w-32"
+          className="border-brand-accent/35 mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_color-mix(in_srgb,var(--brand-accent)_15%,transparent)] backdrop-blur-xl sm:mb-6 sm:h-32 sm:w-32"
         >
           {settings?.logo_url ? (
             <NextImage
@@ -252,7 +252,7 @@ function ModeCard({
         'group relative flex min-h-[172px] flex-col items-center justify-center overflow-hidden rounded-3xl',
         'border border-white/15 bg-black/45 p-6 text-center shadow-lg backdrop-blur-xl',
         'transition-[border-color,box-shadow,background-color] duration-300',
-        'hover:border-brand-accent/50 hover:bg-black/55 hover:shadow-[0_0_32px_rgba(255,183,0,0.18)]',
+        'hover:border-brand-accent/50 hover:bg-black/55 hover:shadow-[0_0_32px_color-mix(in_srgb,var(--brand-accent)_18%,transparent)]',
         'focus-visible:ring-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black'
       )}
     >

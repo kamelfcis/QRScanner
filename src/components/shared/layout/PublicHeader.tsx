@@ -160,7 +160,7 @@ export function PublicHeader() {
             href="/welcome"
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-black md:inline-flex'
+              'bg-brand-accent hover:bg-brand-accent/90 text-on-accent hidden shrink-0 px-4 md:inline-flex'
             )}
           >
             {t('orderNow')}
@@ -275,7 +275,7 @@ export function PublicHeader() {
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-black'
+                    'bg-brand-accent hover:bg-brand-accent/90 text-on-accent flex h-12 w-full items-center justify-center gap-2 text-base font-semibold'
                   )}
                 >
                   <ShoppingBag className="h-5 w-5" aria-hidden />

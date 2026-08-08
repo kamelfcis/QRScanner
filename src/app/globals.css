@@ -110,40 +110,41 @@
 }
 
 .dark {
-  /* Explicit dark — same night kitchen */
-  --background: #0A0A0A;
-  --foreground: #FAFAFA;
-  --card: #141414;
-  --card-foreground: #FAFAFA;
-  --popover: #141414;
-  --popover-foreground: #FAFAFA;
-  --primary: #FFB700;
-  --primary-foreground: #0A0A0A;
-  --secondary: #8B1A2B;
+  /* Night kitchen — ocean charcoal + coral/gold accent (overridden by BrandThemeProvider) */
+  --brand-background: #0A1012;
+  --background: #0A1012;
+  --foreground: #F2F6F8;
+  --card: #121A1E;
+  --card-foreground: #F2F6F8;
+  --popover: #141E23;
+  --popover-foreground: #F2F6F8;
+  --primary: #F97316;
+  --primary-foreground: #0A1012;
+  --secondary: #38768a;
   --secondary-foreground: #FFFFFF;
-  --muted: #1A1A1A;
-  --muted-foreground: #A3A3A3;
-  --accent: #FFB700;
-  --accent-foreground: #0A0A0A;
-  --destructive: #DC2626;
-  --border: #2A2A2A;
-  --input: #2A2A2A;
-  --ring: #FFB700;
-  --chart-1: #FFB700;
-  --chart-2: #8B1A2B;
+  --muted: #1A2429;
+  --muted-foreground: #8FA3AD;
+  --accent: #F97316;
+  --accent-foreground: #0A1012;
+  --destructive: #EF4444;
+  --border: #2A363D;
+  --input: #2A363D;
+  --ring: #F97316;
+  --chart-1: #F97316;
+  --chart-2: #38768a;
   --chart-3: #E8C547;
   --chart-4: #22C55E;
   --chart-5: #3B82F6;
-  
-  /* Sidebar Dark */
-  --sidebar: #121212;
-  --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #FFB700;
-  --sidebar-primary-foreground: #0A0A0A;
-  --sidebar-accent: #1F1F1F;
-  --sidebar-accent-foreground: #FAFAFA;
-  --sidebar-border: #2A2A2A;
-  --sidebar-ring: #FFB700;
+
+  /* Sidebar — admin shell in dark */
+  --sidebar: #080C0E;
+  --sidebar-foreground: #F2F6F8;
+  --sidebar-primary: #F97316;
+  --sidebar-primary-foreground: #0A1012;
+  --sidebar-accent: #1A2429;
+  --sidebar-accent-foreground: #F2F6F8;
+  --sidebar-border: #2A363D;
+  --sidebar-ring: #F97316;
 }
 
 @layer base {
@@ -318,6 +319,34 @@ textarea,
 }
 .safe-pt {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Dark mode — card chrome & section rhythm */
+.dark .card-chrome {
+  border-color: color-mix(in srgb, var(--border) 80%, var(--brand-accent) 20%);
+  background-color: color-mix(in srgb, var(--card) 92%, var(--brand-primary) 8%);
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 8px 24px -12px color-mix(in srgb, var(--brand-accent) 12%, transparent);
+}
+
+.dark .section-stripe {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--muted) 35%, transparent) 0%,
+    transparent 100%
+  );
+}
+
+.dark .glass-surface {
+  border-color: color-mix(in srgb, var(--border) 70%, var(--brand-accent) 30%);
+  background-color: color-mix(in srgb, var(--card) 75%, transparent);
+  backdrop-filter: blur(20px);
+}
+
+/* Accent CTA — readable on coral/gold in both modes */
+.text-on-accent {
+  color: var(--accent-foreground);
 }
 
 /* Reduced motion */

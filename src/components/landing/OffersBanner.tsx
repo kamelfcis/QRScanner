@@ -50,7 +50,7 @@ export function OffersBanner() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                   <div className="absolute right-3 top-3">
-                    <Badge className="bg-brand-accent text-black">
+                    <Badge className="bg-brand-accent text-on-accent">
                       {offer.discount_type === 'percentage'
                         ? `${offer.discount_value}% OFF`
                         : `${formatCurrencyAmount(offer.discount_value, currency, { plain: true })} OFF`}

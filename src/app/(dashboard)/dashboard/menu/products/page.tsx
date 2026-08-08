@@ -123,7 +123,7 @@ const categoryChipClassName = (isActive: boolean) =>
   cn(
     'inline-flex min-h-[36px] shrink-0 items-center whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors',
     isActive
-      ? 'border-brand-accent bg-brand-accent text-black shadow-[0_0_16px_-4px_rgba(255,183,0,0.5)]'
+      ? 'border-brand-accent bg-brand-accent text-on-accent shadow-[0_0_16px_-4px_color-mix(in_srgb,var(--brand-accent)_50%,transparent)]'
       : 'border-border/60 bg-muted/30 text-muted-foreground hover:border-brand-accent/40 hover:text-foreground'
   );
 

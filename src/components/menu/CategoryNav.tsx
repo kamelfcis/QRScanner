@@ -50,7 +50,7 @@ const chipClassName = (isActive: boolean) =>
   cn(
     'inline-flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-colors',
     isActive
-      ? 'border-brand-accent bg-brand-accent text-black shadow-[0_0_20px_-4px_rgba(255,183,0,0.55)]'
+      ? 'border-brand-accent bg-brand-accent text-on-accent shadow-[0_0_20px_-4px_color-mix(in_srgb,var(--brand-accent)_55%,transparent)]'
       : 'border-border/60 bg-muted/40 text-muted-foreground hover:border-brand-accent/40 hover:text-foreground'
   );
 
@@ -136,7 +136,7 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
       initial={prefersReducedMotion ? undefined : { y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-background/90 sticky top-16 z-30 backdrop-blur-xl"
+      className="bg-background/90 border-border/60 dark:border-border/40 sticky top-16 z-30 border-b backdrop-blur-xl"
     >
       <div className="via-brand-accent/50 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
       <div className="container mx-auto px-4">

@@ -17,7 +17,7 @@ export function PublicFooter() {
   const address = resolveContactAddress(settings, locale);
 
   return (
-    <footer className="bg-muted/50 border-t">
+    <footer className="bg-muted/50 border-border/60 dark:bg-muted/25 border-t">
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-1">

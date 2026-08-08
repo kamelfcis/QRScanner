@@ -57,7 +57,7 @@ export function MenuHeader({
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'bg-background/95 sticky top-0 z-40 border-b pt-[env(safe-area-inset-top)] backdrop-blur'
+        'bg-background/95 border-border/60 dark:border-border/40 sticky top-0 z-40 border-b pt-[env(safe-area-inset-top)] backdrop-blur'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between gap-2 px-4">

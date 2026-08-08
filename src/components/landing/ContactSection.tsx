@@ -28,8 +28,7 @@ function GlassCard({ children, className }: { children: React.ReactNode; classNa
   return (
     <div
       className={cn(
-        'border-brand-accent/15 bg-card/90 relative overflow-hidden rounded-2xl border p-6 shadow-lg backdrop-blur-xl',
-        'dark:border-white/10 dark:bg-black/40',
+        'border-brand-accent/15 bg-card/90 glass-surface relative overflow-hidden rounded-2xl border p-6 shadow-lg backdrop-blur-xl',
         className
       )}
     >
