@@ -10,10 +10,8 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getHeroImageUrl } from '@/lib/hero-image';
 import { cn, getName } from '@/lib/utils';
-
-const DEFAULT_HERO =
-  'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2400&q=80';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -42,7 +40,7 @@ export function HeroSection() {
 
   const featuredImages = gallery?.filter((item) => item.is_featured && item.image_url) || [];
   const hasCarousel = featuredImages.length > 0;
-  const heroImage = settings?.hero_image_url || DEFAULT_HERO;
+  const heroImage = getHeroImageUrl(settings?.hero_image_url);
 
   const name = getName(
     locale,

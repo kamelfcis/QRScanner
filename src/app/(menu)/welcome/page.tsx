@@ -11,6 +11,7 @@ import { cn, getName } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useCartStore, type CartDiningMode } from '@/stores/cart-store';
 import { buildMenuUrl, persistDiningMode, readStoredDiningMode } from '@/lib/dining-mode';
+import { getHeroImageUrl } from '@/lib/hero-image';
 import {
   fadeInUp,
   scaleIn,
@@ -19,9 +20,6 @@ import {
   hoverScale,
   tapScale,
 } from '@/lib/motion';
-
-const WELCOME_HERO =
-  'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2400&q=80';
 
 export default function WelcomePage() {
   return (
@@ -64,6 +62,7 @@ function WelcomeContent() {
     settings?.name_en || 'Aklet Gambary',
     settings?.name_ar || 'أكلة جمبري أنا'
   );
+  const heroImage = getHeroImageUrl(settings?.hero_image_url);
 
   const goToMenu = (mode: CartDiningMode) => {
     persistDiningMode(mode);
@@ -83,7 +82,7 @@ function WelcomeContent() {
 
   return (
     <div className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]">
-      {/* Storefront hero — full bleed with subtle ken-burns */}
+      {/* Hero background — same source as landing page */}
       <div className="pointer-events-none absolute inset-0">
         <motion.div
           className="absolute inset-0"
@@ -98,8 +97,8 @@ function WelcomeContent() {
           }
         >
           <NextImage
-            src={WELCOME_HERO}
-            alt={t('heroAlt')}
+            src={heroImage}
+            alt={restaurantName}
             fill
             priority
             sizes="100vw"
