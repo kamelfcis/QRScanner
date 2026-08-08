@@ -1,0 +1,460 @@
+{
+  "categories": [
+    {
+      "key": "fish",
+      "name_ar": "أسماك",
+      "name_en": "Fish",
+      "sort_order": 1
+    },
+    {
+      "key": "sea_fish",
+      "name_ar": "أسماك بحرية",
+      "name_en": "Sea Fish",
+      "sort_order": 2
+    },
+    {
+      "key": "squid",
+      "name_ar": "حبار",
+      "name_en": "Squid",
+      "sort_order": 3
+    },
+    {
+      "key": "fillet",
+      "name_ar": "فيليه وأسماك فاخرة",
+      "name_en": "Fillet & Premium Fish",
+      "sort_order": 4
+    },
+    {
+      "key": "crab",
+      "name_ar": "كابوريا",
+      "name_en": "Crab",
+      "sort_order": 5
+    },
+    {
+      "key": "shellfish",
+      "name_ar": "محار",
+      "name_en": "Shellfish",
+      "sort_order": 6
+    },
+    {
+      "key": "caviar",
+      "name_ar": "كافيار",
+      "name_en": "Caviar",
+      "sort_order": 7
+    },
+    {
+      "key": "shrimp",
+      "name_ar": "جمبري",
+      "name_en": "Shrimp",
+      "sort_order": 8
+    },
+    {
+      "key": "soups",
+      "name_ar": "شوربات",
+      "name_en": "Soups",
+      "sort_order": 9
+    },
+    {
+      "key": "pasta",
+      "name_ar": "مكرونة",
+      "name_en": "Pasta",
+      "sort_order": 10
+    },
+    {
+      "key": "rice",
+      "name_ar": "أرز",
+      "name_en": "Rice",
+      "sort_order": 11
+    },
+    {
+      "key": "sandwiches",
+      "name_ar": "سندوتشات",
+      "name_en": "Sandwiches",
+      "sort_order": 12
+    },
+    {
+      "key": "rice_plates",
+      "name_ar": "أطباق أرز",
+      "name_en": "Rice Plates",
+      "sort_order": 13
+    },
+    {
+      "key": "meals",
+      "name_ar": "وجبات",
+      "name_en": "Meals",
+      "sort_order": 14
+    },
+    {
+      "key": "salads",
+      "name_ar": "سلطات",
+      "name_en": "Salads",
+      "sort_order": 15
+    },
+    {
+      "key": "cooking",
+      "name_ar": "تسوية",
+      "name_en": "Cooking",
+      "sort_order": 16
+    }
+  ],
+  "products": {
+    "fish": [
+      {
+        "name_ar": "بلطي وسط",
+        "name_en": "Tilapia Medium",
+        "price": 110,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "بلطي كبير",
+        "name_en": "Tilapia Large",
+        "price": 120,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "بوري بحري كبير",
+        "name_en": "Large Sea Bream",
+        "price": 300,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "مكرونة سويسي",
+        "name_en": "Swiss Macaroni Fish",
+        "price": 300,
+        "sort_order": 4
+      },
+      {
+        "name_ar": "سردين سويسي",
+        "name_en": "Swiss Sardine",
+        "price": 200,
+        "sort_order": 5
+      },
+      {
+        "name_ar": "ماكريل كبير",
+        "name_en": "Large Mackerel",
+        "price": 300,
+        "sort_order": 6
+      }
+    ],
+    "sea_fish": [
+      {
+        "name_ar": "قاروص بحري",
+        "name_en": "Sea Bass",
+        "price": 800,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "دنيس بحري",
+        "name_en": "Sea Bream (Denis)",
+        "price": 800,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "ناجل بحري",
+        "name_en": "Najil Sea Fish",
+        "price": 800,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "وقار بحري",
+        "name_en": "Waqar Sea Fish",
+        "price": 800,
+        "sort_order": 4
+      },
+      {
+        "name_ar": "لوت بحري",
+        "name_en": "Lout Sea Fish",
+        "price": 500,
+        "sort_order": 5
+      }
+    ],
+    "squid": [
+      {
+        "name_ar": "سبيط بلدي",
+        "name_en": "Local Squid",
+        "price": 600,
+        "sort_order": 1
+      }
+    ],
+    "fillet": [
+      {
+        "name_ar": "فيليه قشر بيض",
+        "name_en": "White Fish Fillet",
+        "price": 500,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "سلمون درجة أولى",
+        "name_en": "Premium Salmon",
+        "price": 800,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "بربوني فرولة",
+        "name_en": "Strawberry Grouper",
+        "price": 500,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "ثعابين بحري",
+        "name_en": "Sea Eel",
+        "price": 700,
+        "sort_order": 4
+      }
+    ],
+    "crab": [
+      {
+        "name_ar": "كابوريا كبيرة",
+        "name_en": "Large Crab",
+        "price": 500,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "كابوريا وسط",
+        "name_en": "Medium Crab",
+        "price": 400,
+        "sort_order": 2
+      }
+    ],
+    "shellfish": [
+      {
+        "name_ar": "بلح بحر كبير",
+        "name_en": "Large Sea Clams",
+        "price": 500,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "جندفلي كبير",
+        "name_en": "Large Scallops",
+        "price": 300,
+        "sort_order": 2
+      }
+    ],
+    "caviar": [
+      {
+        "name_ar": "بطارخ بوري بحري (كافيار)",
+        "name_en": "Sea Bream Roe (Caviar)",
+        "price": 1200,
+        "sort_order": 1
+      }
+    ],
+    "shrimp": [
+      {
+        "name_ar": "جمبري سويسي وسط",
+        "name_en": "Swiss Shrimp Medium",
+        "price": 700,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "جمبري سويسي كبير",
+        "name_en": "Swiss Shrimp Large",
+        "price": 800,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "جمبري سويسي جامبو",
+        "name_en": "Swiss Shrimp Jumbo",
+        "price": 900,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "جمبري لحم وسط",
+        "name_en": "Meaty Shrimp Medium",
+        "price": 1200,
+        "sort_order": 4
+      },
+      {
+        "name_ar": "جمبري لحم كبير",
+        "name_en": "Meaty Shrimp Large",
+        "price": 1400,
+        "sort_order": 5
+      }
+    ],
+    "soups": [
+      {
+        "name_ar": "شوربة سي فود",
+        "name_en": "Seafood Soup",
+        "price": 190,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "شوربة جمبري",
+        "name_en": "Shrimp Soup",
+        "price": 150,
+        "sort_order": 2
+      }
+    ],
+    "pasta": [
+      {
+        "name_ar": "مكرونة سي فود",
+        "name_en": "Seafood Pasta",
+        "price": 200,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "مكرونة جمبري",
+        "name_en": "Shrimp Pasta",
+        "price": 200,
+        "sort_order": 2
+      }
+    ],
+    "rice": [
+      {
+        "name_ar": "أرز صيادية وسط",
+        "name_en": "Sayadiah Rice Medium",
+        "price": 40,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "أرز صيادية كبير",
+        "name_en": "Sayadiah Rice Large",
+        "price": 75,
+        "sort_order": 2
+      }
+    ],
+    "sandwiches": [
+      {
+        "name_ar": "سندوتش جمبري وسط",
+        "name_en": "Shrimp Sandwich Medium",
+        "price": 80,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "سندوتش جمبري كبير",
+        "name_en": "Shrimp Sandwich Large",
+        "price": 100,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "سندوتش فيليه",
+        "name_en": "Fillet Sandwich",
+        "price": 45,
+        "sort_order": 3
+      }
+    ],
+    "rice_plates": [
+      {
+        "name_ar": "طبق أرز جمبري وسط",
+        "name_en": "Shrimp Rice Plate Medium",
+        "price": 120,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "طبق أرز جمبري كبير",
+        "name_en": "Shrimp Rice Plate Large",
+        "price": 150,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "طبق أرز فيليه",
+        "name_en": "Fillet Rice Plate",
+        "price": 100,
+        "sort_order": 3
+      }
+    ],
+    "meals": [
+      {
+        "name_ar": "وجبة جمبري وسط",
+        "name_en": "Shrimp Meal Medium",
+        "price": 170,
+        "sort_order": 1,
+        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
+        "description_en": "Includes rice, salad, tahini, and bread"
+      },
+      {
+        "name_ar": "وجبة جمبري كبير",
+        "name_en": "Shrimp Meal Large",
+        "price": 200,
+        "sort_order": 2,
+        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
+        "description_en": "Includes rice, salad, tahini, and bread"
+      },
+      {
+        "name_ar": "وجبة فيليه",
+        "name_en": "Fillet Meal",
+        "price": 100,
+        "sort_order": 3,
+        "description_ar": "يشمل أرز وسلطة وطحينة وخبز",
+        "description_en": "Includes rice, salad, tahini, and bread"
+      }
+    ],
+    "salads": [
+      {
+        "name_ar": "سلطة خضراء صغير",
+        "name_en": "Green Salad Small",
+        "price": 15,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "سلطة خضراء كبير",
+        "name_en": "Green Salad Large",
+        "price": 25,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "سلطة طحينة صغير",
+        "name_en": "Tahini Salad Small",
+        "price": 15,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "سلطة طحينة كبير",
+        "name_en": "Tahini Salad Large",
+        "price": 25,
+        "sort_order": 4
+      },
+      {
+        "name_ar": "سلطة بابا غنوج صغير",
+        "name_en": "Baba Ghanoush Salad Small",
+        "price": 15,
+        "sort_order": 5
+      },
+      {
+        "name_ar": "سلطة بابا غنوج كبير",
+        "name_en": "Baba Ghanoush Salad Large",
+        "price": 25,
+        "sort_order": 6
+      },
+      {
+        "name_ar": "سلطة جرجير",
+        "name_en": "Arugula Salad",
+        "price": 10,
+        "sort_order": 7
+      }
+    ],
+    "cooking": [
+      {
+        "name_ar": "مشوي ردة",
+        "name_en": "Grilled (Rada Style)",
+        "price": 50,
+        "sort_order": 1
+      },
+      {
+        "name_ar": "سنجاري على الفحم",
+        "name_en": "Sinagari Charcoal",
+        "price": 60,
+        "sort_order": 2
+      },
+      {
+        "name_ar": "زيت وليمون فحم",
+        "name_en": "Charcoal Oil & Lemon",
+        "price": 60,
+        "sort_order": 3
+      },
+      {
+        "name_ar": "مقلي",
+        "name_en": "Fried",
+        "price": 70,
+        "sort_order": 4
+      },
+      {
+        "name_ar": "تسوية جمبري/كابوريا/سبيط/فيليه",
+        "name_en": "Shrimp/Crab/Squid/Fillet Cooking",
+        "price": 80,
+        "sort_order": 5,
+        "description_ar": "مقلي / مشوي / خلطة / صينية صوص",
+        "description_en": "Fried / grilled / mixed / sauce tray"
+      }
+    ]
+  }
+}
