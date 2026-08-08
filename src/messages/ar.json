@@ -208,7 +208,13 @@
     "moreMetrics": "المزيد من المقاييس",
     "secondaryMetrics": "المخزون والمحتوى",
     "switchToLight": "التبديل إلى الوضع الفاتح",
-    "switchToDark": "التبديل إلى الوضع الداكن"
+    "switchToDark": "التبديل إلى الوضع الداكن",
+    "menuManagement": "إدارة القائمة",
+    "menuManagementDescription": "نظّم قائمتك بالتصنيفات والأطباق.",
+    "menuCategoriesTitle": "التصنيفات",
+    "menuCategoriesDescription": "إدارة تصنيفات القائمة وترتيبها.",
+    "menuProductsTitle": "الأطباق",
+    "menuProductsDescription": "إدارة أطباق القائمة والأسعار والتوفر."
   },
   "sidebar": {
     "dashboard": "لوحة التحكم",

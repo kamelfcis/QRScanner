@@ -1,37 +1,39 @@
-import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LayoutDashboard, Settings } from 'lucide-react';
+'use client';
 
-const menuSections = [
-  {
-    title: 'Categories',
-    description: 'Manage menu categories and their order.',
-    href: '/dashboard/menu/categories',
-  },
-  {
-    title: 'Products',
-    description: 'Manage menu products, prices, and availability.',
-    href: '/dashboard/menu/products',
-  },
-];
+import Link from 'next/link';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 export default function MenuPage() {
+  const t = useTranslations('dashboard');
+
+  const menuSections = [
+    {
+      titleKey: 'menuCategoriesTitle',
+      descriptionKey: 'menuCategoriesDescription',
+      href: '/dashboard/menu/categories',
+    },
+    {
+      titleKey: 'menuProductsTitle',
+      descriptionKey: 'menuProductsDescription',
+      href: '/dashboard/menu/products',
+    },
+  ] as const;
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Menu Management</h1>
-        <p className="text-muted-foreground">
-          Organize your menu with categories and products.
-        </p>
+        <h1 className="text-2xl font-bold md:text-3xl">{t('menuManagement')}</h1>
+        <p className="text-muted-foreground">{t('menuManagementDescription')}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         {menuSections.map((section) => (
           <Link key={section.href} href={section.href}>
-            <Card className="transition-colors hover:bg-muted/50">
+            <Card className="hover:bg-muted/50 transition-colors">
               <CardHeader>
-                <CardTitle>{section.title}</CardTitle>
-                <CardDescription>{section.description}</CardDescription>
+                <CardTitle>{t(section.titleKey)}</CardTitle>
+                <CardDescription>{t(section.descriptionKey)}</CardDescription>
               </CardHeader>
             </Card>
           </Link>

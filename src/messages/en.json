@@ -208,7 +208,13 @@
     "moreMetrics": "More metrics",
     "secondaryMetrics": "Inventory & content",
     "switchToLight": "Switch to light mode",
-    "switchToDark": "Switch to dark mode"
+    "switchToDark": "Switch to dark mode",
+    "menuManagement": "Menu Management",
+    "menuManagementDescription": "Organize your menu with categories and products.",
+    "menuCategoriesTitle": "Categories",
+    "menuCategoriesDescription": "Manage menu categories and their order.",
+    "menuProductsTitle": "Products",
+    "menuProductsDescription": "Manage menu products, prices, and availability."
   },
   "sidebar": {
     "dashboard": "Dashboard",
