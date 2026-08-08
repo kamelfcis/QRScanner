@@ -1,5 +1,6 @@
 import type { OrderTotals } from './totals';
 import { formatCurrencyAmount } from './format-currency';
+import type { FulfillmentType } from '@/stores/cart-store';
 
 export type MessageLocale = 'en' | 'ar';
 export type MessageDiningMode = 'dining' | 'takeaway';
@@ -15,6 +16,8 @@ export interface WhatsAppMessageInput {
   locale: MessageLocale;
   mode: MessageDiningMode;
   tableNumber?: string | number | null;
+  fulfillmentType?: FulfillmentType | null;
+  deliveryAddress?: string | null;
   items: WhatsAppMessageItem[];
   totals: OrderTotals;
   currency: string;
@@ -24,8 +27,17 @@ export interface WhatsAppMessageInput {
   prepTimeMinutes?: number | null;
 }
 
+const SEP = '────────────────';
+
 function formatMoney(value: number, currency: string, locale: MessageLocale): string {
   return formatCurrencyAmount(value, currency, { locale, plain: true });
+}
+
+function fulfillmentLabel(locale: MessageLocale, fulfillmentType: FulfillmentType): string {
+  if (locale === 'ar') {
+    return fulfillmentType === 'delivery' ? 'توصيل' : 'استلام في المطعم';
+  }
+  return fulfillmentType === 'delivery' ? 'Delivery' : 'Pickup at restaurant';
 }
 
 export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
@@ -33,6 +45,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     locale,
     mode,
     tableNumber,
+    fulfillmentType,
+    deliveryAddress,
     items,
     totals,
     currency,
@@ -44,19 +58,33 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   const isAr = locale === 'ar';
   const lines: string[] = [];
+  const showFulfillment = mode === 'takeaway' && fulfillmentType;
 
   if (isAr) {
     lines.push(mode === 'dining' ? '*طلب جديد — داخل المطعم*' : '*طلب جديد — تيك أواي*');
-    if (tableNumber) lines.push(`الطاولة: ${tableNumber}`);
-    lines.push('---');
+    lines.push(SEP);
+
+    if (showFulfillment) {
+      lines.push(`نوع الطلب: ${fulfillmentLabel(locale, fulfillmentType)}`);
+      if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
+        lines.push(`العنوان: ${deliveryAddress.trim()}`);
+      }
+      lines.push(SEP);
+    } else if (tableNumber) {
+      lines.push(`الطاولة: ${tableNumber}`);
+      lines.push(SEP);
+    }
+
+    lines.push('*الأصناف*');
     for (const item of items) {
       const lineTotal = item.unitPrice * item.quantity;
       lines.push(`${item.quantity}× ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);
       if (item.notes?.trim()) {
-        lines.push(`  ملاحظة: ${item.notes.trim()}`);
+        lines.push(`  • ${item.notes.trim()}`);
       }
     }
-    lines.push('---');
+
+    lines.push(SEP);
     lines.push(`المجموع الفرعي: ${formatMoney(totals.subtotal, currency, locale)}`);
     if (totals.applyTax && totals.tax > 0) {
       lines.push(`الضريبة (${totals.taxRate}%): ${formatMoney(totals.tax, currency, locale)}`);
@@ -67,7 +95,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       );
     }
     lines.push(`*الإجمالي: ${formatMoney(totals.total, currency, locale)}*`);
-    lines.push('---');
+
+    lines.push(SEP);
     lines.push(`الاسم: ${customerName}`);
     if (customerPhone?.trim()) lines.push(`الهاتف: ${customerPhone.trim()}`);
     if (orderNotes?.trim()) lines.push(`ملاحظات الطلب: ${orderNotes.trim()}`);
@@ -76,16 +105,29 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     }
   } else {
     lines.push(mode === 'dining' ? '*New Order — Dine In*' : '*New Order — Takeaway*');
-    if (tableNumber) lines.push(`Table: ${tableNumber}`);
-    lines.push('---');
+    lines.push(SEP);
+
+    if (showFulfillment) {
+      lines.push(`Order type: ${fulfillmentLabel(locale, fulfillmentType)}`);
+      if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
+        lines.push(`Address: ${deliveryAddress.trim()}`);
+      }
+      lines.push(SEP);
+    } else if (tableNumber) {
+      lines.push(`Table: ${tableNumber}`);
+      lines.push(SEP);
+    }
+
+    lines.push('*Items*');
     for (const item of items) {
       const lineTotal = item.unitPrice * item.quantity;
       lines.push(`${item.quantity}x ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);
       if (item.notes?.trim()) {
-        lines.push(`  Note: ${item.notes.trim()}`);
+        lines.push(`  • ${item.notes.trim()}`);
       }
     }
-    lines.push('---');
+
+    lines.push(SEP);
     lines.push(`Subtotal: ${formatMoney(totals.subtotal, currency, locale)}`);
     if (totals.applyTax && totals.tax > 0) {
       lines.push(`Tax (${totals.taxRate}%): ${formatMoney(totals.tax, currency, locale)}`);
@@ -96,7 +138,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       );
     }
     lines.push(`*Total: ${formatMoney(totals.total, currency, locale)}*`);
-    lines.push('---');
+
+    lines.push(SEP);
     lines.push(`Name: ${customerName}`);
     if (customerPhone?.trim()) lines.push(`Phone: ${customerPhone.trim()}`);
     if (orderNotes?.trim()) lines.push(`Order notes: ${orderNotes.trim()}`);

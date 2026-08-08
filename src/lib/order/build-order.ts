@@ -2,13 +2,15 @@ import { calculateOrderTotals, getUnitPrice, type OrderTotals } from './totals';
 import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage } from './whatsapp-message';
 import { buildWhatsAppUrl } from './whatsapp-url';
-import type { CartItem, CartDiningMode } from '@/stores/cart-store';
+import type { CartItem, CartDiningMode, FulfillmentType } from '@/stores/cart-store';
 import type { RestaurantSettings } from '@/types/database';
 
 export interface BuildOrderInput {
   items: CartItem[];
   diningMode: CartDiningMode;
   tableNumber?: string | null;
+  fulfillmentType?: FulfillmentType | null;
+  deliveryAddress?: string | null;
   customerName: string;
   customerPhone?: string | null;
   orderNotes?: string | null;
@@ -49,6 +51,8 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     locale: input.locale,
     mode: input.diningMode,
     tableNumber: input.tableNumber,
+    fulfillmentType: input.fulfillmentType,
+    deliveryAddress: input.deliveryAddress,
     items: priced.map((i) => ({
       name: i.name,
       quantity: i.quantity,

@@ -53,8 +53,9 @@ describe('buildWhatsAppMessage', () => {
 
     expect(msg).toContain('*New Order — Dine In*');
     expect(msg).toContain('Table: 5');
+    expect(msg).toContain('*Items*');
     expect(msg).toContain('2x Shawarma — 50 SAR');
-    expect(msg).toContain('Note: Extra garlic');
+    expect(msg).toContain('• Extra garlic');
     expect(msg).toContain('Subtotal: 60 SAR');
     expect(msg).toContain('Tax (15%): 9 SAR');
     expect(msg).toContain('Service (10%): 6 SAR');
@@ -88,5 +89,45 @@ describe('buildWhatsAppMessage', () => {
     expect(msg).toContain('الاسم: سارة');
     expect(msg).toContain('وقت التحضير المتوقع: ~20 دقيقة');
     expect(msg).not.toContain('رسوم الخدمة');
+  });
+
+  it('includes delivery address for takeaway delivery orders', () => {
+    const msg = buildWhatsAppMessage({
+      locale: 'ar',
+      mode: 'takeaway',
+      fulfillmentType: 'delivery',
+      deliveryAddress: 'شارع النيل، المعادي، القاهرة',
+      items: [{ name: 'جمبري', quantity: 2, unitPrice: 120 }],
+      totals: {
+        ...totals,
+        subtotal: 240,
+        tax: 36,
+        service: 0,
+        total: 276,
+        applyService: false,
+      },
+      currency: 'EGP',
+      customerName: 'أحمد',
+      customerPhone: '01001234567',
+    });
+
+    expect(msg).toContain('نوع الطلب: توصيل');
+    expect(msg).toContain('العنوان: شارع النيل، المعادي، القاهرة');
+    expect(msg).not.toContain('الطاولة');
+  });
+
+  it('includes pickup label without address for takeaway pickup orders', () => {
+    const msg = buildWhatsAppMessage({
+      locale: 'en',
+      mode: 'takeaway',
+      fulfillmentType: 'pickup',
+      items: [{ name: 'Shrimp', quantity: 1, unitPrice: 80 }],
+      totals: { ...totals, subtotal: 80, tax: 12, service: 0, total: 92, applyService: false },
+      currency: 'EGP',
+      customerName: 'Sara',
+    });
+
+    expect(msg).toContain('Order type: Pickup at restaurant');
+    expect(msg).not.toContain('Address:');
   });
 });

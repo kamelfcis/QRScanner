@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type CartDiningMode = 'dining' | 'takeaway';
+export type FulfillmentType = 'delivery' | 'pickup';
 
 export interface CartItem {
   /** Stable line id: productId + notes key */
@@ -21,6 +22,8 @@ export interface CartItem {
 export interface CartMeta {
   diningMode: CartDiningMode;
   tableNumber: string | null;
+  fulfillmentType: FulfillmentType;
+  deliveryAddress: string;
   customerName: string;
   customerPhone: string;
   orderNotes: string;
@@ -49,6 +52,8 @@ export function makeCartLineId(productId: string, notes: string): string {
 const initialMeta: CartMeta = {
   diningMode: 'dining',
   tableNumber: null,
+  fulfillmentType: 'pickup',
+  deliveryAddress: '',
   customerName: '',
   customerPhone: '',
   orderNotes: '',
@@ -141,6 +146,8 @@ export const useCartStore = create<CartState>()(
       clear: () => {
         set({
           items: [],
+          fulfillmentType: 'pickup',
+          deliveryAddress: '',
           customerName: '',
           customerPhone: '',
           orderNotes: '',
@@ -159,6 +166,8 @@ export const useCartStore = create<CartState>()(
         items: state.items,
         diningMode: state.diningMode,
         tableNumber: state.tableNumber,
+        fulfillmentType: state.fulfillmentType,
+        deliveryAddress: state.deliveryAddress,
         customerName: state.customerName,
         customerPhone: state.customerPhone,
         orderNotes: state.orderNotes,

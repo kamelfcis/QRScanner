@@ -7,6 +7,9 @@ export interface OrderValidationInput {
   maxOrderNotesLength?: number | null;
   whatsappConfigured: boolean;
   hasItems: boolean;
+  /** When true, delivery address is required (takeaway + delivery). */
+  requiresDeliveryAddress?: boolean;
+  deliveryAddress?: string | null;
 }
 
 export interface OrderValidationResult {
@@ -15,7 +18,12 @@ export interface OrderValidationResult {
 }
 
 export type OrderValidationErrorCode =
-  'empty_cart' | 'whatsapp_missing' | 'name_required' | 'min_order' | 'notes_too_long';
+  | 'empty_cart'
+  | 'whatsapp_missing'
+  | 'name_required'
+  | 'address_required'
+  | 'min_order'
+  | 'notes_too_long';
 
 export interface OrderValidationCodedResult {
   valid: boolean;
@@ -32,6 +40,9 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   if (!input.hasItems) codes.push('empty_cart');
   if (!input.whatsappConfigured) codes.push('whatsapp_missing');
   if (!input.customerName?.trim()) codes.push('name_required');
+  if (input.requiresDeliveryAddress && !input.deliveryAddress?.trim()) {
+    codes.push('address_required');
+  }
   if (minOrder > 0 && input.subtotal < minOrder) {
     codes.push('min_order');
   }
