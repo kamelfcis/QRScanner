@@ -6,6 +6,8 @@ import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
+import { getThemeSettings } from '@/lib/supabase/server';
+import { themeToCssText } from '@/lib/theme';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import './globals.css';
 
@@ -114,6 +116,7 @@ export default async function RootLayout({
   const headerStore = await headers();
   const locale = (headerStore.get('x-locale') || defaultLocale) as Locale;
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const brandThemeCss = themeToCssText(await getThemeSettings(), 'light');
 
   return (
     <html
@@ -123,6 +126,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <style id="brand-theme-vars" dangerouslySetInnerHTML={{ __html: brandThemeCss }} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>

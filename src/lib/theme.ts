@@ -69,19 +69,20 @@ export function themeToCssVariables(
   const secondaryDark = adjustDarkness(secondary, 35);
 
   const brandVars: Record<string, string> = {
-    '--color-brand-primary': primary,
-    '--color-brand-primary-light': primaryLight,
-    '--color-brand-primary-dark': primaryDark,
-    '--color-brand-secondary': secondary,
-    '--color-brand-secondary-light': secondaryLight,
-    '--color-brand-secondary-dark': secondaryDark,
-    '--color-brand-accent': accent,
-    '--color-brand-background': background,
+    '--brand-primary': primary,
+    '--brand-primary-light': primaryLight,
+    '--brand-primary-dark': primaryDark,
+    '--brand-secondary': secondary,
+    '--brand-secondary-light': secondaryLight,
+    '--brand-secondary-dark': secondaryDark,
+    '--brand-accent': accent,
+    '--brand-background': background,
   };
 
   if (mode === 'light') {
     return {
       ...brandVars,
+      '--background': background,
       '--primary': primaryDark,
       '--primary-foreground': '#FFFFFF',
       '--secondary': secondary,
@@ -112,6 +113,13 @@ export function themeToCssVariables(
   };
 }
 
+export function themeToCssText(theme: Partial<ThemeSettings>, mode: 'light' | 'dark'): string {
+  const vars = themeToCssVariables(theme, mode);
+  return `:root{${Object.entries(vars)
+    .map(([key, value]) => `${key}:${value}`)
+    .join(';')}}`;
+}
+
 export function applyBrandTheme(theme: Partial<ThemeSettings>, mode: 'light' | 'dark'): void {
   const root = document.documentElement;
   const vars = themeToCssVariables(theme, mode);
@@ -124,14 +132,15 @@ export function applyBrandTheme(theme: Partial<ThemeSettings>, mode: 'light' | '
 export function clearBrandTheme(): void {
   const root = document.documentElement;
   const keys = [
-    '--color-brand-primary',
-    '--color-brand-primary-light',
-    '--color-brand-primary-dark',
-    '--color-brand-secondary',
-    '--color-brand-secondary-light',
-    '--color-brand-secondary-dark',
-    '--color-brand-accent',
-    '--color-brand-background',
+    '--brand-primary',
+    '--brand-primary-light',
+    '--brand-primary-dark',
+    '--brand-secondary',
+    '--brand-secondary-light',
+    '--brand-secondary-dark',
+    '--brand-accent',
+    '--brand-background',
+    '--background',
     '--primary',
     '--primary-foreground',
     '--secondary',

@@ -50,20 +50,30 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   
-  /* Night Levantine street kitchen — charcoal + neon gold */
-  --color-brand-primary: #FFB700;
-  --color-brand-primary-light: #FFC933;
-  --color-brand-primary-dark: #C48A00;
-  --color-brand-secondary: #6B0F1A;
-  --color-brand-secondary-light: #8B1A2B;
-  --color-brand-secondary-dark: #3D0810;
-  --color-brand-accent: #F97316;
-  --color-brand-background: #0E0E0E;
+  /* Brand palette — values come from settings.theme via --brand-* on :root */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-light: var(--brand-primary-light);
+  --color-brand-primary-dark: var(--brand-primary-dark);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-secondary-light: var(--brand-secondary-light);
+  --color-brand-secondary-dark: var(--brand-secondary-dark);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-background: var(--brand-background);
 }
 
 :root {
+  /* Brand defaults (overridden by BrandThemeStyles + BrandThemeProvider from Supabase) */
+  --brand-primary: #0E7490;
+  --brand-primary-light: #398da4;
+  --brand-primary-dark: #0b5a70;
+  --brand-secondary: #155E75;
+  --brand-secondary-light: #38768a;
+  --brand-secondary-dark: #0e3d4c;
+  --brand-accent: #F97316;
+  --brand-background: #F0FDFA;
+
   /* Warm light — readable contrast for public pages */
-  --background: #FAF8F5;
+  --background: var(--brand-background);
   --foreground: #1A1814;
   --card: #FFFFFF;
   --card-foreground: #1A1814;
