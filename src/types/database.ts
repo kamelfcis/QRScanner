@@ -163,6 +163,10 @@ export interface RestaurantSettings {
   tagline: string | null;
   email: string | null;
   google_maps_url: string | null;
+  /** Optional override for QR code base URL (defaults to NEXT_PUBLIC_SITE_URL). */
+  qr_site_url?: string | null;
+  /** Landing path for QR scans, e.g. `/` or `/welcome`. */
+  qr_target_path?: string | null;
 }
 
 export interface ThemeSettings {

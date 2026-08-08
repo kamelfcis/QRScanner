@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useQRCodes, useCreateQRCode, useUpdateQRCode, useDeleteQRCode, useDuplicateQRCode } from '@/hooks/useQRCodes';
+import {
+  useQRCodes,
+  useCreateQRCode,
+  useUpdateQRCode,
+  useDeleteQRCode,
+  useDuplicateQRCode,
+} from '@/hooks/useQRCodes';
 import { useRestaurantTables } from '@/hooks/useRestaurantTables';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
@@ -12,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { QRCard } from '@/components/qr/QRCard';
 import { QRForm } from '@/components/qr/QRForm';
+import { QRTargetSettings } from '@/components/qr/QRTargetSettings';
 import type { QrCodeWithTable } from '@/types';
 import type { QrCodeInput } from '@/types/schema';
 import { Plus, QrCode, Search } from 'lucide-react';
@@ -75,8 +82,10 @@ export default function QRManagementPage() {
         </Button>
       </div>
 
+      <QRTargetSettings />
+
       <div className="relative w-full max-w-sm">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
         <Input
           placeholder={t('searchPlaceholder')}
           value={search}
@@ -87,7 +96,7 @@ export default function QRManagementPage() {
 
       {!filtered?.length ? (
         <EmptyState
-          icon={<QrCode className="h-12 w-12 text-muted-foreground/50" />}
+          icon={<QrCode className="text-muted-foreground/50 h-12 w-12" />}
           title={search ? t('noQRCodesFound') : t('noQRCodes')}
           description={search ? t('tryDifferentSearch') : t('createFirst')}
           action={!search ? { label: t('createQR'), onClick: () => setShowForm(true) } : undefined}
@@ -107,7 +116,7 @@ export default function QRManagementPage() {
       )}
 
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogContent className="max-h-[95vh] max-w-full overflow-y-auto p-4 sm:max-h-[90vh] sm:max-w-2xl sm:p-6 lg:max-w-4xl">
           <DialogHeader>
             <DialogTitle className="text-lg sm:text-xl">{t('createQR')}</DialogTitle>
           </DialogHeader>
@@ -121,7 +130,7 @@ export default function QRManagementPage() {
       </Dialog>
 
       <Dialog open={!!editingQR} onOpenChange={() => setEditingQR(null)}>
-        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogContent className="max-h-[95vh] max-w-full overflow-y-auto p-4 sm:max-h-[90vh] sm:max-w-2xl sm:p-6 lg:max-w-4xl">
           <DialogHeader>
             <DialogTitle className="text-lg sm:text-xl">{t('editQR')}</DialogTitle>
           </DialogHeader>

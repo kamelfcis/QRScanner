@@ -19,7 +19,8 @@ INSERT INTO public.settings (key, value) VALUES
     "address_en": "",
     "currency": "EGP",
     "tax_rate": 0,
-    "service_charge_rate": 0
+    "service_charge_rate": 0,
+    "qr_target_path": "/"
   }'::jsonb),
   ('theme', '{
     "primary_color": "#0E7490",

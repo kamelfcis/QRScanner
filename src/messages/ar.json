@@ -117,7 +117,7 @@
     "defaultLocation": "مصر",
     "followUs": "تابعونا",
     "socialLinks": "روابط التواصل الاجتماعي قريباً.",
-    "copyright": "© {year} وردة شامية. جميع الحقوق محفوظة.",
+    "copyright": "© {year} {name}. جميع الحقوق محفوظة.",
     "premiumDining": "تجربة طعام فاخرة تحتفي بالتقاليد اللبنانية والسورية.",
     "quickLinks": "روابط سريعة",
     "contactInfo": "معلومات الاتصال",
@@ -269,7 +269,15 @@
     "square": "مربع",
     "rounded": "دائري",
     "circle": "دائري",
-    "noTableSelected": "بدون طاولة"
+    "noTableSelected": "بدون طاولة",
+    "targetSettingsTitle": "رابط QR المستهدف",
+    "targetSettingsDescription": "حدد الوجهة التي يفتحها رمز QR على الطاولات. تُستخدم هذه الإعدادات للرموز الجديدة.",
+    "qrSiteUrl": "رابط الموقع",
+    "qrSiteUrlHint": "اتركه فارغاً لاستخدام NEXT_PUBLIC_SITE_URL أو النطاق الحالي.",
+    "qrTargetPath": "مسار الصفحة",
+    "qrTargetPathHint": "استخدم / للصفحة الرئيسية أو /welcome لصفحة ترحيب القائمة.",
+    "qrPreviewLabel": "معاينة (بدون طاولة)",
+    "saveTargetSettings": "حفظ إعدادات رابط QR"
   },
   "settings": {
     "title": "الإعدادات",
@@ -282,6 +290,7 @@
     "hours": "الساعات",
     "theme": "المظهر",
     "business": "الأعمال",
+    "qr": "رموز QR",
     "restaurantInfo": "معلومات المطعم",
     "basicInfo": "معلومات أساسية عن مطعمك.",
     "logo": "الشعار",

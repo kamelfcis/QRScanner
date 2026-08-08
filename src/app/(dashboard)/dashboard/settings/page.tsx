@@ -22,6 +22,7 @@ import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { QRTargetSettings } from '@/components/qr/QRTargetSettings';
 
 const DAYS = [
   'monday',
@@ -276,6 +277,7 @@ export default function SettingsPage() {
           <TabsTrigger value="hours">{t('hours')}</TabsTrigger>
           <TabsTrigger value="theme">{t('theme')}</TabsTrigger>
           <TabsTrigger value="business">{t('business')}</TabsTrigger>
+          <TabsTrigger value="qr">{t('qr')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="space-y-4">
@@ -922,6 +924,10 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="qr" className="space-y-4">
+          <QRTargetSettings />
         </TabsContent>
       </Tabs>
     </div>

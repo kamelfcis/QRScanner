@@ -117,7 +117,7 @@
     "defaultLocation": "Egypt",
     "followUs": "Follow Us",
     "socialLinks": "Social links coming soon.",
-    "copyright": "© {year} Warda Shamya. All rights reserved.",
+    "copyright": "© {year} {name}. All rights reserved.",
     "premiumDining": "Premium dining experience celebrating Lebanese and Syrian culinary traditions.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Info",
@@ -269,7 +269,15 @@
     "square": "Square",
     "rounded": "Rounded",
     "circle": "Circle",
-    "noTableSelected": "No table"
+    "noTableSelected": "No table",
+    "targetSettingsTitle": "QR Target URL",
+    "targetSettingsDescription": "Configure where table QR codes send customers. New QR codes use these defaults.",
+    "qrSiteUrl": "Site URL",
+    "qrSiteUrlHint": "Leave empty to use NEXT_PUBLIC_SITE_URL or the current domain.",
+    "qrTargetPath": "Landing path",
+    "qrTargetPathHint": "Use / for the homepage or /welcome for the menu welcome screen.",
+    "qrPreviewLabel": "Preview (no table)",
+    "saveTargetSettings": "Save QR URL settings"
   },
   "settings": {
     "title": "Settings",
@@ -282,6 +290,7 @@
     "hours": "Hours",
     "theme": "Theme",
     "business": "Business",
+    "qr": "QR Codes",
     "restaurantInfo": "Restaurant Information",
     "basicInfo": "Basic information about your restaurant.",
     "logo": "Logo",

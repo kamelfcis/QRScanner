@@ -14,6 +14,10 @@ export function PublicFooter() {
   const commonT = useTranslations('common');
 
   const name = settings?.name_en || commonT('appName');
+  const displayName =
+    locale === 'ar'
+      ? settings?.name_ar || commonT('appName')
+      : settings?.name_en || commonT('appName');
   const address = resolveContactAddress(settings, locale);
 
   return (
@@ -149,7 +153,7 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            {t('copyright', { year: new Date().getFullYear() })}
+            {t('copyright', { year: new Date().getFullYear(), name: displayName })}
           </p>
         </div>
       </div>

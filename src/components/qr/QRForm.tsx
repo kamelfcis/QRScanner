@@ -20,27 +20,18 @@ import {
 import { TemplateSwitcher } from './TemplateSwitcher';
 import { QRPreview } from './QRPreview';
 import { getTemplate } from '@/lib/qr/templates';
-import { buildWelcomeUrl } from '@/lib/qr/welcome-url';
+import { buildQrTargetUrl, resolveQrUrlConfig } from '@/lib/qr/welcome-url';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { buildQRFilename } from '@/lib/qr/logo-overlay';
+import type { RestaurantSettings } from '@/types';
 
-function getSiteUrl(): string {
-  if (typeof window !== 'undefined') {
-    return (
-      process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || window.location.origin
-    );
-  }
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    'https://engzqrmenu.vercel.app'
-  );
-}
-
-function generateMenuUrl(tableNumber?: number | null): string {
-  return buildWelcomeUrl(getSiteUrl(), tableNumber);
+function generateMenuUrl(
+  settings?: Pick<RestaurantSettings, 'qr_site_url' | 'qr_target_path'> | null,
+  tableNumber?: number | null
+): string {
+  return buildQrTargetUrl(resolveQrUrlConfig(settings), tableNumber);
 }
 
 function getTableNumberByValue(tables: RestaurantTable[], value: string): number | null {
@@ -57,6 +48,10 @@ interface QRFormProps {
 }
 
 export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: QRFormProps) {
+  const t = useTranslations('qr');
+  const tCommon = useTranslations('common');
+  const { data: settings } = useRestaurantSettings();
+
   const {
     register,
     handleSubmit,
@@ -85,7 +80,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
         }
       : {
           name: '',
-          url: generateMenuUrl(),
+          url: generateMenuUrl(settings),
           template: 'classic',
           size: 300,
           primary_color: '#000000',
@@ -105,9 +100,6 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
   const watchedUrl = watched.url;
 
   const tmpl = getTemplate(watched.template || 'classic');
-  const t = useTranslations('qr');
-  const tCommon = useTranslations('common');
-  const { data: settings } = useRestaurantSettings();
   const restaurantLogoUrl = settings?.logo_url ?? null;
   const [includeLogo, setIncludeLogo] = useState(
     Boolean(initialData?.logo_url && initialData.logo_url === restaurantLogoUrl)
@@ -156,11 +148,11 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
     if (watchedTableId && watchedTableId !== 'none') {
       const tableNum = getTableNumberByValue(tables, watchedTableId);
       if (tableNum != null) {
-        return generateMenuUrl(tableNum);
+        return generateMenuUrl(settings, tableNum);
       }
     }
-    return generateMenuUrl();
-  }, [watchedTableId, tables]);
+    return generateMenuUrl(settings);
+  }, [watchedTableId, tables, settings]);
 
   const handleResetUrl = () => {
     setValue('url', autoUrl, { shouldValidate: true });
@@ -170,18 +162,18 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
     if (watchedTableId && watchedTableId !== 'none') {
       const tableNum = getTableNumberByValue(tables, watchedTableId);
       if (tableNum != null) {
-        const newUrl = generateMenuUrl(tableNum);
+        const newUrl = generateMenuUrl(settings, tableNum);
         if (watchedUrl !== newUrl) {
           setValue('url', newUrl, { shouldValidate: true });
         }
       }
     } else {
-      const baseUrl = generateMenuUrl();
+      const baseUrl = generateMenuUrl(settings);
       if (watchedUrl !== baseUrl) {
         setValue('url', baseUrl, { shouldValidate: true });
       }
     }
-  }, [watchedTableId, tables, setValue, watchedUrl]);
+  }, [watchedTableId, tables, settings, setValue, watchedUrl]);
 
   const previewUrl = watchedUrl || autoUrl;
 
@@ -237,7 +229,7 @@ export function QRForm({ initialData, tables, onSubmit, onCancel, isLoading }: Q
                 newTableId && newTableId !== 'none'
                   ? getTableNumberByValue(tables, newTableId)
                   : null;
-              const newUrl = generateMenuUrl(tableNum);
+              const newUrl = generateMenuUrl(settings, tableNum);
               setValue('url', newUrl, { shouldValidate: true });
             }}
           >

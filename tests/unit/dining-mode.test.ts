@@ -6,7 +6,7 @@ import {
   readStoredDiningMode,
   toDiningModeParam,
 } from '@/lib/dining-mode';
-import { buildWelcomeUrl } from '@/lib/qr/welcome-url';
+import { buildWelcomeUrl, buildQrTargetUrl, getDefaultQrTargetPath } from '@/lib/qr/welcome-url';
 
 describe('parseDiningModeParam', () => {
   it('accepts dine_in and dining as dine-in', () => {
@@ -58,13 +58,31 @@ describe('dining mode persistence', () => {
 });
 
 describe('buildWelcomeUrl', () => {
-  it('points QR codes to welcome without table', () => {
-    expect(buildWelcomeUrl('https://example.com')).toBe('https://example.com/welcome');
+  it('uses default QR target path without table', () => {
+    const defaultPath = getDefaultQrTargetPath();
+    const expected =
+      defaultPath === '/' ? 'https://example.com' : `https://example.com${defaultPath}`;
+    expect(buildWelcomeUrl('https://example.com')).toBe(expected);
   });
 
   it('includes table query for table QR codes', () => {
-    expect(buildWelcomeUrl('https://example.com/', 12)).toBe(
-      'https://example.com/welcome?table=12'
+    const defaultPath = getDefaultQrTargetPath();
+    const base = defaultPath === '/' ? 'https://example.com' : `https://example.com${defaultPath}`;
+    expect(buildWelcomeUrl('https://example.com/', 12)).toBe(`${base}?table=12`);
+  });
+
+  it('supports explicit root path for Aklet Gambary', () => {
+    expect(buildQrTargetUrl({ siteUrl: 'https://aklet-gambary.vercel.app', targetPath: '/' })).toBe(
+      'https://aklet-gambary.vercel.app'
+    );
+    expect(
+      buildQrTargetUrl({ siteUrl: 'https://aklet-gambary.vercel.app', targetPath: '/' }, 3)
+    ).toBe('https://aklet-gambary.vercel.app?table=3');
+  });
+
+  it('supports /welcome path for Warda Shamya', () => {
+    expect(buildQrTargetUrl({ siteUrl: 'https://warda.example.com', targetPath: '/welcome' })).toBe(
+      'https://warda.example.com/welcome'
     );
   });
 });
