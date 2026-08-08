@@ -12,6 +12,7 @@ import { OpeningHours } from '@/components/landing/OpeningHours';
 import { ContactSection } from '@/components/landing/ContactSection';
 import { FloatingWhatsApp } from '@/components/landing/FloatingWhatsApp';
 import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { createClient } from '@/lib/supabase/server';
 import { prefetchLandingData } from '@/lib/catalog/prefetchLanding';
 import { CATALOG_GC_TIME, CATALOG_STALE_TIME } from '@/lib/catalog/keys';
@@ -35,6 +36,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <QrScanTracker />
       <Providers>
         <HydrationBoundary state={dehydrate(queryClient)}>
           <div className="flex min-h-screen w-full flex-col overflow-x-clip">

@@ -10,7 +10,13 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { cn, getName } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useCartStore, type CartDiningMode } from '@/stores/cart-store';
-import { buildMenuUrl, persistDiningMode, readStoredDiningMode } from '@/lib/dining-mode';
+import {
+  buildMenuUrl,
+  persistDiningMode,
+  readStoredDiningMode,
+  persistTableNumber,
+} from '@/lib/dining-mode';
+import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { getHeroImageUrl } from '@/lib/hero-image';
 import {
   fadeInUp,
@@ -47,7 +53,7 @@ function WelcomeContent() {
     // Testing escape hatch only - QR table scans always show mode picker
     if (skipParam) {
       const mode = readStoredDiningMode();
-      if (tableParam) localStorage.setItem('aklet-table', tableParam);
+      if (tableParam) persistTableNumber(tableParam);
       router.replace(buildMenuUrl(mode, tableParam));
       return;
     }
@@ -67,7 +73,7 @@ function WelcomeContent() {
   const goToMenu = (mode: CartDiningMode) => {
     persistDiningMode(mode);
     if (tableParam) {
-      localStorage.setItem('aklet-table', tableParam);
+      persistTableNumber(tableParam);
     }
     setMeta({
       diningMode: mode,
@@ -82,6 +88,7 @@ function WelcomeContent() {
 
   return (
     <div className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]">
+      <QrScanTracker />
       {/* Hero background — same source as landing page */}
       <div className="pointer-events-none absolute inset-0">
         <motion.div

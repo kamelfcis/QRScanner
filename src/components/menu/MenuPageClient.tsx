@@ -23,17 +23,17 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { useCartStore } from '@/stores/cart-store';
-import { parseDiningModeParam, persistDiningMode, readStoredDiningMode } from '@/lib/dining-mode';
+import {
+  parseDiningModeParam,
+  persistDiningMode,
+  readStoredDiningMode,
+  readStoredTableNumber,
+} from '@/lib/dining-mode';
+import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { Product } from '@/types/database';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
-import {
-  trackPageView,
-  trackProductView,
-  trackCategoryView,
-  trackQRScan,
-  trackCartOpen,
-} from '@/lib/analytics';
+import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
 
 export function MenuPageClient() {
   return (
@@ -96,11 +96,9 @@ function MenuContent() {
 
   useEffect(() => {
     if (tableParam) {
-      localStorage.setItem('warda-table', tableParam);
       setMeta({ tableNumber: tableParam });
-      trackQRScan(parseInt(tableParam, 10));
     } else {
-      const saved = localStorage.getItem('warda-table');
+      const saved = readStoredTableNumber();
       if (saved) setMeta({ tableNumber: saved });
     }
   }, [tableParam, setMeta]);
@@ -174,6 +172,7 @@ function MenuContent() {
 
   return (
     <div className="bg-background min-h-screen pb-20 md:pb-[env(safe-area-inset-bottom)]">
+      <QrScanTracker />
       <MenuHeader
         tableParam={tableParam}
         diningMode={diningMode}
