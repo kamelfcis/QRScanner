@@ -214,7 +214,14 @@
     "menuCategoriesTitle": "Categories",
     "menuCategoriesDescription": "Manage menu categories and their order.",
     "menuProductsTitle": "Products",
-    "menuProductsDescription": "Manage menu products, prices, and availability."
+    "menuProductsDescription": "Manage menu products, prices, and availability.",
+    "paginationLabel": "Table pagination",
+    "paginationPrevious": "Previous page",
+    "paginationNext": "Next page",
+    "paginationGoToPage": "Go to page {page}",
+    "paginationPageOf": "Page {page} of {total}",
+    "paginationRowsPerPage": "Rows per page",
+    "paginationShowingRange": "Showing {start}–{end} of {total}"
   },
   "sidebar": {
     "dashboard": "Dashboard",

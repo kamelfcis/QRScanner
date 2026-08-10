@@ -214,7 +214,14 @@
     "menuCategoriesTitle": "التصنيفات",
     "menuCategoriesDescription": "إدارة تصنيفات القائمة وترتيبها.",
     "menuProductsTitle": "الأطباق",
-    "menuProductsDescription": "إدارة أطباق القائمة والأسعار والتوفر."
+    "menuProductsDescription": "إدارة أطباق القائمة والأسعار والتوفر.",
+    "paginationLabel": "ترقيم الصفحات",
+    "paginationPrevious": "الصفحة السابقة",
+    "paginationNext": "الصفحة التالية",
+    "paginationGoToPage": "الانتقال إلى الصفحة {page}",
+    "paginationPageOf": "صفحة {page} من {total}",
+    "paginationRowsPerPage": "عدد الصفوف",
+    "paginationShowingRange": "عرض {start}–{end} من {total}"
   },
   "sidebar": {
     "dashboard": "لوحة التحكم",
