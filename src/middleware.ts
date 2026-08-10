@@ -13,9 +13,8 @@ export async function middleware(request: NextRequest) {
   if (localeCookie && locales.includes(localeCookie as Locale)) {
     detected = localeCookie as Locale;
   } else {
-    const acceptLang = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0];
-    detected =
-      acceptLang && locales.includes(acceptLang as Locale) ? (acceptLang as Locale) : defaultLocale;
+    // First visit: always Arabic; ignore browser Accept-Language until user switches
+    detected = defaultLocale;
     response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
   }
   response.headers.set('x-locale', detected);
