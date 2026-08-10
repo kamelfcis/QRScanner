@@ -51,6 +51,8 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { cn, getName } from '@/lib/utils';
 import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
+import { Pagination } from '@/components/shared/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 type ProductForm = z.input<typeof productSchema>;
 
@@ -214,9 +216,22 @@ export default function ProductsPage() {
     return matchesSearch && matchesCategory;
   });
 
+  const {
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    totalItems: filteredCount,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    rangeStart,
+    rangeEnd,
+    pageSizeOptions,
+  } = usePagination(filteredProducts, `${searchQuery}:${categoryFilter}`);
+
   const hasActiveFilters = searchQuery.length > 0 || categoryFilter !== 'all';
   const totalProducts = products?.length ?? 0;
-  const visibleCount = filteredProducts?.length ?? 0;
+  const visibleCount = filteredCount;
   const activeCategory =
     categoryFilter === 'all' ? null : categories?.find((c) => c.id === categoryFilter);
   const activeCategoryLabel = activeCategory
@@ -478,7 +493,7 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {!filteredProducts?.length ? (
+      {!filteredCount ? (
         <EmptyState
           title={t('noProducts')}
           description={hasActiveFilters ? t('noProductsFiltered') : t('addProduct')}
@@ -513,7 +528,7 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filteredProducts.map((product) => {
+                {paginatedProducts.map((product) => {
                   const productName = getName(locale, product.name_en, product.name_ar);
                   const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
                   const categoryName = product.category
@@ -638,6 +653,17 @@ export default function ProductsPage() {
               </tbody>
             </table>
           </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            pageSizeOptions={pageSizeOptions}
+            totalItems={filteredCount}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
         </Card>
       )}
 

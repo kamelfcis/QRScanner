@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useAllCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/useCategories';
+import {
+  useAllCategories,
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+} from '@/hooks/useCategories';
 import { categorySchema } from '@/types/schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +25,8 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
+import { Pagination } from '@/components/shared/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Plus, Search } from 'lucide-react';
 import { CategoryCard } from '@/features/categories/components/CategoryCard';
 import { toast } from 'sonner';
@@ -54,6 +61,19 @@ export default function CategoriesPage() {
       category.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
       category.name_ar.includes(searchQuery)
   );
+
+  const {
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    totalItems: filteredCount,
+    totalPages,
+    paginatedItems: paginatedCategories,
+    rangeStart,
+    rangeEnd,
+    pageSizeOptions,
+  } = usePagination(filteredCategories, searchQuery);
 
   const resetCreateForm = () => {
     setCreateForm(defaultForm);
@@ -136,37 +156,59 @@ export default function CategoriesPage() {
 
       <div className="flex items-center gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2" />
           <Input
             placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="ps-9"
             aria-label={t('searchCategories')}
           />
         </div>
       </div>
 
-      {!filteredCategories?.length ? (
+      {!filteredCount ? (
         <EmptyState
           title={t('noCategories')}
           description={searchQuery ? tCommon('tryAgain') : t('addCategory')}
           action={!searchQuery ? { label: t('addCategory'), onClick: openCreateDialog } : undefined}
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onDelete={() => setDeleteId(category.id)}
-              onUpdate={handleUpdate}
-            />
-          ))}
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {paginatedCategories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                onDelete={() => setDeleteId(category.id)}
+                onUpdate={handleUpdate}
+              />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            pageSizeOptions={pageSizeOptions}
+            totalItems={filteredCount}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            className="border-border/60 bg-card/80 rounded-lg border"
+          />
         </div>
       )}
 
-      <Dialog open={createOpen} onOpenChange={(open) => { if (!open) { setCreateOpen(false); resetCreateForm(); } }}>
+      <Dialog
+        open={createOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCreateOpen(false);
+            resetCreateForm();
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('addCategory')}</DialogTitle>
@@ -180,7 +222,9 @@ export default function CategoriesPage() {
                 value={createForm.name_en}
                 onChange={(e) => setCreateForm((prev) => ({ ...prev, name_en: e.target.value }))}
               />
-              {formErrors.name_en && <p className="text-sm text-destructive">{formErrors.name_en}</p>}
+              {formErrors.name_en && (
+                <p className="text-destructive text-sm">{formErrors.name_en}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="create-name_ar">{t('nameAr')}</Label>
@@ -190,14 +234,18 @@ export default function CategoriesPage() {
                 value={createForm.name_ar}
                 onChange={(e) => setCreateForm((prev) => ({ ...prev, name_ar: e.target.value }))}
               />
-              {formErrors.name_ar && <p className="text-sm text-destructive">{formErrors.name_ar}</p>}
+              {formErrors.name_ar && (
+                <p className="text-destructive text-sm">{formErrors.name_ar}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="create-description_en">{t('descriptionEn')}</Label>
               <Textarea
                 id="create-description_en"
                 value={createForm.description_en || ''}
-                onChange={(e) => setCreateForm((prev) => ({ ...prev, description_en: e.target.value }))}
+                onChange={(e) =>
+                  setCreateForm((prev) => ({ ...prev, description_en: e.target.value }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -206,7 +254,9 @@ export default function CategoriesPage() {
                 id="create-description_ar"
                 dir="rtl"
                 value={createForm.description_ar || ''}
-                onChange={(e) => setCreateForm((prev) => ({ ...prev, description_ar: e.target.value }))}
+                onChange={(e) =>
+                  setCreateForm((prev) => ({ ...prev, description_ar: e.target.value }))
+                }
               />
             </div>
             <div className="flex items-center justify-between">
@@ -214,7 +264,9 @@ export default function CategoriesPage() {
               <Switch
                 id="create-is_visible"
                 checked={createForm.is_visible}
-                onCheckedChange={(checked) => setCreateForm((prev) => ({ ...prev, is_visible: checked }))}
+                onCheckedChange={(checked) =>
+                  setCreateForm((prev) => ({ ...prev, is_visible: checked }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -231,7 +283,13 @@ export default function CategoriesPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => { setCreateOpen(false); resetCreateForm(); }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setCreateOpen(false);
+                resetCreateForm();
+              }}
+            >
               {tCommon('cancel')}
             </Button>
             <Button onClick={handleCreate} disabled={createCategory.isPending}>
@@ -243,7 +301,9 @@ export default function CategoriesPage() {
 
       <ConfirmDialog
         open={deleteId !== null}
-        onOpenChange={(open) => { if (!open) setDeleteId(null); }}
+        onOpenChange={(open) => {
+          if (!open) setDeleteId(null);
+        }}
         title={t('deleteCategory')}
         description={t('confirmDelete')}
         confirmLabel={tCommon('delete')}
