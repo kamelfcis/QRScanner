@@ -101,6 +101,7 @@ export function CustomersTable({ customers }: CustomersTableProps) {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <CustomerLogo
+                      key={c.production_url ?? c.id}
                       productionUrl={c.production_url}
                       displayName={c.display_name_en}
                     />

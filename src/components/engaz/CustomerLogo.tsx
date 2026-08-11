@@ -1,8 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { customerLogoFallbackLetter, getCustomerFaviconUrls } from '@/lib/engaz/customer-logo';
+import { cn } from '@/lib/utils';
 
 type CustomerLogoProps = {
   productionUrl: string | null;
@@ -11,25 +12,27 @@ type CustomerLogoProps = {
 };
 
 export function CustomerLogo({ productionUrl, displayName, size = 'sm' }: CustomerLogoProps) {
-  const { direct, google } = useMemo(() => getCustomerFaviconUrls(productionUrl), [productionUrl]);
-  const [stage, setStage] = useState<'direct' | 'google' | 'fallback'>(() =>
-    direct ? 'direct' : google ? 'google' : 'fallback'
-  );
-
-  const src = stage === 'direct' ? direct : stage === 'google' ? google : null;
+  const candidates = useMemo(() => getCustomerFaviconUrls(productionUrl), [productionUrl]);
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const src = candidates[candidateIndex] ?? null;
 
   function handleImageError() {
-    if (stage === 'direct' && google) {
-      setStage('google');
-      return;
-    }
-    setStage('fallback');
+    setCandidateIndex((index) => index + 1);
   }
 
   return (
     <Avatar size={size}>
-      {src ? <AvatarImage src={src} alt="" onError={handleImageError} /> : null}
-      <AvatarFallback>{customerLogoFallbackLetter(displayName)}</AvatarFallback>
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          className={cn('aspect-square size-full rounded-full object-cover')}
+          onError={handleImageError}
+        />
+      ) : (
+        <AvatarFallback>{customerLogoFallbackLetter(displayName)}</AvatarFallback>
+      )}
     </Avatar>
   );
 }

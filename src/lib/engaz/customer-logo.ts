@@ -1,19 +1,16 @@
-export function getCustomerFaviconUrls(productionUrl: string | null): {
-  direct: string | null;
-  google: string | null;
-} {
+export function getCustomerFaviconUrls(productionUrl: string | null): string[] {
   if (!productionUrl) {
-    return { direct: null, google: null };
+    return [];
   }
 
   try {
     const url = new URL(productionUrl);
-    return {
-      direct: `${url.origin}/favicon.ico`,
-      google: `https://www.google.com/s2/favicons?domain=${encodeURIComponent(url.hostname)}&sz=64`,
-    };
+    const origin = url.origin;
+    const googleFavicon = `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${encodeURIComponent(origin)}&size=64`;
+
+    return [`${origin}/icon`, `${origin}/apple-icon.png`, `${origin}/favicon.ico`, googleFavicon];
   } catch {
-    return { direct: null, google: null };
+    return [];
   }
 }
 
