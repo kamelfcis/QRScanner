@@ -19,9 +19,12 @@ vi.mock('@/lib/supabase/client', () => ({
   createClient: () => ({
     auth: {
       getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
-      onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+      onAuthStateChange: vi
+        .fn()
+        .mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
       signInWithPassword: vi.fn().mockResolvedValue({ data: { user: { id: '1' } }, error: null }),
       signOut: vi.fn().mockResolvedValue({ error: null }),
+      updateUser: vi.fn().mockResolvedValue({ data: { user: { id: '1' } }, error: null }),
     },
     from: vi.fn().mockReturnValue({
       select: vi.fn().mockReturnThis(),
@@ -70,6 +73,12 @@ describe('useAuth hook', () => {
     const { useAuth } = await import('@/hooks/useAuth');
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     expect(typeof result.current.signOut).toBe('function');
+  });
+
+  it('provides changePassword function', async () => {
+    const { useAuth } = await import('@/hooks/useAuth');
+    const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
+    expect(typeof result.current.changePassword).toBe('function');
   });
 
   it('has isAuthenticated property', async () => {

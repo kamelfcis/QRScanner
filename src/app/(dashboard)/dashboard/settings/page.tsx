@@ -23,6 +23,7 @@ import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { QRTargetSettings } from '@/components/qr/QRTargetSettings';
+import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
 
 const DAYS = [
   'monday',
@@ -278,6 +279,7 @@ export default function SettingsPage() {
           <TabsTrigger value="theme">{t('theme')}</TabsTrigger>
           <TabsTrigger value="business">{t('business')}</TabsTrigger>
           <TabsTrigger value="qr">{t('qr')}</TabsTrigger>
+          <TabsTrigger value="account">{t('account')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="space-y-4">
@@ -928,6 +930,10 @@ export default function SettingsPage() {
 
         <TabsContent value="qr" className="space-y-4">
           <QRTargetSettings />
+        </TabsContent>
+
+        <TabsContent value="account" className="space-y-4">
+          <ChangePasswordForm />
         </TabsContent>
       </Tabs>
     </div>
