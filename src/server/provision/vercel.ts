@@ -16,15 +16,10 @@ function headers() {
 }
 
 async function vercel<T>(path: string, init?: RequestInit): Promise<T> {
-  const sep = path.includes('?') ? '&' : '?';
-  const team = env.VERCEL_TEAM_ID ? `${sep}teamId=${encodeURIComponent(env.VERCEL_TEAM_ID)}` : '';
-  // teamQuery used when path has no query; avoid double ?
   const url =
     env.VERCEL_TEAM_ID && !path.includes('teamId')
       ? `${API}${path}${path.includes('?') ? '&' : '?'}teamId=${encodeURIComponent(env.VERCEL_TEAM_ID)}`
       : `${API}${path}`;
-  void team;
-  void teamQuery;
   const res = await fetch(url, {
     ...init,
     headers: { ...headers(), ...(init?.headers || {}) },
@@ -33,7 +28,17 @@ async function vercel<T>(path: string, init?: RequestInit): Promise<T> {
     const body = await res.text();
     throw new Error(`Vercel ${init?.method || 'GET'} ${path} → ${res.status}: ${body}`);
   }
-  return (await res.json()) as T;
+  const text = await res.text();
+  if (!text.trim()) {
+    return undefined as T;
+  }
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    throw new Error(
+      `Vercel ${init?.method || 'GET'} ${path} returned non-JSON: ${text.slice(0, 200)}`
+    );
+  }
 }
 
 export async function createOrGetProject(input: {
@@ -237,16 +242,40 @@ export async function resolveVercelProjectId(input: {
   );
 }
 
+function isVercelNoOpPauseError(message: string, action: 'pause' | 'unpause'): boolean {
+  if (!message.includes('400')) return false;
+  const lower = message.toLowerCase();
+  if (action === 'pause') {
+    return lower.includes('already') && lower.includes('paus');
+  }
+  return (
+    (lower.includes('already') && lower.includes('unpaus')) ||
+    (lower.includes('not') && lower.includes('paus'))
+  );
+}
+
 export async function pauseProject(projectId: string): Promise<void> {
-  await vercel(`/v1/projects/${projectId}/pause`, {
-    method: 'POST',
-    body: JSON.stringify({}),
-  });
+  try {
+    await vercel(`/v1/projects/${projectId}/pause`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (isVercelNoOpPauseError(message, 'pause')) return;
+    throw err;
+  }
 }
 
 export async function unpauseProject(projectId: string): Promise<void> {
-  await vercel(`/v1/projects/${projectId}/unpause`, {
-    method: 'POST',
-    body: JSON.stringify({}),
-  });
+  try {
+    await vercel(`/v1/projects/${projectId}/unpause`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (isVercelNoOpPauseError(message, 'unpause')) return;
+    throw err;
+  }
 }

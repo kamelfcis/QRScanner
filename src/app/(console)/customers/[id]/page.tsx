@@ -125,12 +125,30 @@ export default function CustomerDetailPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: next }),
       });
-      const json = await res.json();
+      const raw = await res.text();
+      let json: {
+        error?: string;
+        customer?: Detail['customer'];
+        vercel?: { action?: string };
+      } = {};
+      if (raw.trim()) {
+        try {
+          json = JSON.parse(raw);
+        } catch {
+          toast.error(raw.slice(0, 200) || 'Server returned non-JSON');
+          return;
+        }
+      } else if (!res.ok) {
+        toast.error('Failed to update status');
+        return;
+      }
       if (!res.ok) {
         toast.error(json.error || 'Failed to update status');
         return;
       }
-      setData((prev) => (prev ? { ...prev, customer: json.customer } : prev));
+      if (json.customer) {
+        setData((prev) => (prev ? { ...prev, customer: json.customer! } : prev));
+      }
       const action = json.vercel?.action;
       if (action === 'paused') {
         toast.success('Customer is offline — Vercel project paused');
@@ -139,6 +157,8 @@ export default function CustomerDetailPage() {
       } else {
         toast.success('Status unchanged');
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to update status');
     } finally {
       setStatusLoading(false);
     }
