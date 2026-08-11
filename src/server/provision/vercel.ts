@@ -186,3 +186,67 @@ export async function assignAlias(deploymentId: string, alias: string): Promise<
 export function customerProductionUrl(slug: string): string {
   return `https://${slug}.vercel.app`;
 }
+
+export function projectNameFromProductionUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    const host = new URL(url).hostname;
+    if (!host.endsWith('.vercel.app')) return null;
+    return host.replace(/\.vercel\.app$/, '');
+  } catch {
+    return null;
+  }
+}
+
+export async function getProject(
+  projectIdOrName: string
+): Promise<{ id: string; name: string } | null> {
+  try {
+    return await vercel<{ id: string; name: string }>(
+      `/v9/projects/${encodeURIComponent(projectIdOrName)}`
+    );
+  } catch {
+    return null;
+  }
+}
+
+export async function resolveVercelProjectId(input: {
+  vercel_project_id?: string | null;
+  slug: string;
+  production_url?: string | null;
+}): Promise<{ id: string; name: string }> {
+  if (input.vercel_project_id) {
+    const byId = await getProject(input.vercel_project_id);
+    if (byId) return byId;
+  }
+
+  const candidates = [
+    input.slug,
+    projectNameFromProductionUrl(input.production_url ?? null),
+  ].filter(
+    (value, index, list): value is string => Boolean(value) && list.indexOf(value) === index
+  );
+
+  for (const name of candidates) {
+    const project = await getProject(name);
+    if (project) return project;
+  }
+
+  throw new Error(
+    `Could not resolve Vercel project for "${input.slug}". Set vercel_project_id or check production URL.`
+  );
+}
+
+export async function pauseProject(projectId: string): Promise<void> {
+  await vercel(`/v1/projects/${projectId}/pause`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+  });
+}
+
+export async function unpauseProject(projectId: string): Promise<void> {
+  await vercel(`/v1/projects/${projectId}/unpause`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+  });
+}

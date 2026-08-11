@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { JobTimeline } from '@/components/engaz/JobTimeline';
 import { StatusBadge } from '@/components/engaz/StatusBadge';
+import { isToggleableCustomerStatus } from '@/lib/engaz/status';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -47,6 +48,7 @@ export default function CustomerDetailPage() {
   const [data, setData] = useState<Detail | null>(null);
   const [creds, setCreds] = useState<{ email: string; password: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [statusLoading, setStatusLoading] = useState(false);
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/customers/${params.id}`);
@@ -115,11 +117,40 @@ export default function CustomerDetailPage() {
     await load();
   }
 
+  async function setCustomerStatus(next: 'live' | 'archived') {
+    setStatusLoading(true);
+    try {
+      const res = await fetch(`/api/customers/${params.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: next }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        toast.error(json.error || 'Failed to update status');
+        return;
+      }
+      setData((prev) => (prev ? { ...prev, customer: json.customer } : prev));
+      const action = json.vercel?.action;
+      if (action === 'paused') {
+        toast.success('Customer is offline — Vercel project paused');
+      } else if (action === 'unpaused') {
+        toast.success('Customer is live — Vercel project resumed');
+      } else {
+        toast.success('Status unchanged');
+      }
+    } finally {
+      setStatusLoading(false);
+    }
+  }
+
   if (loading || !data) {
     return <p className="text-muted-foreground text-sm">Loading customer…</p>;
   }
 
   const c = data.customer;
+  const canToggleStatus =
+    isToggleableCustomerStatus(c.status) || (c.status === 'failed' && Boolean(c.production_url));
 
   return (
     <div className="space-y-6">
@@ -141,6 +172,26 @@ export default function CustomerDetailPage() {
           </div>
         </div>
         <div className="flex gap-2">
+          {canToggleStatus && (
+            <>
+              <Button
+                variant={c.status === 'live' ? 'default' : 'outline'}
+                size="sm"
+                disabled={statusLoading || c.status === 'live'}
+                onClick={() => setCustomerStatus('live')}
+              >
+                Set live
+              </Button>
+              <Button
+                variant={c.status === 'archived' ? 'default' : 'outline'}
+                size="sm"
+                disabled={statusLoading || c.status === 'archived'}
+                onClick={() => setCustomerStatus('archived')}
+              >
+                Set offline
+              </Button>
+            </>
+          )}
           {c.production_url && (
             <a
               href={c.production_url}
@@ -178,6 +229,9 @@ export default function CustomerDetailPage() {
               </div>
             </div>
             <div className="bg-muted/40 rounded-md border p-3">
+              <div className="text-muted-foreground mb-2 text-xs">
+                Offline pauses the customer Vercel project. Live resumes it immediately.
+              </div>
               <div className="mb-2 flex items-center justify-between">
                 <span className="font-medium">Admin credentials</span>
                 <Button size="sm" variant="outline" onClick={reveal}>
