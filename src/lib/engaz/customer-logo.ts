@@ -6,7 +6,7 @@ export function getCustomerFaviconUrls(productionUrl: string | null): string[] {
   try {
     const url = new URL(productionUrl);
     const origin = url.origin;
-    const googleFavicon = `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${encodeURIComponent(origin)}&size=64`;
+    const googleFavicon = `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${encodeURIComponent(origin)}&size=128`;
 
     return [`${origin}/icon`, `${origin}/apple-icon.png`, `${origin}/favicon.ico`, googleFavicon];
   } catch {

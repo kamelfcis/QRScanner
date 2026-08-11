@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 type CustomerLogoProps = {
   productionUrl: string | null;
   displayName: string;
-  size?: 'default' | 'sm' | 'lg';
+  size?: 'default' | 'sm' | 'lg' | 'xl' | '2xl';
 };
 
 export function CustomerLogo({ productionUrl, displayName, size = 'sm' }: CustomerLogoProps) {
@@ -31,7 +31,9 @@ export function CustomerLogo({ productionUrl, displayName, size = 'sm' }: Custom
           onError={handleImageError}
         />
       ) : (
-        <AvatarFallback>{customerLogoFallbackLetter(displayName)}</AvatarFallback>
+        <AvatarFallback className={cn(size === '2xl' && 'text-2xl', size === 'xl' && 'text-lg')}>
+          {customerLogoFallbackLetter(displayName)}
+        </AvatarFallback>
       )}
     </Avatar>
   );

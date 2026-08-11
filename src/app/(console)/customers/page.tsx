@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CustomersTable } from '@/components/engaz/CustomersTable';
+import { CustomersView } from '@/components/engaz/CustomersView';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 
 export default async function CustomersPage() {
@@ -27,7 +27,7 @@ export default async function CustomersPage() {
         </Link>
       </div>
 
-      <CustomersTable customers={customers || []} />
+      <CustomersView customers={customers || []} />
     </div>
   );
 }
