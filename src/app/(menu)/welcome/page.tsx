@@ -16,6 +16,7 @@ import {
   readStoredDiningMode,
   persistTableNumber,
 } from '@/lib/dining-mode';
+import { isDeliveryOnlyMode } from '@/lib/fulfillment-mode';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { getHeroImageUrl } from '@/lib/hero-image';
 import {
@@ -62,6 +63,7 @@ function WelcomeContent() {
     setReady(true);
   }, [skipParam, tableParam, router]);
 
+  const deliveryOnly = isDeliveryOnlyMode();
   const isArabic = locale === 'ar';
   const restaurantName = getName(
     locale,
@@ -80,6 +82,19 @@ function WelcomeContent() {
       tableNumber: tableParam,
     });
     router.push(buildMenuUrl(mode, tableParam));
+  };
+
+  const goToDelivery = () => {
+    persistDiningMode('takeaway');
+    if (tableParam) {
+      persistTableNumber(tableParam);
+    }
+    setMeta({
+      diningMode: 'takeaway',
+      fulfillmentType: 'delivery',
+      tableNumber: tableParam,
+    });
+    router.push(buildMenuUrl('takeaway', tableParam));
   };
 
   if (!ready || redirecting) {
@@ -184,40 +199,55 @@ function WelcomeContent() {
           variants={prefersReducedMotion ? undefined : fadeInUp}
           className="mb-6 text-base font-medium text-white/80 sm:mb-8 sm:text-lg"
         >
-          {t('chooseOrderType')}
+          {deliveryOnly ? t('chooseDelivery') : t('chooseOrderType')}
         </motion.h2>
 
         <motion.div
           variants={prefersReducedMotion ? undefined : staggerContainer}
-          className="mb-5 grid w-full grid-cols-1 gap-4 sm:grid-cols-2"
+          className={cn('mb-5 grid w-full grid-cols-1 gap-4', !deliveryOnly && 'sm:grid-cols-2')}
         >
-          <ModeCard
-            emoji="🍽️"
-            labelEn={t('dineInEn')}
-            labelAr={t('dineInAr')}
-            subtitle={t('dineInDesc')}
-            testId="welcome-dine-in"
-            onSelect={() => goToMenu('dining')}
-            prefersReducedMotion={prefersReducedMotion}
-            isRtl={isArabic}
-          />
-          <ModeCard
-            emoji="🛍️"
-            labelEn={t('takeawayEn')}
-            labelAr={t('takeawayAr')}
-            subtitle={t('takeawayDesc')}
-            testId="welcome-takeaway"
-            onSelect={() => goToMenu('takeaway')}
-            prefersReducedMotion={prefersReducedMotion}
-            isRtl={isArabic}
-          />
+          {deliveryOnly ? (
+            <ModeCard
+              emoji="🚚"
+              labelEn={t('deliveryEn')}
+              labelAr={t('deliveryAr')}
+              subtitle={t('deliveryDesc')}
+              testId="welcome-delivery"
+              onSelect={goToDelivery}
+              prefersReducedMotion={prefersReducedMotion}
+              isRtl={isArabic}
+            />
+          ) : (
+            <>
+              <ModeCard
+                emoji="🍽️"
+                labelEn={t('dineInEn')}
+                labelAr={t('dineInAr')}
+                subtitle={t('dineInDesc')}
+                testId="welcome-dine-in"
+                onSelect={() => goToMenu('dining')}
+                prefersReducedMotion={prefersReducedMotion}
+                isRtl={isArabic}
+              />
+              <ModeCard
+                emoji="🛍️"
+                labelEn={t('takeawayEn')}
+                labelAr={t('takeawayAr')}
+                subtitle={t('takeawayDesc')}
+                testId="welcome-takeaway"
+                onSelect={() => goToMenu('takeaway')}
+                prefersReducedMotion={prefersReducedMotion}
+                isRtl={isArabic}
+              />
+            </>
+          )}
         </motion.div>
 
         <motion.p
           variants={prefersReducedMotion ? undefined : staggerItem}
           className="text-xs text-white/50"
         >
-          {t('orChangeLater')}
+          {deliveryOnly ? t('deliveryHint') : t('orChangeLater')}
         </motion.p>
       </motion.div>
     </div>

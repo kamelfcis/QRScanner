@@ -18,6 +18,7 @@ interface MenuHeaderProps {
   onSearchOpen: () => void;
   onCartOpen: () => void;
   favoriteCount: number;
+  hideDiningModeToggle?: boolean;
 }
 
 export function MenuHeader({
@@ -27,6 +28,7 @@ export function MenuHeader({
   onSearchOpen,
   onCartOpen,
   favoriteCount,
+  hideDiningModeToggle = false,
 }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
   const prefersReducedMotion = useReducedMotion();
@@ -144,32 +146,34 @@ export function MenuHeader({
             )}
           </Button>
 
-          <div
-            className="flex items-center rounded-lg border"
-            role="group"
-            aria-label={t('diningMode')}
-          >
-            <Button
-              variant={diningMode === 'dining' ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-11 w-11 rounded-r-none"
-              onClick={() => onDiningModeChange('dining')}
-              aria-pressed={diningMode === 'dining'}
-              aria-label={t('dining')}
+          {!hideDiningModeToggle && (
+            <div
+              className="flex items-center rounded-lg border"
+              role="group"
+              aria-label={t('diningMode')}
             >
-              <Utensils className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={diningMode === 'takeaway' ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-11 w-11 rounded-l-none"
-              onClick={() => onDiningModeChange('takeaway')}
-              aria-pressed={diningMode === 'takeaway'}
-              aria-label={t('takeaway')}
-            >
-              <ShoppingBag className="h-4 w-4" />
-            </Button>
-          </div>
+              <Button
+                variant={diningMode === 'dining' ? 'default' : 'ghost'}
+                size="icon-sm"
+                className="h-11 w-11 rounded-r-none"
+                onClick={() => onDiningModeChange('dining')}
+                aria-pressed={diningMode === 'dining'}
+                aria-label={t('dining')}
+              >
+                <Utensils className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={diningMode === 'takeaway' ? 'default' : 'ghost'}
+                size="icon-sm"
+                className="h-11 w-11 rounded-l-none"
+                onClick={() => onDiningModeChange('takeaway')}
+                aria-pressed={diningMode === 'takeaway'}
+                aria-label={t('takeaway')}
+              >
+                <ShoppingBag className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </motion.header>

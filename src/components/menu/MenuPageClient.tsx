@@ -31,6 +31,7 @@ import {
 } from '@/lib/dining-mode';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { isDeliveryOnlyMode } from '@/lib/fulfillment-mode';
 import type { Product } from '@/types/database';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
@@ -57,10 +58,12 @@ function MenuContent() {
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
   const prefersReducedMotion = useReducedMotion();
+  const deliveryOnly = isDeliveryOnlyMode();
   const setMeta = useCartStore((s) => s.setMeta);
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
 
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
+    if (deliveryOnly) return 'takeaway';
     const fromUrl = parseDiningModeParam(modeParam);
     if (fromUrl) return fromUrl;
     return readStoredDiningMode();
@@ -74,6 +77,11 @@ function MenuContent() {
   }, []);
 
   useEffect(() => {
+    if (deliveryOnly) {
+      persistDiningMode('takeaway');
+      setMeta({ diningMode: 'takeaway', fulfillmentType: 'delivery' });
+      return;
+    }
     const parsed = parseDiningModeParam(modeParam);
     if (parsed) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode from URL
@@ -81,7 +89,7 @@ function MenuContent() {
       persistDiningMode(parsed);
       setMeta({ diningMode: parsed });
     }
-  }, [modeParam, setMeta]);
+  }, [modeParam, setMeta, deliveryOnly]);
 
   useEffect(() => {
     setMeta({ diningMode });
@@ -180,6 +188,7 @@ function MenuContent() {
         onSearchOpen={() => setSearchOpen(true)}
         onCartOpen={openCart}
         favoriteCount={favoriteCount}
+        hideDiningModeToggle={deliveryOnly}
       />
 
       <CategoryNav

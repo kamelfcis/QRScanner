@@ -32,6 +32,7 @@ import {
   trackOrderWhatsApp,
 } from '@/lib/analytics';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
+import { isDeliveryOnlyMode } from '@/lib/fulfillment-mode';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -59,8 +60,10 @@ export default function CheckoutPage() {
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const whatsappConfigured = Boolean(normalizeWhatsAppPhone(settings?.whatsapp || ''));
-  const isTakeaway = diningMode === 'takeaway';
-  const requiresDeliveryAddress = isTakeaway && fulfillmentType === 'delivery';
+  const deliveryOnly = isDeliveryOnlyMode();
+  const isTakeaway = deliveryOnly || diningMode === 'takeaway';
+  const effectiveFulfillment: FulfillmentType = deliveryOnly ? 'delivery' : fulfillmentType;
+  const requiresDeliveryAddress = isTakeaway && effectiveFulfillment === 'delivery';
 
   const pricedItems = useMemo(
     () =>
@@ -79,6 +82,12 @@ export default function CheckoutPage() {
       ),
     [pricedItems, settings]
   );
+
+  useEffect(() => {
+    if (deliveryOnly) {
+      setMeta({ diningMode: 'takeaway', fulfillmentType: 'delivery' });
+    }
+  }, [deliveryOnly, setMeta]);
 
   useEffect(() => {
     if (!trackedStart && items.length > 0) {
@@ -144,7 +153,7 @@ export default function CheckoutPage() {
         items,
         diningMode,
         tableNumber,
-        fulfillmentType: isTakeaway ? fulfillmentType : null,
+        fulfillmentType: isTakeaway ? effectiveFulfillment : null,
         deliveryAddress: requiresDeliveryAddress ? deliveryAddress : null,
         customerName,
         customerPhone,
@@ -340,7 +349,7 @@ export default function CheckoutPage() {
           </section>
 
           <section className="space-y-4">
-            {isTakeaway && (
+            {isTakeaway && !deliveryOnly && (
               <div className="space-y-3">
                 <Label>{t('fulfillmentType')}</Label>
                 <div
