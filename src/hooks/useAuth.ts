@@ -93,10 +93,32 @@ export function useAuth() {
     router.push('/login');
   }, [router]);
 
+  const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+    if (!user?.email) throw new Error('Not authenticated');
+
+    const { error: reauthError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword,
+    });
+    if (reauthError) throw reauthError;
+
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    if (updateError) throw updateError;
+  }, []);
+
   return {
     ...state,
     signIn,
     signOut,
+    changePassword,
     isAuthenticated: !!state.user,
   };
 }
