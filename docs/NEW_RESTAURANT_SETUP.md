@@ -26,22 +26,25 @@ This playbook is for a **separate clone**. Do not reuse Warda's live Supabase pr
 
 ---
 
-## Two-branch GitHub layout (Warda + Aklet Gambary)
+## Two-branch GitHub layout (Warda + Aklet Gambary + Harameen)
 
-One repo — [kamelfcis/QRScanner](https://github.com/kamelfcis/QRScanner) — two long-lived branches. **Runtime data never mixes**: each restaurant has its own Supabase project and Vercel project.
+One repo — [kamelfcis/QRScanner](https://github.com/kamelfcis/QRScanner) — three long-lived branches. **Runtime data never mixes**: each customer has its own Supabase project and Vercel project.
 
-| Branch            | Restaurant                     | Supabase                 | Vercel                                                                  |
-| ----------------- | ------------------------------ | ------------------------ | ----------------------------------------------------------------------- |
-| `warda` (default) | Warda Shamya                   | Existing Warda project   | Existing Warda deploy (e.g. engaz-qr-menu); Production Branch = `warda` |
-| `aklet-gambary`   | أكلة جمبري أنا / Aklet Gambary | **New** Supabase project | **New** Vercel project; Production Branch = `aklet-gambary`             |
+| Branch            | Customer                                            | Supabase                 | Vercel                                                                  |
+| ----------------- | --------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------- |
+| `warda` (default) | Warda Shamya                                        | Existing Warda project   | Existing Warda deploy (e.g. engaz-qr-menu); Production Branch = `warda` |
+| `aklet-gambary`   | أكلة جمبري أنا / Aklet Gambary                      | **New** Supabase project | **New** Vercel project; Production Branch = `aklet-gambary`             |
+| `harameen`        | سوق الجملة شركة الحرمين / Harameen Wholesale Market | **New** Supabase project | **New** Vercel project `harameen`; Production Branch = `harameen`       |
 
 ### Checklist
 
-1. **Akla Supabase** — create a new project → run migrations `001`–`013` → apply [`supabase/templates/new_restaurant_settings.sql`](../supabase/templates/new_restaurant_settings.sql) (or use branch `aklet-gambary` seed `003`) → create admin user.
-2. **Akla Vercel** — import `QRScanner` → set **Production Branch = `aklet-gambary`** → env vars from Akla Supabase only (`NEXT_PUBLIC_APP_NAME`, URLs, keys).
-3. **Warda Vercel** — keep Production Branch = `warda` with Warda env; reconnect Git to `QRScanner` if it still points at the old repo.
-4. **Domains + QR** — separate production domains; regenerate table QR codes per site URL.
-5. **Never copy** Warda `.env` / `.env.local` into the Akla project.
+1. **Akla Supabase** — create a new project → run migrations `001`–`014` → apply [`supabase/templates/new_restaurant_settings.sql`](../supabase/templates/new_restaurant_settings.sql) (or use branch `aklet-gambary` seed) → create admin user.
+2. **Harameen Supabase** — create a new project → run migrations `001`–`014` → apply [`supabase/templates/harameen_settings.sql`](../supabase/templates/harameen_settings.sql) → run `node scripts/seed-harameen-categories.mjs` → create admin user.
+3. **Akla Vercel** — import `QRScanner` → set **Production Branch = `aklet-gambary`** → env vars from Akla Supabase only (`NEXT_PUBLIC_APP_NAME`, URLs, keys).
+4. **Harameen Vercel** — import `QRScanner` → set **Production Branch = `harameen`** → env vars from Harameen Supabase → deploy to `https://harameen.vercel.app`.
+5. **Warda Vercel** — keep Production Branch = `warda` with Warda env; reconnect Git to `QRScanner` if it still points at the old repo.
+6. **Domains + QR** — separate production domains; regenerate table QR codes per site URL.
+7. **Never copy** Warda `.env` / `.env.local` into the Akla or Harameen projects.
 
 After the fork point, branding defaults (app name, SEO, cart/theme localStorage keys, seed) may diverge on each branch. Shared product fixes can still be cherry-picked or merged carefully.
 

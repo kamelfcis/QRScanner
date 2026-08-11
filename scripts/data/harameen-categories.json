@@ -1,0 +1,89 @@
+{
+  "categories": [
+    {
+      "name_ar": "ألبان وأجبان",
+      "name_en": "Dairy & Cheese",
+      "sort_order": 1,
+      "description_ar": "ألبان طازجة وأجبان متنوعة",
+      "description_en": "Fresh dairy and assorted cheeses"
+    },
+    {
+      "name_ar": "لحوم ودواجن",
+      "name_en": "Meat & Poultry",
+      "sort_order": 2,
+      "description_ar": "لحوم ودواجن طازجة",
+      "description_en": "Fresh meat and poultry"
+    },
+    {
+      "name_ar": "أسماك ومأكولات بحرية",
+      "name_en": "Fish & Seafood",
+      "sort_order": 3,
+      "description_ar": "أسماك ومأكولات بحرية طازجة",
+      "description_en": "Fresh fish and seafood"
+    },
+    {
+      "name_ar": "خضروات وفواكه",
+      "name_en": "Fruits & Vegetables",
+      "sort_order": 4,
+      "description_ar": "خضروات وفواكه طازجة",
+      "description_en": "Fresh fruits and vegetables"
+    },
+    {
+      "name_ar": "مخبوزات",
+      "name_en": "Bakery",
+      "sort_order": 5,
+      "description_ar": "مخبوزات طازجة يومياً",
+      "description_en": "Fresh daily bakery items"
+    },
+    {
+      "name_ar": "معلبات وصلصات",
+      "name_en": "Canned Goods & Sauces",
+      "sort_order": 6,
+      "description_ar": "معلبات وصلصات متنوعة",
+      "description_en": "Canned goods and sauces"
+    },
+    {
+      "name_ar": "أرز ومعكرونة وحبوب",
+      "name_en": "Rice Pasta & Grains",
+      "sort_order": 7,
+      "description_ar": "أرز ومعكرونة وحبوب",
+      "description_en": "Rice, pasta, and grains"
+    },
+    {
+      "name_ar": "مشروبات",
+      "name_en": "Beverages",
+      "sort_order": 8,
+      "description_ar": "مشروبات باردة وساخنة",
+      "description_en": "Cold and hot beverages"
+    },
+    {
+      "name_ar": "حلويات وسناكس",
+      "name_en": "Sweets & Snacks",
+      "sort_order": 9,
+      "description_ar": "حلويات وسناكس",
+      "description_en": "Sweets and snacks"
+    },
+    {
+      "name_ar": "مجمدات",
+      "name_en": "Frozen Foods",
+      "sort_order": 10,
+      "description_ar": "أطعمة مجمدة",
+      "description_en": "Frozen food products"
+    },
+    {
+      "name_ar": "منظفات ومستلزمات منزلية",
+      "name_en": "Household & Cleaning",
+      "sort_order": 11,
+      "description_ar": "منظفات ومستلزمات منزلية",
+      "description_en": "Household and cleaning supplies"
+    },
+    {
+      "name_ar": "العناية الشخصية",
+      "name_en": "Personal Care",
+      "sort_order": 12,
+      "description_ar": "منتجات العناية الشخصية",
+      "description_en": "Personal care products"
+    }
+  ],
+  "products": {}
+}

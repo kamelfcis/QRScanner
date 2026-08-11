@@ -65,8 +65,8 @@ function WelcomeContent() {
   const isArabic = locale === 'ar';
   const restaurantName = getName(
     locale,
-    settings?.name_en || 'Aklet Gambary',
-    settings?.name_ar || 'أكلة جمبري أنا'
+    settings?.name_en || 'Harameen Wholesale Market',
+    settings?.name_ar || 'سوق الجملة شركة الحرمين'
   );
   const heroImage = getHeroImageUrl(settings?.hero_image_url);
 

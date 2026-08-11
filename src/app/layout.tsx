@@ -35,28 +35,27 @@ const tajawal = Tajawal({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aklet-gambary.example.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://harameen.vercel.app';
 
 const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Aklet Gambary | Digital Restaurant Menu',
-    template: '%s | Aklet Gambary',
+    default: 'Harameen Wholesale Market | Digital Supermarket Menu',
+    template: '%s | Harameen Wholesale Market',
   },
   description:
-    'Aklet Gambary Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.',
+    'Harameen Wholesale Market - Browse our digital supermarket catalog. Scan QR code to view categories and order via WhatsApp.',
   keywords: [
-    'restaurant',
+    'supermarket',
+    'wholesale',
+    'grocery',
     'menu',
     'QR code',
-    'seafood',
-    'dining',
-    'food',
-    'Aklet Gambary',
-    'أكلة جمبري أنا',
+    'Harameen',
+    'سوق الجملة شركة الحرمين',
   ],
-  authors: [{ name: 'Aklet Gambary' }],
-  creator: 'Aklet Gambary',
+  authors: [{ name: 'Harameen Wholesale Market' }],
+  creator: 'Harameen Wholesale Market',
   alternates: {
     languages: {
       en: SITE_URL,
@@ -69,22 +68,22 @@ const baseMetadata: Metadata = {
     locale: 'ar_SA',
     alternateLocale: ['en_US'],
     url: SITE_URL,
-    siteName: 'Aklet Gambary',
-    title: 'Aklet Gambary | Digital Restaurant Menu',
-    description: 'Premium dining experience with digital menu.',
+    siteName: 'Harameen Wholesale Market',
+    title: 'Harameen Wholesale Market | Digital Supermarket Menu',
+    description: 'Wholesale supermarket catalog with digital menu and WhatsApp ordering.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Aklet Gambary',
+        alt: 'Harameen Wholesale Market',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aklet Gambary | Digital Restaurant Menu',
-    description: 'Premium dining experience with digital menu.',
+    title: 'Harameen Wholesale Market | Digital Supermarket Menu',
+    description: 'Wholesale supermarket catalog with digital menu and WhatsApp ordering.',
     images: ['/og-image.png'],
   },
   robots: {

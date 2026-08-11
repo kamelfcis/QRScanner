@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Aklet Gambary",
+    "appName": "Harameen Wholesale Market",
     "loading": "Loading...",
     "saving": "Saving...",
     "save": "Save",
@@ -86,17 +86,17 @@
     "orderNow": "Order Now"
   },
   "landing": {
-    "heroTitle": "Aklet Gambary",
+    "heroTitle": "Harameen Wholesale Market",
     "heroWelcome": "Welcome to",
-    "heroSubtitle": "Fresh seafood crafted with passion and quality",
+    "heroSubtitle": "Your trusted wholesale supermarket — quality products at competitive prices",
     "viewMenu": "View Menu",
     "ourStory": "Our Story",
     "storyTitle": "Our Story",
-    "storyP1": "Aklet Gambary is your destination for the freshest seafood in New Cairo. We handpick the finest fish, shrimp, and catch of the day, preparing each dish with care to deliver authentic flavors that reflect our passion for quality.",
-    "storyP2": "From our warm hospitality to our carefully crafted recipes, we welcome you to a relaxed atmosphere that feels like home — and a memorable seafood experience with every visit.",
-    "signatureDishes": "Signature Dishes",
-    "signatureDishesSubtitle": "A taste of our freshest seafood favorites — browse the menu and order with ease.",
-    "noFeaturedDishes": "No featured dishes available yet.",
+    "storyP1": "Harameen Wholesale Market is your destination for everyday groceries and wholesale supplies at competitive prices. We offer a wide range of food, household, and personal care products for families and retailers.",
+    "storyP2": "From dairy and meat to bakery and beverages, we are committed to fresh, reliable products — with fast service and convenient WhatsApp ordering.",
+    "signatureDishes": "Featured Products",
+    "signatureDishesSubtitle": "A glimpse of our departments — browse the catalog and order with ease.",
+    "noFeaturedDishes": "No featured products available yet.",
     "viewFullMenu": "View Full Menu",
     "aTasteOfExcellence": "A Taste of Excellence",
     "visitUs": "Visit Us",
@@ -118,7 +118,7 @@
     "followUs": "Follow Us",
     "socialLinks": "Social links coming soon.",
     "copyright": "© {year} {name}. All rights reserved.",
-    "premiumDining": "Premium seafood dining with exceptional quality and warm hospitality.",
+    "premiumDining": "Trusted wholesale supermarket with quality products, competitive prices, and excellent service.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Info",
     "heroCarousel": "Hero carousel",
@@ -680,7 +680,7 @@
     "loginTitle": "Sign in to the admin dashboard",
     "email": "Email",
     "password": "Password",
-    "emailPlaceholder": "admin@akletgambary.com",
+    "emailPlaceholder": "admin@harameen.com",
     "passwordPlaceholder": "Enter your password",
     "signIn": "Sign in",
     "signingIn": "Signing in..."
@@ -749,7 +749,7 @@
     "tableLabel": "Table",
     "continue": "Continue to Menu",
     "orChangeLater": "You can change this anytime from the menu",
-    "tagline": "Fresh seafood in New Cairo",
-    "heroAlt": "Restaurant hero background"
+    "tagline": "Trusted wholesale supermarket — quality products at competitive prices",
+    "heroAlt": "Supermarket hero background"
   }
 }
