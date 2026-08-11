@@ -1,61 +1,65 @@
 'use client';
 
 import { useState } from 'react';
-import NextImage from 'next/image';
-import { useAuth } from '@/hooks/useAuth';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { useRestaurantSettings } from '@/hooks/useSettings';
-import { getRestaurantDisplayName } from '@/lib/appName';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
-  const t = useTranslations('auth');
-  const { locale } = useI18n();
-  const { data: settings } = useRestaurantSettings();
-  const appName = getRestaurantDisplayName(locale, settings);
+  const router = useRouter();
+  const search = useSearchParams();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
-      await signIn(email, password);
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+      if (authError) throw authError;
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user session');
+
+      const { data: admin } = await supabase
+        .from('super_admins')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!admin) {
+        await supabase.auth.signOut();
+        throw new Error('This account is not an Engaz super admin');
+      }
+
+      const redirect = search.get('redirect') || '/';
+      router.push(redirect.startsWith('/') ? redirect : '/');
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          {settings?.logo_url && (
-            <div className="mb-2 flex justify-center">
-              <NextImage
-                src={settings.logo_url}
-                alt={appName}
-                width={80}
-                height={80}
-                className="h-20 w-20 object-contain"
-              />
-            </div>
-          )}
-          <h1 className="text-primary text-2xl font-bold">{appName}</h1>
-          <CardDescription>{t('loginTitle')}</CardDescription>
+      <Card className="w-full max-w-md shadow-sm">
+        <CardHeader className="text-center">
+          <CardTitle className="font-heading text-2xl">Engaz Admin</CardTitle>
+          <CardDescription>Super-admin sign in</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             {error && (
               <div
                 role="alert"
@@ -65,31 +69,29 @@ export default function LoginPage() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">{t('email')}</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder={t('emailPlaceholder')}
+                autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                aria-required="true"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t('password')}</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder={t('passwordPlaceholder')}
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                aria-required="true"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading} aria-disabled={loading}>
-              {loading ? t('signingIn') : t('signIn')}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
         </CardContent>

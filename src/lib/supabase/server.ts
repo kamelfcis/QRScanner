@@ -1,7 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import type { ThemeSettings } from '@/types';
-import { DEFAULT_THEME } from '@/lib/theme';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -18,14 +17,14 @@ export async function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch {
-            // Server component, can't set cookies
+            // Server component — cookie write may be ignored
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
           } catch {
-            // Server component, can't delete cookies
+            // ignore
           }
         },
       },
@@ -33,21 +32,36 @@ export async function createClient() {
   );
 }
 
-export async function getThemeSettings(): Promise<ThemeSettings> {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from('settings')
-      .select('value')
-      .eq('key', 'theme')
-      .single();
-
-    if (error || !data?.value) {
-      return DEFAULT_THEME;
-    }
-
-    return { ...DEFAULT_THEME, ...(data.value as ThemeSettings) };
-  } catch {
-    return DEFAULT_THEME;
+export function createServiceRoleClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
   }
+  return createServiceClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+export async function requireSuperAdmin() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user) {
+    return { user: null, supabase, error: 'unauthorized' as const };
+  }
+
+  const { data: admin } = await supabase
+    .from('super_admins')
+    .select('user_id, email, display_name')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (!admin) {
+    return { user: null, supabase, error: 'forbidden' as const };
+  }
+
+  return { user, supabase, admin, error: null };
 }

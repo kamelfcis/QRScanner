@@ -1,48 +1,38 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
-import { defaultLocale, locales, type Locale } from '@/i18n/config';
+
+const PUBLIC = ['/login', '/api/health'];
 
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, user } = await updateSession(request);
-  const response = supabaseResponse;
   const { pathname } = request.nextUrl;
-
-  // Locale detection / persistence
-  const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
-  let detected: Locale = defaultLocale;
-  if (localeCookie && locales.includes(localeCookie as Locale)) {
-    detected = localeCookie as Locale;
-  } else {
-    // First visit: always Arabic; ignore browser Accept-Language until user switches
-    detected = defaultLocale;
-    response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
-  }
-  response.headers.set('x-locale', detected);
-
-  // Protect dashboard routes — require authenticated session
-  if (pathname.startsWith('/dashboard')) {
-    if (!user) {
-      const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = '/login';
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon') ||
+    pathname.match(/\.(?:svg|png|jpg|jpeg|gif|webp|ico)$/)
+  ) {
+    return NextResponse.next();
   }
 
-  // Redirect authenticated users away from login
-  if (pathname === '/login' && user) {
-    const redirectTo = request.nextUrl.searchParams.get('redirect') || '/dashboard';
-    const dashboardUrl = request.nextUrl.clone();
-    dashboardUrl.pathname = redirectTo.startsWith('/dashboard') ? redirectTo : '/dashboard';
-    dashboardUrl.search = '';
-    return NextResponse.redirect(dashboardUrl);
+  const response = await updateSession(request);
+
+  const isPublic = PUBLIC.some((p) => pathname === p || pathname.startsWith(p + '/'));
+  if (isPublic) return response;
+
+  // Soft gate: cookie presence. Hard check happens in layouts / API.
+  const hasAuth = request.cookies
+    .getAll()
+    .some((c) => c.name.includes('auth-token') || c.name.includes('sb-'));
+
+  if (!hasAuth && !pathname.startsWith('/api/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    url.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(url);
   }
 
   return response;
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|manifest.webmanifest|sw.js|icon.svg|favicon.svg|icon|apple-icon).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };

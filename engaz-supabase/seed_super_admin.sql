@@ -1,0 +1,13 @@
+﻿-- Seed first Engaz Admin super-admin.
+-- 1) Create Auth user in Engaz Admin Supabase (Dashboard -> Authentication -> Users)
+-- 2) Replace placeholders below and run with service role / SQL editor.
+
+-- insert into public.super_admins (user_id, email, display_name)
+-- values (
+--   '00000000-0000-0000-0000-000000000000',
+--   'admin@engaz.com',
+--   'Engaz Super Admin'
+-- )
+-- on conflict (user_id) do update
+--   set email = excluded.email,
+--       display_name = excluded.display_name;

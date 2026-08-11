@@ -2,8 +2,8 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
+  let response = NextResponse.next({
+    request: { headers: request.headers },
   });
 
   const supabase = createServerClient(
@@ -16,26 +16,22 @@ export async function updateSession(request: NextRequest) {
         },
         set(name: string, value: string, options: CookieOptions) {
           request.cookies.set({ name, value, ...options });
-          supabaseResponse = NextResponse.next({
-            request,
+          response = NextResponse.next({
+            request: { headers: request.headers },
           });
-          supabaseResponse.cookies.set({ name, value, ...options });
+          response.cookies.set({ name, value, ...options });
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({ name, value: '', ...options });
-          supabaseResponse = NextResponse.next({
-            request,
+          response = NextResponse.next({
+            request: { headers: request.headers },
           });
-          supabaseResponse.cookies.set({ name, value: '', ...options });
+          response.cookies.set({ name, value: '', ...options });
         },
       },
     }
   );
 
-  // Refresh session — important for Server Components
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return { supabaseResponse, user };
+  await supabase.auth.getUser();
+  return response;
 }
