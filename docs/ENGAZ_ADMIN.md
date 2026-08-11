@@ -115,3 +115,29 @@ npx vercel --prod --yes
 - Custom domains beyond `{slug}.vercel.app`
 - Billing / multi-org
 - Editing customer menus from Engaz Admin
+
+## Deploy status (engazadmin.vercel.app)
+
+The Vercel project **engazadmin** is created and aliased to `https://engazadmin.vercel.app`.
+`/api/health` returns `{ ok: true, service: "engaz-admin" }`.
+
+### Still required before login / provisioning works
+
+Paste these into the **engazadmin** Vercel project → Settings → Environment Variables (Production), then redeploy:
+
+1. **Engaz Admin Supabase** (dedicated project — not a customer project)
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+2. Apply `engaz-supabase/migrations/001_engaz_schema.sql` in that project’s SQL editor
+3. Create Auth user + insert into `super_admins` (see seed note)
+4. `ENGAZ_SECRETS_KEY` — `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`
+5. `GITHUB_TOKEN` — PAT on private `kamelfcis/QRScanner`
+6. `GITHUB_REPO=kamelfcis/QRScanner`
+7. `VERCEL_TOKEN` (+ optional `VERCEL_TEAM_ID`)
+
+### Recommended Vercel project settings
+
+- Framework Preset: **Next.js** (if UI still shows Other, set manually)
+- Production Branch: **engaz-admin** (when Git integration is connected)
+- Disable Deployment Protection for production if you want the public URL open without bypass
