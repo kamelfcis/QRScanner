@@ -13,12 +13,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Health never depends on Supabase session refresh
+  if (pathname === '/api/health') {
+    return NextResponse.next();
+  }
+
   const response = await updateSession(request);
 
   const isPublic = PUBLIC.some((p) => pathname === p || pathname.startsWith(p + '/'));
   if (isPublic) return response;
 
-  // Soft gate: cookie presence. Hard check happens in layouts / API.
   const hasAuth = request.cookies
     .getAll()
     .some((c) => c.name.includes('auth-token') || c.name.includes('sb-'));

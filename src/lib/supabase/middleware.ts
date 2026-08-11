@@ -6,10 +6,14 @@ export async function updateSession(request: NextRequest) {
     request: { headers: request.headers },
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anon) {
+    return response;
+  }
+
+  try {
+    const supabase = createServerClient(url, anon, {
       cookies: {
         get(name: string) {
           return request.cookies.get(name)?.value;
@@ -29,9 +33,12 @@ export async function updateSession(request: NextRequest) {
           response.cookies.set({ name, value: '', ...options });
         },
       },
-    }
-  );
+    });
 
-  await supabase.auth.getUser();
+    await supabase.auth.getUser();
+  } catch {
+    // Missing/invalid Engaz Supabase config should not hard-crash the edge
+  }
+
   return response;
 }
