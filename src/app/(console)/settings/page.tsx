@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChangePasswordForm } from '@/components/engaz/ChangePasswordForm';
 import { StatusBadge } from '@/components/engaz/StatusBadge';
 
 type PlatformStatus = {
@@ -39,6 +40,16 @@ export default function SettingsPage() {
       </div>
 
       {error && <p className="text-destructive text-sm">{error}</p>}
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Account</CardTitle>
+          <CardDescription>Change your super-admin password</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChangePasswordForm />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
