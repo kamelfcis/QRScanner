@@ -23,7 +23,8 @@ function isNewApplication(c: CustomerListItem) {
 export function CustomersView({ customers }: CustomersViewProps) {
   const [view, setView] = useCustomersViewMode();
   const [filter, setFilter] = useState<ListFilter>('all');
-  const { rows, setCustomerStatus, statusLoadingId } = useCustomerRows(customers);
+  const { rows, setCustomerStatus, statusLoadingId, deleteCustomer, deleteLoadingId } =
+    useCustomerRows(customers);
 
   const applicationCount = useMemo(
     () => rows.filter(isNewApplication).length,
@@ -102,13 +103,17 @@ export function CustomersView({ customers }: CustomersViewProps) {
         <CustomersTable
           rows={visibleRows}
           statusLoadingId={statusLoadingId}
+          deleteLoadingId={deleteLoadingId}
           onSetCustomerStatus={setCustomerStatus}
+          onDeleteCustomer={deleteCustomer}
         />
       ) : (
         <CustomersCards
           rows={visibleRows}
           statusLoadingId={statusLoadingId}
+          deleteLoadingId={deleteLoadingId}
           onSetCustomerStatus={setCustomerStatus}
+          onDeleteCustomer={deleteCustomer}
         />
       )}
     </div>

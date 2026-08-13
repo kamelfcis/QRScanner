@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { DeleteCustomerButton } from '@/components/engaz/DeleteCustomerDialog';
 import { JobTimeline } from '@/components/engaz/JobTimeline';
 import { StatusBadge } from '@/components/engaz/StatusBadge';
 import { CustomerLogo } from '@/components/engaz/CustomerLogo';
@@ -68,10 +69,12 @@ function Field({ label, value }: { label: string; value: string | null | undefin
 
 export default function CustomerDetailPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const [data, setData] = useState<Detail | null>(null);
   const [creds, setCreds] = useState<{ email: string; password: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [statusLoading, setStatusLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/customers/${params.id}`);
@@ -187,6 +190,39 @@ export default function CustomerDetailPage() {
     }
   }
 
+  async function deleteCustomer() {
+    setDeleteLoading(true);
+    try {
+      const res = await fetch(`/api/customers/${params.id}`, { method: 'DELETE' });
+      const raw = await res.text();
+      let json: { error?: string; warnings?: string[] } = {};
+      if (raw.trim()) {
+        try {
+          json = JSON.parse(raw);
+        } catch {
+          toast.error(raw.slice(0, 200) || 'Server returned non-JSON');
+          return;
+        }
+      } else if (!res.ok) {
+        toast.error('Failed to delete customer');
+        return;
+      }
+      if (!res.ok) {
+        toast.error(json.error || 'Failed to delete customer');
+        return;
+      }
+      toast.success('Customer deleted permanently');
+      if (json.warnings?.length) {
+        toast.warning(`Deleted with warnings: ${json.warnings.join('; ')}`);
+      }
+      router.push('/customers');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete customer');
+    } finally {
+      setDeleteLoading(false);
+    }
+  }
+
   if (loading || !data) {
     return <p className="text-muted-foreground text-sm">Loading customer…</p>;
   }
@@ -261,6 +297,12 @@ export default function CustomerDetailPage() {
           {(c.status === 'failed' || data.latestJob?.status === 'failed') && (
             <Button onClick={retry}>Retry provision</Button>
           )}
+          <DeleteCustomerButton
+            displayName={c.display_name_en}
+            status={c.status}
+            loading={deleteLoading || statusLoading}
+            onConfirm={deleteCustomer}
+          />
         </div>
       </div>
 

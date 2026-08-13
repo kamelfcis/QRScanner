@@ -279,3 +279,7 @@ export async function unpauseProject(projectId: string): Promise<void> {
     throw err;
   }
 }
+
+export async function deleteProject(projectId: string): Promise<void> {
+  await vercel(`/v9/projects/${projectId}`, { method: 'DELETE' });
+}

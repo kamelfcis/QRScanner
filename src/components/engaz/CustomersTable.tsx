@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CustomerLogo } from '@/components/engaz/CustomerLogo';
 import { StatusBadge } from '@/components/engaz/StatusBadge';
 import { Button } from '@/components/ui/button';
+import { DeleteCustomerButton } from '@/components/engaz/DeleteCustomerDialog';
 import { isToggleableCustomerStatus } from '@/lib/engaz/status';
 import { TEMPLATE_CONFIGS, type TemplateType } from '@/lib/engaz/types';
 
@@ -24,13 +25,17 @@ export type CustomerListItem = {
 type CustomersTableProps = {
   rows: CustomerListItem[];
   statusLoadingId: string | null;
+  deleteLoadingId: string | null;
   onSetCustomerStatus: (customerId: string, next: 'live' | 'archived') => void;
+  onDeleteCustomer: (customerId: string) => void | Promise<void>;
 };
 
 export function CustomersTable({
   rows,
   statusLoadingId,
+  deleteLoadingId,
   onSetCustomerStatus,
+  onDeleteCustomer,
 }: CustomersTableProps) {
   return (
     <div className="bg-card overflow-hidden rounded-lg border">
@@ -52,6 +57,7 @@ export function CustomersTable({
               isToggleableCustomerStatus(c.status) ||
               (c.status === 'failed' && Boolean(c.production_url));
             const loading = statusLoadingId === c.id;
+            const deleteLoading = deleteLoadingId === c.id;
 
             return (
               <tr key={c.id} className="border-t">
@@ -106,28 +112,34 @@ export function CustomersTable({
                   )}
                 </td>
                 <td className="px-4 py-3">
-                  {canToggleStatus ? (
-                    <div className="flex flex-wrap gap-1">
-                      <Button
-                        variant={c.status === 'live' ? 'default' : 'outline'}
-                        size="sm"
-                        disabled={loading || c.status === 'live'}
-                        onClick={() => onSetCustomerStatus(c.id, 'live')}
-                      >
-                        Set live
-                      </Button>
-                      <Button
-                        variant={c.status === 'archived' ? 'default' : 'outline'}
-                        size="sm"
-                        disabled={loading || c.status === 'archived'}
-                        onClick={() => onSetCustomerStatus(c.id, 'archived')}
-                      >
-                        Set offline
-                      </Button>
-                    </div>
-                  ) : (
-                    <span className="text-muted-foreground text-xs">—</span>
-                  )}
+                  <div className="flex flex-wrap gap-1">
+                    {canToggleStatus ? (
+                      <>
+                        <Button
+                          variant={c.status === 'live' ? 'default' : 'outline'}
+                          size="sm"
+                          disabled={loading || c.status === 'live'}
+                          onClick={() => onSetCustomerStatus(c.id, 'live')}
+                        >
+                          Set live
+                        </Button>
+                        <Button
+                          variant={c.status === 'archived' ? 'default' : 'outline'}
+                          size="sm"
+                          disabled={loading || c.status === 'archived'}
+                          onClick={() => onSetCustomerStatus(c.id, 'archived')}
+                        >
+                          Set offline
+                        </Button>
+                      </>
+                    ) : null}
+                    <DeleteCustomerButton
+                      displayName={c.display_name_en}
+                      status={c.status}
+                      loading={deleteLoading || loading}
+                      onConfirm={() => onDeleteCustomer(c.id)}
+                    />
+                  </div>
                 </td>
               </tr>
             );

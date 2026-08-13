@@ -132,4 +132,23 @@ export async function commitFiles(input: {
   }
 }
 
+export const PROTECTED_GIT_BRANCHES = new Set([
+  'warda',
+  'aklet-gambary',
+  'harameen',
+  'engaz-admin',
+  'engaz-landing-page',
+  'main',
+]);
+
+export async function deleteBranch(branch: string): Promise<void> {
+  if (PROTECTED_GIT_BRANCHES.has(branch)) {
+    return;
+  }
+  const { owner, repo } = repoPath();
+  await gh(`/repos/${owner}/${repo}/git/refs/heads/${encodeURIComponent(branch)}`, {
+    method: 'DELETE',
+  });
+}
+
 export { type GhFile };
