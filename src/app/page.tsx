@@ -8,18 +8,23 @@ import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 export default function HomePage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   return (
     <div>
       <SiteHeader />
       <main>
-        <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 lg:grid-cols-2 lg:py-24">
+        <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 lg:grid-cols-2 lg:py-28">
           <div className="space-y-6">
             <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
               {t.hero.kicker}
             </p>
-            <h1 className="font-heading text-4xl leading-tight font-extrabold sm:text-5xl">
+            <h1
+              className={cn(
+                'font-heading max-w-xl text-4xl font-bold sm:text-5xl lg:max-w-lg',
+                locale === 'ar' ? 'leading-[1.15]' : 'leading-tight tracking-tight'
+              )}
+            >
               {t.hero.title}
             </h1>
             <p className="text-muted-foreground max-w-xl text-lg">{t.hero.subtitle}</p>
@@ -35,7 +40,7 @@ export default function HomePage() {
               {t.hero.chips.map((chip) => (
                 <span
                   key={chip}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300"
+                  className="border-border bg-card text-muted-foreground rounded-full border px-3 py-1 text-xs"
                 >
                   {chip}
                 </span>
@@ -45,21 +50,21 @@ export default function HomePage() {
           <ProductMotion />
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-16">
-          <p className="text-muted-foreground mb-4 text-sm">{t.trust.title}</p>
+        <section className="mx-auto max-w-6xl px-4 pb-20">
+          <p className="text-muted-foreground mb-5 text-sm">{t.trust.title}</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {t.trust.items.map((item) => (
-              <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5">
+              <div key={item} className="surface-card rounded-2xl px-4 py-5">
                 {item}
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-20">
-          <h2 className="font-heading mb-8 text-3xl font-bold">{t.beforeAfter.title}</h2>
+        <section className="mx-auto max-w-6xl px-4 pb-24">
+          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.beforeAfter.title}</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <article className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <article className="surface-card rounded-2xl p-6">
               <h3 className="text-muted-foreground mb-4 text-sm font-semibold tracking-wide uppercase">
                 {t.beforeAfter.before}
               </h3>
@@ -69,7 +74,7 @@ export default function HomePage() {
                 ))}
               </ul>
             </article>
-            <article className="glow-ring rounded-2xl border border-[#51fe00]/30 bg-[#51fe00]/5 p-6">
+            <article className="surface-card rounded-2xl border-primary/30 bg-primary/5 p-6">
               <h3 className="text-primary mb-4 text-sm font-semibold tracking-wide uppercase">
                 {t.beforeAfter.after}
               </h3>
@@ -82,11 +87,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-20">
-          <h2 className="font-heading mb-8 text-3xl font-bold">{t.featuresTitle}</h2>
+        <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
+          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.featuresTitle}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {t.features.map((f) => (
-              <article key={f.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
+              <article key={f.title} className="surface-card rounded-2xl p-5">
                 <h3 className="mb-2 font-semibold">{f.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{f.body}</p>
               </article>
@@ -94,11 +99,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-20">
-          <h2 className="font-heading mb-8 text-3xl font-bold">{t.howTitle}</h2>
+        <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
+          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.howTitle}</h2>
           <div className="grid gap-4 md:grid-cols-4">
             {t.how.map((step) => (
-              <article key={step.title} className="rounded-2xl border border-white/10 bg-[#0e1422] p-5">
+              <article key={step.title} className="surface-card rounded-2xl p-5">
                 <div className="text-primary mb-3 text-2xl font-black">{step.n}</div>
                 <h3 className="mb-2 font-semibold">{step.title}</h3>
                 <p className="text-muted-foreground text-sm">{step.body}</p>
@@ -107,8 +112,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-20">
-          <h2 className="font-heading mb-8 text-3xl font-bold">{t.demosTitle}</h2>
+        <section className="mx-auto max-w-6xl px-4 pb-24">
+          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.demosTitle}</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {t.demos.map((demo) => (
               <a
@@ -116,15 +121,15 @@ export default function HomePage() {
                 href={demo.url}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:border-primary/40 rounded-2xl border border-white/10 bg-white/5 p-5 transition"
+                className="surface-card hover:border-primary/40 rounded-2xl p-5 transition"
               >
                 <div className="font-semibold">{demo.name}</div>
                 <div className="text-muted-foreground mt-1 truncate text-xs">{demo.url}</div>
-                <div className="bg-muted mt-4 overflow-hidden rounded-xl border border-white/10">
+                <div className="bg-muted mt-4 overflow-hidden rounded-xl border border-border">
                   <iframe
                     src={demo.url}
                     title={demo.name}
-                    className="h-56 w-full bg-black"
+                    className="h-56 w-full bg-background"
                     loading="lazy"
                   />
                 </div>
@@ -133,22 +138,19 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 pb-20 lg:grid-cols-2">
+        <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-24 lg:grid-cols-2">
           <div>
-            <h2 className="font-heading mb-4 text-3xl font-bold">{t.qrTitle}</h2>
+            <h2 className="font-heading mb-4 text-balance text-3xl font-bold">{t.qrTitle}</h2>
             <p className="text-muted-foreground text-lg">{t.qrBody}</p>
           </div>
           <ProductMotion />
         </section>
 
-        <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-4 pb-20">
-          <h2 className="font-heading mb-8 text-3xl font-bold">{t.faqTitle}</h2>
+        <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-4 pb-24">
+          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.faqTitle}</h2>
           <div className="space-y-3">
             {t.faq.map((item) => (
-              <details
-                key={item.q}
-                className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4"
-              >
+              <details key={item.q} className="surface-card rounded-2xl px-5 py-4">
                 <summary className="cursor-pointer font-medium">{item.q}</summary>
                 <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{item.a}</p>
               </details>
@@ -157,8 +159,8 @@ export default function HomePage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 pb-24">
-          <div className="glow-ring rounded-3xl bg-[#0e1422] px-6 py-12 text-center">
-            <h2 className="font-heading text-3xl font-bold">{t.cta.title}</h2>
+          <div className="surface-card rounded-3xl px-6 py-12 text-center">
+            <h2 className="font-heading text-balance text-3xl font-bold">{t.cta.title}</h2>
             <p className="text-muted-foreground mx-auto mt-3 max-w-xl">{t.cta.body}</p>
             <Link href="/register" className={cn(buttonVariants({ size: 'lg' }), 'mt-6 inline-flex')}>
               {t.cta.button}

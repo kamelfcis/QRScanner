@@ -1,15 +1,23 @@
 import type { Metadata } from 'next';
-import { Cairo } from 'next/font/google';
+import { Cairo, IBM_Plex_Sans_Arabic } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { ENGAZ_LOGO_ALT, ENGAZ_LOGO_SRC } from '@/lib/brand';
 import { I18nProvider } from '@/lib/i18n';
 import './globals.css';
 
 const cairo = Cairo({
-  variable: '--font-body-family',
+  variable: '--font-sans-family',
   subsets: ['arabic', 'latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600'],
 });
+
+const heading = IBM_Plex_Sans_Arabic({
+  variable: '--font-heading-family',
+  subsets: ['arabic', 'latin'],
+  weight: ['600', '700'],
+});
+
+const themeBoot = `(function(){try{var t=localStorage.getItem('engaz-theme');document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(t==='dark'?'dark':'light');}catch(e){document.documentElement.classList.add('light');}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://engaz-gamma.vercel.app'),
@@ -45,7 +53,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" className={`${cairo.variable} h-full`}>
+    <html lang="ar" dir="rtl" className={`light ${cairo.variable} ${heading.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
+      </head>
       <body className={`${cairo.className} min-h-full font-sans`}>
         <I18nProvider>{children}</I18nProvider>
         <Toaster richColors position="top-center" />

@@ -138,7 +138,7 @@ export default function RegisterPage() {
               key={label}
               className={cn(
                 'rounded-lg border px-2 py-2',
-                i === step ? 'border-primary bg-primary/10 text-primary' : 'border-white/10 text-muted-foreground'
+                i === step ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground'
               )}
             >
               {label}
@@ -147,9 +147,9 @@ export default function RegisterPage() {
         </ol>
 
         {step < 3 && (
-          <div className="mt-8 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6">
+          <div className="surface-card mt-8 space-y-4 rounded-2xl p-6">
             {error && (
-              <div role="alert" className="rounded-md bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+              <div role="alert" className="rounded-md bg-rose-500/10 px-3 py-2 text-destructive text-sm">
                 {error}
               </div>
             )}
@@ -225,10 +225,10 @@ export default function RegisterPage() {
         )}
 
         {step === 3 && (
-          <div className="glow-ring mt-8 rounded-2xl p-8 text-center">
+          <div className="surface-card mt-8 rounded-2xl p-8 text-center">
             <h2 className="font-heading text-2xl font-bold">{r.successTitle}</h2>
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{r.successBody}</p>
-            {uploadWarning && <p className="mt-3 text-sm text-amber-200">{r.successUploadWarn}</p>}
+            {uploadWarning && <p className="mt-3 text-sm text-amber-700 dark:text-amber-200">{r.successUploadWarn}</p>}
             <Link href="/" className={cn(buttonVariants({ size: 'lg' }), 'mt-6 inline-flex')}>
               {r.home}
             </Link>

@@ -15,11 +15,15 @@ export const copy = {
   ar: {
     brand: 'Engaz',
     byline: 'by ILC Soft',
+    theme: {
+      toLight: 'الوضع الفاتح',
+      toDark: 'الوضع الداكن',
+    },
     nav: {
       features: 'المميزات',
       how: 'كيف نشتغل',
       faq: 'أسئلة',
-      start: 'ابدأ مجانًا',
+      start: 'ابدأ الآن',
       login: 'تسجيل الدخول',
     },
     hero: {
@@ -27,7 +31,7 @@ export const copy = {
       title: 'منيو رقمي لمطعمك — من الكيو آر للطلب في ثوانٍ',
       subtitle:
         'ضيفك يمسح، يشوف المنيو بالعربي والإنجليزي، ويطلب واتساب. أنت تتابع المسحات والأطباق الأكثر طلبًا.',
-      cta: 'ابدأ مجانًا',
+      cta: 'ابدأ الآن',
       secondary: 'شوف المميزات',
       chips: ['بدون بوابة دفع', 'عربي / English', 'واتساب للطلب'],
     },
@@ -79,7 +83,7 @@ export const copy = {
         a: 'بعد ما نجهّز موقعك، تسجّل الدخول على رابط مطعمك. مش من لوحة Engaz Admin.',
       },
       {
-        q: 'إيه اللي بيحصل بعد «ابدأ مجانًا»؟',
+        q: 'إيه اللي بيحصل بعد ما تقدّم الطلب؟',
         a: 'طلبك يدخل قائمة المراجعة. هنجهّز المنيو ونتواصل معاك. مفيش لوحة تحكم وهمية بعد الفورم.',
       },
       {
@@ -94,7 +98,7 @@ export const copy = {
     cta: {
       title: 'جهّز منيو QR لمطعمك',
       body: 'املأ الطلب، وهنستلم بياناتك ونبدأ التجهيز.',
-      button: 'ابدأ مجانًا',
+      button: 'ابدأ الآن',
     },
     footer: {
       legal: 'سياسة الخصوصية',
@@ -113,7 +117,7 @@ export const copy = {
       back: 'العودة للرئيسية',
     },
     register: {
-      title: 'ابدأ مجانًا',
+      title: 'ابدأ الآن',
       subtitle: 'طلب انضمام. مش لوحة تحكم، ومش تفعيل تلقائي.',
       steps: ['حسابك', 'نشاطك', 'المنيو', 'تم الاستلام'],
       ownerName: 'الاسم',
@@ -158,11 +162,15 @@ export const copy = {
   en: {
     brand: 'Engaz',
     byline: 'by ILC Soft',
+    theme: {
+      toLight: 'Light mode',
+      toDark: 'Dark mode',
+    },
     nav: {
       features: 'Features',
       how: 'How it works',
       faq: 'FAQ',
-      start: 'Start free',
+      start: 'Start now',
       login: 'Log in',
     },
     hero: {
@@ -170,7 +178,7 @@ export const copy = {
       title: 'A digital menu for your restaurant — scan to order in seconds',
       subtitle:
         'Guests scan, browse Arabic and English, and order on WhatsApp. You see scans, top dishes, and peak hours.',
-      cta: 'Start free',
+      cta: 'Start now',
       secondary: 'See features',
       chips: ['No payment gateway', 'Arabic / English', 'WhatsApp ordering'],
     },
@@ -222,7 +230,7 @@ export const copy = {
         a: 'After we provision your site, you sign in on your restaurant URL — not here, and not on Engaz Admin.',
       },
       {
-        q: 'What happens after Start free?',
+        q: 'What happens after I submit a request?',
         a: 'Your request joins a review queue. We prepare the menu and contact you. There is no fake dashboard after the form.',
       },
       {
@@ -237,7 +245,7 @@ export const copy = {
     cta: {
       title: 'Get a QR menu for your restaurant',
       body: 'Submit the request. We receive your details and start setup.',
-      button: 'Start free',
+      button: 'Start now',
     },
     footer: {
       legal: 'Privacy',
@@ -256,7 +264,7 @@ export const copy = {
       back: 'Back to home',
     },
     register: {
-      title: 'Start free',
+      title: 'Start now',
       subtitle: 'This is an application — not a dashboard and not auto-provisioning.',
       steps: ['Your account', 'Your business', 'Menu files', 'Received'],
       ownerName: 'Full name',
