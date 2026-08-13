@@ -11,15 +11,12 @@ import {
 import { Lottie, type LottieAnimationData } from '@remotion/lottie';
 import { ENGAZ_LOGO_ALT, ENGAZ_LOGO_SRC } from '@/lib/brand';
 import qrScanAnimation from '../../public/lottie/qr-scan.json';
+import { CARD_BORDER, CARD_SHADOW, ENGAZ_GREEN as GREEN, ENGAZ_NAVY as NAVY, ENGAZ_PAPER as PAPER } from './palette';
 
 export const QR_TO_MENU_FPS = 30;
 export const QR_TO_MENU_FRAMES = 180;
 export const QR_TO_MENU_WIDTH = 960;
 export const QR_TO_MENU_HEIGHT = 720;
-
-const GREEN = '#51FE00';
-const NAVY = '#0b1220';
-const PAPER = '#f4f6f8';
 
 function fade(frame: number, start: number, end: number) {
   return interpolate(frame, [start, start + 8, end - 8, end], [0, 1, 1, 0], {
@@ -37,8 +34,7 @@ function TableQr() {
       Array.from({ length: 13 * 13 }, (_, i) => {
         const x = i % 13;
         const y = Math.floor(i / 13);
-        const finder =
-          (x < 3 && y < 3) || (x > 9 && y < 3) || (x < 3 && y > 9);
+        const finder = (x < 3 && y < 3) || (x > 9 && y < 3) || (x < 3 && y > 9);
         const filled = finder || ((x * 7 + y * 13) % 5 === 0 && !finder);
         return { i, filled, finder };
       }),
@@ -61,15 +57,17 @@ function TableQr() {
           height: 340,
           borderRadius: 24,
           background: '#fff',
-          border: '1px solid rgba(11,18,32,0.08)',
-          boxShadow: '0 18px 40px rgba(11,18,32,0.08)',
+          border: `1px solid ${CARD_BORDER}`,
+          boxShadow: CARD_SHADOW,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 16,
+          overflow: 'hidden',
         }}
       >
+        <div style={{ height: 4, width: '100%', background: GREEN, marginTop: -16 }} />
         <Img src={ENGAZ_LOGO_SRC} alt={ENGAZ_LOGO_ALT} style={{ height: 36, width: 'auto' }} />
         <div
           style={{
@@ -167,23 +165,25 @@ function MenuCards() {
               height: 210,
               borderRadius: 20,
               background: '#fff',
-              border: '1px solid rgba(11,18,32,0.08)',
-              boxShadow: '0 12px 28px rgba(11,18,32,0.06)',
-              padding: 16,
+              border: `1px solid ${CARD_BORDER}`,
+              boxShadow: CARD_SHADOW,
+              overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              gap: 10,
             }}
           >
-            <div
-              style={{
-                height: 92,
-                borderRadius: 14,
-                background: index === 1 ? 'rgba(81,254,0,0.18)' : 'rgba(11,18,32,0.06)',
-              }}
-            />
-            <strong style={{ color: NAVY, fontSize: 16 }}>{name}</strong>
-            <span style={{ color: GREEN, fontWeight: 700, fontSize: 14 }}>QR menu</span>
+            <div style={{ height: 4, background: GREEN }} />
+            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+              <div
+                style={{
+                  height: 92,
+                  borderRadius: 14,
+                  background: index === 1 ? 'rgba(81,254,0,0.18)' : 'rgba(11,18,32,0.06)',
+                }}
+              />
+              <strong style={{ color: NAVY, fontSize: 16 }}>{name}</strong>
+              <span style={{ color: GREEN, fontWeight: 700, fontSize: 14 }}>QR menu</span>
+            </div>
           </div>
         );
       })}
@@ -206,37 +206,46 @@ function DashboardPulse() {
     >
       <div
         style={{
-          width: 420,
-          height: 260,
+          width: 460,
+          height: 280,
           borderRadius: 24,
           background: '#fff',
-          border: '1px solid rgba(11,18,32,0.08)',
-          boxShadow: '0 16px 36px rgba(11,18,32,0.07)',
-          padding: 28,
+          border: `1px solid ${CARD_BORDER}`,
+          boxShadow: CARD_SHADOW,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-          <Img src={ENGAZ_LOGO_SRC} alt={ENGAZ_LOGO_ALT} style={{ height: 28, width: 'auto' }} />
-          <span style={{ color: NAVY, fontWeight: 700 }}>Dashboard</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, height: 150 }}>
-          {bars.map((h, i) => {
-            const height = interpolate(frame, [4 + i * 3, 28 + i * 3], [8, h], {
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            });
-            return (
-              <div
-                key={i}
-                style={{
-                  flex: 1,
-                  height: `${height}%`,
-                  borderRadius: 10,
-                  background: i === bars.length - 1 ? GREEN : 'rgba(11,18,32,0.12)',
-                }}
-              />
-            );
-          })}
+        <div style={{ height: 4, background: GREEN }} />
+        <div style={{ padding: '20px 24px 24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+            <Img src={ENGAZ_LOGO_SRC} alt={ENGAZ_LOGO_ALT} style={{ height: 28, width: 'auto' }} />
+            <div>
+              <div style={{ color: NAVY, fontWeight: 800 }}>Dashboard</div>
+              <div style={{ color: 'rgba(11,18,32,0.5)', fontSize: 12 }}>Peak hour · 20:00</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, height: 150 }}>
+            {bars.map((h, i) => {
+              const height = interpolate(frame, [4 + i * 3, 28 + i * 3], [8, h], {
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              });
+              return (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    height: `${height}%`,
+                    borderRadius: 10,
+                    background: i === bars.length - 1 ? GREEN : 'rgba(11,18,32,0.12)',
+                    boxShadow: i === bars.length - 1 ? '0 8px 16px rgba(81,254,0,0.28)' : undefined,
+                  }}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </AbsoluteFill>

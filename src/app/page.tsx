@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SiteFooter, SiteHeader } from '@/components/landing/SiteChrome';
 import { ProductMotion } from '@/components/landing/ProductMotion';
 import { FeaturesShowcase } from '@/components/landing/FeaturesShowcase';
+import { FeatureLottie } from '@/components/landing/FeatureLottie';
 import { LiveDemosSection } from '@/components/landing/LiveDemosSection';
 import { buttonVariants } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n';
@@ -93,12 +94,24 @@ export default function HomePage() {
 
         <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
           <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.howTitle}</h2>
-          <div className="grid gap-4 md:grid-cols-4">
-            {t.how.map((step) => (
-              <article key={step.title} className="surface-card rounded-2xl p-5">
-                <div className="text-primary mb-3 text-2xl font-black">{step.n}</div>
-                <h3 className="mb-2 font-semibold">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">{step.body}</p>
+          <div className="how-snap feature-snap-row">
+            {t.how.map((step, index) => (
+              <article
+                key={step.title}
+                className="feature-bento-card surface-card relative min-h-[11rem] min-w-[42%] overflow-hidden rounded-[16px] p-5"
+                style={{ ['--stagger' as string]: `${index * 80}ms` }}
+              >
+                <span className="feature-bento-accent" />
+                <div className="mb-3 flex items-center gap-2">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#51FE00]/15 text-lg font-black text-[#0b1220] dark:text-[#51FE00]">
+                    {step.n}
+                  </div>
+                  {index === 0 ? (
+                    <FeatureLottie src="/lottie/check.json" tint="green" className="h-11 w-11" />
+                  ) : null}
+                </div>
+                <h3 className="mb-2 font-semibold text-pretty">{step.title}</h3>
+                <p className="text-muted-foreground text-sm text-pretty">{step.body}</p>
               </article>
             ))}
           </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -9,16 +10,29 @@ const QrToMenuPlayer = dynamic(
   () => import('@/components/landing/QrToMenuPlayer').then((mod) => mod.QrToMenuPlayer),
   {
     ssr: false,
-    loading: () => <div className="bg-muted/50 aspect-[4/3] w-full animate-pulse rounded-xl" />,
+    loading: () => <div className="aspect-[4/3] w-full animate-pulse rounded-[16px] bg-[#51FE00]/10" />,
+  },
+);
+
+const WhatsAppOrderPlayer = dynamic(
+  () => import('@/components/landing/WhatsAppOrderPlayer').then((mod) => mod.WhatsAppOrderPlayer),
+  {
+    ssr: false,
+    loading: () => <div className="aspect-[3/4] w-full animate-pulse rounded-[16px] bg-[#25D366]/10" />,
+  },
+);
+
+const AnalyticsPulsePlayer = dynamic(
+  () => import('@/components/landing/AnalyticsPulsePlayer').then((mod) => mod.AnalyticsPulsePlayer),
+  {
+    ssr: false,
+    loading: () => <div className="aspect-[16/10] w-full animate-pulse rounded-[16px] bg-[#0b1220]/8" />,
   },
 );
 
 const LOTTIE: Record<string, string> = {
-  'qr-scan': '/lottie/qr-scan.json',
   globe: '/lottie/globe.json',
   food: '/lottie/food.json',
-  whatsapp: '/lottie/whatsapp.json',
-  charts: '/lottie/charts.json',
   'ai-doc': '/lottie/ai-doc.json',
   delivery: '/lottie/delivery.json',
   'qr-print': '/lottie/qr-print.json',
@@ -33,12 +47,12 @@ function BentoCard({
 }: {
   className?: string;
   delay: number;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <article
       className={cn(
-        'feature-bento-card surface-card group relative overflow-hidden rounded-2xl p-5',
+        'feature-bento-card surface-card group relative overflow-hidden rounded-[16px] p-5',
         className,
       )}
       style={{ ['--stagger' as string]: `${delay}ms` }}
@@ -51,8 +65,8 @@ function BentoCard({
 
 function FeatureCopy({ feature }: { feature: Feature }) {
   return (
-    <div className="relative z-10">
-      <h3 className="mb-2 text-lg font-semibold tracking-tight">{feature.title}</h3>
+    <div className="relative z-10 min-w-0">
+      <h3 className="mb-2 text-lg font-semibold tracking-tight text-pretty">{feature.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed text-pretty">{feature.body}</p>
     </div>
   );
@@ -79,45 +93,56 @@ export function FeaturesShowcase() {
         {t.featuresTitle}
       </h2>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12">
-        <BentoCard className="flex flex-col gap-4 sm:col-span-2 lg:col-span-8" delay={0}>
-          <div className="bg-muted/40 aspect-[4/3] overflow-hidden rounded-xl">
-            <QrToMenuPlayer />
-          </div>
-          <FeatureCopy feature={qr} />
-        </BentoCard>
+      <div className="feature-bento">
+        <div className="feature-snap-row">
+          <BentoCard className="flex min-h-[20rem] min-w-[70%] flex-col gap-4 lg:col-span-8" delay={0}>
+            <div className="aspect-[4/3] overflow-hidden rounded-[16px] bg-[#51FE00]/8">
+              <QrToMenuPlayer />
+            </div>
+            <FeatureCopy feature={qr} />
+          </BentoCard>
+          <BentoCard
+            className="flex min-h-[20rem] min-w-[46%] flex-col justify-between gap-4 lg:col-span-4"
+            delay={80}
+          >
+            <div className="aspect-[3/4] max-h-[280px] overflow-hidden rounded-[16px] bg-[#25D366]/10">
+              <WhatsAppOrderPlayer />
+            </div>
+            <FeatureCopy feature={whatsapp} />
+          </BentoCard>
+        </div>
 
-        <BentoCard className="flex flex-col justify-between sm:col-span-2 lg:col-span-4" delay={80}>
-          <FeatureLottie src={LOTTIE.whatsapp} size="lg" />
-          <FeatureCopy feature={whatsapp} />
-        </BentoCard>
+        <div className="feature-snap-row">
+          <BentoCard className="flex min-h-[16rem] min-w-[46%] flex-col gap-3 lg:col-span-6" delay={140}>
+            <FeatureLottie src={LOTTIE.globe} tint="sky" />
+            <FeatureCopy feature={bilingual} />
+          </BentoCard>
+          <BentoCard className="flex min-h-[16rem] min-w-[46%] flex-col gap-3 lg:col-span-6" delay={180}>
+            <div className="aspect-[16/10] overflow-hidden rounded-[16px] bg-[#0b1220]/6">
+              <AnalyticsPulsePlayer />
+            </div>
+            <FeatureCopy feature={analytics} />
+          </BentoCard>
+        </div>
 
-        <BentoCard className="flex flex-col gap-3 lg:col-span-6" delay={140}>
-          <FeatureLottie src={LOTTIE.globe} />
-          <FeatureCopy feature={bilingual} />
-        </BentoCard>
-
-        <BentoCard className="flex flex-col gap-3 lg:col-span-6" delay={180}>
-          <FeatureLottie src={LOTTIE.charts} className="h-[160px] w-[220px]" />
-          <FeatureCopy feature={analytics} />
-        </BentoCard>
-
-        <BentoCard className="flex flex-col gap-3 lg:col-span-3" delay={220}>
-          <FeatureLottie src={LOTTIE.food} />
-          <FeatureCopy feature={food} />
-        </BentoCard>
-        <BentoCard className="flex flex-col gap-3 lg:col-span-3" delay={260}>
-          <FeatureLottie src={LOTTIE['ai-doc']} />
-          <FeatureCopy feature={ai} />
-        </BentoCard>
-        <BentoCard className="flex flex-col gap-3 lg:col-span-3" delay={300}>
-          <FeatureLottie src={LOTTIE.delivery} />
-          <FeatureCopy feature={delivery} />
-        </BentoCard>
-        <BentoCard className="flex flex-col gap-3 lg:col-span-3" delay={340}>
-          <FeatureLottie src={LOTTIE['qr-print']} />
-          <FeatureCopy feature={qrPrint} />
-        </BentoCard>
+        <div className="feature-snap-row">
+          <BentoCard className="flex min-h-[14rem] min-w-[42%] flex-col gap-3 lg:col-span-3" delay={220}>
+            <FeatureLottie src={LOTTIE.food} tint="amber" />
+            <FeatureCopy feature={food} />
+          </BentoCard>
+          <BentoCard className="flex min-h-[14rem] min-w-[42%] flex-col gap-3 lg:col-span-3" delay={260}>
+            <FeatureLottie src={LOTTIE['ai-doc']} tint="green" />
+            <FeatureCopy feature={ai} />
+          </BentoCard>
+          <BentoCard className="flex min-h-[14rem] min-w-[42%] flex-col gap-3 lg:col-span-3" delay={300}>
+            <FeatureLottie src={LOTTIE.delivery} tint="green" />
+            <FeatureCopy feature={delivery} />
+          </BentoCard>
+          <BentoCard className="flex min-h-[14rem] min-w-[42%] flex-col gap-3 lg:col-span-3" delay={340}>
+            <FeatureLottie src={LOTTIE['qr-print']} tint="navy" />
+            <FeatureCopy feature={qrPrint} />
+          </BentoCard>
+        </div>
       </div>
     </section>
   );

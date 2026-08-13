@@ -8,9 +8,23 @@ type FeatureLottieProps = {
   src: string;
   className?: string;
   size?: 'sm' | 'lg';
+  tint?: 'green' | 'whatsapp' | 'navy' | 'amber' | 'sky';
 };
 
-export function FeatureLottie({ src, className, size = 'sm' }: FeatureLottieProps) {
+const TINT: Record<NonNullable<FeatureLottieProps['tint']>, string> = {
+  green: 'bg-[#51FE00]/10',
+  whatsapp: 'bg-[#25D366]/10',
+  navy: 'bg-[#0b1220]/8 dark:bg-white/10',
+  amber: 'bg-amber-400/15',
+  sky: 'bg-sky-500/12',
+};
+
+export function FeatureLottie({
+  src,
+  className,
+  size = 'sm',
+  tint = 'green',
+}: FeatureLottieProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [data, setData] = useState<object | null>(null);
@@ -43,10 +57,10 @@ export function FeatureLottie({ src, className, size = 'sm' }: FeatureLottieProp
     mq.addEventListener('change', sync);
 
     const node = wrapRef.current;
-    const io = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.35, rootMargin: '40px' },
-    );
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.35,
+      rootMargin: '40px',
+    });
     if (node) io.observe(node);
 
     return () => {
@@ -74,7 +88,8 @@ export function FeatureLottie({ src, className, size = 'sm' }: FeatureLottieProp
       ref={wrapRef}
       aria-hidden
       className={cn(
-        'feature-lottie relative mx-auto flex items-center justify-center',
+        'feature-lottie relative mx-auto flex items-center justify-center rounded-2xl',
+        TINT[tint],
         size === 'lg' ? 'h-[220px] w-[220px]' : 'h-[140px] w-[140px]',
         className,
       )}
@@ -87,12 +102,11 @@ export function FeatureLottie({ src, className, size = 'sm' }: FeatureLottieProp
           animationData={data}
           loop={!reduced}
           autoplay={false}
-          className="h-full w-full mix-blend-multiply dark:mix-blend-screen"
+          className="h-full w-full p-2"
         />
       ) : (
-        <div className="bg-muted/60 h-full w-full animate-pulse rounded-xl" />
+        <div className="h-full w-full animate-pulse rounded-2xl bg-[#51FE00]/10" />
       )}
-      <div className="pointer-events-none absolute inset-0 rounded-xl bg-[#51FE00]/8 mix-blend-overlay" />
     </div>
   );
 }
