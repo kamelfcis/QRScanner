@@ -75,9 +75,11 @@ body {
   min-height: 100vh;
 }
 
+/* Beam runs down the QR plate. `top` is animated because a 1px line cannot be
+   moved with percentage transforms. */
 @keyframes login-qr-scan {
   0% {
-    transform: translateY(-12%);
+    top: 4%;
     opacity: 0;
   }
   12% {
@@ -87,19 +89,98 @@ body {
     opacity: 1;
   }
   100% {
-    transform: translateY(112%);
+    top: 94%;
     opacity: 0;
   }
 }
 
 .login-qr-scan {
-  animation: login-qr-scan 2.8s ease-in-out infinite;
+  top: 4%;
+  animation: login-qr-scan 3.2s ease-in-out infinite;
+}
+
+/* Light sweep across the QR wall. Screen-blended so it only lifts the dark tiles. */
+.login-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  height: 240%;
+  transform: translate(-50%, -50%) rotate(-16deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(81, 254, 0, 0.09) 38%,
+    rgba(214, 255, 196, 0.07) 50%,
+    rgba(81, 254, 0, 0.09) 62%,
+    transparent
+  );
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  animation: login-sweep 17s linear infinite;
+  will-change: transform;
+}
+
+@keyframes login-sweep {
+  from {
+    transform: translate(-50%, -50%) rotate(-16deg) translateX(-155%);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-16deg) translateX(155%);
+  }
+}
+
+@keyframes login-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.03);
+  }
+}
+
+.login-drift {
+  animation: login-drift 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes login-lock {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.login-lock {
+  animation: login-lock 7s ease-in-out infinite;
+}
+
+.login-mono {
+  font-family: var(--font-login-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .login-qr-scan {
     animation: none;
+    top: 50%;
     opacity: 0.45;
+  }
+
+  .login-sweep {
+    animation: none;
+  }
+
+  .login-drift {
+    animation: none;
+  }
+
+  .login-lock {
+    animation: none;
+    opacity: 0.7;
   }
 
   .login-fade-up,
@@ -116,6 +197,7 @@ body {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
+  background-color: #070c16;
 }
 
 html:has(.login-shell),
@@ -127,6 +209,7 @@ html:has(.login-shell) body {
 
 html:has(.login-shell) body {
   background-image: none;
+  background-color: #070c16;
 }
 
 @keyframes login-fade-up {

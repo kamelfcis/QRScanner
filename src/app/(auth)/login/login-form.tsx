@@ -106,20 +106,27 @@ export function LoginForm({ initialLocale }: { initialLocale: LoginLocale }) {
         dir={rtl ? 'rtl' : 'ltr'}
         lang={locale}
         className={cn(
-          'login-fade-up-delay-1 rounded-2xl border border-[#E6EAF0] bg-white p-5 shadow-sm sm:p-6',
+          'login-fade-up-delay-1 relative overflow-hidden rounded-[20px] bg-white p-5 shadow-[0_30px_70px_-24px_rgba(0,0,0,0.7)] ring-1 ring-white/10 sm:p-6',
           rtl && 'login-ar'
         )}
       >
+        <span aria-hidden className="absolute inset-x-0 top-0 h-[2px] bg-[#51FE00]" />
         <div className="mb-4 flex items-center justify-between gap-3">
-          <img
-            src="/brand/engaz-logo.png"
-            alt="Engaz"
-            className="h-7 w-auto max-w-[110px] object-contain"
-          />
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#0B1220]">
+            <img
+              src="/brand/engaz-logo.png"
+              alt="Engaz"
+              className="size-7 object-contain"
+            />
+          </span>
           <button
             type="button"
             onClick={switchLocale}
-            className="rounded-lg border border-[#E6EAF0] px-2.5 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            className={cn(
+              'rounded-lg border border-[#E6EAF0] px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:border-[#51FE00] hover:bg-[#51FE00]/10 hover:text-[#0B1220]',
+              // The mono face is Latin-only, so the Arabic toggle label keeps the Arabic face.
+              rtl ? 'login-mono text-[11px] tracking-[0.12em] uppercase' : 'login-ar'
+            )}
             aria-label={copy.langToggleAria}
           >
             {copy.langToggle}
@@ -192,6 +199,16 @@ export function LoginForm({ initialLocale }: { initialLocale: LoginLocale }) {
           </Button>
         </form>
       </div>
+
+      <p
+        dir={rtl ? 'rtl' : 'ltr'}
+        className={cn(
+          'mt-4 text-center text-[10px] text-white/45',
+          rtl ? 'login-ar' : 'login-mono tracking-[0.14em] uppercase'
+        )}
+      >
+        {copy.secureNote}
+      </p>
     </LoginSplit>
   );
 }
