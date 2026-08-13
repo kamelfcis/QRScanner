@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CustomersView } from '@/components/engaz/CustomersView';
+import { getRegistrationLogoPublicUrl } from '@/lib/engaz/customer-logo';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 
 export default async function CustomersPage() {
@@ -7,8 +8,13 @@ export default async function CustomersPage() {
   const db = createServiceRoleClient();
   const { data: customers } = await db
     .from('customers')
-    .select('id, slug, display_name_en, template_type, git_branch, status, production_url')
+    .select('*')
     .order('created_at', { ascending: false });
+
+  const rows = (customers || []).map((c) => ({
+    ...c,
+    logo_url: getRegistrationLogoPublicUrl(c.logo_path),
+  }));
 
   return (
     <div className="space-y-6">
@@ -16,7 +22,7 @@ export default async function CustomersPage() {
         <div>
           <h1 className="font-heading text-3xl font-semibold tracking-tight">Customers</h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            Branches, templates, status, and production URLs.
+            Live sites, drafts, and self-service applications waiting to be provisioned.
           </p>
         </div>
         <Link
@@ -27,7 +33,7 @@ export default async function CustomersPage() {
         </Link>
       </div>
 
-      <CustomersView customers={customers || []} />
+      <CustomersView customers={rows} />
     </div>
   );
 }

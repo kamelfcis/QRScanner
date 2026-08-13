@@ -61,57 +61,119 @@ export async function POST(request: Request) {
 
   const { data: existing } = await db
     .from('customers')
-    .select('id')
+    .select('*')
     .eq('slug', input.slug)
     .maybeSingle();
+
+  let customer = existing;
   if (existing) {
-    return NextResponse.json({ error: 'Slug already exists' }, { status: 409 });
+    const canReuseDraft =
+      existing.status === 'draft' &&
+      (existing.registration_source === 'self_service' || existing.registration_source === 'admin');
+    if (!canReuseDraft) {
+      return NextResponse.json({ error: 'Slug already exists' }, { status: 409 });
+    }
+
+    const { data: updated, error: updErr } = await db
+      .from('customers')
+      .update({
+        display_name_ar: input.displayNameAr,
+        display_name_en: input.displayNameEn,
+        template_type: input.templateType,
+        git_branch: input.slug,
+        supabase_project_ref: input.secrets.supabaseProjectRef,
+        created_by: auth.user!.id,
+      })
+      .eq('id', existing.id)
+      .select('*')
+      .single();
+
+    if (updErr || !updated) {
+      return NextResponse.json(
+        { error: updErr?.message || 'Failed to update draft customer' },
+        { status: 500 }
+      );
+    }
+    customer = updated;
+  } else {
+    const { data: inserted, error: custErr } = await db
+      .from('customers')
+      .insert({
+        slug: input.slug,
+        display_name_ar: input.displayNameAr,
+        display_name_en: input.displayNameEn,
+        template_type: input.templateType,
+        git_branch: input.slug,
+        supabase_project_ref: input.secrets.supabaseProjectRef,
+        status: 'draft',
+        registration_source: 'admin',
+        created_by: auth.user!.id,
+      })
+      .select('*')
+      .single();
+
+    if (custErr || !inserted) {
+      return NextResponse.json(
+        { error: custErr?.message || 'Failed to create customer' },
+        { status: 500 }
+      );
+    }
+    customer = inserted;
   }
 
-  const { data: customer, error: custErr } = await db
-    .from('customers')
-    .insert({
-      slug: input.slug,
-      display_name_ar: input.displayNameAr,
-      display_name_en: input.displayNameEn,
-      template_type: input.templateType,
-      git_branch: input.slug,
-      supabase_project_ref: input.secrets.supabaseProjectRef,
-      status: 'draft',
-      created_by: auth.user!.id,
-    })
-    .select('*')
-    .single();
-
-  if (custErr || !customer) {
-    return NextResponse.json(
-      { error: custErr?.message || 'Failed to create customer' },
-      { status: 500 }
-    );
+  if (!customer) {
+    return NextResponse.json({ error: 'Failed to create customer' }, { status: 500 });
   }
 
   const enc = encryptJson(input.secrets);
-  const { error: secErr } = await db.from('customer_secrets').insert({
-    customer_id: customer.id,
-    ciphertext: enc.ciphertext,
-    iv: enc.iv,
-    auth_tag: enc.authTag,
-  });
+  const { error: secErr } = await db.from('customer_secrets').upsert(
+    {
+      customer_id: customer.id,
+      ciphertext: enc.ciphertext,
+      iv: enc.iv,
+      auth_tag: enc.authTag,
+    },
+    { onConflict: 'customer_id' }
+  );
   if (secErr) {
-    await db.from('customers').delete().eq('id', customer.id);
+    if (!existing) {
+      await db.from('customers').delete().eq('id', customer.id);
+    }
     return NextResponse.json({ error: secErr.message }, { status: 500 });
   }
 
   const adminEmail = input.adminEmail || `admin@${input.slug}.com`;
-  const adminPassword = input.adminPassword || generatePassword(18);
-  const encPass = encryptSecret(adminPassword);
-  await db.from('customer_admins').insert({
-    customer_id: customer.id,
-    email: adminEmail,
-    password_ciphertext: encPass.ciphertext,
-    password_iv: encPass.iv,
-    password_auth_tag: encPass.authTag,
-  });
+  const { data: existingAdmin } = await db
+    .from('customer_admins')
+    .select('id')
+    .eq('customer_id', customer.id)
+    .eq('email', adminEmail)
+    .maybeSingle();
+
+  let revealedPassword: string | undefined;
+  if (input.adminPassword || !existingAdmin) {
+    const adminPassword = input.adminPassword || generatePassword(18);
+    const encPass = encryptSecret(adminPassword);
+    if (existingAdmin) {
+      await db
+        .from('customer_admins')
+        .update({
+          password_ciphertext: encPass.ciphertext,
+          password_iv: encPass.iv,
+          password_auth_tag: encPass.authTag,
+        })
+        .eq('id', existingAdmin.id);
+    } else {
+      await db.from('customer_admins').insert({
+        customer_id: customer.id,
+        email: adminEmail,
+        password_ciphertext: encPass.ciphertext,
+        password_iv: encPass.iv,
+        password_auth_tag: encPass.authTag,
+      });
+    }
+    revealedPassword = adminPassword;
+  }
 
   const { data: job, error: jobErr } = await db
     .from('provision_jobs')
@@ -135,7 +197,6 @@ export async function POST(request: Request) {
     jobId: job.id,
     slug: customer.slug,
     adminEmail,
-    // Password shown once at create time for handoff UI
-    adminPassword,
+    adminPassword: revealedPassword,
   });
 }

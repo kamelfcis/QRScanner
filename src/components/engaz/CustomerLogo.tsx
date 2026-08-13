@@ -8,11 +8,20 @@ import { cn } from '@/lib/utils';
 type CustomerLogoProps = {
   productionUrl: string | null;
   displayName: string;
+  logoUrl?: string | null;
   size?: 'default' | 'sm' | 'lg' | 'xl' | '2xl';
 };
 
-export function CustomerLogo({ productionUrl, displayName, size = 'sm' }: CustomerLogoProps) {
-  const candidates = useMemo(() => getCustomerFaviconUrls(productionUrl), [productionUrl]);
+export function CustomerLogo({
+  productionUrl,
+  displayName,
+  logoUrl,
+  size = 'sm',
+}: CustomerLogoProps) {
+  const candidates = useMemo(() => {
+    const favicons = getCustomerFaviconUrls(productionUrl);
+    return logoUrl ? [logoUrl, ...favicons] : favicons;
+  }, [logoUrl, productionUrl]);
   const [candidateIndex, setCandidateIndex] = useState(0);
   const src = candidates[candidateIndex] ?? null;
 

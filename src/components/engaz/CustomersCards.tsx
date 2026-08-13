@@ -47,9 +47,10 @@ export function CustomersCards({
           >
             <div className="flex items-start gap-4">
               <CustomerLogo
-                key={c.production_url ?? c.id}
+                key={c.logo_url ?? c.production_url ?? c.id}
                 productionUrl={c.production_url}
                 displayName={c.display_name_en}
+                logoUrl={c.logo_url}
                 size="2xl"
               />
               <div className="min-w-0 flex-1 space-y-1">
@@ -60,7 +61,14 @@ export function CustomersCards({
                   {c.display_name_en}
                 </Link>
                 <p className="text-muted-foreground truncate font-mono text-xs">{c.slug}</p>
-                <StatusBadge status={c.status} />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <StatusBadge status={c.status} />
+                  {c.registration_source === 'self_service' && (
+                    <span className="inline-flex items-center rounded-full bg-lime-100 px-2 py-0.5 text-xs font-medium text-lime-800">
+                      Application
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 

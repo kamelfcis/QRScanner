@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,16 +12,22 @@ import { TEMPLATE_CONFIGS, type TemplateType } from '@/lib/engaz/types';
 
 const STEPS = ['Template', 'Identity', 'Supabase', 'Review'] as const;
 
+function asTemplateType(value: string | null): TemplateType {
+  if (value === 'aklet' || value === 'harameen' || value === 'warda') return value;
+  return 'warda';
+}
+
 export default function NewCustomerPage() {
   const router = useRouter();
+  const search = useSearchParams();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    templateType: 'warda' as TemplateType,
-    slug: '',
-    displayNameAr: '',
-    displayNameEn: '',
-    adminEmail: '',
+    templateType: asTemplateType(search.get('templateType')),
+    slug: search.get('slug') || '',
+    displayNameAr: search.get('displayNameAr') || '',
+    displayNameEn: search.get('displayNameEn') || '',
+    adminEmail: search.get('adminEmail') || '',
     adminPassword: '',
     supabaseUrl: '',
     supabaseAnonKey: '',
@@ -108,6 +114,9 @@ export default function NewCustomerPage() {
         <h1 className="font-heading text-3xl font-semibold tracking-tight">New customer</h1>
         <p className="text-muted-foreground mt-1 text-sm">
           Clone a template, migrate an empty menu, create admin, deploy to Vercel.
+          {search.get('from')
+            ? ' This will reuse the existing self-service draft with the same slug.'
+            : ''}
         </p>
       </div>
 

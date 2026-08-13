@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { decryptJson } from '@/lib/crypto/secrets';
+import { getRegistrationLogoPublicUrl } from '@/lib/engaz/customer-logo';
 import { isToggleableCustomerStatus } from '@/lib/engaz/status';
 import type { CustomerStatus } from '@/lib/engaz/types';
-import { requireSuperAdmin } from '@/lib/supabase/server';
+import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 import { syncVercelForCustomerStatus } from '@/server/provision/customer-status';
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -53,12 +55,65 @@ export async function GET(_request: Request, ctx: Ctx) {
     .select('id, email, supabase_user_id, created_at')
     .eq('customer_id', id);
 
+  let menuSignedUrl: string | null = null;
+  const service = createServiceRoleClient();
+  if (customer.menu_path) {
+    const { data: signed } = await service.storage
+      .from('registration-menus')
+      .createSignedUrl(customer.menu_path, 60 * 60);
+    menuSignedUrl = signed?.signedUrl ?? null;
+  }
+
+  let merged = customer;
+  if (!customer.owner_email && customer.status === 'draft' && !customer.production_url) {
+    const { data: secretRow } = await service
+      .from('customer_secrets')
+      .select('ciphertext, iv, auth_tag')
+      .eq('customer_id', id)
+      .maybeSingle();
+    if (secretRow) {
+      try {
+        const extras = decryptJson<{
+          type?: string;
+          ownerName?: string;
+          email?: string;
+          phone?: string;
+          businessType?: string;
+          address?: string;
+          city?: string;
+        }>({
+          ciphertext: secretRow.ciphertext,
+          iv: secretRow.iv,
+          authTag: secretRow.auth_tag,
+        });
+        if (extras?.type === 'self_service_registration') {
+          merged = {
+            ...customer,
+            registration_source: 'self_service',
+            owner_name: extras.ownerName || null,
+            owner_email: extras.email || null,
+            owner_phone: extras.phone || null,
+            business_type: extras.businessType || null,
+            address: extras.address || null,
+            city: extras.city || null,
+          };
+        }
+      } catch {
+        // Not an application payload (provisioned customer secrets).
+      }
+    }
+  }
+
   return NextResponse.json({
-    customer,
+    customer: {
+      ...merged,
+      logo_url: getRegistrationLogoPublicUrl(merged.logo_path),
+    },
     jobs: jobs || [],
     latestJob: latestJob || null,
     events,
     admins: admins || [],
+    menuSignedUrl,
   });
 }
 

@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { JobTimeline } from '@/components/engaz/JobTimeline';
 import { StatusBadge } from '@/components/engaz/StatusBadge';
+import { CustomerLogo } from '@/components/engaz/CustomerLogo';
 import { isToggleableCustomerStatus } from '@/lib/engaz/status';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +22,18 @@ type Detail = {
     production_url: string | null;
     status: string;
     vercel_project_id: string | null;
+    owner_name: string | null;
+    owner_email: string | null;
+    owner_phone: string | null;
+    business_type: string | null;
+    address: string | null;
+    city: string | null;
+    logo_path: string | null;
+    logo_url: string | null;
+    menu_path: string | null;
+    registration_source: string | null;
+    onboarding_notes: string | null;
+    created_at: string;
   };
   latestJob: { id: string; status: string; error_message: string | null } | null;
   events: Array<{
@@ -31,6 +44,7 @@ type Detail = {
     created_at: string;
   }>;
   admins: Array<{ email: string }>;
+  menuSignedUrl: string | null;
 };
 
 function readHandoff(id: string): { email: string; password: string } | null {
@@ -41,6 +55,15 @@ function readHandoff(id: string): { email: string; password: string } | null {
   } catch {
     return null;
   }
+}
+
+function Field({ label, value }: { label: string; value: string | null | undefined }) {
+  return (
+    <div>
+      <div className="text-muted-foreground text-xs">{label}</div>
+      <div className="text-sm">{value || '—'}</div>
+    </div>
+  );
 }
 
 export default function CustomerDetailPage() {
@@ -187,11 +210,24 @@ export default function CustomerDetailPage() {
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <StatusBadge status={c.status} />
+            {c.registration_source === 'self_service' && (
+              <span className="inline-flex items-center rounded-full bg-lime-100 px-2 py-0.5 text-xs font-medium text-lime-800">
+                Self-service application
+              </span>
+            )}
             <span className="text-muted-foreground font-mono text-xs">{c.slug}</span>
             <span className="text-muted-foreground text-xs">· {c.template_type}</span>
           </div>
         </div>
         <div className="flex gap-2">
+          {c.registration_source === 'self_service' && c.status === 'draft' && (
+            <Link
+              href={`/customers/new?from=${c.id}&slug=${encodeURIComponent(c.slug)}&displayNameEn=${encodeURIComponent(c.display_name_en)}&displayNameAr=${encodeURIComponent(c.display_name_ar)}&adminEmail=${encodeURIComponent(c.owner_email || '')}&templateType=${encodeURIComponent(c.template_type)}`}
+              className="bg-primary text-primary-foreground hover:bg-primary/80 inline-flex h-8 items-center rounded-lg px-2.5 text-sm font-medium"
+            >
+              Provision
+            </Link>
+          )}
           {canToggleStatus && (
             <>
               <Button
@@ -229,6 +265,67 @@ export default function CustomerDetailPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
+        {c.registration_source === 'self_service' && (
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-base">Application</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="flex items-center gap-3 sm:col-span-2 lg:col-span-3">
+                <CustomerLogo
+                  productionUrl={c.production_url}
+                  displayName={c.display_name_en}
+                  logoUrl={c.logo_url}
+                  size="2xl"
+                />
+                <div className="text-muted-foreground text-xs">
+                  Submitted {new Date(c.created_at).toLocaleString()}
+                </div>
+              </div>
+              <Field label="Owner" value={c.owner_name} />
+              <Field label="Email" value={c.owner_email} />
+              <Field label="Phone" value={c.owner_phone} />
+              <Field label="Business type" value={c.business_type?.replaceAll('_', ' ')} />
+              <Field label="City" value={c.city} />
+              <Field label="Address" value={c.address} />
+              {c.onboarding_notes && (
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <div className="text-muted-foreground text-xs">Notes</div>
+                  <div className="text-sm whitespace-pre-wrap">{c.onboarding_notes}</div>
+                </div>
+              )}
+              <div>
+                <div className="text-muted-foreground text-xs">Logo</div>
+                {c.logo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={c.logo_url}
+                    alt=""
+                    className="mt-2 size-20 rounded-md border object-cover"
+                  />
+                ) : (
+                  <div className="text-muted-foreground text-sm">Not uploaded</div>
+                )}
+              </div>
+              <div>
+                <div className="text-muted-foreground text-xs">Menu file</div>
+                {data.menuSignedUrl ? (
+                  <a
+                    href={data.menuSignedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary text-sm hover:underline"
+                  >
+                    Download menu
+                  </a>
+                ) : (
+                  <div className="text-muted-foreground text-sm">Not uploaded</div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Handoff</CardTitle>

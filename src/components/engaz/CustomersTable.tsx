@@ -15,6 +15,10 @@ export type CustomerListItem = {
   git_branch: string | null;
   status: string;
   production_url: string | null;
+  registration_source?: string | null;
+  owner_email?: string | null;
+  logo_url?: string | null;
+  created_at?: string | null;
 };
 
 type CustomersTableProps = {
@@ -34,6 +38,7 @@ export function CustomersTable({
         <thead className="bg-muted/60 text-left">
           <tr>
             <th className="px-4 py-2 font-medium">Customer</th>
+            <th className="px-4 py-2 font-medium">Source</th>
             <th className="px-4 py-2 font-medium">Template</th>
             <th className="px-4 py-2 font-medium">Branch</th>
             <th className="px-4 py-2 font-medium">Status</th>
@@ -53,9 +58,10 @@ export function CustomersTable({
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <CustomerLogo
-                      key={c.production_url ?? c.id}
+                      key={c.logo_url ?? c.production_url ?? c.id}
                       productionUrl={c.production_url}
                       displayName={c.display_name_en}
+                      logoUrl={c.logo_url}
                       size="xl"
                     />
                     <div className="min-w-0">
@@ -68,6 +74,15 @@ export function CustomersTable({
                       <div className="text-muted-foreground truncate text-xs">{c.slug}</div>
                     </div>
                   </div>
+                </td>
+                <td className="px-4 py-3">
+                  {c.registration_source === 'self_service' ? (
+                    <span className="inline-flex items-center rounded-full bg-lime-100 px-2 py-0.5 text-xs font-medium text-lime-800">
+                      Application
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground text-xs">Admin</span>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   {TEMPLATE_CONFIGS[c.template_type as TemplateType]?.label || c.template_type}
@@ -119,7 +134,7 @@ export function CustomersTable({
           })}
           {!rows.length && (
             <tr>
-              <td colSpan={6} className="text-muted-foreground px-4 py-10 text-center">
+              <td colSpan={7} className="text-muted-foreground px-4 py-10 text-center">
                 No customers yet.{' '}
                 <Link href="/customers/new" className="text-primary underline">
                   Create one

@@ -1,3 +1,10 @@
+export function getRegistrationLogoPublicUrl(logoPath: string | null | undefined): string | null {
+  if (!logoPath) return null;
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '');
+  if (!base) return null;
+  return `${base}/storage/v1/object/public/registration-logos/${logoPath}`;
+}
+
 export function getCustomerFaviconUrls(productionUrl: string | null): string[] {
   if (!productionUrl) {
     return [];
