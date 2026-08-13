@@ -1,7 +1,18 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
+import { LOGIN_LOCALE_COOKIE, detectLocaleFromAcceptLanguage } from '@/lib/login-i18n';
 
 const PUBLIC = ['/login', '/api/health'];
+
+function seedLoginLocaleCookie(request: NextRequest, response: NextResponse) {
+  if (request.cookies.get(LOGIN_LOCALE_COOKIE)) return;
+  const locale = detectLocaleFromAcceptLanguage(request.headers.get('accept-language'));
+  response.cookies.set(LOGIN_LOCALE_COOKIE, locale, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: 'lax',
+  });
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -21,7 +32,12 @@ export async function middleware(request: NextRequest) {
   const response = await updateSession(request);
 
   const isPublic = PUBLIC.some((p) => pathname === p || pathname.startsWith(p + '/'));
-  if (isPublic) return response;
+  if (isPublic) {
+    if (pathname === '/login' || pathname.startsWith('/login/')) {
+      seedLoginLocaleCookie(request, response);
+    }
+    return response;
+  }
 
   const hasAuth = request.cookies
     .getAll()

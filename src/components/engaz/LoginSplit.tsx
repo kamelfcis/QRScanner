@@ -2,6 +2,14 @@ const ENGAZ_LOGO = '/brand/engaz-logo.png';
 const ILC_LOGO = '/brand/ilc-soft-logo.png';
 const QR_N = 21;
 
+type LoginBrandCopy = {
+  brandTitle: string;
+  brandKicker: string;
+  brandBody: string;
+  qrCaption: string;
+  byline: string;
+};
+
 function qrFilled(x: number, y: number): boolean {
   const finder = (ox: number, oy: number): boolean | null => {
     const dx = x - ox;
@@ -21,7 +29,7 @@ const QR_CELLS = Array.from({ length: QR_N * QR_N }, (_, i) =>
   qrFilled(i % QR_N, Math.floor(i / QR_N))
 );
 
-function QrMotif() {
+function QrMotif({ caption, rtl }: { caption: string; rtl: boolean }) {
   return (
     <div className="mx-auto w-full max-w-[120px] opacity-80">
       <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#08101c]/80 p-2 shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
@@ -39,14 +47,27 @@ function QrMotif() {
         </div>
         <div className="login-qr-scan pointer-events-none absolute inset-x-2 top-2 h-px rounded-full bg-[#51FE00] shadow-[0_0_10px_#51FE00]" />
       </div>
-      <p className="mt-2 text-center text-[10px] tracking-wider text-white/35 uppercase">
-        QR to live menu
+      <p
+        dir={rtl ? 'rtl' : 'ltr'}
+        className={`mt-2 text-center text-[10px] text-white/35 ${rtl ? 'login-ar tracking-normal' : 'tracking-wider uppercase'}`}
+      >
+        {caption}
       </p>
     </div>
   );
 }
 
-export function LoginSplit({ children }: { children: React.ReactNode }) {
+export function LoginSplit({
+  children,
+  copy,
+  locale,
+}: {
+  children: React.ReactNode;
+  copy: LoginBrandCopy;
+  locale: 'ar' | 'en';
+}) {
+  const rtl = locale === 'ar';
+
   return (
     <div dir="ltr" className="flex h-full max-h-full min-h-0 flex-col overflow-hidden lg:flex-row">
       <aside className="relative hidden min-h-0 shrink-0 overflow-hidden bg-[#0B1220] text-white lg:flex lg:w-[52%] lg:flex-col lg:px-10 lg:py-7 xl:px-12">
@@ -64,32 +85,30 @@ export function LoginSplit({ children }: { children: React.ReactNode }) {
           }}
         />
 
-        <div className="relative z-10 shrink-0">
+        <div dir={rtl ? 'rtl' : 'ltr'} className={`relative z-10 shrink-0 ${rtl ? 'login-ar' : ''}`}>
           <img
             src={ENGAZ_LOGO}
             alt="Engaz"
             className="h-9 w-auto max-w-[180px] object-contain xl:max-w-[200px]"
           />
           <h1 className="font-heading mt-5 text-[28px] font-semibold leading-tight tracking-tight xl:text-[32px]">
-            Engaz Admin
+            {copy.brandTitle}
           </h1>
-          <p className="mt-1.5 text-sm text-[#51FE00]/80">Super-admin control center</p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">
-            Provision restaurants, manage QR menus, and monitor deployments from one place.
-          </p>
+          <p className="mt-1.5 text-sm text-[#51FE00]/80">{copy.brandKicker}</p>
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">{copy.brandBody}</p>
         </div>
 
         <div className="relative z-10 flex min-h-0 flex-1 items-center justify-start py-4">
-          <QrMotif />
+          <QrMotif caption={copy.qrCaption} rtl={rtl} />
         </div>
 
-        <div className="relative z-10 flex shrink-0 items-center gap-2">
+        <div dir={rtl ? 'rtl' : 'ltr'} className={`relative z-10 flex shrink-0 items-center gap-2 ${rtl ? 'login-ar' : ''}`}>
           <img
             src={ILC_LOGO}
             alt="ILC Soft"
             className="size-7 rounded-full bg-white object-contain p-0.5"
           />
-          <span className="text-xs text-white/45">by ILC Soft</span>
+          <span className="text-xs text-white/45">{copy.byline}</span>
         </div>
       </aside>
 

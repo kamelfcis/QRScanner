@@ -151,3 +151,8 @@ html:has(.login-shell) body {
 .login-fade-up-delay-2 {
   animation: login-fade-up 0.45s ease-out 0.14s both;
 }
+
+.login-ar,
+.login-ar .font-heading {
+  font-family: var(--font-login-arabic), var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
+}
