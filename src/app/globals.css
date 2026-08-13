@@ -201,7 +201,7 @@ html.dark .glow-ring {
   animation: scan-beam 2.8s ease-in-out infinite;
 }
 
-@keyframes feature-fade-up {
+@keyframes demo-fade-up {
   from {
     opacity: 0;
     transform: translateY(16px);
@@ -212,81 +212,8 @@ html.dark .glow-ring {
   }
 }
 
-.feature-bento-card {
-  animation: feature-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--stagger, 0ms);
-}
-
-.feature-bento-accent {
-  position: absolute;
-  top: 0;
-  inset-inline: 0;
-  height: 2px;
-  background: #51fe00;
-  opacity: 1;
-  pointer-events: none;
-}
-
-.feature-bento {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.feature-snap-row {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  touch-action: pan-x pan-y;
-}
-
-.feature-snap-row::-webkit-scrollbar {
-  display: none;
-}
-
-.feature-snap-row > * {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-@media (min-width: 1024px) {
-  .feature-bento {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .feature-bento > .feature-snap-row {
-    display: contents;
-  }
-
-  .feature-bento > .feature-snap-row > * {
-    min-width: 0;
-  }
-
-  .how-snap {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    overflow: visible;
-  }
-
-  .how-snap > * {
-    min-width: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .feature-bento-card {
-    animation: none;
-  }
-}
-
 .demo-card {
-  animation: feature-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: demo-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--stagger, 0ms);
 }
 

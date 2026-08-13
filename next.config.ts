@@ -2,7 +2,6 @@ import path from 'node:path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['remotion', '@remotion/player', '@remotion/lottie', 'lottie-web'],
   turbopack: {
     root: path.join(__dirname),
   },
