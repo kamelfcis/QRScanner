@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cairo } from 'next/font/google';
 import { Toaster } from 'sonner';
+import { ENGAZ_LOGO_ALT, ENGAZ_LOGO_SRC } from '@/lib/brand';
 import { I18nProvider } from '@/lib/i18n';
 import './globals.css';
 
@@ -11,7 +12,7 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://engaz.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://engaz-gamma.vercel.app'),
   title: {
     default: 'Engaz — QR Menu for Restaurants & Cafés',
     template: '%s | Engaz',
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ar_EG',
     alternateLocale: ['en_US'],
-    images: [{ url: '/og.png', width: 1024, height: 1024, alt: 'Engaz QR Menu' }],
+    images: [{ url: '/og.png', width: 1024, height: 1024, alt: ENGAZ_LOGO_ALT }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     images: ['/og.png'],
   },
   icons: {
-    icon: '/brand/engaz-hero.png',
+    icon: [{ url: ENGAZ_LOGO_SRC, type: 'image/png' }],
     apple: '/apple-icon.png',
   },
 };

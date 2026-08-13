@@ -10,6 +10,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { BUSINESS_TYPES } from '@/lib/copy';
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
+import { ENGAZ_LOGO_ALT, ENGAZ_LOGO_SRC } from '@/lib/brand';
 
 type FormState = {
   ownerName: string;
@@ -122,6 +123,12 @@ export default function RegisterPage() {
     <div>
       <SiteHeader solid />
       <main className="mx-auto max-w-xl px-4 py-12">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={ENGAZ_LOGO_SRC}
+          alt={ENGAZ_LOGO_ALT}
+          className="mb-6 h-14 w-auto max-w-[220px] object-contain"
+        />
         <h1 className="font-heading text-3xl font-bold">{r.title}</h1>
         <p className="text-muted-foreground mt-2 text-sm">{r.subtitle}</p>
 
