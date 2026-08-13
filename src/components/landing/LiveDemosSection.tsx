@@ -12,15 +12,15 @@ type Demo = {
 };
 
 const DEMO_THEMES: Record<string, { gradient: string; ring: string }> = {
-  'https://harameen.vercel.app/': {
+  'https://harameen.engazqr.com/': {
     gradient: 'from-amber-100/90 via-orange-50 to-white',
     ring: 'group-hover:ring-amber-300/40',
   },
-  'https://engaz-qr-menu.vercel.app/': {
+  'https://wardashamya.engazqr.com/': {
     gradient: 'from-emerald-100/90 via-green-50 to-white',
     ring: 'group-hover:ring-emerald-300/40',
   },
-  'https://aklet-gambary.vercel.app/': {
+  'https://akletgambary.engazqr.com/': {
     gradient: 'from-sky-100/90 via-blue-50 to-white',
     ring: 'group-hover:ring-sky-300/40',
   },

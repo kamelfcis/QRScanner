@@ -70,17 +70,17 @@ export const copy = {
     demos: [
       {
         name: 'Harameen',
-        url: 'https://harameen.vercel.app/',
+        url: 'https://harameen.engazqr.com/',
         preview: '/demos/harameen-icon.png',
       },
       {
         name: 'Warda Shamya',
-        url: 'https://engaz-qr-menu.vercel.app/',
+        url: 'https://wardashamya.engazqr.com/',
         preview: '/demos/warda-icon.png',
       },
       {
         name: 'Aklet Gambary',
-        url: 'https://aklet-gambary.vercel.app/',
+        url: 'https://akletgambary.engazqr.com/',
         preview: '/demos/aklet-icon.png',
       },
     ],
@@ -231,17 +231,17 @@ export const copy = {
     demos: [
       {
         name: 'Harameen',
-        url: 'https://harameen.vercel.app/',
+        url: 'https://harameen.engazqr.com/',
         preview: '/demos/harameen-icon.png',
       },
       {
         name: 'Warda Shamya',
-        url: 'https://engaz-qr-menu.vercel.app/',
+        url: 'https://wardashamya.engazqr.com/',
         preview: '/demos/warda-icon.png',
       },
       {
         name: 'Aklet Gambary',
-        url: 'https://aklet-gambary.vercel.app/',
+        url: 'https://akletgambary.engazqr.com/',
         preview: '/demos/aklet-icon.png',
       },
     ],

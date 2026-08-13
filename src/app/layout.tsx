@@ -20,7 +20,7 @@ const heading = IBM_Plex_Sans_Arabic({
 const themeBoot = `(function(){try{var t=localStorage.getItem('engaz-theme');document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(t==='dark'?'dark':'light');}catch(e){document.documentElement.classList.add('light');}})();`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://engaz-gamma.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://engazqr.com'),
   title: {
     default: 'Engaz — QR Menu for Restaurants & Cafés',
     template: '%s | Engaz',
