@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -73,4 +73,32 @@ body {
     radial-gradient(ellipse 80% 50% at 0% 0%, rgba(15, 118, 110, 0.08), transparent),
     radial-gradient(ellipse 60% 40% at 100% 0%, rgba(15, 23, 42, 0.06), transparent);
   min-height: 100vh;
+}
+
+@keyframes login-qr-scan {
+  0% {
+    transform: translateY(-12%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(112%);
+    opacity: 0;
+  }
+}
+
+.login-qr-scan {
+  animation: login-qr-scan 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-qr-scan {
+    animation: none;
+    opacity: 0.45;
+  }
 }
