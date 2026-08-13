@@ -201,6 +201,37 @@ html.dark .glow-ring {
   animation: scan-beam 2.8s ease-in-out infinite;
 }
 
+@keyframes feature-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.feature-bento-card {
+  animation: feature-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+.feature-bento-accent {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 2px;
+  background: #51fe00;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-bento-card {
+    animation: none;
+  }
+}
+
 @keyframes scan-beam {
   0% {
     transform: translateY(-120%);

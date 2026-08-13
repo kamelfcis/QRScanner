@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { SiteFooter, SiteHeader } from '@/components/landing/SiteChrome';
 import { ProductMotion } from '@/components/landing/ProductMotion';
+import { FeaturesShowcase } from '@/components/landing/FeaturesShowcase';
 import { buttonVariants } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -87,17 +88,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
-          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.featuresTitle}</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {t.features.map((f) => (
-              <article key={f.title} className="surface-card rounded-2xl p-5">
-                <h3 className="mb-2 font-semibold">{f.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{f.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <FeaturesShowcase />
 
         <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-24">
           <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.howTitle}</h2>
