@@ -1,5 +1,5 @@
 {
-  "name": "engaz-admin",
+  "name": "engaz-landing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,17 +10,7 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,mdx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,mdx}\"",
-    "prepare": "husky",
     "check": "npm run type-check && npm run lint"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,yml}": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -48,8 +38,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",

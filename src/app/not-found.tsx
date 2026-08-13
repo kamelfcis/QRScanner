@@ -5,7 +5,7 @@ export default function NotFound() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-3 p-6">
       <h1 className="font-heading text-2xl font-semibold">Not found</h1>
       <Link href="/" className="text-primary text-sm underline">
-        Back to dashboard
+        Engaz
       </Link>
     </div>
   );
