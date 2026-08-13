@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,56 +55,64 @@ export default function LoginPage() {
 
   return (
     <LoginSplit>
-      <div className="rounded-2xl border border-[#E6EAF0] bg-white p-6 shadow-sm sm:p-8">
+      <div className="login-fade-up-delay-1 rounded-2xl border border-[#E6EAF0] bg-white p-5 shadow-sm sm:p-6">
         <img
           src="/brand/engaz-logo.png"
           alt="Engaz"
-          className="mb-6 h-9 w-auto max-w-[140px] object-contain"
+          className="mb-4 h-7 w-auto max-w-[110px] object-contain"
         />
-        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[#0B1220]">
-          Sign in
-        </h1>
-        <p className="mt-1.5 text-sm text-slate-500">
-          Super-admin only — restaurant owners use their own site
-        </p>
+        <h2 className="font-heading text-[22px] font-semibold tracking-tight text-[#0B1220] sm:text-2xl">
+          Welcome back
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">Sign in to Engaz Admin</p>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
+        <form onSubmit={onSubmit} className="mt-5 space-y-3.5">
           {error && (
             <div
               role="alert"
-              className="bg-destructive/10 text-destructive rounded-2xl p-3 text-sm"
+              className="bg-destructive/10 text-destructive rounded-xl p-2.5 text-sm"
             >
               {error}
             </div>
           )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="h-10 rounded-2xl focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/30"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-sm">
+              Email
+            </Label>
             <div className="relative">
+              <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+              <Input
+                id="email"
+                type="email"
+                autoComplete="username"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-10 rounded-xl pl-9 focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/30"
+              />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-sm">
+              Password
+            </Label>
+            <div className="relative">
+              <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="h-10 rounded-2xl pr-10 focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/30"
+                className="h-10 rounded-xl pl-9 pr-10 focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/30"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 hover:text-slate-800"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 hover:text-slate-700"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
@@ -113,11 +121,10 @@ export default function LoginPage() {
           </div>
           <Button
             type="submit"
-            size="lg"
-            className="h-10 w-full rounded-2xl bg-[#51FE00] text-[#041200] hover:bg-[#46e000] focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/40"
+            className="login-fade-up-delay-2 h-10 w-full rounded-xl bg-[#51FE00] text-sm font-semibold text-[#041200] hover:bg-[#46e000] focus-visible:border-[#51FE00] focus-visible:ring-[#51FE00]/40"
             disabled={loading}
           >
-            {loading ? 'Signing in…' : 'Sign in'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </Button>
         </form>
       </div>

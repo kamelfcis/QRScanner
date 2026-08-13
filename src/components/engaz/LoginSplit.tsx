@@ -23,77 +23,78 @@ const QR_CELLS = Array.from({ length: QR_N * QR_N }, (_, i) =>
 
 function QrMotif() {
   return (
-    <div className="relative mx-auto w-full max-w-[280px]">
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#08101c] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
+    <div className="mx-auto w-full max-w-[120px] opacity-80">
+      <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#08101c]/80 p-2 shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
         <div
-          className="grid aspect-square w-full gap-[2px] rounded-xl bg-[#0B1220] p-2"
+          className="grid aspect-square w-full gap-px rounded-lg bg-[#0B1220] p-1.5"
           style={{ gridTemplateColumns: `repeat(${QR_N}, minmax(0, 1fr))` }}
           aria-hidden
         >
           {QR_CELLS.map((filled, i) => (
             <span
               key={i}
-              className={filled ? 'rounded-[1px] bg-[#e8ffd6]' : 'rounded-[1px] bg-transparent'}
+              className={filled ? 'rounded-[0.5px] bg-[#51FE00]/70' : 'rounded-[0.5px] bg-transparent'}
             />
           ))}
         </div>
-        <div className="login-qr-scan pointer-events-none absolute inset-x-4 top-4 h-0.5 rounded-full bg-[#51FE00] shadow-[0_0_18px_#51FE00]" />
+        <div className="login-qr-scan pointer-events-none absolute inset-x-2 top-2 h-px rounded-full bg-[#51FE00] shadow-[0_0_10px_#51FE00]" />
       </div>
-      <p className="mt-3 text-center text-xs tracking-wide text-white/45">QR → live menu</p>
+      <p className="mt-2 text-center text-[10px] tracking-wider text-white/35 uppercase">
+        QR to live menu
+      </p>
     </div>
   );
 }
 
 export function LoginSplit({ children }: { children: React.ReactNode }) {
   return (
-    <div dir="ltr" className="flex min-h-screen flex-col lg:flex-row">
-      <aside className="relative overflow-hidden bg-[#0B1220] px-5 py-5 text-white lg:flex lg:w-[52%] lg:flex-col lg:justify-between lg:px-14 lg:py-12">
+    <div dir="ltr" className="flex h-full max-h-full min-h-0 flex-col overflow-hidden lg:flex-row">
+      <aside className="relative hidden min-h-0 shrink-0 overflow-hidden bg-[#0B1220] text-white lg:flex lg:w-[52%] lg:flex-col lg:px-10 lg:py-7 xl:px-12">
         <div
           aria-hidden
-          className="bg-[#51FE00]/12 pointer-events-none absolute -top-24 right-[-80px] size-[360px] rounded-full blur-3xl"
+          className="pointer-events-none absolute -top-20 right-[-60px] size-[280px] rounded-full bg-[#51FE00]/10 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 1px 1px, rgba(81,254,0,0.55) 1px, transparent 0)',
-            backgroundSize: '22px 22px',
+              'radial-gradient(circle at 1px 1px, rgba(81,254,0,0.5) 1px, transparent 0)',
+            backgroundSize: '20px 20px',
           }}
         />
 
-        <div className="relative z-10 flex items-center gap-4 lg:flex-col lg:items-start lg:gap-8">
+        <div className="relative z-10 shrink-0">
           <img
             src={ENGAZ_LOGO}
-            alt="Engaz — QR Menu for Restaurants & Cafés"
-            className="h-10 w-auto max-w-[150px] object-contain sm:h-12 lg:h-auto lg:max-w-[280px]"
+            alt="Engaz"
+            className="h-9 w-auto max-w-[180px] object-contain xl:max-w-[200px]"
           />
-          <div>
-            <p className="font-heading text-lg font-semibold tracking-tight lg:text-3xl">
-              Engaz Admin
-            </p>
-            <p className="mt-0.5 text-xs text-white/55 lg:mt-2 lg:text-sm">
-              Super-admin control plane
-            </p>
-          </div>
+          <h1 className="font-heading mt-5 text-[28px] font-semibold leading-tight tracking-tight xl:text-[32px]">
+            Engaz Admin
+          </h1>
+          <p className="mt-1.5 text-sm text-[#51FE00]/80">Super-admin control center</p>
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">
+            Provision restaurants, manage QR menus, and monitor deployments from one place.
+          </p>
         </div>
 
-        <div className="relative z-10 mt-8 hidden lg:block">
+        <div className="relative z-10 flex min-h-0 flex-1 items-center justify-start py-4">
           <QrMotif />
         </div>
 
-        <div className="relative z-10 mt-4 flex items-center gap-2.5 lg:mt-0">
+        <div className="relative z-10 flex shrink-0 items-center gap-2">
           <img
             src={ILC_LOGO}
             alt="ILC Soft"
-            className="size-9 rounded-full bg-white object-contain p-0.5"
+            className="size-7 rounded-full bg-white object-contain p-0.5"
           />
-          <span className="text-sm text-white/70">by ILC Soft</span>
+          <span className="text-xs text-white/45">by ILC Soft</span>
         </div>
       </aside>
 
-      <section className="flex flex-1 items-center justify-center bg-[#F7F8FA] px-5 py-10 sm:px-8 lg:px-12">
-        <div className="w-full max-w-[420px]">{children}</div>
+      <section className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto bg-[#F7F8FA] px-4 py-6 sm:px-6 lg:overflow-hidden lg:px-10 lg:py-8">
+        <div className="login-fade-up w-full max-w-[380px]">{children}</div>
       </section>
     </div>
   );
