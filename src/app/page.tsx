@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SiteFooter, SiteHeader } from '@/components/landing/SiteChrome';
 import { ProductMotion } from '@/components/landing/ProductMotion';
 import { FeaturesShowcase } from '@/components/landing/FeaturesShowcase';
+import { LiveDemosSection } from '@/components/landing/LiveDemosSection';
 import { buttonVariants } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -103,31 +104,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-24">
-          <h2 className="font-heading mb-10 text-balance text-3xl font-bold">{t.demosTitle}</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            {t.demos.map((demo) => (
-              <a
-                key={demo.url}
-                href={demo.url}
-                target="_blank"
-                rel="noreferrer"
-                className="surface-card hover:border-primary/40 rounded-2xl p-5 transition"
-              >
-                <div className="font-semibold">{demo.name}</div>
-                <div className="text-muted-foreground mt-1 truncate text-xs">{demo.url}</div>
-                <div className="bg-muted mt-4 overflow-hidden rounded-xl border border-border">
-                  <iframe
-                    src={demo.url}
-                    title={demo.name}
-                    className="h-56 w-full bg-background"
-                    loading="lazy"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
+        <LiveDemosSection />
+
 
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-24 lg:grid-cols-2">
           <div>

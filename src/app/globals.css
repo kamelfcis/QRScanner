@@ -232,6 +232,27 @@ html.dark .glow-ring {
   }
 }
 
+.demo-card {
+  animation: feature-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+.demo-card:hover {
+  box-shadow:
+    var(--shadow-card),
+    0 16px 40px rgba(11, 18, 32, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-card {
+    animation: none;
+  }
+
+  .demo-card:hover {
+    transform: none;
+  }
+}
+
 @keyframes scan-beam {
   0% {
     transform: translateY(-120%);

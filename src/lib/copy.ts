@@ -66,10 +66,23 @@ export const copy = {
       { n: '٤', title: 'QR على الطاولة', body: 'تطبع الكيو آر، والضيف يمسح ويطلب.' },
     ],
     demosTitle: 'جرّب مواقع شغالة',
+    demosVisit: 'افتح الموقع',
     demos: [
-      { name: 'Harameen', url: 'https://harameen.vercel.app/' },
-      { name: 'Warda Shamya', url: 'https://engaz-qr-menu.vercel.app/' },
-      { name: 'Aklet Gambary', url: 'https://aklet-gambary.vercel.app/' },
+      {
+        name: 'Harameen',
+        url: 'https://harameen.vercel.app/',
+        preview: '/demos/harameen-icon.png',
+      },
+      {
+        name: 'Warda Shamya',
+        url: 'https://engaz-qr-menu.vercel.app/',
+        preview: '/demos/warda-icon.png',
+      },
+      {
+        name: 'Aklet Gambary',
+        url: 'https://aklet-gambary.vercel.app/',
+        preview: '/demos/aklet-icon.png',
+      },
     ],
     qrTitle: 'الضيف يمسح — المنيو يفتح',
     qrBody: 'الكود على الطاولة، المنيو على الموبايل، والطلب على واتساب. من غير تطبيق يتنزّل.',
@@ -214,10 +227,23 @@ export const copy = {
       { n: '4', title: 'QR on the table', body: 'Print the code. Guests scan and order.' },
     ],
     demosTitle: 'Live demos',
+    demosVisit: 'Visit site',
     demos: [
-      { name: 'Harameen', url: 'https://harameen.vercel.app/' },
-      { name: 'Warda Shamya', url: 'https://engaz-qr-menu.vercel.app/' },
-      { name: 'Aklet Gambary', url: 'https://aklet-gambary.vercel.app/' },
+      {
+        name: 'Harameen',
+        url: 'https://harameen.vercel.app/',
+        preview: '/demos/harameen-icon.png',
+      },
+      {
+        name: 'Warda Shamya',
+        url: 'https://engaz-qr-menu.vercel.app/',
+        preview: '/demos/warda-icon.png',
+      },
+      {
+        name: 'Aklet Gambary',
+        url: 'https://aklet-gambary.vercel.app/',
+        preview: '/demos/aklet-icon.png',
+      },
     ],
     qrTitle: 'Guests scan — the menu opens',
     qrBody: 'Code on the table, menu on the phone, order on WhatsApp. No app to install.',
