@@ -25,8 +25,7 @@ import {
   hoverScale,
   tapScale,
 } from '@/lib/motion';
-
-const WELCOME_HERO = '/hero/warda-storefront.jpg';
+import { resolveLoginBrand } from '@/lib/login/resolve-login-brand';
 
 export default function WelcomePage() {
   return (
@@ -64,11 +63,17 @@ function WelcomeContent() {
   }, [skipParam, tableParam, router]);
 
   const isArabic = locale === 'ar';
-  const restaurantName = getName(
-    locale,
-    settings?.name_en || 'Warda Shamya',
-    settings?.name_ar || 'وردة الشامية'
-  );
+  const brand = resolveLoginBrand({ restaurant: settings ?? null });
+  const appName = process.env.NEXT_PUBLIC_APP_NAME?.trim() || '';
+  const restaurantName = getName(locale, brand.nameEn || appName, brand.nameAr || appName);
+  const heroImageUrl = brand.heroImageUrl;
+  const brandTagline = isArabic ? brand.taglineAr : brand.taglineEn;
+  const tagline =
+    settings?.tagline?.trim() ||
+    settings?.hero_subtitle?.trim() ||
+    brandTagline ||
+    (brand.tenantId === 'warda' ? t('tagline') : '');
+  const logoFallbackLetter = (restaurantName || appName || '?').charAt(0).toUpperCase();
 
   const goToMenu = (mode: CartDiningMode) => {
     persistDiningMode(mode);
@@ -89,29 +94,38 @@ function WelcomeContent() {
   return (
     <div className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]">
       <QrScanTracker />
-      {/* Storefront hero — full bleed with subtle ken-burns */}
+      {/* Hero — dashboard upload or tenant-aware fallback; CSS gradient when unset */}
       <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          className="absolute inset-0"
-          initial={false}
-          animate={
-            prefersReducedMotion ? undefined : { scale: [1, 1.06], x: [0, '-1%'], y: [0, '-0.5%'] }
-          }
-          transition={
-            prefersReducedMotion
-              ? undefined
-              : { duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }
-          }
-        >
-          <NextImage
-            src={WELCOME_HERO}
-            alt={t('heroAlt')}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
+        {heroImageUrl ? (
+          <motion.div
+            className="absolute inset-0"
+            initial={false}
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : { scale: [1, 1.06], x: [0, '-1%'], y: [0, '-0.5%'] }
+            }
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : { duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }
+            }
+          >
+            <NextImage
+              src={heroImageUrl}
+              alt={t('heroAlt', { name: restaurantName })}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </motion.div>
+        ) : (
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_0%,#3a2a1c_0%,#241a12_55%,#160f0a_100%)]"
           />
-        </motion.div>
+        )}
 
         {/* Layered overlays for readability + night-kitchen mood */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/35" />
@@ -142,7 +156,7 @@ function WelcomeContent() {
             />
           ) : (
             <span className="font-heading text-brand-accent text-5xl font-bold drop-shadow-[0_0_20px_rgba(255,183,0,0.4)]">
-              W
+              {logoFallbackLetter}
             </span>
           )}
         </motion.div>
@@ -161,12 +175,14 @@ function WelcomeContent() {
           {t('welcomeTo', { name: restaurantName })}
         </motion.h1>
 
-        <motion.p
-          variants={prefersReducedMotion ? undefined : fadeInUp}
-          className="mb-1 max-w-sm text-sm leading-relaxed text-white/70"
-        >
-          {t('tagline')}
-        </motion.p>
+        {tagline ? (
+          <motion.p
+            variants={prefersReducedMotion ? undefined : fadeInUp}
+            className="mb-1 max-w-sm text-sm leading-relaxed text-white/70"
+          >
+            {tagline}
+          </motion.p>
+        ) : null}
 
         {tableParam && (
           <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
