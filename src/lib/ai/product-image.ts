@@ -198,13 +198,11 @@ type GeminiPart = {
 function extractInlineImage(parts: GeminiPart[] | undefined): GeneratedImageBytes | null {
   if (!parts) return null;
   for (const part of parts) {
-    const inline = part.inlineData ?? part.inline_data;
-    const data = inline?.data;
+    const camel = part.inlineData;
+    const snake = part.inline_data;
+    const data = camel?.data ?? snake?.data;
     if (!data) continue;
-    const mimeType =
-      (inline && 'mimeType' in inline ? inline.mimeType : undefined) ??
-      (inline && 'mime_type' in inline ? inline.mime_type : undefined) ??
-      'image/png';
+    const mimeType = camel?.mimeType ?? snake?.mime_type ?? 'image/png';
     return { mimeType, data: Buffer.from(data, 'base64') };
   }
   return null;
