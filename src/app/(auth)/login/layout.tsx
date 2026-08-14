@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -13,4 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description: `تسجيل الدخول إلى لوحة تحكم ${displayName}`,
   };
+}
+
+export default function LoginLayout({ children }: { children: ReactNode }) {
+  return children;
 }

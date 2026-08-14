@@ -55,7 +55,6 @@ export function LoginFormFields({
         </Label>
         <Input
           id="email"
-          name="email"
           type="email"
           inputMode="email"
           autoComplete="username"
@@ -69,6 +68,7 @@ export function LoginFormFields({
           disabled={submitting}
           className="login-input h-12"
           {...register('email')}
+          name="email"
         />
         {errors.email ? (
           <p id="login-email-error" className="login-field-error">
@@ -84,7 +84,6 @@ export function LoginFormFields({
         <div className="login-password-wrap">
           <Input
             id="password"
-            name="password"
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
             placeholder={copy.passwordPlaceholder}
@@ -94,6 +93,7 @@ export function LoginFormFields({
             disabled={submitting}
             className="login-input login-input-password h-12"
             {...register('password')}
+            name="password"
           />
           <button
             type="button"
