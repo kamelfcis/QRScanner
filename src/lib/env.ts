@@ -17,6 +17,7 @@ const envSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().optional(),
+  GEMINI_IMAGE_MODEL: z.string().optional(),
 });
 
 function validateEnv() {
@@ -44,6 +45,7 @@ function validateEnv() {
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       GEMINI_API_KEY: process.env.GEMINI_API_KEY,
       GEMINI_MODEL: process.env.GEMINI_MODEL,
+      GEMINI_IMAGE_MODEL: process.env.GEMINI_IMAGE_MODEL,
     };
   }
   return parsed.data;

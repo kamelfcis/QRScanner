@@ -22,7 +22,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
-import { Plus, Search, Upload, X, Images, FilterX } from 'lucide-react';
+import { Plus, Search, Upload, X, Images, FilterX, Sparkles, Wand2 } from 'lucide-react';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import { Label } from '@/components/ui/label';
@@ -51,6 +51,12 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { cn, getName } from '@/lib/utils';
 import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
+import {
+  AiProductImageDialog,
+  requestAiProductImages,
+  type AiCandidate,
+  type AiProductImageMode,
+} from '@/components/dashboard/products/AiProductImageDialog';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 
@@ -79,6 +85,8 @@ function ProductImageField({
   onUploadClick,
   onChooseFromStorage,
   onRemove,
+  onAiImageSelect,
+  categories,
   t,
   tCommon,
 }: {
@@ -87,26 +95,111 @@ function ProductImageField({
   onUploadClick: () => void;
   onChooseFromStorage: () => void;
   onRemove: () => void;
-  t: (key: string) => string;
+  onAiImageSelect: (url: string) => void | Promise<void>;
+  categories?: { id: string; name_en: string; name_ar: string }[];
+  t: (key: string, values?: Record<string, string | number>) => string;
   tCommon: (key: string) => string;
 }) {
+  const { locale } = useI18n();
   const imageUrl = form.watch('image_url');
+  const nameAr = form.watch('name_ar');
+  const nameEn = form.watch('name_en');
+  const descriptionAr = form.watch('description_ar');
+  const descriptionEn = form.watch('description_en');
+  const categoryId = form.watch('category_id');
+  const selectedCategory = categories?.find((c) => c.id === categoryId);
+  const categoryName = selectedCategory
+    ? getName(locale, selectedCategory.name_en, selectedCategory.name_ar)
+    : '';
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiMode, setAiMode] = useState<AiProductImageMode>('generate');
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiImages, setAiImages] = useState<AiCandidate[]>([]);
+  const hasName = Boolean(nameAr?.trim() || nameEn?.trim());
+  const hasImage = Boolean(imageUrl);
+  const buttonsDisabled = uploading || aiBusy;
+
+  const runAiGeneration = async (mode: AiProductImageMode) => {
+    if (mode === 'generate' && !hasName) {
+      toast.error(t('aiGenerateNeedsName'));
+      return;
+    }
+    if (mode === 'enhance' && !hasImage) {
+      toast.error(t('aiEnhanceNeedsImage'));
+      return;
+    }
+    setAiMode(mode);
+    setAiOpen(true);
+    setAiBusy(true);
+    setAiLoading(true);
+    setAiImages([]);
+    try {
+      const images = await requestAiProductImages(
+        mode,
+        {
+          name_ar: nameAr,
+          name_en: nameEn,
+          description_ar: descriptionAr,
+          description_en: descriptionEn,
+          category_name: categoryName,
+          source_image_url: imageUrl,
+        },
+        t
+      );
+      if (images) setAiImages(images);
+    } finally {
+      setAiLoading(false);
+      setAiBusy(false);
+    }
+  };
 
   return (
     <div className="space-y-2">
       <input type="hidden" {...form.register('image_url')} />
       <Label>{t('productImage')}</Label>
       <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" variant="outline" onClick={onUploadClick} disabled={uploading}>
+        <Button type="button" variant="outline" onClick={onUploadClick} disabled={buttonsDisabled}>
           <Upload className="mr-2 h-4 w-4" />
           {uploading ? tCommon('uploading') : imageUrl ? t('changeImage') : t('addImage')}
         </Button>
-        <Button type="button" variant="outline" onClick={onChooseFromStorage} disabled={uploading}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onChooseFromStorage}
+          disabled={buttonsDisabled}
+        >
           <Images className="mr-2 h-4 w-4" />
           {t('chooseFromStorage')}
         </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => void runAiGeneration('generate')}
+          disabled={buttonsDisabled || !hasName}
+          title={!hasName ? t('aiGenerateNeedsName') : undefined}
+        >
+          <Sparkles className="mr-2 h-4 w-4" />
+          {t('generateWithAi')}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => void runAiGeneration('enhance')}
+          disabled={buttonsDisabled || !hasImage}
+          title={!hasImage ? t('aiEnhanceNeedsImage') : undefined}
+        >
+          <Wand2 className="mr-2 h-4 w-4" />
+          {t('enhanceWithAi')}
+        </Button>
         {imageUrl && (
-          <Button type="button" variant="ghost" size="sm" onClick={onRemove} disabled={uploading}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onRemove}
+            disabled={buttonsDisabled}
+          >
             <X className="mr-1 h-4 w-4" />
             {t('removeImage')}
           </Button>
@@ -126,6 +219,17 @@ function ProductImageField({
           />
         </div>
       )}
+      <AiProductImageDialog
+        open={aiOpen}
+        onOpenChange={setAiOpen}
+        mode={aiMode}
+        loading={aiLoading}
+        images={aiImages}
+        onRegenerate={() => void runAiGeneration(aiMode)}
+        onUseImage={onAiImageSelect}
+        t={t}
+        tCommon={tCommon}
+      />
     </div>
   );
 }
@@ -715,6 +819,11 @@ export default function ProductsPage() {
               onUploadClick={() => openImagePicker('create')}
               onChooseFromStorage={() => openStoragePicker('create')}
               onRemove={() => removeImage(createForm)}
+              onAiImageSelect={(url) => {
+                activeFormRef.current = 'create';
+                return handleStorageImageSelect(url);
+              }}
+              categories={categories}
               t={t}
               tCommon={tCommon}
             />
@@ -896,6 +1005,11 @@ export default function ProductsPage() {
               onUploadClick={() => openImagePicker('edit')}
               onChooseFromStorage={() => openStoragePicker('edit')}
               onRemove={() => removeImage(editForm)}
+              onAiImageSelect={(url) => {
+                activeFormRef.current = 'edit';
+                return handleStorageImageSelect(url);
+              }}
+              categories={categories}
               t={t}
               tCommon={tCommon}
             />
