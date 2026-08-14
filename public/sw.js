@@ -1,4 +1,4 @@
-const CACHE_NAME = 'warda-shamya-v1';
+const CACHE_NAME = 'doctorburger-v1';
 const STATIC_ASSETS = [
   '/',
   '/menu',
