@@ -8,6 +8,7 @@ import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useCartStore } from '@/stores/cart-store';
+import { useClientMounted } from '@/hooks/useClientMounted';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 
@@ -37,7 +38,9 @@ export function MenuHeader({
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
+  const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const showCartCount = mounted && cartCount > 0;
 
   const name = getName(
     locale,
@@ -134,14 +137,16 @@ export function MenuHeader({
             type="button"
             className={cn(iconButton, 'relative')}
             onClick={onCartOpen}
-            aria-label={tCart('cartCount', { count: cartCount })}
+            aria-label={tCart('cartCount', { count: showCartCount ? cartCount : 0 })}
             data-testid="cart-button"
           >
             <ShoppingCart className="h-[18px] w-[18px]" aria-hidden="true" />
-            <span className="sr-only" aria-live="polite">
-              {tCart('cartCount', { count: cartCount })}
-            </span>
-            {cartCount > 0 && (
+            {mounted && (
+              <span className="sr-only" aria-live="polite">
+                {tCart('cartCount', { count: cartCount })}
+              </span>
+            )}
+            {showCartCount && (
               <motion.span
                 key={cartCount}
                 initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}

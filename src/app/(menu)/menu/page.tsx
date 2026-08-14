@@ -3,6 +3,8 @@ import { headers } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { fetchCategoriesWithProducts } from '@/lib/catalog/fetchCatalog';
 import { categoryKeys, CATALOG_STALE_TIME, CATALOG_GC_TIME } from '@/lib/catalog/keys';
+import { settingsKeys } from '@/hooks/useSettings';
+import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { MenuPageClient } from '@/components/menu/MenuPageClient';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { generateMenuMetadata } from '@/lib/seo/metadata';
@@ -25,10 +27,20 @@ export default async function PublicMenuPage() {
 
   try {
     const supabase = await createClient();
-    await queryClient.prefetchQuery({
-      queryKey: categoryKeys.withProducts(),
-      queryFn: () => fetchCategoriesWithProducts(supabase),
-    });
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: categoryKeys.withProducts(),
+        queryFn: () => fetchCategoriesWithProducts(supabase),
+      }),
+      queryClient.prefetchQuery({
+        queryKey: settingsKeys.restaurant(),
+        queryFn: async () => {
+          const settings = await fetchRestaurantSettings();
+          if (!settings) throw new Error('Restaurant settings unavailable');
+          return settings;
+        },
+      }),
+    ]);
   } catch {
     // Prefetch is best-effort; client will retry
   }

@@ -57,10 +57,9 @@ function MenuContent() {
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
 
+  // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
-    const fromUrl = parseDiningModeParam(modeParam);
-    if (fromUrl) return fromUrl;
-    return readStoredDiningMode();
+    return parseDiningModeParam(modeParam) ?? 'dining';
   });
 
   const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
@@ -71,13 +70,12 @@ function MenuContent() {
   }, []);
 
   useEffect(() => {
-    const parsed = parseDiningModeParam(modeParam);
-    if (parsed) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode from URL
-      setDiningMode(parsed);
-      persistDiningMode(parsed);
-      setMeta({ diningMode: parsed });
-    }
+    const fromUrl = parseDiningModeParam(modeParam);
+    const next = fromUrl ?? readStoredDiningMode();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode after hydration
+    setDiningMode(next);
+    if (fromUrl) persistDiningMode(fromUrl);
+    setMeta({ diningMode: next });
   }, [modeParam, setMeta]);
 
   useEffect(() => {

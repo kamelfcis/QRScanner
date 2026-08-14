@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/stores/cart-store';
 import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useClientMounted } from '@/hooks/useClientMounted';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getUnitPrice } from '@/lib/order/totals';
@@ -18,6 +19,7 @@ interface OrderBarProps {
  * carry the running total and never collide with the category rail.
  */
 export function OrderBar({ onOpenCart }: OrderBarProps) {
+  const mounted = useClientMounted();
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const tCart = useTranslations('cart');
@@ -34,6 +36,8 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>
