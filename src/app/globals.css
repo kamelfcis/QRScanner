@@ -311,6 +311,478 @@ textarea,
   padding-top: env(safe-area-inset-top, 0px);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Premium login template — scoped to [data-login-theme].
+   Tokens are set inline from resolveLoginBrand; these are fallbacks.
+   ───────────────────────────────────────────────────────────── */
+[data-login-theme] {
+  --login-primary: #0e7490;
+  --login-accent: #c45c26;
+  --login-background: #f6f1e8;
+  --login-surface: #fffcf7;
+  --login-foreground: #1a2226;
+  --login-muted: #5c676e;
+  --login-border: #ddd4c6;
+  --login-panel: #0b4a58;
+  --login-panel-foreground: #f4efe6;
+  --login-radius: 0.5rem;
+  --login-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-login-theme='harameen'] {
+  --login-primary: #0e7490;
+  --login-accent: #c45c26;
+  --login-background: #f6f1e8;
+  --login-surface: #fffcf7;
+  --login-foreground: #1a2226;
+  --login-muted: #5c676e;
+  --login-border: #ddd4c6;
+  --login-panel: #0b4a58;
+  --login-panel-foreground: #f4efe6;
+}
+
+[data-login-theme='aklet'] {
+  --login-primary: #0b1f2a;
+  --login-accent: #e85d3a;
+  --login-background: #f3eee7;
+  --login-surface: #fffcf8;
+  --login-foreground: #0b1f2a;
+  --login-muted: #5a656c;
+  --login-border: #d9d2c8;
+  --login-panel: #07141c;
+  --login-panel-foreground: #f6ede4;
+}
+
+[data-login-theme='warda'] {
+  --login-primary: #6b0f1a;
+  --login-accent: #c49a2a;
+  --login-background: #f7f1e6;
+  --login-surface: #fffbf4;
+  --login-foreground: #2a1c16;
+  --login-muted: #6e5e52;
+  --login-border: #e4d8c4;
+  --login-panel: #5c0d16;
+  --login-panel-foreground: #f7f1e6;
+}
+
+.login-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  background: var(--login-background);
+  color: var(--login-foreground);
+}
+
+.login-form-column {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--login-background);
+  padding:
+    max(1.25rem, env(safe-area-inset-top))
+    clamp(1.25rem, 4vw, 3.25rem)
+    max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.login-form-inner {
+  display: flex;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-block: 0.5rem;
+}
+
+.login-compact-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--login-border);
+}
+
+.login-compact-logo {
+  height: 3rem;
+  width: 3rem;
+  object-fit: contain;
+}
+
+.login-compact-name {
+  font-family: var(--font-market-family), var(--font-ar-family), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--login-foreground);
+}
+
+.login-eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--login-muted);
+}
+
+.login-mobile-kicker {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--login-muted);
+}
+
+.login-form-header {
+  display: none;
+  text-align: start;
+}
+
+.login-form-logo {
+  display: block;
+  height: 4.5rem;
+  width: 4.5rem;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.login-form-title {
+  margin: 0;
+  font-family: var(--font-market-family), var(--font-ar-family), sans-serif;
+  font-size: clamp(1.65rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--login-foreground);
+}
+
+.login-form-subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 0.98rem;
+  color: var(--login-muted);
+}
+
+.login-form {
+  display: block;
+}
+
+.login-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.login-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--login-foreground);
+}
+
+.login-input {
+  height: 3rem;
+  border-radius: var(--login-radius);
+  border-color: var(--login-border);
+  background: var(--login-surface);
+  color: var(--login-foreground);
+  font-size: 1rem;
+  transition:
+    border-color 180ms var(--login-ease),
+    box-shadow 180ms var(--login-ease);
+}
+
+.login-input:focus-visible {
+  border-color: var(--login-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--login-primary) 22%, transparent);
+  outline: none;
+}
+
+.login-password-wrap {
+  position: relative;
+}
+
+.login-input-password {
+  padding-inline-end: 3rem;
+}
+
+.login-password-toggle {
+  position: absolute;
+  inset-inline-end: 0.35rem;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: calc(var(--login-radius) - 2px);
+  background: transparent;
+  color: var(--login-muted);
+  transform: translateY(-50%);
+  transition:
+    color 150ms var(--login-ease),
+    background-color 150ms var(--login-ease);
+}
+
+.login-password-toggle:hover,
+.login-password-toggle:focus-visible {
+  color: var(--login-foreground);
+  background: color-mix(in srgb, var(--login-border) 55%, transparent);
+}
+
+.login-password-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.login-field-error,
+.login-alert {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.login-alert {
+  padding: 0.85rem 1rem;
+  border-radius: var(--login-radius);
+  background: color-mix(in srgb, #dc2626 10%, var(--login-surface));
+  color: #b42318;
+  animation: login-alert-in 200ms var(--login-ease);
+}
+
+.login-field-error {
+  color: #b42318;
+}
+
+.login-submit {
+  height: 3.1rem;
+  width: 100%;
+  margin-top: 0.35rem;
+  border-radius: var(--login-radius);
+  background: var(--login-primary);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  transition:
+    background-color 180ms var(--login-ease),
+    transform 150ms var(--login-ease);
+}
+
+.login-submit:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--login-primary) 88%, #000000);
+}
+
+.login-submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.login-submit-spinner {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-inline-end: 0.45rem;
+  animation: spin 0.8s linear infinite;
+}
+
+.login-brand-panel {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  background: var(--login-panel);
+  color: var(--login-panel-foreground);
+}
+
+.login-brand-hero {
+  object-fit: cover;
+  opacity: 0.38;
+}
+
+.login-brand-wash {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(120% 80% at 20% 20%, color-mix(in srgb, var(--login-accent) 34%, transparent), transparent 58%),
+    radial-gradient(90% 70% at 90% 80%, color-mix(in srgb, var(--login-primary) 45%, transparent), transparent 62%),
+    linear-gradient(165deg, color-mix(in srgb, var(--login-panel) 70%, #000000) 0%, var(--login-panel) 48%, color-mix(in srgb, var(--login-accent) 28%, var(--login-panel)) 100%);
+  animation: login-wash 22s var(--login-ease) infinite alternate;
+}
+
+.login-brand-lockup {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+.login-brand-lockup .login-eyebrow {
+  color: color-mix(in srgb, var(--login-panel-foreground) 72%, var(--login-accent));
+}
+
+.login-lockup-name {
+  margin: 0.35rem 0 0;
+  max-width: 14ch;
+  font-family: var(--font-market-family), var(--font-ar-family), sans-serif;
+  font-size: clamp(2.6rem, 6.2vw, 5.4rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+[data-login-theme='harameen'] .login-brand-lockup {
+  border-inline-start: 4px solid var(--login-accent);
+}
+
+[data-login-theme='aklet'] .login-submit {
+  background: var(--login-accent);
+  color: #fff7f2;
+}
+
+[data-login-theme='aklet'] .login-submit:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--login-accent) 86%, #000000);
+}
+
+[data-login-theme='aklet'] .login-input:focus-visible {
+  border-color: var(--login-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--login-accent) 24%, transparent);
+}
+
+[data-login-theme='aklet'] .login-brand-panel::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 3px;
+  background: var(--login-accent);
+}
+
+[data-login-theme='warda'] .login-lockup-name {
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--login-accent) 70%, transparent);
+}
+
+[data-login-theme='warda'] .login-brand-hero {
+  opacity: 0.28;
+}
+
+@keyframes login-wash {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, 2%, 0) scale(1.06);
+  }
+}
+
+@keyframes login-alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .login-shell {
+    flex-direction: row;
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+    overflow: hidden;
+  }
+
+  .login-compact-brand,
+  .login-mobile-kicker {
+    display: none;
+  }
+
+  .login-form-header {
+    display: block;
+  }
+
+  .login-form-column {
+    flex: 1 1 58%;
+    width: 58%;
+    max-width: none;
+  }
+
+  .login-brand-panel {
+    display: flex;
+    flex: 1 1 42%;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .login-form-column {
+    flex-basis: 40%;
+    width: 40%;
+    max-width: 40rem;
+    padding-inline: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .login-form-inner {
+    max-width: 28rem;
+    margin-inline: 0;
+    margin-inline-start: auto;
+    margin-inline-end: 12%;
+  }
+
+  .login-brand-panel {
+    flex-basis: 60%;
+  }
+
+  .login-lockup-name {
+    max-width: 12ch;
+  }
+}
+
+@media (min-width: 1920px) {
+  .login-form-inner {
+    max-width: 30rem;
+    margin-inline-end: 18%;
+  }
+
+  .login-lockup-name {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .login-shell {
+    height: auto;
+    max-height: none;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  .login-form-column {
+    min-height: 100dvh;
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-brand-wash,
+  .login-alert,
+  .login-submit-spinner {
+    animation: none !important;
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
