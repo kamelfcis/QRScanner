@@ -55,6 +55,7 @@ export function LoginFormFields({
         </Label>
         <Input
           id="email"
+          name="email"
           type="email"
           inputMode="email"
           autoComplete="username"
@@ -83,6 +84,7 @@ export function LoginFormFields({
         <div className="login-password-wrap">
           <Input
             id="password"
+            name="password"
             type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
             placeholder={copy.passwordPlaceholder}

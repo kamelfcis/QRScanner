@@ -1,4 +1,4 @@
-export type LoginTenantId = 'harameen' | 'aklet' | 'warda';
+export type LoginTenantId = 'harameen' | 'aklet' | 'warda' | 'custom';
 
 export interface LoginThemeTokens {
   primary: string;

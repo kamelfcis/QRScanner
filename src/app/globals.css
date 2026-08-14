@@ -365,6 +365,18 @@ textarea,
   --login-panel-foreground: #f7f1e6;
 }
 
+[data-login-theme='custom'] {
+  --login-primary: #2563eb;
+  --login-accent: #f59e0b;
+  --login-background: #f8fafc;
+  --login-surface: #ffffff;
+  --login-foreground: #0f172a;
+  --login-muted: #64748b;
+  --login-border: #e2e8f0;
+  --login-panel: #1e293b;
+  --login-panel-foreground: #f8fafc;
+}
+
 .login-shell {
   display: flex;
   flex-direction: column;
@@ -622,6 +634,14 @@ textarea,
   justify-content: flex-end;
   padding: clamp(1.5rem, 4vw, 3.5rem);
   padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+.login-brand-logo {
+  display: block;
+  height: 6rem;
+  width: 6rem;
+  margin-bottom: 1.25rem;
+  object-fit: contain;
 }
 
 .login-brand-lockup .login-eyebrow {

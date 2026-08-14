@@ -10,7 +10,9 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((value) =>
-      value === 'harameen' || value === 'aklet' || value === 'warda' ? value : undefined
+      value === 'harameen' || value === 'aklet' || value === 'warda' || value === 'custom'
+        ? value
+        : undefined
     ),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
@@ -35,7 +37,8 @@ function validateEnv() {
       NEXT_PUBLIC_TENANT:
         process.env.NEXT_PUBLIC_TENANT === 'harameen' ||
         process.env.NEXT_PUBLIC_TENANT === 'aklet' ||
-        process.env.NEXT_PUBLIC_TENANT === 'warda'
+        process.env.NEXT_PUBLIC_TENANT === 'warda' ||
+        process.env.NEXT_PUBLIC_TENANT === 'custom'
           ? process.env.NEXT_PUBLIC_TENANT
           : undefined,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,

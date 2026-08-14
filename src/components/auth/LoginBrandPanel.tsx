@@ -29,7 +29,7 @@ export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelPro
           />
         ) : null}
         <div className="login-compact-copy">
-          <p className="login-eyebrow">{tagline}</p>
+          {tagline ? <p className="login-eyebrow">{tagline}</p> : null}
           <p className="login-compact-name">{name}</p>
         </div>
       </header>
@@ -50,7 +50,17 @@ export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelPro
       ) : null}
       <div className="login-brand-wash" />
       <div className="login-brand-lockup">
-        <p className="login-eyebrow">{tagline}</p>
+        {brand.logoUrl ? (
+          <NextImage
+            src={brand.logoUrl}
+            alt=""
+            width={96}
+            height={96}
+            className="login-brand-logo"
+            priority
+          />
+        ) : null}
+        {tagline ? <p className="login-eyebrow">{tagline}</p> : null}
         <p className="login-lockup-name">{name}</p>
       </div>
     </aside>
