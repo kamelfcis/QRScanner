@@ -1,11 +1,14 @@
-/** Default currency when restaurant settings omit currency (matches schema default). */
-export const DEFAULT_CURRENCY = 'SAR';
+/**
+ * Default currency when restaurant settings omit currency (matches schema default).
+ * Aklet Gambary trades in Egypt, so a missing value must never become Saudi riyal.
+ */
+export const DEFAULT_CURRENCY = 'EGP';
 
 export type CurrencyLocale = 'en' | 'ar';
 
 export interface FormatCurrencyOptions {
   locale?: CurrencyLocale;
-  /** Use ISO code suffix (e.g. "25 SAR") instead of localized symbol — better for plain text. */
+  /** Use ISO code suffix (e.g. "25 EGP") instead of localized symbol — better for plain text. */
   plain?: boolean;
 }
 
@@ -30,7 +33,7 @@ function canFormatAsCurrency(code: string): boolean {
   }
 }
 
-/** Format amount with currency from restaurant settings (fallback SAR). */
+/** Format amount with currency from restaurant settings (fallback EGP). */
 export function formatCurrencyAmount(
   amount: number,
   currency?: string | null,

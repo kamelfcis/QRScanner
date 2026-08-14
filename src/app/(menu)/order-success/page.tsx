@@ -11,13 +11,17 @@ import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp, scaleIn } from '@/lib/motion';
 import { openWhatsAppUrl } from '@/lib/order/build-order';
+import { AkletThemeScope } from '@/components/menu/AkletThemeScope';
 
 export default function OrderSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[100svh] items-center justify-center">
-          <div className="bg-muted h-8 w-48 animate-pulse rounded" />
+        <div
+          data-aklet-theme
+          className="bg-aklet-paper flex min-h-[100svh] items-center justify-center"
+        >
+          <div className="bg-aklet-sand/70 h-8 w-48 animate-pulse rounded" />
         </div>
       }
     >
@@ -82,7 +86,11 @@ function OrderSuccessContent() {
   };
 
   return (
-    <div className="bg-background flex min-h-[100svh] items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+    <div
+      data-aklet-theme
+      className="bg-aklet-paper text-aklet-ink flex min-h-[100svh] items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]"
+    >
+      <AkletThemeScope />
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
         animate="visible"
@@ -91,21 +99,21 @@ function OrderSuccessContent() {
       >
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="bg-primary/10 text-primary mx-auto flex h-16 w-16 items-center justify-center rounded-full"
+          className="bg-aklet-ocean/10 text-aklet-ocean mx-auto flex h-16 w-16 items-center justify-center rounded-full"
         >
           <CheckCircle2 className="h-9 w-9" aria-hidden="true" />
         </motion.div>
 
         <div className="space-y-2">
-          <h1 className="font-heading text-2xl font-bold sm:text-3xl">{title}</h1>
-          <p className="text-muted-foreground text-sm">{description}</p>
+          <h1 className="font-heading text-aklet-ink text-2xl font-bold sm:text-3xl">{title}</h1>
+          <p className="text-aklet-ink-soft text-sm">{description}</p>
         </div>
 
         <div className="flex flex-col gap-3">
           {waUrl && (
             <Button
               size="lg"
-              className="h-12 w-full"
+              className="bg-aklet-coral-cta hover:bg-aklet-coral-cta/90 h-12 w-full rounded-xl font-bold text-white"
               onClick={() => openWhatsAppUrl(waUrl)}
               data-testid="reopen-whatsapp"
             >
@@ -117,7 +125,7 @@ function OrderSuccessContent() {
           <Button
             size="lg"
             variant="outline"
-            className="h-12 w-full"
+            className="border-aklet-line text-aklet-ink h-12 w-full rounded-xl"
             onClick={keepCart}
             data-testid="keep-cart"
           >
@@ -126,8 +134,8 @@ function OrderSuccessContent() {
 
           <Button
             size="lg"
-            variant="secondary"
-            className="h-12 w-full"
+            variant="ghost"
+            className="text-aklet-ink-soft hover:text-aklet-ink h-12 w-full rounded-xl"
             onClick={clearCart}
             data-testid="clear-cart"
           >

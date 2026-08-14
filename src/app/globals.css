@@ -59,6 +59,20 @@
   --color-brand-secondary-dark: var(--brand-secondary-dark);
   --color-brand-accent: var(--brand-accent);
   --color-brand-background: var(--brand-background);
+
+  /* Aklet menu palette — only resolves inside [data-aklet-theme] */
+  --color-aklet-paper: var(--aklet-paper);
+  --color-aklet-paper-soft: var(--aklet-paper-soft);
+  --color-aklet-sand: var(--aklet-sand);
+  --color-aklet-line: var(--aklet-line);
+  --color-aklet-ink: var(--aklet-ink);
+  --color-aklet-ink-soft: var(--aklet-ink-soft);
+  --color-aklet-grill: var(--aklet-grill);
+  --color-aklet-ocean: var(--aklet-ocean);
+  --color-aklet-ocean-deep: var(--aklet-ocean-deep);
+  --color-aklet-coral: var(--aklet-coral);
+  --color-aklet-coral-cta: var(--aklet-coral-cta);
+  --color-aklet-price: var(--aklet-price);
 }
 
 :root {
@@ -347,6 +361,126 @@ textarea,
 /* Accent CTA — readable on coral/gold in both modes */
 .text-on-accent {
   color: var(--accent-foreground);
+}
+
+/* Hide scrollbars on horizontal chip / strip rails */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ==========================================================================
+   Aklet Gambary menu scope — "night grill on the Mediterranean".
+   Sand paper, charcoal ink, spare ocean teal, coral off the grill.
+   Scoped to [data-aklet-theme] so the dashboard keeps the shared shell; the
+   attribute is mirrored onto <body> so portalled sheets/dialogs inherit it.
+   ========================================================================== */
+[data-aklet-theme] {
+  --aklet-paper: #f7f2e7;
+  --aklet-paper-soft: #fffcf6;
+  --aklet-sand: #ebe1ce;
+  --aklet-line: #ded2bb;
+  --aklet-ink: #121a1d;
+  --aklet-ink-soft: #58656a;
+  --aklet-grill: #0b1215;
+
+  /* Brand colours come from live settings.theme via --brand-* on :root */
+  --aklet-ocean: var(--brand-primary, #0e7490);
+  --aklet-ocean-deep: var(--brand-secondary, #155e75);
+  --aklet-coral: var(--brand-accent, #f97316);
+  --aklet-coral-cta: color-mix(in srgb, var(--aklet-coral) 74%, #7b2d12);
+  --aklet-price: color-mix(in srgb, var(--aklet-coral) 62%, #5c1f0b);
+
+  --aklet-header-h: 3.5rem;
+
+  /* Map onto the shared shadcn contract so ui/* primitives follow along */
+  --background: var(--aklet-paper);
+  --foreground: var(--aklet-ink);
+  --card: var(--aklet-paper-soft);
+  --card-foreground: var(--aklet-ink);
+  --popover: var(--aklet-paper-soft);
+  --popover-foreground: var(--aklet-ink);
+  --primary: var(--aklet-coral-cta);
+  --primary-foreground: #ffffff;
+  --secondary: var(--aklet-ink);
+  --secondary-foreground: var(--aklet-paper);
+  --muted: var(--aklet-sand);
+  --muted-foreground: var(--aklet-ink-soft);
+  --accent: color-mix(in srgb, var(--aklet-sand) 68%, var(--aklet-paper));
+  --accent-foreground: var(--aklet-ink);
+  --border: var(--aklet-line);
+  --input: var(--aklet-line);
+  --ring: var(--aklet-ocean);
+  --radius: 0.5rem;
+}
+
+.dark [data-aklet-theme] {
+  --aklet-paper: #0c1417;
+  --aklet-paper-soft: #121d21;
+  --aklet-sand: #1a272c;
+  --aklet-line: #26363c;
+  --aklet-ink: #f2efe6;
+  --aklet-ink-soft: #9baab0;
+  --aklet-coral-cta: color-mix(in srgb, var(--aklet-coral) 88%, #5c1f0b);
+  --aklet-price: color-mix(in srgb, var(--aklet-coral) 84%, #fff3e6);
+  --card: color-mix(in srgb, var(--aklet-paper-soft) 92%, var(--aklet-ocean-deep));
+  --accent: color-mix(in srgb, var(--aklet-sand) 80%, var(--aklet-paper));
+}
+
+/* Arabic headings switch to IBM Plex Sans Arabic inside the menu only */
+[dir='rtl'] [data-aklet-theme] h1,
+[dir='rtl'] [data-aklet-theme] h2,
+[dir='rtl'] [data-aklet-theme] h3,
+[dir='rtl'] [data-aklet-theme] .font-heading {
+  font-family: var(--font-aklet-display-family), var(--font-ar-family), ui-sans-serif, sans-serif;
+  letter-spacing: 0;
+}
+
+/* Editorial section kicker — thin coral rule instead of a loud heading */
+[data-aklet-theme] .aklet-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aklet-ink-soft);
+}
+[data-aklet-theme] .aklet-kicker::before {
+  content: '';
+  width: 1.25rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--aklet-coral);
+}
+/* Arabic is cursive — tracking pulls the joined glyphs apart */
+[dir='rtl'] [data-aklet-theme] .aklet-kicker {
+  letter-spacing: 0;
+  font-size: 0.75rem;
+}
+
+/* One ken-burns pass on the hero image, then it settles */
+@keyframes aklet-ken-burns {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+[data-aklet-theme] .aklet-ken-burns {
+  animation: aklet-ken-burns 4200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-aklet-theme] .aklet-ken-burns {
+    animation: none;
+  }
 }
 
 /* Reduced motion */

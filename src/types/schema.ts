@@ -174,7 +174,7 @@ export const settingsSchema = z.object({
     tiktok: z.string().optional(),
     address_ar: z.string().optional(),
     address_en: z.string().optional(),
-    currency: z.string().default('SAR'),
+    currency: z.string().default('EGP'),
     tax_rate: z.number().min(0).max(100).default(15),
     service_charge_rate: z.number().min(0).max(100).default(10),
     prep_time_minutes: z.number().int().min(0).max(240).default(25),

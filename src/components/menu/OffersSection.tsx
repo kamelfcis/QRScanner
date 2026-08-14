@@ -23,9 +23,10 @@ export function OffersSection() {
   if (isLoading || !offers?.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-4">
-      <div className="from-primary/10 via-primary/5 to-accent/10 rounded-xl bg-gradient-to-r p-4">
-        <h2 className="font-heading text-primary mb-3 text-lg font-bold">
+    <MotionSection className="mx-auto max-w-6xl px-3 py-4 sm:px-5">
+      <div className="border-aklet-line/70 bg-aklet-sand/40 rounded-2xl border p-4">
+        <span aria-hidden className="bg-aklet-coral mb-2 block h-[3px] w-8 rounded-full" />
+        <h2 className="font-heading text-aklet-ink mb-3 text-base font-bold sm:text-lg">
           {locale === 'ar' ? 'عروض خاصة' : 'Special Offers'}
         </h2>
         <motion.div
@@ -39,7 +40,7 @@ export function OffersSection() {
             <motion.div
               key={offer.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
-              className="bg-background min-w-[260px] shrink-0 overflow-hidden rounded-lg border shadow-sm"
+              className="border-aklet-line/70 bg-aklet-paper-soft min-w-[260px] shrink-0 overflow-hidden rounded-xl border"
             >
               {offer.image_url && (
                 <div className="relative aspect-[16/9] w-full overflow-hidden">
@@ -50,7 +51,7 @@ export function OffersSection() {
                     className="object-cover"
                     sizes="260px"
                   />
-                  <Badge className="bg-accent text-foreground absolute left-2 top-2">
+                  <Badge className="bg-aklet-coral-cta absolute start-2 top-2 text-white">
                     {offer.discount_type === 'percentage'
                       ? `${offer.discount_value}% OFF`
                       : `${formatCurrencyAmount(offer.discount_value, currency, { locale: currencyLocale })} OFF`}
@@ -58,9 +59,11 @@ export function OffersSection() {
                 </div>
               )}
               <div className="p-3">
-                <h3 className="font-semibold">{getName(locale, offer.title_en, offer.title_ar)}</h3>
+                <h3 className="font-heading text-aklet-ink font-bold">
+                  {getName(locale, offer.title_en, offer.title_ar)}
+                </h3>
                 {(offer.description_en || offer.description_ar) && (
-                  <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">
+                  <p className="text-aklet-ink-soft mt-1 line-clamp-2 text-sm">
                     {getName(locale, offer.description_en || '', offer.description_ar)}
                   </p>
                 )}

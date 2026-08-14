@@ -175,7 +175,27 @@
     "removeFavorite": "إزالة من المفضلة",
     "favoritesCount": "المفضلة، {count} عناصر",
     "callWaiter": "استدعاء النادل عبر واتساب",
-    "orderViaWhatsApp": "اطلب عبر واتساب"
+    "orderViaWhatsApp": "اطلب عبر واتساب",
+    "heroKicker": "مأكولات بحرية طازجة",
+    "heroFallbackLine": "طعم البحر... على أصوله",
+    "shrimpPicks": "اختياراتنا من الجمبري",
+    "shrimpPicksNote": "جمبري بلدي على الفحم أو مقلي",
+    "bestsellers": "الأكثر طلباً",
+    "bestsellersNote": "ما يطلبه ضيوفنا كل يوم",
+    "sharedTray": "صانية للمشاركة",
+    "offerLabel": "عرض",
+    "viewOffer": "شاهد الصانية",
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل",
+    "productDetails": "تفاصيل الطبق",
+    "clearSearch": "مسح البحث",
+    "searchHint": "ابحث باسم السمكة أو الطبق",
+    "noResultsHint": "جرّب اسماً آخر أو تصفّح التصنيفات",
+    "groupFish": "الأسماك",
+    "groupSeafood": "المأكولات البحرية",
+    "groupPlates": "الأطباق",
+    "groupCooking": "التسوية",
+    "groupOffers": "العروض"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -404,7 +424,9 @@
     "takeawayPrice": "تيك أواي",
     "added": "تمت الإضافة إلى السلة",
     "unavailable": "غير متاح",
-    "browseMenu": "تصفح القائمة"
+    "browseMenu": "تصفح القائمة",
+    "viewOrder": "عرض الطلب",
+    "total": "الإجمالي"
   },
   "checkout": {
     "title": "إتمام الطلب",

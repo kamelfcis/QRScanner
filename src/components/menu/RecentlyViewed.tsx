@@ -29,13 +29,15 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
   if (!recent.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-6">
+    <MotionSection className="mx-auto max-w-6xl px-3 py-5 sm:px-5">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Clock className="text-muted-foreground h-4 w-4" />
-          <h2 className="font-heading text-lg font-bold">{t('recentlyViewed')}</h2>
+          <Clock className="text-aklet-ink-soft h-4 w-4" aria-hidden />
+          <h2 className="font-heading text-aklet-ink text-base font-bold sm:text-lg">
+            {t('recentlyViewed')}
+          </h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={clearRecent} className="text-muted-foreground">
+        <Button variant="ghost" size="sm" onClick={clearRecent} className="text-aklet-ink-soft">
           <X className="mr-1 h-3 w-3" />
           {t('clear')}
         </Button>
@@ -54,7 +56,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
               key={product.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
               onClick={() => onSelectProduct(product.id)}
-              className="flex min-w-[140px] shrink-0 overflow-hidden rounded-lg border text-left transition-shadow hover:shadow-md"
+              className="border-aklet-line/70 bg-aklet-paper-soft flex min-w-[150px] shrink-0 overflow-hidden rounded-xl border text-start transition-shadow hover:shadow-md"
             >
               {product.image_url && (
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden">
@@ -68,8 +70,8 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
                 </div>
               )}
               <div className="flex flex-col justify-center p-2">
-                <h4 className="line-clamp-1 text-sm font-medium">{name}</h4>
-                <p className="text-primary text-xs">
+                <h4 className="text-aklet-ink line-clamp-1 text-sm font-semibold">{name}</h4>
+                <p className="text-aklet-price text-xs font-bold tabular-nums" dir="ltr">
                   {formatCurrencyAmount(product.dining_price, currency, { locale: currencyLocale })}
                 </p>
               </div>

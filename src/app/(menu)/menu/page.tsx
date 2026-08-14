@@ -6,6 +6,7 @@ import { categoryKeys, CATALOG_STALE_TIME, CATALOG_GC_TIME } from '@/lib/catalog
 import { MenuPageClient } from '@/components/menu/MenuPageClient';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { generateMenuMetadata } from '@/lib/seo/metadata';
+import type { RestaurantSettings, Settings } from '@/types';
 
 export async function generateMetadata() {
   const headerStore = await headers();
@@ -25,10 +26,27 @@ export default async function PublicMenuPage() {
 
   try {
     const supabase = await createClient();
-    await queryClient.prefetchQuery({
-      queryKey: categoryKeys.withProducts(),
-      queryFn: () => fetchCategoriesWithProducts(supabase),
-    });
+    // Settings ride along with the catalogue so prices render with the right
+    // currency on first paint instead of flashing the fallback.
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: categoryKeys.withProducts(),
+        queryFn: () => fetchCategoriesWithProducts(supabase),
+      }),
+      queryClient.prefetchQuery({
+        // Mirrors settingsKeys.restaurant() — inlined because that module is client-only.
+        queryKey: ['settings', 'restaurant'],
+        queryFn: async () => {
+          const { data, error } = await supabase
+            .from('settings')
+            .select('*')
+            .eq('key', 'restaurant')
+            .single();
+          if (error) throw error;
+          return (data as Settings).value as unknown as RestaurantSettings;
+        },
+      }),
+    ]);
   } catch {
     // Prefetch is best-effort; client will retry
   }

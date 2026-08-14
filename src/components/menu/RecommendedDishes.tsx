@@ -28,10 +28,12 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
   if (isLoading || !products?.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-6">
+    <MotionSection className="mx-auto max-w-6xl px-3 py-5 sm:px-5">
       <div className="mb-3 flex items-center gap-2">
-        <Sparkles className="text-accent h-4 w-4" />
-        <h2 className="font-heading text-lg font-bold">{t('recommended')}</h2>
+        <Sparkles className="text-aklet-coral h-4 w-4" aria-hidden />
+        <h2 className="font-heading text-aklet-ink text-base font-bold sm:text-lg">
+          {t('recommended')}
+        </h2>
       </div>
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
@@ -47,7 +49,7 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
               key={product.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
               onClick={() => onSelectProduct(product.id)}
-              className="flex min-w-[160px] shrink-0 overflow-hidden rounded-lg border text-left transition-shadow hover:shadow-md"
+              className="border-aklet-line/70 bg-aklet-paper-soft flex min-w-[170px] shrink-0 overflow-hidden rounded-xl border text-start transition-shadow hover:shadow-md"
             >
               {product.image_url && (
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden">
@@ -61,13 +63,13 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
                 </div>
               )}
               <div className="flex flex-col justify-center p-3">
-                <h4 className="line-clamp-1 text-sm font-medium">{name}</h4>
+                <h4 className="text-aklet-ink line-clamp-1 text-sm font-semibold">{name}</h4>
                 {locale !== 'ar' && product.name_ar && (
-                  <p className="text-muted-foreground mt-1 text-xs" dir="rtl">
+                  <p className="text-aklet-ink-soft mt-0.5 line-clamp-1 text-xs" dir="rtl">
                     {product.name_ar}
                   </p>
                 )}
-                <p className="text-primary mt-1 text-sm font-bold">
+                <p className="text-aklet-price mt-1 text-sm font-bold tabular-nums" dir="ltr">
                   {formatCurrencyAmount(product.dining_price, currency, { locale: currencyLocale })}
                 </p>
               </div>

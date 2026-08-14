@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
+import { AkletThemeScope } from '@/components/menu/AkletThemeScope';
 import { useCartStore, type FulfillmentType } from '@/stores/cart-store';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -186,17 +187,28 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[100svh] items-center justify-center">
-        <div className="bg-muted h-8 w-48 animate-pulse rounded" />
+      <div
+        data-aklet-theme
+        className="bg-aklet-paper flex min-h-[100svh] items-center justify-center"
+      >
+        <AkletThemeScope />
+        <div className="bg-aklet-sand/70 h-8 w-48 animate-pulse rounded" />
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[100svh] max-w-lg flex-col items-center justify-center gap-4 px-4 text-center">
-        <p className="text-lg font-medium">{t('emptyCart')}</p>
-        <Link href="/menu" className={buttonVariants()}>
+      <div
+        data-aklet-theme
+        className="bg-aklet-paper mx-auto flex min-h-[100svh] flex-col items-center justify-center gap-4 px-4 text-center"
+      >
+        <AkletThemeScope />
+        <p className="font-heading text-aklet-ink text-lg font-bold">{t('emptyCart')}</p>
+        <Link
+          href="/menu"
+          className={cn(buttonVariants(), 'bg-aklet-coral-cta h-11 rounded-xl text-white')}
+        >
           {t('backToMenu')}
         </Link>
       </div>
@@ -212,7 +224,11 @@ export default function CheckoutPage() {
   );
 
   return (
-    <div className="bg-background min-h-[100svh] pb-[env(safe-area-inset-bottom)]">
+    <div
+      data-aklet-theme
+      className="bg-aklet-paper text-aklet-ink min-h-[100svh] pb-[env(safe-area-inset-bottom)]"
+    >
+      <AkletThemeScope />
       <div className="mx-auto max-w-lg px-4 py-6">
         <motion.div
           initial={prefersReducedMotion ? undefined : 'hidden'}
@@ -230,7 +246,7 @@ export default function CheckoutPage() {
             </Link>
             <div className="flex min-w-0 items-center gap-3">
               {logo ? (
-                <div className="bg-muted relative h-12 w-12 overflow-hidden rounded-lg">
+                <div className="bg-aklet-sand/60 relative h-12 w-12 overflow-hidden rounded-lg">
                   <Image
                     src={logo}
                     alt={restaurantName}
@@ -242,8 +258,8 @@ export default function CheckoutPage() {
                 </div>
               ) : null}
               <div>
-                <h1 className="text-xl font-bold">{t('title')}</h1>
-                <p className="text-muted-foreground text-sm">{restaurantName}</p>
+                <h1 className="font-heading text-aklet-ink text-xl font-bold">{t('title')}</h1>
+                <p className="text-aklet-ink-soft text-sm">{restaurantName}</p>
               </div>
             </div>
           </div>
@@ -266,7 +282,7 @@ export default function CheckoutPage() {
 
           <section className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-semibold">{t('orderSummary')}</h2>
+              <h2 className="font-heading text-aklet-ink font-bold">{t('orderSummary')}</h2>
               <Badge variant="secondary">
                 {diningMode === 'dining' ? t('dining') : t('takeaway')}
               </Badge>
@@ -303,7 +319,7 @@ export default function CheckoutPage() {
             </ul>
           </section>
 
-          <section className="space-y-3 rounded-xl border p-4">
+          <section className="border-aklet-line/70 bg-aklet-paper-soft space-y-3 rounded-xl border p-4">
             <div className="flex justify-between text-sm">
               <span>{t('subtotal')}</span>
               <span className="tabular-nums">
@@ -326,9 +342,9 @@ export default function CheckoutPage() {
                 </span>
               </div>
             )}
-            <div className="flex justify-between border-t pt-3 text-base font-bold">
+            <div className="border-aklet-line/70 flex justify-between border-t pt-3 text-base font-bold">
               <span>{t('total')}</span>
-              <span className="text-primary tabular-nums">
+              <span className="text-aklet-price tabular-nums" dir="ltr">
                 {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
               </span>
             </div>
@@ -369,10 +385,10 @@ export default function CheckoutPage() {
                           })
                         }
                         className={cn(
-                          'flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-3 text-sm font-medium transition-colors',
+                          'flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-xl border px-3 py-3 text-sm font-medium transition-colors',
                           selected
-                            ? 'border-primary bg-primary/5 text-primary'
-                            : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                            ? 'border-aklet-ink bg-aklet-ink text-aklet-paper'
+                            : 'border-aklet-line/80 bg-aklet-paper-soft text-aklet-ink-soft hover:border-aklet-ink/40 hover:text-aklet-ink'
                         )}
                       >
                         <Icon className="h-5 w-5" />
@@ -446,7 +462,7 @@ export default function CheckoutPage() {
 
           <Button
             size="lg"
-            className="h-14 w-full text-base font-semibold"
+            className="bg-aklet-coral-cta hover:bg-aklet-coral-cta/90 h-14 w-full rounded-xl text-base font-bold text-white"
             disabled={submitting || !whatsappConfigured}
             onClick={handleConfirm}
             data-testid="checkout-confirm"

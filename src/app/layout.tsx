@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, DM_Sans, Tajawal } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans, IBM_Plex_Sans_Arabic, Tajawal } from 'next/font/google';
 import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
@@ -33,6 +33,15 @@ const tajawal = Tajawal({
   weight: ['400', '500', '700'],
   display: 'swap',
   preload: true,
+});
+
+/** Arabic display face for the public menu only — not preloaded for dashboard routes. */
+const plexArabic = IBM_Plex_Sans_Arabic({
+  variable: '--font-aklet-display-family',
+  subsets: ['arabic'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  preload: false,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aklet-gambary.example.com';
@@ -103,8 +112,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#F0FDFA' },
-    { media: '(prefers-color-scheme: dark)', color: '#0A1012' },
+    { media: '(prefers-color-scheme: light)', color: '#F7F2E7' },
+    { media: '(prefers-color-scheme: dark)', color: '#0C1417' },
   ],
 };
 
@@ -122,7 +131,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} h-full w-full overflow-x-clip antialiased`}
+      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >
       <head>

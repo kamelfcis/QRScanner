@@ -20,6 +20,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Save, Upload, X } from 'lucide-react';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import { isValidHexColor } from '@/lib/theme';
+import { DEFAULT_CURRENCY } from '@/lib/order/format-currency';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { QRTargetSettings } from '@/components/qr/QRTargetSettings';
@@ -813,7 +814,7 @@ export default function SettingsPage() {
                   <Label htmlFor="currency">{t('currency')}</Label>
                   <Input
                     id="currency"
-                    value={form.currency || 'SAR'}
+                    value={form.currency || DEFAULT_CURRENCY}
                     onChange={(e) => setForm((prev) => ({ ...prev, currency: e.target.value }))}
                   />
                 </div>

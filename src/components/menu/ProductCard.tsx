@@ -2,9 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Flame, Star, Sparkles, Minus, Plus, ShoppingCart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Heart, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +14,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Image } from '@/components/shared/Image';
-import { MotionCard } from '@/components/shared/motion';
+import { ProductBadges } from '@/components/menu/ProductBadges';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
@@ -35,63 +33,11 @@ interface ProductCardProps {
   onAddedToCart?: () => void;
 }
 
-function pickBadges(product: Product) {
-  const badges: Array<'popular' | 'new' | 'bestseller' | 'spicy'> = [];
-  if (product.is_bestseller) badges.push('bestseller');
-  else if (product.is_popular) badges.push('popular');
-  if (product.is_new && badges.length < 2) badges.push('new');
-  if (product.is_spicy && badges.length < 2) badges.push('spicy');
-  return badges.slice(0, 2);
-}
-
-function BadgePill({
-  badge,
-  label,
-  className,
-}: {
-  badge: 'popular' | 'new' | 'bestseller' | 'spicy';
-  label: string;
-  className?: string;
-}) {
-  if (badge === 'popular' || badge === 'bestseller') {
-    return (
-      <Badge
-        className={cn(
-          'text-brand-accent bg-black/55 px-1.5 py-0.5 text-[10px] backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-          className
-        )}
-      >
-        <Star className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-        {label}
-      </Badge>
-    );
-  }
-  if (badge === 'new') {
-    return (
-      <Badge
-        className={cn(
-          'bg-black/55 px-1.5 py-0.5 text-[10px] text-white backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-          className
-        )}
-      >
-        <Sparkles className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-        {label}
-      </Badge>
-    );
-  }
-  return (
-    <Badge
-      className={cn(
-        'bg-black/55 px-1.5 py-0.5 text-[10px] text-red-400 backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-        className
-      )}
-    >
-      <Flame className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-      {label}
-    </Badge>
-  );
-}
-
+/**
+ * Square editorial card. The photograph carries the appetite, the text stays
+ * to one line each so a two-up phone grid never turns into a wall of prose —
+ * the full description lives in the product sheet.
+ */
 export function ProductCard({
   product,
   diningMode,
@@ -120,15 +66,8 @@ export function ProductCard({
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
-  const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
-
-  const badgeLabel = (badge: (typeof badges)[number]) => {
-    if (badge === 'popular') return t('popular');
-    if (badge === 'new') return t('new');
-    if (badge === 'bestseller') return t('bestseller');
-    return t('spicy');
-  };
+  const description = getName(locale, product.description_en || '', product.description_ar || '');
 
   const handleAdd = (withNotes: string) => {
     if (!product.is_available) return;
@@ -176,195 +115,175 @@ export function ProductCard({
   };
 
   return (
-    <MotionCard hover className="overflow-hidden">
-      <Card className="border-border/50 bg-card/80 relative overflow-hidden rounded-2xl border shadow-sm">
-        <div className="relative aspect-square w-full overflow-hidden sm:aspect-[4/3]">
-          <button
-            type="button"
-            className="absolute inset-0 z-0"
-            onClick={() => onImageClick(product)}
-            aria-label={productName}
-          >
-            {product.image_url ? (
-              <Image
-                src={product.image_url}
-                alt={productName}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
-                containerClassName="absolute inset-0 h-full w-full"
-              />
-            ) : (
-              <div className="bg-muted absolute inset-0 flex h-full w-full items-center justify-center">
-                <span className="font-heading text-muted-foreground/40 text-3xl">
-                  {productName.charAt(0)}
-                </span>
-              </div>
-            )}
-          </button>
+    <article
+      className={cn(
+        'border-aklet-line/70 bg-aklet-paper-soft group relative flex h-full flex-col overflow-hidden rounded-xl border transition-shadow',
+        'hover:shadow-[0_10px_30px_-18px_rgba(18,26,29,0.45)]',
+        !product.is_available && 'opacity-70'
+      )}
+      data-testid="product-card"
+    >
+      <div className="bg-aklet-sand/50 relative aspect-square w-full overflow-hidden">
+        <button
+          type="button"
+          className="absolute inset-0 z-0 h-full w-full"
+          onClick={() => onImageClick(product)}
+          aria-label={productName}
+        >
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={productName}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              containerClassName="absolute inset-0 h-full w-full"
+            />
+          ) : (
+            <span className="text-aklet-ink-soft/40 font-heading absolute inset-0 flex items-center justify-center text-3xl">
+              {productName.charAt(0)}
+            </span>
+          )}
+        </button>
 
-          <div className="pointer-events-none absolute start-2 top-2 z-[1] flex flex-wrap gap-1">
-            {badges.map((badge, index) => (
-              <BadgePill
-                key={badge}
-                badge={badge}
-                label={badgeLabel(badge)}
-                className={index > 0 ? 'hidden sm:inline-flex' : undefined}
-              />
-            ))}
-          </div>
+        <div className="pointer-events-none absolute start-2 top-2 z-[1] flex flex-wrap gap-1">
+          <ProductBadges product={product} />
+        </div>
 
+        <motion.button
+          type="button"
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.85 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(product);
+          }}
+          className={cn(
+            'absolute end-1.5 top-1.5 z-[2] flex h-9 w-9 items-center justify-center rounded-full transition-colors',
+            isFavorite
+              ? 'bg-aklet-coral-cta text-white'
+              : 'text-aklet-ink bg-aklet-paper/80 backdrop-blur-sm'
+          )}
+          aria-label={isFavorite ? t('removeFavorite') : t('addFavorite')}
+          aria-pressed={isFavorite}
+        >
+          <Heart className={cn('h-4 w-4', isFavorite && 'fill-current')} aria-hidden />
+        </motion.button>
+
+        {product.is_available && (
           <motion.button
             type="button"
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.85 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
+            animate={pulse && !prefersReducedMotion ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            onPointerDown={startLongPress}
+            onPointerUp={clearLongPress}
+            onPointerLeave={clearLongPress}
+            onPointerCancel={clearLongPress}
             onClick={(e) => {
               e.stopPropagation();
-              onToggleFavorite(product);
+              handleMobileAddClick();
             }}
-            className={cn(
-              'absolute end-2 top-2 z-[2] flex h-9 w-9 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11',
-              isFavorite
-                ? 'bg-red-500 text-white'
-                : 'bg-background/80 text-muted-foreground backdrop-blur-sm'
-            )}
-            aria-label={isFavorite ? t('removeFavorite') : t('addFavorite')}
-            aria-pressed={isFavorite}
+            className="bg-aklet-coral-cta absolute bottom-2 end-2 z-[2] flex h-10 w-10 items-center justify-center rounded-full text-white shadow-md sm:hidden"
+            aria-label={tCart('addToCart')}
+            data-testid="add-to-cart-mobile"
           >
-            <Heart
-              className={cn('h-3.5 w-3.5 sm:h-4 sm:w-4', isFavorite && 'fill-current')}
-              aria-hidden="true"
-            />
+            <Plus className="h-4 w-4" aria-hidden />
           </motion.button>
+        )}
+      </div>
 
-          {product.is_available && (
-            <motion.button
-              type="button"
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
-              animate={pulse && !prefersReducedMotion ? { scale: [1, 1.08, 1] } : { scale: 1 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              onPointerDown={startLongPress}
-              onPointerUp={clearLongPress}
-              onPointerLeave={clearLongPress}
-              onPointerCancel={clearLongPress}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleMobileAddClick();
-              }}
-              className="bg-brand-accent text-on-accent absolute bottom-2 end-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full shadow-md sm:hidden"
-              aria-label={tCart('addToCart')}
-              data-testid="add-to-cart-mobile"
-            >
-              <ShoppingCart className="h-4 w-4" aria-hidden="true" />
-            </motion.button>
+      <div className="flex min-w-0 flex-1 flex-col p-2.5 sm:p-3">
+        <button
+          type="button"
+          className="block w-full text-start"
+          onClick={() => onImageClick(product)}
+        >
+          <h3 className="font-heading text-aklet-ink line-clamp-1 text-[13px] font-bold leading-snug sm:text-sm">
+            {productName}
+          </h3>
+          {description ? (
+            <p className="text-aklet-ink-soft mt-1 line-clamp-1 text-[11px] leading-relaxed sm:text-xs">
+              {description}
+            </p>
+          ) : null}
+        </button>
+
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-2">
+          <p className="text-aklet-price text-sm font-bold tabular-nums sm:text-[15px]" dir="ltr">
+            {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+          </p>
+          {otherPrice !== activePrice && (
+            <p className="text-aklet-ink-soft hidden text-[11px] tabular-nums sm:inline" dir="auto">
+              {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}{' '}
+              {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+            </p>
+          )}
+          {!product.is_available && (
+            <span className="text-aklet-ink-soft border-aklet-line rounded-full border px-2 py-0.5 text-[10px]">
+              {t('currentlyUnavailable')}
+            </span>
           )}
         </div>
 
-        <CardContent className="p-2.5 sm:p-3.5">
-          <button
-            type="button"
-            className="mb-1.5 block w-full text-start sm:mb-2"
-            onClick={() => onImageClick(product)}
-          >
-            <h3 className="font-heading line-clamp-2 text-sm font-bold leading-snug sm:text-base">
-              {productName}
-            </h3>
-            {locale !== 'ar' && product.name_ar && (
-              <p className="text-muted-foreground mt-0.5 hidden text-xs sm:block" dir="rtl">
-                {product.name_ar}
-              </p>
-            )}
-            {locale === 'ar' && product.name_en && (
-              <p className="text-muted-foreground mt-0.5 hidden text-xs sm:block" dir="ltr">
-                {product.name_en}
-              </p>
-            )}
-            {product.description_en && (
-              <p className="text-muted-foreground mt-1.5 line-clamp-2 hidden text-xs sm:block">
-                {getName(locale, product.description_en, product.description_ar)}
-              </p>
-            )}
-          </button>
-
-          <div className="mb-0 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 sm:mb-2.5">
-            <p className="text-brand-accent text-sm font-bold tabular-nums sm:text-base" dir="ltr">
-              {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-            </p>
-            {otherPrice !== activePrice && (
-              <p className="text-muted-foreground hidden text-xs tabular-nums sm:inline" dir="ltr">
-                {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-                {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
-              </p>
-            )}
-            {!product.is_available && (
-              <Badge variant="secondary" aria-label={t('currentlyUnavailable')}>
-                {t('currentlyUnavailable')}
-              </Badge>
-            )}
-          </div>
-
-          {product.is_available && (
-            <div className="mt-1.5 hidden flex-col gap-1 sm:flex">
-              <div className="flex items-stretch gap-2">
-                <div
-                  className="border-border/60 bg-background inline-flex h-11 shrink-0 items-stretch overflow-hidden rounded-xl border"
-                  role="group"
+        {product.is_available && (
+          <div className="mt-2.5 hidden flex-col gap-1.5 sm:flex">
+            <div className="flex items-stretch gap-2">
+              <div
+                className="border-aklet-line/80 bg-aklet-paper inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-lg border"
+                role="group"
+                aria-label={tCart('quantity')}
+              >
+                <button
+                  type="button"
+                  className="text-aklet-ink hover:bg-aklet-sand/70 flex w-8 items-center justify-center transition-colors disabled:pointer-events-none disabled:opacity-40"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  aria-label={tCart('decreaseQty')}
+                  disabled={qty <= 1}
+                >
+                  <Minus className="h-3.5 w-3.5" aria-hidden />
+                </button>
+                <span
+                  className="border-aklet-line/80 flex min-w-7 items-center justify-center border-x text-xs font-semibold tabular-nums"
+                  aria-live="polite"
                   aria-label={tCart('quantity')}
                 >
-                  <button
-                    type="button"
-                    className="text-foreground hover:bg-muted flex w-10 items-center justify-center transition-colors disabled:pointer-events-none disabled:opacity-40"
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    aria-label={tCart('decreaseQty')}
-                    disabled={qty <= 1}
-                  >
-                    <Minus className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                  <span
-                    className="border-border/60 flex min-w-8 items-center justify-center border-x px-1 text-center text-sm font-medium tabular-nums"
-                    aria-live="polite"
-                    aria-label={tCart('quantity')}
-                  >
-                    {qty}
-                  </span>
-                  <button
-                    type="button"
-                    className="text-foreground hover:bg-muted flex w-10 items-center justify-center transition-colors"
-                    onClick={() => setQty((q) => q + 1)}
-                    aria-label={tCart('increaseQty')}
-                  >
-                    <Plus className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                </div>
-                <motion.div
-                  className="min-w-0 flex-1"
-                  animate={pulse && !prefersReducedMotion ? { scale: [1, 1.04, 1] } : { scale: 1 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  {qty}
+                </span>
+                <button
+                  type="button"
+                  className="text-aklet-ink hover:bg-aklet-sand/70 flex w-8 items-center justify-center transition-colors"
+                  onClick={() => setQty((q) => q + 1)}
+                  aria-label={tCart('increaseQty')}
                 >
-                  <Button
-                    type="button"
-                    className="bg-brand-accent hover:bg-brand-accent/90 text-on-accent h-11 w-full"
-                    onClick={() => handleAdd('')}
-                    data-testid="add-to-cart"
-                    aria-label={tCart('addToCart')}
-                  >
-                    <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />
-                    {tCart('addToCart')}
-                  </Button>
-                </motion.div>
+                  <Plus className="h-3.5 w-3.5" aria-hidden />
+                </button>
               </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground h-7 justify-start px-0.5 text-xs font-normal"
-                onClick={() => setNotesOpen(true)}
+              <motion.div
+                className="min-w-0 flex-1"
+                animate={pulse && !prefersReducedMotion ? { scale: [1, 1.03, 1] } : { scale: 1 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               >
-                {tCart('itemNotes')}
-              </Button>
+                <Button
+                  type="button"
+                  className="bg-aklet-coral-cta hover:bg-aklet-coral-cta/90 h-10 w-full rounded-lg text-xs font-semibold text-white"
+                  onClick={() => handleAdd('')}
+                  data-testid="add-to-cart"
+                  aria-label={tCart('addToCart')}
+                >
+                  {tCart('addToCart')}
+                </Button>
+              </motion.div>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <button
+              type="button"
+              className="text-aklet-ink-soft hover:text-aklet-ink self-start text-[11px] underline-offset-2 transition-colors hover:underline"
+              onClick={() => setNotesOpen(true)}
+            >
+              {tCart('itemNotes')}
+            </button>
+          </div>
+        )}
+      </div>
 
       <Dialog open={notesOpen} onOpenChange={setNotesOpen}>
         <DialogContent className="sm:max-w-md">
@@ -381,7 +300,7 @@ export function ProductCard({
               onChange={(e) => setNotes(e.target.value)}
               autoComplete="off"
             />
-            <p className="text-muted-foreground text-xs tabular-nums">
+            <p className="text-aklet-ink-soft text-xs tabular-nums">
               {notes.length}/{maxNotes}
             </p>
           </div>
@@ -389,12 +308,16 @@ export function ProductCard({
             <Button type="button" variant="outline" onClick={() => setNotesOpen(false)}>
               {tCommon('cancel')}
             </Button>
-            <Button type="button" onClick={() => handleAdd(notes)}>
+            <Button
+              type="button"
+              className="bg-aklet-coral-cta hover:bg-aklet-coral-cta/90 text-white"
+              onClick={() => handleAdd(notes)}
+            >
               {tCart('addToCart')}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </MotionCard>
+    </article>
   );
 }

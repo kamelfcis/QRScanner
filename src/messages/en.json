@@ -175,7 +175,27 @@
     "removeFavorite": "Remove from favorites",
     "favoritesCount": "Favorites, {count} items",
     "callWaiter": "Call waiter via WhatsApp",
-    "orderViaWhatsApp": "Order via WhatsApp"
+    "orderViaWhatsApp": "Order via WhatsApp",
+    "heroKicker": "Fresh from the sea",
+    "heroFallbackLine": "The taste of the sea, done right",
+    "shrimpPicks": "Our shrimp picks",
+    "shrimpPicksNote": "Local shrimp, grilled or fried",
+    "bestsellers": "Most ordered",
+    "bestsellersNote": "What our guests order every day",
+    "sharedTray": "Sharing tray",
+    "offerLabel": "Offer",
+    "viewOffer": "See the tray",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "productDetails": "Item details",
+    "clearSearch": "Clear search",
+    "searchHint": "Search by fish or dish name",
+    "noResultsHint": "Try another name or browse the categories",
+    "groupFish": "Fish",
+    "groupSeafood": "Seafood",
+    "groupPlates": "Plates",
+    "groupCooking": "Cooking",
+    "groupOffers": "Offers"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -404,7 +424,9 @@
     "takeawayPrice": "Takeaway",
     "added": "Added to cart",
     "unavailable": "Unavailable",
-    "browseMenu": "Browse menu"
+    "browseMenu": "Browse menu",
+    "viewOrder": "View order",
+    "total": "Total"
   },
   "checkout": {
     "title": "Checkout",

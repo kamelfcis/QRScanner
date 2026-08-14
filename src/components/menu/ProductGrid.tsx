@@ -35,7 +35,7 @@ export function ProductGrid({
       viewport={{ once: true, margin: '-50px' }}
       variants={prefersReducedMotion ? undefined : staggerContainer}
       className={cn(
-        'grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4',
+        'grid grid-cols-2 items-stretch gap-2.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4',
         className
       )}
     >

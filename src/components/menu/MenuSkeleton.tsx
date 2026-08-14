@@ -1,56 +1,70 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
+import { AkletThemeScope } from '@/components/menu/AkletThemeScope';
 
+/** Mirrors the real layout: 56px header, hero band, chip rail, square cards. */
 export function MenuSkeleton() {
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Skeleton className="h-6 w-40" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-8 w-8 rounded-lg" />
-            <Skeleton className="h-8 w-8 rounded-lg" />
-            <Skeleton className="h-8 w-16 rounded-lg" />
+    <div data-aklet-theme className="bg-aklet-paper min-h-screen">
+      <AkletThemeScope />
+
+      <div className="bg-aklet-paper/92 border-aklet-line/70 sticky top-0 z-40 border-b">
+        <div className="mx-auto flex h-[var(--aklet-header-h)] max-w-6xl items-center gap-2.5 px-3 sm:px-5">
+          <Block className="h-9 w-9 rounded-md" />
+          <Block className="h-4 w-32 rounded" />
+          <div className="ms-auto flex gap-2">
+            <Block className="h-9 w-9 rounded-full" />
+            <Block className="h-9 w-9 rounded-full" />
           </div>
         </div>
       </div>
 
-      <div className="bg-background/95 sticky top-16 z-30 border-b backdrop-blur">
-        <div className="container mx-auto flex gap-2 overflow-hidden px-4 py-3">
-          <Skeleton className="h-8 w-12 rounded-md" />
-          <Skeleton className="h-8 w-20 rounded-md" />
-          <Skeleton className="h-8 w-16 rounded-md" />
-          <Skeleton className="h-8 w-24 rounded-md" />
-          <Skeleton className="h-8 w-14 rounded-md" />
+      <Block className="h-[30svh] min-h-[220px] w-full rounded-none sm:h-[34svh] sm:max-h-[380px]" />
+
+      <div className="border-aklet-line/60 border-b px-3 py-2 sm:px-5">
+        <div className="mx-auto flex max-w-6xl gap-2">
+          <Block className="h-8 w-28 rounded-full" />
+          <Block className="ms-auto h-8 w-16 rounded-full" />
         </div>
       </div>
 
-      <div className="container mx-auto px-3 py-4 sm:px-4 sm:py-6">
-        <div className="mb-4">
-          <Skeleton className="mb-2 h-7 w-32" />
-          <Skeleton className="h-4 w-64" />
+      <div className="border-aklet-line/70 border-b px-3 py-2.5 sm:px-5">
+        <div className="mx-auto flex max-w-6xl gap-2 overflow-hidden">
+          {[12, 20, 16, 24, 14].map((w, i) => (
+            <Block key={i} className={`h-9 rounded-full`} style={{ width: `${w * 4}px` }} />
+          ))}
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+      </div>
+
+      <div className="mx-auto max-w-6xl px-3 py-5 sm:px-5 sm:py-6">
+        <Block className="mb-2 h-3 w-20 rounded" />
+        <Block className="mb-4 h-6 w-40 rounded" />
+        <div className="grid grid-cols-2 items-stretch gap-2.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
-              className="border-border/50 bg-card/80 overflow-hidden rounded-2xl border shadow-sm"
+              className="border-aklet-line/70 bg-aklet-paper-soft overflow-hidden rounded-xl border"
             >
-              <Skeleton className="aspect-square w-full sm:aspect-[4/3]" />
-              <div className="space-y-2 p-3 sm:p-4">
-                <Skeleton className="h-4 w-3/4 sm:h-5" />
-                <Skeleton className="hidden h-4 w-1/2 sm:block" />
-                <Skeleton className="hidden h-3 w-full sm:block" />
-                <div className="flex items-center justify-between gap-2">
-                  <Skeleton className="h-4 w-14 sm:h-6 sm:w-16" />
-                  <Skeleton className="hidden h-5 w-14 sm:block" />
-                </div>
+              <Block className="aspect-square w-full rounded-none" />
+              <div className="space-y-2 p-2.5 sm:p-3">
+                <Block className="h-3.5 w-3/4 rounded" />
+                <Block className="h-3 w-1/2 rounded" />
+                <Block className="h-4 w-16 rounded" />
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
+  );
+}
+
+function Block({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <div
+      aria-hidden
+      style={style}
+      className={`bg-aklet-sand/70 animate-pulse rounded-lg ${className ?? ''}`}
+    />
   );
 }

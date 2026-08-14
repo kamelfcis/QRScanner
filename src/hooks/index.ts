@@ -75,6 +75,7 @@ export {
   useDeleteTestimonial,
 } from './useTestimonials';
 export { useReducedMotion } from './useReducedMotion';
+export { useClientMounted } from './useClientMounted';
 export { useLocalStorage } from './useLocalStorage';
 export { useIntersectionObserver } from './useIntersectionObserver';
 export {
