@@ -201,7 +201,10 @@ function extractInlineImage(parts: GeminiPart[] | undefined): GeneratedImageByte
     const inline = part.inlineData ?? part.inline_data;
     const data = inline?.data;
     if (!data) continue;
-    const mimeType = inline?.mimeType ?? inline?.mime_type ?? 'image/png';
+    const mimeType =
+      (inline && 'mimeType' in inline ? inline.mimeType : undefined) ??
+      (inline && 'mime_type' in inline ? inline.mime_type : undefined) ??
+      'image/png';
     return { mimeType, data: Buffer.from(data, 'base64') };
   }
   return null;
