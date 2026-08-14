@@ -465,7 +465,7 @@
   },
   "tables": {
     "title": "Tables",
-    "description": "Manage restaurant tables for QR code association",
+    "description": "Description",
     "addTable": "Add Table",
     "editTable": "Edit Table",
     "deleteTable": "Delete Table",
@@ -475,7 +475,6 @@
     "tableNumberLabel": "Table Number *",
     "internalName": "Internal Name",
     "internalNamePlaceholder": "e.g., VIP Corner",
-    "description": "Description",
     "descriptionPlaceholder": "Optional notes",
     "active": "Active",
     "confirmDelete": "Are you sure you want to delete this table?",
@@ -713,7 +712,10 @@
     "changePasswordCurrentRequired": "Current password is required.",
     "changePasswordTooShort": "Password must be at least {min} characters.",
     "changePasswordMismatch": "New passwords do not match.",
-    "changePasswordSameAsCurrent": "New password must be different from your current password."
+    "changePasswordSameAsCurrent": "New password must be different from your current password.",
+    "invalidCredentials": "Email or password is incorrect",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "errors": {
     "pageNotFound": "Page not found",

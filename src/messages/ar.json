@@ -712,7 +712,10 @@
     "changePasswordCurrentRequired": "كلمة المرور الحالية مطلوبة.",
     "changePasswordTooShort": "يجب أن تكون كلمة المرور {min} أحرف على الأقل.",
     "changePasswordMismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
-    "changePasswordSameAsCurrent": "يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية."
+    "changePasswordSameAsCurrent": "يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية.",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور"
   },
   "errors": {
     "pageNotFound": "الصفحة غير موجودة",
