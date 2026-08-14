@@ -116,7 +116,7 @@ export function ProductCard({
   return (
     <>
       <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] shadow-[0_1px_2px_rgba(33,29,24,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(33,29,24,0.28)]">
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--menu-paper-deep)] sm:aspect-[3/4]">
+        <div className="relative aspect-square w-full overflow-hidden bg-[var(--menu-paper-deep)]">
           <button
             type="button"
             className="absolute inset-0 z-0 h-full w-full"

@@ -49,7 +49,7 @@ export function MenuGridSkeleton() {
             key={i}
             className="overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)]"
           >
-            <Skeleton className="aspect-[4/5] w-full rounded-none sm:aspect-[3/4]" />
+            <Skeleton className="aspect-square w-full rounded-none" />
             <div className="space-y-2 p-3 sm:p-3.5">
               <Skeleton className="h-3.5 w-4/5" />
               <Skeleton className="h-3 w-3/5" />
