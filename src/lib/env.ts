@@ -6,6 +6,12 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().default('http://localhost:3000'),
   NEXT_PUBLIC_APP_NAME: z.string().default('Aklet Gambary'),
   NEXT_PUBLIC_SITE_URL: z.string().optional(),
+  NEXT_PUBLIC_TENANT: z
+    .string()
+    .optional()
+    .transform((value) =>
+      value === 'harameen' || value === 'aklet' || value === 'warda' ? value : undefined
+    ),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().optional(),
@@ -26,6 +32,12 @@ function validateEnv() {
       NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
       NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'Aklet Gambary',
       NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+      NEXT_PUBLIC_TENANT:
+        process.env.NEXT_PUBLIC_TENANT === 'harameen' ||
+        process.env.NEXT_PUBLIC_TENANT === 'aklet' ||
+        process.env.NEXT_PUBLIC_TENANT === 'warda'
+          ? process.env.NEXT_PUBLIC_TENANT
+          : undefined,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       GEMINI_API_KEY: process.env.GEMINI_API_KEY,
       GEMINI_MODEL: process.env.GEMINI_MODEL,

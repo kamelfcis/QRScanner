@@ -722,7 +722,10 @@
     "changePasswordCurrentRequired": "Current password is required.",
     "changePasswordTooShort": "Password must be at least {min} characters.",
     "changePasswordMismatch": "New passwords do not match.",
-    "changePasswordSameAsCurrent": "New password must be different from your current password."
+    "changePasswordSameAsCurrent": "New password must be different from your current password.",
+    "invalidCredentials": "Email or password is incorrect",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "errors": {
     "pageNotFound": "Page not found",
