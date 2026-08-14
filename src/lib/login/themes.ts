@@ -1,0 +1,69 @@
+import type { LoginBrandConfig, LoginTenantId } from './types';
+
+/**
+ * Static login identities. Live restaurant + theme settings overlay
+ * logo, names, tagline, colors, and hero_image_url at resolve time.
+ * No stock photography -- Harameen/Aklet stay CSS panels unless a real upload exists.
+ */
+export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
+  harameen: {
+    tenantId: 'harameen',
+    nameAr: 'سوق الجملة شركة الحرمين',
+    nameEn: 'Harameen Wholesale Market',
+    taglineAr: 'سوق الجملة',
+    taglineEn: 'Wholesale market',
+    logoUrl: null,
+    heroImageUrl: null,
+    tokens: {
+      primary: '#0E7490',
+      accent: '#C45C26',
+      background: '#F6F1E8',
+      surface: '#FFFCF7',
+      foreground: '#1A2226',
+      muted: '#5C676E',
+      border: '#DDD4C6',
+      panelBackground: '#0B4A58',
+      panelForeground: '#F4EFE6',
+    },
+  },
+  aklet: {
+    tenantId: 'aklet',
+    nameAr: 'أكلة جمبري',
+    nameEn: 'Aklet Gambary',
+    taglineAr: 'أكلة جمبري',
+    taglineEn: 'Aklet Gambary',
+    logoUrl: null,
+    heroImageUrl: null,
+    tokens: {
+      primary: '#0B1F2A',
+      accent: '#E85D3A',
+      background: '#F3EEE7',
+      surface: '#FFFCF8',
+      foreground: '#0B1F2A',
+      muted: '#5A656C',
+      border: '#D9D2C8',
+      panelBackground: '#07141C',
+      panelForeground: '#F6EDE4',
+    },
+  },
+  warda: {
+    tenantId: 'warda',
+    nameAr: 'وردة شامية',
+    nameEn: 'Warda Shamya',
+    taglineAr: 'وردة شامية',
+    taglineEn: 'Warda Shamya',
+    logoUrl: null,
+    heroImageUrl: '/hero/warda-storefront.jpg',
+    tokens: {
+      primary: '#6B0F1A',
+      accent: '#C49A2A',
+      background: '#F7F1E6',
+      surface: '#FFFBF4',
+      foreground: '#2A1C16',
+      muted: '#6E5E52',
+      border: '#E4D8C4',
+      panelBackground: '#5C0D16',
+      panelForeground: '#F7F1E6',
+    },
+  },
+};
