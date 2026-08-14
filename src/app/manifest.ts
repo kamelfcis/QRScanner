@@ -44,15 +44,15 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const shortName = displayName.length > 12 ? appName : displayName;
 
   return {
-    name: `${displayName} - Restaurant`,
+    name: `${displayName} - Wholesale Market`,
     short_name: shortName,
-    description: `${displayName} - Digital restaurant menu. Browse dishes, view offers, and order online.`,
+    description: `${displayName} - Digital wholesale supermarket catalog. Browse products, view offers, and order via WhatsApp.`,
     start_url: '/',
     display: 'standalone',
     background_color: theme.background_color,
     theme_color: theme.primary_color,
     orientation: 'portrait-primary',
-    categories: ['food', 'restaurant', 'business'],
+    categories: ['shopping', 'food', 'business'],
     lang: 'en',
     dir: 'ltr',
     icons: buildManifestIcons(),

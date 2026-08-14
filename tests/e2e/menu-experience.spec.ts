@@ -9,25 +9,16 @@ test.describe('Menu Experience', () => {
     await expect(page).toHaveURL(/.*menu/);
   });
 
-  test('should display menu header', async ({ page }) => {
-    await expect(page.getByText(/warda shamya/i).first()).toBeVisible();
+  test('should display market header', async ({ page }) => {
+    await expect(page.getByRole('banner').first()).toBeVisible();
   });
 
   test('should display category navigation', async ({ page }) => {
-    await expect(page.getByRole('tab', { name: /all/i })).toBeVisible();
+    await expect(page.getByRole('tab').first()).toBeVisible();
   });
 
-  test('should display dining/takeaway toggle', async ({ page }) => {
-    const diningBtn = page.getByRole('button', { name: /dining/i });
-    await expect(diningBtn.first()).toBeVisible();
-  });
-
-  test('should toggle between dining and takeaway mode', async ({ page }) => {
-    const takeawayBtn = page.getByRole('button', { name: /takeaway/i });
-    if (await takeawayBtn.isVisible()) {
-      await takeawayBtn.click();
-      await expect(takeawayBtn).toHaveAttribute('aria-pressed', 'true');
-    }
+  test('should not show a dining/takeaway toggle', async ({ page }) => {
+    await expect(page.getByRole('group', { name: /dining mode|وضع/i })).toHaveCount(0);
   });
 
   test('should filter products by category', async ({ page }) => {
@@ -45,13 +36,11 @@ test.describe('Menu Experience', () => {
     expect(await cards.count()).toBeGreaterThanOrEqual(0);
   });
 
-  test('should open search overlay', async ({ page }) => {
-    const searchBtn = page.getByRole('button', { name: /search/i });
-    if (await searchBtn.isVisible()) {
-      await searchBtn.click();
-      const searchInput = page.getByRole('searchbox').or(page.getByPlaceholder(/search/i));
-      await expect(searchInput).toBeVisible();
-    }
+  test('should expose inline product search', async ({ page }) => {
+    const searchInput = page.getByTestId('market-search');
+    await expect(searchInput).toBeVisible();
+    await searchInput.fill('ar');
+    await page.waitForTimeout(500);
   });
 
   test('should handle ?table= parameter', async ({ page }) => {
@@ -63,10 +52,6 @@ test.describe('Menu Experience', () => {
     await page.goto('/menu?table=3&mode=dine_in');
     await expect(page).toHaveURL(/mode=dine_in/);
     await expect(page).toHaveURL(/table=3/);
-    const diningBtn = page.getByRole('button', { name: /dining|مطاعم/i });
-    if (await diningBtn.count()) {
-      await expect(diningBtn.first()).toHaveAttribute('aria-pressed', 'true');
-    }
   });
 
   test('welcome with table should show mode picker', async ({ page }) => {

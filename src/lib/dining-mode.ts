@@ -3,8 +3,8 @@ import type { CartDiningMode } from '@/stores/cart-store';
 /** URL query values accepted for order type */
 export type DiningModeParam = 'dining' | 'dine_in' | 'takeaway';
 
-const STORAGE_KEY = 'aklet-dining-mode';
-const TABLE_STORAGE_KEY = 'aklet-table';
+const STORAGE_KEY = 'harameen-dining-mode';
+const TABLE_STORAGE_KEY = 'harameen-table';
 
 export function persistTableNumber(table: string): void {
   localStorage.setItem(TABLE_STORAGE_KEY, table);

@@ -3,15 +3,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Settings, RestaurantSettings, ThemeSettings, HoursSettings } from '@/types';
+import { settingsKeys } from '@/lib/settings/keys';
 
 const supabase = createClient();
 
-export const settingsKeys = {
-  all: ['settings'] as const,
-  restaurant: () => [...settingsKeys.all, 'restaurant'] as const,
-  theme: () => [...settingsKeys.all, 'theme'] as const,
-  hours: () => [...settingsKeys.all, 'hours'] as const,
-};
+export { settingsKeys };
 
 export function useRestaurantSettings() {
   return useQuery({
@@ -125,7 +121,7 @@ export function useUpdateRestaurantSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as RestaurantSettings);
+      return data.value as unknown as RestaurantSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
@@ -157,7 +153,7 @@ export function useUpdateHoursSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as HoursSettings);
+      return data.value as unknown as HoursSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
@@ -189,7 +185,7 @@ export function useUpdateThemeSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as ThemeSettings);
+      return data.value as unknown as ThemeSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });

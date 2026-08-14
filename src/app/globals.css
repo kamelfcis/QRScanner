@@ -349,6 +349,86 @@ textarea,
   color: var(--accent-foreground);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Harameen wholesale market — public catalog scope.
+   Applied to the (menu) shell and mirrored onto <body> so
+   portalled sheets/dialogs resolve the same tokens.
+   Brand hues come from settings.theme via --brand-*.
+   ───────────────────────────────────────────────────────────── */
+[data-harameen-theme] {
+  --hm-primary: var(--brand-primary);
+  --hm-primary-strong: var(--brand-secondary);
+  --hm-primary-wash: color-mix(in srgb, var(--brand-primary) 8%, #ffffff);
+  --hm-accent: var(--brand-accent);
+  --hm-accent-strong: color-mix(in srgb, var(--brand-accent) 88%, #000000);
+  --hm-accent-wash: color-mix(in srgb, var(--brand-accent) 10%, #ffffff);
+  --hm-on-accent: #ffffff;
+
+  /* Commerce paper — warm off-white aisle, not a mint wash */
+  --hm-paper: #faf7f1;
+  --hm-paper-alt: #f4efe6;
+  --hm-surface: #ffffff;
+  --hm-surface-muted: #f3efe8;
+
+  --hm-ink: #1b1f23;
+  --hm-ink-soft: #5b6570;
+  --hm-ink-faint: #8b9299;
+
+  --hm-line: #e8e2d7;
+  --hm-line-strong: #d7cfc0;
+
+  --hm-price: color-mix(in srgb, var(--brand-secondary) 82%, #000000);
+
+  /* Spare produce accent — fruits & vegetables only */
+  --hm-fresh: #15803d;
+  --hm-fresh-surface: color-mix(in srgb, #15803d 5%, #ffffff);
+  --hm-fresh-line: color-mix(in srgb, #15803d 22%, #ffffff);
+
+  --hm-radius: 0.75rem;
+  --hm-radius-sm: 0.5rem;
+  --hm-shadow-card: 0 1px 2px rgba(27, 31, 35, 0.05);
+  --hm-shadow-raised: 0 8px 24px -14px rgba(27, 31, 35, 0.35);
+
+  /* Sticky offsets: brand bar + inline search row */
+  --hm-brandbar-h: 3.5rem;
+  --hm-searchbar-h: 3.25rem;
+
+  /* Commerce headings — IBM Plex Sans Arabic (Tajawal still wins in RTL) */
+  --font-heading-family: var(--font-market-family);
+}
+
+.dark [data-harameen-theme] {
+  --hm-paper: #12181b;
+  --hm-paper-alt: #161d21;
+  --hm-surface: #192126;
+  --hm-surface-muted: #1f292f;
+  --hm-ink: #eef3f5;
+  --hm-ink-soft: #9fb0b9;
+  --hm-ink-faint: #7d8d96;
+  --hm-line: #2c383f;
+  --hm-line-strong: #3a4952;
+  --hm-primary-wash: color-mix(in srgb, var(--brand-primary) 18%, #12181b);
+  --hm-accent-wash: color-mix(in srgb, var(--brand-accent) 16%, #12181b);
+  --hm-price: color-mix(in srgb, var(--brand-accent) 92%, #ffffff);
+  --hm-fresh: #4ade80;
+  --hm-fresh-surface: color-mix(in srgb, #4ade80 8%, #12181b);
+  --hm-fresh-line: color-mix(in srgb, #4ade80 22%, #12181b);
+  --hm-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --hm-shadow-raised: 0 8px 24px -14px rgba(0, 0, 0, 0.65);
+}
+
+/* Chip rails and horizontal shelves scroll without a visible bar */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

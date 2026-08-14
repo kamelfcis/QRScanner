@@ -75,16 +75,16 @@ describe('useCartStore', () => {
       fulfillmentType: 'delivery',
       deliveryAddress: '123 Main St',
     });
-    const raw = localStorage.getItem('aklet-cart-v1');
+    const raw = localStorage.getItem('harameen-cart-v1');
     const parsed = JSON.parse(raw!);
     expect(parsed.state.fulfillmentType).toBe('delivery');
     expect(parsed.state.deliveryAddress).toBe('123 Main St');
   });
 
-  it('persists to localStorage under aklet-cart-v1', () => {
+  it('persists to localStorage under harameen-cart-v1', () => {
     useCartStore.getState().addItem({ ...sample, quantity: 1 });
     useCartStore.getState().setMeta({ diningMode: 'takeaway', tableNumber: '3' });
-    const raw = localStorage.getItem('aklet-cart-v1');
+    const raw = localStorage.getItem('harameen-cart-v1');
     expect(raw).toBeTruthy();
     const parsed = JSON.parse(raw!);
     expect(parsed.state.items).toHaveLength(1);

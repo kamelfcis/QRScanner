@@ -180,7 +180,7 @@ export default function CheckoutPage() {
       );
 
       try {
-        sessionStorage.setItem('aklet-last-wa-url', built.whatsappUrl);
+        sessionStorage.setItem('harameen-last-wa-url', built.whatsappUrl);
       } catch {
         // ignore
       }

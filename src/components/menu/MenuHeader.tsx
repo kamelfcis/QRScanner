@@ -1,179 +1,103 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Utensils, ShoppingBag, Heart, Search, MessageCircle, ShoppingCart } from 'lucide-react';
+import { Languages, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useCartStore } from '@/stores/cart-store';
-import { cn, getName } from '@/lib/utils';
+import { getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface MenuHeaderProps {
   tableParam: string | null;
-  diningMode: 'dining' | 'takeaway';
-  onDiningModeChange: (mode: 'dining' | 'takeaway') => void;
-  onSearchOpen: () => void;
-  onCartOpen: () => void;
-  favoriteCount: number;
-  hideDiningModeToggle?: boolean;
 }
 
-export function MenuHeader({
-  tableParam,
-  diningMode,
-  onDiningModeChange,
-  onSearchOpen,
-  onCartOpen,
-  favoriteCount,
-  hideDiningModeToggle = false,
-}: MenuHeaderProps) {
+/**
+ * Short market header: identity only. Search, categories and cart live in the
+ * sticky toolbar below so the brand bar can scroll away.
+ */
+export function MenuHeader({ tableParam }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
   const prefersReducedMotion = useReducedMotion();
-  const { locale } = useI18n();
+  const { locale, setLocale } = useI18n();
   const t = useTranslations('menu');
-  const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
-  const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
 
   const name = getName(
     locale,
     settings?.name_en || tCommon('appName'),
     settings?.name_ar || tCommon('appName')
   );
+  const subtitle =
+    settings?.hero_subtitle?.trim() || settings?.tagline?.trim() || t('marketTagline');
 
   const whatsapp = settings?.whatsapp?.replace(/[^0-9]/g, '');
-  const waiterMessage = tableParam
-    ? encodeURIComponent(
-        locale === 'ar'
-          ? `مرحباً، أحتاج مساعدة في الطاولة رقم ${tableParam}`
-          : `Hello, I need assistance at table ${tableParam}`
-      )
-    : '';
+  const inquiryMessage = encodeURIComponent(
+    locale === 'ar'
+      ? 'مرحباً، أرغب في الاستفسار عن منتجات الجملة'
+      : 'Hello, I would like to ask about wholesale products'
+  );
 
   return (
     <motion.header
-      initial={prefersReducedMotion ? undefined : { y: -64, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        'bg-background/95 border-border/60 dark:border-border/40 sticky top-0 z-40 border-b pt-[env(safe-area-inset-top)] backdrop-blur'
-      )}
+      initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className="border-b border-[var(--hm-line)] bg-[var(--hm-surface)] pt-[env(safe-area-inset-top)]"
     >
-      <div className="container mx-auto flex h-16 items-center justify-between gap-2 px-4">
-        <div className="flex min-w-0 items-center gap-2">
-          {settings?.logo_url ? (
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-4 sm:py-3">
+        {settings?.logo_url ? (
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[var(--hm-radius-sm)] border border-[var(--hm-line)] bg-white p-1">
             <NextImage
               src={settings.logo_url}
               alt={name}
-              width={40}
-              height={40}
-              className="h-10 w-10 shrink-0 object-contain"
+              width={44}
+              height={44}
+              className="h-full w-full object-contain"
+              priority
             />
-          ) : null}
-          <h1 className="font-heading text-primary truncate text-lg font-bold sm:text-xl">
-            {name}
-          </h1>
-          {tableParam && (
-            <Badge variant="secondary" className="shrink-0 text-xs">
-              {t('tableNumber', { number: tableParam })}
-            </Badge>
-          )}
+          </span>
+        ) : null}
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <h1 className="font-heading truncate text-[15px] font-bold leading-tight text-[var(--hm-ink)] sm:text-lg">
+              {name}
+            </h1>
+            {tableParam && (
+              <Badge variant="secondary" className="shrink-0 text-[10px]">
+                {t('tableNumber', { number: tableParam })}
+              </Badge>
+            )}
+          </div>
+          <p className="truncate text-[11px] leading-snug text-[var(--hm-ink-soft)] sm:text-xs">
+            {subtitle}
+          </p>
         </div>
 
-        <div className="flex items-center gap-1 sm:gap-2">
-          {whatsapp && tableParam && (
+        <div className="flex shrink-0 items-center gap-1">
+          {whatsapp && (
             <a
-              href={`https://wa.me/${whatsapp}?text=${waiterMessage}`}
+              href={`https://wa.me/${whatsapp}?text=${inquiryMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:bg-muted inline-flex h-11 w-11 items-center justify-center rounded-lg text-[#25D366]"
-              aria-label={t('callWaiter')}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--hm-radius-sm)] text-[#128C4A] transition-colors hover:bg-[var(--hm-surface-muted)]"
+              aria-label={t('contactSales')}
             >
-              <MessageCircle className="h-5 w-5" />
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
             </a>
           )}
 
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="h-11 w-11"
-            onClick={onSearchOpen}
-            aria-label={t('searchMenu')}
+          <button
+            type="button"
+            onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+            className="inline-flex h-10 items-center gap-1.5 rounded-[var(--hm-radius-sm)] px-2.5 text-xs font-semibold text-[var(--hm-ink-soft)] transition-colors hover:bg-[var(--hm-surface-muted)] hover:text-[var(--hm-ink)]"
+            aria-label={t('switchLanguage')}
           >
-            <Search className="h-5 w-5" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="relative h-11 w-11"
-            aria-label={t('favoritesCount', { count: favoriteCount })}
-          >
-            <Heart className="h-5 w-5" />
-            {favoriteCount > 0 && (
-              <span className="bg-primary text-primary-foreground absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold">
-                {favoriteCount}
-              </span>
-            )}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="relative h-11 w-11"
-            onClick={onCartOpen}
-            aria-label={tCart('cartCount', { count: cartCount })}
-            data-testid="cart-button"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only" aria-live="polite">
-              {tCart('cartCount', { count: cartCount })}
-            </span>
-            {cartCount > 0 && (
-              <motion.span
-                key={cartCount}
-                initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-primary text-primary-foreground absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-0.5 text-[10px] font-bold tabular-nums"
-                data-testid="cart-badge"
-              >
-                {cartCount > 99 ? '99+' : cartCount}
-              </motion.span>
-            )}
-          </Button>
-
-          {!hideDiningModeToggle && (
-            <div
-              className="flex items-center rounded-lg border"
-              role="group"
-              aria-label={t('diningMode')}
-            >
-              <Button
-                variant={diningMode === 'dining' ? 'default' : 'ghost'}
-                size="icon-sm"
-                className="h-11 w-11 rounded-r-none"
-                onClick={() => onDiningModeChange('dining')}
-                aria-pressed={diningMode === 'dining'}
-                aria-label={t('dining')}
-              >
-                <Utensils className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={diningMode === 'takeaway' ? 'default' : 'ghost'}
-                size="icon-sm"
-                className="h-11 w-11 rounded-l-none"
-                onClick={() => onDiningModeChange('takeaway')}
-                aria-pressed={diningMode === 'takeaway'}
-                aria-label={t('takeaway')}
-              >
-                <ShoppingBag className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
+            <Languages className="h-4 w-4" aria-hidden="true" />
+            {locale === 'ar' ? 'EN' : 'ع'}
+          </button>
         </div>
       </div>
     </motion.header>

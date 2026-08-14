@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,12 +13,27 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+const standaloneQuery = () => window.matchMedia('(display-mode: standalone)');
+
+function subscribeToStandalone(onChange: () => void) {
+  const query = standaloneQuery();
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [wasInstalled, setWasInstalled] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const t = useTranslations('pwa');
+
+  const isStandalone = useSyncExternalStore(
+    subscribeToStandalone,
+    () => standaloneQuery().matches,
+    () => false
+  );
+  const isInstalled = wasInstalled || isStandalone;
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -28,16 +43,12 @@ export function InstallPrompt() {
     };
 
     const installedHandler = () => {
-      setIsInstalled(true);
+      setWasInstalled(true);
       setShowPrompt(false);
     };
 
     window.addEventListener('beforeinstallprompt', handler);
     window.addEventListener('appinstalled', installedHandler);
-
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
@@ -57,11 +68,12 @@ export function InstallPrompt() {
 
   const handleDismiss = () => {
     setShowPrompt(false);
-    sessionStorage.setItem('warda-pwa-dismissed', 'true');
+    sessionStorage.setItem('harameen-pwa-dismissed', 'true');
   };
 
   if (isInstalled || !showPrompt || !deferredPrompt) return null;
-  if (typeof window !== 'undefined' && sessionStorage.getItem('warda-pwa-dismissed')) return null;
+  if (typeof window !== 'undefined' && sessionStorage.getItem('harameen-pwa-dismissed'))
+    return null;
 
   return (
     <AnimatePresence>
@@ -71,19 +83,17 @@ export function InstallPrompt() {
           animate={{ opacity: 1, y: 0 }}
           exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
           className={cn(
-            'fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-6 md:bottom-6 md:max-w-sm',
-            'rounded-xl border border-brand-primary/20 bg-background p-4 shadow-2xl'
+            'fixed bottom-4 left-4 right-4 z-50 md:bottom-6 md:left-auto md:right-6 md:max-w-sm',
+            'border-brand-primary/20 bg-background rounded-xl border p-4 shadow-2xl'
           )}
         >
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-primary/10">
-              <Download className="h-5 w-5 text-brand-primary" />
+            <div className="bg-brand-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+              <Download className="text-brand-primary h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-foreground">{t('installTitle')}</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t('installDescription')}
-              </p>
+              <p className="text-foreground font-semibold">{t('installTitle')}</p>
+              <p className="text-muted-foreground mt-1 text-sm">{t('installDescription')}</p>
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={handleInstall}>
                   {t('install')}
@@ -95,7 +105,7 @@ export function InstallPrompt() {
             </div>
             <button
               onClick={handleDismiss}
-              className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground shrink-0 rounded-md p-1"
               aria-label={t('dismiss')}
             >
               <X className="h-4 w-4" />

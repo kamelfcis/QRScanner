@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { BadgePercent } from 'lucide-react';
 import { useActiveOffers } from '@/hooks/useOffers';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { Image } from '@/components/shared/Image';
 import { MotionSection } from '@/components/shared/motion';
-import { Badge } from '@/components/ui/badge';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { staggerContainer, staggerItem } from '@/lib/motion';
@@ -17,58 +17,65 @@ export function OffersSection() {
   const { data: settings } = useRestaurantSettings();
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
+  const t = useTranslations('menu');
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
 
   if (isLoading || !offers?.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-4">
-      <div className="from-primary/10 via-primary/5 to-accent/10 rounded-xl bg-gradient-to-r p-4">
-        <h2 className="font-heading text-primary mb-3 text-lg font-bold">
-          {locale === 'ar' ? 'عروض خاصة' : 'Special Offers'}
+    <MotionSection className="mx-auto max-w-7xl px-3 pt-4 sm:px-4">
+      <div className="mb-2.5 flex items-center gap-2">
+        <BadgePercent className="h-4.5 w-4.5 text-[var(--hm-accent)]" aria-hidden="true" />
+        <h2 className="font-heading text-base font-bold text-[var(--hm-ink)] sm:text-lg">
+          {t('offers')}
         </h2>
-        <motion.div
-          initial={prefersReducedMotion ? undefined : 'hidden'}
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={prefersReducedMotion ? undefined : staggerContainer}
-          className="scrollbar-none flex gap-3 overflow-x-auto pb-2"
-        >
-          {offers.map((offer) => (
-            <motion.div
-              key={offer.id}
-              variants={prefersReducedMotion ? undefined : staggerItem}
-              className="bg-background min-w-[260px] shrink-0 overflow-hidden rounded-lg border shadow-sm"
-            >
-              {offer.image_url && (
-                <div className="relative aspect-[16/9] w-full overflow-hidden">
-                  <Image
-                    src={offer.image_url}
-                    alt={getName(locale, offer.title_en, offer.title_ar)}
-                    fill
-                    className="object-cover"
-                    sizes="260px"
-                  />
-                  <Badge className="bg-accent text-foreground absolute left-2 top-2">
-                    {offer.discount_type === 'percentage'
-                      ? `${offer.discount_value}% OFF`
-                      : `${formatCurrencyAmount(offer.discount_value, currency, { locale: currencyLocale })} OFF`}
-                  </Badge>
-                </div>
-              )}
-              <div className="p-3">
-                <h3 className="font-semibold">{getName(locale, offer.title_en, offer.title_ar)}</h3>
-                {(offer.description_en || offer.description_ar) && (
-                  <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">
-                    {getName(locale, offer.description_en || '', offer.description_ar)}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
+
+      <motion.div
+        initial={prefersReducedMotion ? undefined : 'hidden'}
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
+        className="scrollbar-none -mx-3 flex gap-2.5 overflow-x-auto px-3 pb-1 sm:-mx-4 sm:px-4"
+      >
+        {offers.map((offer) => (
+          <motion.article
+            key={offer.id}
+            variants={prefersReducedMotion ? undefined : staggerItem}
+            className="w-[230px] shrink-0 overflow-hidden rounded-[var(--hm-radius)] border border-[var(--hm-line)] bg-[var(--hm-surface)] shadow-[var(--hm-shadow-card)]"
+          >
+            {offer.image_url && (
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--hm-surface-muted)]">
+                <Image
+                  src={offer.image_url}
+                  alt={getName(locale, offer.title_en, offer.title_ar)}
+                  fill
+                  className="object-cover"
+                  sizes="230px"
+                />
+                <span className="absolute start-2 top-2 rounded-full bg-[var(--hm-accent)] px-2 py-0.5 text-[11px] font-bold text-[var(--hm-on-accent)]">
+                  {offer.discount_type === 'percentage'
+                    ? `${offer.discount_value}%`
+                    : formatCurrencyAmount(offer.discount_value, currency, {
+                        locale: currencyLocale,
+                      })}
+                </span>
+              </div>
+            )}
+            <div className="p-2.5">
+              <h3 className="line-clamp-1 text-sm font-semibold text-[var(--hm-ink)]">
+                {getName(locale, offer.title_en, offer.title_ar)}
+              </h3>
+              {(offer.description_en || offer.description_ar) && (
+                <p className="mt-0.5 line-clamp-2 text-xs text-[var(--hm-ink-soft)]">
+                  {getName(locale, offer.description_en || '', offer.description_ar)}
+                </p>
+              )}
+            </div>
+          </motion.article>
+        ))}
+      </motion.div>
     </MotionSection>
   );
 }

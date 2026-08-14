@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import NextImage from 'next/image';
 import { motion } from 'framer-motion';
+import { ShoppingBasket, Store, Truck, type LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -156,9 +157,10 @@ function WelcomeContent() {
               priority
             />
           ) : (
-            <span className="font-heading text-brand-accent text-5xl font-bold drop-shadow-[0_0_20px_rgba(255,183,0,0.4)]">
-              W
-            </span>
+            <Store
+              className="text-brand-accent h-16 w-16 drop-shadow-[0_0_20px_rgba(249,115,22,0.35)]"
+              aria-hidden="true"
+            />
           )}
         </motion.div>
 
@@ -208,7 +210,7 @@ function WelcomeContent() {
         >
           {deliveryOnly ? (
             <ModeCard
-              emoji="🚚"
+              icon={Truck}
               labelEn={t('deliveryEn')}
               labelAr={t('deliveryAr')}
               subtitle={t('deliveryDesc')}
@@ -220,7 +222,7 @@ function WelcomeContent() {
           ) : (
             <>
               <ModeCard
-                emoji="🍽️"
+                icon={ShoppingBasket}
                 labelEn={t('dineInEn')}
                 labelAr={t('dineInAr')}
                 subtitle={t('dineInDesc')}
@@ -230,7 +232,7 @@ function WelcomeContent() {
                 isRtl={isArabic}
               />
               <ModeCard
-                emoji="🛍️"
+                icon={Store}
                 labelEn={t('takeawayEn')}
                 labelAr={t('takeawayAr')}
                 subtitle={t('takeawayDesc')}
@@ -255,7 +257,7 @@ function WelcomeContent() {
 }
 
 function ModeCard({
-  emoji,
+  icon: Icon,
   labelEn,
   labelAr,
   subtitle,
@@ -264,7 +266,7 @@ function ModeCard({
   prefersReducedMotion,
   isRtl,
 }: {
-  emoji: string;
+  icon: LucideIcon;
   labelEn: string;
   labelAr: string;
   subtitle: string;
@@ -315,9 +317,7 @@ function ModeCard({
         />
       )}
 
-      <span className="mb-3 text-4xl drop-shadow-md" role="img" aria-hidden>
-        {emoji}
-      </span>
+      <Icon className="text-brand-accent mb-3 h-9 w-9 drop-shadow-md" aria-hidden="true" />
       <div className={cn('mb-1 flex flex-col gap-0.5', isRtl ? 'items-center' : 'items-center')}>
         <span className="text-lg font-bold leading-tight text-white">{labelEn}</span>
         <span className="font-arabic text-brand-accent text-base font-semibold">{labelAr}</span>

@@ -35,9 +35,9 @@ function formatMoney(value: number, currency: string, locale: MessageLocale): st
 
 function fulfillmentLabel(locale: MessageLocale, fulfillmentType: FulfillmentType): string {
   if (locale === 'ar') {
-    return fulfillmentType === 'delivery' ? 'توصيل' : 'استلام في المطعم';
+    return fulfillmentType === 'delivery' ? 'توصيل' : 'استلام من المستودع';
   }
-  return fulfillmentType === 'delivery' ? 'Delivery' : 'Pickup at restaurant';
+  return fulfillmentType === 'delivery' ? 'Delivery' : 'Pickup at warehouse';
 }
 
 export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
@@ -61,7 +61,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
   const showFulfillment = mode === 'takeaway' && fulfillmentType;
 
   if (isAr) {
-    lines.push(mode === 'dining' ? '*طلب جديد — داخل المطعم*' : '*طلب جديد — تيك أواي*');
+    lines.push(mode === 'dining' ? '*طلب جملة جديد*' : '*طلب جملة — توصيل*');
     lines.push(SEP);
 
     if (showFulfillment) {
@@ -75,7 +75,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       lines.push(SEP);
     }
 
-    lines.push('*الأصناف*');
+    lines.push('*المنتجات*');
     for (const item of items) {
       const lineTotal = item.unitPrice * item.quantity;
       lines.push(`${item.quantity}× ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);
@@ -104,7 +104,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       lines.push(`وقت التحضير المتوقع: ~${prepTimeMinutes} دقيقة`);
     }
   } else {
-    lines.push(mode === 'dining' ? '*New Order — Dine In*' : '*New Order — Takeaway*');
+    lines.push(mode === 'dining' ? '*New Wholesale Order*' : '*Wholesale Order — Delivery*');
     lines.push(SEP);
 
     if (showFulfillment) {
@@ -118,7 +118,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       lines.push(SEP);
     }
 
-    lines.push('*Items*');
+    lines.push('*Products*');
     for (const item of items) {
       const lineTotal = item.unitPrice * item.quantity;
       lines.push(`${item.quantity}x ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);

@@ -10,7 +10,7 @@ SET
     'tiktok', 'YOUR_TIKTOK',
     'address_ar', 'YOUR_ADDRESS_AR',
     'address_en', 'YOUR_ADDRESS_EN',
-    'currency', 'EGP',
+    'currency', 'SAR',
     'tax_rate', 0,
     'service_charge_rate', 0,
     'email', 'YOUR_EMAIL',

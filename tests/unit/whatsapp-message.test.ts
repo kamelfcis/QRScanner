@@ -51,9 +51,9 @@ describe('buildWhatsAppMessage', () => {
       prepTimeMinutes: 25,
     });
 
-    expect(msg).toContain('*New Order — Dine In*');
+    expect(msg).toContain('*New Wholesale Order*');
     expect(msg).toContain('Table: 5');
-    expect(msg).toContain('*Items*');
+    expect(msg).toContain('*Products*');
     expect(msg).toContain('2x Shawarma — 50 SAR');
     expect(msg).toContain('• Extra garlic');
     expect(msg).toContain('Subtotal: 60 SAR');
@@ -84,7 +84,7 @@ describe('buildWhatsAppMessage', () => {
       prepTimeMinutes: 20,
     });
 
-    expect(msg).toContain('*طلب جديد — تيك أواي*');
+    expect(msg).toContain('*طلب جملة — توصيل*');
     expect(msg).toContain('1× شاورما — 22 SAR');
     expect(msg).toContain('الاسم: سارة');
     expect(msg).toContain('وقت التحضير المتوقع: ~20 دقيقة');
@@ -127,7 +127,7 @@ describe('buildWhatsAppMessage', () => {
       customerName: 'Sara',
     });
 
-    expect(msg).toContain('Order type: Pickup at restaurant');
+    expect(msg).toContain('Order type: Pickup at warehouse');
     expect(msg).not.toContain('Address:');
   });
 });

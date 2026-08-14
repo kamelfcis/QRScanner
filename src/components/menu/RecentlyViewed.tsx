@@ -1,13 +1,12 @@
 'use client';
 
 import { Clock, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 import { Image } from '@/components/shared/Image';
 import { MotionSection } from '@/components/shared/motion';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
@@ -29,50 +28,68 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
   if (!recent.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-6">
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="text-muted-foreground h-4 w-4" />
-          <h2 className="font-heading text-lg font-bold">{t('recentlyViewed')}</h2>
-        </div>
-        <Button variant="ghost" size="sm" onClick={clearRecent} className="text-muted-foreground">
-          <X className="mr-1 h-3 w-3" />
+    <MotionSection className="mx-auto max-w-7xl px-3 py-4 sm:px-4">
+      <div className="mb-2.5 flex items-center justify-between gap-2">
+        <h2 className="font-heading flex items-center gap-2 text-base font-bold text-[var(--hm-ink)] sm:text-lg">
+          <Clock className="h-4.5 w-4.5 text-[var(--hm-primary)]" aria-hidden="true" />
+          {t('recentlyViewed')}
+        </h2>
+        <button
+          type="button"
+          onClick={clearRecent}
+          className="inline-flex items-center gap-1 text-xs text-[var(--hm-ink-faint)] transition-colors hover:text-[var(--hm-ink)]"
+        >
+          <X className="h-3 w-3" aria-hidden="true" />
           {t('clear')}
-        </Button>
+        </button>
       </div>
+
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
         whileInView="visible"
         viewport={{ once: true }}
         variants={prefersReducedMotion ? undefined : staggerContainer}
-        className="scrollbar-none flex gap-3 overflow-x-auto pb-2"
+        className="scrollbar-none -mx-3 flex gap-2.5 overflow-x-auto px-3 pb-1 sm:-mx-4 sm:px-4"
       >
         {recent.map((product) => {
           const name = getName(locale, product.name_en, product.name_ar);
           return (
             <motion.button
               key={product.id}
+              type="button"
               variants={prefersReducedMotion ? undefined : staggerItem}
               onClick={() => onSelectProduct(product.id)}
-              className="flex min-w-[140px] shrink-0 overflow-hidden rounded-lg border text-left transition-shadow hover:shadow-md"
+              className="flex w-[188px] shrink-0 items-center gap-2.5 overflow-hidden rounded-[var(--hm-radius)] border border-[var(--hm-line)] bg-[var(--hm-surface)] p-2 text-start transition-colors hover:border-[var(--hm-primary)]"
             >
-              {product.image_url && (
-                <div className="relative h-20 w-20 shrink-0 overflow-hidden">
+              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[var(--hm-radius-sm)] bg-white">
+                {product.image_url ? (
                   <Image
                     src={product.image_url}
                     alt={name}
                     fill
-                    className="object-cover"
-                    sizes="80px"
+                    className="object-contain p-1"
+                    sizes="56px"
+                    containerClassName="absolute inset-0 h-full w-full"
                   />
-                </div>
-              )}
-              <div className="flex flex-col justify-center p-2">
-                <h4 className="line-clamp-1 text-sm font-medium">{name}</h4>
-                <p className="text-primary text-xs">
-                  {formatCurrencyAmount(product.dining_price, currency, { locale: currencyLocale })}
-                </p>
-              </div>
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-sm text-[var(--hm-ink-faint)]">
+                    {name.charAt(0)}
+                  </span>
+                )}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="line-clamp-2 block text-xs font-medium text-[var(--hm-ink)]">
+                  {name}
+                </span>
+                <span
+                  className="mt-0.5 block text-xs font-bold tabular-nums text-[var(--hm-price)]"
+                  dir="ltr"
+                >
+                  {formatCurrencyAmount(product.takeaway_price, currency, {
+                    locale: currencyLocale,
+                  })}
+                </span>
+              </span>
             </motion.button>
           );
         })}

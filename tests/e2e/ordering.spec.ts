@@ -88,7 +88,7 @@ test.describe('QR Ordering & WhatsApp Checkout', () => {
       const decoded = decodeURIComponent(waUrl).replace(/\+/g, ' ');
       expect(waUrl).toMatch(/966500000001/);
       expect(decoded).toMatch(/Playwright Guest/);
-      expect(decoded).toMatch(/New Order|طلب جديد/);
+      expect(decoded).toMatch(/Wholesale Order|طلب جملة/);
       expect(decoded).toMatch(/Table:\s*4|الطاولة:\s*4/);
       await popup.close();
     }
@@ -110,7 +110,7 @@ test.describe('QR Ordering & WhatsApp Checkout', () => {
     }
 
     await addBtn.click();
-    await page.getByTestId('cart-fab').click();
+    await page.getByTestId('order-bar').click();
 
     const sheet = page.locator('[data-slot="sheet-content"]');
     await expect(sheet).toBeVisible();

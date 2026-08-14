@@ -8,7 +8,7 @@ type Theme = 'light' | 'dark' | 'system';
 export function ThemeProvider({
   children,
   defaultTheme = 'light',
-  storageKey = 'aklet-gambary-theme',
+  storageKey = 'harameen-theme',
 }: {
   children: React.ReactNode;
   defaultTheme?: Theme;

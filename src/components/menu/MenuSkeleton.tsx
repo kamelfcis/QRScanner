@@ -1,51 +1,49 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
+function Shimmer({ className }: { className: string }) {
+  return <div className={`animate-pulse rounded bg-[var(--hm-surface-muted)] ${className}`} />;
+}
 
 export function MenuSkeleton() {
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Skeleton className="h-6 w-40" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-8 w-8 rounded-lg" />
-            <Skeleton className="h-8 w-8 rounded-lg" />
-            <Skeleton className="h-8 w-16 rounded-lg" />
+    <div className="min-h-screen bg-[var(--hm-paper)]">
+      <div className="border-b border-[var(--hm-line)] bg-[var(--hm-surface)]">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-4 sm:py-3">
+          <Shimmer className="h-11 w-11 rounded-[var(--hm-radius-sm)]" />
+          <div className="flex-1 space-y-1.5">
+            <Shimmer className="h-4 w-40" />
+            <Shimmer className="h-3 w-56" />
           </div>
+          <Shimmer className="h-10 w-10 rounded-[var(--hm-radius-sm)]" />
         </div>
       </div>
 
-      <div className="bg-background/95 sticky top-16 z-30 border-b backdrop-blur">
-        <div className="container mx-auto flex gap-2 overflow-hidden px-4 py-3">
-          <Skeleton className="h-8 w-12 rounded-md" />
-          <Skeleton className="h-8 w-20 rounded-md" />
-          <Skeleton className="h-8 w-16 rounded-md" />
-          <Skeleton className="h-8 w-24 rounded-md" />
-          <Skeleton className="h-8 w-14 rounded-md" />
+      <div className="border-b border-[var(--hm-line)] bg-[var(--hm-surface)]">
+        <div className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-2 sm:px-4">
+          <Shimmer className="h-11 flex-1 rounded-[var(--hm-radius)]" />
+          <Shimmer className="h-11 w-11 rounded-[var(--hm-radius)]" />
+        </div>
+        <div className="mx-auto flex max-w-7xl gap-2 overflow-hidden px-3 pb-2.5 sm:px-4">
+          {['w-16', 'w-24', 'w-20', 'w-28', 'w-[4.5rem]', 'w-24'].map((width, index) => (
+            <Shimmer key={index} className={`h-9 shrink-0 rounded-full ${width}`} />
+          ))}
         </div>
       </div>
 
-      <div className="container mx-auto px-3 py-4 sm:px-4 sm:py-6">
-        <div className="mb-4">
-          <Skeleton className="mb-2 h-7 w-32" />
-          <Skeleton className="h-4 w-64" />
-        </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
+      <div className="mx-auto max-w-7xl px-3 py-4 sm:px-4 sm:py-6">
+        <Shimmer className="mb-3 h-5 w-36" />
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {Array.from({ length: 10 }).map((_, index) => (
             <div
-              key={i}
-              className="border-border/50 bg-card/80 overflow-hidden rounded-2xl border shadow-sm"
+              key={index}
+              className="overflow-hidden rounded-[var(--hm-radius)] border border-[var(--hm-line)] bg-[var(--hm-surface)]"
             >
-              <Skeleton className="aspect-square w-full sm:aspect-[4/3]" />
-              <div className="space-y-2 p-3 sm:p-4">
-                <Skeleton className="h-4 w-3/4 sm:h-5" />
-                <Skeleton className="hidden h-4 w-1/2 sm:block" />
-                <Skeleton className="hidden h-3 w-full sm:block" />
-                <div className="flex items-center justify-between gap-2">
-                  <Skeleton className="h-4 w-14 sm:h-6 sm:w-16" />
-                  <Skeleton className="hidden h-5 w-14 sm:block" />
-                </div>
+              <Shimmer className="aspect-square w-full rounded-none" />
+              <div className="space-y-2 p-2.5">
+                <Shimmer className="h-3.5 w-4/5" />
+                <Shimmer className="h-3 w-1/3 rounded-full" />
+                <Shimmer className="h-4 w-1/2" />
+                <Shimmer className="h-9 w-full rounded-[var(--hm-radius-sm)]" />
               </div>
             </div>
           ))}
