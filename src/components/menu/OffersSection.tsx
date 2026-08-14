@@ -3,22 +3,21 @@
 import { motion } from 'framer-motion';
 import { BadgePercent } from 'lucide-react';
 import { useActiveOffers } from '@/hooks/useOffers';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { Image } from '@/components/shared/Image';
 import { MotionSection } from '@/components/shared/motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 
 export function OffersSection() {
   const { data: offers, isLoading } = useActiveOffers();
-  const { data: settings } = useRestaurantSettings();
+  const { currency } = useMenuSettings();
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
-  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
 
   if (isLoading || !offers?.length) return null;

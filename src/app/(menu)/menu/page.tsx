@@ -4,10 +4,11 @@ import { createClient } from '@/lib/supabase/server';
 import { fetchCategoriesWithProducts } from '@/lib/catalog/fetchCatalog';
 import { categoryKeys, CATALOG_STALE_TIME, CATALOG_GC_TIME } from '@/lib/catalog/keys';
 import { settingsKeys } from '@/lib/settings/keys';
-import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { MenuPageClient } from '@/components/menu/MenuPageClient';
+import { MenuSettingsProvider } from '@/components/menu/MenuSettingsProvider';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { generateMenuMetadata } from '@/lib/seo/metadata';
+import type { RestaurantSettings, Settings } from '@/types';
 
 export async function generateMetadata() {
   const headerStore = await headers();
@@ -25,6 +26,8 @@ export default async function PublicMenuPage() {
     },
   });
 
+  let initialRestaurantSettings: RestaurantSettings | null = null;
+
   try {
     const supabase = await createClient();
     await Promise.all([
@@ -32,19 +35,31 @@ export default async function PublicMenuPage() {
         queryKey: categoryKeys.withProducts(),
         queryFn: () => fetchCategoriesWithProducts(supabase),
       }),
-      // Prices, currency and branding render on first paint alongside the catalog.
+      // Match client useRestaurantSettings queryFn so currency hydrates on first paint.
       queryClient.prefetchQuery({
         queryKey: settingsKeys.restaurant(),
-        queryFn: () => fetchRestaurantSettings(),
+        queryFn: async () => {
+          const { data, error } = await supabase
+            .from('settings')
+            .select('*')
+            .eq('key', 'restaurant')
+            .single();
+          if (error) throw error;
+          return (data as Settings).value as unknown as RestaurantSettings;
+        },
       }),
     ]);
+    initialRestaurantSettings =
+      queryClient.getQueryData<RestaurantSettings>(settingsKeys.restaurant()) ?? null;
   } catch {
     // Prefetch is best-effort; client will retry
   }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MenuPageClient />
+      <MenuSettingsProvider initialSettings={initialRestaurantSettings}>
+        <MenuPageClient />
+      </MenuSettingsProvider>
     </HydrationBoundary>
   );
 }

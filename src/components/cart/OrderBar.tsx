@@ -1,13 +1,13 @@
-'use client';
+﻿'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import { useCartCount } from '@/hooks/useCartCount';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { useCartStore, type CartDiningMode } from '@/stores/cart-store';
 import { calculateOrderTotals, getUnitPrice } from '@/lib/order/totals';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface OrderBarProps {
@@ -19,12 +19,11 @@ interface OrderBarProps {
 export function OrderBar({ diningMode, onOpenCart }: OrderBarProps) {
   const cartCount = useCartCount();
   const items = useCartStore((s) => s.items);
-  const { data: settings } = useRestaurantSettings();
+  const { settings, currency } = useMenuSettings();
   const { locale } = useI18n();
   const tCart = useTranslations('cart');
   const prefersReducedMotion = useReducedMotion();
 
-  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const totals = calculateOrderTotals(
     items.map((item) => ({

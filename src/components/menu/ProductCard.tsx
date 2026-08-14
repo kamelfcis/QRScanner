@@ -16,10 +16,10 @@ import {
 } from '@/components/ui/dialog';
 import { Image } from '@/components/shared/Image';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { getCategoryImageFit, type MarketCategoryKind } from '@/lib/market/catalog';
 import { parseUnitLabel } from '@/lib/market/units';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -50,7 +50,7 @@ export function ProductCard({
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
-  const { data: settings } = useRestaurantSettings();
+  const { settings, currency } = useMenuSettings();
   const addItem = useCartStore((s) => s.addItem);
 
   const [qty, setQty] = useState(1);
@@ -58,7 +58,6 @@ export function ProductCard({
   const [notes, setNotes] = useState('');
   const [pulse, setPulse] = useState(false);
 
-  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const price = diningMode === 'dining' ? product.dining_price : product.takeaway_price;

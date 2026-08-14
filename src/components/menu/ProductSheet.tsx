@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
@@ -8,10 +8,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Image } from '@/components/shared/Image';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { getCategoryImageFit, type MarketCategoryKind } from '@/lib/market/catalog';
 import { parseUnitLabel } from '@/lib/market/units';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -31,7 +31,7 @@ export function ProductSheet({ product, categoryKind, diningMode, onClose }: Pro
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
-  const { data: settings } = useRestaurantSettings();
+  const { settings, currency } = useMenuSettings();
   const addItem = useCartStore((s) => s.addItem);
   const [qty, setQty] = useState(1);
   const [openedProductId, setOpenedProductId] = useState(product?.id ?? null);
@@ -43,7 +43,6 @@ export function ProductSheet({ product, categoryKind, diningMode, onClose }: Pro
 
   if (!product) return null;
 
-  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const productName = getName(locale, product.name_en, product.name_ar);
   const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;

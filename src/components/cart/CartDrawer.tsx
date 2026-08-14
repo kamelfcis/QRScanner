@@ -15,8 +15,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cart-store';
 import { calculateOrderTotals, getUnitPrice } from '@/lib/order/totals';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
@@ -33,14 +33,13 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const isDesktop = useIsDesktop();
   const { locale } = useI18n();
   const t = useTranslations('cart');
-  const { data: settings } = useRestaurantSettings();
+  const { settings, currency } = useMenuSettings();
   const items = useCartStore((s) => s.items);
   const diningMode = useCartStore((s) => s.diningMode);
   const updateQty = useCartStore((s) => s.updateQty);
   const removeItem = useCartStore((s) => s.removeItem);
   const setItemNotes = useCartStore((s) => s.setItemNotes);
 
-  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   // RTL is the primary locale here, so the desktop drawer opens from the start edge.
   const side = isDesktop ? 'right' : 'bottom';

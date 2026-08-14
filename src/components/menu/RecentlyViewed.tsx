@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { Image } from '@/components/shared/Image';
 import { MotionSection } from '@/components/shared/motion';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { formatCurrencyAmount } from '@/lib/order/format-currency';
 
 interface RecentlyViewedProps {
   onSelectProduct: (productId: string) => void;
@@ -21,8 +21,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
-  const { data: settings } = useRestaurantSettings();
-  const currency = getRestaurantCurrency(settings?.currency);
+  const { currency } = useMenuSettings();
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
 
   if (!recent.length) return null;
