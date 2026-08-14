@@ -11,7 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = `${displayName} | لوحة التحكم`;
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description: `تسجيل الدخول إلى لوحة تحكم ${displayName}`,
   };
 }
