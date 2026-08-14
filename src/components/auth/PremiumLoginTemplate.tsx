@@ -97,7 +97,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
               copy={{
                 email: t('email'),
                 password: t('password'),
-                emailPlaceholder: t('emailPlaceholder'),
+                emailPlaceholder: brand.emailPlaceholder,
                 passwordPlaceholder: t('passwordPlaceholder'),
                 signIn: t('signIn'),
                 signingIn: t('signingIn'),

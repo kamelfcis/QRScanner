@@ -20,5 +20,6 @@ export interface LoginBrandConfig {
   taglineEn: string;
   logoUrl: string | null;
   heroImageUrl: string | null;
+  emailPlaceholder: string;
   tokens: LoginThemeTokens;
 }

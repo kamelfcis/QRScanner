@@ -4,6 +4,12 @@ import type { LoginBrandConfig, LoginTenantId } from './types';
 
 const TENANT_IDS: readonly LoginTenantId[] = ['harameen', 'aklet', 'warda', 'custom'];
 
+const TENANT_ADMIN_EMAIL: Record<Exclude<LoginTenantId, 'custom'>, string> = {
+  warda: 'admin@wardashamya.com',
+  aklet: 'admin@akletgambary.com',
+  harameen: 'admin@harameen.com',
+};
+
 const HEX_COLOR = /^#[0-9A-Fa-f]{6}$/;
 
 function isLoginTenantId(value: string): value is LoginTenantId {
@@ -124,10 +130,56 @@ export function mergeLiveLoginBrand(
   };
 }
 
+function compactTenantSlug(value: string): string {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '') || 'restaurant'
+  );
+}
+
+function tenantSlugFromEnv(): string | null {
+  const appName = process.env.NEXT_PUBLIC_APP_NAME?.trim();
+  if (appName) return compactTenantSlug(appName);
+
+  const url = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL;
+  if (!url) return null;
+
+  try {
+    const host = new URL(url).hostname;
+    const sub = host.split('.')[0];
+    if (sub && sub !== 'www') return compactTenantSlug(sub);
+  } catch {
+    /* ignore invalid URL */
+  }
+
+  return null;
+}
+
+export function resolveLoginEmailPlaceholder(
+  tenantId: LoginTenantId,
+  restaurant?: RestaurantSettings | null
+): string {
+  const fromSettings = restaurant?.email?.trim();
+  if (fromSettings) return fromSettings;
+
+  if (tenantId !== 'custom') {
+    return TENANT_ADMIN_EMAIL[tenantId];
+  }
+
+  const slug = tenantSlugFromEnv();
+  return slug ? `admin@${slug}.com` : 'admin@example.com';
+}
+
 export function resolveLoginBrand(options?: {
   restaurant?: RestaurantSettings | null;
   theme?: ThemeSettings | null;
 }): LoginBrandConfig {
   const tenantId = resolveLoginTenant();
-  return mergeLiveLoginBrand(loginThemes[tenantId], options?.restaurant, options?.theme);
+  const brand = mergeLiveLoginBrand(loginThemes[tenantId], options?.restaurant, options?.theme);
+  return {
+    ...brand,
+    emailPlaceholder: resolveLoginEmailPlaceholder(tenantId, options?.restaurant),
+  };
 }

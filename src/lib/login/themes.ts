@@ -14,6 +14,7 @@ export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
     taglineEn: 'Wholesale market',
     logoUrl: null,
     heroImageUrl: null,
+    emailPlaceholder: 'admin@harameen.com',
     tokens: {
       primary: '#0E7490',
       accent: '#C45C26',
@@ -34,6 +35,7 @@ export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
     taglineEn: 'Aklet Gambary',
     logoUrl: null,
     heroImageUrl: null,
+    emailPlaceholder: 'admin@akletgambary.com',
     tokens: {
       primary: '#0B1F2A',
       accent: '#E85D3A',
@@ -54,6 +56,7 @@ export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
     taglineEn: 'Warda Shamya',
     logoUrl: null,
     heroImageUrl: '/hero/warda-storefront.jpg',
+    emailPlaceholder: 'admin@wardashamya.com',
     tokens: {
       primary: '#6B0F1A',
       accent: '#C49A2A',
@@ -74,6 +77,7 @@ export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
     taglineEn: '',
     logoUrl: null,
     heroImageUrl: null,
+    emailPlaceholder: 'admin@example.com',
     tokens: {
       primary: '#2563EB',
       accent: '#F59E0B',
