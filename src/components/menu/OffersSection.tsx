@@ -23,11 +23,14 @@ export function OffersSection() {
   if (isLoading || !offers?.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-4">
-      <div className="from-primary/10 via-primary/5 to-accent/10 rounded-xl bg-gradient-to-r p-4">
-        <h2 className="font-heading text-primary mb-3 text-lg font-bold">
-          {locale === 'ar' ? 'عروض خاصة' : 'Special Offers'}
-        </h2>
+    <MotionSection className="mx-auto max-w-6xl px-3 py-5 sm:px-5">
+      <div className="rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-4">
+        <div className="mb-3 flex items-center gap-3">
+          <h2 className="font-heading text-base font-semibold text-[var(--menu-ink)] sm:text-lg">
+            {locale === 'ar' ? 'عروض خاصة' : 'Special Offers'}
+          </h2>
+          <span aria-hidden className="menu-rule h-px flex-1" />
+        </div>
         <motion.div
           initial={prefersReducedMotion ? undefined : 'hidden'}
           whileInView="visible"
@@ -39,7 +42,7 @@ export function OffersSection() {
             <motion.div
               key={offer.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
-              className="bg-background min-w-[260px] shrink-0 overflow-hidden rounded-lg border shadow-sm"
+              className="min-w-[240px] shrink-0 overflow-hidden rounded-lg border border-[var(--menu-line)] bg-[var(--menu-paper)]"
             >
               {offer.image_url && (
                 <div className="relative aspect-[16/9] w-full overflow-hidden">
@@ -50,7 +53,7 @@ export function OffersSection() {
                     className="object-cover"
                     sizes="260px"
                   />
-                  <Badge className="bg-accent text-foreground absolute left-2 top-2">
+                  <Badge className="bg-[#FDF7F0]/94 absolute start-2 top-2 text-[10px] uppercase tracking-[0.08em] text-[var(--menu-wine)]">
                     {offer.discount_type === 'percentage'
                       ? `${offer.discount_value}% OFF`
                       : `${formatCurrencyAmount(offer.discount_value, currency, { locale: currencyLocale })} OFF`}
@@ -58,9 +61,11 @@ export function OffersSection() {
                 </div>
               )}
               <div className="p-3">
-                <h3 className="font-semibold">{getName(locale, offer.title_en, offer.title_ar)}</h3>
+                <h3 className="font-heading text-sm font-semibold text-[var(--menu-ink)]">
+                  {getName(locale, offer.title_en, offer.title_ar)}
+                </h3>
                 {(offer.description_en || offer.description_ar) && (
-                  <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">
+                  <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[var(--menu-ink-soft)]">
                     {getName(locale, offer.description_en || '', offer.description_ar)}
                   </p>
                 )}

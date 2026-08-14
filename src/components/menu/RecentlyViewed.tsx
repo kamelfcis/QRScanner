@@ -29,14 +29,20 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
   if (!recent.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-6">
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="text-muted-foreground h-4 w-4" />
-          <h2 className="font-heading text-lg font-bold">{t('recentlyViewed')}</h2>
-        </div>
-        <Button variant="ghost" size="sm" onClick={clearRecent} className="text-muted-foreground">
-          <X className="mr-1 h-3 w-3" />
+    <MotionSection className="mx-auto max-w-6xl px-3 py-6 sm:px-5">
+      <div className="mb-3 flex items-center gap-3">
+        <Clock className="h-3.5 w-3.5 shrink-0 text-[var(--menu-gold)]" aria-hidden="true" />
+        <h2 className="font-heading text-base font-semibold text-[var(--menu-ink)] sm:text-lg">
+          {t('recentlyViewed')}
+        </h2>
+        <span aria-hidden className="menu-rule h-px flex-1" />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={clearRecent}
+          className="h-8 shrink-0 rounded-full px-3 text-xs text-[var(--menu-ink-soft)]"
+        >
+          <X className="me-1 h-3 w-3" aria-hidden="true" />
           {t('clear')}
         </Button>
       </div>
@@ -54,7 +60,7 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
               key={product.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
               onClick={() => onSelectProduct(product.id)}
-              className="flex min-w-[140px] shrink-0 overflow-hidden rounded-lg border text-left transition-shadow hover:shadow-md"
+              className="flex min-w-[150px] shrink-0 overflow-hidden rounded-lg border border-[var(--menu-line)] bg-[var(--menu-surface)] text-start transition-colors hover:border-[var(--menu-gold-soft)]"
             >
               {product.image_url && (
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden">
@@ -67,9 +73,11 @@ export function RecentlyViewed({ onSelectProduct }: RecentlyViewedProps) {
                   />
                 </div>
               )}
-              <div className="flex flex-col justify-center p-2">
-                <h4 className="line-clamp-1 text-sm font-medium">{name}</h4>
-                <p className="text-primary text-xs">
+              <div className="flex min-w-0 flex-col justify-center p-2.5">
+                <h4 className="font-heading line-clamp-1 text-xs font-semibold text-[var(--menu-ink)]">
+                  {name}
+                </h4>
+                <p className="mt-0.5 text-xs tabular-nums text-[var(--menu-wine)]" dir="ltr">
                   {formatCurrencyAmount(product.dining_price, currency, { locale: currencyLocale })}
                 </p>
               </div>

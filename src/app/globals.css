@@ -13,6 +13,7 @@
   --font-heading: var(--font-heading-family), ui-serif, Georgia, "Times New Roman", serif;
   --font-ar: var(--font-ar-family), ui-sans-serif, sans-serif;
   --font-arabic: var(--font-ar-family), ui-sans-serif, sans-serif;
+  --font-ar-heading: var(--font-ar-heading-family), var(--font-ar-family), ui-sans-serif, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -319,5 +320,152 @@ textarea,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Hide scrollbars on horizontal chip / carousel rows */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ==========================================================================
+   Menu experience — "Damascus salon at dusk"
+
+   Scoped to [data-menu-theme] (set on <body> by MenuThemeScope and on the
+   page root for first paint) so the dashboard keeps its own palette.
+   ========================================================================== */
+
+[data-menu-theme] {
+  /* Signature palette */
+  --menu-paper: #f6f1e8;
+  --menu-paper-deep: #ede4d5;
+  --menu-surface: #fffcf7;
+  --menu-surface-elevated: #ffffff;
+  --menu-ink: #211d18;
+  --menu-ink-soft: #6a6055;
+  --menu-line: #e4dacb;
+  --menu-line-strong: #d3c5ac;
+  --menu-gold: #8c6a2f;
+  --menu-gold-soft: #b8934a;
+  --menu-gold-faint: #c4a877;
+  --menu-gold-wash: rgba(184, 147, 74, 0.12);
+  --menu-gold-line: rgba(184, 147, 74, 0.5);
+  --menu-gold-line-strong: rgba(184, 147, 74, 0.72);
+  --menu-wine: #6b0f1a;
+  --menu-wine-deep: #4f0a12;
+  --menu-wine-wash: rgba(107, 15, 26, 0.08);
+
+  /* Sticky offsets — category nav pins directly under the header */
+  --menu-header-h: calc(3.5rem + env(safe-area-inset-top, 0px));
+  --menu-nav-h: 2.875rem;
+
+  /* Map onto the shared shadcn tokens so every primitive inherits the mood */
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-gold);
+  --primary-foreground: #fffcf7;
+  --secondary: var(--menu-wine);
+  --secondary-foreground: #fdf7f0;
+  --muted: #ece4d6;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-wine);
+  --accent-foreground: #fdf7f0;
+  --destructive: #a3231f;
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-gold);
+  --radius: 0.45rem;
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+}
+
+@media (min-width: 640px) {
+  [data-menu-theme] {
+    --menu-header-h: calc(4rem + env(safe-area-inset-top, 0px));
+  }
+}
+
+/* Arabic headings switch to IBM Plex Sans Arabic; body stays Tajawal */
+[dir="rtl"] [data-menu-theme] h1,
+[dir="rtl"] [data-menu-theme] h2,
+[dir="rtl"] [data-menu-theme] h3,
+[dir="rtl"] [data-menu-theme] h4,
+[dir="rtl"] [data-menu-theme] .font-heading {
+  font-family: var(--font-ar-heading-family), var(--font-ar-family), ui-sans-serif, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+/* Latin headings keep Cormorant, tightened for editorial rhythm */
+[dir="ltr"] [data-menu-theme] .font-heading {
+  letter-spacing: -0.01em;
+}
+
+/* Arabic script must stay joined — tracking utilities break the cursive */
+[dir="rtl"] [data-menu-theme],
+[dir="rtl"] [data-menu-theme] * {
+  letter-spacing: normal;
+}
+
+/* Small caps label above a title; Arabic drops the caps + tracking treatment */
+[data-menu-theme] .menu-eyebrow {
+  font-size: 0.625rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+[dir="rtl"] [data-menu-theme] .menu-eyebrow {
+  font-size: 0.6875rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Editorial section rule: small caps label with a hairline that trails off */
+[data-menu-theme] .menu-rule {
+  background-image: linear-gradient(to right, var(--menu-line-strong), transparent);
+}
+[dir="rtl"] [data-menu-theme] .menu-rule {
+  background-image: linear-gradient(to left, var(--menu-line-strong), transparent);
+}
+
+[data-menu-theme] ::selection {
+  background-color: var(--menu-wine);
+  color: #fdf7f0;
+}
+
+[data-menu-theme] ::-webkit-scrollbar-thumb {
+  background: var(--menu-line-strong);
+}
+
+/* Compact cinematic hero — single ken-burns pass, then rest */
+@keyframes menu-hero-pan {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.menu-hero-image {
+  animation: menu-hero-pan 4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-hero-image {
+    animation: none;
+    transform: none;
   }
 }

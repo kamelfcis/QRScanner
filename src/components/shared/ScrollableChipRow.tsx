@@ -19,6 +19,8 @@ export interface ScrollableChipRowProps {
   scrollClassName?: string;
   /** Tailwind gradient start color for edge fades */
   fadeFromClassName?: string;
+  /** Override styling of the prev/next affordances */
+  arrowClassName?: string;
   /** Re-run scroll metrics when this changes (e.g. item count) */
   itemCount?: number;
 }
@@ -33,6 +35,7 @@ export function ScrollableChipRow({
   className,
   scrollClassName,
   fadeFromClassName = 'from-background/90',
+  arrowClassName,
   itemCount,
 }: ScrollableChipRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -135,7 +138,10 @@ export function ScrollableChipRow({
           type="button"
           onClick={() => scrollByAmount('start')}
           aria-label={scrollPrevLabel}
-          className="border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute start-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className={cn(
+            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute start-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            arrowClassName
+          )}
         >
           <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
         </button>
@@ -162,7 +168,10 @@ export function ScrollableChipRow({
           type="button"
           onClick={() => scrollByAmount('end')}
           aria-label={scrollNextLabel}
-          className="border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute end-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className={cn(
+            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute end-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            arrowClassName
+          )}
         >
           <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
         </button>

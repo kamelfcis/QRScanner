@@ -1,10 +1,10 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Utensils, ShoppingBag, Heart, Search, MessageCircle, ShoppingCart } from 'lucide-react';
+import { Heart, MessageCircle, Search, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useCartStore } from '@/stores/cart-store';
@@ -19,6 +19,9 @@ interface MenuHeaderProps {
   onCartOpen: () => void;
   favoriteCount: number;
 }
+
+const iconButton =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
 
 export function MenuHeader({
   tableParam,
@@ -53,80 +56,88 @@ export function MenuHeader({
 
   return (
     <motion.header
-      initial={prefersReducedMotion ? undefined : { y: -64, opacity: 0 }}
+      initial={prefersReducedMotion ? undefined : { y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        'bg-background/95 sticky top-0 z-40 border-b pt-[env(safe-area-inset-top)] backdrop-blur'
-      )}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-background/92 sticky top-0 z-40 pt-[env(safe-area-inset-top)] backdrop-blur-md"
     >
-      <div className="container mx-auto flex h-16 items-center justify-between gap-2 px-4">
-        <div className="flex min-w-0 items-center gap-2">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:h-16 sm:px-5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
           {settings?.logo_url ? (
-            <NextImage
-              src={settings.logo_url}
-              alt={name}
-              width={32}
-              height={32}
-              className="h-8 w-8 shrink-0 object-contain"
-            />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] p-1 sm:h-10 sm:w-10">
+              <NextImage
+                src={settings.logo_url}
+                alt=""
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
+              />
+            </span>
           ) : null}
-          <h1 className="font-heading text-primary truncate text-lg font-bold sm:text-xl">
-            {name}
-          </h1>
-          {tableParam && (
-            <Badge variant="secondary" className="shrink-0 text-xs">
-              {t('tableNumber', { number: tableParam })}
-            </Badge>
-          )}
+
+          <div className="min-w-0">
+            <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
+              {name}
+            </h1>
+            <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
+              {t('menuLead')}
+              {tableParam ? ` · ${t('tableNumber', { number: tableParam })}` : ''}
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
+          <DiningModeToggle
+            value={diningMode}
+            onChange={onDiningModeChange}
+            className="hidden sm:inline-flex"
+          />
+
+          <LanguageSwitcher
+            variant="ghost"
+            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+          />
+
           {whatsapp && tableParam && (
             <a
               href={`https://wa.me/${whatsapp}?text=${waiterMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:bg-muted inline-flex h-11 w-11 items-center justify-center rounded-lg text-[#25D366]"
+              className={cn(iconButton, 'hidden sm:inline-flex')}
               aria-label={t('callWaiter')}
             >
-              <MessageCircle className="h-5 w-5" />
+              <MessageCircle className="h-[18px] w-[18px]" aria-hidden="true" />
             </a>
           )}
 
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="h-11 w-11"
+          {favoriteCount > 0 && (
+            <span
+              role="status"
+              aria-label={t('favoritesCount', { count: favoriteCount })}
+              className="hidden items-center gap-1.5 rounded-full border border-[var(--menu-line-strong)] px-2.5 py-1 text-xs tabular-nums text-[var(--menu-wine)] sm:inline-flex"
+            >
+              <Heart className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+              {favoriteCount}
+            </span>
+          )}
+
+          <button
+            type="button"
+            className={iconButton}
             onClick={onSearchOpen}
             aria-label={t('searchMenu')}
           >
-            <Search className="h-5 w-5" />
-          </Button>
+            <Search className="h-[18px] w-[18px]" aria-hidden="true" />
+          </button>
 
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="relative h-11 w-11"
-            aria-label={t('favoritesCount', { count: favoriteCount })}
-          >
-            <Heart className="h-5 w-5" />
-            {favoriteCount > 0 && (
-              <span className="bg-primary text-primary-foreground absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold">
-                {favoriteCount}
-              </span>
-            )}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="relative h-11 w-11"
+          <button
+            type="button"
+            className={cn(iconButton, 'relative')}
             onClick={onCartOpen}
             aria-label={tCart('cartCount', { count: cartCount })}
             data-testid="cart-button"
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-[18px] w-[18px]" aria-hidden="true" />
             <span className="sr-only" aria-live="polite">
               {tCart('cartCount', { count: cartCount })}
             </span>
@@ -136,42 +147,20 @@ export function MenuHeader({
                 initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-primary text-primary-foreground absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-0.5 text-[10px] font-bold tabular-nums"
+                className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
                 data-testid="cart-badge"
               >
                 {cartCount > 99 ? '99+' : cartCount}
               </motion.span>
             )}
-          </Button>
-
-          <div
-            className="flex items-center rounded-lg border"
-            role="group"
-            aria-label={t('diningMode')}
-          >
-            <Button
-              variant={diningMode === 'dining' ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-11 w-11 rounded-r-none"
-              onClick={() => onDiningModeChange('dining')}
-              aria-pressed={diningMode === 'dining'}
-              aria-label={t('dining')}
-            >
-              <Utensils className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={diningMode === 'takeaway' ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-11 w-11 rounded-l-none"
-              onClick={() => onDiningModeChange('takeaway')}
-              aria-pressed={diningMode === 'takeaway'}
-              aria-label={t('takeaway')}
-            >
-              <ShoppingBag className="h-4 w-4" />
-            </Button>
-          </div>
+          </button>
         </div>
       </div>
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
+      />
     </motion.header>
   );
 }

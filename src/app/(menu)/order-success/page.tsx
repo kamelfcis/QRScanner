@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { CheckCircle2, MessageCircle } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore } from '@/stores/cart-store';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -82,7 +83,11 @@ function OrderSuccessContent() {
   };
 
   return (
-    <div className="bg-background flex min-h-[100svh] items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+    <div
+      data-menu-theme
+      className="flex min-h-[100svh] items-center justify-center bg-[var(--menu-paper)] px-4 pb-[env(safe-area-inset-bottom)]"
+    >
+      <MenuThemeScope />
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
         animate="visible"
@@ -91,25 +96,27 @@ function OrderSuccessContent() {
       >
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="bg-primary/10 text-primary mx-auto flex h-16 w-16 items-center justify-center rounded-full"
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)]"
         >
-          <CheckCircle2 className="h-9 w-9" aria-hidden="true" />
+          <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
         </motion.div>
 
         <div className="space-y-2">
-          <h1 className="font-heading text-2xl font-bold sm:text-3xl">{title}</h1>
-          <p className="text-muted-foreground text-sm">{description}</p>
+          <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{title}</h1>
+          <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
+            {description}
+          </p>
         </div>
 
         <div className="flex flex-col gap-3">
           {waUrl && (
             <Button
               size="lg"
-              className="h-12 w-full"
+              className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
               onClick={() => openWhatsAppUrl(waUrl)}
               data-testid="reopen-whatsapp"
             >
-              <MessageCircle className="mr-2 h-4 w-4" />
+              <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />
               {t('openWhatsApp')}
             </Button>
           )}
@@ -117,7 +124,7 @@ function OrderSuccessContent() {
           <Button
             size="lg"
             variant="outline"
-            className="h-12 w-full"
+            className="h-12 w-full rounded-full"
             onClick={keepCart}
             data-testid="keep-cart"
           >
@@ -126,8 +133,8 @@ function OrderSuccessContent() {
 
           <Button
             size="lg"
-            variant="secondary"
-            className="h-12 w-full"
+            variant="outline"
+            className="h-12 w-full rounded-full text-[var(--menu-ink-soft)]"
             onClick={clearCart}
             data-testid="clear-cart"
           >

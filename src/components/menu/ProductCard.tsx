@@ -2,8 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Flame, Star, Sparkles, Minus, Plus, ShoppingCart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +15,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Image } from '@/components/shared/Image';
-import { MotionCard } from '@/components/shared/motion';
+import { BadgePill, pickBadges } from '@/components/menu/ProductBadges';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
@@ -33,63 +32,6 @@ interface ProductCardProps {
   onToggleFavorite: (product: Product) => void;
   onImageClick: (product: Product) => void;
   onAddedToCart?: () => void;
-}
-
-function pickBadges(product: Product) {
-  const badges: Array<'popular' | 'new' | 'bestseller' | 'spicy'> = [];
-  if (product.is_bestseller) badges.push('bestseller');
-  else if (product.is_popular) badges.push('popular');
-  if (product.is_new && badges.length < 2) badges.push('new');
-  if (product.is_spicy && badges.length < 2) badges.push('spicy');
-  return badges.slice(0, 2);
-}
-
-function BadgePill({
-  badge,
-  label,
-  className,
-}: {
-  badge: 'popular' | 'new' | 'bestseller' | 'spicy';
-  label: string;
-  className?: string;
-}) {
-  if (badge === 'popular' || badge === 'bestseller') {
-    return (
-      <Badge
-        className={cn(
-          'text-brand-accent bg-black/55 px-1.5 py-0.5 text-[10px] backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-          className
-        )}
-      >
-        <Star className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-        {label}
-      </Badge>
-    );
-  }
-  if (badge === 'new') {
-    return (
-      <Badge
-        className={cn(
-          'bg-black/55 px-1.5 py-0.5 text-[10px] text-white backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-          className
-        )}
-      >
-        <Sparkles className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-        {label}
-      </Badge>
-    );
-  }
-  return (
-    <Badge
-      className={cn(
-        'bg-black/55 px-1.5 py-0.5 text-[10px] text-red-400 backdrop-blur-sm sm:px-2.5 sm:py-0.5 sm:text-xs',
-        className
-      )}
-    >
-      <Flame className="me-0.5 h-2.5 w-2.5 sm:me-1 sm:h-3 sm:w-3" aria-hidden="true" />
-      {label}
-    </Badge>
-  );
 }
 
 export function ProductCard({
@@ -122,13 +64,9 @@ export function ProductCard({
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
-
-  const badgeLabel = (badge: (typeof badges)[number]) => {
-    if (badge === 'popular') return t('popular');
-    if (badge === 'new') return t('new');
-    if (badge === 'bestseller') return t('bestseller');
-    return t('spicy');
-  };
+  const description = product.description_en
+    ? getName(locale, product.description_en, product.description_ar)
+    : '';
 
   const handleAdd = (withNotes: string) => {
     if (!product.is_available) return;
@@ -176,39 +114,43 @@ export function ProductCard({
   };
 
   return (
-    <MotionCard hover className="overflow-hidden">
-      <Card className="border-border/50 bg-card/80 relative overflow-hidden rounded-2xl border shadow-sm">
-        <div className="relative aspect-square w-full overflow-hidden sm:aspect-[4/3]">
+    <>
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] shadow-[0_1px_2px_rgba(33,29,24,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(33,29,24,0.28)]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--menu-paper-deep)] sm:aspect-[3/4]">
           <button
             type="button"
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 h-full w-full"
             onClick={() => onImageClick(product)}
-            aria-label={productName}
+            aria-label={`${t('viewDish')}: ${productName}`}
           >
             {product.image_url ? (
               <Image
                 src={product.image_url}
                 alt={productName}
                 fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-cover transition-transform duration-500 ease-out motion-reduce:transition-none sm:group-hover:scale-[1.04] motion-reduce:sm:group-hover:scale-100"
                 containerClassName="absolute inset-0 h-full w-full"
               />
             ) : (
-              <div className="bg-muted absolute inset-0 flex h-full w-full items-center justify-center">
-                <span className="font-heading text-muted-foreground/40 text-3xl">
+              <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[radial-gradient(120%_100%_at_50%_0%,#ece2d2_0%,#ded1ba_100%)]">
+                <span className="font-heading text-4xl text-[var(--menu-gold-faint)]">
                   {productName.charAt(0)}
                 </span>
               </div>
             )}
           </button>
 
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent"
+          />
+
           <div className="pointer-events-none absolute start-2 top-2 z-[1] flex flex-wrap gap-1">
             {badges.map((badge, index) => (
               <BadgePill
                 key={badge}
                 badge={badge}
-                label={badgeLabel(badge)}
                 className={index > 0 ? 'hidden sm:inline-flex' : undefined}
               />
             ))}
@@ -222,105 +164,103 @@ export function ProductCard({
               onToggleFavorite(product);
             }}
             className={cn(
-              'absolute end-2 top-2 z-[2] flex h-9 w-9 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11',
+              'absolute end-2 top-2 z-[2] flex h-9 w-9 items-center justify-center rounded-full transition-colors',
               isFavorite
-                ? 'bg-red-500 text-white'
-                : 'bg-background/80 text-muted-foreground backdrop-blur-sm'
+                ? 'bg-[var(--menu-wine)] text-[#FDF7F0]'
+                : 'bg-[#FDF7F0]/90 text-[var(--menu-ink-soft)] backdrop-blur-[2px] hover:text-[var(--menu-wine)]'
             )}
             aria-label={isFavorite ? t('removeFavorite') : t('addFavorite')}
             aria-pressed={isFavorite}
           >
-            <Heart
-              className={cn('h-3.5 w-3.5 sm:h-4 sm:w-4', isFavorite && 'fill-current')}
-              aria-hidden="true"
-            />
+            <Heart className={cn('h-4 w-4', isFavorite && 'fill-current')} aria-hidden="true" />
           </motion.button>
 
-          {product.is_available && (
-            <motion.button
-              type="button"
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
-              animate={pulse && !prefersReducedMotion ? { scale: [1, 1.08, 1] } : { scale: 1 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              onPointerDown={startLongPress}
-              onPointerUp={clearLongPress}
-              onPointerLeave={clearLongPress}
-              onPointerCancel={clearLongPress}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleMobileAddClick();
-              }}
-              className="bg-brand-accent absolute bottom-2 end-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full text-black shadow-md sm:hidden"
-              aria-label={tCart('addToCart')}
-              data-testid="add-to-cart-mobile"
-            >
-              <ShoppingCart className="h-4 w-4" aria-hidden="true" />
-            </motion.button>
+          {!product.is_available && (
+            <div className="bg-background/75 absolute inset-0 z-[1] flex items-center justify-center">
+              <Badge
+                variant="secondary"
+                className="bg-[var(--menu-ink)] text-[11px] text-[var(--menu-paper)]"
+              >
+                {t('currentlyUnavailable')}
+              </Badge>
+            </div>
           )}
         </div>
 
-        <CardContent className="p-2.5 sm:p-3.5">
+        <div className="flex flex-1 flex-col p-3 sm:p-3.5">
           <button
             type="button"
-            className="mb-1.5 block w-full text-start sm:mb-2"
+            className="block w-full text-start"
             onClick={() => onImageClick(product)}
           >
-            <h3 className="font-heading line-clamp-2 text-sm font-bold leading-snug sm:text-base">
+            <h3 className="font-heading line-clamp-2 text-[13.5px] font-semibold leading-snug text-[var(--menu-ink)] sm:text-[15px]">
               {productName}
             </h3>
-            {locale !== 'ar' && product.name_ar && (
-              <p className="text-muted-foreground mt-0.5 hidden text-xs sm:block" dir="rtl">
-                {product.name_ar}
-              </p>
-            )}
-            {locale === 'ar' && product.name_en && (
-              <p className="text-muted-foreground mt-0.5 hidden text-xs sm:block" dir="ltr">
-                {product.name_en}
-              </p>
-            )}
-            {product.description_en && (
-              <p className="text-muted-foreground mt-1.5 line-clamp-2 hidden text-xs sm:block">
-                {getName(locale, product.description_en, product.description_ar)}
+            {description && (
+              <p className="mt-1 line-clamp-1 text-[11.5px] leading-relaxed text-[var(--menu-ink-soft)] sm:mt-1.5 sm:line-clamp-2 sm:text-xs">
+                {description}
               </p>
             )}
           </button>
 
-          <div className="mb-0 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 sm:mb-2.5">
-            <p className="text-brand-accent text-sm font-bold tabular-nums sm:text-base" dir="ltr">
-              {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-            </p>
-            {otherPrice !== activePrice && (
-              <p className="text-muted-foreground hidden text-xs tabular-nums sm:inline" dir="ltr">
-                {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-                {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+          <div className="mt-2.5 flex items-end justify-between gap-2 sm:mt-3">
+            <div className="min-w-0">
+              <p
+                className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                dir="ltr"
+              >
+                {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
               </p>
-            )}
-            {!product.is_available && (
-              <Badge variant="secondary" aria-label={t('currentlyUnavailable')}>
-                {t('currentlyUnavailable')}
-              </Badge>
+              {otherPrice !== activePrice && (
+                <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
+                  {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+                  {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+                </p>
+              )}
+            </div>
+
+            {product.is_available && (
+              <motion.button
+                type="button"
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
+                animate={pulse && !prefersReducedMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                onPointerDown={startLongPress}
+                onPointerUp={clearLongPress}
+                onPointerLeave={clearLongPress}
+                onPointerCancel={clearLongPress}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleMobileAddClick();
+                }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
+                aria-label={tCart('addToCart')}
+                data-testid="add-to-cart-mobile"
+              >
+                <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+              </motion.button>
             )}
           </div>
 
           {product.is_available && (
-            <div className="mt-1.5 hidden flex-col gap-1 sm:flex">
+            <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
                 <div
-                  className="border-border/60 bg-background inline-flex h-11 shrink-0 items-stretch overflow-hidden rounded-xl border"
+                  className="inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
                   role="group"
                   aria-label={tCart('quantity')}
                 >
                   <button
                     type="button"
-                    className="text-foreground hover:bg-muted flex w-10 items-center justify-center transition-colors disabled:pointer-events-none disabled:opacity-40"
+                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
                     onClick={() => setQty((q) => Math.max(1, q - 1))}
                     aria-label={tCart('decreaseQty')}
                     disabled={qty <= 1}
                   >
-                    <Minus className="h-4 w-4" aria-hidden="true" />
+                    <Minus className="h-3.5 w-3.5" aria-hidden="true" />
                   </button>
                   <span
-                    className="border-border/60 flex min-w-8 items-center justify-center border-x px-1 text-center text-sm font-medium tabular-nums"
+                    className="flex min-w-7 items-center justify-center text-center text-sm font-medium tabular-nums"
                     aria-live="polite"
                     aria-label={tCart('quantity')}
                   >
@@ -328,13 +268,14 @@ export function ProductCard({
                   </span>
                   <button
                     type="button"
-                    className="text-foreground hover:bg-muted flex w-10 items-center justify-center transition-colors"
+                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
                     onClick={() => setQty((q) => q + 1)}
                     aria-label={tCart('increaseQty')}
                   >
-                    <Plus className="h-4 w-4" aria-hidden="true" />
+                    <Plus className="h-3.5 w-3.5" aria-hidden="true" />
                   </button>
                 </div>
+
                 <motion.div
                   className="min-w-0 flex-1"
                   animate={pulse && !prefersReducedMotion ? { scale: [1, 1.04, 1] } : { scale: 1 }}
@@ -342,29 +283,28 @@ export function ProductCard({
                 >
                   <Button
                     type="button"
-                    className="bg-brand-accent hover:bg-brand-accent/90 h-11 w-full text-black"
+                    className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
                     onClick={() => handleAdd('')}
                     data-testid="add-to-cart"
                     aria-label={tCart('addToCart')}
                   >
-                    <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />
+                    <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
                     {tCart('addToCart')}
                   </Button>
                 </motion.div>
               </div>
-              <Button
+
+              <button
                 type="button"
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground h-7 justify-start px-0.5 text-xs font-normal"
+                className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
                 onClick={() => setNotesOpen(true)}
               >
                 {tCart('itemNotes')}
-              </Button>
+              </button>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </article>
 
       <Dialog open={notesOpen} onOpenChange={setNotesOpen}>
         <DialogContent className="sm:max-w-md">
@@ -395,6 +335,6 @@ export function ProductCard({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </MotionCard>
+    </>
   );
 }

@@ -1,15 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,11 +21,15 @@ interface CartDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
+const stepperButton =
+  'flex h-9 w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
+
 export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const router = useRouter();
   const isDesktop = useIsDesktop();
   const { locale } = useI18n();
   const t = useTranslations('cart');
+  const tCommon = useTranslations('accessibility');
   const { data: settings } = useRestaurantSettings();
   const items = useCartStore((s) => s.items);
   const diningMode = useCartStore((s) => s.diningMode);
@@ -53,12 +50,10 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
     pricedItems.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
     settings
   );
+  const count = items.reduce((n, i) => n + i.quantity, 0);
 
   const handleCheckout = () => {
-    trackCheckoutStart(
-      items.reduce((n, i) => n + i.quantity, 0),
-      totals.total
-    );
+    trackCheckoutStart(count, totals.total);
     onOpenChange(false);
     router.push('/checkout');
   };
@@ -67,137 +62,174 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side={side}
-        className={side === 'bottom' ? 'max-h-[85svh] rounded-t-2xl' : 'w-full sm:max-w-md'}
+        showCloseButton={false}
+        className={
+          side === 'bottom'
+            ? 'max-h-[88svh] gap-0 rounded-t-2xl bg-[var(--menu-surface)] p-0'
+            : 'w-full gap-0 bg-[var(--menu-surface)] p-0 sm:max-w-md'
+        }
       >
-        <SheetHeader>
-          <SheetTitle>{t('title')}</SheetTitle>
-          <SheetDescription className="sr-only">{t('title')}</SheetDescription>
-        </SheetHeader>
+        <button
+          type="button"
+          onClick={() => onOpenChange(false)}
+          aria-label={tCommon('close')}
+          className="absolute end-3 top-3.5 z-10 flex h-9 w-9 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-ink)]"
+        >
+          <X className="h-4 w-4" aria-hidden="true" />
+        </button>
 
-        {items.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-12 text-center">
-            <ShoppingBag className="text-muted-foreground/50 h-12 w-12" aria-hidden="true" />
-            <p className="font-medium">{t('empty')}</p>
-            <p className="text-muted-foreground text-sm">{t('emptyDescription')}</p>
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
-              {t('browseMenu')}
-            </Button>
+        <div className="flex max-h-[88svh] flex-col overflow-hidden md:h-full md:max-h-none">
+          <div className="border-b border-[var(--menu-line)] pb-3 pe-14 ps-4 pt-4">
+            <SheetTitle className="font-heading text-lg font-semibold text-[var(--menu-ink)]">
+              {t('title')}
+            </SheetTitle>
+            <SheetDescription className="text-xs text-[var(--menu-ink-soft)]">
+              {count > 0 ? t('itemsInOrder', { count }) : t('emptyDescription')}
+            </SheetDescription>
           </div>
-        ) : (
-          <>
-            <div className="flex-1 space-y-4 overflow-y-auto px-4 pb-2">
-              {pricedItems.map((item) => {
-                const name = getName(locale, item.name_en, item.name_ar);
-                const lineTotal = item.unitPrice * item.quantity;
-                return (
-                  <div
-                    key={item.id}
-                    className="border-border/60 flex gap-3 border-b pb-4 last:border-0"
-                    data-testid="cart-line"
-                  >
-                    <div className="bg-muted relative h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-                      {item.image_url ? (
-                        <Image
-                          src={item.image_url}
-                          alt={name}
-                          fill
-                          sizes="64px"
-                          className="object-cover"
-                          containerClassName="absolute inset-0"
-                        />
-                      ) : (
-                        <div className="text-muted-foreground/40 flex h-full items-center justify-center text-lg">
-                          {name.charAt(0)}
-                        </div>
-                      )}
-                    </div>
 
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="truncate font-medium">{name}</p>
-                          <p className="text-primary text-sm tabular-nums">
-                            {formatCurrencyAmount(lineTotal, currency, { locale: currencyLocale })}
-                          </p>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          className="h-11 w-11 shrink-0"
-                          onClick={() => removeItem(item.id)}
-                          aria-label={t('removeItem')}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-
-                      <div className="mt-2 flex items-center gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon-sm"
-                          className="h-11 w-11"
-                          onClick={() => updateQty(item.id, item.quantity - 1)}
-                          aria-label={t('decreaseQty')}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <span
-                          className="min-w-8 text-center font-medium tabular-nums"
-                          aria-live="polite"
-                        >
-                          {item.quantity}
-                        </span>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon-sm"
-                          className="h-11 w-11"
-                          onClick={() => updateQty(item.id, item.quantity + 1)}
-                          aria-label={t('increaseQty')}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-
-                      <div className="mt-2 space-y-1">
-                        <Label htmlFor={`notes-${item.id}`} className="text-xs">
-                          {t('editNotes')}
-                        </Label>
-                        <Input
-                          id={`notes-${item.id}`}
-                          value={item.notes}
-                          maxLength={settings?.max_order_notes_length ?? 200}
-                          placeholder={t('itemNotesPlaceholder')}
-                          onChange={(e) => setItemNotes(item.id, e.target.value)}
-                          className="h-9 text-sm"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <SheetFooter className="bg-background border-t">
-              <div className="flex w-full items-center justify-between text-base font-semibold">
-                <span>{t('subtotal')}</span>
-                <span className="text-primary tabular-nums">
-                  {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
-                </span>
-              </div>
+          {items.length === 0 ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 py-14 text-center">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-paper)]">
+                <ShoppingBag className="h-6 w-6 text-[var(--menu-gold)]" aria-hidden="true" />
+              </span>
+              <p className="font-heading text-base font-semibold">{t('empty')}</p>
+              <p className="max-w-[32ch] text-sm text-[var(--menu-ink-soft)]">
+                {t('emptyDescription')}
+              </p>
               <Button
-                size="lg"
-                className="h-12 w-full text-base font-semibold"
-                onClick={handleCheckout}
-                data-testid="cart-checkout"
+                variant="outline"
+                className="mt-1 h-11 rounded-full px-6"
+                onClick={() => onOpenChange(false)}
               >
-                {t('checkout')}
+                {t('browseMenu')}
               </Button>
-            </SheetFooter>
-          </>
-        )}
+            </div>
+          ) : (
+            <>
+              <div className="flex-1 overflow-y-auto px-4 py-3">
+                {pricedItems.map((item) => {
+                  const name = getName(locale, item.name_en, item.name_ar);
+                  const lineTotal = item.unitPrice * item.quantity;
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex gap-3 border-b border-[var(--menu-line)] py-3.5 last:border-0"
+                      data-testid="cart-line"
+                    >
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[var(--menu-paper-deep)]">
+                        {item.image_url ? (
+                          <Image
+                            src={item.image_url}
+                            alt={name}
+                            fill
+                            sizes="64px"
+                            className="object-cover"
+                            containerClassName="absolute inset-0"
+                          />
+                        ) : (
+                          <div className="font-heading flex h-full items-center justify-center text-lg text-[var(--menu-gold-faint)]">
+                            {name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-[var(--menu-ink)]">
+                              {name}
+                            </p>
+                            <p
+                              className="mt-0.5 text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                              dir="ltr"
+                            >
+                              {formatCurrencyAmount(lineTotal, currency, {
+                                locale: currencyLocale,
+                              })}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-wine)]"
+                            onClick={() => removeItem(item.id)}
+                            aria-label={t('removeItem')}
+                          >
+                            <Trash2 className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+
+                        <div className="mt-2 flex items-center gap-2">
+                          <div
+                            className="inline-flex items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)]"
+                            role="group"
+                            aria-label={t('quantity')}
+                          >
+                            <button
+                              type="button"
+                              className={stepperButton}
+                              onClick={() => updateQty(item.id, item.quantity - 1)}
+                              aria-label={t('decreaseQty')}
+                            >
+                              <Minus className="h-3.5 w-3.5" aria-hidden="true" />
+                            </button>
+                            <span
+                              className="flex min-w-7 items-center justify-center text-sm font-medium tabular-nums"
+                              aria-live="polite"
+                            >
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              className={stepperButton}
+                              onClick={() => updateQty(item.id, item.quantity + 1)}
+                              aria-label={t('increaseQty')}
+                            >
+                              <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="mt-2">
+                          <Label htmlFor={`notes-${item.id}`} className="sr-only">
+                            {t('editNotes')}
+                          </Label>
+                          <Input
+                            id={`notes-${item.id}`}
+                            value={item.notes}
+                            maxLength={settings?.max_order_notes_length ?? 200}
+                            placeholder={t('itemNotesPlaceholder')}
+                            onChange={(e) => setItemNotes(item.id, e.target.value)}
+                            className="h-9 rounded-lg bg-[var(--menu-paper)] text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="border-t border-[var(--menu-line)] bg-[var(--menu-paper)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+                <div className="mb-3 flex items-center justify-between text-sm">
+                  <span className="text-[var(--menu-ink-soft)]">{t('subtotal')}</span>
+                  <span
+                    className="font-heading text-lg font-semibold tabular-nums text-[var(--menu-wine)]"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
+                  </span>
+                </div>
+                <Button
+                  className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+                  onClick={handleCheckout}
+                  data-testid="cart-checkout"
+                >
+                  {t('checkout')}
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
       </SheetContent>
     </Sheet>
   );

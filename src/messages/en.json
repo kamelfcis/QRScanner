@@ -175,7 +175,16 @@
     "removeFavorite": "Remove from favorites",
     "favoritesCount": "Favorites, {count} items",
     "callWaiter": "Call waiter via WhatsApp",
-    "orderViaWhatsApp": "Order via WhatsApp"
+    "orderViaWhatsApp": "Order via WhatsApp",
+    "heroTagline": "Authentic Levantine flavor, in a modern experience",
+    "heroImageAlt": "Signature dishes at {name}",
+    "dishDetails": "Dish details",
+    "closeDetails": "Close details",
+    "viewDish": "View dish",
+    "noResultsHint": "Try a different dish name, or browse the categories above.",
+    "searchHint": "Search by dish name in Arabic or English.",
+    "emptyCategory": "Nothing is being served in this section right now.",
+    "menuLead": "Menu"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -395,7 +404,10 @@
     "takeawayPrice": "Takeaway",
     "added": "Added to cart",
     "unavailable": "Unavailable",
-    "browseMenu": "Browse menu"
+    "browseMenu": "Browse menu",
+    "viewOrder": "View order",
+    "total": "Total",
+    "itemsInOrder": "{count} items in your order"
   },
   "checkout": {
     "title": "Checkout",

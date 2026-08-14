@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, DM_Sans, Tajawal } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans, IBM_Plex_Sans_Arabic, Tajawal } from 'next/font/google';
 import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
@@ -29,6 +29,14 @@ const tajawal = Tajawal({
   variable: '--font-ar-family',
   subsets: ['arabic'],
   weight: ['400', '500', '700'],
+  display: 'swap',
+  preload: true,
+});
+
+const plexArabic = IBM_Plex_Sans_Arabic({
+  variable: '--font-ar-heading-family',
+  subsets: ['arabic'],
+  weight: ['500', '600', '700'],
   display: 'swap',
   preload: true,
 });
@@ -110,7 +118,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} h-full w-full overflow-x-clip antialiased`}
+      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >
       <head>

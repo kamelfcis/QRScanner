@@ -28,10 +28,13 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
   if (isLoading || !products?.length) return null;
 
   return (
-    <MotionSection className="container mx-auto px-4 py-6">
-      <div className="mb-3 flex items-center gap-2">
-        <Sparkles className="text-accent h-4 w-4" />
-        <h2 className="font-heading text-lg font-bold">{t('recommended')}</h2>
+    <MotionSection className="mx-auto max-w-6xl px-3 py-6 sm:px-5">
+      <div className="mb-3 flex items-center gap-3">
+        <Sparkles className="h-3.5 w-3.5 shrink-0 text-[var(--menu-gold)]" aria-hidden="true" />
+        <h2 className="font-heading text-base font-semibold text-[var(--menu-ink)] sm:text-lg">
+          {t('recommended')}
+        </h2>
+        <span aria-hidden className="menu-rule h-px flex-1" />
       </div>
       <motion.div
         initial={prefersReducedMotion ? undefined : 'hidden'}
@@ -47,7 +50,7 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
               key={product.id}
               variants={prefersReducedMotion ? undefined : staggerItem}
               onClick={() => onSelectProduct(product.id)}
-              className="flex min-w-[160px] shrink-0 overflow-hidden rounded-lg border text-left transition-shadow hover:shadow-md"
+              className="flex min-w-[170px] shrink-0 overflow-hidden rounded-lg border border-[var(--menu-line)] bg-[var(--menu-surface)] text-start transition-colors hover:border-[var(--menu-gold-soft)]"
             >
               {product.image_url && (
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden">
@@ -60,14 +63,22 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
                   />
                 </div>
               )}
-              <div className="flex flex-col justify-center p-3">
-                <h4 className="line-clamp-1 text-sm font-medium">{name}</h4>
+              <div className="flex min-w-0 flex-col justify-center p-3">
+                <h4 className="font-heading line-clamp-1 text-[13px] font-semibold text-[var(--menu-ink)]">
+                  {name}
+                </h4>
                 {locale !== 'ar' && product.name_ar && (
-                  <p className="text-muted-foreground mt-1 text-xs" dir="rtl">
+                  <p
+                    className="mt-0.5 line-clamp-1 text-[11px] text-[var(--menu-ink-soft)]"
+                    dir="rtl"
+                  >
                     {product.name_ar}
                   </p>
                 )}
-                <p className="text-primary mt-1 text-sm font-bold">
+                <p
+                  className="mt-1 text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                  dir="ltr"
+                >
                   {formatCurrencyAmount(product.dining_price, currency, { locale: currencyLocale })}
                 </p>
               </div>

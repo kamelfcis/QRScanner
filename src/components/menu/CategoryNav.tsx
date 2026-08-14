@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import NextImage from 'next/image';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
@@ -16,10 +15,10 @@ interface CategoryNavProps {
 
 const chipClassName = (isActive: boolean) =>
   cn(
-    'inline-flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+    'relative inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-1 pb-2.5 pt-3 text-[13px] transition-colors sm:text-sm',
     isActive
-      ? 'border-brand-accent bg-brand-accent text-black shadow-[0_0_20px_-4px_rgba(255,183,0,0.55)]'
-      : 'border-border/60 bg-muted/40 text-muted-foreground hover:border-brand-accent/40 hover:text-foreground'
+      ? 'font-semibold text-[var(--menu-ink)]'
+      : 'font-normal text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]'
   );
 
 export function CategoryNav({ categories, activeCategory, onCategoryChange }: CategoryNavProps) {
@@ -45,64 +44,50 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
     }
   };
 
+  const renderChip = (id: string | null, label: string) => {
+    const isActive = activeCategory === id;
+    return (
+      <button
+        key={id ?? 'all'}
+        role="tab"
+        aria-selected={isActive}
+        data-category-id={id ?? 'all'}
+        onClick={() => handleClick(id)}
+        className={chipClassName(isActive)}
+      >
+        {label}
+        {isActive && (
+          <motion.span
+            aria-hidden
+            layoutId={prefersReducedMotion ? undefined : 'menu-category-underline'}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-x-0 bottom-1.5 h-[2px] rounded-full bg-[var(--menu-gold)]"
+          />
+        )}
+      </button>
+    );
+  };
+
   return (
-    <motion.nav
-      initial={prefersReducedMotion ? undefined : { y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-background/90 sticky top-16 z-30 backdrop-blur-xl"
-    >
-      <div className="via-brand-accent/50 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
-      <div className="container mx-auto px-4">
+    <nav className="bg-background/94 sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] backdrop-blur-md">
+      <div className="mx-auto max-w-6xl px-3 sm:px-5">
         <ScrollableChipRow
           ariaLabel={t('menuCategories')}
           scrollPrevLabel={t('scrollCategoriesPrev')}
           scrollNextLabel={t('scrollCategoriesNext')}
           activeChipId={activeCategory ?? 'all'}
           chipIdAttribute="data-category-id"
-          scrollClassName="py-3"
-          fadeFromClassName="from-background/90"
+          scrollClassName="gap-5 sm:gap-7"
+          fadeFromClassName="from-background"
+          arrowClassName="h-9 w-9 border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-ink-soft)] hover:border-[var(--menu-gold-soft)] hover:text-[var(--menu-ink)]"
           itemCount={categories.length}
         >
-          <button
-            role="tab"
-            aria-selected={activeCategory === null}
-            data-category-id="all"
-            onClick={() => handleClick(null)}
-            className={chipClassName(activeCategory === null)}
-          >
-            {t('allCategories')}
-          </button>
-          {categories.map((category) => {
-            const isActive = activeCategory === category.id;
-            const label = getName(locale, category.name_en, category.name_ar);
-
-            return (
-              <button
-                key={category.id}
-                role="tab"
-                aria-selected={isActive}
-                data-category-id={category.id}
-                onClick={() => handleClick(category.id)}
-                className={chipClassName(isActive)}
-              >
-                {category.image_url && (
-                  <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full">
-                    <NextImage
-                      src={category.image_url}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="h-6 w-6 object-cover"
-                    />
-                  </span>
-                )}
-                {label}
-              </button>
-            );
-          })}
+          {renderChip(null, t('allCategories'))}
+          {categories.map((category) =>
+            renderChip(category.id, getName(locale, category.name_en, category.name_ar))
+          )}
         </ScrollableChipRow>
       </div>
-    </motion.nav>
+    </nav>
   );
 }

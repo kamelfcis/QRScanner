@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
+import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore, type FulfillmentType } from '@/stores/cart-store';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -186,7 +187,11 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[100svh] items-center justify-center">
+      <div
+        data-menu-theme
+        className="flex min-h-[100svh] items-center justify-center bg-[var(--menu-paper)]"
+      >
+        <MenuThemeScope />
         <div className="bg-muted h-8 w-48 animate-pulse rounded" />
       </div>
     );
@@ -194,9 +199,19 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[100svh] max-w-lg flex-col items-center justify-center gap-4 px-4 text-center">
-        <p className="text-lg font-medium">{t('emptyCart')}</p>
-        <Link href="/menu" className={buttonVariants()}>
+      <div
+        data-menu-theme
+        className="mx-auto flex min-h-[100svh] max-w-lg flex-col items-center justify-center gap-4 bg-[var(--menu-paper)] px-4 text-center"
+      >
+        <MenuThemeScope />
+        <p className="font-heading text-lg font-semibold">{t('emptyCart')}</p>
+        <Link
+          href="/menu"
+          className={cn(
+            buttonVariants(),
+            'h-11 rounded-full bg-[var(--menu-wine)] px-6 text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+          )}
+        >
           {t('backToMenu')}
         </Link>
       </div>
@@ -212,7 +227,11 @@ export default function CheckoutPage() {
   );
 
   return (
-    <div className="bg-background min-h-[100svh] pb-[env(safe-area-inset-bottom)]">
+    <div
+      data-menu-theme
+      className="min-h-[100svh] bg-[var(--menu-paper)] pb-[env(safe-area-inset-bottom)]"
+    >
+      <MenuThemeScope />
       <div className="mx-auto max-w-lg px-4 py-6">
         <motion.div
           initial={prefersReducedMotion ? undefined : 'hidden'}
@@ -230,7 +249,7 @@ export default function CheckoutPage() {
             </Link>
             <div className="flex min-w-0 items-center gap-3">
               {logo ? (
-                <div className="bg-muted relative h-10 w-10 overflow-hidden rounded-lg">
+                <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] p-1">
                   <Image
                     src={logo}
                     alt={restaurantName}
@@ -241,9 +260,11 @@ export default function CheckoutPage() {
                   />
                 </div>
               ) : null}
-              <div>
-                <h1 className="text-xl font-bold">{t('title')}</h1>
-                <p className="text-muted-foreground text-sm">{restaurantName}</p>
+              <div className="min-w-0">
+                <h1 className="font-heading truncate text-xl font-semibold">{t('title')}</h1>
+                <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
+                  {restaurantName}
+                </p>
               </div>
             </div>
           </div>
@@ -266,7 +287,7 @@ export default function CheckoutPage() {
 
           <section className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-semibold">{t('orderSummary')}</h2>
+              <h2 className="font-heading font-semibold">{t('orderSummary')}</h2>
               <Badge variant="secondary">
                 {diningMode === 'dining' ? t('dining') : t('takeaway')}
               </Badge>
@@ -303,7 +324,7 @@ export default function CheckoutPage() {
             </ul>
           </section>
 
-          <section className="space-y-3 rounded-xl border p-4">
+          <section className="space-y-3 rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-4">
             <div className="flex justify-between text-sm">
               <span>{t('subtotal')}</span>
               <span className="tabular-nums">
@@ -326,9 +347,9 @@ export default function CheckoutPage() {
                 </span>
               </div>
             )}
-            <div className="flex justify-between border-t pt-3 text-base font-bold">
+            <div className="flex justify-between border-t border-[var(--menu-line)] pt-3 text-base font-bold">
               <span>{t('total')}</span>
-              <span className="text-primary tabular-nums">
+              <span className="font-heading text-lg font-semibold tabular-nums text-[var(--menu-wine)]">
                 {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
               </span>
             </div>
@@ -369,10 +390,10 @@ export default function CheckoutPage() {
                           })
                         }
                         className={cn(
-                          'flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-3 text-sm font-medium transition-colors',
+                          'flex min-h-14 flex-col items-center justify-center gap-1.5 rounded-xl border px-3 py-3 text-sm font-medium transition-colors',
                           selected
-                            ? 'border-primary bg-primary/5 text-primary'
-                            : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                            ? 'border-[var(--menu-wine)] bg-[var(--menu-wine-wash)] text-[var(--menu-wine)]'
+                            : 'border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-ink-soft)] hover:border-[var(--menu-gold-soft)] hover:text-[var(--menu-ink)]'
                         )}
                       >
                         <Icon className="h-5 w-5" />
@@ -446,12 +467,12 @@ export default function CheckoutPage() {
 
           <Button
             size="lg"
-            className="h-14 w-full text-base font-semibold"
+            className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
             disabled={submitting || !whatsappConfigured}
             onClick={handleConfirm}
             data-testid="checkout-confirm"
           >
-            <MessageCircle className="mr-2 h-5 w-5" />
+            <MessageCircle className="me-2 h-5 w-5" aria-hidden="true" />
             {submitting ? t('confirming') : t('confirmWhatsApp')}
           </Button>
         </motion.div>
