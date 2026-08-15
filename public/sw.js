@@ -1,4 +1,4 @@
-const CACHE_NAME = 'doctorburger-v1';
+const CACHE_NAME = 'goldensand-v1';
 const STATIC_ASSETS = [
   '/',
   '/menu',
