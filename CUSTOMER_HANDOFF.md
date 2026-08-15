@@ -7,8 +7,8 @@
 | Slug | `goldensand` |
 | Template | Doctor Burger (restaurant) |
 | Git branch | `goldensand` |
-| Production URL | (pending deploy) |
-| Admin dashboard | (pending deploy)/login |
+| Production URL | https://goldensand.vercel.app |
+| Admin dashboard | https://goldensand.vercel.app/login |
 | Admin email | `admin@goldensand.com` |
 | Admin password | `pucQ#bjvAf9FMT#9m9` |
 
