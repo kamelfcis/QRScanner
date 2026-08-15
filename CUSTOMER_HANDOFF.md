@@ -1,16 +1,16 @@
-# Customer Handoff — Doctor Burger
+# Customer Handoff — Golden Sand
 
 | Field | Value |
 |-------|-------|
-| Arabic name | دكتور برجر |
-| English name | Doctor Burger |
-| Slug | `doctorburger` |
-| Template | Warda (restaurant) |
-| Git branch | `doctorburger` |
+| Arabic name | جولدن ساند |
+| English name | Golden Sand |
+| Slug | `goldensand` |
+| Template | Doctor Burger (restaurant) |
+| Git branch | `goldensand` |
 | Production URL | (pending deploy) |
 | Admin dashboard | (pending deploy)/login |
-| Admin email | `admin@doctorburger.com` |
-| Admin password | `12345678` |
+| Admin email | `admin@goldensand.com` |
+| Admin password | `pucQ#bjvAf9FMT#9m9` |
 
 ## Notes
 
