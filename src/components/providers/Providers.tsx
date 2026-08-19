@@ -6,7 +6,7 @@ import { BrandThemeProvider } from './BrandThemeProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="aklet-gambary-theme">
+    <ThemeProvider defaultTheme="light" storageKey="ahlalsham-theme">
       <QueryProvider>
         <BrandThemeProvider>{children}</BrandThemeProvider>
       </QueryProvider>
