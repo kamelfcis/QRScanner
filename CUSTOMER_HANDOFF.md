@@ -7,8 +7,8 @@
 | Slug | `ahlalsham` |
 | Template | Takeaway and delivery |
 | Git branch | `ahlalsham` |
-| Production URL | (pending deploy) |
-| Admin dashboard | (pending deploy)/login |
+| Production URL | https://ahlalsham.engazqr.com |
+| Admin dashboard | https://ahlalsham.engazqr.com/login |
 | Admin email | `admin@ahlalsham.com` |
 | Admin password | `VrVZ7PhVma9GVbDfkJ` |
 
