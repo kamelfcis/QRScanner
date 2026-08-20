@@ -43,7 +43,7 @@ const EXTENDED_LOCALE_WRITE_KEYS = [
 
 /** Drop product columns this tenant’s schema does not have (no migration 016 / 018). */
 export function stripUnsupportedProductWriteFields<T extends object>(input: T): T {
-  const next: Record<string, unknown> = { ...input };
+  const next = { ...(input as Record<string, unknown>) };
   if (!hasExtendedMenuLocales) {
     for (const key of EXTENDED_LOCALE_WRITE_KEYS) {
       delete next[key];
