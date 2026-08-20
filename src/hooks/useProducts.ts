@@ -3,6 +3,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Product, ProductInput, ProductWithGallery } from '@/types';
+import {
+  categoryRelationNameFields,
+  popularProductFields,
+  productTableFields,
+  stripUnsupportedProductWriteFields,
+  subcategoryRelationNameFields,
+} from '@/lib/catalog/keys';
 import { categoryKeys } from './useCategories';
 
 const supabase = createClient();
@@ -30,7 +37,7 @@ export function useProducts(categoryId?: string) {
     queryFn: async () => {
       let query = supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(`${productTableFields}, category:categories(${categoryRelationNameFields})`)
         .order('sort_order', { ascending: true });
 
       if (categoryId) {
@@ -50,7 +57,7 @@ export function useAllProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(`${productTableFields}, category:categories(${categoryRelationNameFields})`)
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
@@ -67,10 +74,10 @@ export function useProduct(id: string) {
         .from('products')
         .select(
           `
-          *,
-          category:categories(id, name_en, name_ar),
-          subcategory:subcategories(id, name_en, name_ar),
-          gallery:product_gallery(*)
+          ${productTableFields},
+          category:categories(${categoryRelationNameFields}),
+          subcategory:subcategories(${subcategoryRelationNameFields}),
+          gallery:product_gallery(id, product_id, image_url, sort_order, created_at)
         `
         )
         .eq('id', id)
@@ -89,7 +96,7 @@ export function useProductsByCategory(categoryId: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
+        .select(productTableFields)
         .eq('category_id', categoryId)
         .eq('is_available', true)
         .order('sort_order', { ascending: true });
@@ -107,16 +114,14 @@ export function usePopularProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select(
-          'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at'
-        )
+        .select(popularProductFields)
         .eq('is_popular', true)
         .eq('is_available', true)
         .order('sort_order', { ascending: true })
         .limit(12);
 
       if (error) throw error;
-      return data as Product[];
+      return data as unknown as Product[];
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -129,7 +134,7 @@ export function useSearchProducts(query: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(`${productTableFields}, category:categories(${categoryRelationNameFields})`)
         .or(
           `name_en.ilike.%${sanitized}%,name_ar.ilike.%${sanitized}%,description_en.ilike.%${sanitized}%`
         )
@@ -148,7 +153,12 @@ export function useCreateProduct() {
 
   return useMutation({
     mutationFn: async (input: ProductInput) => {
-      const { data, error } = await supabase.from('products').insert(input).select().single();
+      const payload = stripUnsupportedProductWriteFields(input);
+      const { data, error } = await supabase
+        .from('products')
+        .insert(payload)
+        .select(productTableFields)
+        .single();
 
       if (error) throw error;
       return data as Product;
@@ -165,11 +175,12 @@ export function useUpdateProduct() {
 
   return useMutation({
     mutationFn: async ({ id, input }: { id: string; input: Partial<ProductInput> }) => {
+      const payload = stripUnsupportedProductWriteFields(input);
       const { data, error } = await supabase
         .from('products')
-        .update(input)
+        .update(payload)
         .eq('id', id)
-        .select()
+        .select(productTableFields)
         .single();
 
       if (error) throw error;
@@ -228,7 +239,7 @@ export function useToggleProductAvailability() {
         .from('products')
         .update({ is_available })
         .eq('id', id)
-        .select()
+        .select(productTableFields)
         .single();
 
       if (error) throw error;

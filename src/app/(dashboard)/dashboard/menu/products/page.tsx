@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -15,7 +15,7 @@ import {
   useToggleProductAvailability,
 } from '@/hooks/useProducts';
 import { useAllCategories } from '@/hooks/useCategories';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useRestaurantSettings, useFeatureSettings } from '@/hooks/useSettings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
@@ -59,18 +59,25 @@ import {
 } from '@/components/dashboard/products/AiProductImageDialog';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { hasExtendedMenuLocales, hasProductSizeOptions } from '@/i18n/config';
+import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 
 type ProductForm = z.input<typeof productSchema>;
 
 const defaultFormValues: ProductForm = {
   name_en: '',
   name_ar: '',
+  name_fr: '',
+  name_nl: '',
   description_en: '',
   description_ar: '',
+  description_fr: '',
+  description_nl: '',
   category_id: '',
   image_url: null,
   dining_price: 0,
   takeaway_price: 0,
+  has_size_options: false,
   is_available: true,
   is_popular: false,
   is_new: false,
@@ -96,11 +103,19 @@ function ProductImageField({
   onChooseFromStorage: () => void;
   onRemove: () => void;
   onAiImageSelect: (url: string) => void | Promise<void>;
-  categories?: { id: string; name_en: string; name_ar: string }[];
+  categories?: {
+    id: string;
+    name_en: string;
+    name_ar: string;
+    name_fr?: string | null;
+    name_nl?: string | null;
+  }[];
   t: (key: string, values?: Record<string, string | number>) => string;
   tCommon: (key: string) => string;
 }) {
   const { locale } = useI18n();
+  const { data: features } = useFeatureSettings();
+  const aiProductImagesEnabled = features?.ai_product_images === true;
   const imageUrl = form.watch('image_url');
   const nameAr = form.watch('name_ar');
   const nameEn = form.watch('name_en');
@@ -109,7 +124,13 @@ function ProductImageField({
   const categoryId = form.watch('category_id');
   const selectedCategory = categories?.find((c) => c.id === categoryId);
   const categoryName = selectedCategory
-    ? getName(locale, selectedCategory.name_en, selectedCategory.name_ar)
+    ? getName(
+        locale,
+        selectedCategory.name_en,
+        selectedCategory.name_ar,
+        selectedCategory.name_fr,
+        selectedCategory.name_nl
+      )
     : '';
   const [aiOpen, setAiOpen] = useState(false);
   const [aiMode, setAiMode] = useState<AiProductImageMode>('generate');
@@ -172,26 +193,30 @@ function ProductImageField({
           <Images className="mr-2 h-4 w-4" />
           {t('chooseFromStorage')}
         </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => void runAiGeneration('generate')}
-          disabled={buttonsDisabled || !hasName}
-          title={!hasName ? t('aiGenerateNeedsName') : undefined}
-        >
-          <Sparkles className="mr-2 h-4 w-4" />
-          {t('generateWithAi')}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => void runAiGeneration('enhance')}
-          disabled={buttonsDisabled || !hasImage}
-          title={!hasImage ? t('aiEnhanceNeedsImage') : undefined}
-        >
-          <Wand2 className="mr-2 h-4 w-4" />
-          {t('enhanceWithAi')}
-        </Button>
+        {aiProductImagesEnabled && (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void runAiGeneration('generate')}
+              disabled={buttonsDisabled || !hasName}
+              title={!hasName ? t('aiGenerateNeedsName') : undefined}
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              {t('generateWithAi')}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void runAiGeneration('enhance')}
+              disabled={buttonsDisabled || !hasImage}
+              title={!hasImage ? t('aiEnhanceNeedsImage') : undefined}
+            >
+              <Wand2 className="mr-2 h-4 w-4" />
+              {t('enhanceWithAi')}
+            </Button>
+          </>
+        )}
         {imageUrl && (
           <Button
             type="button"
@@ -276,6 +301,96 @@ function ProductThumbnail({
   );
 }
 
+function ProductPriceFields({
+  form,
+  currency,
+  idPrefix,
+  t,
+}: {
+  form: UseFormReturn<ProductForm>;
+  currency: string;
+  idPrefix: 'create' | 'edit';
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const hasSizeOptions = hasProductSizeOptions && form.watch('has_size_options');
+  const singlePrice = form.watch('dining_price');
+
+  useEffect(() => {
+    if (!hasSizeOptions) {
+      form.setValue('takeaway_price', singlePrice, { shouldValidate: true });
+    }
+  }, [hasSizeOptions, singlePrice, form]);
+
+  return (
+    <div className="space-y-4">
+      {hasProductSizeOptions ? (
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={hasSizeOptions}
+            onCheckedChange={(checked) =>
+              form.setValue('has_size_options', checked, { shouldDirty: true })
+            }
+            id={`${idPrefix}-size-options`}
+          />
+          <Label htmlFor={`${idPrefix}-size-options`}>{t('enableSizeOptions')}</Label>
+        </div>
+      ) : null}
+
+      {hasSizeOptions ? (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-small`}>
+              {t('smallPrice')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-small`}
+              type="number"
+              min={0}
+              {...form.register('dining_price', { valueAsNumber: true })}
+            />
+            {form.formState.errors.dining_price && (
+              <p className="text-destructive text-sm">
+                {form.formState.errors.dining_price.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-large`}>
+              {t('largePrice')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-large`}
+              type="number"
+              min={0}
+              {...form.register('takeaway_price', { valueAsNumber: true })}
+            />
+            {form.formState.errors.takeaway_price && (
+              <p className="text-destructive text-sm">
+                {form.formState.errors.takeaway_price.message}
+              </p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <Label htmlFor={`${idPrefix}-price`}>
+            {t('price')} ({currency}) *
+          </Label>
+          <Input
+            id={`${idPrefix}-price`}
+            type="number"
+            min={0}
+            {...form.register('dining_price', { valueAsNumber: true })}
+          />
+          {form.formState.errors.dining_price && (
+            <p className="text-destructive text-sm">{form.formState.errors.dining_price.message}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -286,8 +401,15 @@ export default function ProductsPage() {
   const [storagePickerOpen, setStoragePickerOpen] = useState(false);
   const [storagePickerFormType, setStoragePickerFormType] = useState<'create' | 'edit'>('create');
   const [storagePickerSession, setStoragePickerSession] = useState(0);
+  const [batchConfirmOpen, setBatchConfirmOpen] = useState(false);
+  const [batchRunning, setBatchRunning] = useState(false);
+  const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0, name: '' });
+  const [batchErrors, setBatchErrors] = useState<
+    Array<{ id: string; name: string; error: string }>
+  >([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeFormRef = useRef<'create' | 'edit'>('create');
+  const batchCancelRef = useRef(false);
   const t = useTranslations('products');
   const tCommon = useTranslations('common');
   const tMenu = useTranslations('menu');
@@ -296,6 +418,8 @@ export default function ProductsPage() {
   const { data: products, isLoading, error, refetch } = useAllProducts();
   const { data: categories } = useAllCategories();
   const { data: settings } = useRestaurantSettings();
+  const { data: features } = useFeatureSettings();
+  const aiProductImagesEnabled = features?.ai_product_images === true;
   const currency = getRestaurantCurrency(settings?.currency);
   const deleteProduct = useDeleteProduct();
   const updateProduct = useUpdateProduct();
@@ -339,8 +463,70 @@ export default function ProductsPage() {
   const activeCategory =
     categoryFilter === 'all' ? null : categories?.find((c) => c.id === categoryFilter);
   const activeCategoryLabel = activeCategory
-    ? getName(locale, activeCategory.name_en, activeCategory.name_ar)
+    ? getName(
+        locale,
+        activeCategory.name_en,
+        activeCategory.name_ar,
+        activeCategory.name_fr,
+        activeCategory.name_nl
+      )
     : t('allCategories');
+
+  const productsWithoutImages = products?.filter((product) => !product.image_url?.trim()) ?? [];
+  const missingImageCount = productsWithoutImages.length;
+  const estimatedBatchMinutes = Math.max(1, Math.ceil((missingImageCount * 45) / 60));
+
+  const runBatchGeneration = async () => {
+    const targets = productsWithoutImages;
+    if (targets.length === 0) return;
+
+    batchCancelRef.current = false;
+    setBatchRunning(true);
+    setBatchConfirmOpen(false);
+    setBatchErrors([]);
+    setBatchProgress({ current: 0, total: targets.length, name: '' });
+
+    let success = 0;
+    let failed = 0;
+
+    for (let i = 0; i < targets.length; i++) {
+      if (batchCancelRef.current) break;
+
+      const product = targets[i];
+      const productName = getName(
+        locale,
+        product.name_en,
+        product.name_ar,
+        product.name_fr,
+        product.name_nl
+      );
+      setBatchProgress({ current: i + 1, total: targets.length, name: productName });
+
+      try {
+        const response = await fetch('/api/ai/product-image/auto', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId: product.id }),
+        });
+        const payload = (await response.json().catch(() => ({}))) as {
+          error?: string;
+          skipped?: boolean;
+        };
+        if (!response.ok) {
+          throw new Error(payload.error || t('aiImageFailed'));
+        }
+        success++;
+      } catch (err) {
+        failed++;
+        const message = err instanceof Error ? err.message : t('aiImageFailed');
+        setBatchErrors((prev) => [...prev, { id: product.id, name: productName, error: message }]);
+      }
+    }
+
+    setBatchRunning(false);
+    await refetch();
+    toast.success(t('batchCompleteSummary', { success: String(success), failed: String(failed) }));
+  };
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -371,12 +557,17 @@ export default function ProductsPage() {
     editForm.reset({
       name_en: product.name_en,
       name_ar: product.name_ar,
+      name_fr: product.name_fr ?? '',
+      name_nl: product.name_nl ?? '',
       description_en: product.description_en ?? '',
       description_ar: product.description_ar ?? '',
+      description_fr: product.description_fr ?? '',
+      description_nl: product.description_nl ?? '',
       category_id: product.category_id,
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
+      has_size_options: product.has_size_options ?? false,
       is_available: product.is_available,
       is_popular: product.is_popular,
       is_new: product.is_new,
@@ -454,8 +645,18 @@ export default function ProductsPage() {
     }
   };
 
+  const prepareProductPayload = (data: ProductForm): ProductInput => {
+    const payload = { ...(data as ProductInput) };
+    if (!hasProductSizeOptions || !payload.has_size_options) {
+      const price = payload.dining_price;
+      payload.dining_price = price;
+      payload.takeaway_price = price;
+    }
+    return stripUnsupportedProductWriteFields(payload);
+  };
+
   const handleCreate = async (data: ProductForm) => {
-    createProduct.mutate(data as ProductInput, {
+    createProduct.mutate(prepareProductPayload(data), {
       onSuccess: () => {
         setShowCreateDialog(false);
         createForm.reset(defaultFormValues);
@@ -470,7 +671,7 @@ export default function ProductsPage() {
   const handleEditSave = async (data: ProductForm) => {
     if (!editProduct) return;
     updateProduct.mutate(
-      { id: editProduct.id, input: data as Partial<ProductInput> },
+      { id: editProduct.id, input: prepareProductPayload(data) },
       {
         onSuccess: () => {
           setEditProduct(null);
@@ -505,10 +706,23 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
           <p className="text-muted-foreground">{t('searchProducts')}</p>
         </div>
-        <Button onClick={openCreateDialog}>
-          <Plus className="me-2 h-4 w-4" />
-          {t('addProduct')}
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          {aiProductImagesEnabled && missingImageCount > 0 && (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={batchRunning}
+              onClick={() => setBatchConfirmOpen(true)}
+            >
+              <Sparkles className="me-2 h-4 w-4" />
+              {t('generateAllMissingImages')}
+            </Button>
+          )}
+          <Button onClick={openCreateDialog} disabled={batchRunning}>
+            <Plus className="me-2 h-4 w-4" />
+            {t('addProduct')}
+          </Button>
+        </div>
       </div>
 
       <div className="bg-background/95 border-border/60 sticky top-16 z-20 -mx-4 space-y-3 border-b px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
@@ -551,7 +765,13 @@ export default function ProductsPage() {
               {t('allCategories')}
             </button>
             {categories?.map((category) => {
-              const label = getName(locale, category.name_en, category.name_ar);
+              const label = getName(
+                locale,
+                category.name_en,
+                category.name_ar,
+                category.name_fr,
+                category.name_nl
+              );
               const isActive = categoryFilter === category.id;
               return (
                 <button
@@ -633,10 +853,23 @@ export default function ProductsPage() {
               </thead>
               <tbody>
                 {paginatedProducts.map((product) => {
-                  const productName = getName(locale, product.name_en, product.name_ar);
-                  const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
+                  const productName = getName(
+                    locale,
+                    product.name_en,
+                    product.name_ar,
+                    product.name_fr,
+                    product.name_nl
+                  );
+                  const secondaryName =
+                    locale === 'ar' ? product.name_en : product.name_ar || product.name_en;
                   const categoryName = product.category
-                    ? getName(locale, product.category.name_en, product.category.name_ar)
+                    ? getName(
+                        locale,
+                        product.category.name_en,
+                        product.category.name_ar,
+                        product.category.name_fr,
+                        product.category.name_nl
+                      )
                     : '—';
 
                   return (
@@ -707,16 +940,31 @@ export default function ProductsPage() {
                       </td>
                       <td className="p-3">
                         <div className="space-y-0.5 tabular-nums">
-                          <p className="text-muted-foreground text-xs">{tMenu('dining')}</p>
-                          <p className="font-semibold">
-                            {formatCurrencyAmount(product.dining_price, currency, { plain: true })}
-                          </p>
-                          <p className="text-muted-foreground text-xs">{tMenu('takeaway')}</p>
-                          <p className="text-muted-foreground font-medium">
-                            {formatCurrencyAmount(product.takeaway_price, currency, {
-                              plain: true,
-                            })}
-                          </p>
+                          {product.has_size_options ? (
+                            <>
+                              <p className="text-muted-foreground text-xs">{t('smallPrice')}</p>
+                              <p className="font-semibold">
+                                {formatCurrencyAmount(product.dining_price, currency, {
+                                  plain: true,
+                                })}
+                              </p>
+                              <p className="text-muted-foreground text-xs">{t('largePrice')}</p>
+                              <p className="text-muted-foreground font-medium">
+                                {formatCurrencyAmount(product.takeaway_price, currency, {
+                                  plain: true,
+                                })}
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-muted-foreground text-xs">{t('price')}</p>
+                              <p className="font-semibold">
+                                {formatCurrencyAmount(product.dining_price, currency, {
+                                  plain: true,
+                                })}
+                              </p>
+                            </>
+                          )}
                         </div>
                       </td>
                       <td className="hidden p-3 md:table-cell">
@@ -813,6 +1061,34 @@ export default function ProductsPage() {
                 rows={2}
               />
             </div>
+            {hasExtendedMenuLocales ? (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="create-name-fr">{t('productNameFr')}</Label>
+                  <Input id="create-name-fr" {...createForm.register('name_fr')} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="create-name-nl">{t('productNameNl')}</Label>
+                  <Input id="create-name-nl" {...createForm.register('name_nl')} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="create-desc-fr">{t('descriptionFr')}</Label>
+                  <Textarea
+                    id="create-desc-fr"
+                    {...createForm.register('description_fr')}
+                    rows={2}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="create-desc-nl">{t('descriptionNl')}</Label>
+                  <Textarea
+                    id="create-desc-nl"
+                    {...createForm.register('description_nl')}
+                    rows={2}
+                  />
+                </div>
+              </>
+            ) : null}
             <ProductImageField
               form={createForm}
               uploading={uploading}
@@ -841,7 +1117,7 @@ export default function ProductsPage() {
                 <SelectContent>
                   {categories?.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {getName(locale, c.name_en, c.name_ar)}
+                      {getName(locale, c.name_en, c.name_ar, c.name_fr, c.name_nl)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -852,40 +1128,7 @@ export default function ProductsPage() {
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="create-dining">
-                  {t('diningPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="create-dining"
-                  type="number"
-                  min={0}
-                  {...createForm.register('dining_price', { valueAsNumber: true })}
-                />
-                {createForm.formState.errors.dining_price && (
-                  <p className="text-destructive text-sm">
-                    {createForm.formState.errors.dining_price.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="create-takeaway">
-                  {t('takeawayPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="create-takeaway"
-                  type="number"
-                  min={0}
-                  {...createForm.register('takeaway_price', { valueAsNumber: true })}
-                />
-                {createForm.formState.errors.takeaway_price && (
-                  <p className="text-destructive text-sm">
-                    {createForm.formState.errors.takeaway_price.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            <ProductPriceFields form={createForm} currency={currency} idPrefix="create" t={t} />
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch
@@ -999,6 +1242,26 @@ export default function ProductsPage() {
                 rows={2}
               />
             </div>
+            {hasExtendedMenuLocales ? (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-name-fr">{t('productNameFr')}</Label>
+                  <Input id="edit-name-fr" {...editForm.register('name_fr')} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-name-nl">{t('productNameNl')}</Label>
+                  <Input id="edit-name-nl" {...editForm.register('name_nl')} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-desc-fr">{t('descriptionFr')}</Label>
+                  <Textarea id="edit-desc-fr" {...editForm.register('description_fr')} rows={2} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-desc-nl">{t('descriptionNl')}</Label>
+                  <Textarea id="edit-desc-nl" {...editForm.register('description_nl')} rows={2} />
+                </div>
+              </>
+            ) : null}
             <ProductImageField
               form={editForm}
               uploading={uploading}
@@ -1027,7 +1290,7 @@ export default function ProductsPage() {
                 <SelectContent>
                   {categories?.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {getName(locale, c.name_en, c.name_ar)}
+                      {getName(locale, c.name_en, c.name_ar, c.name_fr, c.name_nl)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1038,40 +1301,7 @@ export default function ProductsPage() {
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="edit-dining">
-                  {t('diningPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="edit-dining"
-                  type="number"
-                  min={0}
-                  {...editForm.register('dining_price', { valueAsNumber: true })}
-                />
-                {editForm.formState.errors.dining_price && (
-                  <p className="text-destructive text-sm">
-                    {editForm.formState.errors.dining_price.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-takeaway">
-                  {t('takeawayPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="edit-takeaway"
-                  type="number"
-                  min={0}
-                  {...editForm.register('takeaway_price', { valueAsNumber: true })}
-                />
-                {editForm.formState.errors.takeaway_price && (
-                  <p className="text-destructive text-sm">
-                    {editForm.formState.errors.takeaway_price.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            <ProductPriceFields form={editForm} currency={currency} idPrefix="edit" t={t} />
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch
@@ -1132,6 +1362,60 @@ export default function ProductsPage() {
               </Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      <ConfirmDialog
+        open={batchConfirmOpen}
+        onOpenChange={setBatchConfirmOpen}
+        title={t('batchConfirmTitle')}
+        description={t('batchConfirmDescription', {
+          count: String(missingImageCount),
+          minutes: String(estimatedBatchMinutes),
+        })}
+        confirmLabel={t('generateAllMissingImages')}
+        onConfirm={() => void runBatchGeneration()}
+        loading={batchRunning}
+      />
+
+      <Dialog open={batchRunning} onOpenChange={() => undefined}>
+        <DialogContent className="sm:max-w-md" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{t('batchRunning')}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <p className="text-muted-foreground text-sm">
+              {t('batchProgress', {
+                current: String(batchProgress.current),
+                total: String(batchProgress.total),
+              })}
+            </p>
+            {batchProgress.name && (
+              <p className="text-sm font-medium">
+                {t('batchCurrentProduct', { name: batchProgress.name })}
+              </p>
+            )}
+            {batchErrors.length > 0 && (
+              <div className="border-border/60 bg-muted/20 max-h-32 space-y-1 overflow-y-auto rounded-md border p-2 text-xs">
+                {batchErrors.map((entry) => (
+                  <p key={entry.id} className="text-destructive">
+                    {entry.name}: {entry.error}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                batchCancelRef.current = true;
+              }}
+            >
+              {t('batchCancel')}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
