@@ -46,7 +46,7 @@ export function useProducts(categoryId?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as ProductWithGallery[];
+      return data as unknown as ProductWithGallery[];
     },
   });
 }
@@ -61,7 +61,7 @@ export function useAllProducts() {
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      return data as ProductWithGallery[];
+      return data as unknown as ProductWithGallery[];
     },
   });
 }
@@ -84,7 +84,7 @@ export function useProduct(id: string) {
         .single();
 
       if (error) throw error;
-      return data as ProductWithGallery;
+      return data as unknown as ProductWithGallery;
     },
     enabled: !!id,
   });
@@ -102,7 +102,7 @@ export function useProductsByCategory(categoryId: string) {
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      return data as Product[];
+      return data as unknown as Product[];
     },
     enabled: !!categoryId,
   });
@@ -142,7 +142,7 @@ export function useSearchProducts(query: string) {
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      return data as ProductWithGallery[];
+      return data as unknown as ProductWithGallery[];
     },
     enabled: query.length >= 2,
   });
@@ -161,7 +161,7 @@ export function useCreateProduct() {
         .single();
 
       if (error) throw error;
-      return data as Product;
+      return data as unknown as Product;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
@@ -184,7 +184,7 @@ export function useUpdateProduct() {
         .single();
 
       if (error) throw error;
-      return data as Product;
+      return data as unknown as Product;
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
@@ -243,7 +243,7 @@ export function useToggleProductAvailability() {
         .single();
 
       if (error) throw error;
-      return data as Product;
+      return data as unknown as Product;
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
