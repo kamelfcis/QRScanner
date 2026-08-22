@@ -5,60 +5,7 @@ import { useFeatureSettings } from '@/hooks/useSettings';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
-
-type ShortcutTone = {
-  well: string;
-  label: string;
-};
-
-/** One pigment per destination — spice-counter wells, not pastel chips. */
-const SHORTCUT_TONES: Record<string, ShortcutTone> = {
-  orders: {
-    well: 'bg-amber-600 dark:bg-amber-500',
-    label: 'text-amber-800 dark:text-amber-300',
-  },
-  coupons: {
-    well: 'bg-rose-600 dark:bg-rose-500',
-    label: 'text-rose-800 dark:text-rose-300',
-  },
-  analytics: {
-    well: 'bg-indigo-600 dark:bg-indigo-500',
-    label: 'text-indigo-800 dark:text-indigo-300',
-  },
-  reports: {
-    well: 'bg-slate-600 dark:bg-slate-500',
-    label: 'text-slate-700 dark:text-slate-300',
-  },
-  menu: {
-    well: 'bg-teal-600 dark:bg-teal-500',
-    label: 'text-teal-800 dark:text-teal-300',
-  },
-  import: {
-    well: 'bg-sky-600 dark:bg-sky-500',
-    label: 'text-sky-800 dark:text-sky-300',
-  },
-  testimonials: {
-    well: 'bg-violet-600 dark:bg-violet-500',
-    label: 'text-violet-800 dark:text-violet-300',
-  },
-  qrCodes: {
-    well: 'bg-brand-secondary',
-    label: 'text-brand-secondary dark:text-rose-300',
-  },
-  tables: {
-    well: 'bg-stone-600 dark:bg-stone-500',
-    label: 'text-stone-700 dark:text-stone-300',
-  },
-  settings: {
-    well: 'bg-zinc-600 dark:bg-zinc-500',
-    label: 'text-zinc-700 dark:text-zinc-300',
-  },
-};
-
-const FALLBACK_TONE: ShortcutTone = {
-  well: 'bg-brand-secondary',
-  label: 'text-foreground',
-};
+import { DASHBOARD_NAV_TONES, FALLBACK_NAV_TONE } from '@/lib/navigation/dashboardNavTones';
 
 export function DashboardShortcuts() {
   const { data: features } = useFeatureSettings();
@@ -81,7 +28,7 @@ export function DashboardShortcuts() {
         className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-5"
       >
         {items.map((item) => {
-          const tone = SHORTCUT_TONES[item.key] ?? FALLBACK_TONE;
+          const tone = DASHBOARD_NAV_TONES[item.key] ?? FALLBACK_NAV_TONE;
           const label = tSidebar(item.key);
           const Icon = item.icon;
 

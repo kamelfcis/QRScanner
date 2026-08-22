@@ -258,7 +258,8 @@
     "coupons": "Coupons",
     "logout": "Uitloggen",
     "collapse": "Zijbalk inklappen",
-    "expand": "Zijbalk uitklappen"
+    "expand": "Zijbalk uitklappen",
+    "hoverPeek": "Beweeg over de rail om het menu te bekijken"
   },
   "qr": {
     "title": "QR-codes",

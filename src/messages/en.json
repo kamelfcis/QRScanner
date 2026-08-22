@@ -258,7 +258,8 @@
     "coupons": "Coupons",
     "logout": "Logout",
     "collapse": "Collapse sidebar",
-    "expand": "Expand sidebar"
+    "expand": "Expand sidebar",
+    "hoverPeek": "Hover rail to preview menu"
   },
   "qr": {
     "title": "QR Codes",

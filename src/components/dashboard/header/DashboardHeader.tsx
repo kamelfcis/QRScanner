@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, Bell, Moon, Sun, LogOut, PanelLeft, PanelLeftClose } from 'lucide-react';
+import { Menu, Bell, Moon, Sun, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -21,7 +21,7 @@ import { cn, getName } from '@/lib/utils';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
-import { useSidebarCollapse } from '@/components/dashboard/sidebar/SidebarCollapseContext';
+import { SidebarCollapseToggle } from '@/components/dashboard/sidebar/SidebarCollapseToggle';
 
 export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
@@ -41,8 +41,6 @@ export function DashboardHeader() {
   const { data: unreadCount } = useUnreadNotifications();
   const { data: notifications } = useNotifications(5);
   const markAllRead = useMarkAllNotificationsRead();
-  const { collapsed, toggle } = useSidebarCollapse();
-
   return (
     <header className="bg-background sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 pt-[env(safe-area-inset-top)] sm:px-6">
       <div className="md:hidden">
@@ -108,22 +106,7 @@ export function DashboardHeader() {
       </div>
 
       <div className="hidden items-center gap-2 md:flex">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="hidden min-h-11 min-w-11 md:inline-flex"
-          aria-controls="dashboard-sidebar"
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? tSidebar('expand') : tSidebar('collapse')}
-          onClick={toggle}
-        >
-          {collapsed ? (
-            <PanelLeft className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
-          ) : (
-            <PanelLeftClose className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
-          )}
-        </Button>
+        <SidebarCollapseToggle />
         <span className="text-lg font-semibold">{tNav('dashboard')}</span>
       </div>
 
