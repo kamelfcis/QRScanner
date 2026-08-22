@@ -703,6 +703,12 @@
   },
   "products": {
     "title": "الأطباق",
+    "eyebrow": "القائمة · الأطباق",
+    "description": "أضف الأصناف وحدد الأسعار وتبديل التوفر.",
+    "emptyDescription": "أضف أول طبق لبدء البيع من القائمة.",
+    "statsLabel": "إحصاءات الأطباق",
+    "statTotal": "إجمالي الأطباق",
+    "statAvailable": "متاح",
     "searchPlaceholder": "ابحث في الأطباق...",
     "filterByCategory": "تصفية حسب التصنيف",
     "quickFilters": "تصفية سريعة",

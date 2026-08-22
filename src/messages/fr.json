@@ -702,6 +702,12 @@
   },
   "products": {
     "title": "Produits",
+    "eyebrow": "Menu · Produits",
+    "description": "Ajoutez, tarifiez et activez la disponibilité des articles du menu.",
+    "emptyDescription": "Ajoutez votre premier produit pour commencer à vendre.",
+    "statsLabel": "Compteurs de produits",
+    "statTotal": "Total produits",
+    "statAvailable": "Disponibles",
     "searchPlaceholder": "Rechercher products...",
     "filterByCategory": "Filter by category",
     "quickFilters": "Filtres rapides",

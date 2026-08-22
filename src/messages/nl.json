@@ -702,6 +702,12 @@
   },
   "products": {
     "title": "Producten",
+    "eyebrow": "Menu · Producten",
+    "description": "Voeg items toe, stel prijzen in en schakel beschikbaarheid.",
+    "emptyDescription": "Voeg je eerste product toe om te beginnen met verkopen.",
+    "statsLabel": "Producttellingen",
+    "statTotal": "Totaal producten",
+    "statAvailable": "Beschikbaar",
     "searchPlaceholder": "Zoeken products...",
     "filterByCategory": "Filter by category",
     "quickFilters": "Snelle filters",

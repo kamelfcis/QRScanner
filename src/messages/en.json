@@ -703,6 +703,12 @@
   },
   "products": {
     "title": "Products",
+    "eyebrow": "Menu · Products",
+    "description": "Add, price, and toggle availability for menu items.",
+    "emptyDescription": "Add your first product to start selling from the menu.",
+    "statsLabel": "Product counts",
+    "statTotal": "Total products",
+    "statAvailable": "Available",
     "searchPlaceholder": "Search products...",
     "filterByCategory": "Filter by category",
     "quickFilters": "Quick filters",

@@ -22,7 +22,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
-import { Plus, Search, Upload, X, Images, FilterX, Sparkles, Wand2 } from 'lucide-react';
+import { Search, Upload, X, Images, FilterX, Sparkles, Wand2 } from 'lucide-react';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import { Label } from '@/components/ui/label';
@@ -57,6 +57,7 @@ import {
   type AiCandidate,
   type AiProductImageMode,
 } from '@/components/dashboard/products/AiProductImageDialog';
+import { ProductsCommandHeader } from '@/components/dashboard/menu/ProductsCommandHeader';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { hasExtendedMenuLocales, hasProductSizeOptions } from '@/i18n/config';
@@ -465,6 +466,7 @@ export default function ProductsPage() {
   const hasActiveFilters =
     searchQuery.length > 0 || categoryFilter !== 'all' || quickFilter !== 'all';
   const totalProducts = products?.length ?? 0;
+  const availableProductsCount = products?.filter((product) => product.is_available).length ?? 0;
   const visibleCount = filteredCount;
   const activeCategory =
     categoryFilter === 'all' ? null : categories?.find((c) => c.id === categoryFilter);
@@ -708,29 +710,26 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('searchProducts')}</p>
-        </div>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          {aiProductImagesEnabled && missingImageCount > 0 && (
+      <ProductsCommandHeader
+        totalCount={totalProducts}
+        availableCount={availableProductsCount}
+        onAddProduct={openCreateDialog}
+        addDisabled={batchRunning}
+        secondaryActions={
+          aiProductImagesEnabled && missingImageCount > 0 ? (
             <Button
               type="button"
               variant="outline"
+              className="min-h-11 shrink-0 self-start"
               disabled={batchRunning}
               onClick={() => setBatchConfirmOpen(true)}
             >
-              <Sparkles className="me-2 h-4 w-4" />
+              <Sparkles className="me-2 h-4 w-4" aria-hidden="true" />
               {t('generateAllMissingImages')}
             </Button>
-          )}
-          <Button onClick={openCreateDialog} disabled={batchRunning}>
-            <Plus className="me-2 h-4 w-4" />
-            {t('addProduct')}
-          </Button>
-        </div>
-      </div>
+          ) : null
+        }
+      />
 
       <div className="bg-background/95 border-border/60 sticky top-16 z-20 -mx-4 space-y-3 border-b px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
         <div className="relative">
@@ -739,7 +738,7 @@ export default function ProductsPage() {
             placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="border-border/60 bg-background/80 ps-9"
+            className="border-border/60 bg-background/80 min-h-11 ps-9"
             aria-label={t('searchProducts')}
           />
         </div>
@@ -860,7 +859,7 @@ export default function ProductsPage() {
       {!filteredCount ? (
         <EmptyState
           title={t('noProducts')}
-          description={hasActiveFilters ? t('noProductsFiltered') : t('addProduct')}
+          description={hasActiveFilters ? t('noProductsFiltered') : t('emptyDescription')}
           action={
             !hasActiveFilters ? { label: t('addProduct'), onClick: openCreateDialog } : undefined
           }
