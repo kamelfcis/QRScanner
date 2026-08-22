@@ -27,7 +27,6 @@ import {
   MessageCircle,
   RefreshCcw,
   Keyboard,
-  Calendar,
   X,
 } from 'lucide-react';
 
@@ -359,7 +358,7 @@ function KPI({
         <CardTitle className="text-muted-foreground text-xs font-medium">{title}</CardTitle>
       </CardHeader>
       <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
-        <div className={cn('text-xl font-bold tabular-nums rounded-md px-2 py-1', toneClasses)}>
+        <div className={cn('rounded-md px-2 py-1 text-xl font-bold tabular-nums', toneClasses)}>
           <span dir="ltr">{value}</span>
           {suffix ? <span className="ml-1 text-sm">{suffix}</span> : null}
         </div>
@@ -605,7 +604,10 @@ function OrderTable({
 }
 
 function OrderStatusBadge({ status, t }: { status: OrderStatus; t: (k: string) => string }) {
-  const map: Record<OrderStatus, { label: string; tone: 'info' | 'warning' | 'success' | 'muted' | 'danger' }> = {
+  const map: Record<
+    OrderStatus,
+    { label: string; tone: 'info' | 'warning' | 'success' | 'muted' | 'danger' }
+  > = {
     new: { label: t('new'), tone: 'info' },
     in_prep: { label: t('inPrep'), tone: 'warning' },
     ready: { label: t('ready'), tone: 'success' },
@@ -613,11 +615,7 @@ function OrderStatusBadge({ status, t }: { status: OrderStatus; t: (k: string) =
     cancelled: { label: t('cancelled'), tone: 'danger' },
   };
   const { label, tone } = map[status];
-  return (
-    <span className={cn('status-badge', `status--${tone}`)}>
-      {label}
-    </span>
-  );
+  return <span className={cn('status-badge', `status--${tone}`)}>{label}</span>;
 }
 
 function ActiveFiltersBar({
@@ -638,17 +636,23 @@ function ActiveFiltersBar({
   onClearQuery: () => void;
   onClearStatus: () => void;
   onClearFulfillment: () => void;
-  t: (k: string, values?: Record<string, unknown>) => string;
-  tCommon: (k: string, values?: Record<string, unknown>) => string;
+  t: (k: string, values?: Record<string, string | number | Date>) => string;
+  tCommon: (k: string, values?: Record<string, string | number | Date>) => string;
 }) {
   const active: { key: string; label: string; onClear: () => void }[] = [];
-  if (query) active.push({ key: 'q', label: `${tCommon('search')}: "${query}"`, onClear: onClearQuery });
-  if (statusFilter !== 'all') active.push({ key: 's', label: `${t('status')}: ${t(statusFilter)}`, onClear: onClearStatus });
+  if (query)
+    active.push({ key: 'q', label: `${tCommon('search')}: "${query}"`, onClear: onClearQuery });
+  if (statusFilter !== 'all')
+    active.push({ key: 's', label: `${t('status')}: ${t(statusFilter)}`, onClear: onClearStatus });
   if (fulfillmentFilter !== 'all')
     active.push({
       key: 'f',
       label: `${t('fulfillment')}: ${
-        fulfillmentFilter === 'dining' ? t('dining') : fulfillmentFilter === 'delivery' ? t('delivery') : t('pickup')
+        fulfillmentFilter === 'dining'
+          ? t('dining')
+          : fulfillmentFilter === 'delivery'
+            ? t('delivery')
+            : t('pickup')
       }`,
       onClear: onClearFulfillment,
     });
@@ -680,7 +684,7 @@ function ActiveFiltersBar({
         ))}
       </ul>
       <Button variant="ghost" size="sm" onClick={onClearAll} className="ml-auto h-7 text-xs">
-        {t('clearFilters', { default: 'Clear filters' } as any)}
+        {t('clearFilters')}
       </Button>
     </div>
   );
