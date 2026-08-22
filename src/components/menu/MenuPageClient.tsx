@@ -36,6 +36,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
+import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 
 export function MenuPageClient() {
   return (
@@ -54,6 +55,7 @@ function MenuContent() {
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [allShuffleSeed, setAllShuffleSeed] = useState(() => Date.now());
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
@@ -187,9 +189,25 @@ function MenuContent() {
     [categories, handleProductClick]
   );
 
-  const filteredCategories = activeCategory
-    ? (categories ?? []).filter((c) => c.id === activeCategory)
-    : (categories ?? []);
+  const handleCategoryChange = useCallback((next: string | null) => {
+    setActiveCategory((prev) => {
+      if (next === null && prev !== null) {
+        setAllShuffleSeed(Date.now());
+      }
+      return next;
+    });
+  }, []);
+
+  const filteredCategories = useMemo(() => {
+    const catalog = categories ?? [];
+    if (activeCategory) {
+      return catalog.filter((c) => c.id === activeCategory);
+    }
+    return shuffleCopy(catalog, allShuffleSeed).map((category) => ({
+      ...category,
+      products: shuffleCopy(category.products, allShuffleSeed ^ hashSeed(category.id)),
+    }));
+  }, [activeCategory, categories, allShuffleSeed]);
   const hasCatalog = Boolean(categories?.length);
 
   return (
@@ -222,7 +240,7 @@ function MenuContent() {
         <CategoryNav
           categories={categories!}
           activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
+          onCategoryChange={handleCategoryChange}
         />
       )}
 
