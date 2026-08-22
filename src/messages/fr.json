@@ -607,6 +607,9 @@
     "acknowledgeAll": "Tout accuser réception",
     "newOrderAlert": "{count, plural, one {# nouvelle commande en attente} other {# nouvelles commandes en attente}}",
     "enableSound": "Appuyez pour activer le son",
+    "expandItems": "Afficher les articles",
+    "collapseItems": "Masquer les articles",
+    "itemCount": "{count, plural, one {# article} other {# articles}}",
     "status": {
       "new": "Nouveau",
       "preparing": "En préparation",

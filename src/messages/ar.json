@@ -607,6 +607,9 @@
     "acknowledgeAll": "اطلاع على الكل",
     "newOrderAlert": "{count, plural, one {طلب جديد بانتظار الاطلاع} other {# طلبات جديدة بانتظار الاطلاع}}",
     "enableSound": "اضغط لتفعيل الصوت",
+    "expandItems": "عرض عناصر الطلب",
+    "collapseItems": "إخفاء عناصر الطلب",
+    "itemCount": "{count, plural, one {# عنصر} other {# عناصر}}",
     "status": {
       "new": "جديد",
       "preparing": "قيد التحضير",

@@ -3,19 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import {
-  BellRing,
-  Download,
-  MessageCircle,
-  Phone,
-  Printer,
-  MapPin,
-  UtensilsCrossed,
-  ShoppingBag,
-  Trash2,
-} from 'lucide-react';
+import { BellRing } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
@@ -31,21 +20,18 @@ import {
 } from '@/hooks/useOrders';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { buildStoredOrderWhatsApp, openWhatsAppUrl } from '@/lib/order/build-order';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { resumeOrderRingAudio, startOrderRing, stopOrderRing } from '@/lib/audio/order-ring';
-import { buildCustomerWhatsAppUrl, formatDisplayPhone } from '@/lib/phone/normalize';
-import { downloadReceiptPdf, printReceiptElement, receiptDomId } from '@/lib/order/print-receipt';
-import { cn, getLocalizedText } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
-import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
+import type { OrderStatus, OrderWithItems } from '@/types/database';
 import {
   OrdersCommandHeader,
   ordersColumnId,
 } from '@/components/dashboard/orders/OrdersCommandHeader';
-import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
+import { OrderTicket } from '@/components/dashboard/orders/OrderTicket';
 import { OrdersCleanupDialog } from '@/components/dashboard/orders/OrdersCleanupDialog';
 import { ACTIVE_COLUMNS, COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
 
@@ -448,257 +434,5 @@ export default function OrdersPage() {
 
       <OrdersCleanupDialog open={cleanupOpen} onOpenChange={setCleanupOpen} />
     </div>
-  );
-}
-
-function OrderTicket({
-  order,
-  locale,
-  currencyLocale,
-  settings,
-  t,
-  busy,
-  whatsappConfigured,
-  onAcknowledge,
-  onStatus,
-  onWhatsApp,
-  onDelete,
-}: {
-  order: OrderWithItems;
-  locale: string;
-  currencyLocale: 'en' | 'ar' | 'fr' | 'nl';
-  settings?: RestaurantSettings | null;
-  t: (key: string, values?: Record<string, string | number>) => string;
-  busy: boolean;
-  whatsappConfigured: boolean;
-  onAcknowledge: (id: string) => void;
-  onStatus: (order: OrderWithItems, status: OrderStatus) => void;
-  onWhatsApp: (order: OrderWithItems) => void;
-  onDelete: (order: OrderWithItems) => void;
-}) {
-  const [receiptBusy, setReceiptBusy] = useState(false);
-  const nextStatus: OrderStatus | null =
-    order.status === 'new'
-      ? 'preparing'
-      : order.status === 'preparing'
-        ? 'ready'
-        : order.status === 'ready'
-          ? 'completed'
-          : null;
-
-  const needsAck = isUnacknowledged(order);
-  const customerWaUrl = order.customer_phone ? buildCustomerWhatsAppUrl(order.customer_phone) : '';
-  const displayPhone = order.customer_phone ? formatDisplayPhone(order.customer_phone) : '';
-
-  const runReceiptAction = async (mode: 'print' | 'pdf') => {
-    const node = document.getElementById(receiptDomId(order.id));
-    if (!node) {
-      toast.error(mode === 'print' ? t('printFailed') : t('downloadFailed'));
-      return;
-    }
-    setReceiptBusy(true);
-    try {
-      if (mode === 'print') {
-        await printReceiptElement(node);
-      } else {
-        await downloadReceiptPdf(node, order.order_number);
-      }
-    } catch {
-      toast.error(mode === 'print' ? t('printFailed') : t('downloadFailed'));
-    } finally {
-      setReceiptBusy(false);
-    }
-  };
-
-  return (
-    <article
-      className={cn(
-        'bg-background rounded-xl border p-3 shadow-sm',
-        needsAck && 'border-amber-400 ring-2 ring-amber-400/40'
-      )}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="font-heading text-lg font-semibold tabular-nums">{order.order_number}</p>
-          <p className="text-muted-foreground text-xs">
-            {formatLocaleDate(order.created_at, 'HH:mm', locale)}
-          </p>
-        </div>
-        <Badge className={cn('border', COLUMN_TONE[order.status])}>
-          {t(`status.${order.status}`)}
-        </Badge>
-      </div>
-
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-        <span className="bg-muted inline-flex items-center gap-1 rounded-full px-2 py-1">
-          {order.dining_mode === 'dining' ? (
-            <UtensilsCrossed className="h-3.5 w-3.5" aria-hidden="true" />
-          ) : (
-            <ShoppingBag className="h-3.5 w-3.5" aria-hidden="true" />
-          )}
-          {order.dining_mode === 'dining' ? t('dining') : t('takeaway')}
-        </span>
-        {order.table_number ? (
-          <span className="bg-muted rounded-full px-2 py-1">
-            {t('table')} {order.table_number}
-          </span>
-        ) : null}
-        {order.fulfillment_type ? (
-          <span className="bg-muted rounded-full px-2 py-1">
-            {order.fulfillment_type === 'delivery' ? t('delivery') : t('pickup')}
-          </span>
-        ) : null}
-      </div>
-
-      <ul className="mt-3 space-y-1.5 text-sm">
-        {order.items.map((item) => (
-          <li key={item.id} className="flex justify-between gap-2">
-            <span className="min-w-0">
-              <span className="tabular-nums">{item.quantity}×</span>{' '}
-              {getLocalizedText(locale, {
-                en: item.name_en,
-                ar: item.name_ar,
-                fr: item.name_fr,
-                nl: item.name_nl,
-              })}
-              {item.size_option ? (
-                <span className="text-muted-foreground ms-1 text-xs">
-                  ({item.size_option === 'small' ? t('small') : t('large')})
-                </span>
-              ) : null}
-              {item.notes ? (
-                <span className="text-muted-foreground block text-xs">{item.notes}</span>
-              ) : null}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      {order.notes ? <p className="text-muted-foreground mt-2 text-xs">{order.notes}</p> : null}
-
-      {order.delivery_address ? (
-        <p className="mt-2 flex items-start gap-1.5 text-xs">
-          <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          {order.delivery_address}
-        </p>
-      ) : null}
-
-      <div className="mt-3 flex items-center justify-between gap-2 border-t pt-3">
-        <div>
-          <p className="text-sm font-medium">{order.customer_name}</p>
-          {order.customer_phone ? (
-            customerWaUrl ? (
-              <a
-                href={customerWaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs underline-offset-2 hover:underline"
-              >
-                <Phone className="h-3 w-3" aria-hidden="true" />
-                {displayPhone}
-              </a>
-            ) : (
-              <p className="text-muted-foreground flex items-center gap-1 text-xs">
-                <Phone className="h-3 w-3" aria-hidden="true" />
-                {displayPhone}
-              </p>
-            )
-          ) : null}
-        </div>
-        <p className="font-heading text-base font-semibold tabular-nums">
-          {formatCurrencyAmount(Number(order.total), order.currency, { locale: currencyLocale })}
-        </p>
-      </div>
-      {Number(order.discount_amount) > 0 ? (
-        <p className="text-muted-foreground mt-1 text-end text-xs tabular-nums">
-          {order.coupon_code ? `${order.coupon_code} · ` : ''}−
-          {formatCurrencyAmount(Number(order.discount_amount), order.currency, {
-            locale: currencyLocale,
-          })}
-        </p>
-      ) : null}
-
-      <div className="mt-3 grid gap-2">
-        {needsAck ? (
-          <Button
-            className="min-h-11 bg-amber-600 text-white hover:bg-amber-700"
-            disabled={busy}
-            onClick={() => onAcknowledge(order.id)}
-          >
-            {t('acknowledge')}
-          </Button>
-        ) : null}
-        {nextStatus ? (
-          <Button className="min-h-11" disabled={busy} onClick={() => onStatus(order, nextStatus)}>
-            {t(`action.${nextStatus}`)}
-          </Button>
-        ) : null}
-        {order.status !== 'cancelled' && order.status !== 'completed' ? (
-          <Button
-            variant="outline"
-            className="min-h-11"
-            disabled={busy}
-            onClick={() => onStatus(order, 'cancelled')}
-          >
-            {t('action.cancelled')}
-          </Button>
-        ) : null}
-        <div className="grid grid-cols-2 gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="min-h-11 whitespace-normal"
-            disabled={busy || receiptBusy}
-            aria-label={t('printReceipt')}
-            onClick={() => void runReceiptAction('print')}
-          >
-            <Printer className="me-2 h-4 w-4" aria-hidden="true" />
-            {t('printReceipt')}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="min-h-11 whitespace-normal"
-            disabled={busy || receiptBusy}
-            aria-label={t('downloadReceipt')}
-            onClick={() => void runReceiptAction('pdf')}
-          >
-            <Download className="me-2 h-4 w-4" aria-hidden="true" />
-            {t('downloadReceipt')}
-          </Button>
-        </div>
-        <Button
-          variant="secondary"
-          className="min-h-11"
-          disabled={busy || !whatsappConfigured}
-          onClick={() => onWhatsApp(order)}
-        >
-          <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />
-          {order.whatsapp_sent ? t('sendWhatsAppAgain') : t('sendWhatsApp')}
-        </Button>
-        <Button
-          variant="destructive"
-          className="min-h-11"
-          disabled={busy}
-          onClick={() => onDelete(order)}
-        >
-          <Trash2 className="me-2 h-4 w-4" aria-hidden="true" />
-          {t('deleteOrder')}
-        </Button>
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed top-0"
-        style={{ left: -2000, width: '80mm' }}
-      >
-        <OrderReceipt
-          order={order}
-          settings={settings}
-          locale={locale}
-          currencyLocale={currencyLocale}
-          t={t}
-        />
-      </div>
-    </article>
   );
 }

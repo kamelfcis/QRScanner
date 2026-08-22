@@ -607,6 +607,9 @@
     "acknowledgeAll": "Acknowledge all",
     "newOrderAlert": "{count, plural, one {# new order waiting} other {# new orders waiting}}",
     "enableSound": "Tap to enable sound",
+    "expandItems": "Show order items",
+    "collapseItems": "Hide order items",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
     "status": {
       "new": "New",
       "preparing": "Preparing",

@@ -259,6 +259,8 @@ export interface OrderItem {
   size_option: OrderSizeOption | null;
   notes: string | null;
   created_at: string;
+  /** Joined from products at fetch time; not stored on order_items */
+  image_url?: string | null;
 }
 
 export type CouponDiscountType = 'percentage' | 'fixed';

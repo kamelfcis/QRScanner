@@ -12,10 +12,22 @@ export const orderKeys = {
   lists: () => [...orderKeys.all, 'list'] as const,
 };
 
-function asOrders(rows: Array<Order & { order_items?: OrderItem[] }> | null): OrderWithItems[] {
+type RawOrderItem = OrderItem & {
+  products?: { image_url: string | null } | null;
+};
+
+function normalizeOrderItem(item: RawOrderItem): OrderItem {
+  const { products, ...rest } = item;
+  return { ...rest, image_url: products?.image_url ?? null };
+}
+
+function asOrders(rows: Array<Order & { order_items?: RawOrderItem[] }> | null): OrderWithItems[] {
   return (rows ?? []).map((row) => {
     const { order_items, ...order } = row;
-    return { ...order, items: order_items ?? [] };
+    return {
+      ...order,
+      items: (order_items ?? []).map(normalizeOrderItem),
+    };
   });
 }
 
@@ -29,11 +41,11 @@ export function useOrders() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from('orders')
-        .select('*, order_items(*)')
+        .select('*, order_items(*, products(image_url))')
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
-      return asOrders(data as Array<Order & { order_items?: OrderItem[] }>);
+      return asOrders(data as Array<Order & { order_items?: RawOrderItem[] }>);
     },
     staleTime: 5 * 1000,
   });

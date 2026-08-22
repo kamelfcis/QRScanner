@@ -607,6 +607,9 @@
     "acknowledgeAll": "Alles bevestigen",
     "newOrderAlert": "{count, plural, one {# nieuwe bestelling wacht} other {# nieuwe bestellingen wachten}}",
     "enableSound": "Tik om geluid in te schakelen",
+    "expandItems": "Items tonen",
+    "collapseItems": "Items verbergen",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
     "status": {
       "new": "Nieuw",
       "preparing": "In bereiding",
