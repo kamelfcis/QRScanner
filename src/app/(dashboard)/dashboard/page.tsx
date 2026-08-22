@@ -18,6 +18,7 @@ import { useDashboardStats } from '@/hooks/useDashboardStats';
 import { useTodayHourlyVisitors } from '@/hooks/useAnalytics';
 import { useRealtimeAnalytics } from '@/hooks/useRealtime';
 import { DashboardShortcuts } from '@/components/dashboard/DashboardShortcuts';
+import { DashboardNeedsAttention } from '@/components/dashboard/DashboardNeedsAttention';
 import { KPICard } from '@/components/dashboard/kpi';
 import { LineAreaChart, PieDonutChart, ChartCard } from '@/components/dashboard/charts';
 import dynamic from 'next/dynamic';
@@ -132,6 +133,8 @@ export default function DashboardPage() {
           {formatLocaleDate(new Date(), 'EEEE, MMMM d, yyyy', locale)}
         </p>
       </div>
+
+      <DashboardNeedsAttention />
 
       <DashboardShortcuts />
 

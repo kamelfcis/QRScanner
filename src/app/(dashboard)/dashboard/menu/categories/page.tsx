@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useAllCategories,
   useCreateCategory,
@@ -27,11 +27,12 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
-import { Plus, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { CategoryCard } from '@/features/categories/components/CategoryCard';
 import { toast } from 'sonner';
 import type { CategoryInput } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { CategoriesCommandHeader } from '@/components/dashboard/menu/CategoriesCommandHeader';
 
 const defaultForm: CategoryInput = {
   name_en: '',
@@ -142,21 +143,22 @@ export default function CategoriesPage() {
     }
   };
 
+  const totalCount = categories?.length ?? 0;
+  const visibleCount = useMemo(
+    () => categories?.filter((category) => category.is_visible).length ?? 0,
+    [categories]
+  );
+
   if (isLoading) return <LoadingPage />;
   if (error) return <ErrorState error={error} retry={refetch} />;
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('updateCategoryDetails')}</p>
-        </div>
-        <Button onClick={openCreateDialog}>
-          <Plus className="mr-2 h-4 w-4" />
-          {t('addCategory')}
-        </Button>
-      </div>
+      <CategoriesCommandHeader
+        totalCount={totalCount}
+        visibleCount={visibleCount}
+        onAddCategory={openCreateDialog}
+      />
 
       <div className="flex items-center gap-4">
         <div className="relative flex-1">
@@ -165,7 +167,7 @@ export default function CategoriesPage() {
             placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="ps-9"
+            className="min-h-11 ps-9"
             aria-label={t('searchCategories')}
           />
         </div>
@@ -174,7 +176,7 @@ export default function CategoriesPage() {
       {!filteredCount ? (
         <EmptyState
           title={t('noCategories')}
-          description={searchQuery ? tCommon('tryAgain') : t('addCategory')}
+          description={searchQuery ? tCommon('tryAgain') : t('emptyDescription')}
           action={!searchQuery ? { label: t('addCategory'), onClick: openCreateDialog } : undefined}
         />
       ) : (

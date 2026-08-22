@@ -174,12 +174,21 @@ export function CheckoutCoupon({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold tabular-nums text-[var(--menu-wine)]">
-              −
-              {formatCurrencyAmount(applied.discountAmount, currency, {
-                locale: currencyLocale,
-              })}
-            </span>
+            <div className="text-end">
+              <p className="text-sm font-semibold tabular-nums text-[var(--menu-wine)]">
+                −
+                {formatCurrencyAmount(applied.discountAmount, currency, {
+                  locale: currencyLocale,
+                })}
+              </p>
+              <p className="text-xs text-[var(--menu-ink-soft)]">
+                {t('couponSaved', {
+                  amount: formatCurrencyAmount(applied.discountAmount, currency, {
+                    locale: currencyLocale,
+                  }),
+                })}
+              </p>
+            </div>
             <Button
               type="button"
               variant="ghost"
