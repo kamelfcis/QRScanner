@@ -4,7 +4,7 @@ import { ClipboardList } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 import type { OrderStatus } from '@/types/database';
-import { ACTIVE_COLUMNS, COLUMN_TONE } from './column-tone';
+import { ACTIVE_COLUMNS, COLUMN_TONE, type ActiveOrderStatus } from './column-tone';
 
 export function ordersColumnId(status: OrderStatus): string {
   return `orders-col-${status}`;
@@ -15,7 +15,7 @@ type OrdersTab = 'active' | 'cancelled';
 interface OrdersCommandHeaderProps {
   tab: OrdersTab;
   onTabChange: (tab: OrdersTab) => void;
-  statusCounts: Record<(typeof ACTIVE_COLUMNS)[number], number>;
+  statusCounts: Record<ActiveOrderStatus, number>;
   unackedCount: number;
   todayCount: number;
   cancelledCount: number;

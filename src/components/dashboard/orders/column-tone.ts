@@ -8,4 +8,6 @@ export const COLUMN_TONE: Record<OrderStatus, string> = {
   cancelled: 'border-rose-400/70 bg-rose-500/10 text-rose-800 dark:text-rose-200',
 };
 
-export const ACTIVE_COLUMNS: OrderStatus[] = ['new', 'preparing', 'ready', 'completed'];
+export const ACTIVE_COLUMNS = ['new', 'preparing', 'ready', 'completed'] as const;
+
+export type ActiveOrderStatus = (typeof ACTIVE_COLUMNS)[number];
