@@ -812,6 +812,7 @@
     "discountPercent": "Discount %",
     "validFrom": "Valid From",
     "validUntil": "Valid Until",
+    "addImage": "Ajouter Image",
     "active": "Actif"
   },
   "reports": {
