@@ -198,7 +198,8 @@
     "priceFrom": "À partir de {price}",
     "displayPromoHelper": "Promo affichée — pas un code de caisse",
     "displayPromoBadge": "Bannière promo",
-    "haveCodeAtCheckout": "Vous avez un code ? Appliquez-le au paiement"
+    "haveCodeAtCheckout": "Vous avez un code ? Appliquez-le au paiement",
+    "checkOrderStatus": "Suivre la commande"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -538,7 +539,44 @@
     "openWhatsApp": "Ouvrir WhatsApp again",
     "keepCart": "Keep cart",
     "clearCart": "Clear cart",
-    "backToMenu": "Retour au menu"
+    "backToMenu": "Retour au menu",
+    "checkStatus": "Suivre la commande",
+    "saveLinkHint": "Enregistrez ce lien pour retrouver votre ticket plus tard."
+  },
+  "orderStatus": {
+    "eyebrow": "Ticket cuisine",
+    "title": "Statut de la commande",
+    "lead": "Votre ticket après le paiement. La cuisine met à jour le tableau du magasin.",
+    "ticketLabel": "Ticket",
+    "saveLink": "Enregistrez ce lien pour rouvrir le ticket.",
+    "copyLink": "Copier le lien de suivi",
+    "copied": "Lien copié",
+    "copyFailed": "Impossible de copier. Ajoutez cette page aux favoris.",
+    "lookupTitle": "Retrouver un ticket récent",
+    "lookupLead": "Recherchez la dernière commande passée sur ce téléphone. Nous ne cherchons pas les autres clients.",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "Numéro de mobile",
+    "orderNumberLabel": "Numéro de commande (optionnel)",
+    "orderNumberPlaceholder": "AS-0042",
+    "lookup": "Rechercher",
+    "notFound": "Aucun ticket sur cet appareil pour ces informations. Après la commande, enregistrez le lien de suivi.",
+    "noTicket": "Aucun ticket récent sur cet appareil. Passez commande, puis enregistrez le lien de suivi.",
+    "confirmationHint": "C’est le numéro de la confirmation. Les mises à jour en direct restent au magasin.",
+    "statusHintNew": "La cuisine a votre ticket.",
+    "statusHintPreparing": "La cuisine prépare votre commande.",
+    "statusHintReady": "Votre commande est prête.",
+    "statusHintCompleted": "Cette commande est terminée.",
+    "statusHintCancelled": "Cette commande a été annulée. Demandez de l’aide au magasin.",
+    "timelineLabel": "Progression",
+    "backToMenu": "Retour au menu",
+    "openWhatsApp": "Ouvrir WhatsApp à nouveau",
+    "status": {
+      "new": "Reçue",
+      "preparing": "En préparation",
+      "ready": "Prête",
+      "completed": "Terminée",
+      "cancelled": "Annulée"
+    }
   },
   "orders": {
     "title": "Commandes",

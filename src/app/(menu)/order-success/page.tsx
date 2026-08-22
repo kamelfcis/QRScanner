@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, MessageCircle } from 'lucide-react';
+import { CheckCircle2, ClipboardList, MessageCircle } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore } from '@/stores/cart-store';
@@ -12,6 +12,8 @@ import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp, scaleIn } from '@/lib/motion';
 import { openWhatsAppUrl } from '@/lib/order/build-order';
+import { buildOrderStatusPath } from '@/lib/order/last-order';
+import { cn } from '@/lib/utils';
 
 export default function OrderSuccessPage() {
   return (
@@ -123,10 +125,33 @@ function OrderSuccessContent() {
         </div>
 
         <div className="flex flex-col gap-3">
+          {orderNumber ? (
+            <Link
+              href={buildOrderStatusPath(orderNumber)}
+              className={cn(
+                buttonVariants(),
+                'h-12 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+              )}
+              data-testid="check-order-status"
+            >
+              <ClipboardList className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('checkStatus')}
+            </Link>
+          ) : null}
+          {orderNumber ? (
+            <p className="text-center text-xs leading-relaxed text-[var(--menu-ink-soft)]">
+              {t('saveLinkHint')}
+            </p>
+          ) : null}
           {waUrl && (
             <Button
               size="lg"
-              className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+              variant={orderNumber ? 'outline' : 'default'}
+              className={cn(
+                'h-12 w-full rounded-full',
+                !orderNumber &&
+                  'bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+              )}
               onClick={() => openWhatsAppUrl(waUrl)}
               data-testid="reopen-whatsapp"
             >

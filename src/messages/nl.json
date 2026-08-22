@@ -198,7 +198,8 @@
     "priceFrom": "Vanaf {price}",
     "displayPromoHelper": "Weergavepromo — geen afrekencode",
     "displayPromoBadge": "Promobanner",
-    "haveCodeAtCheckout": "Heb je een code? Pas toe bij afrekenen"
+    "haveCodeAtCheckout": "Heb je een code? Pas toe bij afrekenen",
+    "checkOrderStatus": "Bestelstatus"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -538,7 +539,44 @@
     "openWhatsApp": "Openen WhatsApp again",
     "keepCart": "Keep cart",
     "clearCart": "Clear cart",
-    "backToMenu": "Terug naar menu"
+    "backToMenu": "Terug naar menu",
+    "checkStatus": "Bestelstatus bekijken",
+    "saveLinkHint": "Bewaar deze link om je ticket later terug te vinden."
+  },
+  "orderStatus": {
+    "eyebrow": "Keukenticket",
+    "title": "Bestelstatus",
+    "lead": "Je ticket na het afrekenen. De keuken werkt het winkelbord bij.",
+    "ticketLabel": "Ticket",
+    "saveLink": "Bewaar deze link om het ticket opnieuw te openen.",
+    "copyLink": "Statuslink kopiëren",
+    "copied": "Link gekopieerd",
+    "copyFailed": "Kopiëren mislukt. Zet deze pagina bij je favorieten.",
+    "lookupTitle": "Recent ticket zoeken",
+    "lookupLead": "Zoek de laatste bestelling op deze telefoon. We zoeken niet bij andere klanten.",
+    "phoneLabel": "Telefoon",
+    "phonePlaceholder": "Mobiel nummer",
+    "orderNumberLabel": "Bestelnummer (optioneel)",
+    "orderNumberPlaceholder": "AS-0042",
+    "lookup": "Zoeken",
+    "notFound": "Geen ticket op dit apparaat voor deze gegevens. Sla na het afrekenen de statuslink op.",
+    "noTicket": "Geen recent ticket op dit apparaat. Plaats een bestelling en sla daarna de statuslink op.",
+    "confirmationHint": "Dit is het nummer van de bevestiging. Live keukenupdates blijven in de winkel.",
+    "statusHintNew": "De keuken heeft je ticket.",
+    "statusHintPreparing": "De keuken bereidt je bestelling.",
+    "statusHintReady": "Je bestelling is klaar.",
+    "statusHintCompleted": "Deze bestelling is afgerond.",
+    "statusHintCancelled": "Deze bestelling is geannuleerd. Vraag de winkel om hulp.",
+    "timelineLabel": "Voortgang",
+    "backToMenu": "Terug naar menu",
+    "openWhatsApp": "WhatsApp opnieuw openen",
+    "status": {
+      "new": "Ontvangen",
+      "preparing": "In bereiding",
+      "ready": "Klaar",
+      "completed": "Afgerond",
+      "cancelled": "Geannuleerd"
+    }
   },
   "orders": {
     "title": "Bestellingen",

@@ -41,6 +41,7 @@ import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { normalizeLocalPhone, formatDisplayPhone } from '@/lib/phone/normalize';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
+import { writeLastOrder } from '@/lib/order/last-order';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -240,6 +241,9 @@ export default function CheckoutPage() {
 
         const payload = (await response.json().catch(() => null)) as {
           order_number?: string;
+          id?: string;
+          total?: number;
+          currency?: string;
           code?: string;
           error?: string;
         } | null;
@@ -269,6 +273,18 @@ export default function CheckoutPage() {
         }
 
         orderNumber = payload.order_number;
+        writeLastOrder({
+          orderNumber: payload.order_number,
+          orderId: payload.id,
+          phone: normalizedPhone,
+          customerName,
+          status: 'new',
+          diningMode,
+          fulfillmentType: isTakeaway ? fulfillmentType : null,
+          placedAt: new Date().toISOString(),
+          total: typeof payload.total === 'number' ? payload.total : undefined,
+          currency: payload.currency,
+        });
       }
 
       const built = sendWhatsApp

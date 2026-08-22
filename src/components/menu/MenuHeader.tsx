@@ -1,7 +1,8 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Heart, Search, ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
+import { Heart, Receipt, Search, ShoppingCart } from 'lucide-react';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -14,6 +15,7 @@ import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveOrderModes } from '@/lib/order/order-modes';
+import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -45,6 +47,7 @@ export function MenuHeader({
   const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
+  const lastOrder = mounted ? readLastOrder() : null;
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
@@ -106,6 +109,17 @@ export function MenuHeader({
               {favoriteCount}
             </span>
           )}
+
+          {lastOrder ? (
+            <Link
+              href={buildOrderStatusPath(lastOrder.orderNumber)}
+              className={iconButton}
+              aria-label={t('checkOrderStatus')}
+              data-testid="header-order-status"
+            >
+              <Receipt className="h-[18px] w-[18px]" aria-hidden="true" />
+            </Link>
+          ) : null}
 
           <button
             type="button"

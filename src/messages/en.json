@@ -198,7 +198,8 @@
     "priceFrom": "From {price}",
     "displayPromoHelper": "Display promo — not a checkout code",
     "displayPromoBadge": "Promo banner",
-    "haveCodeAtCheckout": "Have a code? Apply at checkout"
+    "haveCodeAtCheckout": "Have a code? Apply at checkout",
+    "checkOrderStatus": "Check order status"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -538,7 +539,44 @@
     "openWhatsApp": "Open WhatsApp again",
     "keepCart": "Keep cart",
     "clearCart": "Clear cart",
-    "backToMenu": "Back to menu"
+    "backToMenu": "Back to menu",
+    "checkStatus": "Check order status",
+    "saveLinkHint": "Save this link to find your ticket later."
+  },
+  "orderStatus": {
+    "eyebrow": "Kitchen ticket",
+    "title": "Order status",
+    "lead": "Your ticket after checkout. The kitchen updates the shop board.",
+    "ticketLabel": "Ticket",
+    "saveLink": "Save this link to open the ticket again.",
+    "copyLink": "Copy status link",
+    "copied": "Link copied",
+    "copyFailed": "Could not copy. Bookmark this page.",
+    "lookupTitle": "Find a recent ticket",
+    "lookupLead": "Look up the last order you placed on this phone. We do not search other customers.",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "Mobile number",
+    "orderNumberLabel": "Order number (optional)",
+    "orderNumberPlaceholder": "AS-0042",
+    "lookup": "Look up",
+    "notFound": "No ticket on this device for those details. After checkout, save the status link.",
+    "noTicket": "No recent ticket on this device. Place an order, then save the status link.",
+    "confirmationHint": "This is the number from checkout. Live kitchen updates stay with the shop.",
+    "statusHintNew": "The kitchen has your ticket.",
+    "statusHintPreparing": "The kitchen is preparing your order.",
+    "statusHintReady": "Your order is ready.",
+    "statusHintCompleted": "This order is complete.",
+    "statusHintCancelled": "This order was cancelled. Ask the shop if you need help.",
+    "timelineLabel": "Order progress",
+    "backToMenu": "Back to menu",
+    "openWhatsApp": "Open WhatsApp again",
+    "status": {
+      "new": "Received",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   },
   "orders": {
     "title": "Orders",
