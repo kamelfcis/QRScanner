@@ -689,6 +689,19 @@ export default function CheckoutPage() {
             </div>
           </section>
 
+          <p className="text-muted-foreground text-center text-sm leading-relaxed" role="status">
+            {dashboardOrders ? (
+              <>
+                {t('outcomeSaveOrder')}
+                {whatsappConfigured ? ` ${t('outcomeThenWhatsApp')}` : null}
+              </>
+            ) : whatsappConfigured ? (
+              t('outcomeWhatsAppOnly')
+            ) : (
+              t('whatsappMissing')
+            )}
+          </p>
+
           <Button
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"

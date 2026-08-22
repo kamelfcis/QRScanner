@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Copy, Pencil, Plus, Sparkles, TicketPercent, Trash2 } from 'lucide-react';
+import { Copy, Pencil, Sparkles, TicketPercent, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,6 +29,7 @@ import {
   useDeleteCoupon,
   useUpdateCoupon,
 } from '@/hooks/useCoupons';
+import { CouponsCommandHeader } from '@/components/dashboard/coupons/CouponsCommandHeader';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { couponSchema, type CouponInput } from '@/types/schema';
@@ -227,28 +228,29 @@ export default function CouponsPage() {
     []
   );
 
+  const totalCount = coupons?.length ?? 0;
+  const activeCount = useMemo(
+    () => (coupons ?? []).filter((coupon) => couponStatus(coupon) === 'active').length,
+    [coupons]
+  );
+
   if (featuresLoading || isLoading) return <LoadingPage />;
   if (!couponsEnabled) return <LoadingPage />;
   if (error) return <ErrorState error={error} retry={refetch} />;
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('description')}</p>
-        </div>
-        <Button className="min-h-11" onClick={openCreate}>
-          <Plus className="me-2 h-4 w-4" />
-          {t('addCoupon')}
-        </Button>
-      </div>
+      <CouponsCommandHeader
+        totalCount={totalCount}
+        activeCount={activeCount}
+        onAddCoupon={openCreate}
+      />
 
       {!coupons?.length ? (
         <EmptyState
           title={t('empty')}
           description={t('emptyDescription')}
-          action={{ label: t('addCoupon'), onClick: openCreate }}
+          action={{ label: t('createFirstCode'), onClick: openCreate }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

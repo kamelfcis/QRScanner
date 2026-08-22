@@ -394,6 +394,7 @@ function ProductPriceFields({
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [quickFilter, setQuickFilter] = useState<'all' | 'unavailable' | 'no_image'>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -441,7 +442,11 @@ export default function ProductsPage() {
       product.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.name_ar.includes(searchQuery);
     const matchesCategory = categoryFilter === 'all' || product.category_id === categoryFilter;
-    return matchesSearch && matchesCategory;
+    const matchesQuick =
+      quickFilter === 'all' ||
+      (quickFilter === 'unavailable' && !product.is_available) ||
+      (quickFilter === 'no_image' && !product.image_url?.trim());
+    return matchesSearch && matchesCategory && matchesQuick;
   });
 
   const {
@@ -455,9 +460,10 @@ export default function ProductsPage() {
     rangeStart,
     rangeEnd,
     pageSizeOptions,
-  } = usePagination(filteredProducts, `${searchQuery}:${categoryFilter}`);
+  } = usePagination(filteredProducts, `${searchQuery}:${categoryFilter}:${quickFilter}`);
 
-  const hasActiveFilters = searchQuery.length > 0 || categoryFilter !== 'all';
+  const hasActiveFilters =
+    searchQuery.length > 0 || categoryFilter !== 'all' || quickFilter !== 'all';
   const totalProducts = products?.length ?? 0;
   const visibleCount = filteredCount;
   const activeCategory =
@@ -531,6 +537,7 @@ export default function ProductsPage() {
   const clearFilters = () => {
     setSearchQuery('');
     setCategoryFilter('all');
+    setQuickFilter('all');
   };
 
   const handleDelete = () => {
@@ -735,6 +742,39 @@ export default function ProductsPage() {
             className="border-border/60 bg-background/80 ps-9"
             aria-label={t('searchProducts')}
           />
+        </div>
+
+        <div className="space-y-1.5">
+          <p
+            id="products-quick-filter-label"
+            className="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+          >
+            {t('quickFilters')}
+          </p>
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-labelledby="products-quick-filter-label"
+          >
+            {(
+              [
+                { id: 'all', label: t('quickFilterAll') },
+                { id: 'unavailable', label: t('quickFilterUnavailable') },
+                { id: 'no_image', label: t('quickFilterNoImage') },
+              ] as const
+            ).map((chip) => (
+              <button
+                key={chip.id}
+                type="button"
+                role="tab"
+                aria-selected={quickFilter === chip.id}
+                onClick={() => setQuickFilter(chip.id)}
+                className={categoryChipClassName(quickFilter === chip.id)}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-1.5">

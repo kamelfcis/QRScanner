@@ -27,7 +27,7 @@ interface CartDrawerProps {
 }
 
 const stepperButton =
-  'flex h-9 w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
+  'flex h-11 w-11 min-h-11 min-w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] touch-manipulation';
 
 export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const router = useRouter();

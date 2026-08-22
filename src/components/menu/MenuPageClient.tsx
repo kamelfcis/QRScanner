@@ -215,6 +215,7 @@ function MenuContent() {
         tableParam={tableParam}
         diningMode={diningMode}
         onDiningModeChange={handleDiningModeChange}
+        onSearchOpen={() => setSearchOpen(true)}
       />
 
       {hasCatalog && (
@@ -225,7 +226,7 @@ function MenuContent() {
         />
       )}
 
-      {hasCatalog && activeCategory === null && <OffersSection />}
+      {hasCatalog && <OffersSection compact={activeCategory !== null} />}
 
       {isLoading && <MenuGridSkeleton />}
 
