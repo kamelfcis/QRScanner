@@ -1,6 +1,6 @@
 'use client';
 
-import { ClipboardList } from 'lucide-react';
+import { ClipboardList, Trash2 } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 import type { OrderStatus } from '@/types/database';
@@ -22,6 +22,7 @@ interface OrdersCommandHeaderProps {
   formattedRevenue: string;
   prefersReducedMotion: boolean;
   onStatusFocus: (status: OrderStatus) => void;
+  onCleanup: () => void;
 }
 
 export function OrdersCommandHeader({
@@ -34,6 +35,7 @@ export function OrdersCommandHeader({
   formattedRevenue,
   prefersReducedMotion,
   onStatusFocus,
+  onCleanup,
 }: OrdersCommandHeaderProps) {
   const t = useTranslations('orders');
 
@@ -73,39 +75,53 @@ export function OrdersCommandHeader({
             <p className="text-muted-foreground mt-1 max-w-prose text-sm">{t('description')}</p>
           </div>
 
-          <div
-            className="bg-muted/80 inline-flex self-start rounded-full p-1"
-            role="tablist"
-            aria-label={t('title')}
-          >
-            {[
-              { id: 'active' as const, label: t('tabActive'), count: todayCount },
-              { id: 'cancelled' as const, label: t('tabCancelled'), count: cancelledCount },
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                aria-selected={tab === item.id}
-                onClick={() => onTabChange(item.id)}
-                className={cn(
-                  'inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium transition-colors',
-                  tab === item.id
-                    ? 'bg-secondary text-secondary-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
-                )}
-              >
-                {item.label}
-                <span
+          <div className="flex items-center gap-1.5 self-start">
+            <button
+              type="button"
+              onClick={onCleanup}
+              aria-label={t('cleanupOrders')}
+              className={cn(
+                'text-muted-foreground hover:text-foreground hover:bg-muted',
+                'inline-flex min-h-11 min-w-11 items-center justify-center rounded-full',
+                'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+              )}
+            >
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <div
+              className="bg-muted/80 inline-flex rounded-full p-1"
+              role="tablist"
+              aria-label={t('title')}
+            >
+              {[
+                { id: 'active' as const, label: t('tabActive'), count: todayCount },
+                { id: 'cancelled' as const, label: t('tabCancelled'), count: cancelledCount },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === item.id}
+                  onClick={() => onTabChange(item.id)}
                   className={cn(
-                    'text-xs font-semibold tabular-nums',
-                    tab === item.id ? 'text-secondary-foreground/85' : 'text-muted-foreground'
+                    'inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium transition-colors',
+                    tab === item.id
+                      ? 'bg-secondary text-secondary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
-                  {item.count}
-                </span>
-              </button>
-            ))}
+                  {item.label}
+                  <span
+                    className={cn(
+                      'text-xs font-semibold tabular-nums',
+                      tab === item.id ? 'text-secondary-foreground/85' : 'text-muted-foreground'
+                    )}
+                  >
+                    {item.count}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

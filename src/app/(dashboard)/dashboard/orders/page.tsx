@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
   BellRing,
+  Download,
   MessageCircle,
   Phone,
+  Printer,
   MapPin,
   UtensilsCrossed,
   ShoppingBag,
@@ -14,8 +16,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
@@ -23,9 +23,7 @@ import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import {
   useAcknowledgeOrder,
-  useCountOrdersInRange,
   useDeleteOrder,
-  useDeleteOrdersInRange,
   useMarkOrderWhatsAppSent,
   useOrders,
   useRealtimeOrders,
@@ -39,24 +37,17 @@ import { buildStoredOrderWhatsApp, openWhatsAppUrl } from '@/lib/order/build-ord
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { resumeOrderRingAudio, startOrderRing, stopOrderRing } from '@/lib/audio/order-ring';
 import { buildCustomerWhatsAppUrl, formatDisplayPhone } from '@/lib/phone/normalize';
-import { validateDeleteRange } from '@/lib/order/delete-range';
+import { downloadReceiptPdf, printReceiptElement, receiptDomId } from '@/lib/order/print-receipt';
 import { cn, getLocalizedText } from '@/lib/utils';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
-import type { OrderStatus, OrderWithItems } from '@/types/database';
+import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import {
   OrdersCommandHeader,
   ordersColumnId,
 } from '@/components/dashboard/orders/OrdersCommandHeader';
+import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
+import { OrdersCleanupDialog } from '@/components/dashboard/orders/OrdersCleanupDialog';
 import { ACTIVE_COLUMNS, COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
-
-const RANGE_STATUS_OPTIONS: Array<OrderStatus | 'all'> = [
-  'all',
-  'completed',
-  'cancelled',
-  'new',
-  'preparing',
-  'ready',
-];
 
 function isSameLocalDay(iso: string): boolean {
   const date = new Date(iso);
@@ -85,17 +76,11 @@ export default function OrdersPage() {
   const acknowledgeOrder = useAcknowledgeOrder();
   const markWhatsApp = useMarkOrderWhatsAppSent();
   const deleteOrder = useDeleteOrder();
-  const deleteRange = useDeleteOrdersInRange();
-  const countRange = useCountOrdersInRange();
   useRealtimeOrders();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [soundBlocked, setSoundBlocked] = useState(false);
-  const [rangeFrom, setRangeFrom] = useState('');
-  const [rangeTo, setRangeTo] = useState('');
-  const [rangeStatus, setRangeStatus] = useState<OrderStatus | 'all'>('all');
-  const [previewCount, setPreviewCount] = useState<number | null>(null);
-  const [rangeDeleteOpen, setRangeDeleteOpen] = useState(false);
+  const [cleanupOpen, setCleanupOpen] = useState(false);
   const [deletingOrder, setDeletingOrder] = useState<OrderWithItems | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
   const primed = useRef(false);
@@ -289,93 +274,12 @@ export default function OrdersPage() {
     }
   };
 
-  const selectedStatuses = rangeStatus === 'all' ? undefined : [rangeStatus];
-
-  const handlePreviewRange = async () => {
-    const validation = validateDeleteRange(rangeFrom, rangeTo);
-    if (validation === 'invalid_date') {
-      toast.error(tCommon('error'));
-      return;
-    }
-    if (validation === 'invalid_range') {
-      toast.error(tCommon('error'));
-      return;
-    }
-    if (validation === 'range_too_wide') {
-      toast.error(t('deleteRangeTooWide'));
-      return;
-    }
-    try {
-      const count = await countRange.mutateAsync({
-        from: rangeFrom,
-        to: rangeTo,
-        statuses: selectedStatuses,
-      });
-      setPreviewCount(count);
-      if (count === 0) {
-        toast.message(t('deleteRangeEmpty'));
-      }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : tCommon('error'));
-    }
-  };
-
-  const handleDeleteRange = async () => {
-    try {
-      const result = await deleteRange.mutateAsync({
-        from: rangeFrom,
-        to: rangeTo,
-        statuses: selectedStatuses,
-      });
-      setRangeDeleteOpen(false);
-      setPreviewCount(null);
-      toast.success(t('deleteRangeSuccess', { count: result.deleted_count }));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : tCommon('error');
-      if (message === 'range_too_wide') {
-        toast.error(t('deleteRangeTooWide'));
-      } else {
-        toast.error(message);
-      }
-    }
-  };
-
   const handleDeleteOrder = async () => {
     if (!deletingOrder) return;
     try {
       await deleteOrder.mutateAsync(deletingOrder.id);
       toast.success(t('deleteOrderSuccess', { number: deletingOrder.order_number }));
       setDeletingOrder(null);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : tCommon('error'));
-    }
-  };
-
-  const openRangeDelete = async () => {
-    const validation = validateDeleteRange(rangeFrom, rangeTo);
-    if (validation === 'range_too_wide') {
-      toast.error(t('deleteRangeTooWide'));
-      return;
-    }
-    if (validation) {
-      toast.error(tCommon('error'));
-      return;
-    }
-    try {
-      let count = previewCount;
-      if (count === null) {
-        count = await countRange.mutateAsync({
-          from: rangeFrom,
-          to: rangeTo,
-          statuses: selectedStatuses,
-        });
-        setPreviewCount(count);
-      }
-      if (count === 0) {
-        toast.message(t('deleteRangeEmpty'));
-        return;
-      }
-      setRangeDeleteOpen(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : tCommon('error'));
     }
@@ -395,11 +299,7 @@ export default function OrdersPage() {
     updateStatus.isPending ||
     markWhatsApp.isPending ||
     acknowledgeOrder.isPending ||
-    deleteOrder.isPending ||
-    deleteRange.isPending;
-  const rangeBusy = countRange.isPending || deleteRange.isPending;
-  const rangeReady = rangeFrom.length > 0 && rangeTo.length > 0;
-  const effectivePreviewCount = previewCount ?? 0;
+    deleteOrder.isPending;
 
   return (
     <div className="space-y-5">
@@ -451,92 +351,8 @@ export default function OrdersPage() {
         formattedRevenue={formattedRevenue}
         prefersReducedMotion={prefersReducedMotion}
         onStatusFocus={handleStatusFocus}
+        onCleanup={() => setCleanupOpen(true)}
       />
-
-      <details className="bg-muted/20 group rounded-xl border p-4 open:shadow-sm">
-        <summary className="cursor-pointer list-none font-medium marker:content-none [&::-webkit-details-marker]:hidden">
-          <span className="flex items-center justify-between gap-2">
-            {t('manageOrders')}
-            <span className="text-muted-foreground text-xs font-normal sm:hidden">
-              {t('deleteRange')}
-            </span>
-          </span>
-        </summary>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-2">
-            <Label htmlFor="delete-range-from">{t('deleteRangeFrom')}</Label>
-            <Input
-              id="delete-range-from"
-              type="date"
-              dir="ltr"
-              value={rangeFrom}
-              onChange={(event) => {
-                setRangeFrom(event.target.value);
-                setPreviewCount(null);
-              }}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="delete-range-to">{t('deleteRangeTo')}</Label>
-            <Input
-              id="delete-range-to"
-              type="date"
-              dir="ltr"
-              value={rangeTo}
-              onChange={(event) => {
-                setRangeTo(event.target.value);
-                setPreviewCount(null);
-              }}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="delete-range-status">{t('deleteRangeStatus')}</Label>
-            <select
-              id="delete-range-status"
-              className="border-input bg-background ring-offset-background focus-visible:ring-ring flex min-h-11 w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              value={rangeStatus}
-              onChange={(event) => {
-                setRangeStatus(event.target.value as OrderStatus | 'all');
-                setPreviewCount(null);
-              }}
-            >
-              {RANGE_STATUS_OPTIONS.map((status) => (
-                <option key={status} value={status}>
-                  {status === 'all' ? t('deleteRangeAllStatuses') : t(`status.${status}`)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col justify-end gap-2 sm:col-span-2 lg:col-span-1">
-            {previewCount !== null ? (
-              <p className="text-muted-foreground text-sm">
-                {t('deleteRangePreviewResult', { count: previewCount })}
-              </p>
-            ) : null}
-            <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="min-h-11"
-                disabled={!rangeReady || rangeBusy}
-                onClick={() => void handlePreviewRange()}
-              >
-                {t('deleteRangePreview')}
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                className="min-h-11"
-                disabled={!rangeReady || rangeBusy}
-                onClick={() => void openRangeDelete()}
-              >
-                <Trash2 className="me-2 h-4 w-4" aria-hidden="true" />
-                {t('deleteRange')}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </details>
 
       {tab === 'cancelled' ? (
         visible.length === 0 ? (
@@ -549,6 +365,7 @@ export default function OrdersPage() {
                 order={order}
                 locale={locale}
                 currencyLocale={currencyLocale}
+                settings={settings}
                 t={t}
                 busy={busy}
                 whatsappConfigured={whatsappConfigured}
@@ -591,6 +408,7 @@ export default function OrdersPage() {
                       order={order}
                       locale={locale}
                       currencyLocale={currencyLocale}
+                      settings={settings}
                       t={t}
                       busy={busy}
                       whatsappConfigured={whatsappConfigured}
@@ -628,22 +446,7 @@ export default function OrdersPage() {
         onConfirm={() => void handleDeleteOrder()}
       />
 
-      <ConfirmDialog
-        open={rangeDeleteOpen}
-        onOpenChange={setRangeDeleteOpen}
-        title={t('deleteRange')}
-        description={t('deleteRangeConfirm', {
-          count: effectivePreviewCount,
-          from: rangeFrom,
-          to: rangeTo,
-        })}
-        confirmLabel={tCommon('delete')}
-        cancelLabel={tCommon('cancel')}
-        loadingLabel={tCommon('loading')}
-        variant="destructive"
-        loading={deleteRange.isPending}
-        onConfirm={() => void handleDeleteRange()}
-      />
+      <OrdersCleanupDialog open={cleanupOpen} onOpenChange={setCleanupOpen} />
     </div>
   );
 }
@@ -652,6 +455,7 @@ function OrderTicket({
   order,
   locale,
   currencyLocale,
+  settings,
   t,
   busy,
   whatsappConfigured,
@@ -663,6 +467,7 @@ function OrderTicket({
   order: OrderWithItems;
   locale: string;
   currencyLocale: 'en' | 'ar' | 'fr' | 'nl';
+  settings?: RestaurantSettings | null;
   t: (key: string, values?: Record<string, string | number>) => string;
   busy: boolean;
   whatsappConfigured: boolean;
@@ -671,6 +476,7 @@ function OrderTicket({
   onWhatsApp: (order: OrderWithItems) => void;
   onDelete: (order: OrderWithItems) => void;
 }) {
+  const [receiptBusy, setReceiptBusy] = useState(false);
   const nextStatus: OrderStatus | null =
     order.status === 'new'
       ? 'preparing'
@@ -683,6 +489,26 @@ function OrderTicket({
   const needsAck = isUnacknowledged(order);
   const customerWaUrl = order.customer_phone ? buildCustomerWhatsAppUrl(order.customer_phone) : '';
   const displayPhone = order.customer_phone ? formatDisplayPhone(order.customer_phone) : '';
+
+  const runReceiptAction = async (mode: 'print' | 'pdf') => {
+    const node = document.getElementById(receiptDomId(order.id));
+    if (!node) {
+      toast.error(mode === 'print' ? t('printFailed') : t('downloadFailed'));
+      return;
+    }
+    setReceiptBusy(true);
+    try {
+      if (mode === 'print') {
+        await printReceiptElement(node);
+      } else {
+        await downloadReceiptPdf(node, order.order_number);
+      }
+    } catch {
+      toast.error(mode === 'print' ? t('printFailed') : t('downloadFailed'));
+    } finally {
+      setReceiptBusy(false);
+    }
+  };
 
   return (
     <article
@@ -817,6 +643,30 @@ function OrderTicket({
             {t('action.cancelled')}
           </Button>
         ) : null}
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 whitespace-normal"
+            disabled={busy || receiptBusy}
+            aria-label={t('printReceipt')}
+            onClick={() => void runReceiptAction('print')}
+          >
+            <Printer className="me-2 h-4 w-4" aria-hidden="true" />
+            {t('printReceipt')}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 whitespace-normal"
+            disabled={busy || receiptBusy}
+            aria-label={t('downloadReceipt')}
+            onClick={() => void runReceiptAction('pdf')}
+          >
+            <Download className="me-2 h-4 w-4" aria-hidden="true" />
+            {t('downloadReceipt')}
+          </Button>
+        </div>
         <Button
           variant="secondary"
           className="min-h-11"
@@ -835,6 +685,19 @@ function OrderTicket({
           <Trash2 className="me-2 h-4 w-4" aria-hidden="true" />
           {t('deleteOrder')}
         </Button>
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed top-0"
+        style={{ left: -2000, width: '80mm' }}
+      >
+        <OrderReceipt
+          order={order}
+          settings={settings}
+          locale={locale}
+          currencyLocale={currencyLocale}
+          t={t}
+        />
       </div>
     </article>
   );
