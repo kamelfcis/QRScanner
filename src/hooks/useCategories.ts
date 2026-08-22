@@ -10,6 +10,7 @@ import {
   CATALOG_GC_TIME,
 } from '@/lib/catalog/keys';
 import { fetchCategoriesWithProducts } from '@/lib/catalog/fetchCatalog';
+import { menuKeys } from './useMenuStats';
 
 export { categoryKeys };
 
@@ -82,6 +83,7 @@ export function useCreateCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -103,6 +105,7 @@ export function useUpdateCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -117,6 +120,7 @@ export function useDeleteCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -139,6 +143,7 @@ export function useReorderCategories() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
