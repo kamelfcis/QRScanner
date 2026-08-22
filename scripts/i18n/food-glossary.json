@@ -1,0 +1,368 @@
+{
+  "phrases": {
+    "الفطير الحادق": { "en": "Savory Feteer", "fr": "Fêteer salé", "nl": "Hartige feteer" },
+    "الفطائر الحلوة": { "en": "Sweet Feteer", "fr": "Fêteer sucré", "nl": "Zoete feteer" },
+    "الكريب": { "en": "Crepes", "fr": "Crêpes", "nl": "Crêpes" },
+    "الحواوشي": { "en": "Hawawshi", "fr": "Hawawshi", "nl": "Hawawshi" },
+    "مشاوي على الفحم": {
+      "en": "Charcoal Grills",
+      "fr": "Grillades au charbon",
+      "nl": "Houtskoolgrill"
+    },
+    "السندوتشات": { "en": "Sandwiches", "fr": "Sandwiches", "nl": "Broodjes" },
+    "المحاشي والمقبلات الساخنة": {
+      "en": "Stuffed Dishes & Hot Appetizers",
+      "fr": "Plats farcis et entrées chaudes",
+      "nl": "Gevulde gerechten en warme voorgerechten"
+    },
+    "كشري مصري": { "en": "Egyptian Koshari", "fr": "Koshari égyptien", "nl": "Egyptische koshari" },
+    "الأرز": { "en": "Rice", "fr": "Riz", "nl": "Rijst" },
+    "طواجن المكرونة": { "en": "Pasta Casseroles", "fr": "Gratins de pâtes", "nl": "Pastaschotels" },
+    "طواجن الطبيخ": {
+      "en": "Vegetable Casseroles",
+      "fr": "Gratins de légumes",
+      "nl": "Groenteschotels"
+    },
+    "الشعبيات – فول وطعمية": {
+      "en": "Street Food – Foul & Falafel",
+      "fr": "Cuisine populaire – foul et falafel",
+      "nl": "Straateten – foul en falafel"
+    },
+    "السلطات والمقبلات": {
+      "en": "Salads & Appetizers",
+      "fr": "Salades et entrées",
+      "nl": "Salades en voorgerechten"
+    },
+    "العصائر والمشروبات": {
+      "en": "Juices & Beverages",
+      "fr": "Jus et boissons",
+      "nl": "Sappen en dranken"
+    },
+    "الحلويات": { "en": "Desserts", "fr": "Desserts", "nl": "Desserts" },
+    "إضافات": { "en": "Extras", "fr": "Suppléments", "nl": "Extra's" },
+    "يمكن إضافة موتزاريلا حسب الطلب": {
+      "en": "Mozzarella can be added on request",
+      "fr": "Mozzarella peut être ajoutée sur demande",
+      "nl": "Mozzarella kan op verzoek worden toegevoegd"
+    },
+    "حمص، عدس، بجبة، بصل محمص، أرز، مكرونة، صلصة وخلطة المطعم السرية": {
+      "en": "Chickpeas, lentils, bulgur, fried onions, rice, pasta, sauce and the restaurant's secret blend",
+      "fr": "Pois chiches, lentilles, boulgour, oignons frits, riz, pâtes, sauce et mélange secret du restaurant",
+      "nl": "Kikkererwten, linzen, bulgur, gebakken ui, rijst, pasta, saus en het geheime restaurantmengsel"
+    },
+    "فطيرة سجق": { "en": "Sujuk Feteer", "fr": "Fêteer au sujuk", "nl": "Sujuk feteer" },
+    "فطيرة بسطرمة": {
+      "en": "Pastrami Feteer",
+      "fr": "Fêteer au pastrami",
+      "nl": "Pastrami feteer"
+    },
+    "فطيرة مشكل جبن": {
+      "en": "Mixed Cheese Feteer",
+      "fr": "Fêteer fromages mixtes",
+      "nl": "Gemengde kaas feteer"
+    },
+    "فطيرة مشكل لحوم": {
+      "en": "Mixed Meat Feteer",
+      "fr": "Fêteer viandes mixtes",
+      "nl": "Gemengd vlees feteer"
+    },
+    "فطيرة لحمة": { "en": "Meat Feteer", "fr": "Fêteer à la viande", "nl": "Vlees feteer" },
+    "فطيرة فراخ": { "en": "Chicken Feteer", "fr": "Fêteer au poulet", "nl": "Kip feteer" },
+    "فطيرة سوسيس": { "en": "Sausage Feteer", "fr": "Fêteer aux saucisses", "nl": "Worst feteer" },
+    "فطير مشلتت سادة": {
+      "en": "Plain Layered Feteer",
+      "fr": "Fêteer feuilleté nature",
+      "nl": "Gewone gelaagde feteer"
+    },
+    "فطيرة سكر": { "en": "Sugar Feteer", "fr": "Fêteer au sucre", "nl": "Suiker feteer" },
+    "فطيرة كاستر": { "en": "Custard Feteer", "fr": "Fêteer à la crème", "nl": "Custard feteer" },
+    "فطيرة شوكولاتة نوتيلا": {
+      "en": "Nutella Chocolate Feteer",
+      "fr": "Fêteer Nutella chocolat",
+      "nl": "Nutella chocolade feteer"
+    },
+    "فطيرة مشكل مكسرات": {
+      "en": "Mixed Nuts Feteer",
+      "fr": "Fêteer noix mixtes",
+      "nl": "Gemengde noten feteer"
+    },
+    "فطيرة بستاشيو صوص": {
+      "en": "Pistachio Sauce Feteer",
+      "fr": "Fêteer sauce pistache",
+      "nl": "Pistachesaus feteer"
+    },
+    "فطيرة لوتس صوص": {
+      "en": "Lotus Sauce Feteer",
+      "fr": "Fêteer sauce Lotus",
+      "nl": "Lotus saus feteer"
+    },
+    "فطيرة مكس مشكل صوص": {
+      "en": "Mixed Sauce Combo Feteer",
+      "fr": "Fêteer mélange de sauces",
+      "nl": "Gemengde saus combo feteer"
+    },
+    "كريب سجق": { "en": "Sujuk Crepe", "fr": "Crêpe au sujuk", "nl": "Sujuk crêpe" },
+    "كريب لحمة": { "en": "Meat Crepe", "fr": "Crêpe à la viande", "nl": "Vlees crêpe" },
+    "كريب سوسيس": { "en": "Sausage Crepe", "fr": "Crêpe aux saucisses", "nl": "Worst crêpe" },
+    "كريب فراخ": { "en": "Chicken Crepe", "fr": "Crêpe au poulet", "nl": "Kip crêpe" },
+    "كريب بسطرمة": { "en": "Pastrami Crepe", "fr": "Crêpe au pastrami", "nl": "Pastrami crêpe" },
+    "كريب كرنشي فراخ": {
+      "en": "Crispy Chicken Crepe",
+      "fr": "Crêpe poulet croustillant",
+      "nl": "Krokante kip crêpe"
+    },
+    "كريب استريبس فراخ": {
+      "en": "Chicken Strips Crepe",
+      "fr": "Crêpe au poulet strips",
+      "nl": "Kip strips crêpe"
+    },
+    "كريب مشكل جبن": {
+      "en": "Mixed Cheese Crepe",
+      "fr": "Crêpe fromages mixtes",
+      "nl": "Gemengde kaas crêpe"
+    },
+    "كريب مشكل فراخ": {
+      "en": "Mixed Chicken Crepe",
+      "fr": "Crêpe poulet mixte",
+      "nl": "Gemengde kip crêpe"
+    },
+    "كريب مشكل لحوم": {
+      "en": "Mixed Meat Crepe",
+      "fr": "Crêpe viandes mixtes",
+      "nl": "Gemengd vlees crêpe"
+    },
+    "حواوشي لحمة بلدي": {
+      "en": "Baladi Meat Hawawshi",
+      "fr": "Hawawshi viande baladi",
+      "nl": "Baladi vlees hawawshi"
+    },
+    "كفتة": { "en": "Kofta", "fr": "Kofta", "nl": "Kofta" },
+    "فراخ مشوية": { "en": "Grilled Chicken", "fr": "Poulet grillé", "nl": "Gegrilde kip" },
+    "كباب قطع": { "en": "Meat Cubes Kebab", "fr": "Kebab en cubes", "nl": "Kebab in blokjes" },
+    "شواية مشكل": {
+      "en": "Mixed Grill Platter",
+      "fr": "Grillade mixte",
+      "nl": "Gemengde grillplaat"
+    },
+    "شيش طاووق": { "en": "Shish Tawook", "fr": "Shish taouk", "nl": "Shish tawook" },
+    "سجق إسكندراني": {
+      "en": "Alexandrian Sujuk",
+      "fr": "Sujuk alexandrin",
+      "nl": "Alexandriaanse sujuk"
+    },
+    "كبدة إسكندراني": {
+      "en": "Alexandrian Liver",
+      "fr": "Foie alexandrin",
+      "nl": "Alexandriaanse lever"
+    },
+    "برجر": { "en": "Burger", "fr": "Burger", "nl": "Burger" },
+    "حواوشي": { "en": "Hawawshi", "fr": "Hawawshi", "nl": "Hawawshi" },
+    "محشي كرنب": { "en": "Stuffed Cabbage", "fr": "Chou farci", "nl": "Gevulde kool" },
+    "ورق عنب": {
+      "en": "Stuffed Grape Leaves",
+      "fr": "Feuilles de vigne farcies",
+      "nl": "Gevulde wijnbladeren"
+    },
+    "محشي كوسة": {
+      "en": "Stuffed Zucchini",
+      "fr": "Courgettes farcies",
+      "nl": "Gevulde courgette"
+    },
+    "محشي باذنجان": {
+      "en": "Stuffed Eggplant",
+      "fr": "Aubergines farcies",
+      "nl": "Gevulde aubergine"
+    },
+    "محشي مشكل": {
+      "en": "Mixed Stuffed Vegetables",
+      "fr": "Légumes farcis mixtes",
+      "nl": "Gemengde gevulde groenten"
+    },
+    "ممبار": { "en": "Mombar", "fr": "Mombar", "nl": "Mombar" },
+    "سمبوسة لحمة": { "en": "Meat Samosa", "fr": "Samoussa à la viande", "nl": "Vleessamosa" },
+    "سمبوسة جبنة": { "en": "Cheese Samosa", "fr": "Samoussa au fromage", "nl": "Kaassamosa" },
+    "كبيبة": { "en": "Kibbeh", "fr": "Kibbeh", "nl": "Kibbeh" },
+    "بطاطس باللحمة": {
+      "en": "Potatoes with Meat",
+      "fr": "Pommes de terre à la viande",
+      "nl": "Aardappelen met vlees"
+    },
+    "رز بسمتي": { "en": "Basmati Rice", "fr": "Riz basmati", "nl": "Basmatirijst" },
+    "رز معمر": { "en": "Om Ali Rice", "fr": "Riz maamar", "nl": "Maamar rijst" },
+    "رز بالشعرية": {
+      "en": "Vermicelli Rice",
+      "fr": "Riz aux vermicelles",
+      "nl": "Rijst met vermicelli"
+    },
+    "رز أبيض": { "en": "White Rice", "fr": "Riz blanc", "nl": "Witte rijst" },
+    "طاجن مكرونة باللحمة": {
+      "en": "Meat Pasta Casserole",
+      "fr": "Gratin de pâtes à la viande",
+      "nl": "Vlees pastaschotel"
+    },
+    "طاجن مكرونة بالسجق": {
+      "en": "Sujuk Pasta Casserole",
+      "fr": "Gratin de pâtes au sujuk",
+      "nl": "Sujuk pastaschotel"
+    },
+    "طاجن مكرونة بشاميل": {
+      "en": "Béchamel Pasta Casserole",
+      "fr": "Gratin de pâtes béchamel",
+      "nl": "Bechamel pastaschotel"
+    },
+    "بامية باللحمة": { "en": "Okra with Meat", "fr": "Bamya à la viande", "nl": "Okra met vlees" },
+    "بسلة باللحمة": {
+      "en": "Peas with Meat",
+      "fr": "Petits pois à la viande",
+      "nl": "Erwten met vlees"
+    },
+    "فتة بالموزة الضاني": {
+      "en": "Fattah with Lamb Shank",
+      "fr": "Fattah au gigot d'agneau",
+      "nl": "Fattah met lamsbout"
+    },
+    "فتة لحمة بقري": { "en": "Beef Fattah", "fr": "Fattah au bœuf", "nl": "Rundvlees fattah" },
+    "لحمة بالبصل": { "en": "Meat with Onions", "fr": "Viande aux oignons", "nl": "Vlees met ui" },
+    "طعمية بالسمسم – سادة": {
+      "en": "Sesame Falafel – Plain",
+      "fr": "Falafel au sésame – nature",
+      "nl": "Sesam falafel – naturel"
+    },
+    "طعمية بالسمسم – محشية": {
+      "en": "Sesame Falafel – Stuffed",
+      "fr": "Falafel au sésame – farci",
+      "nl": "Sesam falafel – gevuld"
+    },
+    "فول بالزيت الحار": {
+      "en": "Foul with Chili Oil",
+      "fr": "Foul à l'huile piquante",
+      "nl": "Foul met pittige olie"
+    },
+    "فول بالزيت الحلو": {
+      "en": "Foul with Mild Oil",
+      "fr": "Foul à l'huile douce",
+      "nl": "Foul met milde olie"
+    },
+    "فول بالسمنة": { "en": "Foul with Ghee", "fr": "Foul au samneh", "nl": "Foul met ghee" },
+    "فول بالسجق": { "en": "Foul with Sujuk", "fr": "Foul au sujuk", "nl": "Foul met sujuk" },
+    "فول بالبيض": { "en": "Foul with Eggs", "fr": "Foul aux œufs", "nl": "Foul met eieren" },
+    "باذنجان وفلفل مقلي": {
+      "en": "Fried Eggplant & Pepper",
+      "fr": "Aubergine et poivron frits",
+      "nl": "Gebakken aubergine en paprika"
+    },
+    "باذنجان وفلفل مشوي": {
+      "en": "Grilled Eggplant & Pepper",
+      "fr": "Aubergine et poivron grillés",
+      "nl": "Gegrilde aubergine en paprika"
+    },
+    "بطاطس مقلية": { "en": "French Fries", "fr": "Frites", "nl": "Friet" },
+    "بطاطس مهروسة": {
+      "en": "Mashed Potatoes",
+      "fr": "Purée de pommes de terre",
+      "nl": "Aardappelpuree"
+    },
+    "بيض بالبسطرمة": {
+      "en": "Eggs with Pastrami",
+      "fr": "Œufs au pastrami",
+      "nl": "Eieren met pastrami"
+    },
+    "جبنة فيتا بالطماطم": {
+      "en": "Feta Cheese with Tomato",
+      "fr": "Feta à la tomate",
+      "nl": "Fetakaas met tomaat"
+    },
+    "بيض مسلوق": { "en": "Boiled Eggs", "fr": "Œufs durs", "nl": "Gekookte eieren" },
+    "بيض أومليت": { "en": "Omelette", "fr": "Omelette", "nl": "Omelet" },
+    "سلطة بلدي حاتي": {
+      "en": "Baladi Country Salad",
+      "fr": "Salade baladi campagnarde",
+      "nl": "Baladi landelijke salade"
+    },
+    "طحينة": { "en": "Tahini", "fr": "Tahini", "nl": "Tahini" },
+    "حمص": { "en": "Hummus", "fr": "Houmous", "nl": "Hummus" },
+    "كريمة الثوم": { "en": "Garlic Cream", "fr": "Crème à l'ail", "nl": "Knoflookcrème" },
+    "سلطة خضراء بيتي": {
+      "en": "Homemade Green Salad",
+      "fr": "Salade verte maison",
+      "nl": "Huisgemaakte groene salade"
+    },
+    "صوص الرانش": { "en": "Ranch Sauce", "fr": "Sauce ranch", "nl": "Ranchsaus" },
+    "ليمون بالنعناع": { "en": "Lemon Mint", "fr": "Citron menthe", "nl": "Citroen munt" },
+    "شاي": { "en": "Tea", "fr": "Thé", "nl": "Thee" },
+    "قهوة": { "en": "Coffee", "fr": "Café", "nl": "Koffie" },
+    "موز باللبن": { "en": "Banana Milk", "fr": "Banane au lait", "nl": "Banaan met melk" },
+    "عصير برتقال فريش": {
+      "en": "Fresh Orange Juice",
+      "fr": "Jus d'orange frais",
+      "nl": "Vers sinaasappelsap"
+    },
+    "فخفخينا": { "en": "Fakhfakheena", "fr": "Fakhfakheena", "nl": "Fakhfakheena" },
+    "عناب – ساقع / ساخن": {
+      "en": "Jujube – Cold / Hot",
+      "fr": "Jujube – froid / chaud",
+      "nl": "Jujube – koud / warm"
+    },
+    "عرقسوس": { "en": "Licorice Drink", "fr": "Boisson à la réglisse", "nl": "Zoethoutdrank" },
+    "تمر هندي": { "en": "Tamarind Drink", "fr": "Boisson au tamarin", "nl": "Tamarindedrank" },
+    "سوبيا": { "en": "Sobia", "fr": "Sobia", "nl": "Sobia" },
+    "خروب": { "en": "Carob Drink", "fr": "Boisson au caroube", "nl": "Carobdrank" },
+    "شويبس – جميع الأنواع": {
+      "en": "Schweppes – All Flavors",
+      "fr": "Schweppes – toutes saveurs",
+      "nl": "Schweppes – alle smaken"
+    },
+    "راني – جميع الأنواع": {
+      "en": "Rani – All Flavors",
+      "fr": "Rani – toutes saveurs",
+      "nl": "Rani – alle smaken"
+    },
+    "فيروز": { "en": "Fairouz", "fr": "Fairouz", "nl": "Fairouz" },
+    "عصير المطعم": { "en": "House Juice", "fr": "Jus maison", "nl": "Huis sap" },
+    "حمص الشام": {
+      "en": "Sham Hummus Drink",
+      "fr": "Boisson houmous Cham",
+      "nl": "Sham hummusdrank"
+    },
+    "بليلة": { "en": "Belila", "fr": "Belila", "nl": "Belila" },
+    "مشروبات فريش وطبيعية": {
+      "en": "Fresh Natural Drinks",
+      "fr": "Boissons fraîches naturelles",
+      "nl": "Verse natuurlijke dranken"
+    },
+    "بسبوسة بلدي": { "en": "Baladi Basbousa", "fr": "Basbousa baladi", "nl": "Baladi basbousa" },
+    "كنافة بالقشطة": {
+      "en": "Kunafa with Cream",
+      "fr": "Kunafa à la crème",
+      "nl": "Kunafa met room"
+    },
+    "كنافة سادة": { "en": "Plain Kunafa", "fr": "Kunafa nature", "nl": "Naturelle kunafa" },
+    "هريسة بالمكسرات": {
+      "en": "Harissa with Nuts",
+      "fr": "Harissa aux noix",
+      "nl": "Harissa met noten"
+    },
+    "أم علي": { "en": "Om Ali", "fr": "Om Ali", "nl": "Om Ali" },
+    "رز بلبن": { "en": "Rice Pudding", "fr": "Riz au lait", "nl": "Rijstpap" },
+    "إضافة موتزاريلا": {
+      "en": "Extra Mozzarella",
+      "fr": "Supplément mozzarella",
+      "nl": "Extra mozzarella"
+    },
+    "إضافة صوص": { "en": "Extra Sauce", "fr": "Supplément sauce", "nl": "Extra saus" },
+    "إضافة مكسرات": { "en": "Extra Nuts", "fr": "Supplément noix", "nl": "Extra noten" }
+  },
+  "fragments": {
+    "فطيرة": { "en": "Feteer", "fr": "Fêteer", "nl": "Feteer" },
+    "فطير": { "en": "Feteer", "fr": "Fêteer", "nl": "Feteer" },
+    "كريب": { "en": "Crepe", "fr": "Crêpe", "nl": "Crêpe" },
+    "سجق": { "en": "Sujuk", "fr": "Sujuk", "nl": "Sujuk" },
+    "لحمة": { "en": "Meat", "fr": "Viande", "nl": "Vlees" },
+    "فراخ": { "en": "Chicken", "fr": "Poulet", "nl": "Kip" },
+    "جبن": { "en": "Cheese", "fr": "Fromage", "nl": "Kaas" },
+    "مشكل": { "en": "Mixed", "fr": "Mixte", "nl": "Gemengd" },
+    "محشي": { "en": "Stuffed", "fr": "Farcí", "nl": "Gevuld" },
+    "بال": { "en": "with", "fr": "au", "nl": "met" },
+    "إضافة": { "en": "Extra", "fr": "Supplément", "nl": "Extra" }
+  }
+}

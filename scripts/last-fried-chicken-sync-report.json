@@ -1,0 +1,79 @@
+{
+  "dryRun": false,
+  "category": {
+    "created": true,
+    "id": "802709d6-7fe9-41f1-b3fa-64410bbf0a99"
+  },
+  "upserted": [
+    {
+      "action": "insert",
+      "name_ar": "تشيكن كلاسيك",
+      "name_en": "Classic Chicken",
+      "dining_price": 90,
+      "takeaway_price": 130
+    },
+    {
+      "action": "insert",
+      "name_ar": "تشيكن هالبينو",
+      "name_en": "Jalapeño Chicken",
+      "dining_price": 95,
+      "takeaway_price": 125
+    },
+    {
+      "action": "insert",
+      "name_ar": "تشيكن ستيكس",
+      "name_en": "Chicken Steaks",
+      "dining_price": 100,
+      "takeaway_price": 140
+    },
+    {
+      "action": "insert",
+      "name_ar": "تشيكن أونيون",
+      "name_en": "Onion Chicken",
+      "dining_price": 100,
+      "takeaway_price": 140
+    },
+    {
+      "action": "insert",
+      "name_ar": "تشيكن رانش",
+      "name_en": "Chicken Ranch",
+      "dining_price": 90,
+      "takeaway_price": 120
+    }
+  ],
+  "deleted": [],
+  "unchanged": [],
+  "errors": [],
+  "final": [
+    {
+      "name_ar": "تشيكن كلاسيك",
+      "name_en": "Classic Chicken",
+      "dining_price": 90,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "تشيكن هالبينو",
+      "name_en": "Jalapeño Chicken",
+      "dining_price": 95,
+      "takeaway_price": 125
+    },
+    {
+      "name_ar": "تشيكن ستيكس",
+      "name_en": "Chicken Steaks",
+      "dining_price": 100,
+      "takeaway_price": 140
+    },
+    {
+      "name_ar": "تشيكن أونيون",
+      "name_en": "Onion Chicken",
+      "dining_price": 100,
+      "takeaway_price": 140
+    },
+    {
+      "name_ar": "تشيكن رانش",
+      "name_en": "Chicken Ranch",
+      "dining_price": 90,
+      "takeaway_price": 120
+    }
+  ]
+}

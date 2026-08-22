@@ -2,7 +2,7 @@ import type { OrderTotals } from './totals';
 import { formatCurrencyAmount } from './format-currency';
 import type { FulfillmentType } from '@/stores/cart-store';
 
-export type MessageLocale = 'en' | 'ar';
+export type MessageLocale = 'en' | 'ar' | 'fr' | 'nl';
 export type MessageDiningMode = 'dining' | 'takeaway';
 
 export interface WhatsAppMessageItem {
@@ -25,6 +25,7 @@ export interface WhatsAppMessageInput {
   customerPhone?: string | null;
   orderNotes?: string | null;
   prepTimeMinutes?: number | null;
+  couponCode?: string | null;
 }
 
 const SEP = '────────────────';
@@ -33,11 +34,112 @@ function formatMoney(value: number, currency: string, locale: MessageLocale): st
   return formatCurrencyAmount(value, currency, { locale, plain: true });
 }
 
+interface MessageLabels {
+  headerDining: string;
+  headerTakeaway: string;
+  orderType: string;
+  delivery: string;
+  pickup: string;
+  address: string;
+  table: string;
+  items: string;
+  subtotal: string;
+  discount: (code?: string | null) => string;
+  tax: (rate: number) => string;
+  service: (rate: number) => string;
+  total: string;
+  name: string;
+  phone: string;
+  orderNotes: string;
+  prepTime: (minutes: number) => string;
+}
+
+const LABELS: Record<MessageLocale, MessageLabels> = {
+  ar: {
+    headerDining: '*طلب جديد — داخل المطعم*',
+    headerTakeaway: '*طلب جديد — تيك أواي*',
+    orderType: 'نوع الطلب',
+    delivery: 'توصيل',
+    pickup: 'استلام في المطعم',
+    address: 'العنوان',
+    table: 'الطاولة',
+    items: '*الأصناف*',
+    subtotal: 'المجموع الفرعي',
+    discount: (code) => (code ? `الخصم (${code})` : 'الخصم'),
+    tax: (rate) => `الضريبة (${rate}%)`,
+    service: (rate) => `رسوم الخدمة (${rate}%)`,
+    total: 'الإجمالي',
+    name: 'الاسم',
+    phone: 'الهاتف',
+    orderNotes: 'ملاحظات الطلب',
+    prepTime: (minutes) => `وقت التحضير المتوقع: ~${minutes} دقيقة`,
+  },
+  en: {
+    headerDining: '*New Order — Dine In*',
+    headerTakeaway: '*New Order — Takeaway*',
+    orderType: 'Order type',
+    delivery: 'Delivery',
+    pickup: 'Pickup at restaurant',
+    address: 'Address',
+    table: 'Table',
+    items: '*Items*',
+    subtotal: 'Subtotal',
+    discount: (code) => (code ? `Discount (${code})` : 'Discount'),
+    tax: (rate) => `Tax (${rate}%)`,
+    service: (rate) => `Service (${rate}%)`,
+    total: 'Total',
+    name: 'Name',
+    phone: 'Phone',
+    orderNotes: 'Order notes',
+    prepTime: (minutes) => `Est. prep time: ~${minutes} min`,
+  },
+  fr: {
+    headerDining: '*Nouvelle commande — Sur place*',
+    headerTakeaway: '*Nouvelle commande — À emporter*',
+    orderType: 'Type de commande',
+    delivery: 'Livraison',
+    pickup: 'Retrait au restaurant',
+    address: 'Adresse',
+    table: 'Table',
+    items: '*Articles*',
+    subtotal: 'Sous-total',
+    discount: (code) => (code ? `Réduction (${code})` : 'Réduction'),
+    tax: (rate) => `TVA (${rate}%)`,
+    service: (rate) => `Service (${rate}%)`,
+    total: 'Total',
+    name: 'Nom',
+    phone: 'Téléphone',
+    orderNotes: 'Notes de commande',
+    prepTime: (minutes) => `Temps de préparation estimé : ~${minutes} min`,
+  },
+  nl: {
+    headerDining: '*Nieuwe bestelling — Ter plaatse*',
+    headerTakeaway: '*Nieuwe bestelling — Afhalen*',
+    orderType: 'Besteltype',
+    delivery: 'Bezorging',
+    pickup: 'Afhalen bij restaurant',
+    address: 'Adres',
+    table: 'Tafel',
+    items: '*Artikelen*',
+    subtotal: 'Subtotaal',
+    discount: (code) => (code ? `Korting (${code})` : 'Korting'),
+    tax: (rate) => `BTW (${rate}%)`,
+    service: (rate) => `Service (${rate}%)`,
+    total: 'Totaal',
+    name: 'Naam',
+    phone: 'Telefoon',
+    orderNotes: 'Bestelnotities',
+    prepTime: (minutes) => `Geschatte bereidingstijd: ~${minutes} min`,
+  },
+};
+
 function fulfillmentLabel(locale: MessageLocale, fulfillmentType: FulfillmentType): string {
-  if (locale === 'ar') {
-    return fulfillmentType === 'delivery' ? 'توصيل' : 'استلام في المطعم';
-  }
-  return fulfillmentType === 'delivery' ? 'Delivery' : 'Pickup at restaurant';
+  const labels = LABELS[locale];
+  return fulfillmentType === 'delivery' ? labels.delivery : labels.pickup;
+}
+
+function itemMultiplier(locale: MessageLocale): string {
+  return locale === 'ar' ? '×' : 'x';
 }
 
 export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
@@ -54,98 +156,62 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     customerPhone,
     orderNotes,
     prepTimeMinutes,
+    couponCode,
   } = input;
 
-  const isAr = locale === 'ar';
+  const labels = LABELS[locale];
   const lines: string[] = [];
   const showFulfillment = mode === 'takeaway' && fulfillmentType;
+  const multiplier = itemMultiplier(locale);
 
-  if (isAr) {
-    lines.push(mode === 'dining' ? '*طلب جديد — داخل المطعم*' : '*طلب جديد — تيك أواي*');
+  lines.push(mode === 'dining' ? labels.headerDining : labels.headerTakeaway);
+  lines.push(SEP);
+
+  if (showFulfillment) {
+    lines.push(`${labels.orderType}: ${fulfillmentLabel(locale, fulfillmentType)}`);
+    if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
+      lines.push(`${labels.address}: ${deliveryAddress.trim()}`);
+    }
     lines.push(SEP);
-
-    if (showFulfillment) {
-      lines.push(`نوع الطلب: ${fulfillmentLabel(locale, fulfillmentType)}`);
-      if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
-        lines.push(`العنوان: ${deliveryAddress.trim()}`);
-      }
-      lines.push(SEP);
-    } else if (tableNumber) {
-      lines.push(`الطاولة: ${tableNumber}`);
-      lines.push(SEP);
-    }
-
-    lines.push('*الأصناف*');
-    for (const item of items) {
-      const lineTotal = item.unitPrice * item.quantity;
-      lines.push(`${item.quantity}× ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);
-      if (item.notes?.trim()) {
-        lines.push(`  • ${item.notes.trim()}`);
-      }
-    }
-
+  } else if (tableNumber) {
+    lines.push(`${labels.table}: ${tableNumber}`);
     lines.push(SEP);
-    lines.push(`المجموع الفرعي: ${formatMoney(totals.subtotal, currency, locale)}`);
-    if (totals.applyTax && totals.tax > 0) {
-      lines.push(`الضريبة (${totals.taxRate}%): ${formatMoney(totals.tax, currency, locale)}`);
-    }
-    if (totals.applyService && totals.service > 0) {
-      lines.push(
-        `رسوم الخدمة (${totals.serviceRate}%): ${formatMoney(totals.service, currency, locale)}`
-      );
-    }
-    lines.push(`*الإجمالي: ${formatMoney(totals.total, currency, locale)}*`);
+  }
 
-    lines.push(SEP);
-    lines.push(`الاسم: ${customerName}`);
-    if (customerPhone?.trim()) lines.push(`الهاتف: ${customerPhone.trim()}`);
-    if (orderNotes?.trim()) lines.push(`ملاحظات الطلب: ${orderNotes.trim()}`);
-    if (prepTimeMinutes != null && prepTimeMinutes > 0) {
-      lines.push(`وقت التحضير المتوقع: ~${prepTimeMinutes} دقيقة`);
+  lines.push(labels.items);
+  for (const item of items) {
+    const lineTotal = item.unitPrice * item.quantity;
+    lines.push(
+      `${item.quantity}${multiplier} ${item.name} — ${formatMoney(lineTotal, currency, locale)}`
+    );
+    if (item.notes?.trim()) {
+      lines.push(`  • ${item.notes.trim()}`);
     }
-  } else {
-    lines.push(mode === 'dining' ? '*New Order — Dine In*' : '*New Order — Takeaway*');
-    lines.push(SEP);
+  }
 
-    if (showFulfillment) {
-      lines.push(`Order type: ${fulfillmentLabel(locale, fulfillmentType)}`);
-      if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
-        lines.push(`Address: ${deliveryAddress.trim()}`);
-      }
-      lines.push(SEP);
-    } else if (tableNumber) {
-      lines.push(`Table: ${tableNumber}`);
-      lines.push(SEP);
-    }
+  lines.push(SEP);
+  lines.push(`${labels.subtotal}: ${formatMoney(totals.subtotal, currency, locale)}`);
+  if (totals.discount > 0) {
+    lines.push(
+      `${labels.discount(couponCode)}: −${formatMoney(totals.discount, currency, locale)}`
+    );
+  }
+  if (totals.applyTax && totals.tax > 0) {
+    lines.push(`${labels.tax(totals.taxRate)}: ${formatMoney(totals.tax, currency, locale)}`);
+  }
+  if (totals.applyService && totals.service > 0) {
+    lines.push(
+      `${labels.service(totals.serviceRate)}: ${formatMoney(totals.service, currency, locale)}`
+    );
+  }
+  lines.push(`*${labels.total}: ${formatMoney(totals.total, currency, locale)}*`);
 
-    lines.push('*Items*');
-    for (const item of items) {
-      const lineTotal = item.unitPrice * item.quantity;
-      lines.push(`${item.quantity}x ${item.name} — ${formatMoney(lineTotal, currency, locale)}`);
-      if (item.notes?.trim()) {
-        lines.push(`  • ${item.notes.trim()}`);
-      }
-    }
-
-    lines.push(SEP);
-    lines.push(`Subtotal: ${formatMoney(totals.subtotal, currency, locale)}`);
-    if (totals.applyTax && totals.tax > 0) {
-      lines.push(`Tax (${totals.taxRate}%): ${formatMoney(totals.tax, currency, locale)}`);
-    }
-    if (totals.applyService && totals.service > 0) {
-      lines.push(
-        `Service (${totals.serviceRate}%): ${formatMoney(totals.service, currency, locale)}`
-      );
-    }
-    lines.push(`*Total: ${formatMoney(totals.total, currency, locale)}*`);
-
-    lines.push(SEP);
-    lines.push(`Name: ${customerName}`);
-    if (customerPhone?.trim()) lines.push(`Phone: ${customerPhone.trim()}`);
-    if (orderNotes?.trim()) lines.push(`Order notes: ${orderNotes.trim()}`);
-    if (prepTimeMinutes != null && prepTimeMinutes > 0) {
-      lines.push(`Est. prep time: ~${prepTimeMinutes} min`);
-    }
+  lines.push(SEP);
+  lines.push(`${labels.name}: ${customerName}`);
+  if (customerPhone?.trim()) lines.push(`${labels.phone}: ${customerPhone.trim()}`);
+  if (orderNotes?.trim()) lines.push(`${labels.orderNotes}: ${orderNotes.trim()}`);
+  if (prepTimeMinutes != null && prepTimeMinutes > 0) {
+    lines.push(labels.prepTime(prepTimeMinutes));
   }
 
   return lines.join('\n');

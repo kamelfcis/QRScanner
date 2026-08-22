@@ -16,6 +16,7 @@ import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { createClient } from '@/lib/supabase/server';
 import { prefetchLandingData } from '@/lib/catalog/prefetchLanding';
 import { CATALOG_GC_TIME, CATALOG_STALE_TIME } from '@/lib/catalog/keys';
+import { showLandingFeaturedDishes, showLandingGallery } from '@/i18n/config';
 
 export default async function HomePage() {
   const queryClient = new QueryClient({
@@ -44,8 +45,8 @@ export default async function HomePage() {
             <main className="flex-1" id="main-content">
               <HeroSection />
               <StorySection />
-              <FeaturedDishes />
-              <GalleryPreview />
+              {showLandingFeaturedDishes && <FeaturedDishes />}
+              {showLandingGallery && <GalleryPreview />}
               <OffersBanner />
               <TestimonialsSection />
               <OpeningHours />

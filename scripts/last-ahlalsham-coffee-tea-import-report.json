@@ -1,0 +1,69 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "f7701214-50dc-489e-9e1d-24d78e9c1de1",
+    "name_ar": "القهوة و الشاي",
+    "name_en": "Coffee & Tea",
+    "created": false,
+    "sort_order": 0
+  },
+  "excel": {
+    "file": "c:\\Users\\Administrator\\Downloads\\منيو\\القهوة و الشاي.xlsx",
+    "sheet": "Sheet",
+    "parsed_rows": 133,
+    "unique_products": 126
+  },
+  "products": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 126,
+    "errors": 0
+  },
+  "sample_products": [
+    {
+      "name_ar": "بن عبد المعبودمحوج وسط 200غ",
+      "dining_price": 170,
+      "takeaway_price": 170
+    },
+    {
+      "name_ar": "بن المعبود محوج غامق(100غ)",
+      "dining_price": 85,
+      "takeaway_price": 85
+    },
+    {
+      "name_ar": "بن الحموي قهوة عربية مع هال سريعة التحضير 30غ",
+      "dining_price": 60,
+      "takeaway_price": 60
+    },
+    {
+      "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 180 غرام",
+      "dining_price": 205,
+      "takeaway_price": 205
+    },
+    {
+      "name_ar": "بن الحموي اخضر  450غ(محوج وسط)",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "بن الحموي اكسترا هال 450غ (محوج اكسترا)",
+      "dining_price": 75,
+      "takeaway_price": 75
+    },
+    {
+      "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 90 غرام",
+      "dining_price": 100,
+      "takeaway_price": 100
+    },
+    {
+      "name_ar": "بن الحموي ساده فاتح 90 غرام",
+      "dining_price": 75,
+      "takeaway_price": 75
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "verified_product_count": 126
+}

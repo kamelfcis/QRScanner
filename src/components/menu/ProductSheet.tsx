@@ -13,9 +13,14 @@ import { BadgePill, pickBadges } from '@/components/menu/ProductBadges';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
-import { useCartStore } from '@/stores/cart-store';
+import { useCartStore, type CartSizeOption } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { haptic } from '@/lib/haptics';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
@@ -38,42 +43,80 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
 
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState('');
+  const [sizeOption, setSizeOption] = useState<CartSizeOption>('small');
 
   useEffect(() => {
     if (product) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reset controls per dish
       setQty(1);
       setNotes('');
+      setSizeOption('small');
     }
   }, [product]);
 
   if (!product) return null;
 
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
-  const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
+  const hasSizeOptions = product.has_size_options;
+  const activePrice = hasSizeOptions
+    ? sizeOption === 'large'
+      ? product.takeaway_price
+      : product.dining_price
+    : diningMode === 'dining'
+      ? product.dining_price
+      : product.takeaway_price;
+  const otherPrice = hasSizeOptions
+    ? null
+    : diningMode === 'dining'
+      ? product.takeaway_price
+      : product.dining_price;
   const badges = pickBadges(product);
-  const productName = getName(locale, product.name_en, product.name_ar);
-  const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
+  const productName = getName(
+    locale,
+    product.name_en,
+    product.name_ar,
+    product.name_fr,
+    product.name_nl
+  );
+  const secondaryName =
+    locale === 'ar'
+      ? product.name_en
+      : locale === 'fr'
+        ? product.name_fr || product.name_en
+        : locale === 'nl'
+          ? product.name_nl || product.name_en
+          : product.name_ar;
   const description = product.description_en
-    ? getName(locale, product.description_en, product.description_ar)
+    ? getName(
+        locale,
+        product.description_en,
+        product.description_ar,
+        product.description_fr,
+        product.description_nl
+      )
     : '';
+  const canAdd = product.is_available && (!hasSizeOptions || sizeOption !== null);
 
   const handleAdd = () => {
-    if (!product.is_available) return;
+    if (!canAdd) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
       name_ar: product.name_ar,
+      name_fr: product.name_fr,
+      name_nl: product.name_nl,
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
+      has_size_options: hasSizeOptions,
+      sizeOption: hasSizeOptions ? sizeOption : null,
       quantity: qty,
       notes,
     });
     trackAddToCart(product.id, qty, diningMode);
+    haptic.confirm();
     onAdded?.();
     onClose();
   };
@@ -140,20 +183,56 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         )}
       </SheetDescriptionOrDialogDescription>
 
-      <div className="flex items-end gap-3 border-t border-[var(--menu-line)] pt-4">
-        <p
-          className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
-          dir="ltr"
-        >
-          {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-        </p>
-        {otherPrice !== activePrice && (
-          <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
-            {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-            {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+      {hasSizeOptions ? (
+        <div className="space-y-2 border-t border-[var(--menu-line)] pt-4">
+          <Label className="text-xs text-[var(--menu-ink-soft)]">{t('selectSize')}</Label>
+          <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('selectSize')}>
+            {(['small', 'large'] as const).map((size) => {
+              const price = size === 'small' ? product.dining_price : product.takeaway_price;
+              const selected = sizeOption === size;
+              return (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => setSizeOption(size)}
+                  className={cn(
+                    'rounded-xl border px-3 py-3 text-start transition-colors',
+                    selected
+                      ? 'border-[var(--menu-wine)] bg-[var(--menu-gold-wash)]'
+                      : 'border-[var(--menu-line-strong)] bg-[var(--menu-surface)] hover:bg-[var(--menu-paper)]'
+                  )}
+                  aria-pressed={selected}
+                >
+                  <span className="block text-sm font-medium text-[var(--menu-ink)]">
+                    {size === 'small' ? t('small') : t('large')}
+                  </span>
+                  <span
+                    className="mt-1 block text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(price, currency, { locale: currencyLocale })}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-end gap-3 border-t border-[var(--menu-line)] pt-4">
+          <p
+            className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
+            dir="ltr"
+          >
+            {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
           </p>
-        )}
-      </div>
+          {otherPrice !== null && otherPrice !== activePrice && (
+            <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
+              {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+              {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+            </p>
+          )}
+        </div>
+      )}
 
       {product.is_available ? (
         <div className="space-y-3">
@@ -223,6 +302,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
           type="button"
           className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
           onClick={handleAdd}
+          disabled={!canAdd}
           data-testid="sheet-add-to-cart"
         >
           <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />

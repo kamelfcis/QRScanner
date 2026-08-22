@@ -1,0 +1,69 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "9de129a5-d201-4895-ae89-39736be6dd7d",
+    "name_ar": "منيو الاعشاب",
+    "name_en": "Herbs Menu",
+    "created": false,
+    "sort_order": 5
+  },
+  "excel": {
+    "file": "c:\\Users\\Administrator\\Downloads\\منيو\\منيو الاعشاب.xlsx",
+    "sheet": "Sheet",
+    "parsed_rows": 67,
+    "unique_products": 66
+  },
+  "products": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 66,
+    "errors": 0
+  },
+  "sample_products": [
+    {
+      "name_ar": "شاي اخضر نعناع العطار",
+      "dining_price": 80,
+      "takeaway_price": 80
+    },
+    {
+      "name_ar": "كمون و ليمون العطار 12فتلة",
+      "dining_price": 55,
+      "takeaway_price": 55
+    },
+    {
+      "name_ar": "كركديه شربات العطار",
+      "dining_price": 95,
+      "takeaway_price": 95
+    },
+    {
+      "name_ar": "زنجبيل و ليمون العطار",
+      "dining_price": 85,
+      "takeaway_price": 85
+    },
+    {
+      "name_ar": "كمون و ليمون العطار 24فتلة",
+      "dining_price": 95,
+      "takeaway_price": 95
+    },
+    {
+      "name_ar": "يانسون العطار24",
+      "dining_price": 85,
+      "takeaway_price": 85
+    },
+    {
+      "name_ar": "زهورات شامية العطار",
+      "dining_price": 100,
+      "takeaway_price": 100
+    },
+    {
+      "name_ar": "زنجبيل و قرفة العطار24ظ",
+      "dining_price": 87,
+      "takeaway_price": 87
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "verified_product_count": 66
+}

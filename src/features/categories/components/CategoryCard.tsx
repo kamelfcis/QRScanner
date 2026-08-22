@@ -33,8 +33,12 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
   const [editForm, setEditForm] = useState<Partial<CategoryInput>>({
     name_en: category.name_en,
     name_ar: category.name_ar,
+    name_fr: category.name_fr || '',
+    name_nl: category.name_nl || '',
     description_en: category.description_en || '',
     description_ar: category.description_ar || '',
+    description_fr: category.description_fr || '',
+    description_nl: category.description_nl || '',
     is_visible: category.is_visible,
     sort_order: category.sort_order,
   });
@@ -50,25 +54,22 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
     <Card className="relative overflow-hidden">
       {category.image_url && (
         <div className="aspect-video w-full overflow-hidden">
-          <Image
-            src={category.image_url}
-            alt={category.name_en}
-            fill
-            className="object-cover"
-          />
+          <Image src={category.image_url} alt={category.name_en} fill className="object-cover" />
         </div>
       )}
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <CardTitle className="text-lg">{category.name_en}</CardTitle>
-            <p className="text-sm text-muted-foreground" dir="rtl">
+            <p className="text-muted-foreground text-sm" dir="rtl">
               {category.name_ar}
             </p>
           </div>
           <div className="flex items-center gap-1">
             {category.is_visible ? (
-              <Badge variant="default" className="bg-green-500 text-white">{t('visible')}</Badge>
+              <Badge variant="default" className="bg-green-500 text-white">
+                {t('visible')}
+              </Badge>
             ) : (
               <Badge variant="secondary">{tCommon('hidden')}</Badge>
             )}
@@ -77,12 +78,10 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
       </CardHeader>
       <CardContent>
         {category.description_en && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {category.description_en}
-          </p>
+          <p className="text-muted-foreground line-clamp-2 text-sm">{category.description_en}</p>
         )}
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-muted-foreground text-xs">
             {t('order', { order: String(category.sort_order) })}
           </span>
           <div className="flex items-center gap-2">
@@ -144,6 +143,52 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                       }
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name_fr">{t('nameFr')}</Label>
+                    <Input
+                      id="name_fr"
+                      value={editForm.name_fr || ''}
+                      onChange={(e) =>
+                        setEditForm((prev) => ({ ...prev, name_fr: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name_nl">{t('nameNl')}</Label>
+                    <Input
+                      id="name_nl"
+                      value={editForm.name_nl || ''}
+                      onChange={(e) =>
+                        setEditForm((prev) => ({ ...prev, name_nl: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description_fr">{t('descriptionFr')}</Label>
+                    <Textarea
+                      id="description_fr"
+                      value={editForm.description_fr || ''}
+                      onChange={(e) =>
+                        setEditForm((prev) => ({
+                          ...prev,
+                          description_fr: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description_nl">{t('descriptionNl')}</Label>
+                    <Textarea
+                      id="description_nl"
+                      value={editForm.description_nl || ''}
+                      onChange={(e) =>
+                        setEditForm((prev) => ({
+                          ...prev,
+                          description_nl: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
                   <div className="flex items-center justify-between">
                     <Label htmlFor="is_visible">{t('visible')}</Label>
                     <Switch
@@ -182,7 +227,7 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-destructive"
+              className="text-destructive h-8 w-8"
               onClick={onDelete}
             >
               <Trash2 className="h-4 w-4" />

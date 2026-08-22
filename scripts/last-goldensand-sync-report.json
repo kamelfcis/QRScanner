@@ -1,0 +1,773 @@
+{
+  "dryRun": false,
+  "project": "worxtjqwmlusmttekawu",
+  "categories": 16,
+  "productsExpected": 109,
+  "categoryResults": [
+    {
+      "name_ar": "الفطير الحادق",
+      "productCount": 8,
+      "created": true,
+      "id": "b7457948-0203-46a4-b283-33a22db44fef"
+    },
+    {
+      "name_ar": "الفطائر الحلوة",
+      "productCount": 7,
+      "created": true,
+      "id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e"
+    },
+    {
+      "name_ar": "الكريب",
+      "productCount": 10,
+      "created": true,
+      "id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53"
+    },
+    {
+      "name_ar": "الحواوشي",
+      "productCount": 1,
+      "created": true,
+      "id": "36557639-3ff6-4645-885a-9f7137ead77d"
+    },
+    {
+      "name_ar": "مشاوي على الفحم",
+      "productCount": 5,
+      "created": true,
+      "id": "a060446d-8b33-40eb-90f5-d0423cf323ae"
+    },
+    {
+      "name_ar": "السندوتشات",
+      "productCount": 6,
+      "created": true,
+      "id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab"
+    },
+    {
+      "name_ar": "المحاشي والمقبلات الساخنة",
+      "productCount": 10,
+      "created": true,
+      "id": "82c126bb-a085-4047-aaec-29584916382b"
+    },
+    {
+      "name_ar": "كشري مصري",
+      "productCount": 1,
+      "created": true,
+      "id": "597eea64-931a-41a3-bf34-e4a76f52cf71"
+    },
+    {
+      "name_ar": "الأرز",
+      "productCount": 4,
+      "created": true,
+      "id": "7c418a17-96d2-48d3-866e-5a0cd3f26140"
+    },
+    {
+      "name_ar": "طواجن المكرونة",
+      "productCount": 3,
+      "created": true,
+      "id": "5445b047-92bd-4ef6-92fa-26526d529099"
+    },
+    {
+      "name_ar": "طواجن الطبيخ",
+      "productCount": 6,
+      "created": true,
+      "id": "40ce5e89-1779-439c-a1e9-cf5fee190303"
+    },
+    {
+      "name_ar": "الشعبيات – فول وطعمية",
+      "productCount": 15,
+      "created": true,
+      "id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee"
+    },
+    {
+      "name_ar": "السلطات والمقبلات",
+      "productCount": 6,
+      "created": true,
+      "id": "a366d482-c10d-4f7b-a81b-6dba0fe81058"
+    },
+    {
+      "name_ar": "العصائر والمشروبات",
+      "productCount": 18,
+      "created": true,
+      "id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6"
+    },
+    {
+      "name_ar": "الحلويات",
+      "productCount": 6,
+      "created": true,
+      "id": "a6c33e97-0799-48dd-9711-3cc91bd032a2"
+    },
+    {
+      "name_ar": "إضافات",
+      "productCount": 3,
+      "created": true,
+      "id": "a101d7ae-c25f-4bc7-ad71-80768da958e4"
+    }
+  ],
+  "upserted": [
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة سجق",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة بسطرمة",
+      "price": 190
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة مشكل جبن",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة مشكل لحوم",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة لحمة",
+      "price": 200
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة فراخ",
+      "price": 190
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطيرة سوسيس",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "b7457948-0203-46a4-b283-33a22db44fef",
+      "name_ar": "فطير مشلتت سادة",
+      "price": 140
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة سكر",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة كاستر",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة شوكولاتة نوتيلا",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة مشكل مكسرات",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة بستاشيو صوص",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة لوتس صوص",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "cde73bfc-dafb-4f11-a98e-f5e4df37622e",
+      "name_ar": "فطيرة مكس مشكل صوص",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب سجق",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب لحمة",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب سوسيس",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب فراخ",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب بسطرمة",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب كرنشي فراخ",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب استريبس فراخ",
+      "price": 170
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب مشكل جبن",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب مشكل فراخ",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "b00bb0b9-adf9-452c-9f3c-3dff628cdd53",
+      "name_ar": "كريب مشكل لحوم",
+      "price": 190
+    },
+    {
+      "action": "insert",
+      "category_id": "36557639-3ff6-4645-885a-9f7137ead77d",
+      "name_ar": "حواوشي لحمة بلدي",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "a060446d-8b33-40eb-90f5-d0423cf323ae",
+      "name_ar": "كفتة",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "a060446d-8b33-40eb-90f5-d0423cf323ae",
+      "name_ar": "فراخ مشوية",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "a060446d-8b33-40eb-90f5-d0423cf323ae",
+      "name_ar": "كباب قطع",
+      "price": 300
+    },
+    {
+      "action": "insert",
+      "category_id": "a060446d-8b33-40eb-90f5-d0423cf323ae",
+      "name_ar": "شواية مشكل",
+      "price": 300
+    },
+    {
+      "action": "insert",
+      "category_id": "a060446d-8b33-40eb-90f5-d0423cf323ae",
+      "name_ar": "شيش طاووق",
+      "price": 240
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "سجق إسكندراني",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "كبدة إسكندراني",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "كفتة",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "شيش طاووق",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "برجر",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "183e3cd7-f628-422c-ae9b-ebe9b88682ab",
+      "name_ar": "حواوشي",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "محشي كرنب",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "ورق عنب",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "محشي كوسة",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "محشي باذنجان",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "محشي مشكل",
+      "price": 130
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "ممبار",
+      "price": 150
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "سمبوسة لحمة",
+      "price": 90
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "سمبوسة جبنة",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "كبيبة",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "82c126bb-a085-4047-aaec-29584916382b",
+      "name_ar": "بطاطس باللحمة",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "597eea64-931a-41a3-bf34-e4a76f52cf71",
+      "name_ar": "كشري مصري",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "7c418a17-96d2-48d3-866e-5a0cd3f26140",
+      "name_ar": "رز بسمتي",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "7c418a17-96d2-48d3-866e-5a0cd3f26140",
+      "name_ar": "رز معمر",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "7c418a17-96d2-48d3-866e-5a0cd3f26140",
+      "name_ar": "رز بالشعرية",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "7c418a17-96d2-48d3-866e-5a0cd3f26140",
+      "name_ar": "رز أبيض",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "5445b047-92bd-4ef6-92fa-26526d529099",
+      "name_ar": "طاجن مكرونة باللحمة",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "5445b047-92bd-4ef6-92fa-26526d529099",
+      "name_ar": "طاجن مكرونة بالسجق",
+      "price": 160
+    },
+    {
+      "action": "insert",
+      "category_id": "5445b047-92bd-4ef6-92fa-26526d529099",
+      "name_ar": "طاجن مكرونة بشاميل",
+      "price": 180
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "بامية باللحمة",
+      "price": 190
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "بسلة باللحمة",
+      "price": 190
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "فتة بالموزة الضاني",
+      "price": 280
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "فتة لحمة بقري",
+      "price": 240
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "لحمة بالبصل",
+      "price": 220
+    },
+    {
+      "action": "insert",
+      "category_id": "40ce5e89-1779-439c-a1e9-cf5fee190303",
+      "name_ar": "رز معمر",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "طعمية بالسمسم – سادة",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "طعمية بالسمسم – محشية",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "فول بالزيت الحار",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "فول بالزيت الحلو",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "فول بالسمنة",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "فول بالسجق",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "فول بالبيض",
+      "price": 90
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "باذنجان وفلفل مقلي",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "باذنجان وفلفل مشوي",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "بطاطس مقلية",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "بطاطس مهروسة",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "بيض بالبسطرمة",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "جبنة فيتا بالطماطم",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "بيض مسلوق",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "e40feec4-ba95-44c8-b683-0bf9bd5f3eee",
+      "name_ar": "بيض أومليت",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "سلطة بلدي حاتي",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "طحينة",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "حمص",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "كريمة الثوم",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "سلطة خضراء بيتي",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "a366d482-c10d-4f7b-a81b-6dba0fe81058",
+      "name_ar": "صوص الرانش",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "ليمون بالنعناع",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "شاي",
+      "price": 35
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "قهوة",
+      "price": 45
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "موز باللبن",
+      "price": 90
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "عصير برتقال فريش",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "فخفخينا",
+      "price": 120
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "عناب – ساقع / ساخن",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "عرقسوس",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "تمر هندي",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "سوبيا",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "خروب",
+      "price": 60
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "شويبس – جميع الأنواع",
+      "price": 50
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "راني – جميع الأنواع",
+      "price": 50
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "فيروز",
+      "price": 50
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "عصير المطعم",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "حمص الشام",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "بليلة",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "6ca6ff3a-3be1-4b80-8e61-4ec9329a06f6",
+      "name_ar": "مشروبات فريش وطبيعية",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "بسبوسة بلدي",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "كنافة بالقشطة",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "كنافة سادة",
+      "price": 80
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "هريسة بالمكسرات",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "أم علي",
+      "price": 100
+    },
+    {
+      "action": "insert",
+      "category_id": "a6c33e97-0799-48dd-9711-3cc91bd032a2",
+      "name_ar": "رز بلبن",
+      "price": 70
+    },
+    {
+      "action": "insert",
+      "category_id": "a101d7ae-c25f-4bc7-ad71-80768da958e4",
+      "name_ar": "إضافة موتزاريلا",
+      "price": 30
+    },
+    {
+      "action": "insert",
+      "category_id": "a101d7ae-c25f-4bc7-ad71-80768da958e4",
+      "name_ar": "إضافة صوص",
+      "price": 20
+    },
+    {
+      "action": "insert",
+      "category_id": "a101d7ae-c25f-4bc7-ad71-80768da958e4",
+      "name_ar": "إضافة مكسرات",
+      "price": 40
+    }
+  ],
+  "unchanged": [],
+  "deleted": [],
+  "deletedCategories": [],
+  "errors": [],
+  "currency": {
+    "before": "EGP",
+    "expected": "EGP"
+  },
+  "verify": {
+    "categoryCount": 16,
+    "productCount": 109,
+    "currency": "EGP"
+  }
+}

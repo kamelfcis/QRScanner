@@ -20,7 +20,12 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { haptic } from '@/lib/haptics';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
@@ -58,29 +63,49 @@ export function ProductCard({
   const longPressFired = useRef(false);
 
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
+  const hasSizeOptions = product.has_size_options;
   const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
+  const minPrice = Math.min(product.dining_price, product.takeaway_price);
+  const maxPrice = Math.max(product.dining_price, product.takeaway_price);
   const badges = pickBadges(product);
-  const productName = getName(locale, product.name_en, product.name_ar);
+  const productName = getName(
+    locale,
+    product.name_en,
+    product.name_ar,
+    product.name_fr,
+    product.name_nl
+  );
   const description = product.description_en
-    ? getName(locale, product.description_en, product.description_ar)
+    ? getName(
+        locale,
+        product.description_en,
+        product.description_ar,
+        product.description_fr,
+        product.description_nl
+      )
     : '';
 
   const handleAdd = (withNotes: string) => {
-    if (!product.is_available) return;
+    if (!product.is_available || hasSizeOptions) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
       name_ar: product.name_ar,
+      name_fr: product.name_fr,
+      name_nl: product.name_nl,
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
+      has_size_options: false,
+      sizeOption: null,
       quantity: qty,
       notes: withNotes,
     });
     trackAddToCart(product.id, qty, diningMode);
+    haptic.confirm();
     setPulse(true);
     window.setTimeout(() => setPulse(false), 400);
     setQty(1);
@@ -97,6 +122,7 @@ export function ProductCard({
   };
 
   const startLongPress = () => {
+    if (hasSizeOptions) return;
     longPressFired.current = false;
     clearLongPress();
     longPressTimer.current = setTimeout(() => {
@@ -106,6 +132,10 @@ export function ProductCard({
   };
 
   const handleMobileAddClick = () => {
+    if (hasSizeOptions) {
+      onImageClick(product);
+      return;
+    }
     if (longPressFired.current) {
       longPressFired.current = false;
       return;
@@ -205,17 +235,38 @@ export function ProductCard({
 
           <div className="mt-2.5 flex items-end justify-between gap-2 sm:mt-3">
             <div className="min-w-0">
-              <p
-                className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                dir="ltr"
-              >
-                {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-              </p>
-              {otherPrice !== activePrice && (
-                <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
-                  {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-                  {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
-                </p>
+              {hasSizeOptions ? (
+                minPrice !== maxPrice ? (
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })} –{' '}
+                    {formatCurrencyAmount(maxPrice, currency, { locale: currencyLocale })}
+                  </p>
+                ) : (
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })}
+                  </p>
+                )
+              ) : (
+                <>
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+                  </p>
+                  {otherPrice !== activePrice && (
+                    <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
+                      {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+                      {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+                    </p>
+                  )}
+                </>
               )}
             </div>
 
@@ -284,7 +335,7 @@ export function ProductCard({
                   <Button
                     type="button"
                     className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-                    onClick={() => handleAdd('')}
+                    onClick={() => (hasSizeOptions ? onImageClick(product) : handleAdd(''))}
                     data-testid="add-to-cart"
                     aria-label={tCart('addToCart')}
                   >
@@ -297,7 +348,7 @@ export function ProductCard({
               <button
                 type="button"
                 className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
-                onClick={() => setNotesOpen(true)}
+                onClick={() => (hasSizeOptions ? onImageClick(product) : setNotesOpen(true))}
               >
                 {tCart('itemNotes')}
               </button>

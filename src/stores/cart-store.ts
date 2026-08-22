@@ -5,16 +5,21 @@ import { persist } from 'zustand/middleware';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
+export type CartSizeOption = 'small' | 'large' | null;
 
 export interface CartItem {
-  /** Stable line id: productId + notes key */
+  /** Stable line id: productId + optional size + notes key */
   id: string;
   productId: string;
   name_en: string;
   name_ar: string;
+  name_fr?: string | null;
+  name_nl?: string | null;
   image_url: string | null;
   dining_price: number;
   takeaway_price: number;
+  has_size_options: boolean;
+  sizeOption: CartSizeOption;
   quantity: number;
   notes: string;
 }
@@ -44,9 +49,16 @@ function notesKey(notes: string): string {
   return notes.trim().toLowerCase();
 }
 
-export function makeCartLineId(productId: string, notes: string): string {
+export function makeCartLineId(
+  productId: string,
+  notes: string,
+  sizeOption: CartSizeOption = null
+): string {
   const key = notesKey(notes);
-  return key ? `${productId}::${key}` : productId;
+  if (sizeOption && key) return `${productId}::${sizeOption}::${key}`;
+  if (sizeOption) return `${productId}::${sizeOption}`;
+  if (key) return `${productId}::${key}`;
+  return productId;
 }
 
 const initialMeta: CartMeta = {
@@ -68,7 +80,8 @@ export const useCartStore = create<CartState>()(
       addItem: (item) => {
         const qty = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
-        const id = makeCartLineId(item.productId, notes);
+        const sizeOption = item.sizeOption ?? null;
+        const id = makeCartLineId(item.productId, notes, sizeOption);
         set((state) => {
           const existing = state.items.find((i) => i.id === id);
           if (existing) {
@@ -89,6 +102,8 @@ export const useCartStore = create<CartState>()(
                 image_url: item.image_url,
                 dining_price: item.dining_price,
                 takeaway_price: item.takeaway_price,
+                has_size_options: item.has_size_options ?? false,
+                sizeOption,
                 quantity: qty,
                 notes,
               },
@@ -119,7 +134,7 @@ export const useCartStore = create<CartState>()(
           const current = state.items.find((i) => i.id === id);
           if (!current) return state;
 
-          const newId = makeCartLineId(current.productId, trimmed);
+          const newId = makeCartLineId(current.productId, trimmed, current.sizeOption);
           if (newId === id) {
             return {
               items: state.items.map((i) => (i.id === id ? { ...i, notes: trimmed } : i)),

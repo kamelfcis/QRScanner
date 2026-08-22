@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { getRestaurantDisplayName } from '@/lib/appName';
 import { cn } from '@/lib/utils';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -16,9 +18,14 @@ interface BeforeInstallPromptEvent extends Event {
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
+  );
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
+  const { data: settings } = useRestaurantSettings();
   const t = useTranslations('pwa');
+  const restaurantName = getRestaurantDisplayName(locale, settings);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -34,10 +41,6 @@ export function InstallPrompt() {
 
     window.addEventListener('beforeinstallprompt', handler);
     window.addEventListener('appinstalled', installedHandler);
-
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
@@ -71,19 +74,19 @@ export function InstallPrompt() {
           animate={{ opacity: 1, y: 0 }}
           exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
           className={cn(
-            'fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-6 md:bottom-6 md:max-w-sm',
-            'rounded-xl border border-brand-primary/20 bg-background p-4 shadow-2xl'
+            'fixed bottom-4 left-4 right-4 z-50 md:bottom-6 md:left-auto md:right-6 md:max-w-sm',
+            'border-brand-primary/20 bg-background rounded-xl border p-4 shadow-2xl'
           )}
         >
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-primary/10">
-              <Download className="h-5 w-5 text-brand-primary" />
+            <div className="bg-brand-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+              <Download className="text-brand-primary h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-foreground">{t('installTitle')}</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t('installDescription')}
+              <p className="text-foreground font-semibold">
+                {t('installTitle', { name: restaurantName })}
               </p>
+              <p className="text-muted-foreground mt-1 text-sm">{t('installDescription')}</p>
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={handleInstall}>
                   {t('install')}
@@ -95,7 +98,7 @@ export function InstallPrompt() {
             </div>
             <button
               onClick={handleDismiss}
-              className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground shrink-0 rounded-md p-1"
               aria-label={t('dismiss')}
             >
               <X className="h-4 w-4" />

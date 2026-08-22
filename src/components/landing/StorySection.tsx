@@ -6,7 +6,8 @@ import { ParallaxSection } from '@/components/shared/motion';
 import { fadeInLeft, fadeInRight } from '@/lib/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getName } from '@/lib/utils';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { getLocalizedText, getName } from '@/lib/utils';
 
 export function StorySection() {
   const { data: settings } = useRestaurantSettings();
@@ -14,12 +15,39 @@ export function StorySection() {
   const t = useTranslations('landing');
   const tSettings = useTranslations('settings');
 
-  const restaurantName = getName(
+  const restaurantName = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
+  const logoInitial = restaurantName.charAt(0).toUpperCase();
+
+  const storyTitle = getLocalizedText(
     locale,
-    settings?.name_en || t('heroTitle'),
-    settings?.name_ar || t('heroTitle')
+    {
+      en: settings?.story_title_en?.trim() || t('storyTitle'),
+      ar: settings?.story_title_ar?.trim() || t('storyTitle'),
+      fr: settings?.story_title_fr?.trim(),
+      nl: settings?.story_title_nl?.trim(),
+    },
+    t('storyTitle')
   );
-  const logoInitial = (settings?.name_en || settings?.name_ar || 'W').charAt(0).toUpperCase();
+  const storyP1 = getLocalizedText(
+    locale,
+    {
+      en: settings?.story_p1_en?.trim() || t('storyP1'),
+      ar: settings?.story_p1_ar?.trim() || t('storyP1'),
+      fr: settings?.story_p1_fr?.trim(),
+      nl: settings?.story_p1_nl?.trim(),
+    },
+    t('storyP1')
+  );
+  const storyP2 = getLocalizedText(
+    locale,
+    {
+      en: settings?.story_p2_en?.trim() || t('storyP2'),
+      ar: settings?.story_p2_ar?.trim() || t('storyP2'),
+      fr: settings?.story_p2_fr?.trim(),
+      nl: settings?.story_p2_nl?.trim(),
+    },
+    t('storyP2')
+  );
 
   return (
     <section id="story" className="relative py-20 md:py-28">
@@ -28,11 +56,11 @@ export function StorySection() {
           <MotionSection variants={fadeInLeft}>
             <div className="space-y-6">
               <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
-                {t('storyTitle')}
+                {storyTitle}
               </h2>
               <div className="bg-brand-accent h-1 w-20 rounded" />
-              <p className="text-muted-foreground text-lg leading-relaxed">{t('storyP1')}</p>
-              <p className="text-muted-foreground text-lg leading-relaxed">{t('storyP2')}</p>
+              <p className="text-muted-foreground text-lg leading-relaxed">{storyP1}</p>
+              <p className="text-muted-foreground text-lg leading-relaxed">{storyP2}</p>
             </div>
           </MotionSection>
 

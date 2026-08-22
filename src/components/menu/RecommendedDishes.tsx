@@ -10,7 +10,11 @@ import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 
 interface RecommendedDishesProps {
   onSelectProduct: (productId: string) => void;
@@ -23,7 +27,7 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
   const t = useTranslations('menu');
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
 
   if (isLoading || !products?.length) return null;
 
@@ -44,7 +48,13 @@ export function RecommendedDishes({ onSelectProduct }: RecommendedDishesProps) {
         className="scrollbar-none flex gap-3 overflow-x-auto pb-2"
       >
         {products.map((product) => {
-          const name = getName(locale, product.name_en, product.name_ar);
+          const name = getName(
+            locale,
+            product.name_en,
+            product.name_ar,
+            product.name_fr,
+            product.name_nl
+          );
           return (
             <motion.button
               key={product.id}

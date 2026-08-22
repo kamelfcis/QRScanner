@@ -4,12 +4,11 @@ import {
   ProductImageAiError,
   buildEnhancePrompt,
   buildGeneratePrompt,
-  extensionForMime,
   fetchSourceImage,
   generateProductImageCandidates,
   sanitizeErrorMessage,
-  type GeneratedImageBytes,
 } from '@/lib/ai/product-image';
+import { uploadAiCandidates } from '@/lib/ai/product-image-storage';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -22,29 +21,18 @@ function jsonError(error: string, status: number, code?: string) {
   return NextResponse.json(code ? { error, code } : { error }, { status });
 }
 
-async function uploadCandidates(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
-  images: GeneratedImageBytes[]
-): Promise<Array<{ id: string; url: string }>> {
-  const timestamp = Date.now();
-  const uploaded = await Promise.all(
-    images.map(async (image, index) => {
-      const ext = extensionForMime(image.mimeType);
-      const path = `ai-candidates/${userId}/${timestamp}-${index + 1}.${ext}`;
-      const { data, error } = await supabase.storage.from('products').upload(path, image.data, {
-        contentType: image.mimeType,
-        cacheControl: '31536000',
-        upsert: false,
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      const { data: urlData } = supabase.storage.from('products').getPublicUrl(data.path);
-      return { id: data.path, url: urlData.publicUrl };
-    })
-  );
-  return uploaded;
+async function isAiProductImagesEnabled(
+  supabase: Awaited<ReturnType<typeof createClient>>
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('settings')
+    .select('value')
+    .eq('key', 'features')
+    .maybeSingle();
+
+  if (error) return false;
+  const value = data?.value as { ai_product_images?: boolean } | undefined;
+  return value?.ai_product_images === true;
 }
 
 export async function POST(request: Request) {
@@ -57,6 +45,14 @@ export async function POST(request: Request) {
 
     if (authError || !user) {
       return jsonError('Unauthorized', 401);
+    }
+
+    if (!(await isAiProductImagesEnabled(supabase))) {
+      return jsonError(
+        'AI product images are not enabled for this restaurant',
+        403,
+        'feature_disabled'
+      );
     }
 
     if (!process.env.GEMINI_API_KEY?.trim()) {
@@ -99,7 +95,7 @@ export async function POST(request: Request) {
     const sourceImage = mode === 'enhance' ? await fetchSourceImage(source_image_url) : undefined;
 
     const images = await generateProductImageCandidates(prompt, sourceImage);
-    const uploaded = await uploadCandidates(supabase, user.id, images);
+    const uploaded = await uploadAiCandidates(supabase, user.id, images);
 
     return NextResponse.json({ images: uploaded });
   } catch (err) {

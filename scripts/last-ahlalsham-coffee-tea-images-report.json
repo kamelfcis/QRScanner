@@ -1,0 +1,2245 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "f7701214-50dc-489e-9e1d-24d78e9c1de1",
+    "name_ar": "القهوة و الشاي"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\القهوة و الشاي\\القهوة و الشاي",
+  "counts": {
+    "images_found": 124,
+    "products_in_category": 126,
+    "matched": 122,
+    "uploaded": 0,
+    "skipped_unchanged": 122,
+    "unmatched_images": 2,
+    "unmatched_products": 4,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "الطحان تمر محشو لوز.jpg",
+      "product_id": "55911f09-d169-4d6e-a7c0-d659fe0a51d9",
+      "name_ar": "الطحان تمر محشو لوز",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "الطحان تمر مغطى بالشوكولاته محشو لوز.jpg",
+      "product_id": "c324796f-e156-4f28-bd17-ea8a73c1ffe6",
+      "name_ar": "الطحان تمر مغطى بالشوكولاته محشو لوز",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "اولكر بسكويت شاي.jpg",
+      "product_id": "400420de-4b8d-402a-ac92-c4eaa67801f9",
+      "name_ar": "اولكر بسكويت شاي",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "ايليت ويفر شوكلاتة 7ق.jpg",
+      "product_id": "36fb7f07-3a4f-40d2-9d9b-54654515d058",
+      "name_ar": "ايليت ويفر شوكلاتة 7ق",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "ايليت ويفر فانليا 7 ق.jpg",
+      "product_id": "c27fce42-df9a-4288-a22a-eb795ef932d6",
+      "name_ar": "ايليت ويفر فانليا 7 ق",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بسكويت ابو الولد.jpg",
+      "product_id": "780e183f-a259-44bf-b3ab-299a8569dd70",
+      "name_ar": "بسكويت ابو الولد",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بسكويت اوريو ابو الولد.jpg",
+      "product_id": "27718459-ec44-4d73-9af2-f6b3fdc85480",
+      "name_ar": "بسكويت اوريو ابو الولد",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بسكويت شاتو بالشوكولاتة.jpg",
+      "product_id": "0a039a4a-fc45-4076-8589-43c8e46403cc",
+      "name_ar": "بسكويت شاتو بالشوكولاتة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [
+    {
+      "file": "بن الحموي اخضر 180غ(محوج وسط).jpg",
+      "path": "C:\\Users\\Administrator\\Downloads\\القهوة و الشاي\\القهوة و الشاي\\بن الحموي اخضر 180غ(محوج وسط).jpg",
+      "best_candidate": "بن الحموي اخضر 180غ(محوج وسط)",
+      "best_score": 1
+    },
+    {
+      "file": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة.jpg",
+      "path": "C:\\Users\\Administrator\\Downloads\\القهوة و الشاي\\القهوة و الشاي\\شاي احمد تي شاي اخضر بالنعناع 100 فتلة.jpg",
+      "best_candidate": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+      "best_score": 1
+    }
+  ],
+  "sample_unmatched_products": [
+    {
+      "id": "387261b0-3d42-4e2c-bcb2-90e53e1e263c",
+      "name_ar": "بن الحموي اخضر 180غ(محوج وسط)",
+      "image_url": null
+    },
+    {
+      "id": "d3d1cc7c-408c-42b6-9ca5-557479d33325",
+      "name_ar": "بن الحموي اخضر 180غ(محوج وسط)",
+      "image_url": null
+    },
+    {
+      "id": "2883a835-b0ce-4046-99aa-b1fabbc96e72",
+      "name_ar": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+      "image_url": null
+    },
+    {
+      "id": "bdf2a0ba-c361-492a-bb11-7a030c381867",
+      "name_ar": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+      "image_url": null
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:20:46.958Z",
+  "details": {
+    "matched": [
+      {
+        "file": "الطحان تمر محشو لوز.jpg",
+        "product_id": "55911f09-d169-4d6e-a7c0-d659fe0a51d9",
+        "name_ar": "الطحان تمر محشو لوز",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "الطحان تمر مغطى بالشوكولاته محشو لوز.jpg",
+        "product_id": "c324796f-e156-4f28-bd17-ea8a73c1ffe6",
+        "name_ar": "الطحان تمر مغطى بالشوكولاته محشو لوز",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "اولكر بسكويت شاي.jpg",
+        "product_id": "400420de-4b8d-402a-ac92-c4eaa67801f9",
+        "name_ar": "اولكر بسكويت شاي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ايليت ويفر شوكلاتة 7ق.jpg",
+        "product_id": "36fb7f07-3a4f-40d2-9d9b-54654515d058",
+        "name_ar": "ايليت ويفر شوكلاتة 7ق",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ايليت ويفر فانليا 7 ق.jpg",
+        "product_id": "c27fce42-df9a-4288-a22a-eb795ef932d6",
+        "name_ar": "ايليت ويفر فانليا 7 ق",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسكويت ابو الولد.jpg",
+        "product_id": "780e183f-a259-44bf-b3ab-299a8569dd70",
+        "name_ar": "بسكويت ابو الولد",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسكويت اوريو ابو الولد.jpg",
+        "product_id": "27718459-ec44-4d73-9af2-f6b3fdc85480",
+        "name_ar": "بسكويت اوريو ابو الولد",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسكويت شاتو بالشوكولاتة.jpg",
+        "product_id": "0a039a4a-fc45-4076-8589-43c8e46403cc",
+        "name_ar": "بسكويت شاتو بالشوكولاتة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسكويت كوكا كريم ستارز.jpg",
+        "product_id": "8eed83bb-0bc5-471b-bbd6-a667964de6a4",
+        "name_ar": "بسكويت كوكا كريم ستارز",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسكويت ماري.jpg",
+        "product_id": "682c6434-81a4-4a3c-9b35-82aaaefd6fa9",
+        "name_ar": "بسكويت ماري",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي احمر 180غ (سادة وسط).jpg",
+        "product_id": "122a1afc-0fa3-4a0e-a502-8d474f8fce7c",
+        "name_ar": "بن الحموي احمر 180غ (سادة وسط)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي احمر 90غ(سادة وسط).jpg",
+        "product_id": "1eacbed0-b56d-493e-b11b-182f2bab8949",
+        "name_ar": "بن الحموي احمر 90غ(سادة وسط)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي اخضر  450غ(محوج وسط).jpg",
+        "product_id": "32952ecf-b28c-4303-a769-0de7f376d94a",
+        "name_ar": "بن الحموي اخضر  450غ(محوج وسط)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي اخضر  90غ(محوج وسط).jpg",
+        "product_id": "0709fc28-f0c5-47b2-9c75-338088e6f3e2",
+        "name_ar": "بن الحموي اخضر  90غ(محوج وسط)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي ازرق  180غ(محوج اكسترا).jpg",
+        "product_id": "7c8dad94-8361-497b-9f63-53404dc71c21",
+        "name_ar": "بن الحموي ازرق  180غ(محوج اكسترا)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي ازرق 90غ(محوج اكسترا).jpg",
+        "product_id": "0f90a758-06e4-4e7a-831d-34416cf445b5",
+        "name_ar": "بن الحموي ازرق 90غ(محوج اكسترا)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي اكسترا هال 450غ (محوج اكسترا).jpg",
+        "product_id": "8de512fc-db2f-49cc-836e-f7245c002637",
+        "name_ar": "بن الحموي اكسترا هال 450غ (محوج اكسترا)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي ساده فاتح 90 غرام.jpg",
+        "product_id": "a73fd096-db11-4775-b58d-90b711bb68e9",
+        "name_ar": "بن الحموي ساده فاتح 90 غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي غامق اكسترا هال محوج غامق 180 غرام.jpg",
+        "product_id": "d655f73a-16f5-4774-bbe9-479a4ace745c",
+        "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 180 غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي غامق اكسترا هال محوج غامق 90 غرام.jpg",
+        "product_id": "e1b4cd87-bfff-461f-8f5c-6e63a4d75968",
+        "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 90 غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي قهوة برايت مع هال فاتح محوج 180 غرام.jpg",
+        "product_id": "f3e92ea8-1957-460e-ac70-cd94b5de9e98",
+        "name_ar": "بن الحموي قهوة برايت مع هال فاتح محوج 180 غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي قهوة برايت مع هال فاتح محوج 90 غرام.jpg",
+        "product_id": "15dec788-3063-4140-9db6-e01e7dfb0f18",
+        "name_ar": "بن الحموي قهوة برايت مع هال فاتح محوج 90 غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي قهوة سادة فاتح روز 180غرام.jpg",
+        "product_id": "948a87d5-a257-4e8c-a49e-0e65ad7343c5",
+        "name_ar": "بن الحموي قهوة سادة فاتح روز 180غرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن الحموي قهوة عربية مع هال سريعة التحضير 30غ.jpg",
+        "product_id": "b4d5a997-7679-49a6-b2dc-5da555e0f429",
+        "name_ar": "بن الحموي قهوة عربية مع هال سريعة التحضير 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن المعبود محوج غامق(100غ).jpg",
+        "product_id": "762ca41f-b288-4c41-add5-ee2dc099164d",
+        "name_ar": "بن المعبود محوج غامق(100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بن عبد المعبودمحوج وسط 200غ.jpg",
+        "product_id": "40cfff4c-dc28-4ca6-8ffb-2a393acb5241",
+        "name_ar": "بن عبد المعبودمحوج وسط 200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بيكنج بودر كوكس16غ.jpg",
+        "product_id": "b83ffd3b-78c9-42da-ab9e-0f7f32c72f9c",
+        "name_ar": "بيكنج بودر كوكس16غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بيكينج بودر دريم16غ.jpg",
+        "product_id": "8d76576b-b9d9-47c5-82d4-df2448205e89",
+        "name_ar": "بيكينج بودر دريم16غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تورتو 30 جم شوكلت شيبس بتر كوكيز وايت كاسل.jpg",
+        "product_id": "31262d43-e8b8-4204-9de1-aafdd782f667",
+        "name_ar": "تورتو 30 جم شوكلت شيبس بتر كوكيز وايت كاسل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خلطة ماجي بشاميل 70غ.jpg",
+        "product_id": "f0836a79-cc38-4fb2-bd8a-e58d888dc8db",
+        "name_ar": "خلطة ماجي بشاميل 70غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خلطة ماجي شيش30غ.jpg",
+        "product_id": "16b5e726-7934-41e4-ad74-0425b0c21a86",
+        "name_ar": "خلطة ماجي شيش30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خميرة دريم اظرف(11غ).jpg",
+        "product_id": "82dca8e5-c44f-41e2-8f47-0e125ec8ea4b",
+        "name_ar": "خميرة دريم اظرف(11غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خميرة كوكس ظرف10غ.jpg",
+        "product_id": "0e125dd0-f668-45cf-ae4d-980555817548",
+        "name_ar": "خميرة كوكس ظرف10غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دروو كيك زبدة - 5 جنيه.jpg",
+        "product_id": "a229d280-5438-4026-a4a2-d506c86d303c",
+        "name_ar": "دروو كيك زبدة - 5 جنيه",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة الروابي 2.5كغ.jpg",
+        "product_id": "1379301c-55bc-4d4c-b1cd-e28ba819ae09",
+        "name_ar": "سمنة الروابي 2.5كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة الروابي قشطة700غ.jpg",
+        "product_id": "6e6801f1-2124-4bdc-ae0c-c1be296b37bc",
+        "name_ar": "سمنة الروابي قشطة700غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة الهانم 650غ.jpg",
+        "product_id": "181c1fd3-8117-4132-bfe0-da08ed3770af",
+        "name_ar": "سمنة الهانم 650غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة 2.5 نيوزلاندي.jpg",
+        "product_id": "58163f29-e32a-42ff-a8f5-bc538a22f995",
+        "name_ar": "سمنة جنة 2.5 نيوزلاندي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة(1.5كغ)طعم الزبدة.jpg",
+        "product_id": "12551649-3fb7-4b53-8623-c89e7d22c237",
+        "name_ar": "سمنة جنة(1.5كغ)طعم الزبدة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة(1.5كغ)نيوزيلاندي.jpg",
+        "product_id": "7b222ae2-f3a8-493f-9f0f-5a12150a3493",
+        "name_ar": "سمنة جنة(1.5كغ)نيوزيلاندي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة(2.5كغ)طعم الزبدة.jpg",
+        "product_id": "0a91de62-e4cd-4855-8f68-a9acc5f20812",
+        "name_ar": "سمنة جنة(2.5كغ)طعم الزبدة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة(700غ)نيوزيلاندي.jpg",
+        "product_id": "ca14e7e4-0ddd-4d22-b076-40ad5ecfa406",
+        "name_ar": "سمنة جنة(700غ)نيوزيلاندي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة جنة700غ.jpg",
+        "product_id": "ee0b6286-015e-4fc5-bdff-aa5eaa08331e",
+        "name_ar": "سمنة جنة700غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة روابي قشطة 1.5كغ.jpg",
+        "product_id": "0967e469-b265-4965-8860-265ddb87bd4d",
+        "name_ar": "سمنة روابي قشطة 1.5كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة روابي1.5كغ.jpg",
+        "product_id": "dd0d057f-48bf-46f1-8e81-e1024a53b7d0",
+        "name_ar": "سمنة روابي1.5كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة روابي700غ.jpg",
+        "product_id": "df478cae-cf28-439b-9ca6-594a61a3d996",
+        "name_ar": "سمنة روابي700غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة ظرف جنة.jpg",
+        "product_id": "f9e874e2-87ce-46ee-90ed-b085103455ce",
+        "name_ar": "سمنة ظرف جنة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة قوت 1.450 كج.jpg",
+        "product_id": "b222384d-c630-4112-b3e0-cdbe476cb49d",
+        "name_ar": "سمنة قوت 1.450 كج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة كريستال (1ك).jpg",
+        "product_id": "a7b24c7c-8845-49b8-92e4-dfe42b9d4e4f",
+        "name_ar": "سمنة كريستال (1ك)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة كريستال (2ك)صافي.jpg",
+        "product_id": "c1f6a553-4032-49fd-b366-1299710813d6",
+        "name_ar": "سمنة كريستال (2ك)صافي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة كريستال (700غ).jpg",
+        "product_id": "8eaa023f-430a-401e-8978-9caa9b0a74c1",
+        "name_ar": "سمنة كريستال (700غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة كريستال ظرف.jpg",
+        "product_id": "ab01a4aa-9c2c-413b-ac28-805d20585dda",
+        "name_ar": "سمنة كريستال ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة هانم 2ك.jpg",
+        "product_id": "7135a125-51d8-4929-9886-4528e65cd1d3",
+        "name_ar": "سمنة هانم 2ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة هانم 3ك.jpg",
+        "product_id": "920969a6-66f8-4b2d-8f45-d62c90fdbb05",
+        "name_ar": "سمنة هانم 3ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سمنة هانم ظرف.jpg",
+        "product_id": "62444721-5318-4251-a09b-90225fc3fe04",
+        "name_ar": "سمنة هانم ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سيتي كافيه 2×1.jpg",
+        "product_id": "f0ff061b-6dd6-4e54-a8ee-56bdf7ef1696",
+        "name_ar": "سيتي كافيه 2×1",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سيتي كافيه جولد80غ.jpg",
+        "product_id": "4e9fcdf7-5ff9-452f-ad44-b390e3a45880",
+        "name_ar": "سيتي كافيه جولد80غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سيتي كافيه دريمي3×1.jpg",
+        "product_id": "b1a4cf2c-6cd0-4b2d-a019-febeb4252df6",
+        "name_ar": "سيتي كافيه دريمي3×1",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سيتي كافيه كلاسيك ظرف.jpg",
+        "product_id": "0251bc0b-9fa9-434f-9722-100c11422443",
+        "name_ar": "سيتي كافيه كلاسيك ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي 100+25 فتلة إفطار.jpg",
+        "product_id": "05f76aae-2ed1-42a5-9bc3-63b1014f5b3d",
+        "name_ar": "شاي احمد تي 100+25 فتلة إفطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي اخضر 250غ.jpg",
+        "product_id": "bc6f4824-5ad3-403f-bee3-914c190c4a1c",
+        "name_ar": "شاي احمد تي اخضر 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي اخضر بالنعناع 250غ.jpg",
+        "product_id": "30489077-f2c0-458e-a1b0-3f4933539ec8",
+        "name_ar": "شاي احمد تي اخضر بالنعناع 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي افطار 100 ج.jpg",
+        "product_id": "3ab5917c-16f0-4e8c-bbef-b13652f98ce5",
+        "name_ar": "شاي احمد تي افطار 100 ج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي إفطار 250غ.jpg",
+        "product_id": "d2d5eedf-c379-41d0-89b7-ca2f5119874d",
+        "name_ar": "شاي احمد تي إفطار 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي انجليش تي 25 فتلة.jpg",
+        "product_id": "abba06bb-9d61-457f-bfc0-7433fef2037f",
+        "name_ar": "شاي احمد تي انجليش تي 25 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي ايرلي غري 25 فتلة.jpg",
+        "product_id": "1ab7b60e-c03c-4e13-93dc-fd7bc277b392",
+        "name_ar": "شاي احمد تي ايرلي غري 25 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي ايرلي غري100فتلة.jpg",
+        "product_id": "251ee0ef-1c0c-4b70-a374-dfc5e4f69c6a",
+        "name_ar": "شاي احمد تي ايرلي غري100فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي بريك 25 فتلة.jpg",
+        "product_id": "f61d049d-0f3f-4974-b007-e5cf487f9393",
+        "name_ar": "شاي احمد تي بريك 25 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي شاي لندن بالنعناع عرض 200 جرام.jpg",
+        "product_id": "5ca7432c-97d4-49df-9c05-096184934fcf",
+        "name_ar": "شاي احمد تي شاي لندن بالنعناع عرض 200 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي عرض 200غ.jpg",
+        "product_id": "ac4da7d1-ee92-4638-a213-52dddaf14313",
+        "name_ar": "شاي احمد تي عرض 200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي لندن 25فتلة.jpg",
+        "product_id": "72f94412-0d04-41f8-88c0-fb00ee86bce6",
+        "name_ar": "شاي احمد تي لندن 25فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي لندن بلند100فتلة.jpg",
+        "product_id": "57483873-8991-48ca-9ea0-1cca69e87596",
+        "name_ar": "شاي احمد تي لندن بلند100فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي نمبر ون 100 فتلة +28 فتلة هدية.jpg",
+        "product_id": "a016e25a-fdef-48b2-93a7-6f03ac84cfe5",
+        "name_ar": "شاي احمد تي نمبر ون 100 فتلة +28 فتلة هدية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي100غ ناعم.jpg",
+        "product_id": "addf2975-ed59-4157-bca6-807978018910",
+        "name_ar": "شاي احمد تي100غ ناعم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي احمد تي40 غ.jpg",
+        "product_id": "10cd80d8-8bab-4d54-903e-55308b22faf8",
+        "name_ar": "شاي احمد تي40 غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر احمد تي  100 جرام.jpg",
+        "product_id": "0466ac98-a841-4cf1-832e-4811522055e4",
+        "name_ar": "شاي اخضر احمد تي  100 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر أحمد تي 25 فتله.jpg",
+        "product_id": "0845c183-b92f-4722-a935-0b9c527efdb6",
+        "name_ar": "شاي اخضر أحمد تي 25 فتله",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر احمد تي 25فتلة.jpg",
+        "product_id": "47d46e42-03c0-421b-bbf8-15d88eefafcb",
+        "name_ar": "شاي اخضر احمد تي 25فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر احمد تي بالنعناع 100 جرام.jpg",
+        "product_id": "751b72cc-b434-44e4-9d42-9f560f53592e",
+        "name_ar": "شاي اخضر احمد تي بالنعناع 100 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي العروسة -100فتلة غامق.jpg",
+        "product_id": "afdafd2c-412a-4d51-a9f0-eb2a87ea4528",
+        "name_ar": "شاي العروسة /100فتلة غامق",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي العروسة (100غ).jpg",
+        "product_id": "a613e851-03d2-497e-985b-7d2d6e93e4ca",
+        "name_ar": "شاي العروسة (100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي العروسة (250غ) ناعم.jpg",
+        "product_id": "8050b0a7-f29c-4c99-8088-f49e8e53fc81",
+        "name_ar": "شاي العروسة (250غ) ناعم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي العروسة (40غ).jpg",
+        "product_id": "25e1d0f1-0415-4563-96d7-525bfcd3c567",
+        "name_ar": "شاي العروسة (40غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي الغزالتين 225 جرام.jpg",
+        "product_id": "5392ff9c-d5d8-494e-aeeb-28d7968e8882",
+        "name_ar": "شاي الغزالتين 225 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي الكابوس(200غ)ناعم.jpg",
+        "product_id": "688a692f-9b17-4449-a28a-fb2906f3e11d",
+        "name_ar": "شاي الكابوس(200غ)ناعم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي الكبوس-100فتلة فاتح.jpg",
+        "product_id": "86d7e579-e565-4d81-88b2-0ca3df7be481",
+        "name_ar": "شاي الكبوس/100فتلة فاتح",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي الكبوس(200غ)خشن.jpg",
+        "product_id": "aa4dad68-f55b-4381-80c2-0222c38e8a19",
+        "name_ar": "شاي الكبوس(200غ)خشن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي الكبوس(30غ).jpg",
+        "product_id": "c216c25b-a757-48ca-8cd9-81c2275b9e62",
+        "name_ar": "شاي الكبوس(30غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي عدن.jpg",
+        "product_id": "2af6d38d-33e4-4ec1-b197-12b1effccee6",
+        "name_ar": "شاي عدن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي كرك.jpg",
+        "product_id": "a7371102-c8de-40c3-9f17-ba18c14ddd91",
+        "name_ar": "شاي كرك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ليبتون كركديه-20فتلة.jpg",
+        "product_id": "f7eb99b5-6448-4a76-8010-88e4d9ebb36a",
+        "name_ar": "شاي ليبتون كركديه/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ليبتون(100غ)ناعم.jpg",
+        "product_id": "ab4a5fc1-0a65-416f-8487-1b5d3615531e",
+        "name_ar": "شاي ليبتون(100غ)ناعم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ليبتون(40غ)ناعم.jpg",
+        "product_id": "705a11e1-f9ef-47e5-a170-f75c069a8d79",
+        "name_ar": "شاي ليبتون(40غ)ناعم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ماسالا.jpg",
+        "product_id": "39d018b6-bb60-44a1-821e-7f95c368ec37",
+        "name_ar": "شاي ماسالا",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوربة كريمة الفطر ماجي 68غ.jpg",
+        "product_id": "f69dfcdc-c0de-43d0-bce3-148598bd0512",
+        "name_ar": "شوربة كريمة الفطر ماجي 68غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فانيليا برتقال دريم(5غ).jpg",
+        "product_id": "cc26a4c0-a992-4de3-a5ad-77162b42105a",
+        "name_ar": "فانيليا برتقال دريم(5غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فانيليا دريم اظرف(2غ).jpg",
+        "product_id": "23706655-436a-4f02-b6ad-2481dcd5cb51",
+        "name_ar": "فانيليا دريم اظرف(2غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فانيليا كوكس(1غ).jpg",
+        "product_id": "425cba56-267b-49ce-aa99-175481e03a93",
+        "name_ar": "فانيليا كوكس(1غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فرسكا شوكوبار مغطى بالشوكولاته - 5 جنيه.jpg",
+        "product_id": "d624528e-ca66-49d3-bc6c-98d820f8b75e",
+        "name_ar": "فرسكا شوكوبار مغطى بالشوكولاته - 5 جنيه",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فيجتار كنور(35غ)حار.jpg",
+        "product_id": "e9231ef3-2c16-4fb5-afc4-e0f337649d7a",
+        "name_ar": "فيجتار كنور(35غ)حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فيجتار كنور(35غ)حلو.jpg",
+        "product_id": "a6a76b61-5872-4e72-9d7c-ef9c9020aeba",
+        "name_ar": "فيجتار كنور(35غ)حلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قهوة الاموي ظرف.jpg",
+        "product_id": "4f702e43-64e9-46d3-a3fc-d56d4cced02f",
+        "name_ar": "قهوة الاموي ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قهوة جولد 100غ.jpg",
+        "product_id": "8347a1a5-1b5d-4bd4-8ea2-1c4c9a2c180a",
+        "name_ar": "قهوة جولد 100غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قهوة جولد 200غ.jpg",
+        "product_id": "3d1a1ca7-735e-46fb-8555-4bb18aded3c2",
+        "name_ar": "قهوة جولد 200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كيك شيف دريم(23غ).jpg",
+        "product_id": "8a45ae3f-f566-47a3-9317-a69fc5a15eeb",
+        "name_ar": "كيك شيف دريم(23غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي 12مكعب فراخ.jpg",
+        "product_id": "e0887aab-62e9-4280-9eaf-f01a1ee83b85",
+        "name_ar": "ماجي 12مكعب فراخ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي 8 مكعب خضار.jpg",
+        "product_id": "88176f79-68c9-48a1-ad3d-a0dd2be26b94",
+        "name_ar": "ماجي 8 مكعب خضار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي 8 مكعب فراخ.jpg",
+        "product_id": "ec892e6e-bcb1-4cd4-9a6d-e3eebaacf4d8",
+        "name_ar": "ماجي 8 مكعب فراخ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي خضار 12مكعب.jpg",
+        "product_id": "0a01c377-051b-4e65-aeb4-fc8d33b0677c",
+        "name_ar": "ماجي خضار 12مكعب",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي كريمة الدجاج71غ.jpg",
+        "product_id": "19b466fa-33f3-445d-b782-5834ecdfdb96",
+        "name_ar": "ماجي كريمة الدجاج71غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماجي كفته 35غ.jpg",
+        "product_id": "f412d5eb-ea15-4339-bf83-45bfaaa6ca2b",
+        "name_ar": "ماجي كفته 35غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "متة الاموي بيضاء250غ.jpg",
+        "product_id": "f3a3f176-bc79-4102-8038-4d2bac00c4aa",
+        "name_ar": "متة الاموي بيضاء250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "متة الاموي حمراء250غ.jpg",
+        "product_id": "64969dd8-2a04-4c8c-b72b-a8204fa51076",
+        "name_ar": "متة الاموي حمراء250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "متة خارطة 250غ.jpg",
+        "product_id": "3aa311c8-ab83-420a-8d11-37e72792a949",
+        "name_ar": "متة خارطة 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مصر كافيه (200غ).jpg",
+        "product_id": "7487c57b-a017-4bc9-b81a-d65e7e982edf",
+        "name_ar": "مصر كافيه (200غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكفتيز بسكويت الشوفان الذهبي بشوكولاتة داكنة.jpg",
+        "product_id": "415d2102-f334-4359-8ef0-84001e0e3afd",
+        "name_ar": "مكفتيز بسكويت الشوفان الذهبي بشوكولاتة داكنة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكفتيز بسكويت ميني الشوفان الذهبي بشوكولاتة داكنة.jpg",
+        "product_id": "89403708-b523-46dd-b073-abf164e8959b",
+        "name_ar": "مكفتيز بسكويت ميني الشوفان الذهبي بشوكولاتة داكنة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكفتيز بسكويت ميني الشوفان الذهبي مغطى بشوكولاتة و حليب.jpg",
+        "product_id": "46738353-7a4a-48d1-b5fc-23983bfac09b",
+        "name_ar": "مكفتيز بسكويت ميني الشوفان الذهبي مغطى بشوكولاتة و حليب",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نسكويك 135غ.jpg",
+        "product_id": "3b257f3e-661a-4480-b60b-a9618f506c0f",
+        "name_ar": "نسكويك 135غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نسكويك270غ.jpg",
+        "product_id": "9820d9ed-5755-49f7-b1a0-7a0407809387",
+        "name_ar": "نسكويك270غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "هالي بسكويت ساندويتش مغطى بالكاكاو محشو بالمارشملو - 15 جنيه.jpg",
+        "product_id": "9c5091dd-f27d-4651-93b0-586fc3d5b764",
+        "name_ar": "هالي بسكويت ساندويتش مغطى بالكاكاو محشو بالمارشملو - 15 جنيه",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يوني كافيه 2×1.jpg",
+        "product_id": "a08378ea-cf53-47c8-87ce-dfd47f568235",
+        "name_ar": "يوني كافيه 2×1",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "الطحان تمر محشو لوز.jpg",
+        "product_id": "55911f09-d169-4d6e-a7c0-d659fe0a51d9",
+        "name_ar": "الطحان تمر محشو لوز",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206780417-6b0654.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206780417-6b0654.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "الطحان تمر مغطى بالشوكولاته محشو لوز.jpg",
+        "product_id": "c324796f-e156-4f28-bd17-ea8a73c1ffe6",
+        "name_ar": "الطحان تمر مغطى بالشوكولاته محشو لوز",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206781046-29psrb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206781046-29psrb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "اولكر بسكويت شاي.jpg",
+        "product_id": "400420de-4b8d-402a-ac92-c4eaa67801f9",
+        "name_ar": "اولكر بسكويت شاي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206781740-zfbhix.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206781740-zfbhix.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ايليت ويفر شوكلاتة 7ق.jpg",
+        "product_id": "36fb7f07-3a4f-40d2-9d9b-54654515d058",
+        "name_ar": "ايليت ويفر شوكلاتة 7ق",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206782131-55ky15.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206782131-55ky15.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ايليت ويفر فانليا 7 ق.jpg",
+        "product_id": "c27fce42-df9a-4288-a22a-eb795ef932d6",
+        "name_ar": "ايليت ويفر فانليا 7 ق",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206782539-4v6toe.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206782539-4v6toe.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسكويت ابو الولد.jpg",
+        "product_id": "780e183f-a259-44bf-b3ab-299a8569dd70",
+        "name_ar": "بسكويت ابو الولد",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206783035-3wqy5q.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206783035-3wqy5q.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسكويت اوريو ابو الولد.jpg",
+        "product_id": "27718459-ec44-4d73-9af2-f6b3fdc85480",
+        "name_ar": "بسكويت اوريو ابو الولد",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206783491-ef62cw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206783491-ef62cw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسكويت شاتو بالشوكولاتة.jpg",
+        "product_id": "0a039a4a-fc45-4076-8589-43c8e46403cc",
+        "name_ar": "بسكويت شاتو بالشوكولاتة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784013-q4coak.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784013-q4coak.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسكويت كوكا كريم ستارز.jpg",
+        "product_id": "8eed83bb-0bc5-471b-bbd6-a667964de6a4",
+        "name_ar": "بسكويت كوكا كريم ستارز",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784350-le3nqg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784350-le3nqg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسكويت ماري.jpg",
+        "product_id": "682c6434-81a4-4a3c-9b35-82aaaefd6fa9",
+        "name_ar": "بسكويت ماري",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784867-wa1cqi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206784867-wa1cqi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي احمر 180غ (سادة وسط).jpg",
+        "product_id": "122a1afc-0fa3-4a0e-a502-8d474f8fce7c",
+        "name_ar": "بن الحموي احمر 180غ (سادة وسط)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206785218-xvevk7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206785218-xvevk7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي احمر 90غ(سادة وسط).jpg",
+        "product_id": "1eacbed0-b56d-493e-b11b-182f2bab8949",
+        "name_ar": "بن الحموي احمر 90غ(سادة وسط)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206785651-d6ibnr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206785651-d6ibnr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي اخضر  450غ(محوج وسط).jpg",
+        "product_id": "32952ecf-b28c-4303-a769-0de7f376d94a",
+        "name_ar": "بن الحموي اخضر  450غ(محوج وسط)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786096-2sc7tf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786096-2sc7tf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي اخضر  90غ(محوج وسط).jpg",
+        "product_id": "0709fc28-f0c5-47b2-9c75-338088e6f3e2",
+        "name_ar": "بن الحموي اخضر  90غ(محوج وسط)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786453-t76wuw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786453-t76wuw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي ازرق  180غ(محوج اكسترا).jpg",
+        "product_id": "7c8dad94-8361-497b-9f63-53404dc71c21",
+        "name_ar": "بن الحموي ازرق  180غ(محوج اكسترا)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786817-vtqjls.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206786817-vtqjls.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي ازرق 90غ(محوج اكسترا).jpg",
+        "product_id": "0f90a758-06e4-4e7a-831d-34416cf445b5",
+        "name_ar": "بن الحموي ازرق 90غ(محوج اكسترا)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206787324-5f001n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206787324-5f001n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي اكسترا هال 450غ (محوج اكسترا).jpg",
+        "product_id": "8de512fc-db2f-49cc-836e-f7245c002637",
+        "name_ar": "بن الحموي اكسترا هال 450غ (محوج اكسترا)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206787786-rqffu0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206787786-rqffu0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي ساده فاتح 90 غرام.jpg",
+        "product_id": "a73fd096-db11-4775-b58d-90b711bb68e9",
+        "name_ar": "بن الحموي ساده فاتح 90 غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206788252-sln4ae.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206788252-sln4ae.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي غامق اكسترا هال محوج غامق 180 غرام.jpg",
+        "product_id": "d655f73a-16f5-4774-bbe9-479a4ace745c",
+        "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 180 غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206788661-90yso9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206788661-90yso9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي غامق اكسترا هال محوج غامق 90 غرام.jpg",
+        "product_id": "e1b4cd87-bfff-461f-8f5c-6e63a4d75968",
+        "name_ar": "بن الحموي غامق اكسترا هال محوج غامق 90 غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206789133-k2lr20.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206789133-k2lr20.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي قهوة برايت مع هال فاتح محوج 180 غرام.jpg",
+        "product_id": "f3e92ea8-1957-460e-ac70-cd94b5de9e98",
+        "name_ar": "بن الحموي قهوة برايت مع هال فاتح محوج 180 غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206789644-gkafk5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206789644-gkafk5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي قهوة برايت مع هال فاتح محوج 90 غرام.jpg",
+        "product_id": "15dec788-3063-4140-9db6-e01e7dfb0f18",
+        "name_ar": "بن الحموي قهوة برايت مع هال فاتح محوج 90 غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206790054-s1ycxc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206790054-s1ycxc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي قهوة سادة فاتح روز 180غرام.jpg",
+        "product_id": "948a87d5-a257-4e8c-a49e-0e65ad7343c5",
+        "name_ar": "بن الحموي قهوة سادة فاتح روز 180غرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206790446-hi133e.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206790446-hi133e.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن الحموي قهوة عربية مع هال سريعة التحضير 30غ.jpg",
+        "product_id": "b4d5a997-7679-49a6-b2dc-5da555e0f429",
+        "name_ar": "بن الحموي قهوة عربية مع هال سريعة التحضير 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206791540-e2b1gg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206791540-e2b1gg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن المعبود محوج غامق(100غ).jpg",
+        "product_id": "762ca41f-b288-4c41-add5-ee2dc099164d",
+        "name_ar": "بن المعبود محوج غامق(100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206791988-ktymr0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206791988-ktymr0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بن عبد المعبودمحوج وسط 200غ.jpg",
+        "product_id": "40cfff4c-dc28-4ca6-8ffb-2a393acb5241",
+        "name_ar": "بن عبد المعبودمحوج وسط 200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206792399-uf6xi7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206792399-uf6xi7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بيكنج بودر كوكس16غ.jpg",
+        "product_id": "b83ffd3b-78c9-42da-ab9e-0f7f32c72f9c",
+        "name_ar": "بيكنج بودر كوكس16غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206792882-ps0vik.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206792882-ps0vik.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بيكينج بودر دريم16غ.jpg",
+        "product_id": "8d76576b-b9d9-47c5-82d4-df2448205e89",
+        "name_ar": "بيكينج بودر دريم16غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793269-qbq8hk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793269-qbq8hk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تورتو 30 جم شوكلت شيبس بتر كوكيز وايت كاسل.jpg",
+        "product_id": "31262d43-e8b8-4204-9de1-aafdd782f667",
+        "name_ar": "تورتو 30 جم شوكلت شيبس بتر كوكيز وايت كاسل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793602-jlwm5c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793602-jlwm5c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خلطة ماجي بشاميل 70غ.jpg",
+        "product_id": "f0836a79-cc38-4fb2-bd8a-e58d888dc8db",
+        "name_ar": "خلطة ماجي بشاميل 70غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793939-8smyg7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206793939-8smyg7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خلطة ماجي شيش30غ.jpg",
+        "product_id": "16b5e726-7934-41e4-ad74-0425b0c21a86",
+        "name_ar": "خلطة ماجي شيش30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206794458-r85771.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206794458-r85771.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خميرة دريم اظرف(11غ).jpg",
+        "product_id": "82dca8e5-c44f-41e2-8f47-0e125ec8ea4b",
+        "name_ar": "خميرة دريم اظرف(11غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206794807-nn1rvc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206794807-nn1rvc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خميرة كوكس ظرف10غ.jpg",
+        "product_id": "0e125dd0-f668-45cf-ae4d-980555817548",
+        "name_ar": "خميرة كوكس ظرف10غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206795165-pyapga.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206795165-pyapga.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دروو كيك زبدة - 5 جنيه.jpg",
+        "product_id": "a229d280-5438-4026-a4a2-d506c86d303c",
+        "name_ar": "دروو كيك زبدة - 5 جنيه",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206795653-nf62mj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206795653-nf62mj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة الروابي 2.5كغ.jpg",
+        "product_id": "1379301c-55bc-4d4c-b1cd-e28ba819ae09",
+        "name_ar": "سمنة الروابي 2.5كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206796092-stpk0j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206796092-stpk0j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة الروابي قشطة700غ.jpg",
+        "product_id": "6e6801f1-2124-4bdc-ae0c-c1be296b37bc",
+        "name_ar": "سمنة الروابي قشطة700غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206796525-grpqhn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206796525-grpqhn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة الهانم 650غ.jpg",
+        "product_id": "181c1fd3-8117-4132-bfe0-da08ed3770af",
+        "name_ar": "سمنة الهانم 650غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797000-4x3sll.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797000-4x3sll.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة 2.5 نيوزلاندي.jpg",
+        "product_id": "58163f29-e32a-42ff-a8f5-bc538a22f995",
+        "name_ar": "سمنة جنة 2.5 نيوزلاندي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797348-vhymnh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797348-vhymnh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة(1.5كغ)طعم الزبدة.jpg",
+        "product_id": "12551649-3fb7-4b53-8623-c89e7d22c237",
+        "name_ar": "سمنة جنة(1.5كغ)طعم الزبدة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797698-71m3oc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206797698-71m3oc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة(1.5كغ)نيوزيلاندي.jpg",
+        "product_id": "7b222ae2-f3a8-493f-9f0f-5a12150a3493",
+        "name_ar": "سمنة جنة(1.5كغ)نيوزيلاندي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206798013-1275ti.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206798013-1275ti.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة(2.5كغ)طعم الزبدة.jpg",
+        "product_id": "0a91de62-e4cd-4855-8f68-a9acc5f20812",
+        "name_ar": "سمنة جنة(2.5كغ)طعم الزبدة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206798609-b713ez.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206798609-b713ez.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة(700غ)نيوزيلاندي.jpg",
+        "product_id": "ca14e7e4-0ddd-4d22-b076-40ad5ecfa406",
+        "name_ar": "سمنة جنة(700غ)نيوزيلاندي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799001-aijsqm.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799001-aijsqm.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة جنة700غ.jpg",
+        "product_id": "ee0b6286-015e-4fc5-bdff-aa5eaa08331e",
+        "name_ar": "سمنة جنة700غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799403-wklnlo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799403-wklnlo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة روابي قشطة 1.5كغ.jpg",
+        "product_id": "0967e469-b265-4965-8860-265ddb87bd4d",
+        "name_ar": "سمنة روابي قشطة 1.5كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799761-0leat4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206799761-0leat4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة روابي1.5كغ.jpg",
+        "product_id": "dd0d057f-48bf-46f1-8e81-e1024a53b7d0",
+        "name_ar": "سمنة روابي1.5كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206800313-4uhce9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206800313-4uhce9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة روابي700غ.jpg",
+        "product_id": "df478cae-cf28-439b-9ca6-594a61a3d996",
+        "name_ar": "سمنة روابي700غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206800779-jwx32p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206800779-jwx32p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة ظرف جنة.jpg",
+        "product_id": "f9e874e2-87ce-46ee-90ed-b085103455ce",
+        "name_ar": "سمنة ظرف جنة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206801231-5ghrq6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206801231-5ghrq6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة قوت 1.450 كج.jpg",
+        "product_id": "b222384d-c630-4112-b3e0-cdbe476cb49d",
+        "name_ar": "سمنة قوت 1.450 كج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206801641-24e9zz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206801641-24e9zz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة كريستال (1ك).jpg",
+        "product_id": "a7b24c7c-8845-49b8-92e4-dfe42b9d4e4f",
+        "name_ar": "سمنة كريستال (1ك)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802062-28uzmj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802062-28uzmj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة كريستال (2ك)صافي.jpg",
+        "product_id": "c1f6a553-4032-49fd-b366-1299710813d6",
+        "name_ar": "سمنة كريستال (2ك)صافي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802507-xac4tt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802507-xac4tt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة كريستال (700غ).jpg",
+        "product_id": "8eaa023f-430a-401e-8978-9caa9b0a74c1",
+        "name_ar": "سمنة كريستال (700غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802875-uc88kz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206802875-uc88kz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة كريستال ظرف.jpg",
+        "product_id": "ab01a4aa-9c2c-413b-ac28-805d20585dda",
+        "name_ar": "سمنة كريستال ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803278-vuzlct.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803278-vuzlct.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة هانم 2ك.jpg",
+        "product_id": "7135a125-51d8-4929-9886-4528e65cd1d3",
+        "name_ar": "سمنة هانم 2ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803638-5aw9un.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803638-5aw9un.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة هانم 3ك.jpg",
+        "product_id": "920969a6-66f8-4b2d-8f45-d62c90fdbb05",
+        "name_ar": "سمنة هانم 3ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803999-9w1s5c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206803999-9w1s5c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سمنة هانم ظرف.jpg",
+        "product_id": "62444721-5318-4251-a09b-90225fc3fe04",
+        "name_ar": "سمنة هانم ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206804471-omtjnf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206804471-omtjnf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سيتي كافيه 2×1.jpg",
+        "product_id": "f0ff061b-6dd6-4e54-a8ee-56bdf7ef1696",
+        "name_ar": "سيتي كافيه 2×1",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206804846-t8lmuh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206804846-t8lmuh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سيتي كافيه جولد80غ.jpg",
+        "product_id": "4e9fcdf7-5ff9-452f-ad44-b390e3a45880",
+        "name_ar": "سيتي كافيه جولد80غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206805356-lavay5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206805356-lavay5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سيتي كافيه دريمي3×1.jpg",
+        "product_id": "b1a4cf2c-6cd0-4b2d-a019-febeb4252df6",
+        "name_ar": "سيتي كافيه دريمي3×1",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206805710-yg2ikv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206805710-yg2ikv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سيتي كافيه كلاسيك ظرف.jpg",
+        "product_id": "0251bc0b-9fa9-434f-9722-100c11422443",
+        "name_ar": "سيتي كافيه كلاسيك ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806136-s6ypja.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806136-s6ypja.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي 100+25 فتلة إفطار.jpg",
+        "product_id": "05f76aae-2ed1-42a5-9bc3-63b1014f5b3d",
+        "name_ar": "شاي احمد تي 100+25 فتلة إفطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806456-neszvg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806456-neszvg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي اخضر 250غ.jpg",
+        "product_id": "bc6f4824-5ad3-403f-bee3-914c190c4a1c",
+        "name_ar": "شاي احمد تي اخضر 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806841-0pyd0s.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206806841-0pyd0s.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي اخضر بالنعناع 250غ.jpg",
+        "product_id": "30489077-f2c0-458e-a1b0-3f4933539ec8",
+        "name_ar": "شاي احمد تي اخضر بالنعناع 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807217-fvek7b.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807217-fvek7b.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي افطار 100 ج.jpg",
+        "product_id": "3ab5917c-16f0-4e8c-bbef-b13652f98ce5",
+        "name_ar": "شاي احمد تي افطار 100 ج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807567-d0kzkn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807567-d0kzkn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي إفطار 250غ.jpg",
+        "product_id": "d2d5eedf-c379-41d0-89b7-ca2f5119874d",
+        "name_ar": "شاي احمد تي إفطار 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807900-qxjcik.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206807900-qxjcik.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي انجليش تي 25 فتلة.jpg",
+        "product_id": "abba06bb-9d61-457f-bfc0-7433fef2037f",
+        "name_ar": "شاي احمد تي انجليش تي 25 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808236-o0n8ke.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808236-o0n8ke.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي ايرلي غري 25 فتلة.jpg",
+        "product_id": "1ab7b60e-c03c-4e13-93dc-fd7bc277b392",
+        "name_ar": "شاي احمد تي ايرلي غري 25 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808543-oe4qz6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808543-oe4qz6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي ايرلي غري100فتلة.jpg",
+        "product_id": "251ee0ef-1c0c-4b70-a374-dfc5e4f69c6a",
+        "name_ar": "شاي احمد تي ايرلي غري100فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808865-zoqc4h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206808865-zoqc4h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي بريك 25 فتلة.jpg",
+        "product_id": "f61d049d-0f3f-4974-b007-e5cf487f9393",
+        "name_ar": "شاي احمد تي بريك 25 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809197-8894bp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809197-8894bp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي شاي لندن بالنعناع عرض 200 جرام.jpg",
+        "product_id": "5ca7432c-97d4-49df-9c05-096184934fcf",
+        "name_ar": "شاي احمد تي شاي لندن بالنعناع عرض 200 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809503-6yrb4t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809503-6yrb4t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي عرض 200غ.jpg",
+        "product_id": "ac4da7d1-ee92-4638-a213-52dddaf14313",
+        "name_ar": "شاي احمد تي عرض 200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809810-j4vwo0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206809810-j4vwo0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي لندن 25فتلة.jpg",
+        "product_id": "72f94412-0d04-41f8-88c0-fb00ee86bce6",
+        "name_ar": "شاي احمد تي لندن 25فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810142-sx0wdx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810142-sx0wdx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي لندن بلند100فتلة.jpg",
+        "product_id": "57483873-8991-48ca-9ea0-1cca69e87596",
+        "name_ar": "شاي احمد تي لندن بلند100فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810482-zg3vgu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810482-zg3vgu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي نمبر ون 100 فتلة +28 فتلة هدية.jpg",
+        "product_id": "a016e25a-fdef-48b2-93a7-6f03ac84cfe5",
+        "name_ar": "شاي احمد تي نمبر ون 100 فتلة +28 فتلة هدية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810805-2txa7r.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206810805-2txa7r.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي100غ ناعم.jpg",
+        "product_id": "addf2975-ed59-4157-bca6-807978018910",
+        "name_ar": "شاي احمد تي100غ ناعم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811150-pcw5o9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811150-pcw5o9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي احمد تي40 غ.jpg",
+        "product_id": "10cd80d8-8bab-4d54-903e-55308b22faf8",
+        "name_ar": "شاي احمد تي40 غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811473-ruusdr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811473-ruusdr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر احمد تي  100 جرام.jpg",
+        "product_id": "0466ac98-a841-4cf1-832e-4811522055e4",
+        "name_ar": "شاي اخضر احمد تي  100 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811792-ki7kua.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206811792-ki7kua.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر أحمد تي 25 فتله.jpg",
+        "product_id": "0845c183-b92f-4722-a935-0b9c527efdb6",
+        "name_ar": "شاي اخضر أحمد تي 25 فتله",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812142-0322jc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812142-0322jc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر احمد تي 25فتلة.jpg",
+        "product_id": "47d46e42-03c0-421b-bbf8-15d88eefafcb",
+        "name_ar": "شاي اخضر احمد تي 25فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812514-cthuxu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812514-cthuxu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر احمد تي بالنعناع 100 جرام.jpg",
+        "product_id": "751b72cc-b434-44e4-9d42-9f560f53592e",
+        "name_ar": "شاي اخضر احمد تي بالنعناع 100 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812875-pq156x.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206812875-pq156x.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي العروسة -100فتلة غامق.jpg",
+        "product_id": "afdafd2c-412a-4d51-a9f0-eb2a87ea4528",
+        "name_ar": "شاي العروسة /100فتلة غامق",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206813247-xerbi9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206813247-xerbi9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي العروسة (100غ).jpg",
+        "product_id": "a613e851-03d2-497e-985b-7d2d6e93e4ca",
+        "name_ar": "شاي العروسة (100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206813637-la9un5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206813637-la9un5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي العروسة (250غ) ناعم.jpg",
+        "product_id": "8050b0a7-f29c-4c99-8088-f49e8e53fc81",
+        "name_ar": "شاي العروسة (250غ) ناعم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814025-1ncc8c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814025-1ncc8c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي العروسة (40غ).jpg",
+        "product_id": "25e1d0f1-0415-4563-96d7-525bfcd3c567",
+        "name_ar": "شاي العروسة (40غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814415-rm28pv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814415-rm28pv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي الغزالتين 225 جرام.jpg",
+        "product_id": "5392ff9c-d5d8-494e-aeeb-28d7968e8882",
+        "name_ar": "شاي الغزالتين 225 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814954-xdkqek.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206814954-xdkqek.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي الكابوس(200غ)ناعم.jpg",
+        "product_id": "688a692f-9b17-4449-a28a-fb2906f3e11d",
+        "name_ar": "شاي الكابوس(200غ)ناعم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206815593-8suskp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206815593-8suskp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي الكبوس-100فتلة فاتح.jpg",
+        "product_id": "86d7e579-e565-4d81-88b2-0ca3df7be481",
+        "name_ar": "شاي الكبوس/100فتلة فاتح",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206815971-x4laad.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206815971-x4laad.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي الكبوس(200غ)خشن.jpg",
+        "product_id": "aa4dad68-f55b-4381-80c2-0222c38e8a19",
+        "name_ar": "شاي الكبوس(200غ)خشن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206816348-wcn7u1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206816348-wcn7u1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي الكبوس(30غ).jpg",
+        "product_id": "c216c25b-a757-48ca-8cd9-81c2275b9e62",
+        "name_ar": "شاي الكبوس(30غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206816944-otfj3o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206816944-otfj3o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي عدن.jpg",
+        "product_id": "2af6d38d-33e4-4ec1-b197-12b1effccee6",
+        "name_ar": "شاي عدن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206817364-ngmlej.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206817364-ngmlej.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي كرك.jpg",
+        "product_id": "a7371102-c8de-40c3-9f17-ba18c14ddd91",
+        "name_ar": "شاي كرك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206817810-uqi5ro.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206817810-uqi5ro.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ليبتون كركديه-20فتلة.jpg",
+        "product_id": "f7eb99b5-6448-4a76-8010-88e4d9ebb36a",
+        "name_ar": "شاي ليبتون كركديه/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818220-mpt3sc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818220-mpt3sc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ليبتون(100غ)ناعم.jpg",
+        "product_id": "ab4a5fc1-0a65-416f-8487-1b5d3615531e",
+        "name_ar": "شاي ليبتون(100غ)ناعم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818546-2fe78a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818546-2fe78a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ليبتون(40غ)ناعم.jpg",
+        "product_id": "705a11e1-f9ef-47e5-a170-f75c069a8d79",
+        "name_ar": "شاي ليبتون(40غ)ناعم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818896-5xrple.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206818896-5xrple.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ماسالا.jpg",
+        "product_id": "39d018b6-bb60-44a1-821e-7f95c368ec37",
+        "name_ar": "شاي ماسالا",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206819236-9xaqdd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206819236-9xaqdd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوربة كريمة الفطر ماجي 68غ.jpg",
+        "product_id": "f69dfcdc-c0de-43d0-bce3-148598bd0512",
+        "name_ar": "شوربة كريمة الفطر ماجي 68غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206819599-qwsjoe.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206819599-qwsjoe.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فانيليا برتقال دريم(5غ).jpg",
+        "product_id": "cc26a4c0-a992-4de3-a5ad-77162b42105a",
+        "name_ar": "فانيليا برتقال دريم(5غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820033-tqk0am.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820033-tqk0am.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فانيليا دريم اظرف(2غ).jpg",
+        "product_id": "23706655-436a-4f02-b6ad-2481dcd5cb51",
+        "name_ar": "فانيليا دريم اظرف(2غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820430-8k8s8c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820430-8k8s8c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فانيليا كوكس(1غ).jpg",
+        "product_id": "425cba56-267b-49ce-aa99-175481e03a93",
+        "name_ar": "فانيليا كوكس(1غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820890-2bv2zg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206820890-2bv2zg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فرسكا شوكوبار مغطى بالشوكولاته - 5 جنيه.jpg",
+        "product_id": "d624528e-ca66-49d3-bc6c-98d820f8b75e",
+        "name_ar": "فرسكا شوكوبار مغطى بالشوكولاته - 5 جنيه",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821193-p1m4u8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821193-p1m4u8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فيجتار كنور(35غ)حار.jpg",
+        "product_id": "e9231ef3-2c16-4fb5-afc4-e0f337649d7a",
+        "name_ar": "فيجتار كنور(35غ)حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821575-4sp6c8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821575-4sp6c8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فيجتار كنور(35غ)حلو.jpg",
+        "product_id": "a6a76b61-5872-4e72-9d7c-ef9c9020aeba",
+        "name_ar": "فيجتار كنور(35غ)حلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821889-pmm3n2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206821889-pmm3n2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قهوة الاموي ظرف.jpg",
+        "product_id": "4f702e43-64e9-46d3-a3fc-d56d4cced02f",
+        "name_ar": "قهوة الاموي ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206822585-0kxa3j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206822585-0kxa3j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قهوة جولد 100غ.jpg",
+        "product_id": "8347a1a5-1b5d-4bd4-8ea2-1c4c9a2c180a",
+        "name_ar": "قهوة جولد 100غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823017-9pjw56.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823017-9pjw56.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قهوة جولد 200غ.jpg",
+        "product_id": "3d1a1ca7-735e-46fb-8555-4bb18aded3c2",
+        "name_ar": "قهوة جولد 200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823435-px8346.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823435-px8346.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كيك شيف دريم(23غ).jpg",
+        "product_id": "8a45ae3f-f566-47a3-9317-a69fc5a15eeb",
+        "name_ar": "كيك شيف دريم(23غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823854-3fdtj6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206823854-3fdtj6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي 12مكعب فراخ.jpg",
+        "product_id": "e0887aab-62e9-4280-9eaf-f01a1ee83b85",
+        "name_ar": "ماجي 12مكعب فراخ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206824253-nwkk4n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206824253-nwkk4n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي 8 مكعب خضار.jpg",
+        "product_id": "88176f79-68c9-48a1-ad3d-a0dd2be26b94",
+        "name_ar": "ماجي 8 مكعب خضار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206824793-nukytz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206824793-nukytz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي 8 مكعب فراخ.jpg",
+        "product_id": "ec892e6e-bcb1-4cd4-9a6d-e3eebaacf4d8",
+        "name_ar": "ماجي 8 مكعب فراخ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825133-ig4nvn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825133-ig4nvn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي خضار 12مكعب.jpg",
+        "product_id": "0a01c377-051b-4e65-aeb4-fc8d33b0677c",
+        "name_ar": "ماجي خضار 12مكعب",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825606-mcq6mt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825606-mcq6mt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي كريمة الدجاج71غ.jpg",
+        "product_id": "19b466fa-33f3-445d-b782-5834ecdfdb96",
+        "name_ar": "ماجي كريمة الدجاج71غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825924-6qi6wz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206825924-6qi6wz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماجي كفته 35غ.jpg",
+        "product_id": "f412d5eb-ea15-4339-bf83-45bfaaa6ca2b",
+        "name_ar": "ماجي كفته 35غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206826332-m7lru8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206826332-m7lru8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "متة الاموي بيضاء250غ.jpg",
+        "product_id": "f3a3f176-bc79-4102-8038-4d2bac00c4aa",
+        "name_ar": "متة الاموي بيضاء250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206826733-rjg2pp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206826733-rjg2pp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "متة الاموي حمراء250غ.jpg",
+        "product_id": "64969dd8-2a04-4c8c-b72b-a8204fa51076",
+        "name_ar": "متة الاموي حمراء250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206827137-ey6bph.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206827137-ey6bph.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "متة خارطة 250غ.jpg",
+        "product_id": "3aa311c8-ab83-420a-8d11-37e72792a949",
+        "name_ar": "متة خارطة 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206827560-jyzb6o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206827560-jyzb6o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مصر كافيه (200غ).jpg",
+        "product_id": "7487c57b-a017-4bc9-b81a-d65e7e982edf",
+        "name_ar": "مصر كافيه (200غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828018-lhq8h8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828018-lhq8h8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكفتيز بسكويت الشوفان الذهبي بشوكولاتة داكنة.jpg",
+        "product_id": "415d2102-f334-4359-8ef0-84001e0e3afd",
+        "name_ar": "مكفتيز بسكويت الشوفان الذهبي بشوكولاتة داكنة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828332-xipnoh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828332-xipnoh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكفتيز بسكويت ميني الشوفان الذهبي بشوكولاتة داكنة.jpg",
+        "product_id": "89403708-b523-46dd-b073-abf164e8959b",
+        "name_ar": "مكفتيز بسكويت ميني الشوفان الذهبي بشوكولاتة داكنة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828687-40n43y.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206828687-40n43y.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكفتيز بسكويت ميني الشوفان الذهبي مغطى بشوكولاتة و حليب.jpg",
+        "product_id": "46738353-7a4a-48d1-b5fc-23983bfac09b",
+        "name_ar": "مكفتيز بسكويت ميني الشوفان الذهبي مغطى بشوكولاتة و حليب",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829025-rk1a4i.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829025-rk1a4i.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نسكويك 135غ.jpg",
+        "product_id": "3b257f3e-661a-4480-b60b-a9618f506c0f",
+        "name_ar": "نسكويك 135غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829363-4qx78o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829363-4qx78o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نسكويك270غ.jpg",
+        "product_id": "9820d9ed-5755-49f7-b1a0-7a0407809387",
+        "name_ar": "نسكويك270غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829898-ie60dt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206829898-ie60dt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "هالي بسكويت ساندويتش مغطى بالكاكاو محشو بالمارشملو - 15 جنيه.jpg",
+        "product_id": "9c5091dd-f27d-4651-93b0-586fc3d5b764",
+        "name_ar": "هالي بسكويت ساندويتش مغطى بالكاكاو محشو بالمارشملو - 15 جنيه",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206830369-kak1bc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206830369-kak1bc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يوني كافيه 2×1.jpg",
+        "product_id": "a08378ea-cf53-47c8-87ce-dfd47f568235",
+        "name_ar": "يوني كافيه 2×1",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206830719-jrg6o3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206830719-jrg6o3.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [
+      {
+        "file": "بن الحموي اخضر 180غ(محوج وسط).jpg",
+        "path": "C:\\Users\\Administrator\\Downloads\\القهوة و الشاي\\القهوة و الشاي\\بن الحموي اخضر 180غ(محوج وسط).jpg",
+        "best_candidate": "بن الحموي اخضر 180غ(محوج وسط)",
+        "best_score": 1
+      },
+      {
+        "file": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة.jpg",
+        "path": "C:\\Users\\Administrator\\Downloads\\القهوة و الشاي\\القهوة و الشاي\\شاي احمد تي شاي اخضر بالنعناع 100 فتلة.jpg",
+        "best_candidate": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+        "best_score": 1
+      }
+    ],
+    "unmatched_products": [
+      {
+        "id": "387261b0-3d42-4e2c-bcb2-90e53e1e263c",
+        "name_ar": "بن الحموي اخضر 180غ(محوج وسط)",
+        "image_url": null
+      },
+      {
+        "id": "d3d1cc7c-408c-42b6-9ca5-557479d33325",
+        "name_ar": "بن الحموي اخضر 180غ(محوج وسط)",
+        "image_url": null
+      },
+      {
+        "id": "2883a835-b0ce-4046-99aa-b1fabbc96e72",
+        "name_ar": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+        "image_url": null
+      },
+      {
+        "id": "bdf2a0ba-c361-492a-bb11-7a030c381867",
+        "name_ar": "شاي احمد تي شاي اخضر بالنعناع 100 فتلة",
+        "image_url": null
+      }
+    ],
+    "errors": []
+  }
+}

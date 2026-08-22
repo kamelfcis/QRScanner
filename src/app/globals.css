@@ -961,3 +961,26 @@ textarea,
     transform: none;
   }
 }
+
+/* Landing hero — slow looping Ken Burns zoom */
+@keyframes landing-hero-kenburns {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.landing-hero-image {
+  animation: landing-hero-kenburns 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-image {
+    animation: none;
+    transform: none;
+  }
+}

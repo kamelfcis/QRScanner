@@ -6,6 +6,8 @@ export interface OrderValidationInput {
   minimumOrder?: number | null;
   maxOrderNotesLength?: number | null;
   whatsappConfigured: boolean;
+  /** When false, missing WhatsApp is not a blocking error (dashboard board flow). */
+  requireWhatsApp?: boolean;
   hasItems: boolean;
   /** When true, delivery address is required (takeaway + delivery). */
   requiresDeliveryAddress?: boolean;
@@ -38,7 +40,9 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   const minOrder = input.minimumOrder ?? 0;
 
   if (!input.hasItems) codes.push('empty_cart');
-  if (!input.whatsappConfigured) codes.push('whatsapp_missing');
+  if (input.requireWhatsApp !== false && !input.whatsappConfigured) {
+    codes.push('whatsapp_missing');
+  }
   if (!input.customerName?.trim()) codes.push('name_required');
   if (input.requiresDeliveryAddress && !input.deliveryAddress?.trim()) {
     codes.push('address_required');

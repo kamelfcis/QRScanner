@@ -7,6 +7,8 @@ import {
   gallerySchema,
   qrCodeSchema,
   loginSchema,
+  couponSchema,
+  placeOrderSchema,
   type CategoryInput,
   type ProductInput,
   type OfferInput,
@@ -54,6 +56,7 @@ describe('productSchema', () => {
     name_ar: 'حمص',
     dining_price: 25,
     takeaway_price: 22,
+    has_size_options: false,
     is_available: true,
     is_popular: false,
     is_new: false,
@@ -232,5 +235,50 @@ describe('subcategorySchema', () => {
       name_ar: 'مقبلات ساخنة',
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('couponSchema', () => {
+  it('uppercases codes and accepts percentage coupons', () => {
+    const result = couponSchema.safeParse({
+      code: 'welcome10',
+      discount_type: 'percentage',
+      discount_value: 10,
+      min_subtotal: 0,
+      per_phone_limit: 1,
+      is_active: true,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.code).toBe('WELCOME10');
+  });
+
+  it('rejects percentage over 100', () => {
+    const result = couponSchema.safeParse({
+      code: 'TOOHIGH',
+      discount_type: 'percentage',
+      discount_value: 150,
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('placeOrderSchema coupon_code', () => {
+  const base = {
+    items: [{ product_id: '550e8400-e29b-41d4-a716-446655440000', quantity: 1 }],
+    dining_mode: 'dining' as const,
+    customer_name: 'Ali',
+    locale: 'en' as const,
+  };
+
+  it('accepts an optional coupon code and uppercases it', () => {
+    const result = placeOrderSchema.safeParse({ ...base, coupon_code: 'save20' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.coupon_code).toBe('SAVE20');
+  });
+
+  it('treats a blank coupon code as null', () => {
+    const result = placeOrderSchema.safeParse({ ...base, coupon_code: '  ' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.coupon_code).toBeNull();
   });
 });

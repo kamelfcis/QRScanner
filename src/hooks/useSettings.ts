@@ -2,7 +2,13 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
-import type { Settings, RestaurantSettings, ThemeSettings, HoursSettings } from '@/types';
+import type {
+  Settings,
+  RestaurantSettings,
+  ThemeSettings,
+  HoursSettings,
+  FeatureSettings,
+} from '@/types';
 
 const supabase = createClient();
 
@@ -11,6 +17,7 @@ export const settingsKeys = {
   restaurant: () => [...settingsKeys.all, 'restaurant'] as const,
   theme: () => [...settingsKeys.all, 'theme'] as const,
   hours: () => [...settingsKeys.all, 'hours'] as const,
+  features: () => [...settingsKeys.all, 'features'] as const,
 };
 
 export function useRestaurantSettings() {
@@ -57,6 +64,36 @@ export function useHoursSettings() {
 
       if (error) throw error;
       return (data as Settings).value as unknown as HoursSettings;
+    },
+  });
+}
+
+export function useFeatureSettings() {
+  return useQuery({
+    queryKey: settingsKeys.features(),
+    queryFn: async (): Promise<FeatureSettings> => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .eq('key', 'features')
+        .maybeSingle();
+
+      if (error) throw error;
+      const value =
+        (data?.value as
+          | {
+              ai_product_images?: unknown;
+              dashboard_orders?: unknown;
+              coupons?: unknown;
+              order_prefix?: unknown;
+            }
+          | undefined) ?? {};
+      return {
+        ai_product_images: value.ai_product_images === true,
+        dashboard_orders: value.dashboard_orders === true,
+        coupons: value.coupons === true,
+        order_prefix: typeof value.order_prefix === 'string' ? value.order_prefix : undefined,
+      };
     },
   });
 }
@@ -125,7 +162,7 @@ export function useUpdateRestaurantSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as RestaurantSettings);
+      return data.value as unknown as RestaurantSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
@@ -157,7 +194,7 @@ export function useUpdateHoursSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as HoursSettings);
+      return data.value as unknown as HoursSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
@@ -189,7 +226,7 @@ export function useUpdateThemeSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as ThemeSettings);
+      return data.value as unknown as ThemeSettings;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });

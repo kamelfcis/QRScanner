@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle, Mail } from 'lucide-react';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getRestaurantDisplayName } from '@/lib/appName';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 
 export function PublicFooter() {
@@ -11,9 +12,8 @@ export function PublicFooter() {
   const { locale } = useI18n();
   const t = useTranslations('landing');
   const navT = useTranslations('nav');
-  const commonT = useTranslations('common');
 
-  const name = settings?.name_en || commonT('appName');
+  const name = getRestaurantDisplayName(locale, settings);
   const address = resolveContactAddress(settings, locale);
 
   return (
@@ -149,7 +149,7 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            {t('copyright', { year: new Date().getFullYear() })}
+            {t('copyright', { year: new Date().getFullYear(), name })}
           </p>
         </div>
       </div>

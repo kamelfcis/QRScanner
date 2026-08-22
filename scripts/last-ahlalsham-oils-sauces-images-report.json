@@ -1,0 +1,1055 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "56fd686a-0c18-453a-b370-83c03630493b",
+    "name_ar": "زيوت الطبخ + الصلصة"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\زيوت_الطبخ_والصلصة\\زيوت الطبخ + الصلصة",
+  "counts": {
+    "images_found": 56,
+    "products_in_category": 56,
+    "matched": 56,
+    "uploaded": 0,
+    "skipped_unchanged": 56,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "بابزي صوص الباربكيو 310 جرام.jpg",
+      "product_id": "d2fb8fad-e940-4da7-8546-982f4e2f2fd8",
+      "name_ar": "بابزي صوص الباربكيو 310 جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بابزي كاتشب 310 جرام.jpg",
+      "product_id": "5ede330a-4f15-4f28-92e7-eeb40fff9421",
+      "name_ar": "بابزي كاتشب 310 جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بابزي مستردة 300 جرام.jpg",
+      "product_id": "de04d74f-4e83-4b5a-9372-89ee0a8bf9dc",
+      "name_ar": "بابزي مستردة 300 جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "باربيكو هاينز(200غ).jpg",
+      "product_id": "4cc68be9-6e80-430c-860d-2e835a4590d6",
+      "name_ar": "باربيكو هاينز(200غ)",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "باربيكيو ان جي 5 كيلو.jpg",
+      "product_id": "5fd7846a-a0f4-42f4-ba0a-21be7cbd5f11",
+      "name_ar": "باربيكيو ان جي 5 كيلو",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "دبس فليفلة الدرة 370غ.jpg",
+      "product_id": "29b6235a-e67a-492a-a1b0-a818aefa793e",
+      "name_ar": "دبس فليفلة الدرة 370غ",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "زيت الاصيل1.5لتر.jpg",
+      "product_id": "b2f5e431-14fa-459a-b0a0-06ad06250006",
+      "name_ar": "زيت الاصيل1.5لتر",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "زيت حلوة 1لتر صافي.jpg",
+      "product_id": "cd451420-3af9-41fd-8bf0-14d918ab04fb",
+      "name_ar": "زيت حلوة 1لتر صافي",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:21:20.832Z",
+  "details": {
+    "matched": [
+      {
+        "file": "بابزي صوص الباربكيو 310 جرام.jpg",
+        "product_id": "d2fb8fad-e940-4da7-8546-982f4e2f2fd8",
+        "name_ar": "بابزي صوص الباربكيو 310 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بابزي كاتشب 310 جرام.jpg",
+        "product_id": "5ede330a-4f15-4f28-92e7-eeb40fff9421",
+        "name_ar": "بابزي كاتشب 310 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بابزي مستردة 300 جرام.jpg",
+        "product_id": "de04d74f-4e83-4b5a-9372-89ee0a8bf9dc",
+        "name_ar": "بابزي مستردة 300 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "باربيكو هاينز(200غ).jpg",
+        "product_id": "4cc68be9-6e80-430c-860d-2e835a4590d6",
+        "name_ar": "باربيكو هاينز(200غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "باربيكيو ان جي 5 كيلو.jpg",
+        "product_id": "5fd7846a-a0f4-42f4-ba0a-21be7cbd5f11",
+        "name_ar": "باربيكيو ان جي 5 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دبس فليفلة الدرة 370غ.jpg",
+        "product_id": "29b6235a-e67a-492a-a1b0-a818aefa793e",
+        "name_ar": "دبس فليفلة الدرة 370غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الاصيل1.5لتر.jpg",
+        "product_id": "b2f5e431-14fa-459a-b0a0-06ad06250006",
+        "name_ar": "زيت الاصيل1.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلوة 1لتر صافي.jpg",
+        "product_id": "cd451420-3af9-41fd-8bf0-14d918ab04fb",
+        "name_ar": "زيت حلوة 1لتر صافي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلوة 4.5لتر.jpg",
+        "product_id": "82f9c481-f541-4f37-850e-d884027a7cb3",
+        "name_ar": "زيت حلوة 4.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلوة 700.jpg",
+        "product_id": "c192da9e-ab6a-40d3-a775-3fc2559fadf6",
+        "name_ar": "زيت حلوة 700",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلوة2.25لتر.jpg",
+        "product_id": "11098ee6-3f8a-4c64-9088-c2216bfab97b",
+        "name_ar": "زيت حلوة2.25لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عافية ذرة 700غ.jpg",
+        "product_id": "401b518b-00d3-4788-8836-347cfed5f01f",
+        "name_ar": "زيت عافية ذرة 700غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عافية ذرة بيور2.2لتر.jpg",
+        "product_id": "50044a4e-334a-460b-868a-352892d099a8",
+        "name_ar": "زيت عافية ذرة بيور2.2لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عافية عباد (0.7لتر).jpg",
+        "product_id": "19b1068c-ded9-4187-82ed-0efbf8ba18bf",
+        "name_ar": "زيت عافية عباد (0.7لتر)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عافية عباد (2.2لتر).jpg",
+        "product_id": "d8af1e1e-d252-49e3-976f-feb6fbed47dd",
+        "name_ar": "زيت عافية عباد (2.2لتر)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت قلية 1 لتر.jpg",
+        "product_id": "3fb07bc4-3e8a-4d52-b881-81d66f882770",
+        "name_ar": "زيت قلية 1 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت قلية 2.1لتر.jpg",
+        "product_id": "0e2381d5-2a8e-4fd8-afa0-95717106d1eb",
+        "name_ar": "زيت قلية 2.1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت قلية 700مل.jpg",
+        "product_id": "c27f62f2-6108-4c7a-b970-ffb40ca1458e",
+        "name_ar": "زيت قلية 700مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال 1.6لتر ذرة.jpg",
+        "product_id": "64f25432-7a89-41b8-96ed-469a48be002c",
+        "name_ar": "زيت كريستال 1.6لتر ذرة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال ذرة 1 لتر.jpg",
+        "product_id": "cba35a60-2561-47ea-86e6-0fc20dcc8978",
+        "name_ar": "زيت كريستال ذرة 1 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال ذرة 3.5لتر.jpg",
+        "product_id": "b0e5e016-ef32-4aa2-b0ef-73f28735f2fd",
+        "name_ar": "زيت كريستال ذرة 3.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال ذرة 700مل.jpg",
+        "product_id": "b8197889-6dde-4e84-8cc5-8cc642cc5aa6",
+        "name_ar": "زيت كريستال ذرة 700مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال عباد 1لتر صافي.jpg",
+        "product_id": "209b2c59-1ad0-4953-9a8e-49fceb39002f",
+        "name_ar": "زيت كريستال عباد 1لتر صافي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كريستال عباد 5لتر.jpg",
+        "product_id": "0281043f-0939-4d54-8547-41c3a3b84b3e",
+        "name_ar": "زيت كريستال عباد 5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ممتاز 2.5لتر.jpg",
+        "product_id": "c745f2cc-d8d6-48e8-aba1-c12682a4f6ab",
+        "name_ar": "زيت ممتاز 2.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ممتاز 4.5 لتر.jpg",
+        "product_id": "e453fefb-6ef0-4344-a6d0-777f45b46131",
+        "name_ar": "زيت ممتاز 4.5 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ممتاز 700مل.jpg",
+        "product_id": "a83da93b-9846-4d08-9b28-84b9587a2322",
+        "name_ar": "زيت ممتاز 700مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هدية 1لتر.jpg",
+        "product_id": "9f139f98-60e6-4d50-b326-a211b2a76b64",
+        "name_ar": "زيت هدية 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هدية 2.1لتر.jpg",
+        "product_id": "e5c6e619-1525-4651-bfb6-77a92b379e37",
+        "name_ar": "زيت هدية 2.1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هدية 700مل.jpg",
+        "product_id": "b105570e-0dd9-4310-8ebc-2af26d3a9e0b",
+        "name_ar": "زيت هدية 700مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هلا 1.5لتر.jpg",
+        "product_id": "53e86637-78d9-4c7a-a0b9-d6579f3d7c87",
+        "name_ar": "زيت هلا 1.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هلا 1لتر.jpg",
+        "product_id": "d8042fd9-9483-450c-b47b-b919f60d2237",
+        "name_ar": "زيت هلا 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هلا عباد (2.25لتر).jpg",
+        "product_id": "b9153c81-d811-4cf2-a7c8-f5e9b367a503",
+        "name_ar": "زيت هلا عباد (2.25لتر)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت هلا عباد (5 لتر).jpg",
+        "product_id": "756beb8c-66e6-4cc5-a3b0-136e477d0122",
+        "name_ar": "زيت هلا عباد (5 لتر)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة  طماطم الدرة 375غ).jpg",
+        "product_id": "e05521eb-43a5-4771-9ca7-eb67e375e7d4",
+        "name_ar": "صلصة  طماطم الدرة 375غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة بيتزا الدرة 350 غ).jpg",
+        "product_id": "4b0d8f21-f35b-4324-a867-2c080a80d534",
+        "name_ar": "صلصة بيتزا الدرة 350 غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة طماطم الدرة (1.100ك).jpg",
+        "product_id": "8d38f4a7-9828-4e6a-8fdf-3cdb2960b5a5",
+        "name_ar": "صلصة طماطم الدرة (1.100ك)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة طماطم الدرة (4.400ك).jpg",
+        "product_id": "7e89cfee-7eb8-4fdc-b00d-ec3b70d57ad9",
+        "name_ar": "صلصة طماطم الدرة (4.400ك)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة طماطم الدرة (650غ).jpg",
+        "product_id": "b122a8ef-9a49-4512-bf45-c6c11fb081b6",
+        "name_ar": "صلصة طماطم الدرة (650غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صلصة طماطم الدرة (800غ).jpg",
+        "product_id": "43888e54-7f0b-4a05-9f51-caad6f45a4ed",
+        "name_ar": "صلصة طماطم الدرة (800غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل جلوكوز مولانا 700غ.jpg",
+        "product_id": "fd7baea8-3864-4ea9-b250-8ac76a91939d",
+        "name_ar": "عسل جلوكوز مولانا 700غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب الدرة أسطوانة(500غ)حار.jpg",
+        "product_id": "f1a30278-1564-473a-9d0f-e089134cef16",
+        "name_ar": "كتشب الدرة أسطوانة(500غ)حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب الدرة أسطوانة(500غ)حلو.jpg",
+        "product_id": "0a8451a7-d32b-44f1-8f8d-b751c5328890",
+        "name_ar": "كتشب الدرة أسطوانة(500غ)حلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب الدرة(250غ)حار.jpg",
+        "product_id": "48a284be-5e7f-4d79-80ac-ab8b434f46cb",
+        "name_ar": "كتشب الدرة(250غ)حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب الدرة(250غ)حلو.jpg",
+        "product_id": "94143191-364e-4caa-a732-2bb25fdfdb13",
+        "name_ar": "كتشب الدرة(250غ)حلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب ان جي (10ك) (اسود).jpg",
+        "product_id": "991be477-a4d1-4e87-923f-c642fcbb0c0f",
+        "name_ar": "كتشب ان جي (10ك) (اسود)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب ان جي (10ك).jpg",
+        "product_id": "4102354d-1ed6-47bf-8464-213acfda213e",
+        "name_ar": "كتشب ان جي (10ك)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كتشب عرض(900غ).jpg",
+        "product_id": "9b96c36d-2b4b-49a6-9755-237e9f8aeac3",
+        "name_ar": "كتشب عرض(900غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مايونيز الدرة(250غ).jpg",
+        "product_id": "eabdfa5e-50d5-414c-96f2-7e8ae511ec53",
+        "name_ar": "مايونيز الدرة(250غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مايونيز بابزي 3.3 كيلو جرام.jpg",
+        "product_id": "8889ed13-3f1c-4c64-9780-fbec0a16a46e",
+        "name_ar": "مايونيز بابزي 3.3 كيلو جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مستردة الدرة(275غ).jpg",
+        "product_id": "97d32e47-f42b-4a4b-a644-fb57fc564816",
+        "name_ar": "مستردة الدرة(275غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مستردة ان جي5كغ.jpg",
+        "product_id": "9a8aeec2-926b-446a-8e67-86ca2fb1fb11",
+        "name_ar": "مستردة ان جي5كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "معجون طماطم السعودية 135 جرام - استيراد السعودية.jpg",
+        "product_id": "9f09cddc-8c67-4ff3-87b3-2d6677fb26b6",
+        "name_ar": "معجون طماطم السعودية 135 جرام - استيراد السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "معجون طماطم لونا 135 جرام - استيراد السعودية.jpg",
+        "product_id": "198bfebd-49b7-44a4-9ca5-8d1db8f894d1",
+        "name_ar": "معجون طماطم لونا 135 جرام - استيراد السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "معجون طماطم هالي 135 جرام - استيراد السعودية.jpg",
+        "product_id": "b3640343-e73a-4beb-a53a-1ebd32a60523",
+        "name_ar": "معجون طماطم هالي 135 جرام - استيراد السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "هوت صوص الدرة (175مل).jpg",
+        "product_id": "5936e8c0-0a1e-470d-a7b3-2972c50151be",
+        "name_ar": "هوت صوص الدرة (175مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "بابزي صوص الباربكيو 310 جرام.jpg",
+        "product_id": "d2fb8fad-e940-4da7-8546-982f4e2f2fd8",
+        "name_ar": "بابزي صوص الباربكيو 310 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206846829-ovy51c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206846829-ovy51c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بابزي كاتشب 310 جرام.jpg",
+        "product_id": "5ede330a-4f15-4f28-92e7-eeb40fff9421",
+        "name_ar": "بابزي كاتشب 310 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206847287-vkl0xa.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206847287-vkl0xa.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بابزي مستردة 300 جرام.jpg",
+        "product_id": "de04d74f-4e83-4b5a-9372-89ee0a8bf9dc",
+        "name_ar": "بابزي مستردة 300 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206847833-b3iom1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206847833-b3iom1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "باربيكو هاينز(200غ).jpg",
+        "product_id": "4cc68be9-6e80-430c-860d-2e835a4590d6",
+        "name_ar": "باربيكو هاينز(200غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848232-zbpv69.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848232-zbpv69.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "باربيكيو ان جي 5 كيلو.jpg",
+        "product_id": "5fd7846a-a0f4-42f4-ba0a-21be7cbd5f11",
+        "name_ar": "باربيكيو ان جي 5 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848552-qm26fi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848552-qm26fi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دبس فليفلة الدرة 370غ.jpg",
+        "product_id": "29b6235a-e67a-492a-a1b0-a818aefa793e",
+        "name_ar": "دبس فليفلة الدرة 370غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848877-7t7v5j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206848877-7t7v5j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الاصيل1.5لتر.jpg",
+        "product_id": "b2f5e431-14fa-459a-b0a0-06ad06250006",
+        "name_ar": "زيت الاصيل1.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849262-4duj1p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849262-4duj1p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلوة 1لتر صافي.jpg",
+        "product_id": "cd451420-3af9-41fd-8bf0-14d918ab04fb",
+        "name_ar": "زيت حلوة 1لتر صافي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849569-huqc5z.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849569-huqc5z.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلوة 4.5لتر.jpg",
+        "product_id": "82f9c481-f541-4f37-850e-d884027a7cb3",
+        "name_ar": "زيت حلوة 4.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849894-ti6ecp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206849894-ti6ecp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلوة 700.jpg",
+        "product_id": "c192da9e-ab6a-40d3-a775-3fc2559fadf6",
+        "name_ar": "زيت حلوة 700",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850206-ux93ri.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850206-ux93ri.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلوة2.25لتر.jpg",
+        "product_id": "11098ee6-3f8a-4c64-9088-c2216bfab97b",
+        "name_ar": "زيت حلوة2.25لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850572-d0uyev.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850572-d0uyev.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عافية ذرة 700غ.jpg",
+        "product_id": "401b518b-00d3-4788-8836-347cfed5f01f",
+        "name_ar": "زيت عافية ذرة 700غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850903-v1s2rf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206850903-v1s2rf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عافية ذرة بيور2.2لتر.jpg",
+        "product_id": "50044a4e-334a-460b-868a-352892d099a8",
+        "name_ar": "زيت عافية ذرة بيور2.2لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206851360-f78q3r.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206851360-f78q3r.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عافية عباد (0.7لتر).jpg",
+        "product_id": "19b1068c-ded9-4187-82ed-0efbf8ba18bf",
+        "name_ar": "زيت عافية عباد (0.7لتر)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206851683-j556zi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206851683-j556zi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عافية عباد (2.2لتر).jpg",
+        "product_id": "d8af1e1e-d252-49e3-976f-feb6fbed47dd",
+        "name_ar": "زيت عافية عباد (2.2لتر)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852074-vhxuk4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852074-vhxuk4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت قلية 1 لتر.jpg",
+        "product_id": "3fb07bc4-3e8a-4d52-b881-81d66f882770",
+        "name_ar": "زيت قلية 1 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852455-omvjd6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852455-omvjd6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت قلية 2.1لتر.jpg",
+        "product_id": "0e2381d5-2a8e-4fd8-afa0-95717106d1eb",
+        "name_ar": "زيت قلية 2.1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852930-n8wnhw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206852930-n8wnhw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت قلية 700مل.jpg",
+        "product_id": "c27f62f2-6108-4c7a-b970-ffb40ca1458e",
+        "name_ar": "زيت قلية 700مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206853263-47jvy3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206853263-47jvy3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال 1.6لتر ذرة.jpg",
+        "product_id": "64f25432-7a89-41b8-96ed-469a48be002c",
+        "name_ar": "زيت كريستال 1.6لتر ذرة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206853736-ave6wj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206853736-ave6wj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال ذرة 1 لتر.jpg",
+        "product_id": "cba35a60-2561-47ea-86e6-0fc20dcc8978",
+        "name_ar": "زيت كريستال ذرة 1 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854066-g90bcn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854066-g90bcn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال ذرة 3.5لتر.jpg",
+        "product_id": "b0e5e016-ef32-4aa2-b0ef-73f28735f2fd",
+        "name_ar": "زيت كريستال ذرة 3.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854479-7m9rbe.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854479-7m9rbe.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال ذرة 700مل.jpg",
+        "product_id": "b8197889-6dde-4e84-8cc5-8cc642cc5aa6",
+        "name_ar": "زيت كريستال ذرة 700مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854779-zppnb1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206854779-zppnb1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال عباد 1لتر صافي.jpg",
+        "product_id": "209b2c59-1ad0-4953-9a8e-49fceb39002f",
+        "name_ar": "زيت كريستال عباد 1لتر صافي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855082-34uail.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855082-34uail.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كريستال عباد 5لتر.jpg",
+        "product_id": "0281043f-0939-4d54-8547-41c3a3b84b3e",
+        "name_ar": "زيت كريستال عباد 5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855442-hf017u.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855442-hf017u.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ممتاز 2.5لتر.jpg",
+        "product_id": "c745f2cc-d8d6-48e8-aba1-c12682a4f6ab",
+        "name_ar": "زيت ممتاز 2.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855782-iylbjq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206855782-iylbjq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ممتاز 4.5 لتر.jpg",
+        "product_id": "e453fefb-6ef0-4344-a6d0-777f45b46131",
+        "name_ar": "زيت ممتاز 4.5 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206856105-2gtzmu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206856105-2gtzmu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ممتاز 700مل.jpg",
+        "product_id": "a83da93b-9846-4d08-9b28-84b9587a2322",
+        "name_ar": "زيت ممتاز 700مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206856425-8jn40t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206856425-8jn40t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هدية 1لتر.jpg",
+        "product_id": "9f139f98-60e6-4d50-b326-a211b2a76b64",
+        "name_ar": "زيت هدية 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857199-uvhtao.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857199-uvhtao.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هدية 2.1لتر.jpg",
+        "product_id": "e5c6e619-1525-4651-bfb6-77a92b379e37",
+        "name_ar": "زيت هدية 2.1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857517-oo5jhv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857517-oo5jhv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هدية 700مل.jpg",
+        "product_id": "b105570e-0dd9-4310-8ebc-2af26d3a9e0b",
+        "name_ar": "زيت هدية 700مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857851-j76gba.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206857851-j76gba.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هلا 1.5لتر.jpg",
+        "product_id": "53e86637-78d9-4c7a-a0b9-d6579f3d7c87",
+        "name_ar": "زيت هلا 1.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858195-cbr6jc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858195-cbr6jc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هلا 1لتر.jpg",
+        "product_id": "d8042fd9-9483-450c-b47b-b919f60d2237",
+        "name_ar": "زيت هلا 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858593-9thpfh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858593-9thpfh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هلا عباد (2.25لتر).jpg",
+        "product_id": "b9153c81-d811-4cf2-a7c8-f5e9b367a503",
+        "name_ar": "زيت هلا عباد (2.25لتر)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858943-6da9eg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206858943-6da9eg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت هلا عباد (5 لتر).jpg",
+        "product_id": "756beb8c-66e6-4cc5-a3b0-136e477d0122",
+        "name_ar": "زيت هلا عباد (5 لتر)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859256-kywxh7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859256-kywxh7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة  طماطم الدرة 375غ).jpg",
+        "product_id": "e05521eb-43a5-4771-9ca7-eb67e375e7d4",
+        "name_ar": "صلصة  طماطم الدرة 375غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859572-870hqc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859572-870hqc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة بيتزا الدرة 350 غ).jpg",
+        "product_id": "4b0d8f21-f35b-4324-a867-2c080a80d534",
+        "name_ar": "صلصة بيتزا الدرة 350 غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859906-3x244p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206859906-3x244p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة طماطم الدرة (1.100ك).jpg",
+        "product_id": "8d38f4a7-9828-4e6a-8fdf-3cdb2960b5a5",
+        "name_ar": "صلصة طماطم الدرة (1.100ك)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860238-bb8vrt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860238-bb8vrt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة طماطم الدرة (4.400ك).jpg",
+        "product_id": "7e89cfee-7eb8-4fdc-b00d-ec3b70d57ad9",
+        "name_ar": "صلصة طماطم الدرة (4.400ك)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860664-jexvm2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860664-jexvm2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة طماطم الدرة (650غ).jpg",
+        "product_id": "b122a8ef-9a49-4512-bf45-c6c11fb081b6",
+        "name_ar": "صلصة طماطم الدرة (650غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860980-81xt6u.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206860980-81xt6u.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صلصة طماطم الدرة (800غ).jpg",
+        "product_id": "43888e54-7f0b-4a05-9f51-caad6f45a4ed",
+        "name_ar": "صلصة طماطم الدرة (800غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206861332-fp9gu0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206861332-fp9gu0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل جلوكوز مولانا 700غ.jpg",
+        "product_id": "fd7baea8-3864-4ea9-b250-8ac76a91939d",
+        "name_ar": "عسل جلوكوز مولانا 700غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206861688-vknhf3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206861688-vknhf3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب الدرة أسطوانة(500غ)حار.jpg",
+        "product_id": "f1a30278-1564-473a-9d0f-e089134cef16",
+        "name_ar": "كتشب الدرة أسطوانة(500غ)حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862000-kfu4m8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862000-kfu4m8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب الدرة أسطوانة(500غ)حلو.jpg",
+        "product_id": "0a8451a7-d32b-44f1-8f8d-b751c5328890",
+        "name_ar": "كتشب الدرة أسطوانة(500غ)حلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862323-ytedmu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862323-ytedmu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب الدرة(250غ)حار.jpg",
+        "product_id": "48a284be-5e7f-4d79-80ac-ab8b434f46cb",
+        "name_ar": "كتشب الدرة(250غ)حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862619-qgccmy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862619-qgccmy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب الدرة(250غ)حلو.jpg",
+        "product_id": "94143191-364e-4caa-a732-2bb25fdfdb13",
+        "name_ar": "كتشب الدرة(250غ)حلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862916-urb6at.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206862916-urb6at.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب ان جي (10ك) (اسود).jpg",
+        "product_id": "991be477-a4d1-4e87-923f-c642fcbb0c0f",
+        "name_ar": "كتشب ان جي (10ك) (اسود)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206863312-t3bk8a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206863312-t3bk8a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب ان جي (10ك).jpg",
+        "product_id": "4102354d-1ed6-47bf-8464-213acfda213e",
+        "name_ar": "كتشب ان جي (10ك)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206863862-lxr744.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206863862-lxr744.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كتشب عرض(900غ).jpg",
+        "product_id": "9b96c36d-2b4b-49a6-9755-237e9f8aeac3",
+        "name_ar": "كتشب عرض(900غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864260-o5sfzp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864260-o5sfzp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مايونيز الدرة(250غ).jpg",
+        "product_id": "eabdfa5e-50d5-414c-96f2-7e8ae511ec53",
+        "name_ar": "مايونيز الدرة(250غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864570-rbjs2n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864570-rbjs2n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مايونيز بابزي 3.3 كيلو جرام.jpg",
+        "product_id": "8889ed13-3f1c-4c64-9780-fbec0a16a46e",
+        "name_ar": "مايونيز بابزي 3.3 كيلو جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864892-8twzkp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206864892-8twzkp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مستردة الدرة(275غ).jpg",
+        "product_id": "97d32e47-f42b-4a4b-a644-fb57fc564816",
+        "name_ar": "مستردة الدرة(275غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206865303-yilwd3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206865303-yilwd3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مستردة ان جي5كغ.jpg",
+        "product_id": "9a8aeec2-926b-446a-8e67-86ca2fb1fb11",
+        "name_ar": "مستردة ان جي5كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206865611-sqz525.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206865611-sqz525.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "معجون طماطم السعودية 135 جرام - استيراد السعودية.jpg",
+        "product_id": "9f09cddc-8c67-4ff3-87b3-2d6677fb26b6",
+        "name_ar": "معجون طماطم السعودية 135 جرام - استيراد السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866019-t700gw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866019-t700gw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "معجون طماطم لونا 135 جرام - استيراد السعودية.jpg",
+        "product_id": "198bfebd-49b7-44a4-9ca5-8d1db8f894d1",
+        "name_ar": "معجون طماطم لونا 135 جرام - استيراد السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866325-j7loud.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866325-j7loud.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "معجون طماطم هالي 135 جرام - استيراد السعودية.jpg",
+        "product_id": "b3640343-e73a-4beb-a53a-1ebd32a60523",
+        "name_ar": "معجون طماطم هالي 135 جرام - استيراد السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866756-qsrh7t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206866756-qsrh7t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "هوت صوص الدرة (175مل).jpg",
+        "product_id": "5936e8c0-0a1e-470d-a7b3-2972c50151be",
+        "name_ar": "هوت صوص الدرة (175مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206867101-dphmez.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206867101-dphmez.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

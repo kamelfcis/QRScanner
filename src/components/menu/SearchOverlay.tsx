@@ -11,7 +11,11 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { trackSearch } from '@/lib/analytics';
 import type { Product } from '@/types/database';
 
@@ -35,7 +39,7 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
   const tCommon = useTranslations('accessibility');
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
 
   useEffect(() => {
     if (isOpen) {
@@ -147,7 +151,13 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
               {results && results.length > 0 && (
                 <ul className="divide-y divide-[var(--menu-line)]">
                   {results.map((product) => {
-                    const name = getName(locale, product.name_en, product.name_ar);
+                    const name = getName(
+                      locale,
+                      product.name_en,
+                      product.name_ar,
+                      product.name_fr,
+                      product.name_nl
+                    );
                     return (
                       <li key={product.id}>
                         <button
@@ -182,9 +192,31 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                               className="mt-0.5 block text-sm tabular-nums text-[var(--menu-wine)]"
                               dir="ltr"
                             >
-                              {formatCurrencyAmount(product.dining_price, currency, {
-                                locale: currencyLocale,
-                              })}
+                              {product.has_size_options ? (
+                                product.dining_price !== product.takeaway_price ? (
+                                  <>
+                                    {formatCurrencyAmount(
+                                      Math.min(product.dining_price, product.takeaway_price),
+                                      currency,
+                                      { locale: currencyLocale }
+                                    )}{' '}
+                                    –{' '}
+                                    {formatCurrencyAmount(
+                                      Math.max(product.dining_price, product.takeaway_price),
+                                      currency,
+                                      { locale: currencyLocale }
+                                    )}
+                                  </>
+                                ) : (
+                                  formatCurrencyAmount(product.dining_price, currency, {
+                                    locale: currencyLocale,
+                                  })
+                                )
+                              ) : (
+                                formatCurrencyAmount(product.dining_price, currency, {
+                                  locale: currencyLocale,
+                                })
+                              )}
                             </span>
                           </span>
                         </button>

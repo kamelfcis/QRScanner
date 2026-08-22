@@ -9,7 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 
 export function OffersSection() {
@@ -18,7 +22,7 @@ export function OffersSection() {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
 
   if (isLoading || !offers?.length) return null;
 

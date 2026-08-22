@@ -1,0 +1,69 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "17fbf1d7-6c41-4f2d-86d5-1fb629856134",
+    "name_ar": "قسم التجميل و الخميرة",
+    "name_en": "Beauty & Yeast",
+    "created": false,
+    "sort_order": 7
+  },
+  "excel": {
+    "file": "c:\\Users\\Administrator\\Downloads\\منيو\\قسم التجميل و الخميرة.xlsx",
+    "sheet": "Sheet",
+    "parsed_rows": 79,
+    "unique_products": 64
+  },
+  "products": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 64,
+    "errors": 0
+  },
+  "sample_products": [
+    {
+      "name_ar": "ماء ورد لاجونز  لبان200مل",
+      "dining_price": 45,
+      "takeaway_price": 45
+    },
+    {
+      "name_ar": "ماء ورد لاجونز طبيعي20ملل",
+      "dining_price": 45,
+      "takeaway_price": 45
+    },
+    {
+      "name_ar": "ماء ورد مورد300ملي",
+      "dining_price": 50,
+      "takeaway_price": 50
+    },
+    {
+      "name_ar": "معطر اطفال ميكي",
+      "dining_price": 25,
+      "takeaway_price": 25
+    },
+    {
+      "name_ar": "زيت شعر الحواج 125مل",
+      "dining_price": 88,
+      "takeaway_price": 88
+    },
+    {
+      "name_ar": "زيت صبار شعر 125مل",
+      "dining_price": 50,
+      "takeaway_price": 50
+    },
+    {
+      "name_ar": "زيت جوز هند نخاع 125مل",
+      "dining_price": 60,
+      "takeaway_price": 60
+    },
+    {
+      "name_ar": "خلطة ذهبية للشعر(150مل)",
+      "dining_price": 135,
+      "takeaway_price": 135
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "verified_product_count": 64
+}

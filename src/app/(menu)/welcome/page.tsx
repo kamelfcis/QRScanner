@@ -26,6 +26,9 @@ import {
   tapScale,
 } from '@/lib/motion';
 import { resolveLoginBrand } from '@/lib/login/resolve-login-brand';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { getWelcomeCards, resolveOrderModes, type WelcomeCardId } from '@/lib/order/order-modes';
+import type { FulfillmentType } from '@/stores/cart-store';
 
 export default function WelcomePage() {
   return (
@@ -40,7 +43,7 @@ function WelcomeContent() {
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const skipParam = searchParams.get('skip') === '1';
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isLoading: settingsLoading } = useRestaurantSettings();
   const { locale } = useI18n();
   const t = useTranslations('welcome');
   const prefersReducedMotion = useReducedMotion();
@@ -75,7 +78,7 @@ function WelcomeContent() {
     (brand.tenantId === 'warda' ? t('tagline') : '');
   const logoFallbackLetter = (restaurantName || appName || '?').charAt(0).toUpperCase();
 
-  const goToMenu = (mode: CartDiningMode) => {
+  const goToMenu = (mode: CartDiningMode, fulfillment?: FulfillmentType) => {
     persistDiningMode(mode);
     if (tableParam) {
       persistTableNumber(tableParam);
@@ -83,11 +86,52 @@ function WelcomeContent() {
     setMeta({
       diningMode: mode,
       tableNumber: tableParam,
+      ...(fulfillment ? { fulfillmentType: fulfillment } : {}),
     });
     router.push(buildMenuUrl(mode, tableParam));
   };
 
-  if (!ready || redirecting) {
+  const orderModes = resolveOrderModes(settings);
+  const welcomeCards = getWelcomeCards(orderModes);
+
+  const welcomeCardConfig: Record<
+    WelcomeCardId,
+    {
+      emoji: string;
+      labelEn: string;
+      labelAr: string;
+      subtitle: string;
+      testId: string;
+      onSelect: () => void;
+    }
+  > = {
+    'dine-in': {
+      emoji: '🍽️',
+      labelEn: t('dineInEn'),
+      labelAr: t('dineInAr'),
+      subtitle: t('dineInDesc'),
+      testId: 'welcome-dine-in',
+      onSelect: () => goToMenu('dining'),
+    },
+    takeaway: {
+      emoji: '🛍️',
+      labelEn: t('takeawayEn'),
+      labelAr: t('takeawayAr'),
+      subtitle: t('takeawayDesc'),
+      testId: 'welcome-takeaway',
+      onSelect: () => (orderModes.dineIn ? goToMenu('takeaway') : goToMenu('takeaway', 'pickup')),
+    },
+    delivery: {
+      emoji: '🛵',
+      labelEn: t('deliveryEn'),
+      labelAr: t('deliveryAr'),
+      subtitle: t('deliveryDesc'),
+      testId: 'welcome-delivery',
+      onSelect: () => goToMenu('takeaway', 'delivery'),
+    },
+  };
+
+  if (!ready || redirecting || settingsLoading) {
     return <WelcomeSkeleton />;
   }
 
@@ -132,6 +176,13 @@ function WelcomeContent() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
         <div className="via-brand-accent/30 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
+      </div>
+
+      <div className="absolute end-4 top-[max(1rem,env(safe-area-inset-top))] z-20">
+        <LanguageSwitcher
+          variant="ghost"
+          className="size-11 rounded-full border border-white/20 bg-black/40 text-white hover:bg-black/55 hover:text-white"
+        />
       </div>
 
       <motion.div
@@ -207,33 +258,29 @@ function WelcomeContent() {
           variants={prefersReducedMotion ? undefined : staggerContainer}
           className="mb-5 grid w-full grid-cols-1 gap-4 sm:grid-cols-2"
         >
-          <ModeCard
-            emoji="🍽️"
-            labelEn={t('dineInEn')}
-            labelAr={t('dineInAr')}
-            subtitle={t('dineInDesc')}
-            testId="welcome-dine-in"
-            onSelect={() => goToMenu('dining')}
-            prefersReducedMotion={prefersReducedMotion}
-            isRtl={isArabic}
-          />
-          <ModeCard
-            emoji="🛍️"
-            labelEn={t('takeawayEn')}
-            labelAr={t('takeawayAr')}
-            subtitle={t('takeawayDesc')}
-            testId="welcome-takeaway"
-            onSelect={() => goToMenu('takeaway')}
-            prefersReducedMotion={prefersReducedMotion}
-            isRtl={isArabic}
-          />
+          {welcomeCards.map((cardId) => {
+            const card = welcomeCardConfig[cardId];
+            return (
+              <ModeCard
+                key={cardId}
+                emoji={card.emoji}
+                labelEn={card.labelEn}
+                labelAr={card.labelAr}
+                subtitle={card.subtitle}
+                testId={card.testId}
+                onSelect={card.onSelect}
+                prefersReducedMotion={prefersReducedMotion}
+                isRtl={isArabic}
+              />
+            );
+          })}
         </motion.div>
 
         <motion.p
           variants={prefersReducedMotion ? undefined : staggerItem}
           className="text-xs text-white/50"
         >
-          {t('orChangeLater')}
+          {orderModes.dineIn ? t('orChangeLater') : t('orChangeLaterCheckout')}
         </motion.p>
       </motion.div>
     </div>

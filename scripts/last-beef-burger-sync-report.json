@@ -1,0 +1,177 @@
+{
+  "dryRun": false,
+  "beefCategory": {
+    "created": true,
+    "id": "e3647298-4ffb-4a64-ac6d-afec13ebb572"
+  },
+  "beefAdded": [
+    {
+      "name_ar": "بيف تكساس",
+      "name_en": "Beef Texas",
+      "dining_price": 90,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "بيف هالبينو",
+      "name_en": "Beef Jalapeño",
+      "dining_price": 90,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "بيف ستيكس",
+      "name_en": "Beef Steaks",
+      "dining_price": 90,
+      "takeaway_price": 120
+    }
+  ],
+  "beefUpdated": [],
+  "beefDeleted": [],
+  "beefUnchanged": [],
+  "beefFinal": [
+    {
+      "name_ar": "بيف تكساس",
+      "name_en": "Beef Texas",
+      "dining_price": 90,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "بيف هالبينو",
+      "name_en": "Beef Jalapeño",
+      "dining_price": 90,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "بيف ستيكس",
+      "name_en": "Beef Steaks",
+      "dining_price": 90,
+      "takeaway_price": 120
+    }
+  ],
+  "sandwichesRemoved": {
+    "found": true,
+    "count": 1
+  },
+  "deletedProducts": [
+    {
+      "category": "الساندوتشات",
+      "id": "f35ac5c6-53e5-4341-976d-035da90a276a",
+      "name_ar": "برجر لحم",
+      "name_en": "Beef Burger"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "302d848c-adae-4a02-a07e-13b663d05873",
+      "name_ar": "برجر فراخ",
+      "name_en": "Chicken Burger"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "60a3c28d-049b-4759-8875-d286c9d40b64",
+      "name_ar": "برجر دبل",
+      "name_en": "Double Burger"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "f1a0fff7-e5b7-40ec-854c-753aca3798f2",
+      "name_ar": "زنجر",
+      "name_en": "Zinger Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "bff976fa-cadb-4572-9528-a5d868e29cb5",
+      "name_ar": "فلافل",
+      "name_en": "Falafel Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "2022edfe-f694-4b6a-814e-904929511c82",
+      "name_ar": "كباب",
+      "name_en": "Kebab Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "0e3a6245-2fca-476f-9798-0ab40b8944b7",
+      "name_ar": "كفتة",
+      "name_en": "Kofta Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "cb83097d-ea1d-44f7-a82a-50feaece9e2b",
+      "name_ar": "سجق",
+      "name_en": "Sausage Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "fa8b1f4d-e330-4420-a0d0-fe91273e70bf",
+      "name_ar": "بطاطس",
+      "name_en": "Potato Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "af31a4f7-8a11-4579-bf74-9f90d20c84e0",
+      "name_ar": "جبنة",
+      "name_en": "Cheese Sandwich"
+    },
+    {
+      "category": "الساندوتشات",
+      "id": "607f2237-21a2-4fc5-9ee2-517c363a96bc",
+      "name_ar": "مشكل",
+      "name_en": "Mixed Sandwich"
+    }
+  ],
+  "deletedCategories": [
+    {
+      "id": "97d72add-56a3-4eb1-8e4e-f7c6f414dbc1",
+      "label": "الساندوتشات"
+    }
+  ],
+  "deletedSubcategories": [],
+  "errors": [],
+  "verify": {
+    "beefCategoryExists": true,
+    "beefProductCount": 3,
+    "sandwichesCategoryExists": false,
+    "otherCategories": [
+      {
+        "name_ar": "الكربيات",
+        "count": 1,
+        "exists": true
+      },
+      {
+        "name_ar": "الوجبات",
+        "count": 1,
+        "exists": true
+      },
+      {
+        "name_ar": "المشروبات",
+        "count": 1,
+        "exists": true
+      },
+      {
+        "name_ar": "الإضافات",
+        "count": 1,
+        "exists": true
+      }
+    ],
+    "beefProducts": [
+      {
+        "name_ar": "بيف تكساس",
+        "name_en": "Beef Texas",
+        "dining_price": 90,
+        "takeaway_price": 130
+      },
+      {
+        "name_ar": "بيف هالبينو",
+        "name_en": "Beef Jalapeño",
+        "dining_price": 90,
+        "takeaway_price": 120
+      },
+      {
+        "name_ar": "بيف ستيكس",
+        "name_en": "Beef Steaks",
+        "dining_price": 90,
+        "takeaway_price": 120
+      }
+    ]
+  }
+}

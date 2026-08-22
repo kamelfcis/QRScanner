@@ -3,7 +3,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Category, CategoryInput, CategoryWithProducts } from '@/types';
-import { categoryKeys, CATALOG_STALE_TIME, CATALOG_GC_TIME } from '@/lib/catalog/keys';
+import {
+  categoryKeys,
+  categoryListFields,
+  CATALOG_STALE_TIME,
+  CATALOG_GC_TIME,
+} from '@/lib/catalog/keys';
 import { fetchCategoriesWithProducts } from '@/lib/catalog/fetchCatalog';
 
 export { categoryKeys };
@@ -16,14 +21,12 @@ export function useCategories() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('categories')
-        .select(
-          'id, name_ar, name_en, description_ar, description_en, image_url, banner_url, sort_order, is_visible'
-        )
+        .select(categoryListFields)
         .eq('is_visible', true)
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      return data as Category[];
+      return data as unknown as Category[];
     },
     staleTime: CATALOG_STALE_TIME,
     gcTime: CATALOG_GC_TIME,

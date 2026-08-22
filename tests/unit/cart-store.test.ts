@@ -8,6 +8,8 @@ const sample = {
   image_url: null,
   dining_price: 25,
   takeaway_price: 22,
+  has_size_options: false,
+  sizeOption: null,
   notes: '',
 };
 
@@ -19,6 +21,12 @@ describe('makeCartLineId', () => {
   it('includes notes key so variants stay separate', () => {
     expect(makeCartLineId('p1', 'Extra garlic')).toBe('p1::extra garlic');
     expect(makeCartLineId('p1', 'Extra garlic')).not.toBe(makeCartLineId('p1', ''));
+  });
+
+  it('includes size option so same product in two sizes stays separate', () => {
+    expect(makeCartLineId('p1', '', 'small')).toBe('p1::small');
+    expect(makeCartLineId('p1', '', 'large')).toBe('p1::large');
+    expect(makeCartLineId('p1', 'Extra garlic', 'large')).toBe('p1::large::extra garlic');
   });
 });
 
@@ -42,6 +50,12 @@ describe('useCartStore', () => {
     useCartStore.getState().addItem({ ...sample, quantity: 2 });
     expect(useCartStore.getState().items).toHaveLength(1);
     expect(useCartStore.getState().items[0].quantity).toBe(3);
+  });
+
+  it('keeps separate lines for different sizes', () => {
+    useCartStore.getState().addItem({ ...sample, has_size_options: true, sizeOption: 'small' });
+    useCartStore.getState().addItem({ ...sample, has_size_options: true, sizeOption: 'large' });
+    expect(useCartStore.getState().items).toHaveLength(2);
   });
 
   it('keeps separate lines for different notes', () => {

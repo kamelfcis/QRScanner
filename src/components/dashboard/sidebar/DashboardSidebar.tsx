@@ -4,27 +4,25 @@ import Link from 'next/link';
 import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LogOut } from 'lucide-react';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
+import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { signOut } = useAuth();
   const { data: settings } = useRestaurantSettings();
+  const { data: features } = useFeatureSettings();
+  const navItems = getDashboardNav(features);
   const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
-  const tCommon = useTranslations('common');
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
   return (
     <aside className="bg-muted/40 hidden w-64 border-r md:block">
@@ -46,7 +44,7 @@ export function DashboardSidebar() {
 
         <ScrollArea className="flex-1 px-3 py-4">
           <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
-            {DASHBOARD_NAV.map((item) => {
+            {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               const label = tSidebar(item.key);
               return (

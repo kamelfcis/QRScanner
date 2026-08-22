@@ -1,8 +1,15 @@
 import { format, type Locale } from 'date-fns';
-import { arSA, enUS } from 'date-fns/locale';
+import { arSA, enUS, fr, nl } from 'date-fns/locale';
+
+const DATE_FNS_LOCALES: Record<string, Locale> = {
+  ar: arSA,
+  en: enUS,
+  fr,
+  nl,
+};
 
 export function getDateFnsLocale(locale: string | undefined): Locale {
-  return locale === 'ar' ? arSA : enUS;
+  return DATE_FNS_LOCALES[locale ?? ''] ?? enUS;
 }
 
 export function formatLocaleDate(

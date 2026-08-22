@@ -1,0 +1,135 @@
+{
+  "dryRun": false,
+  "category": {
+    "created": true,
+    "id": "d18f93c3-8af8-4136-ab29-7d7fa8caaed8"
+  },
+  "added": [
+    {
+      "name_ar": "بيتزا مارجريتا",
+      "price": 90
+    },
+    {
+      "name_ar": "بيتزا ميكس جبن",
+      "price": 110
+    },
+    {
+      "name_ar": "بيتزا شاورما فراخ",
+      "price": 120
+    },
+    {
+      "name_ar": "بيتزا استريبس",
+      "price": 130
+    },
+    {
+      "name_ar": "بيتزا تشيكن رانش",
+      "price": 140
+    },
+    {
+      "name_ar": "بيتزا تشيكن باربيكيو",
+      "price": 140
+    },
+    {
+      "name_ar": "بيتزا ميكس فراخ",
+      "price": 145
+    },
+    {
+      "name_ar": "بيتزا ميكس لحوم",
+      "price": 160
+    },
+    {
+      "name_ar": "بيتزا سجق",
+      "price": 110
+    },
+    {
+      "name_ar": "بيتزا سوسيس",
+      "price": 110
+    },
+    {
+      "name_ar": "بيتزا تونة",
+      "price": 120
+    },
+    {
+      "name_ar": "بيتزا ببروني",
+      "price": 130
+    }
+  ],
+  "updated": [],
+  "deleted": [],
+  "unchanged": [],
+  "errors": [],
+  "final": [
+    {
+      "name_ar": "بيتزا مارجريتا",
+      "name_en": "Pizza Margherita",
+      "dining_price": 90,
+      "takeaway_price": 90
+    },
+    {
+      "name_ar": "بيتزا ميكس جبن",
+      "name_en": "Pizza Mixed Cheese",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "بيتزا شاورما فراخ",
+      "name_en": "Pizza Chicken Shawarma",
+      "dining_price": 120,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "بيتزا استريبس",
+      "name_en": "Pizza Strips",
+      "dining_price": 130,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "بيتزا تشيكن رانش",
+      "name_en": "Pizza Chicken Ranch",
+      "dining_price": 140,
+      "takeaway_price": 140
+    },
+    {
+      "name_ar": "بيتزا تشيكن باربيكيو",
+      "name_en": "Pizza Chicken BBQ",
+      "dining_price": 140,
+      "takeaway_price": 140
+    },
+    {
+      "name_ar": "بيتزا ميكس فراخ",
+      "name_en": "Pizza Chicken Mix",
+      "dining_price": 145,
+      "takeaway_price": 145
+    },
+    {
+      "name_ar": "بيتزا ميكس لحوم",
+      "name_en": "Pizza Meat Mix",
+      "dining_price": 160,
+      "takeaway_price": 160
+    },
+    {
+      "name_ar": "بيتزا سجق",
+      "name_en": "Pizza Sujuk",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "بيتزا سوسيس",
+      "name_en": "Pizza Sausage",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "بيتزا تونة",
+      "name_en": "Pizza Tuna",
+      "dining_price": 120,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "بيتزا ببروني",
+      "name_en": "Pizza Pepperoni",
+      "dining_price": 130,
+      "takeaway_price": 130
+    }
+  ]
+}

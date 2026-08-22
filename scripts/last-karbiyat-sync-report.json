@@ -1,0 +1,223 @@
+{
+  "dryRun": false,
+  "category": {
+    "created": false,
+    "id": "d81c41cc-2f2f-4ea5-8730-3f268a7b198a"
+  },
+  "added": [],
+  "updated": [
+    {
+      "name_ar": "كريب شاورما فراخ",
+      "price": 100,
+      "previous": {
+        "name_ar": "شاورما فراخ",
+        "name_en": "Chicken Shawarma",
+        "dining_price": 100,
+        "takeaway_price": 100
+      }
+    },
+    {
+      "name_ar": "كريب استريبس",
+      "price": 110,
+      "previous": {
+        "name_ar": "استريبس",
+        "name_en": "Strips",
+        "dining_price": 110,
+        "takeaway_price": 110
+      }
+    },
+    {
+      "name_ar": "كريب مكس فراخ",
+      "price": 125,
+      "previous": {
+        "name_ar": "مكس فراخ",
+        "name_en": "Chicken Mix",
+        "dining_price": 125,
+        "takeaway_price": 125
+      }
+    },
+    {
+      "name_ar": "كريب بانيه",
+      "price": 95,
+      "previous": {
+        "name_ar": "بانيه",
+        "name_en": "Pane",
+        "dining_price": 95,
+        "takeaway_price": 95
+      }
+    },
+    {
+      "name_ar": "كريب بطاطس",
+      "price": 55,
+      "previous": {
+        "name_ar": "بطاطس",
+        "name_en": "Potatoes",
+        "dining_price": 55,
+        "takeaway_price": 55
+      }
+    },
+    {
+      "name_ar": "كريب سوسيس",
+      "price": 90,
+      "previous": {
+        "name_ar": "سوسيس",
+        "name_en": "Sausage",
+        "dining_price": 90,
+        "takeaway_price": 90
+      }
+    },
+    {
+      "name_ar": "كريب سجق",
+      "price": 90,
+      "previous": {
+        "name_ar": "سجق",
+        "name_en": "Sujuk",
+        "dining_price": 90,
+        "takeaway_price": 90
+      }
+    },
+    {
+      "name_ar": "كريب مكس لحوم",
+      "price": 130,
+      "previous": {
+        "name_ar": "مكس لحوم",
+        "name_en": "Meat Mix",
+        "dining_price": 130,
+        "takeaway_price": 130
+      }
+    },
+    {
+      "name_ar": "كريب برجر",
+      "price": 100,
+      "previous": {
+        "name_ar": "برجر",
+        "name_en": "Burger",
+        "dining_price": 100,
+        "takeaway_price": 100
+      }
+    },
+    {
+      "name_ar": "كريب كفتة",
+      "price": 125,
+      "previous": {
+        "name_ar": "كفتة",
+        "name_en": "Kofta",
+        "dining_price": 125,
+        "takeaway_price": 125
+      }
+    },
+    {
+      "name_ar": "كريب زنجر",
+      "price": 120,
+      "previous": {
+        "name_ar": "زنجر",
+        "name_en": "Zinger",
+        "dining_price": 120,
+        "takeaway_price": 120
+      }
+    },
+    {
+      "name_ar": "كريب تشيكن رانش",
+      "price": 120,
+      "previous": {
+        "name_ar": "تشيكن رانش",
+        "name_en": "Chicken Ranch",
+        "dining_price": 120,
+        "takeaway_price": 120
+      }
+    },
+    {
+      "name_ar": "كريب سوبر كرانشي",
+      "price": 120,
+      "previous": {
+        "name_ar": "سوبر كرانشي",
+        "name_en": "Super Crunchy",
+        "dining_price": 120,
+        "takeaway_price": 120
+      }
+    }
+  ],
+  "deleted": [],
+  "unchanged": [],
+  "errors": [],
+  "final": [
+    {
+      "name_ar": "كريب شاورما فراخ",
+      "name_en": "Crepe Chicken Shawarma",
+      "dining_price": 100,
+      "takeaway_price": 100
+    },
+    {
+      "name_ar": "كريب استريبس",
+      "name_en": "Crepe Strips",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "كريب مكس فراخ",
+      "name_en": "Crepe Chicken Mix",
+      "dining_price": 125,
+      "takeaway_price": 125
+    },
+    {
+      "name_ar": "كريب بانيه",
+      "name_en": "Crepe Pane",
+      "dining_price": 95,
+      "takeaway_price": 95
+    },
+    {
+      "name_ar": "كريب بطاطس",
+      "name_en": "Crepe Potatoes",
+      "dining_price": 55,
+      "takeaway_price": 55
+    },
+    {
+      "name_ar": "كريب سوسيس",
+      "name_en": "Crepe Sausage",
+      "dining_price": 90,
+      "takeaway_price": 90
+    },
+    {
+      "name_ar": "كريب سجق",
+      "name_en": "Crepe Sujuk",
+      "dining_price": 90,
+      "takeaway_price": 90
+    },
+    {
+      "name_ar": "كريب مكس لحوم",
+      "name_en": "Crepe Meat Mix",
+      "dining_price": 130,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "كريب برجر",
+      "name_en": "Crepe Burger",
+      "dining_price": 100,
+      "takeaway_price": 100
+    },
+    {
+      "name_ar": "كريب كفتة",
+      "name_en": "Crepe Kofta",
+      "dining_price": 125,
+      "takeaway_price": 125
+    },
+    {
+      "name_ar": "كريب زنجر",
+      "name_en": "Crepe Zinger",
+      "dining_price": 120,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "كريب تشيكن رانش",
+      "name_en": "Crepe Chicken Ranch",
+      "dining_price": 120,
+      "takeaway_price": 120
+    },
+    {
+      "name_ar": "كريب سوبر كرانشي",
+      "name_en": "Crepe Super Crunchy",
+      "dining_price": 120,
+      "takeaway_price": 120
+    }
+  ]
+}

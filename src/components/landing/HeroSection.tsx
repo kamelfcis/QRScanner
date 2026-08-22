@@ -10,9 +10,9 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
-
-const DEFAULT_HERO = '/hero/warda-storefront.jpg';
+import { getHeroImageUrlOrFallback } from '@/lib/hero-image';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -41,13 +41,9 @@ export function HeroSection() {
 
   const featuredImages = gallery?.filter((item) => item.is_featured && item.image_url) || [];
   const hasCarousel = featuredImages.length > 0;
-  const heroImage = settings?.hero_image_url || DEFAULT_HERO;
+  const heroImage = getHeroImageUrlOrFallback(settings?.hero_image_url);
 
-  const name = getName(
-    locale,
-    settings?.name_en || t('heroTitle'),
-    settings?.name_ar || t('heroTitle')
-  );
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const heroAriaLabel = `${t('heroWelcome')} ${name}`;
 
   const goToSlide = useCallback(
@@ -125,7 +121,7 @@ export function HeroSection() {
                 fill
                 priority={currentIndex === 0}
                 sizes="100%"
-                className="object-cover"
+                className={cn('object-cover', !prefersReducedMotion && 'landing-hero-image')}
               />
             </motion.div>
           </AnimatePresence>
@@ -136,7 +132,10 @@ export function HeroSection() {
             fill
             priority
             sizes="100%"
-            className="object-cover object-center"
+            className={cn(
+              'object-cover object-center',
+              !prefersReducedMotion && 'landing-hero-image'
+            )}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/45" />

@@ -11,6 +11,7 @@ import {
 } from '@/hooks/useSettings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,6 +24,7 @@ import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
+import { resolveOrderModes, validateOrderModes } from '@/lib/order/order-modes';
 
 const DAYS = [
   'monday',
@@ -120,6 +122,7 @@ export default function SettingsPage() {
       errs.push(t('validation.maxNotesRange'));
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.push(t('validation.invalidEmail'));
+    if (!validateOrderModes(resolveOrderModes(form))) errs.push(t('validation.orderModeRequired'));
     (['primary_color', 'secondary_color', 'accent_color', 'background_color'] as const).forEach(
       (key) => {
         const color = themeForm[key];
@@ -458,9 +461,145 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>{t('storySection')}</CardTitle>
-              <CardDescription>{t('storyImageDescription')}</CardDescription>
+              <CardDescription>{t('storyTextDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_en">{t('storyTitleEn')}</Label>
+                  <Input
+                    id="story_title_en"
+                    value={form.story_title_en || ''}
+                    placeholder={t('storyTitleEn')}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_en: e.target.value }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_ar">{t('storyTitleAr')}</Label>
+                  <Input
+                    id="story_title_ar"
+                    value={form.story_title_ar || ''}
+                    placeholder={t('storyTitleAr')}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_ar: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_en">{t('storyP1En')}</Label>
+                  <Textarea
+                    id="story_p1_en"
+                    value={form.story_p1_en || ''}
+                    placeholder={t('storyP1En')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_en: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_ar">{t('storyP1Ar')}</Label>
+                  <Textarea
+                    id="story_p1_ar"
+                    value={form.story_p1_ar || ''}
+                    placeholder={t('storyP1Ar')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_ar: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_en">{t('storyP2En')}</Label>
+                  <Textarea
+                    id="story_p2_en"
+                    value={form.story_p2_en || ''}
+                    placeholder={t('storyP2En')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_en: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_ar">{t('storyP2Ar')}</Label>
+                  <Textarea
+                    id="story_p2_ar"
+                    value={form.story_p2_ar || ''}
+                    placeholder={t('storyP2Ar')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_ar: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_fr">{t('storyTitleFr')}</Label>
+                  <Input
+                    id="story_title_fr"
+                    value={form.story_title_fr || ''}
+                    placeholder={t('storyTitleFr')}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_fr: e.target.value }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_nl">{t('storyTitleNl')}</Label>
+                  <Input
+                    id="story_title_nl"
+                    value={form.story_title_nl || ''}
+                    placeholder={t('storyTitleNl')}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_nl: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_fr">{t('storyP1Fr')}</Label>
+                  <Textarea
+                    id="story_p1_fr"
+                    value={form.story_p1_fr || ''}
+                    placeholder={t('storyP1Fr')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_fr: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_nl">{t('storyP1Nl')}</Label>
+                  <Textarea
+                    id="story_p1_nl"
+                    value={form.story_p1_nl || ''}
+                    placeholder={t('storyP1Nl')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_nl: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_fr">{t('storyP2Fr')}</Label>
+                  <Textarea
+                    id="story_p2_fr"
+                    value={form.story_p2_fr || ''}
+                    placeholder={t('storyP2Fr')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_fr: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_nl">{t('storyP2Nl')}</Label>
+                  <Textarea
+                    id="story_p2_nl"
+                    value={form.story_p2_nl || ''}
+                    placeholder={t('storyP2Nl')}
+                    rows={4}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_nl: e.target.value }))}
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label>{t('storyImage')}</Label>
                 <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -547,6 +686,7 @@ export default function SettingsPage() {
                     placeholder="+20 ..."
                     onChange={(e) => setForm((prev) => ({ ...prev, whatsapp: e.target.value }))}
                   />
+                  <p className="text-muted-foreground text-xs">{t('whatsappPhoneHint')}</p>
                 </div>
               </div>
               <div className="space-y-2">
@@ -921,6 +1061,54 @@ export default function SettingsPage() {
                   />
                   <Label htmlFor="apply_service_charge">{t('applyServiceCharge')}</Label>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('orderTypes')}</CardTitle>
+              <CardDescription>{t('orderTypesDescription')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="enable_dine_in">{t('enableDineIn')}</Label>
+                  <p className="text-muted-foreground text-sm">{t('enableDineInHint')}</p>
+                </div>
+                <Switch
+                  id="enable_dine_in"
+                  checked={form.enable_dine_in !== false}
+                  onCheckedChange={(checked) =>
+                    setForm((prev) => ({ ...prev, enable_dine_in: checked }))
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="enable_takeaway">{t('enableTakeaway')}</Label>
+                  <p className="text-muted-foreground text-sm">{t('enableTakeawayHint')}</p>
+                </div>
+                <Switch
+                  id="enable_takeaway"
+                  checked={form.enable_takeaway !== false}
+                  onCheckedChange={(checked) =>
+                    setForm((prev) => ({ ...prev, enable_takeaway: checked }))
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="enable_delivery">{t('enableDelivery')}</Label>
+                  <p className="text-muted-foreground text-sm">{t('enableDeliveryHint')}</p>
+                </div>
+                <Switch
+                  id="enable_delivery"
+                  checked={form.enable_delivery === true}
+                  onCheckedChange={(checked) =>
+                    setForm((prev) => ({ ...prev, enable_delivery: checked }))
+                  }
+                />
               </div>
             </CardContent>
           </Card>

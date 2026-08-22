@@ -7,13 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cart-store';
-import { calculateOrderTotals, getUnitPrice } from '@/lib/order/totals';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
+import { haptic } from '@/lib/haptics';
 import { Image } from '@/components/shared/Image';
 
 interface CartDrawerProps {
@@ -38,13 +43,13 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const setItemNotes = useCartStore((s) => s.setItemNotes);
 
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
   const isRtl = locale === 'ar';
   const side = isDesktop ? (isRtl ? 'left' : 'right') : 'bottom';
 
   const pricedItems = items.map((item) => ({
     ...item,
-    unitPrice: getUnitPrice(item.dining_price, item.takeaway_price, diningMode),
+    unitPrice: getCartLineUnitPrice(item, diningMode),
   }));
   const totals = calculateOrderTotals(
     pricedItems.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
@@ -109,7 +114,13 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
             <>
               <div className="flex-1 overflow-y-auto px-4 py-3">
                 {pricedItems.map((item) => {
-                  const name = getName(locale, item.name_en, item.name_ar);
+                  const name = getName(
+                    locale,
+                    item.name_en,
+                    item.name_ar,
+                    item.name_fr,
+                    item.name_nl
+                  );
                   const lineTotal = item.unitPrice * item.quantity;
                   return (
                     <div
@@ -139,6 +150,11 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium text-[var(--menu-ink)]">
                               {name}
+                              {item.has_size_options && item.sizeOption ? (
+                                <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
+                                  {item.sizeOption === 'small' ? t('small') : t('large')}
+                                </span>
+                              ) : null}
                             </p>
                             <p
                               className="mt-0.5 text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
@@ -152,7 +168,10 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                           <button
                             type="button"
                             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-wine)]"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => {
+                              haptic.remove();
+                              removeItem(item.id);
+                            }}
                             aria-label={t('removeItem')}
                           >
                             <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -168,7 +187,10 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                             <button
                               type="button"
                               className={stepperButton}
-                              onClick={() => updateQty(item.id, item.quantity - 1)}
+                              onClick={() => {
+                                haptic.tick();
+                                updateQty(item.id, item.quantity - 1);
+                              }}
                               aria-label={t('decreaseQty')}
                             >
                               <Minus className="h-3.5 w-3.5" aria-hidden="true" />
@@ -182,7 +204,10 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                             <button
                               type="button"
                               className={stepperButton}
-                              onClick={() => updateQty(item.id, item.quantity + 1)}
+                              onClick={() => {
+                                haptic.tick();
+                                updateQty(item.id, item.quantity + 1);
+                              }}
                               aria-label={t('increaseQty')}
                             >
                               <Plus className="h-3.5 w-3.5" aria-hidden="true" />

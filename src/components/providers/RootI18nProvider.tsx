@@ -2,13 +2,17 @@
 
 import { useState, createContext, useContext, useCallback } from 'react';
 import { NextIntlClientProvider, useTranslations as useNextTranslations } from 'next-intl';
-import { type Locale, defaultLocale, isRtl } from '@/i18n/config';
+import { type Locale, defaultLocale, enabledLocales, isEnabledLocale, isRtl } from '@/i18n/config';
 import enMessages from '@/messages/en.json';
 import arMessages from '@/messages/ar.json';
+import frMessages from '@/messages/fr.json';
+import nlMessages from '@/messages/nl.json';
 
 const messages: Record<Locale, typeof enMessages> = {
-  en: enMessages,
   ar: arMessages,
+  en: enMessages,
+  fr: frMessages,
+  nl: nlMessages,
 };
 
 interface I18nContextValue {
@@ -43,6 +47,7 @@ export function RootI18nProvider({
   const dir = isRtl(locale) ? 'rtl' : 'ltr';
 
   const setLocale = useCallback((newLocale: Locale) => {
+    if (!isEnabledLocale(newLocale)) return;
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${365 * 24 * 60 * 60}`;
     setLocaleState(newLocale);
     document.documentElement.dir = isRtl(newLocale) ? 'rtl' : 'ltr';

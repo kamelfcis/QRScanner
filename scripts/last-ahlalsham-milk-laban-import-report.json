@@ -1,0 +1,69 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "a1aa0d99-12cf-4612-b977-d83f81ad2dd1",
+    "name_ar": "منيو الحليب و اللبن",
+    "name_en": "Milk & Dairy",
+    "created": false,
+    "sort_order": 2
+  },
+  "excel": {
+    "file": "c:\\Users\\Administrator\\Downloads\\منيو\\منيو الحليب و اللبن.xlsx",
+    "sheet": "Sheet",
+    "parsed_rows": 51,
+    "unique_products": 51
+  },
+  "products": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 51,
+    "errors": 0
+  },
+  "sample_products": [
+    {
+      "name_ar": "شوكولا ماكس تيلا (4ك)",
+      "dining_price": 600,
+      "takeaway_price": 600
+    },
+    {
+      "name_ar": "شوكولا ماكس تيلا حليب(900غ)",
+      "dining_price": 130,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "شوكولا ماكس تيلا (200غ)",
+      "dining_price": 50,
+      "takeaway_price": 50
+    },
+    {
+      "name_ar": "شوكولا ماكس تيلا (900غ)",
+      "dining_price": 130,
+      "takeaway_price": 130
+    },
+    {
+      "name_ar": "شوكولا ماكس تيلا  زجاج (300غ)",
+      "dining_price": 67,
+      "takeaway_price": 67
+    },
+    {
+      "name_ar": "شوكولا دريم 200غ دارك",
+      "dining_price": 55,
+      "takeaway_price": 55
+    },
+    {
+      "name_ar": "شوكولا ماكس تيلادارك بار سادة 125غ",
+      "dining_price": 25.9,
+      "takeaway_price": 25.9
+    },
+    {
+      "name_ar": "شوكولا دريم خام ابيض بار 200 غ",
+      "dining_price": 62,
+      "takeaway_price": 62
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "verified_product_count": 51
+}

@@ -1,0 +1,1191 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "17fbf1d7-6c41-4f2d-86d5-1fb629856134",
+    "name_ar": "قسم التجميل و الخميرة"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\قسم_التجميل_والخميرة\\قسم التجميل و الخميرة",
+  "counts": {
+    "images_found": 64,
+    "products_in_category": 64,
+    "matched": 64,
+    "uploaded": 0,
+    "skipped_unchanged": 64,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "بخور كنوز 40غ.jpg",
+      "product_id": "c6ec0eab-faf4-4934-8cca-ea4080b8c8bf",
+      "name_ar": "بخور كنوز 40غ",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور كنوز كلمات.jpg",
+      "product_id": "49f1cc4d-4126-4431-9711-9c6e13789966",
+      "name_ar": "بخور كنوز كلمات",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بلسم جوز هند الحواج 250 مل.jpg",
+      "product_id": "783cca04-05ea-428d-81c2-d6f2e99c4fc5",
+      "name_ar": "بلسم جوز هند الحواج 250 مل",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بلسم روزماري الحواج 250 مل.jpg",
+      "product_id": "b0583d13-434a-4594-bdb7-dc92da3068c8",
+      "name_ar": "بلسم روزماري الحواج 250 مل",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بيكينج بودر كوكس(500غ).jpg",
+      "product_id": "2472ece4-8daa-4771-bbb6-d7296b954728",
+      "name_ar": "بيكينج بودر كوكس(500غ)",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جلسرين توت الحواج 50 مل.jpg",
+      "product_id": "83341d59-6290-4ea1-b25b-f9749658b853",
+      "name_ar": "جلسرين توت الحواج 50 مل",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جلسرين عود الحواج 50 مل.jpg",
+      "product_id": "a4ffd807-94c1-4a3c-8e28-8ca7027fb8a3",
+      "name_ar": "جلسرين عود الحواج 50 مل",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جلسرين مسك ابيض الحواج 50 ملي.jpg",
+      "product_id": "38dcc240-aedc-490b-a208-523e36d88947",
+      "name_ar": "جلسرين مسك ابيض الحواج 50 ملي",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:15:38.696Z",
+  "details": {
+    "matched": [
+      {
+        "file": "بخور كنوز 40غ.jpg",
+        "product_id": "c6ec0eab-faf4-4934-8cca-ea4080b8c8bf",
+        "name_ar": "بخور كنوز 40غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور كنوز كلمات.jpg",
+        "product_id": "49f1cc4d-4126-4431-9711-9c6e13789966",
+        "name_ar": "بخور كنوز كلمات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بلسم جوز هند الحواج 250 مل.jpg",
+        "product_id": "783cca04-05ea-428d-81c2-d6f2e99c4fc5",
+        "name_ar": "بلسم جوز هند الحواج 250 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بلسم روزماري الحواج 250 مل.jpg",
+        "product_id": "b0583d13-434a-4594-bdb7-dc92da3068c8",
+        "name_ar": "بلسم روزماري الحواج 250 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بيكينج بودر كوكس(500غ).jpg",
+        "product_id": "2472ece4-8daa-4771-bbb6-d7296b954728",
+        "name_ar": "بيكينج بودر كوكس(500غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جلسرين توت الحواج 50 مل.jpg",
+        "product_id": "83341d59-6290-4ea1-b25b-f9749658b853",
+        "name_ar": "جلسرين توت الحواج 50 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جلسرين عود الحواج 50 مل.jpg",
+        "product_id": "a4ffd807-94c1-4a3c-8e28-8ca7027fb8a3",
+        "name_ar": "جلسرين عود الحواج 50 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جلسرين مسك ابيض الحواج 50 ملي.jpg",
+        "product_id": "38dcc240-aedc-490b-a208-523e36d88947",
+        "name_ar": "جلسرين مسك ابيض الحواج 50 ملي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جيلي دريم فراولة 70غ.jpg",
+        "product_id": "7881ba2a-f974-4844-a3fa-1521e98705ce",
+        "name_ar": "جيلي دريم فراولة 70غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جيلي دريم مشمش 70غ.jpg",
+        "product_id": "ca8a2ec9-505d-46bf-b02f-2f8cd2828768",
+        "name_ar": "جيلي دريم مشمش 70غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خلطة ذهبية للشعر(150مل).jpg",
+        "product_id": "b7d62f6d-14b1-435a-aaef-a465654b3420",
+        "name_ar": "خلطة ذهبية للشعر(150مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خميرة انجل(450غ).jpg",
+        "product_id": "42fc86f8-47a4-48f7-90c3-32db86375ae5",
+        "name_ar": "خميرة انجل(450غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دهان الحبة السوداء 50 جم.jpg",
+        "product_id": "b6928719-9ece-443c-87a3-0f377c097520",
+        "name_ar": "دهان الحبة السوداء 50 جم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دهن الحنظل بزيت حبة البركة الحواج.jpg",
+        "product_id": "98cc366e-7f2a-476c-b49c-c89561a499c6",
+        "name_ar": "دهن الحنظل بزيت حبة البركة الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زبدة الشيا الحواج 50غ.jpg",
+        "product_id": "a1bf8955-ec03-4092-99e5-7029eb9132c6",
+        "name_ar": "زبدة الشيا الحواج 50غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند نخاع 125مل.jpg",
+        "product_id": "4c1a1dfe-dab6-4cb7-ba40-bc3c392c4e6a",
+        "name_ar": "زيت جوز هند نخاع 125مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شعر الحواج 125مل.jpg",
+        "product_id": "005709ba-2842-410d-b6cb-a7a78bece7ef",
+        "name_ar": "زيت شعر الحواج 125مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت صبار شعر 125مل.jpg",
+        "product_id": "b33f7d8b-fed1-4642-aa5a-c55103646796",
+        "name_ar": "زيت صبار شعر 125مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سحلب كاندي فود.jpg",
+        "product_id": "99a16308-dca7-4135-9b65-ff8664c2b954",
+        "name_ar": "سحلب كاندي فود",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شامبو بلاك بأوراق السدر 250 مل.jpg",
+        "product_id": "2de1add5-c839-481b-90aa-6b01cf9d128e",
+        "name_ar": "شامبو بلاك بأوراق السدر 250 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شامبو جوز هند الحواج 250 مل.jpg",
+        "product_id": "2b127a28-0e3a-4a51-86d7-b24e7153e624",
+        "name_ar": "شامبو جوز هند الحواج 250 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون الجلسرين النقي(100غ) لاجونز.jpg",
+        "product_id": "33a88ef3-e8c3-434c-9205-5cdba42a2984",
+        "name_ar": "صابون الجلسرين النقي(100غ) لاجونز",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون العرق سوس(100غ).jpg",
+        "product_id": "f12ea0af-f297-4e16-b931-1baf8b14dacb",
+        "name_ar": "صابون العرق سوس(100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون القهوة الحواج.jpg",
+        "product_id": "42b02bdf-1941-43e4-a5d4-152e8c68ebb6",
+        "name_ar": "صابون القهوة الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون الورد (100غ).jpg",
+        "product_id": "64f14b98-a7f5-4636-976c-d52e5cc3fc56",
+        "name_ar": "صابون الورد (100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون جوز هند و لبن الماعز الحواج 85 جرام.jpg",
+        "product_id": "c430edbd-e538-44b2-bb34-d6ef5fdefc53",
+        "name_ar": "صابون جوز هند و لبن الماعز الحواج 85 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون شيا وكركم الحواج.jpg",
+        "product_id": "e9e2e149-a2ba-4506-a60d-8fb620126577",
+        "name_ar": "صابون شيا وكركم الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون عسل و لوز (100غ).jpg",
+        "product_id": "50e03fc4-e510-41b9-9c0b-553b88f3c6bd",
+        "name_ar": "صابون عسل و لوز (100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون غار بالزيتون الحواج 120 جم.jpg",
+        "product_id": "607d44f8-a1f4-4186-a86f-7cd988e711c4",
+        "name_ar": "صابون غار بالزيتون الحواج 120 جم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون كبريت (90غ).jpg",
+        "product_id": "f211b6f5-7002-4437-a3bf-9c5711eab56a",
+        "name_ar": "صابون كبريت (90غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون لبان دكر صافلك.jpg",
+        "product_id": "b0313bb0-a35a-4497-b910-b30cc56b3959",
+        "name_ar": "صابون لبان دكر صافلك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون مسك طهارة.jpg",
+        "product_id": "fa2b649a-60d3-4f0a-a6ab-a723333f9d75",
+        "name_ar": "صابون مسك طهارة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون مغربي زبادي جوز هند 250 مل.jpg",
+        "product_id": "280f6231-cd92-4ad5-af93-c44d60faecf3",
+        "name_ar": "صابون مغربي زبادي جوز هند 250 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون مغربي300غ شام ستار.jpg",
+        "product_id": "3dc7444e-4a13-4e6f-9afe-a6213a7f4eb2",
+        "name_ar": "صابون مغربي300غ شام ستار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابونة المر 100غ.jpg",
+        "product_id": "fcf60d19-e994-47f2-861d-32bdd7a744f3",
+        "name_ar": "صابونة المر 100غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابونة النيلة المغربية.jpg",
+        "product_id": "65dcbd96-f595-400f-9452-967806c3e6b0",
+        "name_ar": "صابونة النيلة المغربية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابونة بكيني كير 100غ.jpg",
+        "product_id": "ba4fa540-6db7-4f04-9178-6b45d548768f",
+        "name_ar": "صابونة بكيني كير 100غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابونة شجرة الشاي(100غ).jpg",
+        "product_id": "7131db75-3a03-4263-93d9-834d56b267ab",
+        "name_ar": "صابونة شجرة الشاي(100غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابونة فحم لاجونس.jpg",
+        "product_id": "61610eae-c2c1-462e-94e6-0185e6fd8b1c",
+        "name_ar": "صابونة فحم لاجونس",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير اجين نكهة البرتقال 20 جم.jpg",
+        "product_id": "1b61032e-a24e-4638-9584-11329072c615",
+        "name_ar": "عصير اجين نكهة البرتقال 20 جم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس اناناس 30غ.jpg",
+        "product_id": "722b7bf9-b9ea-4774-80bc-79742e216868",
+        "name_ar": "عصير ايس اناناس 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس برتقال 30غ.jpg",
+        "product_id": "0e9890d9-418f-405c-8b3e-3e2934698b5f",
+        "name_ar": "عصير ايس برتقال 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس توت 30غ.jpg",
+        "product_id": "3e344194-20aa-45f3-9967-fc1f46926112",
+        "name_ar": "عصير ايس توت 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس خوخ30غ.jpg",
+        "product_id": "55ec6375-4676-494d-851e-440804d749bd",
+        "name_ar": "عصير ايس خوخ30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس قمر الدين 30غ.jpg",
+        "product_id": "0c79cde3-4efe-4fca-9fe1-09d754099a9c",
+        "name_ar": "عصير ايس قمر الدين 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس ليمون 30غ.jpg",
+        "product_id": "022e58e9-dc1e-4c46-abd1-311ecc26db21",
+        "name_ar": "عصير ايس ليمون 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير ايس مانجو 30غ.jpg",
+        "product_id": "48ef9d7b-4c61-44b6-99e5-de659db77a16",
+        "name_ar": "عصير ايس مانجو 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عصير كوكتيل ايس 30غ.jpg",
+        "product_id": "69577712-57b0-4b12-8a1e-5be7245a6316",
+        "name_ar": "عصير كوكتيل ايس 30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كاسترد دريم (300غ).jpg",
+        "product_id": "f6589c9b-19fa-4b61-bbba-459b2fba38ce",
+        "name_ar": "كاسترد دريم (300غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كاسترد فانليا كوكس(300غ).jpg",
+        "product_id": "e05c4569-5944-4e7b-bf7b-cfbfebbbf9d6",
+        "name_ar": "كاسترد فانليا كوكس(300غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريم كراميل دريم 93غ.jpg",
+        "product_id": "5a523087-c29e-4d6c-95fa-0abd874b143f",
+        "name_ar": "كريم كراميل دريم 93غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لوشن انشنتر باريس عرض.jpg",
+        "product_id": "bc1b81fa-163d-4a05-a835-6981ec9aa3d5",
+        "name_ar": "لوشن انشنتر باريس عرض",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لوشن معطر للجسم-خمرة.jpg",
+        "product_id": "7169c421-5b93-406d-ba5e-2fb2a785f28d",
+        "name_ar": "لوشن معطر للجسم/خمرة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لوشن معطر للجسم-كريزي.jpg",
+        "product_id": "e9f52be5-d12a-4f1b-b3c4-990b2c183e66",
+        "name_ar": "لوشن معطر للجسم/كريزي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لوشن معطر للجسم-كوين.jpg",
+        "product_id": "39887531-6a73-4774-8e40-68af2d152057",
+        "name_ar": "لوشن معطر للجسم/كوين",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء ورد لاجونز  لبان200مل.jpg",
+        "product_id": "6ebc30c9-75a5-4a0b-a6dd-fbe0c17925a1",
+        "name_ar": "ماء ورد لاجونز  لبان200مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء ورد لاجونز طبيعي20ملل.jpg",
+        "product_id": "0e04edec-620b-4d0b-8474-9b967fa63623",
+        "name_ar": "ماء ورد لاجونز طبيعي20ملل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء ورد مورد300ملي.jpg",
+        "product_id": "42ada3e1-d8ce-4bf3-9a52-b3fb0ddfe5f2",
+        "name_ar": "ماء ورد مورد300ملي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مخمرية لاجونز باريس30غ.jpg",
+        "product_id": "c5a704ce-5ce2-4865-bd7e-84090e05fea3",
+        "name_ar": "مخمرية لاجونز باريس30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مخمرية لاجونز روج30غ.jpg",
+        "product_id": "c5c43c3c-7ebe-4a04-9412-ff66b5791c47",
+        "name_ar": "مخمرية لاجونز روج30غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مسك  لاجونز طهارة روائح 6مل.jpg",
+        "product_id": "34613ec4-4f1a-4b4f-9112-b30db8d71247",
+        "name_ar": "مسك  لاجونز طهارة روائح 6مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مسك طهارة 8مل - ابيض.jpg",
+        "product_id": "e05d9479-72b6-4abd-a5e3-947456e9d4e2",
+        "name_ar": "مسك طهارة 8مل / ابيض",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "معطر اطفال ميكي.jpg",
+        "product_id": "e42bba58-bdfb-429c-ba1b-3f7f5d72eea1",
+        "name_ar": "معطر اطفال ميكي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلو الشام كريم كراميل عرض 2_1.jpg",
+        "product_id": "cd2fe7a1-43df-4e07-bcb3-bc4ee24fb629",
+        "name_ar": "حلو الشام كريم كراميل عرض 2*1",
+        "score": 0.9583,
+        "method": "fuzzy",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "بخور كنوز 40غ.jpg",
+        "product_id": "c6ec0eab-faf4-4934-8cca-ea4080b8c8bf",
+        "name_ar": "بخور كنوز 40غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206493659-rzm4fu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206493659-rzm4fu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور كنوز كلمات.jpg",
+        "product_id": "49f1cc4d-4126-4431-9711-9c6e13789966",
+        "name_ar": "بخور كنوز كلمات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206494575-znjwzz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206494575-znjwzz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بلسم جوز هند الحواج 250 مل.jpg",
+        "product_id": "783cca04-05ea-428d-81c2-d6f2e99c4fc5",
+        "name_ar": "بلسم جوز هند الحواج 250 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206495596-b9rjeg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206495596-b9rjeg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بلسم روزماري الحواج 250 مل.jpg",
+        "product_id": "b0583d13-434a-4594-bdb7-dc92da3068c8",
+        "name_ar": "بلسم روزماري الحواج 250 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496031-ndzikc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496031-ndzikc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بيكينج بودر كوكس(500غ).jpg",
+        "product_id": "2472ece4-8daa-4771-bbb6-d7296b954728",
+        "name_ar": "بيكينج بودر كوكس(500غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496517-toj04k.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496517-toj04k.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جلسرين توت الحواج 50 مل.jpg",
+        "product_id": "83341d59-6290-4ea1-b25b-f9749658b853",
+        "name_ar": "جلسرين توت الحواج 50 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496932-gp1hyn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206496932-gp1hyn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جلسرين عود الحواج 50 مل.jpg",
+        "product_id": "a4ffd807-94c1-4a3c-8e28-8ca7027fb8a3",
+        "name_ar": "جلسرين عود الحواج 50 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206497340-hwsihc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206497340-hwsihc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جلسرين مسك ابيض الحواج 50 ملي.jpg",
+        "product_id": "38dcc240-aedc-490b-a208-523e36d88947",
+        "name_ar": "جلسرين مسك ابيض الحواج 50 ملي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206497725-th44mp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206497725-th44mp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جيلي دريم فراولة 70غ.jpg",
+        "product_id": "7881ba2a-f974-4844-a3fa-1521e98705ce",
+        "name_ar": "جيلي دريم فراولة 70غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498121-r9mnk8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498121-r9mnk8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جيلي دريم مشمش 70غ.jpg",
+        "product_id": "ca8a2ec9-505d-46bf-b02f-2f8cd2828768",
+        "name_ar": "جيلي دريم مشمش 70غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498527-xq7mg4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498527-xq7mg4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خلطة ذهبية للشعر(150مل).jpg",
+        "product_id": "b7d62f6d-14b1-435a-aaef-a465654b3420",
+        "name_ar": "خلطة ذهبية للشعر(150مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498922-5pbjq8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206498922-5pbjq8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خميرة انجل(450غ).jpg",
+        "product_id": "42fc86f8-47a4-48f7-90c3-32db86375ae5",
+        "name_ar": "خميرة انجل(450غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206499341-jhvgeq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206499341-jhvgeq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دهان الحبة السوداء 50 جم.jpg",
+        "product_id": "b6928719-9ece-443c-87a3-0f377c097520",
+        "name_ar": "دهان الحبة السوداء 50 جم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206499716-pi1rct.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206499716-pi1rct.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دهن الحنظل بزيت حبة البركة الحواج.jpg",
+        "product_id": "98cc366e-7f2a-476c-b49c-c89561a499c6",
+        "name_ar": "دهن الحنظل بزيت حبة البركة الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206500136-zsluqt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206500136-zsluqt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زبدة الشيا الحواج 50غ.jpg",
+        "product_id": "a1bf8955-ec03-4092-99e5-7029eb9132c6",
+        "name_ar": "زبدة الشيا الحواج 50غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206500944-2lyk0h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206500944-2lyk0h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند نخاع 125مل.jpg",
+        "product_id": "4c1a1dfe-dab6-4cb7-ba40-bc3c392c4e6a",
+        "name_ar": "زيت جوز هند نخاع 125مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206501668-0m136m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206501668-0m136m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شعر الحواج 125مل.jpg",
+        "product_id": "005709ba-2842-410d-b6cb-a7a78bece7ef",
+        "name_ar": "زيت شعر الحواج 125مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502081-fo0d4h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502081-fo0d4h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت صبار شعر 125مل.jpg",
+        "product_id": "b33f7d8b-fed1-4642-aa5a-c55103646796",
+        "name_ar": "زيت صبار شعر 125مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502503-yoylyr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502503-yoylyr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سحلب كاندي فود.jpg",
+        "product_id": "99a16308-dca7-4135-9b65-ff8664c2b954",
+        "name_ar": "سحلب كاندي فود",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502918-fwl5ck.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206502918-fwl5ck.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شامبو بلاك بأوراق السدر 250 مل.jpg",
+        "product_id": "2de1add5-c839-481b-90aa-6b01cf9d128e",
+        "name_ar": "شامبو بلاك بأوراق السدر 250 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206503567-4zr42t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206503567-4zr42t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شامبو جوز هند الحواج 250 مل.jpg",
+        "product_id": "2b127a28-0e3a-4a51-86d7-b24e7153e624",
+        "name_ar": "شامبو جوز هند الحواج 250 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206503966-ohf6e9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206503966-ohf6e9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون الجلسرين النقي(100غ) لاجونز.jpg",
+        "product_id": "33a88ef3-e8c3-434c-9205-5cdba42a2984",
+        "name_ar": "صابون الجلسرين النقي(100غ) لاجونز",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206504487-97h83a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206504487-97h83a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون العرق سوس(100غ).jpg",
+        "product_id": "f12ea0af-f297-4e16-b931-1baf8b14dacb",
+        "name_ar": "صابون العرق سوس(100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206504987-b4ds6c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206504987-b4ds6c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون القهوة الحواج.jpg",
+        "product_id": "42b02bdf-1941-43e4-a5d4-152e8c68ebb6",
+        "name_ar": "صابون القهوة الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206505445-kvye9x.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206505445-kvye9x.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون الورد (100غ).jpg",
+        "product_id": "64f14b98-a7f5-4636-976c-d52e5cc3fc56",
+        "name_ar": "صابون الورد (100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206505854-4ol30t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206505854-4ol30t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون جوز هند و لبن الماعز الحواج 85 جرام.jpg",
+        "product_id": "c430edbd-e538-44b2-bb34-d6ef5fdefc53",
+        "name_ar": "صابون جوز هند و لبن الماعز الحواج 85 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206506345-xur2xt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206506345-xur2xt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون شيا وكركم الحواج.jpg",
+        "product_id": "e9e2e149-a2ba-4506-a60d-8fb620126577",
+        "name_ar": "صابون شيا وكركم الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206506740-w07ige.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206506740-w07ige.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون عسل و لوز (100غ).jpg",
+        "product_id": "50e03fc4-e510-41b9-9c0b-553b88f3c6bd",
+        "name_ar": "صابون عسل و لوز (100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206507168-wjiifc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206507168-wjiifc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون غار بالزيتون الحواج 120 جم.jpg",
+        "product_id": "607d44f8-a1f4-4186-a86f-7cd988e711c4",
+        "name_ar": "صابون غار بالزيتون الحواج 120 جم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206507838-sm6y83.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206507838-sm6y83.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون كبريت (90غ).jpg",
+        "product_id": "f211b6f5-7002-4437-a3bf-9c5711eab56a",
+        "name_ar": "صابون كبريت (90غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206508557-m1ddty.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206508557-m1ddty.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون لبان دكر صافلك.jpg",
+        "product_id": "b0313bb0-a35a-4497-b910-b30cc56b3959",
+        "name_ar": "صابون لبان دكر صافلك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206508985-kut5ms.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206508985-kut5ms.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون مسك طهارة.jpg",
+        "product_id": "fa2b649a-60d3-4f0a-a6ab-a723333f9d75",
+        "name_ar": "صابون مسك طهارة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206509471-g3774m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206509471-g3774m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون مغربي زبادي جوز هند 250 مل.jpg",
+        "product_id": "280f6231-cd92-4ad5-af93-c44d60faecf3",
+        "name_ar": "صابون مغربي زبادي جوز هند 250 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206510044-varh2d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206510044-varh2d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون مغربي300غ شام ستار.jpg",
+        "product_id": "3dc7444e-4a13-4e6f-9afe-a6213a7f4eb2",
+        "name_ar": "صابون مغربي300غ شام ستار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206510530-z18j1w.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206510530-z18j1w.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابونة المر 100غ.jpg",
+        "product_id": "fcf60d19-e994-47f2-861d-32bdd7a744f3",
+        "name_ar": "صابونة المر 100غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511007-pk7dsy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511007-pk7dsy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابونة النيلة المغربية.jpg",
+        "product_id": "65dcbd96-f595-400f-9452-967806c3e6b0",
+        "name_ar": "صابونة النيلة المغربية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511437-rgeiot.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511437-rgeiot.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابونة بكيني كير 100غ.jpg",
+        "product_id": "ba4fa540-6db7-4f04-9178-6b45d548768f",
+        "name_ar": "صابونة بكيني كير 100غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511887-zj50v2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206511887-zj50v2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابونة شجرة الشاي(100غ).jpg",
+        "product_id": "7131db75-3a03-4263-93d9-834d56b267ab",
+        "name_ar": "صابونة شجرة الشاي(100غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206512308-04v9kd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206512308-04v9kd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابونة فحم لاجونس.jpg",
+        "product_id": "61610eae-c2c1-462e-94e6-0185e6fd8b1c",
+        "name_ar": "صابونة فحم لاجونس",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206512714-6xcvgb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206512714-6xcvgb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير اجين نكهة البرتقال 20 جم.jpg",
+        "product_id": "1b61032e-a24e-4638-9584-11329072c615",
+        "name_ar": "عصير اجين نكهة البرتقال 20 جم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206513218-qrhxa8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206513218-qrhxa8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس اناناس 30غ.jpg",
+        "product_id": "722b7bf9-b9ea-4774-80bc-79742e216868",
+        "name_ar": "عصير ايس اناناس 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206513688-16ozb9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206513688-16ozb9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس برتقال 30غ.jpg",
+        "product_id": "0e9890d9-418f-405c-8b3e-3e2934698b5f",
+        "name_ar": "عصير ايس برتقال 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514097-k0xvgp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514097-k0xvgp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس توت 30غ.jpg",
+        "product_id": "3e344194-20aa-45f3-9967-fc1f46926112",
+        "name_ar": "عصير ايس توت 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514528-br2d69.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514528-br2d69.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس خوخ30غ.jpg",
+        "product_id": "55ec6375-4676-494d-851e-440804d749bd",
+        "name_ar": "عصير ايس خوخ30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514990-t46x6q.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206514990-t46x6q.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس قمر الدين 30غ.jpg",
+        "product_id": "0c79cde3-4efe-4fca-9fe1-09d754099a9c",
+        "name_ar": "عصير ايس قمر الدين 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206515482-9mpfrd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206515482-9mpfrd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس ليمون 30غ.jpg",
+        "product_id": "022e58e9-dc1e-4c46-abd1-311ecc26db21",
+        "name_ar": "عصير ايس ليمون 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516059-1nj6x6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516059-1nj6x6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير ايس مانجو 30غ.jpg",
+        "product_id": "48ef9d7b-4c61-44b6-99e5-de659db77a16",
+        "name_ar": "عصير ايس مانجو 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516454-lozaqy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516454-lozaqy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عصير كوكتيل ايس 30غ.jpg",
+        "product_id": "69577712-57b0-4b12-8a1e-5be7245a6316",
+        "name_ar": "عصير كوكتيل ايس 30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516869-3r6gi5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206516869-3r6gi5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كاسترد دريم (300غ).jpg",
+        "product_id": "f6589c9b-19fa-4b61-bbba-459b2fba38ce",
+        "name_ar": "كاسترد دريم (300غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206517310-xm799u.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206517310-xm799u.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كاسترد فانليا كوكس(300غ).jpg",
+        "product_id": "e05c4569-5944-4e7b-bf7b-cfbfebbbf9d6",
+        "name_ar": "كاسترد فانليا كوكس(300غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206517782-t73jnz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206517782-t73jnz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريم كراميل دريم 93غ.jpg",
+        "product_id": "5a523087-c29e-4d6c-95fa-0abd874b143f",
+        "name_ar": "كريم كراميل دريم 93غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206518200-b5bdi3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206518200-b5bdi3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لوشن انشنتر باريس عرض.jpg",
+        "product_id": "bc1b81fa-163d-4a05-a835-6981ec9aa3d5",
+        "name_ar": "لوشن انشنتر باريس عرض",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206518673-nsss1g.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206518673-nsss1g.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لوشن معطر للجسم-خمرة.jpg",
+        "product_id": "7169c421-5b93-406d-ba5e-2fb2a785f28d",
+        "name_ar": "لوشن معطر للجسم/خمرة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519077-usu2nw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519077-usu2nw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لوشن معطر للجسم-كريزي.jpg",
+        "product_id": "e9f52be5-d12a-4f1b-b3c4-990b2c183e66",
+        "name_ar": "لوشن معطر للجسم/كريزي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519550-iqgbns.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519550-iqgbns.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لوشن معطر للجسم-كوين.jpg",
+        "product_id": "39887531-6a73-4774-8e40-68af2d152057",
+        "name_ar": "لوشن معطر للجسم/كوين",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519956-sk6p8u.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206519956-sk6p8u.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء ورد لاجونز  لبان200مل.jpg",
+        "product_id": "6ebc30c9-75a5-4a0b-a6dd-fbe0c17925a1",
+        "name_ar": "ماء ورد لاجونز  لبان200مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206520360-msn8qu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206520360-msn8qu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء ورد لاجونز طبيعي20ملل.jpg",
+        "product_id": "0e04edec-620b-4d0b-8474-9b967fa63623",
+        "name_ar": "ماء ورد لاجونز طبيعي20ملل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206520808-rmu142.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206520808-rmu142.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء ورد مورد300ملي.jpg",
+        "product_id": "42ada3e1-d8ce-4bf3-9a52-b3fb0ddfe5f2",
+        "name_ar": "ماء ورد مورد300ملي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206521237-30ajzh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206521237-30ajzh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مخمرية لاجونز باريس30غ.jpg",
+        "product_id": "c5a704ce-5ce2-4865-bd7e-84090e05fea3",
+        "name_ar": "مخمرية لاجونز باريس30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206521716-oa7ok6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206521716-oa7ok6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مخمرية لاجونز روج30غ.jpg",
+        "product_id": "c5c43c3c-7ebe-4a04-9412-ff66b5791c47",
+        "name_ar": "مخمرية لاجونز روج30غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206522332-u3nrpc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206522332-u3nrpc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مسك  لاجونز طهارة روائح 6مل.jpg",
+        "product_id": "34613ec4-4f1a-4b4f-9112-b30db8d71247",
+        "name_ar": "مسك  لاجونز طهارة روائح 6مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206522859-sugzwo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206522859-sugzwo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مسك طهارة 8مل - ابيض.jpg",
+        "product_id": "e05d9479-72b6-4abd-a5e3-947456e9d4e2",
+        "name_ar": "مسك طهارة 8مل / ابيض",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206523311-8okj4f.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206523311-8okj4f.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "معطر اطفال ميكي.jpg",
+        "product_id": "e42bba58-bdfb-429c-ba1b-3f7f5d72eea1",
+        "name_ar": "معطر اطفال ميكي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206523715-9u1c1p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206523715-9u1c1p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلو الشام كريم كراميل عرض 2_1.jpg",
+        "product_id": "cd2fe7a1-43df-4e07-bcb3-bc4ee24fb629",
+        "name_ar": "حلو الشام كريم كراميل عرض 2*1",
+        "score": 0.9583,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206524104-kppwmf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206524104-kppwmf.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

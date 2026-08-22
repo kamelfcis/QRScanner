@@ -6,8 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import NextImage from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { loginSchema, type LoginInput } from '@/types/schema';
 import type { LoginBrandConfig } from '@/lib/login/types';
+import { getLocalizedText } from '@/lib/utils';
 import { LoginBrandPanel } from './LoginBrandPanel';
 import { LoginFormFields } from './LoginFormFields';
 
@@ -34,7 +36,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
   const { signIn } = useAuth();
   const t = useTranslations('auth');
   const { locale } = useI18n();
-  const displayName = locale === 'ar' ? brand.nameAr : brand.nameEn;
+  const displayName = getLocalizedText(locale, { en: brand.nameEn, ar: brand.nameAr });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -57,7 +59,20 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
   };
 
   return (
-    <div data-login-theme={brand.tenantId} className="login-shell" style={loginTokenStyle(brand)}>
+    <div
+      data-login-theme={brand.tenantId}
+      className="login-shell relative"
+      style={loginTokenStyle(brand)}
+    >
+      <div
+        className="absolute z-10"
+        style={{
+          top: 'max(1rem, env(safe-area-inset-top))',
+          insetInlineEnd: 'clamp(1.25rem, 4vw, 3.25rem)',
+        }}
+      >
+        <LanguageSwitcher />
+      </div>
       <section id="main-content" className="login-form-column" tabIndex={-1}>
         <div className="login-form-inner">
           <LoginBrandPanel brand={brand} variant="compact" />

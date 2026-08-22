@@ -1,0 +1,2636 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "6fe6a01d-ca94-43d1-9719-2a18e0a5af52",
+    "name_ar": "كريم شانتيه + الحواج"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\كريم شانتيه + الحواج\\كريم شانتيه + الحواج",
+  "counts": {
+    "images_found": 149,
+    "products_in_category": 149,
+    "matched": 149,
+    "uploaded": 0,
+    "skipped_unchanged": 149,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "انسام الاقصى 45 دقيقة قمع.jpg",
+      "product_id": "d206a2c1-56e3-456e-8df2-579a691b4bde",
+      "name_ar": "انسام الاقصى 45 دقيقة قمع",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "انسام مكة قمع 45 دقيقة قمع.jpg",
+      "product_id": "e7bda7a2-cc1e-4406-919c-88ad805c1fdc",
+      "name_ar": "انسام مكة قمع 45 دقيقة قمع",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام ارابيسك 2.5ساعة.jpg",
+      "product_id": "d6cc8e69-6912-4cf8-b929-54d720f9426f",
+      "name_ar": "بخور انسام ارابيسك 2.5ساعة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام ارابيسك 3ساعات.jpg",
+      "product_id": "1abcef9a-078e-48f6-82de-213a2b302df6",
+      "name_ar": "بخور انسام ارابيسك 3ساعات",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام الاقصى 2.5ساعة.jpg",
+      "product_id": "a1ddee11-0a45-4f26-8a98-39d771f998a9",
+      "name_ar": "بخور انسام الاقصى 2.5ساعة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام الاقصى 3ساعات.jpg",
+      "product_id": "84483223-43eb-4222-85eb-0e00c68d4dab",
+      "name_ar": "بخور انسام الاقصى 3ساعات",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام الاندلس 3ساعات.jpg",
+      "product_id": "690e394f-6da1-4e51-82b9-9723e8cf3006",
+      "name_ar": "بخور انسام الاندلس 3ساعات",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بخور انسام الاندلس 5ساعات.jpg",
+      "product_id": "ddeee8a7-8912-41f0-a4b7-750fde3c463a",
+      "name_ar": "بخور انسام الاندلس 5ساعات",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:19:20.527Z",
+  "details": {
+    "matched": [
+      {
+        "file": "انسام الاقصى 45 دقيقة قمع.jpg",
+        "product_id": "d206a2c1-56e3-456e-8df2-579a691b4bde",
+        "name_ar": "انسام الاقصى 45 دقيقة قمع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "انسام مكة قمع 45 دقيقة قمع.jpg",
+        "product_id": "e7bda7a2-cc1e-4406-919c-88ad805c1fdc",
+        "name_ar": "انسام مكة قمع 45 دقيقة قمع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام ارابيسك 2.5ساعة.jpg",
+        "product_id": "d6cc8e69-6912-4cf8-b929-54d720f9426f",
+        "name_ar": "بخور انسام ارابيسك 2.5ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام ارابيسك 3ساعات.jpg",
+        "product_id": "1abcef9a-078e-48f6-82de-213a2b302df6",
+        "name_ar": "بخور انسام ارابيسك 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام الاقصى 2.5ساعة.jpg",
+        "product_id": "a1ddee11-0a45-4f26-8a98-39d771f998a9",
+        "name_ar": "بخور انسام الاقصى 2.5ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام الاقصى 3ساعات.jpg",
+        "product_id": "84483223-43eb-4222-85eb-0e00c68d4dab",
+        "name_ar": "بخور انسام الاقصى 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام الاندلس 3ساعات.jpg",
+        "product_id": "690e394f-6da1-4e51-82b9-9723e8cf3006",
+        "name_ar": "بخور انسام الاندلس 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام الاندلس 5ساعات.jpg",
+        "product_id": "ddeee8a7-8912-41f0-a4b7-750fde3c463a",
+        "name_ar": "بخور انسام الاندلس 5ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام الاندلس2.5.jpg",
+        "product_id": "59f3d23d-ec72-4324-897a-63b764f32a4c",
+        "name_ar": "بخور انسام الاندلس2.5",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام العنبر 3ساعات.jpg",
+        "product_id": "0a9b4d4a-08e1-41fa-893f-f25fe528ef54",
+        "name_ar": "بخور انسام العنبر 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام المدينة 2.5ساعة.jpg",
+        "product_id": "0ab7d38d-858c-4860-8ba8-bb4e002712b8",
+        "name_ar": "بخور انسام المدينة 2.5ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام المدينة 45 دقيقة قمع.jpg",
+        "product_id": "f4aea6e2-9c07-4db3-aeb1-5caecb6d26ff",
+        "name_ar": "بخور انسام المدينة 45 دقيقة قمع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام باقة زهور 5 ساعات.jpg",
+        "product_id": "f61b669e-32cb-4a15-8bf6-f0ed0c3ffd08",
+        "name_ar": "بخور انسام باقة زهور 5 ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام جذور العود 3ساعات.jpg",
+        "product_id": "76df0d4a-62ce-4d56-a96a-f87114ad8e5a",
+        "name_ar": "بخور انسام جذور العود 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام جذور العود 5ساعات.jpg",
+        "product_id": "cbc5ae47-34ca-45ad-9506-779988128a2a",
+        "name_ar": "بخور انسام جذور العود 5ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام روح المسك 2.5ساعة.jpg",
+        "product_id": "60ca9cbe-b65b-48e2-a4e1-ada0f33f62de",
+        "name_ar": "بخور انسام روح المسك 2.5ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام روح المسك 3ساعات.jpg",
+        "product_id": "46283c81-0076-48de-b556-aab20458dea5",
+        "name_ar": "بخور انسام روح المسك 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام روح المسك 5 ساعات.jpg",
+        "product_id": "32e66e78-a04e-4970-8d0d-2bfdff4a75ee",
+        "name_ar": "بخور انسام روح المسك 5 ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام سحر الربيع 3ساعات.jpg",
+        "product_id": "eae7cf79-84ae-4286-93ff-0ad1bc479619",
+        "name_ar": "بخور انسام سحر الربيع 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام سحر الربيع 5 ساعات.jpg",
+        "product_id": "6daa60c7-3ea3-4e3e-809e-6969a354e717",
+        "name_ar": "بخور انسام سحر الربيع 5 ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام عود 2.5ساعة.jpg",
+        "product_id": "7f8427ca-fc05-4bc3-b1eb-18bea6c1ca5d",
+        "name_ar": "بخور انسام عود 2.5ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام مكة 2.5 ساعة.jpg",
+        "product_id": "8d318fdf-b534-4fa1-8e71-41c6fd241c30",
+        "name_ar": "بخور انسام مكة 2.5 ساعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام مكة 3ساعات.jpg",
+        "product_id": "040e31e6-2c4e-4e30-aabe-bea18d7390c2",
+        "name_ar": "بخور انسام مكة 3ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام مملكة الورد 3 ساعات.jpg",
+        "product_id": "22b928f5-6a03-40d4-bbf1-35ef6ece9d3b",
+        "name_ar": "بخور انسام مملكة الورد 3 ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخور انسام مملكة الورد 5 ساعات.jpg",
+        "product_id": "917c3d8f-5e2f-4216-9621-783b86d51668",
+        "name_ar": "بخور انسام مملكة الورد 5 ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بخورانسام الأقصى 5ساعات.jpg",
+        "product_id": "6d582618-ac95-470e-b1aa-74defc6f49e1",
+        "name_ar": "بخورانسام الأقصى 5ساعات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دهن الحنظل بزيت حبة البركة الحواج.jpg",
+        "product_id": "814107cb-2308-402c-a9e6-bf493819249f",
+        "name_ar": "دهن الحنظل بزيت حبة البركة الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ارجان الحواج 30مل.jpg",
+        "product_id": "f4b1b5b5-034e-429c-bbe4-cf76a6da30c8",
+        "name_ar": "زيت ارجان الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ارجان الحواج500مل.jpg",
+        "product_id": "51d7282d-563c-4055-8575-8b262faa7676",
+        "name_ar": "زيت ارجان الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ارجان الحواج60مل.jpg",
+        "product_id": "5e9d5d08-07ce-468c-af8e-e7a25ec3d25c",
+        "name_ar": "زيت ارجان الحواج60مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت افوكادو الحواج 60مل.jpg",
+        "product_id": "17adaf17-c12d-41c5-a7ac-54f96c28daf1",
+        "name_ar": "زيت افوكادو الحواج 60مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت البابونج الحواج30مل.jpg",
+        "product_id": "5375dae4-e81a-4d0a-ae2f-a58c697368f5",
+        "name_ar": "زيت البابونج الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت البصل الحواج 1كغ.jpg",
+        "product_id": "10ec9968-9adc-440c-a974-2a720c859ecc",
+        "name_ar": "زيت البصل الحواج 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت البنفسج الحواج30مل.jpg",
+        "product_id": "f6b978bb-5e5f-483a-b270-de386d7f541b",
+        "name_ar": "زيت البنفسج الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الثوم الحواج 30 مل.jpg",
+        "product_id": "4b328cf2-287b-417a-839b-e9557ca247cf",
+        "name_ar": "زيت الثوم الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الحرمل الحواج 30 مل.jpg",
+        "product_id": "b16b4b43-887c-4d97-8187-c83af1ed40a7",
+        "name_ar": "زيت الحرمل الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الحواج كتان500مل.jpg",
+        "product_id": "63a36da1-cfae-4f0f-bc08-deba23aea4a9",
+        "name_ar": "زيت الحواج كتان500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الحواج ليمون500مل.jpg",
+        "product_id": "024eac3e-2167-4b26-8b17-506d850c2d78",
+        "name_ar": "زيت الحواج ليمون500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الخس الحواج(30مل).jpg",
+        "product_id": "1214025a-4bca-4e8b-a9ed-44db4765fb9a",
+        "name_ar": "زيت الخس الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الريحان الحواج 30 مل.jpg",
+        "product_id": "b08182c0-a85f-40db-b196-adcf97c4169a",
+        "name_ar": "زيت الريحان الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الزعفران الحواج(30).jpg",
+        "product_id": "cc6499de-6302-44df-8beb-84665aecc921",
+        "name_ar": "زيت الزعفران الحواج(30)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الزنجبيل الحواج(30مل).jpg",
+        "product_id": "80b9771b-67e1-43fe-a280-c9cff278134b",
+        "name_ar": "زيت الزنجبيل الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت السعد الحواج 1ك.jpg",
+        "product_id": "43294dad-22ea-40b5-8cfb-ddb064885abf",
+        "name_ar": "زيت السعد الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت السعد الحواج 30مل.jpg",
+        "product_id": "c39caa0e-af7d-4e52-b19c-0f6e8766923a",
+        "name_ar": "زيت السعد الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت السعد الحواج500مل.jpg",
+        "product_id": "cbd2c261-434f-4784-b0b3-de97bc0c95c3",
+        "name_ar": "زيت السعد الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الفل الحواج 1كغ.jpg",
+        "product_id": "34201fa4-7ce4-4a46-a679-ac897836653d",
+        "name_ar": "زيت الفل الحواج 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت الفل الحواج 30مل.jpg",
+        "product_id": "3f9857cf-2435-4a72-90f8-0595e507def4",
+        "name_ar": "زيت الفل الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت القرفة الحواج(30مل).jpg",
+        "product_id": "b500f6bb-8eab-4ca4-835a-6b4c8a586b21",
+        "name_ar": "زيت القرفة الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت اللبان الحواج 1 لتر.jpg",
+        "product_id": "5211b53f-33d8-469e-8632-eb215db14be9",
+        "name_ar": "زيت اللبان الحواج 1 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت اللبان الحواج500مل.jpg",
+        "product_id": "6bfa42d8-cb88-4651-9fc2-21f14da556bd",
+        "name_ar": "زيت اللبان الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت النيم الحواج 30 مل.jpg",
+        "product_id": "702ab54f-9332-4304-bffd-ed7117f1ee75",
+        "name_ar": "زيت النيم الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت اوفوكادو الحواج30مل.jpg",
+        "product_id": "bb1bd7bc-df22-4b15-9eec-51106cf054a4",
+        "name_ar": "زيت اوفوكادو الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بابونج 500 مل الحواج.jpg",
+        "product_id": "f1c5332c-d821-4e58-a9c1-943eab0676a3",
+        "name_ar": "زيت بابونج 500 مل الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بذر كتان الحواج30مل.jpg",
+        "product_id": "8a0c9166-70fe-4b8f-8057-9c8dab91e17d",
+        "name_ar": "زيت بذر كتان الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بذر كتان الحواج500مل.jpg",
+        "product_id": "42327d4f-fcd8-4884-8de6-f2f3c1fe3a48",
+        "name_ar": "زيت بذر كتان الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت برتقال الحواج 30مل.jpg",
+        "product_id": "c2a9102f-8f60-4da9-90c6-358dd4e46491",
+        "name_ar": "زيت برتقال الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بردقوش الحواج 30مل.jpg",
+        "product_id": "7b3f8e87-2356-492c-91b5-677cde115c3b",
+        "name_ar": "زيت بردقوش الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بصل الحواج 30مل.jpg",
+        "product_id": "110f8454-c165-47f4-9ddc-d88599a1c07f",
+        "name_ar": "زيت بصل الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت بقدونس الحواج 30 مل.jpg",
+        "product_id": "6bc6adb8-78e0-486d-a1b7-c15b875b1f42",
+        "name_ar": "زيت بقدونس الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ترمس الحواج30مل.jpg",
+        "product_id": "70e592c9-89eb-461a-bb32-2658c50eaa91",
+        "name_ar": "زيت ترمس الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ثوم الحواج 30مل.jpg",
+        "product_id": "b17e68e5-47c4-446d-80ed-81940d6e1c80",
+        "name_ar": "زيت ثوم الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ثوم الحواج 500مل.jpg",
+        "product_id": "e6bc1846-7e19-498e-9c60-286f52856046",
+        "name_ar": "زيت ثوم الحواج 500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جرجير الحواج 1ك.jpg",
+        "product_id": "54158a09-afc8-4c19-8f9d-5c08c994648a",
+        "name_ar": "زيت جرجير الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جرجير الحواج 30مل.jpg",
+        "product_id": "59f36b69-001b-4b78-a72a-c08b546a2fb2",
+        "name_ar": "زيت جرجير الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جزر الحواج30مل.jpg",
+        "product_id": "fb37aec2-dc5a-4764-a269-743835e5fc3d",
+        "name_ar": "زيت جزر الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جلسرين الحواج 1لتر.jpg",
+        "product_id": "812776c6-cc73-44bb-a0b9-1bff3bd027b0",
+        "name_ar": "زيت جلسرين الحواج 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جلسرين الحواج 30مل.jpg",
+        "product_id": "5a526611-e659-4271-a44e-0002a6a9bed0",
+        "name_ar": "زيت جلسرين الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جنين القمح الحواج 30مل.jpg",
+        "product_id": "2f8a7e30-c9c5-4c7b-8cb4-349b99ccfc97",
+        "name_ar": "زيت جنين القمح الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جنين قمح الحواج500مل.jpg",
+        "product_id": "59812334-2d88-40d4-a72b-006eabfc2d4f",
+        "name_ar": "زيت جنين قمح الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوجوبا الحواج 15مل.jpg",
+        "product_id": "9cc508ca-0efd-420b-be3c-fefe2284d83b",
+        "name_ar": "زيت جوجوبا الحواج 15مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوجوبا الحواج30مل.jpg",
+        "product_id": "0805c114-ab80-4ca2-939f-73c036db09bd",
+        "name_ar": "زيت جوجوبا الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوجوبا الحواج500مل.jpg",
+        "product_id": "ea7184d2-af00-4eb6-8c2c-40efa97ee097",
+        "name_ar": "زيت جوجوبا الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند الحواج 30مل.jpg",
+        "product_id": "d4a89d74-bf06-493b-abcc-a865982fa1fa",
+        "name_ar": "زيت جوز هند الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند الحواج خام400مل.jpg",
+        "product_id": "b9b0a142-70a7-4ed0-9141-aee648608251",
+        "name_ar": "زيت جوز هند الحواج خام400مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند الحواج500مل.jpg",
+        "product_id": "14251d91-b348-4611-b3aa-f4166898a4a3",
+        "name_ar": "زيت جوز هند الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند الحواج60مل.jpg",
+        "product_id": "b5654092-1aa5-4e9d-ae8b-89e178f470a5",
+        "name_ar": "زيت جوز هند الحواج60مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جوز هند طبيعي الحواج 1ك.jpg",
+        "product_id": "4b3f3ea9-d542-406e-a633-bd79a083043f",
+        "name_ar": "زيت جوز هند طبيعي الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جينسنج الحواج 15مل.jpg",
+        "product_id": "624995f3-9823-4f07-b627-935f2b8d6290",
+        "name_ar": "زيت جينسنج الحواج 15مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جينسنغ الحواج 1كغ.jpg",
+        "product_id": "1d406877-8f01-4480-8813-804a01381eaa",
+        "name_ar": "زيت جينسنغ الحواج 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جينسينج الحواج 30مل.jpg",
+        "product_id": "6b50af7b-203d-4b37-8aee-a29afbe6e18a",
+        "name_ar": "زيت جينسينج الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت جينسينج الحواج500مل.jpg",
+        "product_id": "eb0cc059-aac0-4b02-a5b0-af7727a60b52",
+        "name_ar": "زيت جينسينج الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حب الرشاد الحواج30مل.jpg",
+        "product_id": "ddaee15a-5968-4f44-9d9e-bfa19b61ed51",
+        "name_ar": "زيت حب الرشاد الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حب الرشاد الحواج500مل.jpg",
+        "product_id": "325a8cee-64cc-4713-9bf5-562f3343dab7",
+        "name_ar": "زيت حب الرشاد الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حبة البركة الحواج1كغ.jpg",
+        "product_id": "37642793-bddc-48b3-b446-de57617f6652",
+        "name_ar": "زيت حبة البركة الحواج1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حبة البركة الحواج30مل.jpg",
+        "product_id": "13746855-aa5a-48e2-a977-947ce576fab2",
+        "name_ar": "زيت حبة البركة الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حبة البركة الحواج500مل.jpg",
+        "product_id": "7280ada6-dce2-4e91-af3e-dbb858c09bed",
+        "name_ar": "زيت حبة البركة الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حشيش الحواج500مل.jpg",
+        "product_id": "3bd2d808-02e7-4e87-9c80-8f078b681d99",
+        "name_ar": "زيت حشيش الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حصى لبان الحواج 1ك.jpg",
+        "product_id": "733d23f1-2169-4642-a4c8-a7848d5077fa",
+        "name_ar": "زيت حصى لبان الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حصى لبان الحواج 30مل.jpg",
+        "product_id": "43762c22-9932-4a7a-be16-e0d4668d8736",
+        "name_ar": "زيت حصى لبان الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلبة الحواج 1كغ.jpg",
+        "product_id": "9f6c2dd8-4e5a-4697-802e-6fae60dbcdf0",
+        "name_ar": "زيت حلبة الحواج 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حلبة الحواج 30مل.jpg",
+        "product_id": "3ae1fe6a-3150-4561-8900-1180149e4b99",
+        "name_ar": "زيت حلبة الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حنظل الحواج 30مل.jpg",
+        "product_id": "c6c8eda1-2d4d-4044-840a-56012127dcd7",
+        "name_ar": "زيت حنظل الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت خردل الحواج 30مل.jpg",
+        "product_id": "3b0826ec-80d0-4f75-83d6-e3ebd8464763",
+        "name_ar": "زيت خردل الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت خروع الحواج 1ك.jpg",
+        "product_id": "e6d6d7ba-2413-4370-9c42-0b19edf16b35",
+        "name_ar": "زيت خروع الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت خروع الحواج 30مل.jpg",
+        "product_id": "a91cca10-d4af-491f-84e6-39ba740f6114",
+        "name_ar": "زيت خروع الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت خروع الحواج500مل.jpg",
+        "product_id": "75fe8587-362f-436a-a7fc-8f3894eb74db",
+        "name_ar": "زيت خروع الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت خزامي-لافندر الحواج 30مل.jpg",
+        "product_id": "e17caf04-83a8-4262-b9a7-6cd6b60d2060",
+        "name_ar": "زيت خزامي/لافندر الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت روز ماري الحواج(30مل).jpg",
+        "product_id": "c20eb4b7-5c43-4751-a886-6c5b56be75fd",
+        "name_ar": "زيت روز ماري الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت زعتر الحواج 30مل.jpg",
+        "product_id": "ea1b1642-95c9-4503-8645-cb4d7ba7ba92",
+        "name_ar": "زيت زعتر الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت زيتون الحواج60مل.jpg",
+        "product_id": "01667bb8-0db8-4640-be93-7179fdec390f",
+        "name_ar": "زيت زيتون الحواج60مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت سدر الحواج30مل.jpg",
+        "product_id": "b88e5d58-b726-4bd6-9570-7da1f7f466bd",
+        "name_ar": "زيت سدر الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت سمسم  الحواج500مل.jpg",
+        "product_id": "8dd7c5e6-296a-4c8c-9f3e-19b35eb0dc65",
+        "name_ar": "زيت سمسم  الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت سمسم الحواج30مل.jpg",
+        "product_id": "cd9b959a-dc8f-430a-959c-508eb393103f",
+        "name_ar": "زيت سمسم الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شاي اخضر الحواج 30 مل.jpg",
+        "product_id": "402ddaff-8a92-4181-a775-2ad76a2ba5ea",
+        "name_ar": "زيت شاي اخضر الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شجرة الشاي الحواج500مل.jpg",
+        "product_id": "285b4f8b-b06d-4913-8556-d8f085e5c310",
+        "name_ar": "زيت شجرة الشاي الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شطة الحواج(30مل).jpg",
+        "product_id": "48b09124-11a2-4ab6-9255-cae7e75864ce",
+        "name_ar": "زيت شطة الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شعر الحواج 125مل.jpg",
+        "product_id": "992eecc4-1136-43fd-ab81-b20d9a303442",
+        "name_ar": "زيت شعر الحواج 125مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت شيا الحواج40مل.jpg",
+        "product_id": "d5657549-1311-4a78-a9d4-a068bda5b778",
+        "name_ar": "زيت شيا الحواج40مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت صبار الحواج 1ك.jpg",
+        "product_id": "23be4b3b-1c4c-4d1a-966a-2ac3ee14896b",
+        "name_ar": "زيت صبار الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت صبار الحواج 30مل.jpg",
+        "product_id": "855a11d1-055f-4c83-853a-e58b35b7f3fb",
+        "name_ar": "زيت صبار الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت صبار الحواج500مل.jpg",
+        "product_id": "d4aa04b1-19d8-4e72-9cc3-814424da352a",
+        "name_ar": "زيت صبار الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عرق سوس الحواج30مل.jpg",
+        "product_id": "3d470b13-3bfd-4bae-9769-4fc186dff313",
+        "name_ar": "زيت عرق سوس الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عنب الحواج 30مل.jpg",
+        "product_id": "e262189d-9273-4124-8907-ef62238c81b0",
+        "name_ar": "زيت عنب الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عنبر ازرق الحواج(30مل).jpg",
+        "product_id": "4eb3dd95-8a45-4cb7-b64d-b4b6bd431a66",
+        "name_ar": "زيت عنبر ازرق الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت عنبر عادي الحواج30مل.jpg",
+        "product_id": "bdbd407e-cf30-4de5-b51a-1cf903f7aff4",
+        "name_ar": "زيت عنبر عادي الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت فل 500 مل الحواج.jpg",
+        "product_id": "bad9690a-516b-402b-b635-db89f334fe25",
+        "name_ar": "زيت فل 500 مل الحواج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت قرنفل الحواج 30مل.jpg",
+        "product_id": "4c65fc21-26fa-4534-8b5e-6d7d04651b87",
+        "name_ar": "زيت قرنفل الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت قسط هندي الحواج 30 مل.jpg",
+        "product_id": "9b5976c3-a675-4c3c-91d0-6319a286cbd0",
+        "name_ar": "زيت قسط هندي الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كافور الحواج 30مل.jpg",
+        "product_id": "fe7315c0-10e5-4b6d-a3d7-18684ae74d2b",
+        "name_ar": "زيت كافور الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كبد الحوت الحواج(30مل.jpg",
+        "product_id": "4fb155aa-a3aa-4e7f-a402-f8448c47b4c2",
+        "name_ar": "زيت كبد الحوت الحواج(30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كلام رسل الحواج30مل.jpg",
+        "product_id": "6db08413-b575-411f-93b6-7d7e7a7cfdff",
+        "name_ar": "زيت كلام رسل الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت كمون الحواج(30) مل.jpg",
+        "product_id": "fcacbe14-5c45-4e68-a38b-727dd3d84808",
+        "name_ar": "زيت كمون الحواج(30) مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لب القرع الحواج 30مل.jpg",
+        "product_id": "316ffd41-8dfc-44ea-8928-965b5c3720a5",
+        "name_ar": "زيت لب القرع الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لب القرع الحواج500مل.jpg",
+        "product_id": "5d77d7f2-74af-4de2-91b5-220544c3a424",
+        "name_ar": "زيت لب القرع الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز حلو الحواج 1ك.jpg",
+        "product_id": "f7840ee3-89f3-4441-b395-12c79b3ebba8",
+        "name_ar": "زيت لوز حلو الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز حلو الحواج 30مل.jpg",
+        "product_id": "8f37a8b3-7c61-4dfa-beaf-d2156bc0c257",
+        "name_ar": "زيت لوز حلو الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز حلو الحواج500مل.jpg",
+        "product_id": "9071280c-4030-4505-8935-4bd43076a1ac",
+        "name_ar": "زيت لوز حلو الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز مر الحواج 1ك.jpg",
+        "product_id": "4e808177-9195-40b4-af98-8b5ce3a9f42b",
+        "name_ar": "زيت لوز مر الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز مر الحواج 30مل.jpg",
+        "product_id": "426fd86b-351a-4c3e-a97a-d81b9c818ecc",
+        "name_ar": "زيت لوز مر الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت لوز مر الحواج500مل.jpg",
+        "product_id": "4ba960e6-3a11-40d5-8b25-c583a5e6e159",
+        "name_ar": "زيت لوز مر الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ليمون الحواج 30مل.jpg",
+        "product_id": "a1fb1197-a009-4583-a8c3-f719b4227c6e",
+        "name_ar": "زيت ليمون الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت مرمرية الحواج(30مل).jpg",
+        "product_id": "811dd6a9-2899-471e-969c-895d3e20cffa",
+        "name_ar": "زيت مرمرية الحواج(30مل)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت مسك الحواج 30مل.jpg",
+        "product_id": "3831309f-e0d1-4a35-ba66-b3606f5ac556",
+        "name_ar": "زيت مسك الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت نعناع الحواج 1ك.jpg",
+        "product_id": "f2c742ec-e560-40cb-946e-34f623836bf2",
+        "name_ar": "زيت نعناع الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت نعناع الحواج30مل.jpg",
+        "product_id": "5048ef32-557c-4872-b990-64b8f2b79e4e",
+        "name_ar": "زيت نعناع الحواج30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت نعناع الحواج500مل.jpg",
+        "product_id": "bd532835-a3d5-4d0d-aaa6-fee3da04905d",
+        "name_ar": "زيت نعناع الحواج500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ورد الحواج 1ك.jpg",
+        "product_id": "66fc93fc-c912-48c8-a288-9d87249afaf0",
+        "name_ar": "زيت ورد الحواج 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ورد الحواج 30مل.jpg",
+        "product_id": "c7e77508-4bff-47a1-8272-3dad23ea0702",
+        "name_ar": "زيت ورد الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت ياسمين الحواج 30 مل.jpg",
+        "product_id": "850fdfc6-d3ad-43a4-8036-7267dede6023",
+        "name_ar": "زيت ياسمين الحواج 30 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت يانسون الحواج 30مل.jpg",
+        "product_id": "929328d4-a434-47cb-b965-73280f593bf0",
+        "name_ar": "زيت يانسون الحواج 30مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صابون غار بالزيتون الحواج 120 جم.jpg",
+        "product_id": "eccc164c-1b9d-40a2-bf67-21e8b9debdce",
+        "name_ar": "صابون غار بالزيتون الحواج 120 جم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كاكاو خام دريم (80غ).jpg",
+        "product_id": "a607e05a-6ddb-4d6e-a564-a0a337d33ec4",
+        "name_ar": "كاكاو خام دريم (80غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريم شانتيه دريم فراولة 45 جرام.jpg",
+        "product_id": "44a872c3-1f8c-42c4-b550-dc40afb31138",
+        "name_ar": "كريم شانتيه دريم فراولة 45 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريمة خفق دريم الباني.jpg",
+        "product_id": "15638bc0-30aa-41d4-a416-daeda123948f",
+        "name_ar": "كريمة خفق دريم الباني",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريمة دريم توفير180غ.jpg",
+        "product_id": "bb4734ad-f119-4101-b840-293c19d30758",
+        "name_ar": "كريمة دريم توفير180غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريمة شانتيه دريم 45غ.jpg",
+        "product_id": "a85f8205-2fcf-440f-ad07-9c5f18550f0c",
+        "name_ar": "كريمة شانتيه دريم 45غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كريمة شانتيه دريم شوكولا 65 جرام.jpg",
+        "product_id": "8adfbcdc-3f39-45df-b613-1e692348389b",
+        "name_ar": "كريمة شانتيه دريم شوكولا 65 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نشاء ذرة كوكس 40غ.jpg",
+        "product_id": "fd6f8265-4320-4fe3-9253-c3d1a2018e6c",
+        "name_ar": "نشاء ذرة كوكس 40غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نشاء كوكس240غ.jpg",
+        "product_id": "beb366fe-6f5f-4ff4-8cd9-9311b4b8c231",
+        "name_ar": "نشاء كوكس240غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "انسام الاقصى 45 دقيقة قمع.jpg",
+        "product_id": "d206a2c1-56e3-456e-8df2-579a691b4bde",
+        "name_ar": "انسام الاقصى 45 دقيقة قمع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678128-j7rqbn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678128-j7rqbn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "انسام مكة قمع 45 دقيقة قمع.jpg",
+        "product_id": "e7bda7a2-cc1e-4406-919c-88ad805c1fdc",
+        "name_ar": "انسام مكة قمع 45 دقيقة قمع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678642-7lbudg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678642-7lbudg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام ارابيسك 2.5ساعة.jpg",
+        "product_id": "d6cc8e69-6912-4cf8-b929-54d720f9426f",
+        "name_ar": "بخور انسام ارابيسك 2.5ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679721-7c4y7d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679721-7c4y7d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام ارابيسك 3ساعات.jpg",
+        "product_id": "1abcef9a-078e-48f6-82de-213a2b302df6",
+        "name_ar": "بخور انسام ارابيسك 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680111-62jbh3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680111-62jbh3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام الاقصى 2.5ساعة.jpg",
+        "product_id": "a1ddee11-0a45-4f26-8a98-39d771f998a9",
+        "name_ar": "بخور انسام الاقصى 2.5ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680688-3l9956.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680688-3l9956.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام الاقصى 3ساعات.jpg",
+        "product_id": "84483223-43eb-4222-85eb-0e00c68d4dab",
+        "name_ar": "بخور انسام الاقصى 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681153-wyeed3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681153-wyeed3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام الاندلس 3ساعات.jpg",
+        "product_id": "690e394f-6da1-4e51-82b9-9723e8cf3006",
+        "name_ar": "بخور انسام الاندلس 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681637-6xwrni.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681637-6xwrni.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام الاندلس 5ساعات.jpg",
+        "product_id": "ddeee8a7-8912-41f0-a4b7-750fde3c463a",
+        "name_ar": "بخور انسام الاندلس 5ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682052-281ndd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682052-281ndd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام الاندلس2.5.jpg",
+        "product_id": "59f3d23d-ec72-4324-897a-63b764f32a4c",
+        "name_ar": "بخور انسام الاندلس2.5",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682557-a524wr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682557-a524wr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام العنبر 3ساعات.jpg",
+        "product_id": "0a9b4d4a-08e1-41fa-893f-f25fe528ef54",
+        "name_ar": "بخور انسام العنبر 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682922-pmovb8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682922-pmovb8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام المدينة 2.5ساعة.jpg",
+        "product_id": "0ab7d38d-858c-4860-8ba8-bb4e002712b8",
+        "name_ar": "بخور انسام المدينة 2.5ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683386-krtpsx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683386-krtpsx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام المدينة 45 دقيقة قمع.jpg",
+        "product_id": "f4aea6e2-9c07-4db3-aeb1-5caecb6d26ff",
+        "name_ar": "بخور انسام المدينة 45 دقيقة قمع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683794-o5oqcv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683794-o5oqcv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام باقة زهور 5 ساعات.jpg",
+        "product_id": "f61b669e-32cb-4a15-8bf6-f0ed0c3ffd08",
+        "name_ar": "بخور انسام باقة زهور 5 ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684174-90ct0i.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684174-90ct0i.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام جذور العود 3ساعات.jpg",
+        "product_id": "76df0d4a-62ce-4d56-a96a-f87114ad8e5a",
+        "name_ar": "بخور انسام جذور العود 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684552-xolaol.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684552-xolaol.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام جذور العود 5ساعات.jpg",
+        "product_id": "cbc5ae47-34ca-45ad-9506-779988128a2a",
+        "name_ar": "بخور انسام جذور العود 5ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684910-vhhmji.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684910-vhhmji.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام روح المسك 2.5ساعة.jpg",
+        "product_id": "60ca9cbe-b65b-48e2-a4e1-ada0f33f62de",
+        "name_ar": "بخور انسام روح المسك 2.5ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685243-9olb1c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685243-9olb1c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام روح المسك 3ساعات.jpg",
+        "product_id": "46283c81-0076-48de-b556-aab20458dea5",
+        "name_ar": "بخور انسام روح المسك 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685960-jivn8c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685960-jivn8c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام روح المسك 5 ساعات.jpg",
+        "product_id": "32e66e78-a04e-4970-8d0d-2bfdff4a75ee",
+        "name_ar": "بخور انسام روح المسك 5 ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206686449-s0hj53.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206686449-s0hj53.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام سحر الربيع 3ساعات.jpg",
+        "product_id": "eae7cf79-84ae-4286-93ff-0ad1bc479619",
+        "name_ar": "بخور انسام سحر الربيع 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687132-3astbo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687132-3astbo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام سحر الربيع 5 ساعات.jpg",
+        "product_id": "6daa60c7-3ea3-4e3e-809e-6969a354e717",
+        "name_ar": "بخور انسام سحر الربيع 5 ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687639-ylkfb7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687639-ylkfb7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام عود 2.5ساعة.jpg",
+        "product_id": "7f8427ca-fc05-4bc3-b1eb-18bea6c1ca5d",
+        "name_ar": "بخور انسام عود 2.5ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688104-bf5qc9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688104-bf5qc9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام مكة 2.5 ساعة.jpg",
+        "product_id": "8d318fdf-b534-4fa1-8e71-41c6fd241c30",
+        "name_ar": "بخور انسام مكة 2.5 ساعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688574-nnbtmf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688574-nnbtmf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام مكة 3ساعات.jpg",
+        "product_id": "040e31e6-2c4e-4e30-aabe-bea18d7390c2",
+        "name_ar": "بخور انسام مكة 3ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689016-zhbupn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689016-zhbupn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام مملكة الورد 3 ساعات.jpg",
+        "product_id": "22b928f5-6a03-40d4-bbf1-35ef6ece9d3b",
+        "name_ar": "بخور انسام مملكة الورد 3 ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689487-8s2mp1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689487-8s2mp1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخور انسام مملكة الورد 5 ساعات.jpg",
+        "product_id": "917c3d8f-5e2f-4216-9621-783b86d51668",
+        "name_ar": "بخور انسام مملكة الورد 5 ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689972-xgcb23.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689972-xgcb23.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بخورانسام الأقصى 5ساعات.jpg",
+        "product_id": "6d582618-ac95-470e-b1aa-74defc6f49e1",
+        "name_ar": "بخورانسام الأقصى 5ساعات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690496-v7l2sd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690496-v7l2sd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دهن الحنظل بزيت حبة البركة الحواج.jpg",
+        "product_id": "814107cb-2308-402c-a9e6-bf493819249f",
+        "name_ar": "دهن الحنظل بزيت حبة البركة الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690979-g0q82l.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690979-g0q82l.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ارجان الحواج 30مل.jpg",
+        "product_id": "f4b1b5b5-034e-429c-bbe4-cf76a6da30c8",
+        "name_ar": "زيت ارجان الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691357-s7v0zq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691357-s7v0zq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ارجان الحواج500مل.jpg",
+        "product_id": "51d7282d-563c-4055-8575-8b262faa7676",
+        "name_ar": "زيت ارجان الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691742-j8mva7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691742-j8mva7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ارجان الحواج60مل.jpg",
+        "product_id": "5e9d5d08-07ce-468c-af8e-e7a25ec3d25c",
+        "name_ar": "زيت ارجان الحواج60مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692215-4hwrxz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692215-4hwrxz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت افوكادو الحواج 60مل.jpg",
+        "product_id": "17adaf17-c12d-41c5-a7ac-54f96c28daf1",
+        "name_ar": "زيت افوكادو الحواج 60مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692608-880kfh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692608-880kfh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت البابونج الحواج30مل.jpg",
+        "product_id": "5375dae4-e81a-4d0a-ae2f-a58c697368f5",
+        "name_ar": "زيت البابونج الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692943-pivv2m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692943-pivv2m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت البصل الحواج 1كغ.jpg",
+        "product_id": "10ec9968-9adc-440c-a974-2a720c859ecc",
+        "name_ar": "زيت البصل الحواج 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693497-gd7iuy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693497-gd7iuy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت البنفسج الحواج30مل.jpg",
+        "product_id": "f6b978bb-5e5f-483a-b270-de386d7f541b",
+        "name_ar": "زيت البنفسج الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693947-cs4fhu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693947-cs4fhu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الثوم الحواج 30 مل.jpg",
+        "product_id": "4b328cf2-287b-417a-839b-e9557ca247cf",
+        "name_ar": "زيت الثوم الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694290-wubysy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694290-wubysy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الحرمل الحواج 30 مل.jpg",
+        "product_id": "b16b4b43-887c-4d97-8187-c83af1ed40a7",
+        "name_ar": "زيت الحرمل الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694671-13eur2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694671-13eur2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الحواج كتان500مل.jpg",
+        "product_id": "63a36da1-cfae-4f0f-bc08-deba23aea4a9",
+        "name_ar": "زيت الحواج كتان500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695066-lrx4yx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695066-lrx4yx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الحواج ليمون500مل.jpg",
+        "product_id": "024eac3e-2167-4b26-8b17-506d850c2d78",
+        "name_ar": "زيت الحواج ليمون500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695470-0jjw3r.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695470-0jjw3r.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الخس الحواج(30مل).jpg",
+        "product_id": "1214025a-4bca-4e8b-a9ed-44db4765fb9a",
+        "name_ar": "زيت الخس الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695826-s6u8a7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695826-s6u8a7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الريحان الحواج 30 مل.jpg",
+        "product_id": "b08182c0-a85f-40db-b196-adcf97c4169a",
+        "name_ar": "زيت الريحان الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696161-1he775.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696161-1he775.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الزعفران الحواج(30).jpg",
+        "product_id": "cc6499de-6302-44df-8beb-84665aecc921",
+        "name_ar": "زيت الزعفران الحواج(30)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696537-ouyjh6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696537-ouyjh6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الزنجبيل الحواج(30مل).jpg",
+        "product_id": "80b9771b-67e1-43fe-a280-c9cff278134b",
+        "name_ar": "زيت الزنجبيل الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696910-n7wr3i.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696910-n7wr3i.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت السعد الحواج 1ك.jpg",
+        "product_id": "43294dad-22ea-40b5-8cfb-ddb064885abf",
+        "name_ar": "زيت السعد الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206697272-8pz56k.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206697272-8pz56k.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت السعد الحواج 30مل.jpg",
+        "product_id": "c39caa0e-af7d-4e52-b19c-0f6e8766923a",
+        "name_ar": "زيت السعد الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206697645-vxvhaq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206697645-vxvhaq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت السعد الحواج500مل.jpg",
+        "product_id": "cbd2c261-434f-4784-b0b3-de97bc0c95c3",
+        "name_ar": "زيت السعد الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698028-4n878l.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698028-4n878l.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الفل الحواج 1كغ.jpg",
+        "product_id": "34201fa4-7ce4-4a46-a679-ac897836653d",
+        "name_ar": "زيت الفل الحواج 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698388-n9kyec.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698388-n9kyec.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت الفل الحواج 30مل.jpg",
+        "product_id": "3f9857cf-2435-4a72-90f8-0595e507def4",
+        "name_ar": "زيت الفل الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698749-l2hcpi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206698749-l2hcpi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت القرفة الحواج(30مل).jpg",
+        "product_id": "b500f6bb-8eab-4ca4-835a-6b4c8a586b21",
+        "name_ar": "زيت القرفة الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699078-05k1k7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699078-05k1k7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت اللبان الحواج 1 لتر.jpg",
+        "product_id": "5211b53f-33d8-469e-8632-eb215db14be9",
+        "name_ar": "زيت اللبان الحواج 1 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699449-7s8dcn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699449-7s8dcn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت اللبان الحواج500مل.jpg",
+        "product_id": "6bfa42d8-cb88-4651-9fc2-21f14da556bd",
+        "name_ar": "زيت اللبان الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699797-pxrt16.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206699797-pxrt16.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت النيم الحواج 30 مل.jpg",
+        "product_id": "702ab54f-9332-4304-bffd-ed7117f1ee75",
+        "name_ar": "زيت النيم الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700163-ywas9f.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700163-ywas9f.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت اوفوكادو الحواج30مل.jpg",
+        "product_id": "bb1bd7bc-df22-4b15-9eec-51106cf054a4",
+        "name_ar": "زيت اوفوكادو الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700558-gfu2jk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700558-gfu2jk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بابونج 500 مل الحواج.jpg",
+        "product_id": "f1c5332c-d821-4e58-a9c1-943eab0676a3",
+        "name_ar": "زيت بابونج 500 مل الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700922-vimn7c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206700922-vimn7c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بذر كتان الحواج30مل.jpg",
+        "product_id": "8a0c9166-70fe-4b8f-8057-9c8dab91e17d",
+        "name_ar": "زيت بذر كتان الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206701325-akrgjo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206701325-akrgjo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بذر كتان الحواج500مل.jpg",
+        "product_id": "42327d4f-fcd8-4884-8de6-f2f3c1fe3a48",
+        "name_ar": "زيت بذر كتان الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206701794-kymuip.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206701794-kymuip.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت برتقال الحواج 30مل.jpg",
+        "product_id": "c2a9102f-8f60-4da9-90c6-358dd4e46491",
+        "name_ar": "زيت برتقال الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206702267-cplizj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206702267-cplizj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بردقوش الحواج 30مل.jpg",
+        "product_id": "7b3f8e87-2356-492c-91b5-677cde115c3b",
+        "name_ar": "زيت بردقوش الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206702688-6rbggq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206702688-6rbggq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بصل الحواج 30مل.jpg",
+        "product_id": "110f8454-c165-47f4-9ddc-d88599a1c07f",
+        "name_ar": "زيت بصل الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703123-xm4kkx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703123-xm4kkx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت بقدونس الحواج 30 مل.jpg",
+        "product_id": "6bc6adb8-78e0-486d-a1b7-c15b875b1f42",
+        "name_ar": "زيت بقدونس الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703494-pzb894.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703494-pzb894.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ترمس الحواج30مل.jpg",
+        "product_id": "70e592c9-89eb-461a-bb32-2658c50eaa91",
+        "name_ar": "زيت ترمس الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703850-5ilk6o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206703850-5ilk6o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ثوم الحواج 30مل.jpg",
+        "product_id": "b17e68e5-47c4-446d-80ed-81940d6e1c80",
+        "name_ar": "زيت ثوم الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704205-8psalg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704205-8psalg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ثوم الحواج 500مل.jpg",
+        "product_id": "e6bc1846-7e19-498e-9c60-286f52856046",
+        "name_ar": "زيت ثوم الحواج 500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704576-zgb6ss.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704576-zgb6ss.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جرجير الحواج 1ك.jpg",
+        "product_id": "54158a09-afc8-4c19-8f9d-5c08c994648a",
+        "name_ar": "زيت جرجير الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704939-6tk7j6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206704939-6tk7j6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جرجير الحواج 30مل.jpg",
+        "product_id": "59f36b69-001b-4b78-a72a-c08b546a2fb2",
+        "name_ar": "زيت جرجير الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206705295-9pye1p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206705295-9pye1p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جزر الحواج30مل.jpg",
+        "product_id": "fb37aec2-dc5a-4764-a269-743835e5fc3d",
+        "name_ar": "زيت جزر الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206705676-phnixb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206705676-phnixb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جلسرين الحواج 1لتر.jpg",
+        "product_id": "812776c6-cc73-44bb-a0b9-1bff3bd027b0",
+        "name_ar": "زيت جلسرين الحواج 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706018-p21yt8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706018-p21yt8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جلسرين الحواج 30مل.jpg",
+        "product_id": "5a526611-e659-4271-a44e-0002a6a9bed0",
+        "name_ar": "زيت جلسرين الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706461-vuv86s.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706461-vuv86s.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جنين القمح الحواج 30مل.jpg",
+        "product_id": "2f8a7e30-c9c5-4c7b-8cb4-349b99ccfc97",
+        "name_ar": "زيت جنين القمح الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706840-8iqgg4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206706840-8iqgg4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جنين قمح الحواج500مل.jpg",
+        "product_id": "59812334-2d88-40d4-a72b-006eabfc2d4f",
+        "name_ar": "زيت جنين قمح الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707203-t7q2jr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707203-t7q2jr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوجوبا الحواج 15مل.jpg",
+        "product_id": "9cc508ca-0efd-420b-be3c-fefe2284d83b",
+        "name_ar": "زيت جوجوبا الحواج 15مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707625-zs24sw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707625-zs24sw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوجوبا الحواج30مل.jpg",
+        "product_id": "0805c114-ab80-4ca2-939f-73c036db09bd",
+        "name_ar": "زيت جوجوبا الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707976-em66zk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206707976-em66zk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوجوبا الحواج500مل.jpg",
+        "product_id": "ea7184d2-af00-4eb6-8c2c-40efa97ee097",
+        "name_ar": "زيت جوجوبا الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206708369-g4tpsj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206708369-g4tpsj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند الحواج 30مل.jpg",
+        "product_id": "d4a89d74-bf06-493b-abcc-a865982fa1fa",
+        "name_ar": "زيت جوز هند الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206708743-dmqr0w.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206708743-dmqr0w.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند الحواج خام400مل.jpg",
+        "product_id": "b9b0a142-70a7-4ed0-9141-aee648608251",
+        "name_ar": "زيت جوز هند الحواج خام400مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709159-8yiv2t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709159-8yiv2t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند الحواج500مل.jpg",
+        "product_id": "14251d91-b348-4611-b3aa-f4166898a4a3",
+        "name_ar": "زيت جوز هند الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709577-x5sfjc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709577-x5sfjc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند الحواج60مل.jpg",
+        "product_id": "b5654092-1aa5-4e9d-ae8b-89e178f470a5",
+        "name_ar": "زيت جوز هند الحواج60مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709978-wq238x.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206709978-wq238x.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جوز هند طبيعي الحواج 1ك.jpg",
+        "product_id": "4b3f3ea9-d542-406e-a633-bd79a083043f",
+        "name_ar": "زيت جوز هند طبيعي الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206710430-jyyun9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206710430-jyyun9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جينسنج الحواج 15مل.jpg",
+        "product_id": "624995f3-9823-4f07-b627-935f2b8d6290",
+        "name_ar": "زيت جينسنج الحواج 15مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206710825-6wj4yc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206710825-6wj4yc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جينسنغ الحواج 1كغ.jpg",
+        "product_id": "1d406877-8f01-4480-8813-804a01381eaa",
+        "name_ar": "زيت جينسنغ الحواج 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206711246-qd1vgj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206711246-qd1vgj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جينسينج الحواج 30مل.jpg",
+        "product_id": "6b50af7b-203d-4b37-8aee-a29afbe6e18a",
+        "name_ar": "زيت جينسينج الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206711641-3zmwh2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206711641-3zmwh2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت جينسينج الحواج500مل.jpg",
+        "product_id": "eb0cc059-aac0-4b02-a5b0-af7727a60b52",
+        "name_ar": "زيت جينسينج الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712011-9yi8td.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712011-9yi8td.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حب الرشاد الحواج30مل.jpg",
+        "product_id": "ddaee15a-5968-4f44-9d9e-bfa19b61ed51",
+        "name_ar": "زيت حب الرشاد الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712439-ptr81b.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712439-ptr81b.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حب الرشاد الحواج500مل.jpg",
+        "product_id": "325a8cee-64cc-4713-9bf5-562f3343dab7",
+        "name_ar": "زيت حب الرشاد الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712845-v61qrj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206712845-v61qrj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حبة البركة الحواج1كغ.jpg",
+        "product_id": "37642793-bddc-48b3-b446-de57617f6652",
+        "name_ar": "زيت حبة البركة الحواج1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206713215-lfk2ea.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206713215-lfk2ea.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حبة البركة الحواج30مل.jpg",
+        "product_id": "13746855-aa5a-48e2-a977-947ce576fab2",
+        "name_ar": "زيت حبة البركة الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206713621-g7as9n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206713621-g7as9n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حبة البركة الحواج500مل.jpg",
+        "product_id": "7280ada6-dce2-4e91-af3e-dbb858c09bed",
+        "name_ar": "زيت حبة البركة الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714017-nvkwq4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714017-nvkwq4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حشيش الحواج500مل.jpg",
+        "product_id": "3bd2d808-02e7-4e87-9c80-8f078b681d99",
+        "name_ar": "زيت حشيش الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714393-lgxgnx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714393-lgxgnx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حصى لبان الحواج 1ك.jpg",
+        "product_id": "733d23f1-2169-4642-a4c8-a7848d5077fa",
+        "name_ar": "زيت حصى لبان الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714739-vkyea8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206714739-vkyea8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حصى لبان الحواج 30مل.jpg",
+        "product_id": "43762c22-9932-4a7a-be16-e0d4668d8736",
+        "name_ar": "زيت حصى لبان الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715089-nwnd76.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715089-nwnd76.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلبة الحواج 1كغ.jpg",
+        "product_id": "9f6c2dd8-4e5a-4697-802e-6fae60dbcdf0",
+        "name_ar": "زيت حلبة الحواج 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715480-oqkvd5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715480-oqkvd5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حلبة الحواج 30مل.jpg",
+        "product_id": "3ae1fe6a-3150-4561-8900-1180149e4b99",
+        "name_ar": "زيت حلبة الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715956-p3ecv7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206715956-p3ecv7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حنظل الحواج 30مل.jpg",
+        "product_id": "c6c8eda1-2d4d-4044-840a-56012127dcd7",
+        "name_ar": "زيت حنظل الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206717424-m8mbe3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206717424-m8mbe3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت خردل الحواج 30مل.jpg",
+        "product_id": "3b0826ec-80d0-4f75-83d6-e3ebd8464763",
+        "name_ar": "زيت خردل الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206717792-faf80p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206717792-faf80p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت خروع الحواج 1ك.jpg",
+        "product_id": "e6d6d7ba-2413-4370-9c42-0b19edf16b35",
+        "name_ar": "زيت خروع الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718212-l8h5c3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718212-l8h5c3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت خروع الحواج 30مل.jpg",
+        "product_id": "a91cca10-d4af-491f-84e6-39ba740f6114",
+        "name_ar": "زيت خروع الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718611-ccbgt2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718611-ccbgt2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت خروع الحواج500مل.jpg",
+        "product_id": "75fe8587-362f-436a-a7fc-8f3894eb74db",
+        "name_ar": "زيت خروع الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718988-rsifa3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206718988-rsifa3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت خزامي-لافندر الحواج 30مل.jpg",
+        "product_id": "e17caf04-83a8-4262-b9a7-6cd6b60d2060",
+        "name_ar": "زيت خزامي/لافندر الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206719365-k8ndb6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206719365-k8ndb6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت روز ماري الحواج(30مل).jpg",
+        "product_id": "c20eb4b7-5c43-4751-a886-6c5b56be75fd",
+        "name_ar": "زيت روز ماري الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206719740-k561jw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206719740-k561jw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت زعتر الحواج 30مل.jpg",
+        "product_id": "ea1b1642-95c9-4503-8645-cb4d7ba7ba92",
+        "name_ar": "زيت زعتر الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206720094-oonpbb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206720094-oonpbb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت زيتون الحواج60مل.jpg",
+        "product_id": "01667bb8-0db8-4640-be93-7179fdec390f",
+        "name_ar": "زيت زيتون الحواج60مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206720894-j3vstu.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206720894-j3vstu.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت سدر الحواج30مل.jpg",
+        "product_id": "b88e5d58-b726-4bd6-9570-7da1f7f466bd",
+        "name_ar": "زيت سدر الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206721285-6u0ru3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206721285-6u0ru3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت سمسم  الحواج500مل.jpg",
+        "product_id": "8dd7c5e6-296a-4c8c-9f3e-19b35eb0dc65",
+        "name_ar": "زيت سمسم  الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206721633-giwdxm.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206721633-giwdxm.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت سمسم الحواج30مل.jpg",
+        "product_id": "cd9b959a-dc8f-430a-959c-508eb393103f",
+        "name_ar": "زيت سمسم الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206722024-v3epe1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206722024-v3epe1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شاي اخضر الحواج 30 مل.jpg",
+        "product_id": "402ddaff-8a92-4181-a775-2ad76a2ba5ea",
+        "name_ar": "زيت شاي اخضر الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206722421-t6z3iq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206722421-t6z3iq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شجرة الشاي الحواج500مل.jpg",
+        "product_id": "285b4f8b-b06d-4913-8556-d8f085e5c310",
+        "name_ar": "زيت شجرة الشاي الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723139-318t3a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723139-318t3a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شطة الحواج(30مل).jpg",
+        "product_id": "48b09124-11a2-4ab6-9255-cae7e75864ce",
+        "name_ar": "زيت شطة الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723527-eouwl4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723527-eouwl4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شعر الحواج 125مل.jpg",
+        "product_id": "992eecc4-1136-43fd-ab81-b20d9a303442",
+        "name_ar": "زيت شعر الحواج 125مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723879-p623km.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206723879-p623km.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت شيا الحواج40مل.jpg",
+        "product_id": "d5657549-1311-4a78-a9d4-a068bda5b778",
+        "name_ar": "زيت شيا الحواج40مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206724261-46gjvx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206724261-46gjvx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت صبار الحواج 1ك.jpg",
+        "product_id": "23be4b3b-1c4c-4d1a-966a-2ac3ee14896b",
+        "name_ar": "زيت صبار الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206724818-hrvgoo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206724818-hrvgoo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت صبار الحواج 30مل.jpg",
+        "product_id": "855a11d1-055f-4c83-853a-e58b35b7f3fb",
+        "name_ar": "زيت صبار الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725181-fw8fv6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725181-fw8fv6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت صبار الحواج500مل.jpg",
+        "product_id": "d4aa04b1-19d8-4e72-9cc3-814424da352a",
+        "name_ar": "زيت صبار الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725560-dxlsam.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725560-dxlsam.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عرق سوس الحواج30مل.jpg",
+        "product_id": "3d470b13-3bfd-4bae-9769-4fc186dff313",
+        "name_ar": "زيت عرق سوس الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725918-w7ipp2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206725918-w7ipp2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عنب الحواج 30مل.jpg",
+        "product_id": "e262189d-9273-4124-8907-ef62238c81b0",
+        "name_ar": "زيت عنب الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206726277-96z5jx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206726277-96z5jx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عنبر ازرق الحواج(30مل).jpg",
+        "product_id": "4eb3dd95-8a45-4cb7-b64d-b4b6bd431a66",
+        "name_ar": "زيت عنبر ازرق الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206726664-e60igb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206726664-e60igb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت عنبر عادي الحواج30مل.jpg",
+        "product_id": "bdbd407e-cf30-4de5-b51a-1cf903f7aff4",
+        "name_ar": "زيت عنبر عادي الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727036-rf6udt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727036-rf6udt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت فل 500 مل الحواج.jpg",
+        "product_id": "bad9690a-516b-402b-b635-db89f334fe25",
+        "name_ar": "زيت فل 500 مل الحواج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727488-f0sfuj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727488-f0sfuj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت قرنفل الحواج 30مل.jpg",
+        "product_id": "4c65fc21-26fa-4534-8b5e-6d7d04651b87",
+        "name_ar": "زيت قرنفل الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727834-6tdg6t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206727834-6tdg6t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت قسط هندي الحواج 30 مل.jpg",
+        "product_id": "9b5976c3-a675-4c3c-91d0-6319a286cbd0",
+        "name_ar": "زيت قسط هندي الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728212-4g8ih5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728212-4g8ih5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كافور الحواج 30مل.jpg",
+        "product_id": "fe7315c0-10e5-4b6d-a3d7-18684ae74d2b",
+        "name_ar": "زيت كافور الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728593-dqsn48.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728593-dqsn48.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كبد الحوت الحواج(30مل.jpg",
+        "product_id": "4fb155aa-a3aa-4e7f-a402-f8448c47b4c2",
+        "name_ar": "زيت كبد الحوت الحواج(30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728950-8197va.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206728950-8197va.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كلام رسل الحواج30مل.jpg",
+        "product_id": "6db08413-b575-411f-93b6-7d7e7a7cfdff",
+        "name_ar": "زيت كلام رسل الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206729316-lme5cl.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206729316-lme5cl.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت كمون الحواج(30) مل.jpg",
+        "product_id": "fcacbe14-5c45-4e68-a38b-727dd3d84808",
+        "name_ar": "زيت كمون الحواج(30) مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206729709-e1j43n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206729709-e1j43n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لب القرع الحواج 30مل.jpg",
+        "product_id": "316ffd41-8dfc-44ea-8928-965b5c3720a5",
+        "name_ar": "زيت لب القرع الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206730247-xcv65o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206730247-xcv65o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لب القرع الحواج500مل.jpg",
+        "product_id": "5d77d7f2-74af-4de2-91b5-220544c3a424",
+        "name_ar": "زيت لب القرع الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206730629-sbd8p0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206730629-sbd8p0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز حلو الحواج 1ك.jpg",
+        "product_id": "f7840ee3-89f3-4441-b395-12c79b3ebba8",
+        "name_ar": "زيت لوز حلو الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731004-z0spbd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731004-z0spbd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز حلو الحواج 30مل.jpg",
+        "product_id": "8f37a8b3-7c61-4dfa-beaf-d2156bc0c257",
+        "name_ar": "زيت لوز حلو الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731379-kuytmz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731379-kuytmz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز حلو الحواج500مل.jpg",
+        "product_id": "9071280c-4030-4505-8935-4bd43076a1ac",
+        "name_ar": "زيت لوز حلو الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731755-pmv65e.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206731755-pmv65e.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز مر الحواج 1ك.jpg",
+        "product_id": "4e808177-9195-40b4-af98-8b5ce3a9f42b",
+        "name_ar": "زيت لوز مر الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732145-jcz7q6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732145-jcz7q6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز مر الحواج 30مل.jpg",
+        "product_id": "426fd86b-351a-4c3e-a97a-d81b9c818ecc",
+        "name_ar": "زيت لوز مر الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732531-rnb98d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732531-rnb98d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت لوز مر الحواج500مل.jpg",
+        "product_id": "4ba960e6-3a11-40d5-8b25-c583a5e6e159",
+        "name_ar": "زيت لوز مر الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732888-0bsbke.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206732888-0bsbke.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ليمون الحواج 30مل.jpg",
+        "product_id": "a1fb1197-a009-4583-a8c3-f719b4227c6e",
+        "name_ar": "زيت ليمون الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206733289-lqf8yn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206733289-lqf8yn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت مرمرية الحواج(30مل).jpg",
+        "product_id": "811dd6a9-2899-471e-969c-895d3e20cffa",
+        "name_ar": "زيت مرمرية الحواج(30مل)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206733664-bmqnn5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206733664-bmqnn5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت مسك الحواج 30مل.jpg",
+        "product_id": "3831309f-e0d1-4a35-ba66-b3606f5ac556",
+        "name_ar": "زيت مسك الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206734163-bzt6po.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206734163-bzt6po.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت نعناع الحواج 1ك.jpg",
+        "product_id": "f2c742ec-e560-40cb-946e-34f623836bf2",
+        "name_ar": "زيت نعناع الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206734626-5fba4d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206734626-5fba4d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت نعناع الحواج30مل.jpg",
+        "product_id": "5048ef32-557c-4872-b990-64b8f2b79e4e",
+        "name_ar": "زيت نعناع الحواج30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206735101-2bua8a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206735101-2bua8a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت نعناع الحواج500مل.jpg",
+        "product_id": "bd532835-a3d5-4d0d-aaa6-fee3da04905d",
+        "name_ar": "زيت نعناع الحواج500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206735982-6474hq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206735982-6474hq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ورد الحواج 1ك.jpg",
+        "product_id": "66fc93fc-c912-48c8-a288-9d87249afaf0",
+        "name_ar": "زيت ورد الحواج 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206736725-nwytew.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206736725-nwytew.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ورد الحواج 30مل.jpg",
+        "product_id": "c7e77508-4bff-47a1-8272-3dad23ea0702",
+        "name_ar": "زيت ورد الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737203-tj5opo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737203-tj5opo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت ياسمين الحواج 30 مل.jpg",
+        "product_id": "850fdfc6-d3ad-43a4-8036-7267dede6023",
+        "name_ar": "زيت ياسمين الحواج 30 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737642-pqy5pj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737642-pqy5pj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت يانسون الحواج 30مل.jpg",
+        "product_id": "929328d4-a434-47cb-b965-73280f593bf0",
+        "name_ar": "زيت يانسون الحواج 30مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737990-pv0y2l.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206737990-pv0y2l.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صابون غار بالزيتون الحواج 120 جم.jpg",
+        "product_id": "eccc164c-1b9d-40a2-bf67-21e8b9debdce",
+        "name_ar": "صابون غار بالزيتون الحواج 120 جم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206738346-czm3sp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206738346-czm3sp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كاكاو خام دريم (80غ).jpg",
+        "product_id": "a607e05a-6ddb-4d6e-a564-a0a337d33ec4",
+        "name_ar": "كاكاو خام دريم (80غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206738780-sjw4bo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206738780-sjw4bo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريم شانتيه دريم فراولة 45 جرام.jpg",
+        "product_id": "44a872c3-1f8c-42c4-b550-dc40afb31138",
+        "name_ar": "كريم شانتيه دريم فراولة 45 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206739199-q36wh9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206739199-q36wh9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريمة خفق دريم الباني.jpg",
+        "product_id": "15638bc0-30aa-41d4-a416-daeda123948f",
+        "name_ar": "كريمة خفق دريم الباني",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206739561-waed89.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206739561-waed89.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريمة دريم توفير180غ.jpg",
+        "product_id": "bb4734ad-f119-4101-b840-293c19d30758",
+        "name_ar": "كريمة دريم توفير180غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740044-t19g05.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740044-t19g05.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريمة شانتيه دريم 45غ.jpg",
+        "product_id": "a85f8205-2fcf-440f-ad07-9c5f18550f0c",
+        "name_ar": "كريمة شانتيه دريم 45غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740416-52oy9d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740416-52oy9d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كريمة شانتيه دريم شوكولا 65 جرام.jpg",
+        "product_id": "8adfbcdc-3f39-45df-b613-1e692348389b",
+        "name_ar": "كريمة شانتيه دريم شوكولا 65 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740900-3yp7s5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206740900-3yp7s5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نشاء ذرة كوكس 40غ.jpg",
+        "product_id": "fd6f8265-4320-4fe3-9253-c3d1a2018e6c",
+        "name_ar": "نشاء ذرة كوكس 40غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206741603-rzf76d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206741603-rzf76d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نشاء كوكس240غ.jpg",
+        "product_id": "beb366fe-6f5f-4ff4-8cd9-9311b4b8c231",
+        "name_ar": "نشاء كوكس240غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206741956-zj22v5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206741956-zj22v5.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

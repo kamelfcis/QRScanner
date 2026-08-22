@@ -1,7 +1,8 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Heart, MessageCircle, Search, ShoppingCart } from 'lucide-react';
+import { Heart, Search, ShoppingCart } from 'lucide-react';
+import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
@@ -9,8 +10,10 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { resolveOrderModes } from '@/lib/order/order-modes';
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -33,29 +36,17 @@ export function MenuHeader({
   favoriteCount,
 }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
+  const orderModes = resolveOrderModes(settings);
+  const showDiningToggle = orderModes.dineIn;
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
-  const tCommon = useTranslations('common');
   const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
-
-  const whatsapp = settings?.whatsapp?.replace(/[^0-9]/g, '');
-  const waiterMessage = tableParam
-    ? encodeURIComponent(
-        locale === 'ar'
-          ? `مرحباً، أحتاج مساعدة في الطاولة رقم ${tableParam}`
-          : `Hello, I need assistance at table ${tableParam}`
-      )
-    : '';
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
   return (
     <motion.header
@@ -90,28 +81,20 @@ export function MenuHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
-          <DiningModeToggle
-            value={diningMode}
-            onChange={onDiningModeChange}
-            className="hidden sm:inline-flex"
-          />
+          {showDiningToggle ? (
+            <DiningModeToggle
+              value={diningMode}
+              onChange={onDiningModeChange}
+              className="hidden sm:inline-flex"
+            />
+          ) : null}
 
           <LanguageSwitcher
             variant="ghost"
             className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
           />
 
-          {whatsapp && tableParam && (
-            <a
-              href={`https://wa.me/${whatsapp}?text=${waiterMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(iconButton, 'hidden sm:inline-flex')}
-              aria-label={t('callWaiter')}
-            >
-              <MessageCircle className="h-[18px] w-[18px]" aria-hidden="true" />
-            </a>
-          )}
+          <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
 
           {favoriteCount > 0 && (
             <span

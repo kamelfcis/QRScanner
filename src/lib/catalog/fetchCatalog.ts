@@ -13,7 +13,12 @@ export async function fetchCategoriesWithProducts(
 
   if (error) throw error;
 
-  return (data || []).map((category) => ({
+  type RawCategory = CategoryWithProducts & {
+    products?: CategoryWithProducts['products'];
+    subcategories?: NonNullable<CategoryWithProducts['subcategories']>;
+  };
+
+  return ((data || []) as unknown as RawCategory[]).map((category) => ({
     ...category,
     products: ((category.products || []) as CategoryWithProducts['products'])
       .filter((p) => p.is_available)

@@ -1,0 +1,2630 @@
+{
+  "A Taste of Excellence": {
+    "fr": "Un goût d'excellence",
+    "nl": "Een smaak van excellentie"
+  },
+  "A culinary journey through Lebanese & Syrian traditions": {
+    "fr": "Un voyage culinaire à travers les traditions libanaises et syriennes",
+    "nl": "Een culinaire reis door Libanese en Syrische tradities"
+  },
+  "A taste of our most loved Levantine classics — scan, browse, and order.": {
+    "fr": "Un avant-goût de nos classiques levantins préférés — scannez, parcourez et commandez.",
+    "nl": "Een proeverij van onze geliefde Levantijnse klassiekers — scan, blader en bestel."
+  },
+  "AI candidate {n}": {
+    "fr": "AI candidate {n}",
+    "nl": "AI candidate {n}"
+  },
+  "AI image generation is not configured": {
+    "fr": "AI image generation is not configured",
+    "nl": "AI image generation is not configured"
+  },
+  "About": {
+    "fr": "À propos",
+    "nl": "Over ons"
+  },
+  "Accent Color": {
+    "fr": "Accent Couleur",
+    "nl": "Accent Kleur"
+  },
+  "Account": {
+    "fr": "Compte",
+    "nl": "Account"
+  },
+  "Actions": {
+    "fr": "Actions",
+    "nl": "Acties"
+  },
+  "Active": {
+    "fr": "Actif",
+    "nl": "Actief"
+  },
+  "Active Offers": {
+    "fr": "Offres actives",
+    "nl": "Actieve aanbiedingen"
+  },
+  "Active Users": {
+    "fr": "Utilisateurs actifs",
+    "nl": "Actieve gebruikers"
+  },
+  "Activity by day of week": {
+    "fr": "Activity by jour of semaine",
+    "nl": "Activity by dag of week"
+  },
+  "Activity by hour of day": {
+    "fr": "Activity by heure of jour",
+    "nl": "Activity by uur of dag"
+  },
+  "Add": {
+    "fr": "Ajouter",
+    "nl": "Toevoegen"
+  },
+  "Add Category": {
+    "fr": "Ajouter Category",
+    "nl": "Toevoegen Category"
+  },
+  "Add Image": {
+    "fr": "Ajouter Image",
+    "nl": "Toevoegen Afbeelding"
+  },
+  "Add Offer": {
+    "fr": "Ajouter Offer",
+    "nl": "Toevoegen Offer"
+  },
+  "Add Product": {
+    "fr": "Ajouter Product",
+    "nl": "Toevoegen Product"
+  },
+  "Add Table": {
+    "fr": "Ajouter Table",
+    "nl": "Toevoegen Tafel"
+  },
+  "Add Testimonial": {
+    "fr": "Ajouter Testimonial",
+    "nl": "Toevoegen Testimonial"
+  },
+  "Add an image first to enhance it": {
+    "fr": "Ajouter an image first to enhance it",
+    "nl": "Toevoegen an image first to enhance it"
+  },
+  "Add customer testimonials to build trust.": {
+    "fr": "Ajouter customer testimonials to build trust.",
+    "nl": "Toevoegen customer testimonials to build trust."
+  },
+  "Add tables to associate with QR codes": {
+    "fr": "Ajouter tables to associate with QR codes",
+    "nl": "Toevoegen tables to associate with QR codes"
+  },
+  "Add to cart": {
+    "fr": "Ajouter au panier",
+    "nl": "In winkelwagen"
+  },
+  "Add to favorites": {
+    "fr": "Ajouter aux favoris",
+    "nl": "Toevoegen aan favorieten"
+  },
+  "Add to your home screen for quick access to our menu.": {
+    "fr": "Ajoutez à votre écran d'accueil pour un accès rapide à notre menu.",
+    "nl": "Voeg toe aan uw startscherm voor snelle toegang tot ons menu."
+  },
+  "Added to cart": {
+    "fr": "Ajouté au panier",
+    "nl": "Toegevoegd aan winkelwagen"
+  },
+  "Address (Arabic)": {
+    "fr": "Adresse (arabe)",
+    "nl": "Adres (Arabisch)"
+  },
+  "Address (English)": {
+    "fr": "Adresse (anglais)",
+    "nl": "Adres (Engels)"
+  },
+  "Admin": {
+    "fr": "Admin",
+    "nl": "Beheer"
+  },
+  "Admin Dashboard": {
+    "fr": "Tableau de bord admin",
+    "nl": "Beheerdersdashboard"
+  },
+  "All": {
+    "fr": "Tout",
+    "nl": "Alles"
+  },
+  "All Categories": {
+    "fr": "All Catégories",
+    "nl": "All Categorieën"
+  },
+  "Alt Text": {
+    "fr": "Alt Text",
+    "nl": "Alt Text"
+  },
+  "An unexpected error occurred.": {
+    "fr": "Une erreur inattendue s'est produite.",
+    "nl": "Er is een onverwachte fout opgetreden."
+  },
+  "An unexpected error occurred. Please try again or contact support if the problem persists.": {
+    "fr": "An unexpected error occurred. Please try again or contact support if the problem persists.",
+    "nl": "An unexpected error occurred. Please try again or contact support if the problem persists."
+  },
+  "Analytics": {
+    "fr": "Analyses",
+    "nl": "Analyses"
+  },
+  "Any special requests for the kitchen": {
+    "fr": "Demandes spéciales pour la cuisine",
+    "nl": "Speciale verzoeken voor de keuken"
+  },
+  "Apply service charge to orders": {
+    "fr": "Apply service charge to orders",
+    "nl": "Apply service charge to orders"
+  },
+  "Apply tax to orders": {
+    "fr": "Apply tax to orders",
+    "nl": "Apply tax to orders"
+  },
+  "Are you sure you want to delete \"{name}\"? This cannot be undone.": {
+    "fr": "Are you sure you want to delete \"{name}\"? This cannot be undone.",
+    "nl": "Are you sure you want to delete \"{name}\"? This cannot be undone."
+  },
+  "Are you sure you want to delete this category?": {
+    "fr": "Are you sure you want to delete this category?",
+    "nl": "Are you sure you want to delete this category?"
+  },
+  "Are you sure you want to delete this image?": {
+    "fr": "Are you sure you want to delete this image?",
+    "nl": "Are you sure you want to delete this image?"
+  },
+  "Are you sure you want to delete this offer?": {
+    "fr": "Are you sure you want to delete this offer?",
+    "nl": "Are you sure you want to delete this offer?"
+  },
+  "Are you sure you want to delete this product?": {
+    "fr": "Are you sure you want to delete this product?",
+    "nl": "Are you sure you want to delete this product?"
+  },
+  "Are you sure you want to delete this table?": {
+    "fr": "Are you sure you want to delete this table?",
+    "nl": "Are you sure you want to delete this table?"
+  },
+  "Are you sure you want to delete this testimonial? This action cannot be undone.": {
+    "fr": "Are you sure you want to delete this testimonial? This action cannot be undone.",
+    "nl": "Are you sure you want to delete this testimonial? This action cannot be undone."
+  },
+  "Are you sure?": {
+    "fr": "Êtes-vous sûr ?",
+    "nl": "Weet u het zeker?"
+  },
+  "At least one category is required.": {
+    "fr": "At least one category is required.",
+    "nl": "At least one category is required."
+  },
+  "Authentic Levantine flavor, in a modern experience": {
+    "fr": "Saveur levantine authentique, dans une expérience moderne",
+    "nl": "Authentieke Levantijnse smaken in een moderne ervaring"
+  },
+  "Auto": {
+    "fr": "Auto",
+    "nl": "Auto"
+  },
+  "Auto-generated": {
+    "fr": "Auto-generated",
+    "nl": "Auto-generated"
+  },
+  "Available": {
+    "fr": "Disponible",
+    "nl": "Beschikbaar"
+  },
+  "Avatar URL (optional)": {
+    "fr": "Avatar URL (optional)",
+    "nl": "Avatar URL (optional)"
+  },
+  "Back": {
+    "fr": "Retour",
+    "nl": "Terug"
+  },
+  "Back to List": {
+    "fr": "Back to List",
+    "nl": "Back to List"
+  },
+  "Back to cart": {
+    "fr": "Retour au panier",
+    "nl": "Terug naar winkelwagen"
+  },
+  "Back to menu": {
+    "fr": "Retour au menu",
+    "nl": "Terug naar menu"
+  },
+  "Background": {
+    "fr": "Arrière-plan",
+    "nl": "Achtergrond"
+  },
+  "Background Color": {
+    "fr": "Arrière-plan Couleur",
+    "nl": "Achtergrond Kleur"
+  },
+  "Basic information about your restaurant.": {
+    "fr": "Informations de base sur votre restaurant.",
+    "nl": "Basisinformatie over uw restaurant."
+  },
+  "Bestseller": {
+    "fr": "Best-seller",
+    "nl": "Bestseller"
+  },
+  "Branding & Theme": {
+    "fr": "Branding & Thème",
+    "nl": "Branding & Thema"
+  },
+  "Browse menu": {
+    "fr": "Parcourir le menu",
+    "nl": "Menu bekijken"
+  },
+  "Browse the menu and add dishes to get started.": {
+    "fr": "Parcourez le menu et ajoutez des plats pour commencer.",
+    "nl": "Blader door het menu en voeg gerechten toe om te beginnen."
+  },
+  "Business": {
+    "fr": "Entreprise",
+    "nl": "Bedrijf"
+  },
+  "Business Settings": {
+    "fr": "Business Paramètres",
+    "nl": "Business Instellingen"
+  },
+  "CSV": {
+    "fr": "CSV",
+    "nl": "CSV"
+  },
+  "Call waiter via WhatsApp": {
+    "fr": "Appeler le serveur via WhatsApp",
+    "nl": "Ober bellen via WhatsApp"
+  },
+  "Cancel": {
+    "fr": "Annuler",
+    "nl": "Annuleren"
+  },
+  "Caption": {
+    "fr": "Caption",
+    "nl": "Caption"
+  },
+  "Caption (Arabic)": {
+    "fr": "Caption (arabe)",
+    "nl": "Caption (Arabisch)"
+  },
+  "Caption (English)": {
+    "fr": "Caption (anglais)",
+    "nl": "Caption (Engels)"
+  },
+  "Carousel slides": {
+    "fr": "Diapositives du carrousel",
+    "nl": "Carrouseldia's"
+  },
+  "Cart, {count} items": {
+    "fr": "Panier, {count} articles",
+    "nl": "Winkelwagen, {count} items"
+  },
+  "Categories": {
+    "fr": "Catégories",
+    "nl": "Categorieën"
+  },
+  "Categories:": {
+    "fr": "Catégories:",
+    "nl": "Categorieën:"
+  },
+  "Category": {
+    "fr": "Category",
+    "nl": "Category"
+  },
+  "Category {number}": {
+    "fr": "Category {number}",
+    "nl": "Category {number}"
+  },
+  "Change Image": {
+    "fr": "Change Image",
+    "nl": "Change Afbeelding"
+  },
+  "Change Logo": {
+    "fr": "Changer le logo",
+    "nl": "Logo wijzigen"
+  },
+  "Change Password": {
+    "fr": "Change Mot de passe",
+    "nl": "Change Wachtwoord"
+  },
+  "Change image": {
+    "fr": "Change image",
+    "nl": "Change image"
+  },
+  "Chat on WhatsApp": {
+    "fr": "Discuter sur WhatsApp",
+    "nl": "Chat via WhatsApp"
+  },
+  "Checkout": {
+    "fr": "Paiement",
+    "nl": "Afrekenen"
+  },
+  "Choose a generated image": {
+    "fr": "Choose a generated image",
+    "nl": "Choose a generated image"
+  },
+  "Choose an enhanced image": {
+    "fr": "Choose an enhanced image",
+    "nl": "Choose an enhanced image"
+  },
+  "Choose from storage": {
+    "fr": "Choose from storage",
+    "nl": "Choose from storage"
+  },
+  "Choose image from storage": {
+    "fr": "Choose image from storage",
+    "nl": "Choose image from storage"
+  },
+  "Circle": {
+    "fr": "Circle",
+    "nl": "Circle"
+  },
+  "Clear": {
+    "fr": "Effacer",
+    "nl": "Wissen"
+  },
+  "Clear cart": {
+    "fr": "Clear cart",
+    "nl": "Clear cart"
+  },
+  "Clear filters": {
+    "fr": "Clear filters",
+    "nl": "Clear filters"
+  },
+  "Close": {
+    "fr": "Fermer",
+    "nl": "Sluiten"
+  },
+  "Close details": {
+    "fr": "Fermer les détails",
+    "nl": "Details sluiten"
+  },
+  "Close lightbox": {
+    "fr": "Fermer la lightbox",
+    "nl": "Lightbox sluiten"
+  },
+  "Close menu": {
+    "fr": "Fermer le menu",
+    "nl": "Menu sluiten"
+  },
+  "Close search": {
+    "fr": "Fermer la recherche",
+    "nl": "Zoeken sluiten"
+  },
+  "Closed": {
+    "fr": "Fermé",
+    "nl": "Gesloten"
+  },
+  "Configure your restaurant details.": {
+    "fr": "Configurez les détails de votre restaurant.",
+    "nl": "Configureer uw restaurantgegevens."
+  },
+  "Confirm": {
+    "fr": "Confirmer",
+    "nl": "Bevestigen"
+  },
+  "Confirm & send via WhatsApp": {
+    "fr": "Confirmer et envoyer via WhatsApp",
+    "nl": "Bevestigen en versturen via WhatsApp"
+  },
+  "Confirm Import": {
+    "fr": "Confirmer Importer",
+    "nl": "Bevestigen Importeren"
+  },
+  "Confirm new password": {
+    "fr": "Confirmer new password",
+    "nl": "Bevestigen new password"
+  },
+  "Contact": {
+    "fr": "Contact",
+    "nl": "Contact"
+  },
+  "Contact Info": {
+    "fr": "Coordonnées",
+    "nl": "Contactgegevens"
+  },
+  "Contact Information": {
+    "fr": "Contact Information",
+    "nl": "Contact Information"
+  },
+  "Contact Us": {
+    "fr": "Contactez-nous",
+    "nl": "Neem contact op"
+  },
+  "Contact details will appear here once configured in settings.": {
+    "fr": "Les coordonnées apparaîtront ici une fois configurées dans les paramètres.",
+    "nl": "Contactgegevens verschijnen hier zodra ze in de instellingen zijn geconfigureerd."
+  },
+  "Continue to Menu": {
+    "fr": "Continuer vers le menu",
+    "nl": "Doorgaan naar menu"
+  },
+  "Create": {
+    "fr": "Créer",
+    "nl": "Aanmaken"
+  },
+  "Create QR Code": {
+    "fr": "Create QR Code",
+    "nl": "Create QR Code"
+  },
+  "Create and manage QR codes for your restaurant": {
+    "fr": "Create and manage QR codes for your restaurant",
+    "nl": "Create and manage QR codes for your restaurant"
+  },
+  "Create your first QR code to get started": {
+    "fr": "Create your first QR code to get started",
+    "nl": "Create your first QR code to get started"
+  },
+  "Currency": {
+    "fr": "Devise",
+    "nl": "Valuta"
+  },
+  "Current password": {
+    "fr": "Current password",
+    "nl": "Current password"
+  },
+  "Current password is required.": {
+    "fr": "Current password is required.",
+    "nl": "Current password is required."
+  },
+  "Currently unavailable": {
+    "fr": "Actuellement indisponible",
+    "nl": "Momenteel niet beschikbaar"
+  },
+  "Customer Name": {
+    "fr": "Client Name",
+    "nl": "Klant Name"
+  },
+  "Customize colors applied to the landing page and dashboard.": {
+    "fr": "Customize colors applied to the landing page and dashboard.",
+    "nl": "Customize colors applied to the landing page and dashboard."
+  },
+  "Customize the Our Story title, paragraphs, and image shown on the landing page.": {
+    "fr": "Customize the Our Histoire title, paragraphs, and image shown on the landing page.",
+    "nl": "Customize the Our Verhaal title, paragraphs, and image shown on the landing page."
+  },
+  "Customize the headline, subtitle, and background image on the landing page.": {
+    "fr": "Personnalisez le titre, le sous-titre et l'image de fond de la page d'accueil.",
+    "nl": "Pas kop, ondertitel en achtergrondafbeelding op de landingspagina aan."
+  },
+  "Daily traffic over time": {
+    "fr": "Daily traffic over time",
+    "nl": "Daily traffic over time"
+  },
+  "Dashboard": {
+    "fr": "Tableau de bord",
+    "nl": "Dashboard"
+  },
+  "Decrease quantity": {
+    "fr": "Diminuer la quantité",
+    "nl": "Aantal verlagen"
+  },
+  "Delete": {
+    "fr": "Supprimer",
+    "nl": "Verwijderen"
+  },
+  "Delete Category": {
+    "fr": "Supprimer Category",
+    "nl": "Verwijderen Category"
+  },
+  "Delete Image": {
+    "fr": "Supprimer Image",
+    "nl": "Verwijderen Afbeelding"
+  },
+  "Delete Import": {
+    "fr": "Supprimer Importer",
+    "nl": "Verwijderen Importeren"
+  },
+  "Delete Offer": {
+    "fr": "Supprimer Offer",
+    "nl": "Verwijderen Offer"
+  },
+  "Delete Product": {
+    "fr": "Supprimer Product",
+    "nl": "Verwijderen Product"
+  },
+  "Delete QR Code": {
+    "fr": "Supprimer QR Code",
+    "nl": "Verwijderen QR Code"
+  },
+  "Delete Table": {
+    "fr": "Supprimer Table",
+    "nl": "Verwijderen Tafel"
+  },
+  "Delete Testimonial": {
+    "fr": "Supprimer Testimonial",
+    "nl": "Verwijderen Testimonial"
+  },
+  "Delete import \"{name}\"? This action cannot be undone.": {
+    "fr": "Supprimer import \"{name}\"? This action cannot be undone.",
+    "nl": "Verwijderen import \"{name}\"? This action cannot be undone."
+  },
+  "Delete table": {
+    "fr": "Supprimer table",
+    "nl": "Verwijderen table"
+  },
+  "Delivery": {
+    "fr": "Livraison",
+    "nl": "Bezorging"
+  },
+  "Delivery address": {
+    "fr": "Adresse de livraison",
+    "nl": "Bezorgadres"
+  },
+  "Description": {
+    "fr": "Description",
+    "nl": "Beschrijving"
+  },
+  "Description (Arabic)": {
+    "fr": "Description (arabe)",
+    "nl": "Description (Arabisch)"
+  },
+  "Description (Dutch)": {
+    "fr": "Description (néerlandais)",
+    "nl": "Description (Nederlands)"
+  },
+  "Description (English)": {
+    "fr": "Description (anglais)",
+    "nl": "Description (Engels)"
+  },
+  "Description (French)": {
+    "fr": "Description (français)",
+    "nl": "Description (Frans)"
+  },
+  "Device Breakdown": {
+    "fr": "Device Breakdown",
+    "nl": "Device Breakdown"
+  },
+  "Devices": {
+    "fr": "Appareils",
+    "nl": "Apparaten"
+  },
+  "Dine In": {
+    "fr": "Sur place",
+    "nl": "Ter plaatse"
+  },
+  "Dine in": {
+    "fr": "Sur place",
+    "nl": "Ter plaatse"
+  },
+  "Dining": {
+    "fr": "Sur place",
+    "nl": "Ter plaatse"
+  },
+  "Dining %": {
+    "fr": "Sur place %",
+    "nl": "Ter plaatse %"
+  },
+  "Dining Price": {
+    "fr": "Sur place Price",
+    "nl": "Ter plaatse Price"
+  },
+  "Dining mode": {
+    "fr": "Mode sur place",
+    "nl": "Modus ter plaatse"
+  },
+  "Dining price": {
+    "fr": "Sur place price",
+    "nl": "Ter plaatse price"
+  },
+  "Dining vs Takeaway": {
+    "fr": "Sur place vs à emporter",
+    "nl": "Ter plaatse vs afhalen"
+  },
+  "Disabled": {
+    "fr": "Désactivé",
+    "nl": "Uitgeschakeld"
+  },
+  "Discount": {
+    "fr": "Remise",
+    "nl": "Korting"
+  },
+  "Discount %": {
+    "fr": "Discount %",
+    "nl": "Discount %"
+  },
+  "Dish details": {
+    "fr": "Détails du plat",
+    "nl": "Gerecht details"
+  },
+  "Dismiss install prompt": {
+    "fr": "Ignorer l'invite d'installation",
+    "nl": "Installatieprompt sluiten"
+  },
+  "Download": {
+    "fr": "Télécharger",
+    "nl": "Downloaden"
+  },
+  "Download PDF": {
+    "fr": "Télécharger PDF",
+    "nl": "Downloaden PDF"
+  },
+  "Download PNG": {
+    "fr": "Télécharger PNG",
+    "nl": "Downloaden PNG"
+  },
+  "Download SVG": {
+    "fr": "Télécharger SVG",
+    "nl": "Downloaden SVG"
+  },
+  "Drop your menu file here": {
+    "fr": "Drop your menu file here",
+    "nl": "Drop your menu file here"
+  },
+  "Duplicate": {
+    "fr": "Dupliquer",
+    "nl": "Dupliceren"
+  },
+  "Edit": {
+    "fr": "Modifier",
+    "nl": "Bewerken"
+  },
+  "Edit Category": {
+    "fr": "Modifier Category",
+    "nl": "Bewerken Category"
+  },
+  "Edit Image": {
+    "fr": "Modifier Image",
+    "nl": "Bewerken Afbeelding"
+  },
+  "Edit Offer": {
+    "fr": "Modifier Offer",
+    "nl": "Bewerken Offer"
+  },
+  "Edit Product": {
+    "fr": "Modifier Product",
+    "nl": "Bewerken Product"
+  },
+  "Edit QR Code": {
+    "fr": "Modifier QR Code",
+    "nl": "Bewerken QR Code"
+  },
+  "Edit Table": {
+    "fr": "Modifier Table",
+    "nl": "Bewerken Tafel"
+  },
+  "Edit Testimonial": {
+    "fr": "Modifier Testimonial",
+    "nl": "Bewerken Testimonial"
+  },
+  "Edit notes": {
+    "fr": "Modifier les notes",
+    "nl": "Notities bewerken"
+  },
+  "Edit table": {
+    "fr": "Modifier table",
+    "nl": "Bewerken table"
+  },
+  "Egypt": {
+    "fr": "Égypte",
+    "nl": "Egypte"
+  },
+  "Email": {
+    "fr": "E-mail",
+    "nl": "E-mail"
+  },
+  "Email or password is incorrect": {
+    "fr": "E-mail or password is incorrect",
+    "nl": "E-mail or password is incorrect"
+  },
+  "Enable size options (Small / Large)": {
+    "fr": "Enable size options (Small / Large)",
+    "nl": "Enable size options (Small / Large)"
+  },
+  "Enabled": {
+    "fr": "Activé",
+    "nl": "Ingeschakeld"
+  },
+  "English name is required.": {
+    "fr": "anglais name is required.",
+    "nl": "Engels name is required."
+  },
+  "Enhance with AI": {
+    "fr": "Enhance with AI",
+    "nl": "Enhance with AI"
+  },
+  "Enter a new password": {
+    "fr": "Enter a new password",
+    "nl": "Enter a new password"
+  },
+  "Enter a product name first": {
+    "fr": "Enter a product name first",
+    "nl": "Enter a product name first"
+  },
+  "Enter customer name": {
+    "fr": "Enter customer name",
+    "nl": "Enter customer name"
+  },
+  "Enter review in Arabic": {
+    "fr": "Enter review in arabe",
+    "nl": "Enter review in Arabisch"
+  },
+  "Enter review in English": {
+    "fr": "Enter review in anglais",
+    "nl": "Enter review in Engels"
+  },
+  "Enter your current password": {
+    "fr": "Enter your current password",
+    "nl": "Enter your current password"
+  },
+  "Enter your password": {
+    "fr": "Enter your password",
+    "nl": "Enter your password"
+  },
+  "Error": {
+    "fr": "Erreur",
+    "nl": "Fout"
+  },
+  "Error Correction": {
+    "fr": "Erreur Correction",
+    "nl": "Fout Correction"
+  },
+  "Error correction is set to High for reliable scanning with a logo": {
+    "fr": "Erreur correction is set to High for reliable scanning with a logo",
+    "nl": "Fout correction is set to High for reliable scanning with a logo"
+  },
+  "Estimated prep time: ~{minutes} min": {
+    "fr": "Temps de préparation estimé : ~{minutes} min",
+    "nl": "Geschatte bereidingstijd: ~{minutes} min"
+  },
+  "Excel": {
+    "fr": "Excel",
+    "nl": "Excel"
+  },
+  "Export": {
+    "fr": "Exporter",
+    "nl": "Exporteren"
+  },
+  "Extracted Data Preview": {
+    "fr": "Extracted Data Aperçu",
+    "nl": "Extracted Data Voorbeeld"
+  },
+  "Eye Style": {
+    "fr": "Eye Style",
+    "nl": "Eye Style"
+  },
+  "Facebook": {
+    "fr": "Facebook",
+    "nl": "Facebook"
+  },
+  "Failed to generate images": {
+    "fr": "Failed to generate images",
+    "nl": "Failed to generate images"
+  },
+  "Failed to update password.": {
+    "fr": "Failed to update password.",
+    "nl": "Failed to update password."
+  },
+  "Failed to upload hero image": {
+    "fr": "Failed to upload hero image",
+    "nl": "Failed to upload hero image"
+  },
+  "Failed to upload logo": {
+    "fr": "Failed to upload logo",
+    "nl": "Failed to upload logo"
+  },
+  "Failed to upload product image": {
+    "fr": "Failed to upload product image",
+    "nl": "Failed to upload product image"
+  },
+  "Failed to upload story image": {
+    "fr": "Failed to upload story image",
+    "nl": "Failed to upload story image"
+  },
+  "Favorites": {
+    "fr": "Favoris",
+    "nl": "Favorieten"
+  },
+  "Favorites, {count} items": {
+    "fr": "Favoris, {count} articles",
+    "nl": "Favorieten, {count} items"
+  },
+  "Featured": {
+    "fr": "En vedette",
+    "nl": "Uitgelicht"
+  },
+  "File too large. Maximum size is {maxSize}MB.": {
+    "fr": "File too large. Maximum size is {maxSize}MB.",
+    "nl": "File too large. Maximum size is {maxSize}MB."
+  },
+  "Filter by category": {
+    "fr": "Filter by category",
+    "nl": "Filter by category"
+  },
+  "First paragraph (Arabic)": {
+    "fr": "First paragraph (arabe)",
+    "nl": "First paragraph (Arabisch)"
+  },
+  "First paragraph (Dutch)": {
+    "fr": "First paragraph (néerlandais)",
+    "nl": "First paragraph (Nederlands)"
+  },
+  "First paragraph (English)": {
+    "fr": "First paragraph (anglais)",
+    "nl": "First paragraph (Engels)"
+  },
+  "First paragraph (French)": {
+    "fr": "First paragraph (français)",
+    "nl": "First paragraph (Frans)"
+  },
+  "Follow Us": {
+    "fr": "Suivez-nous",
+    "nl": "Volg ons"
+  },
+  "Foreground": {
+    "fr": "Foreground",
+    "nl": "Foreground"
+  },
+  "Friday": {
+    "fr": "Vendredi",
+    "nl": "Vrijdag"
+  },
+  "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home.": {
+    "fr": "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home.",
+    "nl": "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home."
+  },
+  "From {price}": {
+    "fr": "À partir de {price}",
+    "nl": "Vanaf {price}"
+  },
+  "Fulfillment": {
+    "fr": "Mode de livraison",
+    "nl": "Afhandeling"
+  },
+  "Full name": {
+    "fr": "Nom complet",
+    "nl": "Volledige naam"
+  },
+  "Gallery": {
+    "fr": "Galerie",
+    "nl": "Galerij"
+  },
+  "Gallery Images": {
+    "fr": "Images galerie",
+    "nl": "Galerijafbeeldingen"
+  },
+  "Gallery coming soon.": {
+    "fr": "Galerie bientôt disponible.",
+    "nl": "Galerij binnenkort beschikbaar."
+  },
+  "General": {
+    "fr": "Général",
+    "nl": "Algemeen"
+  },
+  "Generate and export restaurant reports": {
+    "fr": "Générer and export restaurant reports",
+    "nl": "Genereren and export restaurant reports"
+  },
+  "Generate with AI": {
+    "fr": "Générer with AI",
+    "nl": "Genereren with AI"
+  },
+  "Generating images...": {
+    "fr": "Generating images...",
+    "nl": "Generating images..."
+  },
+  "Get in Touch": {
+    "fr": "Contactez-nous",
+    "nl": "Neem contact op"
+  },
+  "Go back": {
+    "fr": "Retour",
+    "nl": "Ga terug"
+  },
+  "Go back home": {
+    "fr": "Retour à l'accueil",
+    "nl": "Terug naar home"
+  },
+  "Go home": {
+    "fr": "Retour à l'accueil",
+    "nl": "Naar startpagina"
+  },
+  "Go to page {page}": {
+    "fr": "Go to page {page}",
+    "nl": "Go to page {page}"
+  },
+  "Go to slide {number}": {
+    "fr": "Aller à la diapositive {number}",
+    "nl": "Ga naar dia {number}"
+  },
+  "Go to testimonial {number}": {
+    "fr": "Aller au témoignage {number}",
+    "nl": "Ga naar getuigenis {number}"
+  },
+  "Google Maps URL": {
+    "fr": "Google Maps URL",
+    "nl": "Google Maps URL"
+  },
+  "Headline": {
+    "fr": "Headline",
+    "nl": "Headline"
+  },
+  "Heatmaps": {
+    "fr": "Cartes thermiques",
+    "nl": "Heatmaps"
+  },
+  "Hero": {
+    "fr": "Bannière",
+    "nl": "Hero"
+  },
+  "Hero Section": {
+    "fr": "Section héro",
+    "nl": "Hero-sectie"
+  },
+  "Hero background image": {
+    "fr": "Hero background image",
+    "nl": "Hero background image"
+  },
+  "Hero background preview": {
+    "fr": "Hero background preview",
+    "nl": "Hero background preview"
+  },
+  "Hero carousel": {
+    "fr": "Carrousel héro",
+    "nl": "Hero-carrousel"
+  },
+  "Hidden": {
+    "fr": "Masqué",
+    "nl": "Verborgen"
+  },
+  "Hide password": {
+    "fr": "Hide password",
+    "nl": "Hide password"
+  },
+  "High (30%)": {
+    "fr": "High (30%)",
+    "nl": "High (30%)"
+  },
+  "Home": {
+    "fr": "Accueil",
+    "nl": "Home"
+  },
+  "Hours": {
+    "fr": "Horaires",
+    "nl": "Openingstijden"
+  },
+  "How customers can reach you.": {
+    "fr": "How customers can reach you.",
+    "nl": "How customers can reach you."
+  },
+  "Image URL": {
+    "fr": "Image URL",
+    "nl": "Afbeelding URL"
+  },
+  "Import": {
+    "fr": "Importer",
+    "nl": "Importeren"
+  },
+  "Importing...": {
+    "fr": "Importing...",
+    "nl": "Importing..."
+  },
+  "Inactive": {
+    "fr": "Inactif",
+    "nl": "Inactief"
+  },
+  "Include logo in center": {
+    "fr": "Include logo in center",
+    "nl": "Include logo in center"
+  },
+  "Includes table parameter:": {
+    "fr": "Includes table parameter:",
+    "nl": "Includes table parameter:"
+  },
+  "Increase quantity": {
+    "fr": "Augmenter la quantité",
+    "nl": "Aantal verhogen"
+  },
+  "Insights": {
+    "fr": "Statistiques",
+    "nl": "Inzichten"
+  },
+  "Instagram": {
+    "fr": "Instagram",
+    "nl": "Instagram"
+  },
+  "Install": {
+    "fr": "Installer",
+    "nl": "Installeren"
+  },
+  "Install {name}": {
+    "fr": "Installer {name}",
+    "nl": "{name} installeren"
+  },
+  "Internal Name": {
+    "fr": "Internal Name",
+    "nl": "Internal Name"
+  },
+  "Inventory & content": {
+    "fr": "Inventaire et contenu",
+    "nl": "Voorraad en content"
+  },
+  "Item notes": {
+    "fr": "Notes sur l'article",
+    "nl": "Itemnotities"
+  },
+  "Keep cart": {
+    "fr": "Keep cart",
+    "nl": "Keep cart"
+  },
+  "Large": {
+    "fr": "Grand",
+    "nl": "Groot"
+  },
+  "Large price": {
+    "fr": "Large price",
+    "nl": "Large price"
+  },
+  "Live preview": {
+    "fr": "Live preview",
+    "nl": "Live preview"
+  },
+  "Load more": {
+    "fr": "Load more",
+    "nl": "Load more"
+  },
+  "Loading": {
+    "fr": "Chargement",
+    "nl": "Laden"
+  },
+  "Loading...": {
+    "fr": "Chargement…",
+    "nl": "Laden…"
+  },
+  "Login": {
+    "fr": "Connexion",
+    "nl": "Inloggen"
+  },
+  "Logo": {
+    "fr": "Logo",
+    "nl": "Logo"
+  },
+  "Logo URL (Optional)": {
+    "fr": "Logo URL (Facultatif)",
+    "nl": "Logo URL (Optioneel)"
+  },
+  "Logout": {
+    "fr": "Déconnexion",
+    "nl": "Uitloggen"
+  },
+  "Low (7%)": {
+    "fr": "Low (7%)",
+    "nl": "Low (7%)"
+  },
+  "Manage customer reviews and testimonials.": {
+    "fr": "Manage customer reviews and testimonials.",
+    "nl": "Manage customer reviews and testimonials."
+  },
+  "Manage menu categories and their order.": {
+    "fr": "Gérez les catégories du menu et leur ordre.",
+    "nl": "Beheer menucategorieën en hun volgorde."
+  },
+  "Manage menu products, prices, and availability.": {
+    "fr": "Gérez les produits, prix et disponibilité du menu.",
+    "nl": "Beheer menuproducten, prijzen en beschikbaarheid."
+  },
+  "Margin": {
+    "fr": "Margin",
+    "nl": "Margin"
+  },
+  "Mark all read": {
+    "fr": "Tout marquer comme lu",
+    "nl": "Alles als gelezen markeren"
+  },
+  "Mark as read": {
+    "fr": "Marquer comme lu",
+    "nl": "Als gelezen markeren"
+  },
+  "Max notes length": {
+    "fr": "Max notes length",
+    "nl": "Max notes length"
+  },
+  "Max notes length must be between 0 and 1000.": {
+    "fr": "Max notes length must be between 0 and 1000.",
+    "nl": "Max notes length must be between 0 and 1000."
+  },
+  "Medium (15%)": {
+    "fr": "Medium (15%)",
+    "nl": "Medium (15%)"
+  },
+  "Menu": {
+    "fr": "Menu",
+    "nl": "Menu"
+  },
+  "Menu Import": {
+    "fr": "Menu Importer",
+    "nl": "Menu Importeren"
+  },
+  "Menu Management": {
+    "fr": "Gestion du menu",
+    "nl": "Menubeheer"
+  },
+  "Menu URL (Auto-generated)": {
+    "fr": "Menu URL (Auto-generated)",
+    "nl": "Menu URL (Auto-generated)"
+  },
+  "Menu categories": {
+    "fr": "Catégories du menu",
+    "nl": "Menucategorieën"
+  },
+  "Menu coming soon": {
+    "fr": "Menu bientôt disponible",
+    "nl": "Menu binnenkort beschikbaar"
+  },
+  "Menu unavailable": {
+    "fr": "Menu unavailable",
+    "nl": "Menu unavailable"
+  },
+  "Minimum order amount": {
+    "fr": "Minimum order amount",
+    "nl": "Minimum order amount"
+  },
+  "Minimum order is {amount} {currency}.": {
+    "fr": "Commande minimum : {amount} {currency}.",
+    "nl": "Minimumbestelling is {amount} {currency}."
+  },
+  "Minimum order must be 0 or greater.": {
+    "fr": "Minimum order must be 0 or greater.",
+    "nl": "Minimum order must be 0 or greater."
+  },
+  "Monday": {
+    "fr": "Lundi",
+    "nl": "Maandag"
+  },
+  "More metrics": {
+    "fr": "Plus de métriques",
+    "nl": "Meer statistieken"
+  },
+  "Most Viewed Categories": {
+    "fr": "Most Viewed Catégories",
+    "nl": "Most Viewed Categorieën"
+  },
+  "Most Viewed Products": {
+    "fr": "Most Viewed Produits",
+    "nl": "Most Viewed Producten"
+  },
+  "Most searched terms": {
+    "fr": "Most searched terms",
+    "nl": "Most searched terms"
+  },
+  "Must be a number": {
+    "fr": "Doit être un nombre",
+    "nl": "Moet een getal zijn"
+  },
+  "Must be a positive number": {
+    "fr": "Doit être un nombre positif",
+    "nl": "Moet een positief getal zijn"
+  },
+  "Must be at least {min} characters": {
+    "fr": "Doit contenir au moins {min} caractères",
+    "nl": "Moet minimaal {min} tekens bevatten"
+  },
+  "Must be at most {max} characters": {
+    "fr": "Doit contenir au maximum {max} caractères",
+    "nl": "Mag maximaal {max} tekens bevatten"
+  },
+  "Name (Arabic)": {
+    "fr": "Nom (arabe)",
+    "nl": "Naam (Arabisch)"
+  },
+  "Name (Dutch)": {
+    "fr": "Name (néerlandais)",
+    "nl": "Name (Nederlands)"
+  },
+  "Name (English)": {
+    "fr": "Nom (anglais)",
+    "nl": "Naam (Engels)"
+  },
+  "Name (French)": {
+    "fr": "Name (français)",
+    "nl": "Name (Frans)"
+  },
+  "New": {
+    "fr": "Nouveau",
+    "nl": "Nieuw"
+  },
+  "New Import": {
+    "fr": "New Importer",
+    "nl": "New Importeren"
+  },
+  "New password": {
+    "fr": "New password",
+    "nl": "New password"
+  },
+  "New password must be different from your current password.": {
+    "fr": "New password must be different from your current password.",
+    "nl": "New password must be different from your current password."
+  },
+  "New passwords do not match.": {
+    "fr": "New passwords do not match.",
+    "nl": "New passwords do not match."
+  },
+  "Next page": {
+    "fr": "Next page",
+    "nl": "Next page"
+  },
+  "Next slide": {
+    "fr": "Diapositive suivante",
+    "nl": "Volgende dia"
+  },
+  "No": {
+    "fr": "Non",
+    "nl": "Nee"
+  },
+  "No QR codes found": {
+    "fr": "No QR codes found",
+    "nl": "No QR codes found"
+  },
+  "No QR codes yet": {
+    "fr": "No QR codes yet",
+    "nl": "No QR codes yet"
+  },
+  "No QR scan data yet": {
+    "fr": "No QR scan data yet",
+    "nl": "No QR scan data yet"
+  },
+  "No categories found": {
+    "fr": "No categories found",
+    "nl": "No categories found"
+  },
+  "No data found": {
+    "fr": "Aucune donnée",
+    "nl": "Geen gegevens gevonden"
+  },
+  "No data yet": {
+    "fr": "No data yet",
+    "nl": "No data yet"
+  },
+  "No featured dishes available yet.": {
+    "fr": "Aucun plat vedette disponible pour le moment.",
+    "nl": "Nog geen uitgelichte gerechten beschikbaar."
+  },
+  "No image": {
+    "fr": "No image",
+    "nl": "No image"
+  },
+  "No images found": {
+    "fr": "No images found",
+    "nl": "No images found"
+  },
+  "No images found in the products bucket.": {
+    "fr": "No images found in the products bucket.",
+    "nl": "No images found in the products bucket."
+  },
+  "No images were generated. Try again.": {
+    "fr": "No images were generated. Try again.",
+    "nl": "No images were generated. Try again."
+  },
+  "No imports yet": {
+    "fr": "No imports yet",
+    "nl": "No imports yet"
+  },
+  "No notifications": {
+    "fr": "Aucune notification",
+    "nl": "Geen meldingen"
+  },
+  "No offers found": {
+    "fr": "No offers found",
+    "nl": "No offers found"
+  },
+  "No products available in this category": {
+    "fr": "Aucun produit disponible dans cette catégorie",
+    "nl": "Geen producten beschikbaar in deze categorie"
+  },
+  "No products found": {
+    "fr": "No products found",
+    "nl": "No products found"
+  },
+  "No products match your filters. Try adjusting search or category.": {
+    "fr": "No products match your filters. Try adjusting search or category.",
+    "nl": "No products match your filters. Try adjusting search or category."
+  },
+  "No recent activity": {
+    "fr": "Aucune activité récente",
+    "nl": "Geen recente activiteit"
+  },
+  "No results found": {
+    "fr": "Aucun résultat",
+    "nl": "Geen resultaten gevonden"
+  },
+  "No results found for \"{query}\"": {
+    "fr": "Aucun résultat pour « {query} »",
+    "nl": "Geen resultaten voor \"{query}\""
+  },
+  "No table": {
+    "fr": "No table",
+    "nl": "No table"
+  },
+  "No tables yet": {
+    "fr": "No tables yet",
+    "nl": "No tables yet"
+  },
+  "No testimonials found": {
+    "fr": "No testimonials found",
+    "nl": "No testimonials found"
+  },
+  "None": {
+    "fr": "Aucun",
+    "nl": "Geen"
+  },
+  "Not now": {
+    "fr": "Pas maintenant",
+    "nl": "Niet nu"
+  },
+  "Notes must be at most {max} characters.": {
+    "fr": "Les notes doivent contenir au maximum {max} caractères.",
+    "nl": "Notities mogen maximaal {max} tekens bevatten."
+  },
+  "Nothing is being served in this section right now.": {
+    "fr": "Rien n'est servi dans cette section pour le moment.",
+    "nl": "Er wordt momenteel niets geserveerd in deze sectie."
+  },
+  "Notifications": {
+    "fr": "Notifications",
+    "nl": "Meldingen"
+  },
+  "Offers": {
+    "fr": "Offres",
+    "nl": "Aanbiedingen"
+  },
+  "Open WhatsApp again": {
+    "fr": "Ouvrir WhatsApp again",
+    "nl": "Openen WhatsApp again"
+  },
+  "Open cart": {
+    "fr": "Ouvrir le panier",
+    "nl": "Winkelwagen openen"
+  },
+  "Open menu": {
+    "fr": "Ouvrir le menu",
+    "nl": "Menu openen"
+  },
+  "Opening Hours": {
+    "fr": "Heures d'ouverture",
+    "nl": "Openingstijden"
+  },
+  "Opening WhatsApp...": {
+    "fr": "Ouverture de WhatsApp…",
+    "nl": "WhatsApp openen…"
+  },
+  "Optional": {
+    "fr": "Facultatif",
+    "nl": "Optioneel"
+  },
+  "Optional notes": {
+    "fr": "Facultatif notes",
+    "nl": "Optioneel notes"
+  },
+  "Order": {
+    "fr": "Commande",
+    "nl": "Bestelling"
+  },
+  "Order Now": {
+    "fr": "Commander",
+    "nl": "Nu bestellen"
+  },
+  "Order notes": {
+    "fr": "Notes de commande",
+    "nl": "Bestelnotities"
+  },
+  "Order ready to send": {
+    "fr": "Commande ready to send",
+    "nl": "Bestelling ready to send"
+  },
+  "Order summary": {
+    "fr": "Récapitulatif de commande",
+    "nl": "Besteloverzicht"
+  },
+  "Order type": {
+    "fr": "Type de commande",
+    "nl": "Besteltype"
+  },
+  "Order type breakdown": {
+    "fr": "Commande type breakdown",
+    "nl": "Bestelling type breakdown"
+  },
+  "Order via WhatsApp": {
+    "fr": "Commander via WhatsApp",
+    "nl": "Bestellen via WhatsApp"
+  },
+  "Order: {order}": {
+    "fr": "Commande: {order}",
+    "nl": "Bestelling: {order}"
+  },
+  "Organize your menu with categories and products.": {
+    "fr": "Organisez votre menu avec des catégories et des produits.",
+    "nl": "Organiseer uw menu met categorieën en producten."
+  },
+  "Our Location": {
+    "fr": "Notre emplacement",
+    "nl": "Onze locatie"
+  },
+  "Our Menu": {
+    "fr": "Notre menu",
+    "nl": "Ons menu"
+  },
+  "Our Story": {
+    "fr": "Notre histoire",
+    "nl": "Ons verhaal"
+  },
+  "Our Story Section": {
+    "fr": "Our Histoire Section",
+    "nl": "Our Verhaal Section"
+  },
+  "Our story section preview": {
+    "fr": "Our story section preview",
+    "nl": "Our story section preview"
+  },
+  "Overall:": {
+    "fr": "Overall:",
+    "nl": "Overall:"
+  },
+  "Overview": {
+    "fr": "Aperçu",
+    "nl": "Overzicht"
+  },
+  "PDF, PNG, JPEG, or WebP (max {maxSize}MB)": {
+    "fr": "PDF, PNG, JPEG, or WebP (max {maxSize}MB)",
+    "nl": "PDF, PNG, JPEG, or WebP (max {maxSize}MB)"
+  },
+  "Page not found": {
+    "fr": "Page introuvable",
+    "nl": "Pagina niet gevonden"
+  },
+  "Page {page} of {total}": {
+    "fr": "Page {page} of {total}",
+    "nl": "Page {page} of {total}"
+  },
+  "Password": {
+    "fr": "Mot de passe",
+    "nl": "Wachtwoord"
+  },
+  "Password must be at least {min} characters.": {
+    "fr": "Mot de passe must be at least {min} characters.",
+    "nl": "Wachtwoord must be at least {min} characters."
+  },
+  "Password updated successfully.": {
+    "fr": "Mot de passe updated successfully.",
+    "nl": "Wachtwoord updated successfully."
+  },
+  "Peak Days": {
+    "fr": "Peak Days",
+    "nl": "Peak Days"
+  },
+  "Peak Hours": {
+    "fr": "Peak Hours",
+    "nl": "Peak Hours"
+  },
+  "Phone": {
+    "fr": "Téléphone",
+    "nl": "Telefoon"
+  },
+  "Phone (optional)": {
+    "fr": "Téléphone (facultatif)",
+    "nl": "Telefoon (optioneel)"
+  },
+  "Pickup at restaurant": {
+    "fr": "Retrait au restaurant",
+    "nl": "Afhalen bij restaurant"
+  },
+  "Please check your internet connection and try again.": {
+    "fr": "Vérifiez votre connexion Internet et réessayez.",
+    "nl": "Controleer uw internetverbinding en probeer opnieuw."
+  },
+  "Please choose your order type": {
+    "fr": "Veuillez choisir votre type de commande",
+    "nl": "Kies uw besteltype"
+  },
+  "Please enter a valid email address": {
+    "fr": "Veuillez saisir une adresse e-mail valide",
+    "nl": "Voer een geldig e-mailadres in"
+  },
+  "Please enter a valid email address.": {
+    "fr": "Please enter a valid email address.",
+    "nl": "Please enter a valid email address."
+  },
+  "Please enter your full delivery address.": {
+    "fr": "Veuillez saisir votre adresse de livraison complète.",
+    "nl": "Voer uw volledige bezorgadres in."
+  },
+  "Please enter your name.": {
+    "fr": "Veuillez saisir votre nom.",
+    "nl": "Voer uw naam in."
+  },
+  "Please fix the following:": {
+    "fr": "Please fix the following:",
+    "nl": "Please fix the following:"
+  },
+  "Popular": {
+    "fr": "Populaire",
+    "nl": "Populair"
+  },
+  "Premium dining experience celebrating Lebanese and Syrian culinary traditions.": {
+    "fr": "Expérience gastronomique premium célébrant les traditions culinaires libanaises et syriennes.",
+    "nl": "Premium dinerervaring ter ere van Libanese en Syrische culinaire tradities."
+  },
+  "Prep time (minutes)": {
+    "fr": "Prep time (minutes)",
+    "nl": "Prep time (minuten)"
+  },
+  "Prep time must be between 0 and 240 minutes.": {
+    "fr": "Prep time must be between 0 and 240 minutes.",
+    "nl": "Prep time must be between 0 and 240 minuten."
+  },
+  "Preview": {
+    "fr": "Aperçu",
+    "nl": "Voorbeeld"
+  },
+  "Preview & Download": {
+    "fr": "Aperçu & Télécharger",
+    "nl": "Voorbeeld & Downloaden"
+  },
+  "Previous page": {
+    "fr": "Previous page",
+    "nl": "Previous page"
+  },
+  "Previous slide": {
+    "fr": "Diapositive précédente",
+    "nl": "Vorige dia"
+  },
+  "Price": {
+    "fr": "Prix",
+    "nl": "Prijs"
+  },
+  "Prices": {
+    "fr": "Prices",
+    "nl": "Prices"
+  },
+  "Primary Color": {
+    "fr": "Primaire Couleur",
+    "nl": "Primair Kleur"
+  },
+  "Print": {
+    "fr": "Imprimer",
+    "nl": "Afdrukken"
+  },
+  "Processing your menu file...": {
+    "fr": "Traitement your menu file...",
+    "nl": "Verwerken your menu file..."
+  },
+  "Processing...": {
+    "fr": "Traitement…",
+    "nl": "Verwerken…"
+  },
+  "Product": {
+    "fr": "Product",
+    "nl": "Product"
+  },
+  "Product Image": {
+    "fr": "Product Image",
+    "nl": "Product Afbeelding"
+  },
+  "Product Name (Arabic)": {
+    "fr": "Product Name (arabe)",
+    "nl": "Product Name (Arabisch)"
+  },
+  "Product Name (Dutch)": {
+    "fr": "Product Name (néerlandais)",
+    "nl": "Product Name (Nederlands)"
+  },
+  "Product Name (English)": {
+    "fr": "Product Name (anglais)",
+    "nl": "Product Name (Engels)"
+  },
+  "Product Name (French)": {
+    "fr": "Product Name (français)",
+    "nl": "Product Name (Frans)"
+  },
+  "Product image preview": {
+    "fr": "Product image preview",
+    "nl": "Product image preview"
+  },
+  "Product image removed": {
+    "fr": "Product image removed",
+    "nl": "Product image removed"
+  },
+  "Product image saved": {
+    "fr": "Product image saved",
+    "nl": "Product image saved"
+  },
+  "Product name (Arabic)": {
+    "fr": "Product name (arabe)",
+    "nl": "Product name (Arabisch)"
+  },
+  "Product name (English)": {
+    "fr": "Product name (anglais)",
+    "nl": "Product name (Engels)"
+  },
+  "Product views over time": {
+    "fr": "Product views over time",
+    "nl": "Product views over time"
+  },
+  "Product {number}": {
+    "fr": "Product {number}",
+    "nl": "Product {number}"
+  },
+  "Products": {
+    "fr": "Produits",
+    "nl": "Producten"
+  },
+  "Products:": {
+    "fr": "Produits:",
+    "nl": "Producten:"
+  },
+  "QR Code Name": {
+    "fr": "QR Code Name",
+    "nl": "QR Code Name"
+  },
+  "QR Code Scans": {
+    "fr": "QR Code Scans",
+    "nl": "QR Code Scans"
+  },
+  "QR Codes": {
+    "fr": "Codes QR",
+    "nl": "QR-codes"
+  },
+  "QR actions": {
+    "fr": "QR actions",
+    "nl": "QR actions"
+  },
+  "Quantity": {
+    "fr": "Quantité",
+    "nl": "Aantal"
+  },
+  "Quartile (25%)": {
+    "fr": "Quartile (25%)",
+    "nl": "Quartile (25%)"
+  },
+  "Quick Links": {
+    "fr": "Liens rapides",
+    "nl": "Snelle links"
+  },
+  "Quick and convenient — take your favorites to go": {
+    "fr": "Rapide et pratique — emportez vos favoris",
+    "nl": "Snel en handig — neem uw favorieten mee"
+  },
+  "Rating": {
+    "fr": "Rating",
+    "nl": "Rating"
+  },
+  "Re-enter the new password": {
+    "fr": "Re-enter the new password",
+    "nl": "Re-enter the new password"
+  },
+  "Reach us by phone, WhatsApp, or email.": {
+    "fr": "Contactez-nous par téléphone, WhatsApp ou e-mail.",
+    "nl": "Bereik ons via telefoon, WhatsApp of e-mail."
+  },
+  "Recent Activity": {
+    "fr": "Activité récente",
+    "nl": "Recente activiteit"
+  },
+  "Recent Searches": {
+    "fr": "Recherches récentes",
+    "nl": "Recente zoekopdrachten"
+  },
+  "Recently Popular": {
+    "fr": "Recently Popular",
+    "nl": "Recently Popular"
+  },
+  "Recently Viewed": {
+    "fr": "Récemment consultés",
+    "nl": "Recent bekeken"
+  },
+  "Recommended for You": {
+    "fr": "Recommandé pour vous",
+    "nl": "Aanbevolen voor u"
+  },
+  "Regenerate": {
+    "fr": "Regenerate",
+    "nl": "Regenerate"
+  },
+  "Relax and enjoy your meal in our elegant dining area": {
+    "fr": "Détendez-vous et savourez votre repas dans notre salle élégante",
+    "nl": "Ontspan en geniet van uw maaltijd in onze elegante eetruimte"
+  },
+  "Remove": {
+    "fr": "Retirer",
+    "nl": "Verwijderen"
+  },
+  "Remove Image": {
+    "fr": "Retirer Image",
+    "nl": "Verwijderen Afbeelding"
+  },
+  "Remove category": {
+    "fr": "Retirer category",
+    "nl": "Verwijderen category"
+  },
+  "Remove file": {
+    "fr": "Retirer file",
+    "nl": "Verwijderen file"
+  },
+  "Remove from favorites": {
+    "fr": "Retirer des favoris",
+    "nl": "Verwijderen uit favorieten"
+  },
+  "Remove hero image": {
+    "fr": "Retirer hero image",
+    "nl": "Verwijderen hero image"
+  },
+  "Remove item": {
+    "fr": "Retirer l'article",
+    "nl": "Item verwijderen"
+  },
+  "Remove logo": {
+    "fr": "Retirer le logo",
+    "nl": "Logo verwijderen"
+  },
+  "Remove product": {
+    "fr": "Retirer product",
+    "nl": "Verwijderen product"
+  },
+  "Remove story image": {
+    "fr": "Retirer story image",
+    "nl": "Verwijderen story image"
+  },
+  "Report Summary": {
+    "fr": "Report Summary",
+    "nl": "Report Summary"
+  },
+  "Reports": {
+    "fr": "Rapports",
+    "nl": "Rapporten"
+  },
+  "Required": {
+    "fr": "Obligatoire",
+    "nl": "Verplicht"
+  },
+  "Restaurant Details": {
+    "fr": "Restaurant Details",
+    "nl": "Restaurant Details"
+  },
+  "Restaurant Info": {
+    "fr": "Restaurant Info",
+    "nl": "Restaurant Info"
+  },
+  "Restaurant Information": {
+    "fr": "Informations du restaurant",
+    "nl": "Restaurantinformatie"
+  },
+  "Restaurant location map": {
+    "fr": "Carte de localisation du restaurant",
+    "nl": "Locatiekaart restaurant"
+  },
+  "Restaurant logo": {
+    "fr": "Logo du restaurant",
+    "nl": "Restaurantlogo"
+  },
+  "Restaurant name (Arabic) is required.": {
+    "fr": "Restaurant name (arabe) is required.",
+    "nl": "Restaurant name (Arabisch) is required."
+  },
+  "Restaurant name (English) is required.": {
+    "fr": "Restaurant name (anglais) is required.",
+    "nl": "Restaurant name (Engels) is required."
+  },
+  "Restaurant:": {
+    "fr": "Restaurant:",
+    "nl": "Restaurant:"
+  },
+  "Retry": {
+    "fr": "Réessayer",
+    "nl": "Opnieuw proberen"
+  },
+  "Review (Arabic)": {
+    "fr": "Review (arabe)",
+    "nl": "Review (Arabisch)"
+  },
+  "Review (English)": {
+    "fr": "Review (anglais)",
+    "nl": "Review (Engels)"
+  },
+  "Review and edit the extracted menu data before importing": {
+    "fr": "Review and edit the extracted menu data before importing",
+    "nl": "Review and edit the extracted menu data before importing"
+  },
+  "Rounded": {
+    "fr": "Rounded",
+    "nl": "Rounded"
+  },
+  "Rounded Style": {
+    "fr": "Rounded Style",
+    "nl": "Rounded Style"
+  },
+  "Rows per page": {
+    "fr": "Rows per page",
+    "nl": "Rows per page"
+  },
+  "SAR": {
+    "fr": "SAR",
+    "nl": "SAR"
+  },
+  "Saturday": {
+    "fr": "Samedi",
+    "nl": "Zaterdag"
+  },
+  "Save": {
+    "fr": "Enregistrer",
+    "nl": "Opslaan"
+  },
+  "Save Changes": {
+    "fr": "Enregistrer les modifications",
+    "nl": "Wijzigingen opslaan"
+  },
+  "Saving...": {
+    "fr": "Enregistrement…",
+    "nl": "Opslaan…"
+  },
+  "Scan QR Code": {
+    "fr": "Scanner le code QR",
+    "nl": "QR-code scannen"
+  },
+  "Scan activity over time": {
+    "fr": "Scan activity over time",
+    "nl": "Scan activity over time"
+  },
+  "Scroll categories backward": {
+    "fr": "Faire défiler les catégories vers l'arrière",
+    "nl": "Categorieën naar achteren scrollen"
+  },
+  "Scroll categories forward": {
+    "fr": "Faire défiler les catégories vers l'avant",
+    "nl": "Categorieën naar voren scrollen"
+  },
+  "Search": {
+    "fr": "Rechercher",
+    "nl": "Zoeken"
+  },
+  "Search QR codes...": {
+    "fr": "Rechercher QR codes...",
+    "nl": "Zoeken QR codes..."
+  },
+  "Search by dish name in Arabic or English.": {
+    "fr": "Rechercher par nom de plat en arabe ou en anglais.",
+    "nl": "Zoek op gerechtnaam in Arabisch of Engels."
+  },
+  "Search categories": {
+    "fr": "Rechercher categories",
+    "nl": "Zoeken categories"
+  },
+  "Search categories...": {
+    "fr": "Rechercher categories...",
+    "nl": "Zoeken categories..."
+  },
+  "Search gallery...": {
+    "fr": "Rechercher gallery...",
+    "nl": "Zoeken gallery..."
+  },
+  "Search menu": {
+    "fr": "Rechercher dans le menu",
+    "nl": "Menu doorzoeken"
+  },
+  "Search menu items": {
+    "fr": "Rechercher des plats",
+    "nl": "Menu-items zoeken"
+  },
+  "Search menu...": {
+    "fr": "Rechercher dans le menu…",
+    "nl": "Menu doorzoeken…"
+  },
+  "Search offers...": {
+    "fr": "Rechercher offers...",
+    "nl": "Zoeken offers..."
+  },
+  "Search products": {
+    "fr": "Rechercher products",
+    "nl": "Zoeken products"
+  },
+  "Search products...": {
+    "fr": "Rechercher products...",
+    "nl": "Zoeken products..."
+  },
+  "Second paragraph (Arabic)": {
+    "fr": "Second paragraph (arabe)",
+    "nl": "Second paragraph (Arabisch)"
+  },
+  "Second paragraph (Dutch)": {
+    "fr": "Second paragraph (néerlandais)",
+    "nl": "Second paragraph (Nederlands)"
+  },
+  "Second paragraph (English)": {
+    "fr": "Second paragraph (anglais)",
+    "nl": "Second paragraph (Engels)"
+  },
+  "Second paragraph (French)": {
+    "fr": "Second paragraph (français)",
+    "nl": "Second paragraph (Frans)"
+  },
+  "Secondary Color": {
+    "fr": "Secondaire Couleur",
+    "nl": "Secundair Kleur"
+  },
+  "Select category": {
+    "fr": "Select category",
+    "nl": "Select category"
+  },
+  "Select size": {
+    "fr": "Choisir la taille",
+    "nl": "Maat kiezen"
+  },
+  "Service ({rate}%)": {
+    "fr": "Service ({rate}%)",
+    "nl": "Service ({rate}%)"
+  },
+  "Service Charge (%)": {
+    "fr": "Service Charge (%)",
+    "nl": "Service Charge (%)"
+  },
+  "Service charge must be between 0 and 100.": {
+    "fr": "Service charge must be between 0 and 100.",
+    "nl": "Service charge must be between 0 and 100."
+  },
+  "Set your restaurant's opening and closing times for each day.": {
+    "fr": "Set your restaurant's opening and closing times for each jour.",
+    "nl": "Set your restaurant's opening and closing times for each dag."
+  },
+  "Settings": {
+    "fr": "Paramètres",
+    "nl": "Instellingen"
+  },
+  "Show password": {
+    "fr": "Show password",
+    "nl": "Show password"
+  },
+  "Showing {count} of {total}": {
+    "fr": "Showing {count} of {total}",
+    "nl": "Showing {count} of {total}"
+  },
+  "Showing {count} of {total} · {category}": {
+    "fr": "Showing {count} of {total} · {category}",
+    "nl": "Showing {count} of {total} · {category}"
+  },
+  "Showing {start}–{end} of {total}": {
+    "fr": "Showing {start}–{end} of {total}",
+    "nl": "Showing {start}–{end} of {total}"
+  },
+  "Shown beside the Our Story text on the landing page. Recommended: 4:3 aspect ratio (e.g. 1200×900).": {
+    "fr": "Shown beside the Our Histoire text on the landing page. Recommandé: 4:3 aspect ratio (e.g. 1200×900).",
+    "nl": "Shown beside the Our Verhaal text on the landing page. Aanbevolen: 4:3 aspect ratio (e.g. 1200×900)."
+  },
+  "Shown on the landing page when no featured gallery carousel is active. Recommended: 1920×1080 or wider.": {
+    "fr": "Shown on the landing page when no featured gallery carousel is active. Recommandé: 1920×1080 or wider.",
+    "nl": "Shown on the landing page when no featured gallery carousel is active. Aanbevolen: 1920×1080 or wider."
+  },
+  "Sign in": {
+    "fr": "Sign in",
+    "nl": "Sign in"
+  },
+  "Sign in to the admin dashboard": {
+    "fr": "Connectez-vous au tableau de bord admin",
+    "nl": "Log in op het beheerdersdashboard"
+  },
+  "Signature Dishes": {
+    "fr": "Plats signature",
+    "nl": "Signatuurgerechten"
+  },
+  "Signature dishes at {name}": {
+    "fr": "Plats signature chez {name}",
+    "nl": "Signatuurgerechten bij {name}"
+  },
+  "Signing in...": {
+    "fr": "Connexion...",
+    "nl": "Inloggen..."
+  },
+  "Size (px)": {
+    "fr": "Size (px)",
+    "nl": "Size (px)"
+  },
+  "Skip to main content": {
+    "fr": "Aller au contenu principal",
+    "nl": "Ga naar hoofdinhoud"
+  },
+  "Slide {number}": {
+    "fr": "Diapositive {number}",
+    "nl": "Dia {number}"
+  },
+  "Small": {
+    "fr": "Petit",
+    "nl": "Klein"
+  },
+  "Small price": {
+    "fr": "Small price",
+    "nl": "Small price"
+  },
+  "Social links coming soon.": {
+    "fr": "Liens sociaux bientôt disponibles.",
+    "nl": "Social links binnenkort beschikbaar."
+  },
+  "Something went wrong": {
+    "fr": "Une erreur s'est produite",
+    "nl": "Er is iets misgegaan"
+  },
+  "Sort Order": {
+    "fr": "Sort Commande",
+    "nl": "Sort Bestelling"
+  },
+  "Special Offers": {
+    "fr": "Offres spéciales",
+    "nl": "Speciale aanbiedingen"
+  },
+  "Spicy": {
+    "fr": "Épicé",
+    "nl": "Pittig"
+  },
+  "Square": {
+    "fr": "Square",
+    "nl": "Square"
+  },
+  "Star": {
+    "fr": "Étoile",
+    "nl": "Ster"
+  },
+  "Stars": {
+    "fr": "Étoiles",
+    "nl": "Sterren"
+  },
+  "Start Import": {
+    "fr": "Start Importer",
+    "nl": "Start Importeren"
+  },
+  "Status": {
+    "fr": "Status",
+    "nl": "Status"
+  },
+  "Story section image": {
+    "fr": "Histoire section image",
+    "nl": "Verhaal section image"
+  },
+  "Story title (Arabic)": {
+    "fr": "Histoire title (arabe)",
+    "nl": "Verhaal title (Arabisch)"
+  },
+  "Story title (Dutch)": {
+    "fr": "Histoire title (néerlandais)",
+    "nl": "Verhaal title (Nederlands)"
+  },
+  "Story title (English)": {
+    "fr": "Histoire title (anglais)",
+    "nl": "Verhaal title (Engels)"
+  },
+  "Story title (French)": {
+    "fr": "Histoire title (français)",
+    "nl": "Verhaal title (Frans)"
+  },
+  "Street, district, city, nearby landmark…": {
+    "fr": "Rue, quartier, ville, point de repère…",
+    "nl": "Straat, wijk, stad, herkenningspunt…"
+  },
+  "Subtitle": {
+    "fr": "Subtitle",
+    "nl": "Subtitle"
+  },
+  "Subtotal": {
+    "fr": "Sous-total",
+    "nl": "Subtotaal"
+  },
+  "Success": {
+    "fr": "Succès",
+    "nl": "Gelukt"
+  },
+  "Sunday": {
+    "fr": "Dimanche",
+    "nl": "Zondag"
+  },
+  "Switch language": {
+    "fr": "Changer de langue",
+    "nl": "Taal wisselen"
+  },
+  "Switch to dark mode": {
+    "fr": "Passer en mode sombre",
+    "nl": "Naar donkere modus"
+  },
+  "Switch to light mode": {
+    "fr": "Passer en mode clair",
+    "nl": "Naar lichte modus"
+  },
+  "Table": {
+    "fr": "Table",
+    "nl": "Tafel"
+  },
+  "Table Number *": {
+    "fr": "Table Number *",
+    "nl": "Tafel Number *"
+  },
+  "Table Usage": {
+    "fr": "Table Usage",
+    "nl": "Tafel Usage"
+  },
+  "Table Usage Heatmap": {
+    "fr": "Table Usage Heatmap",
+    "nl": "Tafel Usage Heatmap"
+  },
+  "Table pagination": {
+    "fr": "Table pagination",
+    "nl": "Tafel pagination"
+  },
+  "Table {number}": {
+    "fr": "Table {number}",
+    "nl": "Tafel {number}"
+  },
+  "Tables": {
+    "fr": "Tables",
+    "nl": "Tafels"
+  },
+  "Tagline": {
+    "fr": "Slogan",
+    "nl": "Tagline"
+  },
+  "Takeaway": {
+    "fr": "À emporter",
+    "nl": "Afhalen"
+  },
+  "Takeaway %": {
+    "fr": "À emporter %",
+    "nl": "Afhalen %"
+  },
+  "Takeaway Price": {
+    "fr": "À emporter Price",
+    "nl": "Afhalen Price"
+  },
+  "Takeaway price": {
+    "fr": "À emporter price",
+    "nl": "Afhalen price"
+  },
+  "Tax ({rate}%)": {
+    "fr": "TVA ({rate}%)",
+    "nl": "BTW ({rate}%)"
+  },
+  "Tax Rate (%)": {
+    "fr": "TVA Rate (%)",
+    "nl": "BTW Rate (%)"
+  },
+  "Tax rate must be between 0 and 100.": {
+    "fr": "TVA rate must be between 0 and 100.",
+    "nl": "BTW rate must be between 0 and 100."
+  },
+  "Tax, currency, and ordering settings.": {
+    "fr": "TVA, currency, and ordering settings.",
+    "nl": "BTW, currency, and ordering settings."
+  },
+  "Template": {
+    "fr": "Template",
+    "nl": "Template"
+  },
+  "Testimonials": {
+    "fr": "Témoignages",
+    "nl": "Getuigenissen"
+  },
+  "Thank you!": {
+    "fr": "Thank you!",
+    "nl": "Thank you!"
+  },
+  "The page you are looking for does not exist.": {
+    "fr": "La page que vous recherchez n'existe pas.",
+    "nl": "De pagina die u zoekt bestaat niet."
+  },
+  "Theme": {
+    "fr": "Thème",
+    "nl": "Thema"
+  },
+  "Theme Colors": {
+    "fr": "Thème Colors",
+    "nl": "Thema Colors"
+  },
+  "There is nothing to display yet.": {
+    "fr": "Rien à afficher pour le moment.",
+    "nl": "Er is nog niets om weer te geven."
+  },
+  "This AI model cannot generate images": {
+    "fr": "This AI model cannot generate images",
+    "nl": "This AI model cannot generate images"
+  },
+  "This action cannot be undone.": {
+    "fr": "Cette action est irréversible.",
+    "nl": "Deze actie kan niet ongedaan worden gemaakt."
+  },
+  "This field is required": {
+    "fr": "Ce champ est obligatoire",
+    "nl": "Dit veld is verplicht"
+  },
+  "This may take a few minutes depending on file size.": {
+    "fr": "This may take a few minutes depending on file size.",
+    "nl": "This may take a few minuten depending on file size."
+  },
+  "Thursday": {
+    "fr": "Jeudi",
+    "nl": "Donderdag"
+  },
+  "TikTok": {
+    "fr": "TikTok",
+    "nl": "TikTok"
+  },
+  "Title (Arabic)": {
+    "fr": "Title (arabe)",
+    "nl": "Title (Arabisch)"
+  },
+  "Title (English)": {
+    "fr": "Title (anglais)",
+    "nl": "Title (Engels)"
+  },
+  "Today": {
+    "fr": "Aujourd'hui",
+    "nl": "Vandaag"
+  },
+  "Today's Activity": {
+    "fr": "Activité d'aujourd'hui",
+    "nl": "Activiteit vandaag"
+  },
+  "Today's Scans": {
+    "fr": "Scans d'aujourd'hui",
+    "nl": "Scans vandaag"
+  },
+  "Today's Visitors": {
+    "fr": "Visiteurs d'aujourd'hui",
+    "nl": "Bezoekers vandaag"
+  },
+  "Today's order breakdown": {
+    "fr": "Répartition des commandes d'aujourd'hui",
+    "nl": "Besteloverzicht vandaag"
+  },
+  "Toggle theme": {
+    "fr": "Changer de thème",
+    "nl": "Thema wisselen"
+  },
+  "Top Search Terms": {
+    "fr": "Top Rechercher Terms",
+    "nl": "Top Zoeken Terms"
+  },
+  "Top categories by views": {
+    "fr": "Top categories by views",
+    "nl": "Top categories by views"
+  },
+  "Top products by views": {
+    "fr": "Top products by views",
+    "nl": "Top products by views"
+  },
+  "Total": {
+    "fr": "Total",
+    "nl": "Totaal"
+  },
+  "Total Categories": {
+    "fr": "Total catégories",
+    "nl": "Totaal categorieën"
+  },
+  "Total Products": {
+    "fr": "Total produits",
+    "nl": "Totaal producten"
+  },
+  "Track visitor behavior and performance metrics.": {
+    "fr": "Track visitor behavior and performance metrics.",
+    "nl": "Track visitor behavior and performance metrics."
+  },
+  "Trending Dishes": {
+    "fr": "Trending Dishes",
+    "nl": "Trending Dishes"
+  },
+  "Try Again": {
+    "fr": "Réessayer",
+    "nl": "Opnieuw proberen"
+  },
+  "Try a different dish name, or browse the categories above.": {
+    "fr": "Essayez un autre nom de plat ou parcourez les catégories ci-dessus.",
+    "nl": "Probeer een andere gerechtnaam of blader door de categorieën hierboven."
+  },
+  "Try a different search term": {
+    "fr": "Try a different search term",
+    "nl": "Try a different search term"
+  },
+  "Tuesday": {
+    "fr": "Mardi",
+    "nl": "Dinsdag"
+  },
+  "Unavailable": {
+    "fr": "Indisponible",
+    "nl": "Niet beschikbaar"
+  },
+  "Unsupported file type. Please upload a PDF, PNG, JPEG, or WebP file.": {
+    "fr": "Unsupported file type. Please upload a PDF, PNG, JPEG, or WebP file.",
+    "nl": "Unsupported file type. Please upload a PDF, PNG, JPEG, or WebP file."
+  },
+  "Update": {
+    "fr": "Mettre à jour",
+    "nl": "Bijwerken"
+  },
+  "Update password": {
+    "fr": "Update password",
+    "nl": "Update password"
+  },
+  "Update the category details.": {
+    "fr": "Update the category details.",
+    "nl": "Update the category details."
+  },
+  "Update your admin account password. You must enter your current password to confirm.": {
+    "fr": "Update your admin account password. You must enter your current password to confirm.",
+    "nl": "Update your admin account password. You must enter your current password to confirm."
+  },
+  "Updating password...": {
+    "fr": "Updating password...",
+    "nl": "Updating password..."
+  },
+  "Upload": {
+    "fr": "Téléverser",
+    "nl": "Uploaden"
+  },
+  "Upload a logo in Settings to enable this option": {
+    "fr": "Téléverser a logo in Paramètres to enable this option",
+    "nl": "Uploaden a logo in Instellingen to enable this option"
+  },
+  "Upload a menu PDF or image to automatically extract menu data": {
+    "fr": "Téléverser a menu PDF or image to automatically extract menu data",
+    "nl": "Uploaden a menu PDF or image to automatically extract menu data"
+  },
+  "Upload a menu PDF or image to get started": {
+    "fr": "Téléverser a menu PDF or image to get started",
+    "nl": "Uploaden a menu PDF or image to get started"
+  },
+  "Upload hero image": {
+    "fr": "Téléverser hero image",
+    "nl": "Uploaden hero image"
+  },
+  "Upload menu file": {
+    "fr": "Téléverser menu file",
+    "nl": "Uploaden menu file"
+  },
+  "Upload story image": {
+    "fr": "Téléverser story image",
+    "nl": "Uploaden story image"
+  },
+  "Uploading...": {
+    "fr": "Téléversement…",
+    "nl": "Uploaden…"
+  },
+  "Use selected image": {
+    "fr": "Use selected image",
+    "nl": "Use selected image"
+  },
+  "Use this image": {
+    "fr": "Use this image",
+    "nl": "Use this image"
+  },
+  "Uses your restaurant logo from Settings": {
+    "fr": "Uses your restaurant logo from Paramètres",
+    "nl": "Uses your restaurant logo from Instellingen"
+  },
+  "Valid From": {
+    "fr": "Valid From",
+    "nl": "Valid From"
+  },
+  "Valid Until": {
+    "fr": "Valid Until",
+    "nl": "Valid Until"
+  },
+  "View Full Menu": {
+    "fr": "Voir le menu complet",
+    "nl": "Volledig menu bekijken"
+  },
+  "View Gallery": {
+    "fr": "Voir la galerie",
+    "nl": "Galerij bekijken"
+  },
+  "View Menu": {
+    "fr": "Voir le menu",
+    "nl": "Menu bekijken"
+  },
+  "View dish": {
+    "fr": "Voir le plat",
+    "nl": "Gerecht bekijken"
+  },
+  "View on Map": {
+    "fr": "Voir sur la carte",
+    "nl": "Bekijk op kaart"
+  },
+  "View order": {
+    "fr": "Voir la commande",
+    "nl": "Bestelling bekijken"
+  },
+  "Visible": {
+    "fr": "Visible",
+    "nl": "Zichtbaar"
+  },
+  "Visit Us": {
+    "fr": "Nous rendre visite",
+    "nl": "Bezoek ons"
+  },
+  "Visitors & Scans": {
+    "fr": "Visiteurs & Scans",
+    "nl": "Bezoekers & Scans"
+  },
+  "Visitors by device type": {
+    "fr": "Visiteurs by device type",
+    "nl": "Bezoekers by device type"
+  },
+  "Visitors over time today": {
+    "fr": "Visiteurs au fil de la journée",
+    "nl": "Bezoekers vandaag in de loop van de tijd"
+  },
+  "Warda Shamya": {
+    "fr": "Warda Shamya",
+    "nl": "Warda Shamya"
+  },
+  "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.": {
+    "fr": "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.",
+    "nl": "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant."
+  },
+  "We are preparing our delicious menu for you.": {
+    "fr": "Nous préparons notre délicieux menu pour vous.",
+    "nl": "We bereiden ons heerlijke menu voor u voor."
+  },
+  "We'd love to hear from you": {
+    "fr": "Nous serions ravis de vous entendre",
+    "nl": "We horen graag van u"
+  },
+  "Wednesday": {
+    "fr": "Mercredi",
+    "nl": "Woensdag"
+  },
+  "Welcome to": {
+    "fr": "Bienvenue chez",
+    "nl": "Welkom bij"
+  },
+  "Welcome to Warda Shamya": {
+    "fr": "Bienvenue chez Warda Shamya",
+    "nl": "Welkom bij Warda Shamya"
+  },
+  "Welcome to {name}": {
+    "fr": "Bienvenue chez {name}",
+    "nl": "Welkom bij {name}"
+  },
+  "What Our Guests Say": {
+    "fr": "Ce que disent nos clients",
+    "nl": "Wat onze gasten zeggen"
+  },
+  "WhatsApp": {
+    "fr": "WhatsApp",
+    "nl": "WhatsApp"
+  },
+  "WhatsApp or mobile number": {
+    "fr": "Numéro WhatsApp ou mobile",
+    "nl": "WhatsApp- of mobiel nummer"
+  },
+  "WhatsApp ordering is not configured. Please contact the restaurant.": {
+    "fr": "La commande WhatsApp n'est pas configurée. Veuillez contacter le restaurant.",
+    "nl": "WhatsApp-bestellen is niet geconfigureerd. Neem contact op met het restaurant."
+  },
+  "WhatsApp should open with your order. If it did not, use the button below.": {
+    "fr": "WhatsApp should open with your order. If it did not, use the button below.",
+    "nl": "WhatsApp should open with your order. If it did not, use the button below."
+  },
+  "Yes": {
+    "fr": "Oui",
+    "nl": "Ja"
+  },
+  "You are offline": {
+    "fr": "Vous êtes hors ligne",
+    "nl": "U bent offline"
+  },
+  "You are offline. Some features may be unavailable.": {
+    "fr": "You are offline. Some features may be unavailable.",
+    "nl": "You are offline. Some features may be unavailable."
+  },
+  "You can change this anytime from the menu": {
+    "fr": "Vous pouvez changer cela à tout moment depuis le menu",
+    "nl": "U kunt dit altijd wijzigen via het menu"
+  },
+  "Your Cart": {
+    "fr": "Votre panier",
+    "nl": "Uw winkelwagen"
+  },
+  "Your cart is empty": {
+    "fr": "Votre panier est vide",
+    "nl": "Uw winkelwagen is leeg"
+  },
+  "Your cart is empty. Add items before checkout.": {
+    "fr": "Votre panier est vide. Ajoutez des articles avant de payer.",
+    "nl": "Uw winkelwagen is leeg. Voeg items toe vóór het afrekenen."
+  },
+  "Your name": {
+    "fr": "Votre nom",
+    "nl": "Uw naam"
+  },
+  "Your order has been prepared for WhatsApp. What would you like to do next?": {
+    "fr": "Your order has been prepared for WhatsApp. What would you like to do next?",
+    "nl": "Your order has been prepared for WhatsApp. What would you like to do next?"
+  },
+  "Zoom in": {
+    "fr": "Zoom avant",
+    "nl": "Inzoomen"
+  },
+  "Zoom out": {
+    "fr": "Zoom arrière",
+    "nl": "Uitzoomen"
+  },
+  "admin@wardashamya.com": {
+    "fr": "admin@wardashamya.com",
+    "nl": "admin@wardashamya.com"
+  },
+  "and": {
+    "fr": "et",
+    "nl": "en"
+  },
+  "e.g. A culinary journey through traditions": {
+    "fr": "p. ex. Un voyage culinaire à travers les traditions",
+    "nl": "bijv. Een culinaire reis door tradities"
+  },
+  "e.g. A culinary journey...": {
+    "fr": "e.g. A culinary journey...",
+    "nl": "e.g. A culinary journey..."
+  },
+  "e.g. Extra garlic, no onions": {
+    "fr": "p. ex. ail supplémentaire, sans oignons",
+    "nl": "bijv. extra knoflook, geen ui"
+  },
+  "e.g. Welcome to Warda Shamya": {
+    "fr": "e.g. Bienvenue to Warda Shamya",
+    "nl": "e.g. Welkom to Warda Shamya"
+  },
+  "e.g., Main Entrance QR": {
+    "fr": "e.g., Main Entrance QR",
+    "nl": "e.g., Main Entrance QR"
+  },
+  "e.g., VIP Corner": {
+    "fr": "e.g., VIP Corner",
+    "nl": "e.g., VIP Corner"
+  },
+  "from": {
+    "fr": "de",
+    "nl": "van"
+  },
+  "https://example.com/avatar.jpg": {
+    "fr": "https://example.com/avatar.jpg",
+    "nl": "https://example.com/avatar.jpg"
+  },
+  "of": {
+    "fr": "sur",
+    "nl": "van"
+  },
+  "or": {
+    "fr": "ou",
+    "nl": "of"
+  },
+  "restaurant@example.com": {
+    "fr": "restaurant@example.com",
+    "nl": "restaurant@example.com"
+  },
+  "to": {
+    "fr": "à",
+    "nl": "tot"
+  },
+  "{count} items in your order": {
+    "fr": "{count} articles dans votre commande",
+    "nl": "{count} items in uw bestelling"
+  },
+  "{field} must be a valid hex color (e.g. #FFB700).": {
+    "fr": "{field} must be a valid hex color (e.g. #FFB700).",
+    "nl": "{field} must be a valid hex color (e.g. #FFB700)."
+  },
+  "{name} restaurant hero image": {
+    "fr": "Image héro du restaurant {name}",
+    "nl": "Hero-afbeelding restaurant {name}"
+  },
+  "© {year} Warda Shamya. All rights reserved.": {
+    "fr": "© {year} Warda Shamya. Tous droits réservés.",
+    "nl": "© {year} Warda Shamya. Alle rechten voorbehouden."
+  },
+  "تيك أواي": {
+    "fr": "تيك أواي",
+    "nl": "تيك أواي"
+  },
+  "صالة": {
+    "fr": "صالة",
+    "nl": "صالة"
+  },
+  "مصر": {
+    "fr": "مصر",
+    "nl": "مصر"
+  }
+}

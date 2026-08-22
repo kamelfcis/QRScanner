@@ -1,0 +1,970 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "a1aa0d99-12cf-4612-b977-d83f81ad2dd1",
+    "name_ar": "منيو الحليب و اللبن"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\منيو_الحليب_واللبن_1\\منيو الحليب و اللبن",
+  "counts": {
+    "images_found": 51,
+    "products_in_category": 51,
+    "matched": 51,
+    "uploaded": 0,
+    "skipped_unchanged": 51,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "الممتاز حليب مبخر.jpg",
+      "product_id": "4b21884b-593e-45d8-b4ae-6c0cafa36fcb",
+      "name_ar": "الممتاز حليب مبخر",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "انجينار أرضي شوكي 1000 جرام ربيع الشام.jpg",
+      "product_id": "d0394df5-ea86-4731-a602-6edc796671df",
+      "name_ar": "انجينار أرضي شوكي 1000 جرام ربيع الشام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "باندا جورميه جبنة مثلثات 8 قطعة.jpg",
+      "product_id": "af13e2c9-bca0-4650-bd3c-1407798b4ded",
+      "name_ar": "باندا جورميه جبنة مثلثات 8 قطعة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جبنة ابو الولد 8 قطع.jpg",
+      "product_id": "010f5979-b92d-4c7b-807a-129e33cfe727",
+      "name_ar": "جبنة ابو الولد 8 قطع",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جبنة بوك صغير 240جرام.jpg",
+      "product_id": "5a8ffd4d-0770-41a1-b5f0-d2dc2a20fb45",
+      "name_ar": "جبنة بوك صغير 240جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "جبنة كيري بالقشطة - 8 قطعة.jpg",
+      "product_id": "7b1e1f28-4baf-405b-8c93-bd4d988a1c26",
+      "name_ar": "جبنة كيري بالقشطة - 8 قطعة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "حلاوة اركان (300غ) شوكولا.jpg",
+      "product_id": "b5de2289-d230-448f-9106-05fa8bdb4f15",
+      "name_ar": "حلاوة اركان (300غ) شوكولا",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "حلاوة اركان (500غ) فستق معدن.jpg",
+      "product_id": "31600959-cece-4784-b1ad-6e611f7a9285",
+      "name_ar": "حلاوة اركان (500غ) فستق معدن",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:16:22.649Z",
+  "details": {
+    "matched": [
+      {
+        "file": "الممتاز حليب مبخر.jpg",
+        "product_id": "4b21884b-593e-45d8-b4ae-6c0cafa36fcb",
+        "name_ar": "الممتاز حليب مبخر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "انجينار أرضي شوكي 1000 جرام ربيع الشام.jpg",
+        "product_id": "d0394df5-ea86-4731-a602-6edc796671df",
+        "name_ar": "انجينار أرضي شوكي 1000 جرام ربيع الشام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "باندا جورميه جبنة مثلثات 8 قطعة.jpg",
+        "product_id": "af13e2c9-bca0-4650-bd3c-1407798b4ded",
+        "name_ar": "باندا جورميه جبنة مثلثات 8 قطعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جبنة ابو الولد 8 قطع.jpg",
+        "product_id": "010f5979-b92d-4c7b-807a-129e33cfe727",
+        "name_ar": "جبنة ابو الولد 8 قطع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جبنة بوك صغير 240جرام.jpg",
+        "product_id": "5a8ffd4d-0770-41a1-b5f0-d2dc2a20fb45",
+        "name_ar": "جبنة بوك صغير 240جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جبنة كيري بالقشطة - 8 قطعة.jpg",
+        "product_id": "7b1e1f28-4baf-405b-8c93-bd4d988a1c26",
+        "name_ar": "جبنة كيري بالقشطة - 8 قطعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة اركان (300غ) شوكولا.jpg",
+        "product_id": "b5de2289-d230-448f-9106-05fa8bdb4f15",
+        "name_ar": "حلاوة اركان (300غ) شوكولا",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة اركان (500غ) فستق معدن.jpg",
+        "product_id": "31600959-cece-4784-b1ad-6e611f7a9285",
+        "name_ar": "حلاوة اركان (500غ) فستق معدن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة اركان (600غ) فستق.jpg",
+        "product_id": "a520b0d1-b1eb-4575-af33-207481a8daa4",
+        "name_ar": "حلاوة اركان (600غ) فستق",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة بلدي سادة 400 جرام.jpg",
+        "product_id": "290163b0-aa97-4cc1-a894-b6fdf47222cf",
+        "name_ar": "حلاوة بلدي سادة 400 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 1050 جرام.jpg",
+        "product_id": "a20bb559-8214-4041-9512-ab0f463788db",
+        "name_ar": "حلاوة طحينية التوفيق 1050 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 150 جرام.jpg",
+        "product_id": "bd90c677-272b-4d1f-b004-8ce2d1fc3e7c",
+        "name_ar": "حلاوة طحينية التوفيق 150 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 350 جرام.jpg",
+        "product_id": "6d0f2eb0-b0f5-4261-8f82-777aa3b02af3",
+        "name_ar": "حلاوة طحينية التوفيق 350 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 700 جرام.jpg",
+        "product_id": "ed5e5091-4833-40aa-867a-88bf415c6944",
+        "name_ar": "حلاوة طحينية التوفيق 700 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية التوفيق شعر 400 جرام.jpg",
+        "product_id": "875b07b2-14d6-4093-99cc-c8a0a744f5eb",
+        "name_ar": "حلاوة طحينية التوفيق شعر 400 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلاوة طحينية ساده التوفيق20 جرام.jpg",
+        "product_id": "92590ebe-2bbb-47fa-aa51-3ae0e8f128e0",
+        "name_ar": "حلاوة طحينية ساده التوفيق20 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب المراعي التر بلاستيك.jpg",
+        "product_id": "2b744b34-620f-4e5e-92db-ac48afd99eac",
+        "name_ar": "حليب المراعي التر بلاستيك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب المراعي مبخر 170 جرام - السعودية.jpg",
+        "product_id": "29dba061-ba0a-4c7c-b492-0329d8cae3e0",
+        "name_ar": "حليب المراعي مبخر 170 جرام - السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب بخيره 0.5لتر.jpg",
+        "product_id": "f880295a-0bcf-44b1-a01d-4a5086ea903e",
+        "name_ar": "حليب بخيره 0.5لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب بخيره 1لتر.jpg",
+        "product_id": "3fb0e8a2-b222-49a8-8c01-ef62715bbce5",
+        "name_ar": "حليب بخيره 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب جهينة خالي الدسم 1 لتر.jpg",
+        "product_id": "b8078636-bc63-4608-97f7-a17deaf54004",
+        "name_ar": "حليب جهينة خالي الدسم 1 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب جهينة كامل الدسم 1لتر.jpg",
+        "product_id": "11e08563-2e25-458b-a024-03db4d8119e2",
+        "name_ar": "حليب جهينة كامل الدسم 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب مبخر بيستو(170غ).jpg",
+        "product_id": "30431f16-7162-4ff2-b577-2b58ac319761",
+        "name_ar": "حليب مبخر بيستو(170غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ديري جبنة مثلثات 16 قطعة.jpg",
+        "product_id": "d10f18f7-3278-4cd4-b288-03d2d71dc850",
+        "name_ar": "ديري جبنة مثلثات 16 قطعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ديري جبنة مثلثات 8 قطعة.jpg",
+        "product_id": "1154be6f-c209-4874-acf0-4d8720429270",
+        "name_ar": "ديري جبنة مثلثات 8 قطعة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "روتس 1كج.jpg",
+        "product_id": "76ee0529-e02e-4c52-801a-1d3b31aa870a",
+        "name_ar": "روتس 1كج",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "روتس 350غ.jpg",
+        "product_id": "8d321aa1-bbd9-439b-a7af-2027e9da9688",
+        "name_ar": "روتس 350غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شبيه حليب مكثف ماليزي 390جرام.jpg",
+        "product_id": "96361867-521e-4b00-8a08-5090ea8d67bb",
+        "name_ar": "شبيه حليب مكثف ماليزي 390جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا دريم 200غ دارك.jpg",
+        "product_id": "1978fe4d-9f17-4fe8-baaa-8e6ae72e8577",
+        "name_ar": "شوكولا دريم 200غ دارك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا دريم خام ابيض بار 200 غ.jpg",
+        "product_id": "88582650-7c16-4950-8e72-23ad87d169ab",
+        "name_ar": "شوكولا دريم خام ابيض بار 200 غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا سما خام ابيض بار 200غ.jpg",
+        "product_id": "7fa60eff-133b-4538-b5ea-16787a539881",
+        "name_ar": "شوكولا سما خام ابيض بار 200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا سما طبخ شوكولاته دارك 200غ.jpg",
+        "product_id": "0d1469e7-db24-4a80-a477-c5a328b8c64b",
+        "name_ar": "شوكولا سما طبخ شوكولاته دارك 200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلا  زجاج (300غ).jpg",
+        "product_id": "64326fe5-40da-4cde-8bcd-0a332e136340",
+        "name_ar": "شوكولا ماكس تيلا  زجاج (300غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلا (200غ).jpg",
+        "product_id": "102b39d9-b81a-4801-bd31-28060ec2aea7",
+        "name_ar": "شوكولا ماكس تيلا (200غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلا (4ك).jpg",
+        "product_id": "3f566e90-5068-4760-92ba-e61b9a6d6759",
+        "name_ar": "شوكولا ماكس تيلا (4ك)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلا (900غ).jpg",
+        "product_id": "0c1196cc-2c82-4fb8-8ac6-ed7e4aa49704",
+        "name_ar": "شوكولا ماكس تيلا (900غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلا حليب(900غ).jpg",
+        "product_id": "1dbf12e5-79f8-45bb-8396-a3bdfc39910c",
+        "name_ar": "شوكولا ماكس تيلا حليب(900غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوكولا ماكس تيلادارك بار سادة 125غ.jpg",
+        "product_id": "6fd24b98-e4f4-418c-8bb4-33868f29d87c",
+        "name_ar": "شوكولا ماكس تيلادارك بار سادة 125غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قشطة بوك علب 160 جرام - السعودية.jpg",
+        "product_id": "d9a0d161-6a9c-4d46-97ce-d98f0c098a4e",
+        "name_ar": "قشطة بوك علب 160 جرام - السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قشطة بيستو (155غ).jpg",
+        "product_id": "2395b0c4-204f-4ee6-9e8f-504bb01889fb",
+        "name_ar": "قشطة بيستو (155غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قشطة نادك علب 170 جرام - استيراد السعودية.jpg",
+        "product_id": "c52017e1-e412-41fc-b3c0-af4d09f5e46d",
+        "name_ar": "قشطة نادك علب 170 جرام - استيراد السعودية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مخلل ربيع الشام 660غ.jpg",
+        "product_id": "f22330cd-2a22-42d4-b960-90161d69947a",
+        "name_ar": "مخلل ربيع الشام 660غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مخلل ربيع الشام1كغ.jpg",
+        "product_id": "230a9b5c-e8b2-4c1e-96d8-54a51386602d",
+        "name_ar": "مخلل ربيع الشام1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح بونو 400 غ.jpg",
+        "product_id": "ff93c8cc-5e71-48c5-b5e0-4c798f741143",
+        "name_ar": "ملح بونو 400 غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح كوكس (700غ).jpg",
+        "product_id": "5c260ecb-855b-4590-8933-e591cfa69224",
+        "name_ar": "ملح كوكس (700غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح كوكس 400 جرام كوكس.jpg",
+        "product_id": "e6b168ca-dea3-4e12-b8aa-dcdbb6031b32",
+        "name_ar": "ملح كوكس 400 جرام كوكس",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح كوكس صغير.jpg",
+        "product_id": "9400f0b2-a0d2-4480-aea5-1ae5f0cfe541",
+        "name_ar": "ملح كوكس صغير",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح هماليا 600غ.jpg",
+        "product_id": "7d42684f-2cb6-4463-9821-9f2731f51c7e",
+        "name_ar": "ملح هماليا 600غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملح هملايا كوكس200غ.jpg",
+        "product_id": "85a5cabe-102e-46ba-bb32-e358753a6ef2",
+        "name_ar": "ملح هملايا كوكس200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ورق عنب ابو الجود.jpg",
+        "product_id": "5161b17f-2759-47fb-b632-2ecc91a80193",
+        "name_ar": "ورق عنب ابو الجود",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ورق عنب ربيع الشام 1ك.jpg",
+        "product_id": "39ccc58d-d885-449f-a1ec-52324d774b69",
+        "name_ar": "ورق عنب ربيع الشام 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "الممتاز حليب مبخر.jpg",
+        "product_id": "4b21884b-593e-45d8-b4ae-6c0cafa36fcb",
+        "name_ar": "الممتاز حليب مبخر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206537525-lk3xyg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206537525-lk3xyg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "انجينار أرضي شوكي 1000 جرام ربيع الشام.jpg",
+        "product_id": "d0394df5-ea86-4731-a602-6edc796671df",
+        "name_ar": "انجينار أرضي شوكي 1000 جرام ربيع الشام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206537955-pmrygd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206537955-pmrygd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "باندا جورميه جبنة مثلثات 8 قطعة.jpg",
+        "product_id": "af13e2c9-bca0-4650-bd3c-1407798b4ded",
+        "name_ar": "باندا جورميه جبنة مثلثات 8 قطعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206538500-utiflg.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206538500-utiflg.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جبنة ابو الولد 8 قطع.jpg",
+        "product_id": "010f5979-b92d-4c7b-807a-129e33cfe727",
+        "name_ar": "جبنة ابو الولد 8 قطع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206538863-xjtjt4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206538863-xjtjt4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جبنة بوك صغير 240جرام.jpg",
+        "product_id": "5a8ffd4d-0770-41a1-b5f0-d2dc2a20fb45",
+        "name_ar": "جبنة بوك صغير 240جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206539555-h8d1nv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206539555-h8d1nv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جبنة كيري بالقشطة - 8 قطعة.jpg",
+        "product_id": "7b1e1f28-4baf-405b-8c93-bd4d988a1c26",
+        "name_ar": "جبنة كيري بالقشطة - 8 قطعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206540013-ws43ax.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206540013-ws43ax.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة اركان (300غ) شوكولا.jpg",
+        "product_id": "b5de2289-d230-448f-9106-05fa8bdb4f15",
+        "name_ar": "حلاوة اركان (300غ) شوكولا",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206540463-mhqa7q.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206540463-mhqa7q.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة اركان (500غ) فستق معدن.jpg",
+        "product_id": "31600959-cece-4784-b1ad-6e611f7a9285",
+        "name_ar": "حلاوة اركان (500غ) فستق معدن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541001-aqyvw0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541001-aqyvw0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة اركان (600غ) فستق.jpg",
+        "product_id": "a520b0d1-b1eb-4575-af33-207481a8daa4",
+        "name_ar": "حلاوة اركان (600غ) فستق",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541320-p6ms4j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541320-p6ms4j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة بلدي سادة 400 جرام.jpg",
+        "product_id": "290163b0-aa97-4cc1-a894-b6fdf47222cf",
+        "name_ar": "حلاوة بلدي سادة 400 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541703-1rcckw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206541703-1rcckw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 1050 جرام.jpg",
+        "product_id": "a20bb559-8214-4041-9512-ab0f463788db",
+        "name_ar": "حلاوة طحينية التوفيق 1050 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542146-1kdpjy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542146-1kdpjy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 150 جرام.jpg",
+        "product_id": "bd90c677-272b-4d1f-b004-8ce2d1fc3e7c",
+        "name_ar": "حلاوة طحينية التوفيق 150 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542459-gq58nt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542459-gq58nt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 350 جرام.jpg",
+        "product_id": "6d0f2eb0-b0f5-4261-8f82-777aa3b02af3",
+        "name_ar": "حلاوة طحينية التوفيق 350 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542808-zt2p6h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206542808-zt2p6h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية التوفيق 700 جرام.jpg",
+        "product_id": "ed5e5091-4833-40aa-867a-88bf415c6944",
+        "name_ar": "حلاوة طحينية التوفيق 700 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543125-yib20h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543125-yib20h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية التوفيق شعر 400 جرام.jpg",
+        "product_id": "875b07b2-14d6-4093-99cc-c8a0a744f5eb",
+        "name_ar": "حلاوة طحينية التوفيق شعر 400 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543461-12pplk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543461-12pplk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلاوة طحينية ساده التوفيق20 جرام.jpg",
+        "product_id": "92590ebe-2bbb-47fa-aa51-3ae0e8f128e0",
+        "name_ar": "حلاوة طحينية ساده التوفيق20 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543792-y5v1iw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206543792-y5v1iw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب المراعي التر بلاستيك.jpg",
+        "product_id": "2b744b34-620f-4e5e-92db-ac48afd99eac",
+        "name_ar": "حليب المراعي التر بلاستيك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206544107-nt80p5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206544107-nt80p5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب المراعي مبخر 170 جرام - السعودية.jpg",
+        "product_id": "29dba061-ba0a-4c7c-b492-0329d8cae3e0",
+        "name_ar": "حليب المراعي مبخر 170 جرام - السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206544723-wsyhkv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206544723-wsyhkv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب بخيره 0.5لتر.jpg",
+        "product_id": "f880295a-0bcf-44b1-a01d-4a5086ea903e",
+        "name_ar": "حليب بخيره 0.5لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545179-1z5j9n.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545179-1z5j9n.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب بخيره 1لتر.jpg",
+        "product_id": "3fb0e8a2-b222-49a8-8c01-ef62715bbce5",
+        "name_ar": "حليب بخيره 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545516-5ybc8a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545516-5ybc8a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب جهينة خالي الدسم 1 لتر.jpg",
+        "product_id": "b8078636-bc63-4608-97f7-a17deaf54004",
+        "name_ar": "حليب جهينة خالي الدسم 1 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545851-ko9zh3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206545851-ko9zh3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب جهينة كامل الدسم 1لتر.jpg",
+        "product_id": "11e08563-2e25-458b-a024-03db4d8119e2",
+        "name_ar": "حليب جهينة كامل الدسم 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546256-w5ge5p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546256-w5ge5p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب مبخر بيستو(170غ).jpg",
+        "product_id": "30431f16-7162-4ff2-b577-2b58ac319761",
+        "name_ar": "حليب مبخر بيستو(170غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546646-mq7x6k.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546646-mq7x6k.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ديري جبنة مثلثات 16 قطعة.jpg",
+        "product_id": "d10f18f7-3278-4cd4-b288-03d2d71dc850",
+        "name_ar": "ديري جبنة مثلثات 16 قطعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546994-mmcyr3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206546994-mmcyr3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ديري جبنة مثلثات 8 قطعة.jpg",
+        "product_id": "1154be6f-c209-4874-acf0-4d8720429270",
+        "name_ar": "ديري جبنة مثلثات 8 قطعة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206547451-zen66f.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206547451-zen66f.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "روتس 1كج.jpg",
+        "product_id": "76ee0529-e02e-4c52-801a-1d3b31aa870a",
+        "name_ar": "روتس 1كج",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206547900-q0cs2o.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206547900-q0cs2o.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "روتس 350غ.jpg",
+        "product_id": "8d321aa1-bbd9-439b-a7af-2027e9da9688",
+        "name_ar": "روتس 350غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206548326-g5xno3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206548326-g5xno3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شبيه حليب مكثف ماليزي 390جرام.jpg",
+        "product_id": "96361867-521e-4b00-8a08-5090ea8d67bb",
+        "name_ar": "شبيه حليب مكثف ماليزي 390جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206548764-l5jpg4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206548764-l5jpg4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا دريم 200غ دارك.jpg",
+        "product_id": "1978fe4d-9f17-4fe8-baaa-8e6ae72e8577",
+        "name_ar": "شوكولا دريم 200غ دارك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549225-u0w7t9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549225-u0w7t9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا دريم خام ابيض بار 200 غ.jpg",
+        "product_id": "88582650-7c16-4950-8e72-23ad87d169ab",
+        "name_ar": "شوكولا دريم خام ابيض بار 200 غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549563-rxpsl6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549563-rxpsl6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا سما خام ابيض بار 200غ.jpg",
+        "product_id": "7fa60eff-133b-4538-b5ea-16787a539881",
+        "name_ar": "شوكولا سما خام ابيض بار 200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549984-0457vh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206549984-0457vh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا سما طبخ شوكولاته دارك 200غ.jpg",
+        "product_id": "0d1469e7-db24-4a80-a477-c5a328b8c64b",
+        "name_ar": "شوكولا سما طبخ شوكولاته دارك 200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206550330-5vddr6.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206550330-5vddr6.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلا  زجاج (300غ).jpg",
+        "product_id": "64326fe5-40da-4cde-8bcd-0a332e136340",
+        "name_ar": "شوكولا ماكس تيلا  زجاج (300غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206550834-pfp00p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206550834-pfp00p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلا (200غ).jpg",
+        "product_id": "102b39d9-b81a-4801-bd31-28060ec2aea7",
+        "name_ar": "شوكولا ماكس تيلا (200غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206551255-pm9z5h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206551255-pm9z5h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلا (4ك).jpg",
+        "product_id": "3f566e90-5068-4760-92ba-e61b9a6d6759",
+        "name_ar": "شوكولا ماكس تيلا (4ك)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206551678-27afid.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206551678-27afid.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلا (900غ).jpg",
+        "product_id": "0c1196cc-2c82-4fb8-8ac6-ed7e4aa49704",
+        "name_ar": "شوكولا ماكس تيلا (900غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552084-0kbo98.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552084-0kbo98.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلا حليب(900غ).jpg",
+        "product_id": "1dbf12e5-79f8-45bb-8396-a3bdfc39910c",
+        "name_ar": "شوكولا ماكس تيلا حليب(900غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552497-4dsove.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552497-4dsove.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوكولا ماكس تيلادارك بار سادة 125غ.jpg",
+        "product_id": "6fd24b98-e4f4-418c-8bb4-33868f29d87c",
+        "name_ar": "شوكولا ماكس تيلادارك بار سادة 125غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552914-men16w.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206552914-men16w.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قشطة بوك علب 160 جرام - السعودية.jpg",
+        "product_id": "d9a0d161-6a9c-4d46-97ce-d98f0c098a4e",
+        "name_ar": "قشطة بوك علب 160 جرام - السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206553278-xwal86.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206553278-xwal86.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قشطة بيستو (155غ).jpg",
+        "product_id": "2395b0c4-204f-4ee6-9e8f-504bb01889fb",
+        "name_ar": "قشطة بيستو (155غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206553768-eg2wtn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206553768-eg2wtn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قشطة نادك علب 170 جرام - استيراد السعودية.jpg",
+        "product_id": "c52017e1-e412-41fc-b3c0-af4d09f5e46d",
+        "name_ar": "قشطة نادك علب 170 جرام - استيراد السعودية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206554122-oi3jfl.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206554122-oi3jfl.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مخلل ربيع الشام 660غ.jpg",
+        "product_id": "f22330cd-2a22-42d4-b960-90161d69947a",
+        "name_ar": "مخلل ربيع الشام 660غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206554501-ldozqv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206554501-ldozqv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مخلل ربيع الشام1كغ.jpg",
+        "product_id": "230a9b5c-e8b2-4c1e-96d8-54a51386602d",
+        "name_ar": "مخلل ربيع الشام1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555087-vh8i2d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555087-vh8i2d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح بونو 400 غ.jpg",
+        "product_id": "ff93c8cc-5e71-48c5-b5e0-4c798f741143",
+        "name_ar": "ملح بونو 400 غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555452-1mkg2i.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555452-1mkg2i.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح كوكس (700غ).jpg",
+        "product_id": "5c260ecb-855b-4590-8933-e591cfa69224",
+        "name_ar": "ملح كوكس (700غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555903-bg5j5s.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206555903-bg5j5s.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح كوكس 400 جرام كوكس.jpg",
+        "product_id": "e6b168ca-dea3-4e12-b8aa-dcdbb6031b32",
+        "name_ar": "ملح كوكس 400 جرام كوكس",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206556270-olabn0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206556270-olabn0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح كوكس صغير.jpg",
+        "product_id": "9400f0b2-a0d2-4480-aea5-1ae5f0cfe541",
+        "name_ar": "ملح كوكس صغير",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206556672-wr6pv9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206556672-wr6pv9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح هماليا 600غ.jpg",
+        "product_id": "7d42684f-2cb6-4463-9821-9f2731f51c7e",
+        "name_ar": "ملح هماليا 600غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206557036-ea92xa.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206557036-ea92xa.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملح هملايا كوكس200غ.jpg",
+        "product_id": "85a5cabe-102e-46ba-bb32-e358753a6ef2",
+        "name_ar": "ملح هملايا كوكس200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206557621-74tsrf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206557621-74tsrf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ورق عنب ابو الجود.jpg",
+        "product_id": "5161b17f-2759-47fb-b632-2ecc91a80193",
+        "name_ar": "ورق عنب ابو الجود",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206558274-6juzuy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206558274-6juzuy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ورق عنب ربيع الشام 1ك.jpg",
+        "product_id": "39ccc58d-d885-449f-a1ec-52324d774b69",
+        "name_ar": "ورق عنب ربيع الشام 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206558754-zk1x2d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206558754-zk1x2d.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

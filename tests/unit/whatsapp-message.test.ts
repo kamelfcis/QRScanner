@@ -5,6 +5,7 @@ import type { OrderTotals } from '@/lib/order/totals';
 
 const totals: OrderTotals = {
   subtotal: 60,
+  discount: 0,
   tax: 9,
   service: 6,
   total: 75,
@@ -24,6 +25,11 @@ describe('buildWhatsAppUrl', () => {
   it('builds encoded wa.me url', () => {
     const url = buildWhatsAppUrl('+966500000001', 'Hello world');
     expect(url).toBe('https://wa.me/966500000001?text=Hello%20world');
+  });
+
+  it('normalizes Egyptian local restaurant numbers', () => {
+    const url = buildWhatsAppUrl('01001234567', 'Hello');
+    expect(url).toBe('https://wa.me/201001234567?text=Hello');
   });
 
   it('encodes newlines and arabic text', () => {
@@ -64,6 +70,22 @@ describe('buildWhatsAppMessage', () => {
     expect(msg).toContain('Phone: +966500000000');
     expect(msg).toContain('Order notes: No spicy');
     expect(msg).toContain('Est. prep time: ~25 min');
+  });
+
+  it('includes a discount line with coupon code', () => {
+    const msg = buildWhatsAppMessage({
+      locale: 'en',
+      mode: 'dining',
+      items: [{ name: 'Shawarma', quantity: 2, unitPrice: 25 }],
+      totals: { ...totals, discount: 6, tax: 8.1, service: 5.4, total: 67.5 },
+      currency: 'EGP',
+      customerName: 'Omar',
+      couponCode: 'WELCOME10',
+    });
+
+    expect(msg).toContain('Subtotal: 60 EGP');
+    expect(msg).toContain('Discount (WELCOME10): −6 EGP');
+    expect(msg).toContain('*Total: 67.50 EGP*');
   });
 
   it('builds Arabic takeaway message', () => {

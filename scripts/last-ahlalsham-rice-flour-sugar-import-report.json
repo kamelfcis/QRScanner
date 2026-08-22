@@ -1,0 +1,70 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "5242c9df-d1eb-4203-a52f-b4c9a6c87e80",
+    "name_ar": "منيو الرز و الدقيق و السكر",
+    "name_en": "Rice, Flour & Sugar",
+    "created": false,
+    "sort_order": 4
+  },
+  "excel": {
+    "file": "c:\\Users\\Administrator\\Downloads\\منيو\\منيز الرز و الدقيق و السكر.xlsx",
+    "sheet": "Sheet",
+    "parsed_rows": 43,
+    "unique_products": 41
+  },
+  "products": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 41,
+    "removed": 0,
+    "errors": 0
+  },
+  "sample_products": [
+    {
+      "name_ar": "تمر هندي النخيل (300غ)",
+      "dining_price": 45,
+      "takeaway_price": 45
+    },
+    {
+      "name_ar": "قمر الدين",
+      "dining_price": 80,
+      "takeaway_price": 80
+    },
+    {
+      "name_ar": "رز الساعة1كغ",
+      "dining_price": 40,
+      "takeaway_price": 40
+    },
+    {
+      "name_ar": "رز زاد 1كغ",
+      "dining_price": 31.5,
+      "takeaway_price": 31.5
+    },
+    {
+      "name_ar": "رز المراد 1كغ",
+      "dining_price": 30,
+      "takeaway_price": 30
+    },
+    {
+      "name_ar": "رز مصري ابو الذهب رايس رفيع الحبة 8% كسر 1 كيلو",
+      "dining_price": 28.5,
+      "takeaway_price": 28.5
+    },
+    {
+      "name_ar": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 1 كيلو",
+      "dining_price": 36,
+      "takeaway_price": 36
+    },
+    {
+      "name_ar": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر  1 كيلو",
+      "dining_price": 32,
+      "takeaway_price": 32
+    }
+  ],
+  "errors": [],
+  "dry_run": false,
+  "verified_product_count": 41
+}

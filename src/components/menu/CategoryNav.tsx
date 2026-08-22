@@ -84,7 +84,16 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
         >
           {renderChip(null, t('allCategories'))}
           {categories.map((category) =>
-            renderChip(category.id, getName(locale, category.name_en, category.name_ar))
+            renderChip(
+              category.id,
+              getName(
+                locale,
+                category.name_en,
+                category.name_ar,
+                category.name_fr,
+                category.name_nl
+              )
+            )
           )}
         </ScrollableChipRow>
       </div>

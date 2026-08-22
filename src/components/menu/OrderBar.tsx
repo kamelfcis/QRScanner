@@ -7,8 +7,12 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useClientMounted } from '@/hooks/useClientMounted';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getUnitPrice } from '@/lib/order/totals';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { getCartLineUnitPrice } from '@/lib/order/totals';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 
 interface OrderBarProps {
   onOpenCart: () => void;
@@ -30,12 +34,12 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
 
   const count = items.reduce((n, i) => n + i.quantity, 0);
   const subtotal = items.reduce(
-    (sum, i) => sum + getUnitPrice(i.dining_price, i.takeaway_price, diningMode) * i.quantity,
+    (sum, i) => sum + getCartLineUnitPrice(i, diningMode) * i.quantity,
     0
   );
 
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
 
   if (!mounted) return null;
 

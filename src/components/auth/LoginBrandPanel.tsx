@@ -3,6 +3,7 @@
 import NextImage from 'next/image';
 import { useI18n } from '@/components/providers/RootI18nProvider';
 import type { LoginBrandConfig } from '@/lib/login/types';
+import { getLocalizedText } from '@/lib/utils';
 
 interface LoginBrandPanelProps {
   brand: LoginBrandConfig;
@@ -11,8 +12,8 @@ interface LoginBrandPanelProps {
 
 export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelProps) {
   const { locale } = useI18n();
-  const name = locale === 'ar' ? brand.nameAr : brand.nameEn;
-  const tagline = locale === 'ar' ? brand.taglineAr : brand.taglineEn;
+  const name = getLocalizedText(locale, { en: brand.nameEn, ar: brand.nameAr });
+  const tagline = getLocalizedText(locale, { en: brand.taglineEn, ar: brand.taglineAr });
   const showHero = Boolean(brand.heroImageUrl) && variant === 'panel';
 
   if (variant === 'compact') {

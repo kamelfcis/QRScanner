@@ -1,7 +1,7 @@
 'use client';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
@@ -32,8 +32,10 @@ import {
 } from '@/lib/dining-mode';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import type { Product } from '@/types/database';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
+import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
 
 export function MenuPageClient() {
   return (
@@ -44,15 +46,19 @@ export function MenuPageClient() {
 }
 
 function MenuContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const modeParam = searchParams.get('mode');
+  const cartParam = searchParams.get('cart');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
+  const { data: settings } = useRestaurantSettings();
+  const orderModes = useMemo(() => resolveOrderModes(settings), [settings]);
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
@@ -71,12 +77,16 @@ function MenuContent() {
 
   useEffect(() => {
     const fromUrl = parseDiningModeParam(modeParam);
-    const next = fromUrl ?? readStoredDiningMode();
+    let next = fromUrl ?? readStoredDiningMode();
+    if (!orderModes.dineIn) {
+      next = 'takeaway';
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode after hydration
     setDiningMode(next);
-    if (fromUrl) persistDiningMode(fromUrl);
+    if (fromUrl && orderModes.dineIn) persistDiningMode(fromUrl);
+    if (!orderModes.dineIn) persistDiningMode('takeaway');
     setMeta({ diningMode: next });
-  }, [modeParam, setMeta]);
+  }, [modeParam, setMeta, orderModes.dineIn]);
 
   useEffect(() => {
     setMeta({ diningMode });
@@ -97,6 +107,42 @@ function MenuContent() {
       if (saved) setMeta({ tableNumber: saved });
     }
   }, [tableParam, setMeta]);
+
+  useEffect(() => {
+    if (!settings) return;
+    const options = getFulfillmentOptions(orderModes);
+    if (options.length === 0) return;
+    const current = useCartStore.getState().fulfillmentType;
+    if (options.includes(current)) return;
+    const fallback = options[0];
+    setMeta({
+      fulfillmentType: fallback,
+      ...(fallback === 'pickup' ? { deliveryAddress: '' } : {}),
+    });
+  }, [settings, orderModes, setMeta]);
+
+  useEffect(() => {
+    if (cartParam !== '1') return;
+
+    const openCartFromQuery = () => {
+      const items = useCartStore.getState().items;
+      if (items.length === 0) return;
+      trackCartOpen(items.reduce((n, i) => n + i.quantity, 0));
+      setCartOpen(true);
+    };
+
+    if (useCartStore.persist.hasHydrated()) {
+      openCartFromQuery();
+      router.replace('/menu', { scroll: false });
+      return;
+    }
+
+    const unsub = useCartStore.persist.onFinishHydration(() => {
+      openCartFromQuery();
+      router.replace('/menu', { scroll: false });
+    });
+    return unsub;
+  }, [cartParam, router]);
 
   const handleDiningModeChange = useCallback(
     (mode: 'dining' | 'takeaway') => {
@@ -198,9 +244,21 @@ function MenuContent() {
       {filteredCategories.length > 0 && (
         <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
           {filteredCategories.map((category) => {
-            const categoryName = getName(locale, category.name_en, category.name_ar);
+            const categoryName = getName(
+              locale,
+              category.name_en,
+              category.name_ar,
+              category.name_fr,
+              category.name_nl
+            );
             const categoryDescription = category.description_en
-              ? getName(locale, category.description_en, category.description_ar)
+              ? getName(
+                  locale,
+                  category.description_en,
+                  category.description_ar,
+                  category.description_fr,
+                  category.description_nl
+                )
               : '';
 
             return (
@@ -262,7 +320,7 @@ function MenuContent() {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema(settings, locale)) }}
       />
     </div>
   );

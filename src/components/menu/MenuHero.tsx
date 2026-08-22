@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { getName } from '@/lib/utils';
 
 /**
@@ -16,13 +17,7 @@ export function MenuHero() {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
-  const tCommon = useTranslations('common');
-
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || 'وردة الشامية'
-  );
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
   const headline = settings?.hero_headline?.trim() || name;
   const tagline = settings?.hero_subtitle?.trim() || t('heroTagline');

@@ -1,5 +1,6 @@
+import { getSiteNameAr, getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import type { RestaurantSettings } from '@/types/database';
-import { defaultLocale, type Locale } from '@/i18n/config';
+import { defaultLocale, enabledLocales, type Locale } from '@/i18n/config';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
 
@@ -7,14 +8,15 @@ export function generateRestaurantSchema(
   settings?: RestaurantSettings | null,
   locale: Locale = defaultLocale
 ) {
-  const name =
-    locale === 'ar' ? settings?.name_ar || 'وردة الشامية' : settings?.name_en || 'Warda Shamya';
+  const name = getSiteNameForLocale(locale, settings);
+  const siteNameEn = getSiteNameEn(settings);
+  const siteNameAr = getSiteNameAr(settings);
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    name: settings?.name_en || 'Warda Shamya',
-    alternateName: settings?.name_ar || 'وردة الشامية',
+    name: siteNameEn,
+    alternateName: siteNameAr,
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     description:
@@ -59,17 +61,23 @@ export function generateRestaurantSchema(
   };
 }
 
-export function generateMenuSchema(locale: Locale = defaultLocale) {
+export function generateMenuSchema(
+  settings?: RestaurantSettings | null,
+  locale: Locale = defaultLocale
+) {
+  const siteName = getSiteNameForLocale(locale, settings);
+  const siteNameEn = getSiteNameEn(settings);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Menu',
-    name: locale === 'ar' ? 'قائمة وردة الشامية' : 'Warda Shamya Menu',
+    name: locale === 'ar' ? `قائمة ${siteName}` : `${siteNameEn} Menu`,
     description:
       locale === 'ar'
         ? 'قائمة المأكولات اللبنانية والسورية الأصيلة.'
         : 'Authentic Lebanese and Syrian cuisine menu.',
     url: `${SITE_URL}/menu`,
-    inLanguage: ['en', 'ar'],
+    inLanguage: [...enabledLocales],
     hasMenuSection: [],
   };
 }

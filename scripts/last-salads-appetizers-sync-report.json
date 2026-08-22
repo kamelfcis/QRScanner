@@ -1,0 +1,102 @@
+{
+  "dryRun": false,
+  "section": {
+    "name_ar": "السلطات والمقبلات",
+    "category": {
+      "created": true,
+      "id": "aa541a5d-e1d8-404a-8c34-7a9c11b0151a"
+    },
+    "upserted": [
+      {
+        "action": "insert",
+        "name_ar": "كول سلو",
+        "name_en": "Coleslaw",
+        "dining_price": 20,
+        "takeaway_price": 20
+      },
+      {
+        "action": "insert",
+        "name_ar": "هالابينو",
+        "name_en": "Jalapeño",
+        "dining_price": 10,
+        "takeaway_price": 10
+      },
+      {
+        "action": "insert",
+        "name_ar": "سلطة خضراء",
+        "name_en": "Green Salad",
+        "dining_price": 10,
+        "takeaway_price": 10
+      },
+      {
+        "action": "insert",
+        "name_ar": "فلفل بالخلة",
+        "name_en": "Pickled Peppers",
+        "dining_price": 10,
+        "takeaway_price": 10
+      }
+    ],
+    "deleted": [],
+    "unchanged": [],
+    "final": [
+      {
+        "name_ar": "كول سلو",
+        "name_en": "Coleslaw",
+        "dining_price": 20,
+        "takeaway_price": 20
+      },
+      {
+        "name_ar": "هالابينو",
+        "name_en": "Jalapeño",
+        "dining_price": 10,
+        "takeaway_price": 10
+      },
+      {
+        "name_ar": "سلطة خضراء",
+        "name_en": "Green Salad",
+        "dining_price": 10,
+        "takeaway_price": 10
+      },
+      {
+        "name_ar": "فلفل بالخلة",
+        "name_en": "Pickled Peppers",
+        "dining_price": 10,
+        "takeaway_price": 10
+      }
+    ]
+  },
+  "errors": [],
+  "verify": {
+    "السلطات والمقبلات": {
+      "expectedCount": 4,
+      "actualCount": 4,
+      "ok": true,
+      "products": [
+        {
+          "name_ar": "كول سلو",
+          "name_en": "Coleslaw",
+          "dining_price": 20,
+          "takeaway_price": 20
+        },
+        {
+          "name_ar": "هالابينو",
+          "name_en": "Jalapeño",
+          "dining_price": 10,
+          "takeaway_price": 10
+        },
+        {
+          "name_ar": "سلطة خضراء",
+          "name_en": "Green Salad",
+          "dining_price": 10,
+          "takeaway_price": 10
+        },
+        {
+          "name_ar": "فلفل بالخلة",
+          "name_en": "Pickled Peppers",
+          "dining_price": 10,
+          "takeaway_price": 10
+        }
+      ]
+    }
+  }
+}

@@ -31,6 +31,7 @@ function OrderSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sent = searchParams.get('sent') === '1';
+  const orderNumber = searchParams.get('order');
   const t = useTranslations('orderSuccess');
   const prefersReducedMotion = useReducedMotion();
   const clear = useCartStore((s) => s.clear);
@@ -65,8 +66,16 @@ function OrderSuccessContent() {
   }, [sent]);
 
   const showThankYou = !sent || returned;
-  const title = showThankYou ? t('thankYouTitle') : t('readyTitle');
-  const description = showThankYou ? t('thankYouDescription') : t('readyDescription');
+  const title = showThankYou
+    ? orderNumber
+      ? t('placedTitle')
+      : t('thankYouTitle')
+    : t('readyTitle');
+  const description = showThankYou
+    ? orderNumber
+      ? t('placedDescription', { number: orderNumber })
+      : t('thankYouDescription')
+    : t('readyDescription');
 
   const keepCart = () => {
     router.push('/menu');
@@ -103,6 +112,11 @@ function OrderSuccessContent() {
 
         <div className="space-y-2">
           <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{title}</h1>
+          {orderNumber ? (
+            <p className="font-heading text-xl font-semibold tabular-nums text-[var(--menu-wine)]">
+              {orderNumber}
+            </p>
+          ) : null}
           <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
             {description}
           </p>

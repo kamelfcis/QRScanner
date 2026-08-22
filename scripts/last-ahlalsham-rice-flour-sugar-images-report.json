@@ -1,0 +1,814 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "5242c9df-d1eb-4203-a52f-b4c9a6c87e80",
+    "name_ar": "منيو الرز و الدقيق و السكر"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\pilot_الرز_و_الدقيق_و_السكر_1\\الرز و الدقيق و السكر",
+  "counts": {
+    "images_found": 42,
+    "products_in_category": 41,
+    "matched": 41,
+    "uploaded": 0,
+    "skipped_unchanged": 41,
+    "unmatched_images": 1,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك.jpg",
+      "product_id": "7686d627-399d-464c-bd6b-ec11a77679a7",
+      "name_ar": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بسبوسة جوز هند - حلو الشام.jpg",
+      "product_id": "5a0b8144-903e-4c98-9552-067b45f169b6",
+      "name_ar": "بسبوسة جوز هند - حلو الشام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تمر هندي النخيل (300غ).jpg",
+      "product_id": "fcdb4915-928c-4b25-816e-92fe46e59537",
+      "name_ar": "تمر هندي النخيل (300غ)",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "حليب صويا.jpg",
+      "product_id": "e92509f8-58f1-459b-97b4-fdb94a0c36fb",
+      "name_ar": "حليب صويا",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "دقيق دخن نوب 500جرام.jpg",
+      "product_id": "f768b43e-531b-46b2-ab79-10de6a2ed037",
+      "name_ar": "دقيق دخن نوب 500جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "دقيق ذرة أبيض نوب - 1 كيلو.jpg",
+      "product_id": "585b9ee6-8b3f-4eca-ab51-40f7bac7511b",
+      "name_ar": "دقيق ذرة أبيض نوب - 1 كيلو",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "دقيق قمح 1كغ سلارا.jpg",
+      "product_id": "435674ab-bf68-4ee5-aa84-9105c0e084c2",
+      "name_ar": "دقيق قمح 1كغ سلارا",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "دقيق قمح كامل نوب - 1 كيلو.jpg",
+      "product_id": "f80ad7ed-16e0-4a80-a0ad-7f8e0f53139e",
+      "name_ar": "دقيق قمح كامل نوب - 1 كيلو",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [
+    {
+      "file": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 5 كيلو.jpg",
+      "path": "C:\\Users\\Administrator\\Downloads\\pilot_الرز_و_الدقيق_و_السكر_1\\الرز و الدقيق و السكر\\رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 5 كيلو.jpg",
+      "best_candidate": null,
+      "best_score": null
+    }
+  ],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:18:36.084Z",
+  "details": {
+    "matched": [
+      {
+        "file": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك.jpg",
+        "product_id": "7686d627-399d-464c-bd6b-ec11a77679a7",
+        "name_ar": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بسبوسة جوز هند - حلو الشام.jpg",
+        "product_id": "5a0b8144-903e-4c98-9552-067b45f169b6",
+        "name_ar": "بسبوسة جوز هند - حلو الشام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تمر هندي النخيل (300غ).jpg",
+        "product_id": "fcdb4915-928c-4b25-816e-92fe46e59537",
+        "name_ar": "تمر هندي النخيل (300غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حليب صويا.jpg",
+        "product_id": "e92509f8-58f1-459b-97b4-fdb94a0c36fb",
+        "name_ar": "حليب صويا",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دقيق دخن نوب 500جرام.jpg",
+        "product_id": "f768b43e-531b-46b2-ab79-10de6a2ed037",
+        "name_ar": "دقيق دخن نوب 500جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دقيق ذرة أبيض نوب - 1 كيلو.jpg",
+        "product_id": "585b9ee6-8b3f-4eca-ab51-40f7bac7511b",
+        "name_ar": "دقيق ذرة أبيض نوب - 1 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دقيق قمح 1كغ سلارا.jpg",
+        "product_id": "435674ab-bf68-4ee5-aa84-9105c0e084c2",
+        "name_ar": "دقيق قمح 1كغ سلارا",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دقيق قمح كامل نوب - 1 كيلو.jpg",
+        "product_id": "f80ad7ed-16e0-4a80-a0ad-7f8e0f53139e",
+        "name_ar": "دقيق قمح كامل نوب - 1 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز الساعة1كغ.jpg",
+        "product_id": "82bdeb60-1597-4359-9c18-96893fa3dd71",
+        "name_ar": "رز الساعة1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز العاصم 1كغ.jpg",
+        "product_id": "bd706fdb-8983-4086-974d-bd021f39944c",
+        "name_ar": "رز العاصم 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز المراد 1كغ.jpg",
+        "product_id": "de2eebab-0665-406f-b5f4-19aa6a77085e",
+        "name_ar": "رز المراد 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز زاد 1كغ.jpg",
+        "product_id": "cd958111-a35e-4d7a-9fe0-8db8fceed676",
+        "name_ar": "رز زاد 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 1 كيلو.jpg",
+        "product_id": "87f45245-d4f3-468d-af4a-45ddaaa29e0a",
+        "name_ar": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 1 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 5 كيلو.jpg",
+        "product_id": "280b6e23-ca70-457b-ac21-08a496d8b5ed",
+        "name_ar": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 5 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 1 كيلو.jpg",
+        "product_id": "46f9d098-39e8-42c4-b932-e2f5fdacbb6e",
+        "name_ar": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر  1 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رز مصري ابو الذهب رايس رفيع الحبة 8% كسر 1 كيلو.jpg",
+        "product_id": "4ea33d41-5bef-48d7-a77e-40e2bb670747",
+        "name_ar": "رز مصري ابو الذهب رايس رفيع الحبة 8% كسر 1 كيلو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زعتر خمس نجوم اخضر(400غ).jpg",
+        "product_id": "12ce84b3-936b-4261-9133-cc1ba47b7ddd",
+        "name_ar": "زعتر خمس نجوم اخضر(400غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت تلال الزيتون1لتر عرض.jpg",
+        "product_id": "6c7a974e-253f-4ca9-903f-6928967e13f1",
+        "name_ar": "زيت تلال الزيتون1لتر عرض",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت زيتون اغصان 1لتر.jpg",
+        "product_id": "d2904b30-b313-4c31-9042-786394da956e",
+        "name_ar": "زيت زيتون اغصان 1لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت زيتون الاغصان 500مل.jpg",
+        "product_id": "bda1c423-dd5d-48a0-9adb-e27108814692",
+        "name_ar": "زيت زيتون الاغصان 500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت زيتون عضوي - الجوف 1 لتر.jpg",
+        "product_id": "9b606663-f348-446c-931f-1b6d47cd3a89",
+        "name_ar": "زيت زيتون عضوي - الجوف 1 لتر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سكر ابيض الضحى 1كغ.jpg",
+        "product_id": "14339d22-3b6b-435a-83ab-29387a966549",
+        "name_ar": "سكر ابيض الضحى 1كغ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سكر ام القرى 1ك.jpg",
+        "product_id": "6391e610-5173-48eb-805c-c16f88470df0",
+        "name_ar": "سكر  ام القرى 1ك",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان اخناسيا250غ.jpg",
+        "product_id": "d80db457-28b2-4164-8f60-bd6ec7e3162a",
+        "name_ar": "عسل امتنان اخناسيا250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان البرسيم450غ.jpg",
+        "product_id": "b9c2cf94-d8b7-49a6-9ac2-7c19fe47ec06",
+        "name_ar": "عسل امتنان البرسيم450غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان حبة البركة450غ.jpg",
+        "product_id": "331b88d4-6f49-4151-82ce-2181fe8a9bd8",
+        "name_ar": "عسل امتنان حبة البركة450غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان زعتر250غ.jpg",
+        "product_id": "daefd18e-3f00-45ab-ba98-c4521fd8aae6",
+        "name_ar": "عسل امتنان زعتر250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان زهور الربيع450غ.jpg",
+        "product_id": "70fae45c-8269-4888-b6d0-bf7156f9aef8",
+        "name_ar": "عسل امتنان زهور الربيع450غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان زهور موالح 250غ.jpg",
+        "product_id": "ca569c41-ada2-4b5d-ab9a-f1788d3118af",
+        "name_ar": "عسل امتنان زهور موالح 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان موالح450غ.jpg",
+        "product_id": "4e4ceed4-2d59-4155-b604-349c018b79b8",
+        "name_ar": "عسل امتنان موالح450غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل امتنان250غ زهور الربيع.jpg",
+        "product_id": "1a70f996-4117-452c-8dc4-ceb78e33fe0e",
+        "name_ar": "عسل امتنان250غ زهور الربيع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل برسيم 250غ امتنان.jpg",
+        "product_id": "349bbeed-cbc3-46f9-aa88-2df4bc1ba292",
+        "name_ar": "عسل برسيم 250غ امتنان",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل جنة 450غ.jpg",
+        "product_id": "78cdfa5b-b7ec-45e7-ae7b-f6e06d70a756",
+        "name_ar": "عسل جنة 450غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "عسل جنة برسيم 250غ.jpg",
+        "product_id": "cb5af77f-c55c-4d5b-95bd-f4863f1b8e1c",
+        "name_ar": "عسل جنة برسيم 250غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قمر الدين.jpg",
+        "product_id": "27e767bf-458d-4a6d-99bb-d1e599ff6093",
+        "name_ar": "قمر الدين",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كاري مدراس600غ.jpg",
+        "product_id": "b551fcc0-2281-4c32-8cfd-0fdf57f645de",
+        "name_ar": "كاري مدراس600غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كحل بارد الحواج 10 ملي.jpg",
+        "product_id": "2b199ed3-2310-4982-923c-1831736a618c",
+        "name_ar": "كحل بارد الحواج 10 ملي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كحل حامي الحواج 10 ملي.jpg",
+        "product_id": "ec7bd395-d6bc-4fdc-89c6-7e73e4ab14a1",
+        "name_ar": "كحل حامي الحواج 10 ملي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كنور الشرق الاقصى.jpg",
+        "product_id": "160e9d8c-c7a0-4c11-97cf-e0116acb508e",
+        "name_ar": "كنور الشرق الاقصى",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "هدية عسل امتنان.jpg",
+        "product_id": "3363654d-2472-44a8-a6a0-49c40392eb05",
+        "name_ar": "هدية عسل امتنان",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زعتر الناصر(450غ)محلي.jpg",
+        "product_id": "1530d61e-8516-425b-95d3-f8c3f16e61e6",
+        "name_ar": "زعتر الناصر(450غ)محلي*",
+        "score": 0.9474,
+        "method": "fuzzy",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك.jpg",
+        "product_id": "7686d627-399d-464c-bd6b-ec11a77679a7",
+        "name_ar": "النخيل ارز بسمتي ذهبي مغلي طويل الحبة 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206677473-s0bxjj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206677473-s0bxjj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بسبوسة جوز هند - حلو الشام.jpg",
+        "product_id": "5a0b8144-903e-4c98-9552-067b45f169b6",
+        "name_ar": "بسبوسة جوز هند - حلو الشام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678062-8sl26g.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678062-8sl26g.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تمر هندي النخيل (300غ).jpg",
+        "product_id": "fcdb4915-928c-4b25-816e-92fe46e59537",
+        "name_ar": "تمر هندي النخيل (300غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678960-aduttb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206678960-aduttb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حليب صويا.jpg",
+        "product_id": "e92509f8-58f1-459b-97b4-fdb94a0c36fb",
+        "name_ar": "حليب صويا",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679518-2ugh1j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679518-2ugh1j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دقيق دخن نوب 500جرام.jpg",
+        "product_id": "f768b43e-531b-46b2-ab79-10de6a2ed037",
+        "name_ar": "دقيق دخن نوب 500جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679915-514t2e.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206679915-514t2e.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دقيق ذرة أبيض نوب - 1 كيلو.jpg",
+        "product_id": "585b9ee6-8b3f-4eca-ab51-40f7bac7511b",
+        "name_ar": "دقيق ذرة أبيض نوب - 1 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680327-bv6ni7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680327-bv6ni7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دقيق قمح 1كغ سلارا.jpg",
+        "product_id": "435674ab-bf68-4ee5-aa84-9105c0e084c2",
+        "name_ar": "دقيق قمح 1كغ سلارا",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680750-40f76t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206680750-40f76t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دقيق قمح كامل نوب - 1 كيلو.jpg",
+        "product_id": "f80ad7ed-16e0-4a80-a0ad-7f8e0f53139e",
+        "name_ar": "دقيق قمح كامل نوب - 1 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681188-r578b5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681188-r578b5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز الساعة1كغ.jpg",
+        "product_id": "82bdeb60-1597-4359-9c18-96893fa3dd71",
+        "name_ar": "رز الساعة1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681634-8eesme.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206681634-8eesme.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز العاصم 1كغ.jpg",
+        "product_id": "bd706fdb-8983-4086-974d-bd021f39944c",
+        "name_ar": "رز العاصم 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682030-vpojne.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682030-vpojne.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز المراد 1كغ.jpg",
+        "product_id": "de2eebab-0665-406f-b5f4-19aa6a77085e",
+        "name_ar": "رز المراد 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682690-m889kk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206682690-m889kk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز زاد 1كغ.jpg",
+        "product_id": "cd958111-a35e-4d7a-9fe0-8db8fceed676",
+        "name_ar": "رز زاد 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683154-nkkmjv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683154-nkkmjv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 1 كيلو.jpg",
+        "product_id": "87f45245-d4f3-468d-af4a-45ddaaa29e0a",
+        "name_ar": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 1 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683626-kby41g.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206683626-kby41g.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 5 كيلو.jpg",
+        "product_id": "280b6e23-ca70-457b-ac21-08a496d8b5ed",
+        "name_ar": "رز مصري ابو الذهب اخضر عريض الحبة 3% كسر 5 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684108-1aadb4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684108-1aadb4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 1 كيلو.jpg",
+        "product_id": "46f9d098-39e8-42c4-b932-e2f5fdacbb6e",
+        "name_ar": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر  1 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684576-4vis40.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206684576-4vis40.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رز مصري ابو الذهب رايس رفيع الحبة 8% كسر 1 كيلو.jpg",
+        "product_id": "4ea33d41-5bef-48d7-a77e-40e2bb670747",
+        "name_ar": "رز مصري ابو الذهب رايس رفيع الحبة 8% كسر 1 كيلو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685012-21yvy9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685012-21yvy9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زعتر خمس نجوم اخضر(400غ).jpg",
+        "product_id": "12ce84b3-936b-4261-9133-cc1ba47b7ddd",
+        "name_ar": "زعتر خمس نجوم اخضر(400غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685515-bdhz9v.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685515-bdhz9v.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت تلال الزيتون1لتر عرض.jpg",
+        "product_id": "6c7a974e-253f-4ca9-903f-6928967e13f1",
+        "name_ar": "زيت تلال الزيتون1لتر عرض",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685995-dgdfmf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206685995-dgdfmf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت زيتون اغصان 1لتر.jpg",
+        "product_id": "d2904b30-b313-4c31-9042-786394da956e",
+        "name_ar": "زيت زيتون اغصان 1لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206686585-34ht21.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206686585-34ht21.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت زيتون الاغصان 500مل.jpg",
+        "product_id": "bda1c423-dd5d-48a0-9adb-e27108814692",
+        "name_ar": "زيت زيتون الاغصان 500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687110-fbmfco.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687110-fbmfco.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت زيتون عضوي - الجوف 1 لتر.jpg",
+        "product_id": "9b606663-f348-446c-931f-1b6d47cd3a89",
+        "name_ar": "زيت زيتون عضوي - الجوف 1 لتر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687465-7cilb9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687465-7cilb9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سكر ابيض الضحى 1كغ.jpg",
+        "product_id": "14339d22-3b6b-435a-83ab-29387a966549",
+        "name_ar": "سكر ابيض الضحى 1كغ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687916-3ri1in.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206687916-3ri1in.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سكر ام القرى 1ك.jpg",
+        "product_id": "6391e610-5173-48eb-805c-c16f88470df0",
+        "name_ar": "سكر  ام القرى 1ك",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688376-t2a55k.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688376-t2a55k.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان اخناسيا250غ.jpg",
+        "product_id": "d80db457-28b2-4164-8f60-bd6ec7e3162a",
+        "name_ar": "عسل امتنان اخناسيا250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688827-0oh34z.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206688827-0oh34z.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان البرسيم450غ.jpg",
+        "product_id": "b9c2cf94-d8b7-49a6-9ac2-7c19fe47ec06",
+        "name_ar": "عسل امتنان البرسيم450غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689237-uq4p9w.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689237-uq4p9w.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان حبة البركة450غ.jpg",
+        "product_id": "331b88d4-6f49-4151-82ce-2181fe8a9bd8",
+        "name_ar": "عسل امتنان حبة البركة450غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689764-en8aer.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206689764-en8aer.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان زعتر250غ.jpg",
+        "product_id": "daefd18e-3f00-45ab-ba98-c4521fd8aae6",
+        "name_ar": "عسل امتنان زعتر250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690238-dyj2q4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690238-dyj2q4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان زهور الربيع450غ.jpg",
+        "product_id": "70fae45c-8269-4888-b6d0-bf7156f9aef8",
+        "name_ar": "عسل امتنان زهور الربيع450غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690616-13t5ln.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206690616-13t5ln.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان زهور موالح 250غ.jpg",
+        "product_id": "ca569c41-ada2-4b5d-ab9a-f1788d3118af",
+        "name_ar": "عسل امتنان زهور موالح 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691441-udejll.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691441-udejll.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان موالح450غ.jpg",
+        "product_id": "4e4ceed4-2d59-4155-b604-349c018b79b8",
+        "name_ar": "عسل امتنان موالح450غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691798-xu9psz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206691798-xu9psz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل امتنان250غ زهور الربيع.jpg",
+        "product_id": "1a70f996-4117-452c-8dc4-ceb78e33fe0e",
+        "name_ar": "عسل امتنان250غ زهور الربيع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692249-iyb7a2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692249-iyb7a2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل برسيم 250غ امتنان.jpg",
+        "product_id": "349bbeed-cbc3-46f9-aa88-2df4bc1ba292",
+        "name_ar": "عسل برسيم 250غ امتنان",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692795-x0od8t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206692795-x0od8t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل جنة 450غ.jpg",
+        "product_id": "78cdfa5b-b7ec-45e7-ae7b-f6e06d70a756",
+        "name_ar": "عسل جنة 450غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693211-tytkos.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693211-tytkos.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "عسل جنة برسيم 250غ.jpg",
+        "product_id": "cb5af77f-c55c-4d5b-95bd-f4863f1b8e1c",
+        "name_ar": "عسل جنة برسيم 250غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693683-qwfoaf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206693683-qwfoaf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قمر الدين.jpg",
+        "product_id": "27e767bf-458d-4a6d-99bb-d1e599ff6093",
+        "name_ar": "قمر الدين",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694069-aoq3zn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694069-aoq3zn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كاري مدراس600غ.jpg",
+        "product_id": "b551fcc0-2281-4c32-8cfd-0fdf57f645de",
+        "name_ar": "كاري مدراس600غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694634-winedy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206694634-winedy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كحل بارد الحواج 10 ملي.jpg",
+        "product_id": "2b199ed3-2310-4982-923c-1831736a618c",
+        "name_ar": "كحل بارد الحواج 10 ملي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695021-70isfv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695021-70isfv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كحل حامي الحواج 10 ملي.jpg",
+        "product_id": "ec7bd395-d6bc-4fdc-89c6-7e73e4ab14a1",
+        "name_ar": "كحل حامي الحواج 10 ملي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695499-07hu4h.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695499-07hu4h.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كنور الشرق الاقصى.jpg",
+        "product_id": "160e9d8c-c7a0-4c11-97cf-e0116acb508e",
+        "name_ar": "كنور الشرق الاقصى",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695906-aznrg2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206695906-aznrg2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "هدية عسل امتنان.jpg",
+        "product_id": "3363654d-2472-44a8-a6a0-49c40392eb05",
+        "name_ar": "هدية عسل امتنان",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696478-2qa2qa.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696478-2qa2qa.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زعتر الناصر(450غ)محلي.jpg",
+        "product_id": "1530d61e-8516-425b-95d3-f8c3f16e61e6",
+        "name_ar": "زعتر الناصر(450غ)محلي*",
+        "score": 0.9474,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696945-4lovak.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206696945-4lovak.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [
+      {
+        "file": "رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 5 كيلو.jpg",
+        "path": "C:\\Users\\Administrator\\Downloads\\pilot_الرز_و_الدقيق_و_السكر_1\\الرز و الدقيق و السكر\\رز مصري ابو الذهب ازرق عريض الحبة 6% كسر 5 كيلو.jpg",
+        "best_candidate": null,
+        "best_score": null
+      }
+    ],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

@@ -36,8 +36,12 @@ import { useTranslations } from '@/components/providers/RootI18nProvider';
 const defaultForm: CategoryInput = {
   name_en: '',
   name_ar: '',
+  name_fr: '',
+  name_nl: '',
   description_en: '',
   description_ar: '',
+  description_fr: '',
+  description_nl: '',
   sort_order: 0,
   is_visible: true,
 };
@@ -256,6 +260,42 @@ export default function CategoriesPage() {
                 value={createForm.description_ar || ''}
                 onChange={(e) =>
                   setCreateForm((prev) => ({ ...prev, description_ar: e.target.value }))
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-name_fr">{t('nameFr')}</Label>
+              <Input
+                id="create-name_fr"
+                value={createForm.name_fr || ''}
+                onChange={(e) => setCreateForm((prev) => ({ ...prev, name_fr: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-name_nl">{t('nameNl')}</Label>
+              <Input
+                id="create-name_nl"
+                value={createForm.name_nl || ''}
+                onChange={(e) => setCreateForm((prev) => ({ ...prev, name_nl: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-description_fr">{t('descriptionFr')}</Label>
+              <Textarea
+                id="create-description_fr"
+                value={createForm.description_fr || ''}
+                onChange={(e) =>
+                  setCreateForm((prev) => ({ ...prev, description_fr: e.target.value }))
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="create-description_nl">{t('descriptionNl')}</Label>
+              <Textarea
+                id="create-description_nl"
+                value={createForm.description_nl || ''}
+                onChange={(e) =>
+                  setCreateForm((prev) => ({ ...prev, description_nl: e.target.value }))
                 }
               />
             </div>

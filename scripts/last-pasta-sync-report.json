@@ -1,0 +1,85 @@
+{
+  "dryRun": false,
+  "category": {
+    "created": true,
+    "id": "73aac115-a814-4db1-a953-46094acc6740"
+  },
+  "added": [
+    {
+      "name_ar": "بنا الفريدو",
+      "price": 80
+    },
+    {
+      "name_ar": "بولونيز",
+      "price": 80
+    },
+    {
+      "name_ar": "مكس تشيز",
+      "price": 80
+    },
+    {
+      "name_ar": "نجرسكو",
+      "price": 100
+    },
+    {
+      "name_ar": "بشاميل",
+      "price": 90
+    },
+    {
+      "name_ar": "ستريبس",
+      "price": 110
+    },
+    {
+      "name_ar": "سوبريم",
+      "price": 120
+    }
+  ],
+  "updated": [],
+  "deleted": [],
+  "unchanged": [],
+  "errors": [],
+  "final": [
+    {
+      "name_ar": "بنا الفريدو",
+      "name_en": "Alfredo",
+      "dining_price": 80,
+      "takeaway_price": 80
+    },
+    {
+      "name_ar": "بولونيز",
+      "name_en": "Bolognese",
+      "dining_price": 80,
+      "takeaway_price": 80
+    },
+    {
+      "name_ar": "مكس تشيز",
+      "name_en": "Mixed Cheese",
+      "dining_price": 80,
+      "takeaway_price": 80
+    },
+    {
+      "name_ar": "نجرسكو",
+      "name_en": "Negrisco",
+      "dining_price": 100,
+      "takeaway_price": 100
+    },
+    {
+      "name_ar": "بشاميل",
+      "name_en": "Bechamel",
+      "dining_price": 90,
+      "takeaway_price": 90
+    },
+    {
+      "name_ar": "ستريبس",
+      "name_en": "Strips",
+      "dining_price": 110,
+      "takeaway_price": 110
+    },
+    {
+      "name_ar": "سوبريم",
+      "name_en": "Supreme",
+      "dining_price": 120,
+      "takeaway_price": 120
+    }
+  ]
+}

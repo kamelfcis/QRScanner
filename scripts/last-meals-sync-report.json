@@ -1,0 +1,139 @@
+{
+  "dryRun": false,
+  "category": {
+    "created": false,
+    "id": "222878b9-dc32-43aa-b1cc-99f32a00495e"
+  },
+  "upserted": [
+    {
+      "action": "update",
+      "name_ar": "وجبة استربس",
+      "name_en": "Strips Meal",
+      "dining_price": 120,
+      "takeaway_price": 120,
+      "description_ar": "وجبة استربس. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Strips Meal. Includes: basmati rice, pickled cucumber, sauce, and salad",
+      "previous": {
+        "name_ar": "وجبة استربس",
+        "name_en": "Strips Meal",
+        "dining_price": 120,
+        "takeaway_price": 120,
+        "description_ar": "وجبة استربس — أرز بسمتي + خيار مخلل + صوص + سلطة",
+        "description_en": "Strips Meal — Basmati rice + pickled cucumber + sauce + salad"
+      }
+    },
+    {
+      "action": "update",
+      "name_ar": "وجبة شاورما",
+      "name_en": "Shawarma Meal",
+      "dining_price": 110,
+      "takeaway_price": 110,
+      "description_ar": "وجبة شاورما. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Shawarma Meal. Includes: basmati rice, pickled cucumber, sauce, and salad",
+      "previous": {
+        "name_ar": "وجبة شاورما",
+        "name_en": "Shawarma Meal",
+        "dining_price": 110,
+        "takeaway_price": 110,
+        "description_ar": "وجبة شاورما — أرز بسمتي + خيار مخلل + صوص + سلطة",
+        "description_en": "Shawarma Meal — Basmati rice + pickled cucumber + sauce + salad"
+      }
+    },
+    {
+      "action": "update",
+      "name_ar": "وجبة شيش طاووق",
+      "name_en": "Shish Tawook Meal",
+      "dining_price": 135,
+      "takeaway_price": 135,
+      "description_ar": "وجبة شيش طاووق. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Shish Tawook Meal. Includes: basmati rice, pickled cucumber, sauce, and salad",
+      "previous": {
+        "name_ar": "وجبة شيش طاووق",
+        "name_en": "Shish Tawook Meal",
+        "dining_price": 135,
+        "takeaway_price": 135,
+        "description_ar": "وجبة شيش طاووق — أرز بسمتي + خيار مخلل + صوص + سلطة",
+        "description_en": "Shish Tawook Meal — Basmati rice + pickled cucumber + sauce + salad"
+      }
+    },
+    {
+      "action": "update",
+      "name_ar": "وجبة كفتة",
+      "name_en": "Kofta Meal",
+      "dining_price": 125,
+      "takeaway_price": 125,
+      "description_ar": "وجبة كفتة. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Kofta Meal. Includes: basmati rice, pickled cucumber, sauce, and salad",
+      "previous": {
+        "name_ar": "وجبة كفتة",
+        "name_en": "Kofta Meal",
+        "dining_price": 125,
+        "takeaway_price": 125,
+        "description_ar": "وجبة كفتة — أرز بسمتي + خيار مخلل + صوص + سلطة",
+        "description_en": "Kofta Meal — Basmati rice + pickled cucumber + sauce + salad"
+      }
+    },
+    {
+      "action": "update",
+      "name_ar": "وجبة سجق",
+      "name_en": "Sujuk Meal",
+      "dining_price": 120,
+      "takeaway_price": 120,
+      "description_ar": "وجبة سجق. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Sujuk Meal. Includes: basmati rice, pickled cucumber, sauce, and salad",
+      "previous": {
+        "name_ar": "وجبة سجق",
+        "name_en": "Sujuk Meal",
+        "dining_price": 120,
+        "takeaway_price": 120,
+        "description_ar": "وجبة سجق — أرز بسمتي + خيار مخلل + صوص + سلطة",
+        "description_en": "Sujuk Meal — Basmati rice + pickled cucumber + sauce + salad"
+      }
+    }
+  ],
+  "deleted": [],
+  "unchanged": [],
+  "errors": [],
+  "final": [
+    {
+      "name_ar": "وجبة استربس",
+      "name_en": "Strips Meal",
+      "dining_price": 120,
+      "takeaway_price": 120,
+      "description_ar": "وجبة استربس. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Strips Meal. Includes: basmati rice, pickled cucumber, sauce, and salad"
+    },
+    {
+      "name_ar": "وجبة شاورما",
+      "name_en": "Shawarma Meal",
+      "dining_price": 110,
+      "takeaway_price": 110,
+      "description_ar": "وجبة شاورما. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Shawarma Meal. Includes: basmati rice, pickled cucumber, sauce, and salad"
+    },
+    {
+      "name_ar": "وجبة شيش طاووق",
+      "name_en": "Shish Tawook Meal",
+      "dining_price": 135,
+      "takeaway_price": 135,
+      "description_ar": "وجبة شيش طاووق. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Shish Tawook Meal. Includes: basmati rice, pickled cucumber, sauce, and salad"
+    },
+    {
+      "name_ar": "وجبة كفتة",
+      "name_en": "Kofta Meal",
+      "dining_price": 125,
+      "takeaway_price": 125,
+      "description_ar": "وجبة كفتة. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Kofta Meal. Includes: basmati rice, pickled cucumber, sauce, and salad"
+    },
+    {
+      "name_ar": "وجبة سجق",
+      "name_en": "Sujuk Meal",
+      "dining_price": 120,
+      "takeaway_price": 120,
+      "description_ar": "وجبة سجق. تشتمل على: أرز بسمتي + خيار مخلل + صوص + سلطة",
+      "description_en": "Sujuk Meal. Includes: basmati rice, pickled cucumber, sauce, and salad"
+    }
+  ]
+}

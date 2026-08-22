@@ -1,0 +1,1225 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "9de129a5-d201-4895-ae89-39736be6dd7d",
+    "name_ar": "منيو الاعشاب"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\منيو_الاعشاب\\منيو الاعشاب",
+  "counts": {
+    "images_found": 66,
+    "products_in_category": 66,
+    "matched": 66,
+    "uploaded": 0,
+    "skipped_unchanged": 66,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "اعشاب تيليو ايزيس-20فتلة.jpg",
+      "product_id": "acf1b0b7-5bbf-4db4-ad1b-58e96982eaee",
+      "name_ar": "اعشاب تيليو ايزيس/20فتلة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "الحمية الغذائية18ظرف.jpg",
+      "product_id": "65059905-874a-4fa8-8afd-f8d5a0b237dc",
+      "name_ar": "الحمية الغذائية18ظرف",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "السنا امتنان18ظرف.jpg",
+      "product_id": "98c2e9bc-dab6-42cf-9021-238e4dc9570b",
+      "name_ar": "السنا امتنان18ظرف",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "اوراق جوافة ايزيس-20فتلة.jpg",
+      "product_id": "3164239e-b942-4d15-8d21-2bd0dda78139",
+      "name_ar": "اوراق جوافة ايزيس/20فتلة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "ايزيس رمان 20فتلة.jpg",
+      "product_id": "7d7b4166-49e4-4ea0-9548-0e73bc919c05",
+      "name_ar": "ايزيس رمان 20فتلة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "ايزيس زعتر 20فتلة.jpg",
+      "product_id": "80d3a219-5d56-4501-93fd-f6bd869fed1e",
+      "name_ar": "ايزيس زعتر 20فتلة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بابونج العطار.jpg",
+      "product_id": "1176dcc6-f89d-4852-aca9-943c6df3fa43",
+      "name_ar": "بابونج العطار",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بابونج ايزيس-12فتلة.jpg",
+      "product_id": "a83f9a31-38d5-4b85-8436-83ac101530a1",
+      "name_ar": "بابونج ايزيس/12فتلة",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:14:43.178Z",
+  "details": {
+    "matched": [
+      {
+        "file": "اعشاب تيليو ايزيس-20فتلة.jpg",
+        "product_id": "acf1b0b7-5bbf-4db4-ad1b-58e96982eaee",
+        "name_ar": "اعشاب تيليو ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "الحمية الغذائية18ظرف.jpg",
+        "product_id": "65059905-874a-4fa8-8afd-f8d5a0b237dc",
+        "name_ar": "الحمية الغذائية18ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "السنا امتنان18ظرف.jpg",
+        "product_id": "98c2e9bc-dab6-42cf-9021-238e4dc9570b",
+        "name_ar": "السنا امتنان18ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "اوراق جوافة ايزيس-20فتلة.jpg",
+        "product_id": "3164239e-b942-4d15-8d21-2bd0dda78139",
+        "name_ar": "اوراق جوافة ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ايزيس رمان 20فتلة.jpg",
+        "product_id": "7d7b4166-49e4-4ea0-9548-0e73bc919c05",
+        "name_ar": "ايزيس رمان 20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ايزيس زعتر 20فتلة.jpg",
+        "product_id": "80d3a219-5d56-4501-93fd-f6bd869fed1e",
+        "name_ar": "ايزيس زعتر 20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بابونج العطار.jpg",
+        "product_id": "1176dcc6-f89d-4852-aca9-943c6df3fa43",
+        "name_ar": "بابونج العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بابونج ايزيس-12فتلة.jpg",
+        "product_id": "a83f9a31-38d5-4b85-8436-83ac101530a1",
+        "name_ar": "بابونج ايزيس/12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بابونج ايزيس-20فتلة.jpg",
+        "product_id": "9a20ea20-e9cc-48af-b10f-c59e3e818109",
+        "name_ar": "بابونج ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بارلي ايزيس12غ.jpg",
+        "product_id": "18e97dfe-e148-4c39-a305-77ddce6e7278",
+        "name_ar": "بارلي ايزيس12غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بردقوش ايزيس 20 فتلة.jpg",
+        "product_id": "84e4a88d-4477-4aa8-b436-512eae048b92",
+        "name_ar": "بردقوش ايزيس 20 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تيليو ايزيس 12ظرف.jpg",
+        "product_id": "c54c14d5-c444-4254-bac2-0d8951b18595",
+        "name_ar": "تيليو ايزيس 12ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "جينجر ايد 18ظرف.jpg",
+        "product_id": "bd6cf68c-105a-4bab-ad93-fd1bb0e5a4fb",
+        "name_ar": "جينجر ايد 18ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حلبة ايزيس-20فتلة.jpg",
+        "product_id": "1f0de96c-9f76-4b8a-b4a5-994e703157e5",
+        "name_ar": "حلبة ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ديتوكس ايزيس-20فتلة.jpg",
+        "product_id": "b836c3cc-dce1-4671-81ef-c8a00a8496be",
+        "name_ar": "ديتوكس ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رمان العطار 12فتلة.jpg",
+        "product_id": "9e9f1661-195d-4157-a017-f49d06c451b4",
+        "name_ar": "رمان العطار 12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "رمان العطار 24 فتلة.jpg",
+        "product_id": "dddfdec0-a654-4ccf-a2e9-4215f68abc35",
+        "name_ar": "رمان العطار 24 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زعتر بري العطار.jpg",
+        "product_id": "afa4674d-a78a-4e1e-a3ab-0e65e0f21dfb",
+        "name_ar": "زعتر بري العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "c2f1fa06-fdf5-4f64-9a95-8725e486f0f0",
+        "name_ar": "زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زنجبيل و عسل العطار.jpg",
+        "product_id": "23c265e9-43f1-4d13-9d7d-671a3dd34518",
+        "name_ar": "زنجبيل و عسل العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زنجبيل و قرفة العطار.jpg",
+        "product_id": "8d1f4c08-5df3-4530-9394-853a64a6b054",
+        "name_ar": "زنجبيل و قرفة العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زنجبيل و قرفة العطار24ظ.jpg",
+        "product_id": "b09154e9-686e-4c9a-83e4-e5b6ccb07f93",
+        "name_ar": "زنجبيل و قرفة العطار24ظ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زنجبيل و ليمون العطار.jpg",
+        "product_id": "d904cd1b-6811-44cc-870d-c56a3841bc6a",
+        "name_ar": "زنجبيل و ليمون العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زهورات شامية العطار.jpg",
+        "product_id": "cf26c38d-e76d-4bcb-b888-d0d3cb0e4007",
+        "name_ar": "زهورات شامية العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر العطار12ظرف.jpg",
+        "product_id": "2291af5e-a7a9-4605-b8c9-452b0d691319",
+        "name_ar": "شاي اخضر العطار12ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر العطار24.jpg",
+        "product_id": "a2dc7d6d-2e53-435e-ba5e-ce0a3a224933",
+        "name_ar": "شاي اخضر العطار24",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر ايزيس 12ظرف.jpg",
+        "product_id": "dba5d826-4c8d-4cd3-bd42-9db00c0a6d4b",
+        "name_ar": "شاي اخضر ايزيس 12ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر ايزيس-20فتلة.jpg",
+        "product_id": "b4dde4b7-c964-4727-8618-6967d2203e5d",
+        "name_ar": "شاي اخضر ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر بالنعناع ايزيس-20فتلة.jpg",
+        "product_id": "232b117e-631f-47f6-884f-91d6eb627f20",
+        "name_ar": "شاي اخضر بالنعناع ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي اخضر نعناع العطار.jpg",
+        "product_id": "1f3d6637-ae72-4e60-aa0b-4c56fa53e677",
+        "name_ar": "شاي اخضر نعناع العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ايزيس2+1-ريجيم.jpg",
+        "product_id": "0b4a21e8-dbac-4cd6-837b-88296a5d9345",
+        "name_ar": "شاي ايزيس2+1/ريجيم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شاي ريجيم ايزيس-20فتلة.jpg",
+        "product_id": "3f1936c0-834a-4df8-9075-0bd0f7f53ec6",
+        "name_ar": "شاي ريجيم ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ظرف شاي ريجيم ايزيس.jpg",
+        "product_id": "fa38516c-07f7-4db7-a7fc-1a2603aaaab6",
+        "name_ar": "ظرف شاي ريجيم ايزيس",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قرفة ايزيس 12لفة.jpg",
+        "product_id": "126d9c37-5c11-4936-b6dc-16c0e104e751",
+        "name_ar": "قرفة ايزيس 12لفة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قرفة ايزيس-20فتلة.jpg",
+        "product_id": "760438e9-d916-4451-a1de-6560da1bc548",
+        "name_ar": "قرفة ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قرفة و تفاح العطار.jpg",
+        "product_id": "27ccbdbc-6bdf-4643-ad81-ff7d12ec13d7",
+        "name_ar": "قرفة و تفاح العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "قرفة و زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "8f2d1863-d12c-4ab2-bfb7-2b7634be3b47",
+        "name_ar": "قرفة و زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كراوية ايزيس-20فتلة.jpg",
+        "product_id": "b7cd60ce-3328-4a21-91bb-ce0b680cae6a",
+        "name_ar": "كراوية ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كرفس و بقدونس ايزيس-12فتلة.jpg",
+        "product_id": "bb4001af-7403-4ad3-95a7-da7b3c243253",
+        "name_ar": "كرفس و بقدونس ايزيس/12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كرفس و بقدونس ايزيس-20فتلة.jpg",
+        "product_id": "b584bf9d-d4c0-467e-8fd2-17b545735fa4",
+        "name_ar": "كرفس و بقدونس ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كركديه العطار.jpg",
+        "product_id": "18b38581-1df1-4c14-a345-6d6e9eccc5b8",
+        "name_ar": "كركديه العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كركديه ايزيس 12فتلة.jpg",
+        "product_id": "773d8ed3-e488-425f-bc4b-e3d1ec743012",
+        "name_ar": "كركديه ايزيس 12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كركديه ايزيس 50لفة.jpg",
+        "product_id": "bef29cf6-b79f-4320-bc43-5bf5fece7e18",
+        "name_ar": "كركديه ايزيس 50لفة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كركديه ايزيس-20فتلة.jpg",
+        "product_id": "433059c8-997d-4fd6-bcca-d5d233964b9d",
+        "name_ar": "كركديه ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كركديه شربات العطار.jpg",
+        "product_id": "8fc06e6b-bcf1-4933-91af-9fc10b1652fe",
+        "name_ar": "كركديه شربات العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كمون ليمون ايزيس-20فتلة.jpg",
+        "product_id": "d5553d22-4455-4cae-9366-b67b91bc7de1",
+        "name_ar": "كمون ليمون ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كمون و ليمون العطار 12فتلة.jpg",
+        "product_id": "ddf4ef4c-9797-42f8-b88b-045b0389ec58",
+        "name_ar": "كمون و ليمون العطار 12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كمون و ليمون العطار 24فتلة.jpg",
+        "product_id": "1d6c15ac-1fd6-44b9-83a4-a83184e5bc85",
+        "name_ar": "كمون و ليمون العطار 24فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "كمون و ليمون و شطة العطار.jpg",
+        "product_id": "53820d35-4013-43c7-8682-4d72788b1610",
+        "name_ar": "كمون و ليمون و شطة العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ليمون و زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "d54ee0f5-742e-4e84-8ac6-24fa6748cff0",
+        "name_ar": "ليمون و زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ليمون وزنجبيل ايزيس 12 فتلة.jpg",
+        "product_id": "10bcdf90-f33b-41f2-9e8d-7c03fca6e69f",
+        "name_ar": "ليمون وزنجبيل ايزيس 12 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "متة العطار 24ظرف.jpg",
+        "product_id": "ba43cd88-770a-4b80-b3af-b39f44ab5583",
+        "name_ar": "متة العطار 24ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مليسة العطار.jpg",
+        "product_id": "2e7a8ac3-31d4-4560-85f8-296f56cc7b50",
+        "name_ar": "مليسة العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مورينجا ايزيس-20فتلة.jpg",
+        "product_id": "68218a16-80ff-4b1a-a12d-5d45db000465",
+        "name_ar": "مورينجا ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ميرمية ايزيس-20فتلة.jpg",
+        "product_id": "4fddb501-3b40-4961-a749-a3c98cd616d4",
+        "name_ar": "ميرمية ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نعناع ايزيس 50ظرف.jpg",
+        "product_id": "17eeb56c-e8c5-4cb8-a7e2-d2cbbffd67e1",
+        "name_ar": "نعناع ايزيس 50ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "نعناع ايزيس-20فتلة.jpg",
+        "product_id": "4596293c-1c52-4f93-8ab7-8528bf6c0a4c",
+        "name_ar": "نعناع ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون العطار.jpg",
+        "product_id": "8cce3ca7-7812-4ece-a959-3fce6d962dba",
+        "name_ar": "يانسون العطار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون العطار24.jpg",
+        "product_id": "4d48106f-7484-42bc-9bba-eb98f7a04371",
+        "name_ar": "يانسون العطار24",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ايزيس-100فتلة.jpg",
+        "product_id": "a8ca97d0-9172-4133-a59c-ae0052ece51c",
+        "name_ar": "يانسون ايزيس/100فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ايزيس-12فتلة.jpg",
+        "product_id": "3379f10c-c4dc-4e53-8767-1ae7c79c8e2c",
+        "name_ar": "يانسون ايزيس/12فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ايزيس-20فتلة.jpg",
+        "product_id": "cd870865-25b2-4a87-9913-ebcbdfda7864",
+        "name_ar": "يانسون ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ايزيس-50 فتلة.jpg",
+        "product_id": "510fabf7-fd9a-43a4-acd1-67973597a5f2",
+        "name_ar": "يانسون ايزيس/50 فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ليمون ايزيس 12ظرف.jpg",
+        "product_id": "4d8f0c8d-3106-4073-a8e5-a66e1d4751ee",
+        "name_ar": "يانسون ليمون ايزيس 12ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يانسون ليمون ايزيس-20فتلة.jpg",
+        "product_id": "73f0ab6e-255d-438b-816c-ac54fde4dbf1",
+        "name_ar": "يانسون ليمون ايزيس/20فتلة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "يوحنا امتنان 18ظرف.jpg",
+        "product_id": "f677d3ec-f944-4018-9861-2ea0893cfc34",
+        "name_ar": "يوحنا امتنان 18ظرف",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "اعشاب تيليو ايزيس-20فتلة.jpg",
+        "product_id": "acf1b0b7-5bbf-4db4-ad1b-58e96982eaee",
+        "name_ar": "اعشاب تيليو ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206436734-p07asr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206436734-p07asr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "الحمية الغذائية18ظرف.jpg",
+        "product_id": "65059905-874a-4fa8-8afd-f8d5a0b237dc",
+        "name_ar": "الحمية الغذائية18ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206437856-e1aogq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206437856-e1aogq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "السنا امتنان18ظرف.jpg",
+        "product_id": "98c2e9bc-dab6-42cf-9021-238e4dc9570b",
+        "name_ar": "السنا امتنان18ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206438426-65bf3m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206438426-65bf3m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "اوراق جوافة ايزيس-20فتلة.jpg",
+        "product_id": "3164239e-b942-4d15-8d21-2bd0dda78139",
+        "name_ar": "اوراق جوافة ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206438745-bmd1r4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206438745-bmd1r4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ايزيس رمان 20فتلة.jpg",
+        "product_id": "7d7b4166-49e4-4ea0-9548-0e73bc919c05",
+        "name_ar": "ايزيس رمان 20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206439210-jd3pd2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206439210-jd3pd2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ايزيس زعتر 20فتلة.jpg",
+        "product_id": "80d3a219-5d56-4501-93fd-f6bd869fed1e",
+        "name_ar": "ايزيس زعتر 20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206439681-o2ygqs.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206439681-o2ygqs.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بابونج العطار.jpg",
+        "product_id": "1176dcc6-f89d-4852-aca9-943c6df3fa43",
+        "name_ar": "بابونج العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440072-527axj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440072-527axj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بابونج ايزيس-12فتلة.jpg",
+        "product_id": "a83f9a31-38d5-4b85-8436-83ac101530a1",
+        "name_ar": "بابونج ايزيس/12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440632-rf719q.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440632-rf719q.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بابونج ايزيس-20فتلة.jpg",
+        "product_id": "9a20ea20-e9cc-48af-b10f-c59e3e818109",
+        "name_ar": "بابونج ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440964-ozzl02.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206440964-ozzl02.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بارلي ايزيس12غ.jpg",
+        "product_id": "18e97dfe-e148-4c39-a305-77ddce6e7278",
+        "name_ar": "بارلي ايزيس12غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441266-sha4mk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441266-sha4mk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بردقوش ايزيس 20 فتلة.jpg",
+        "product_id": "84e4a88d-4477-4aa8-b436-512eae048b92",
+        "name_ar": "بردقوش ايزيس 20 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441598-bi3zjt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441598-bi3zjt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تيليو ايزيس 12ظرف.jpg",
+        "product_id": "c54c14d5-c444-4254-bac2-0d8951b18595",
+        "name_ar": "تيليو ايزيس 12ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441951-686atq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206441951-686atq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "جينجر ايد 18ظرف.jpg",
+        "product_id": "bd6cf68c-105a-4bab-ad93-fd1bb0e5a4fb",
+        "name_ar": "جينجر ايد 18ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206442298-sot584.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206442298-sot584.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حلبة ايزيس-20فتلة.jpg",
+        "product_id": "1f0de96c-9f76-4b8a-b4a5-994e703157e5",
+        "name_ar": "حلبة ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206442719-3hjxbh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206442719-3hjxbh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ديتوكس ايزيس-20فتلة.jpg",
+        "product_id": "b836c3cc-dce1-4671-81ef-c8a00a8496be",
+        "name_ar": "ديتوكس ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443102-xulpht.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443102-xulpht.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رمان العطار 12فتلة.jpg",
+        "product_id": "9e9f1661-195d-4157-a017-f49d06c451b4",
+        "name_ar": "رمان العطار 12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443497-nuwcbs.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443497-nuwcbs.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "رمان العطار 24 فتلة.jpg",
+        "product_id": "dddfdec0-a654-4ccf-a2e9-4215f68abc35",
+        "name_ar": "رمان العطار 24 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443843-f34kxz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206443843-f34kxz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زعتر بري العطار.jpg",
+        "product_id": "afa4674d-a78a-4e1e-a3ab-0e65e0f21dfb",
+        "name_ar": "زعتر بري العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444195-r0dqcy.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444195-r0dqcy.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "c2f1fa06-fdf5-4f64-9a95-8725e486f0f0",
+        "name_ar": "زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444533-mmizmk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444533-mmizmk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زنجبيل و عسل العطار.jpg",
+        "product_id": "23c265e9-43f1-4d13-9d7d-671a3dd34518",
+        "name_ar": "زنجبيل و عسل العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444875-hi5gbz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206444875-hi5gbz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زنجبيل و قرفة العطار.jpg",
+        "product_id": "8d1f4c08-5df3-4530-9394-853a64a6b054",
+        "name_ar": "زنجبيل و قرفة العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445208-ufgo9u.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445208-ufgo9u.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زنجبيل و قرفة العطار24ظ.jpg",
+        "product_id": "b09154e9-686e-4c9a-83e4-e5b6ccb07f93",
+        "name_ar": "زنجبيل و قرفة العطار24ظ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445544-qvrjtx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445544-qvrjtx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زنجبيل و ليمون العطار.jpg",
+        "product_id": "d904cd1b-6811-44cc-870d-c56a3841bc6a",
+        "name_ar": "زنجبيل و ليمون العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445882-zeuk06.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206445882-zeuk06.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زهورات شامية العطار.jpg",
+        "product_id": "cf26c38d-e76d-4bcb-b888-d0d3cb0e4007",
+        "name_ar": "زهورات شامية العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446293-w6vjoq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446293-w6vjoq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر العطار12ظرف.jpg",
+        "product_id": "2291af5e-a7a9-4605-b8c9-452b0d691319",
+        "name_ar": "شاي اخضر العطار12ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446647-3jfx39.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446647-3jfx39.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر العطار24.jpg",
+        "product_id": "a2dc7d6d-2e53-435e-ba5e-ce0a3a224933",
+        "name_ar": "شاي اخضر العطار24",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446972-2c7xw5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206446972-2c7xw5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر ايزيس 12ظرف.jpg",
+        "product_id": "dba5d826-4c8d-4cd3-bd42-9db00c0a6d4b",
+        "name_ar": "شاي اخضر ايزيس 12ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447304-cyixef.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447304-cyixef.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر ايزيس-20فتلة.jpg",
+        "product_id": "b4dde4b7-c964-4727-8618-6967d2203e5d",
+        "name_ar": "شاي اخضر ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447618-41a583.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447618-41a583.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر بالنعناع ايزيس-20فتلة.jpg",
+        "product_id": "232b117e-631f-47f6-884f-91d6eb627f20",
+        "name_ar": "شاي اخضر بالنعناع ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447914-6jscjj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206447914-6jscjj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي اخضر نعناع العطار.jpg",
+        "product_id": "1f3d6637-ae72-4e60-aa0b-4c56fa53e677",
+        "name_ar": "شاي اخضر نعناع العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448286-j2ikub.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448286-j2ikub.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ايزيس2+1-ريجيم.jpg",
+        "product_id": "0b4a21e8-dbac-4cd6-837b-88296a5d9345",
+        "name_ar": "شاي ايزيس2+1/ريجيم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448657-wag6g0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448657-wag6g0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شاي ريجيم ايزيس-20فتلة.jpg",
+        "product_id": "3f1936c0-834a-4df8-9075-0bd0f7f53ec6",
+        "name_ar": "شاي ريجيم ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448990-yz97t7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206448990-yz97t7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ظرف شاي ريجيم ايزيس.jpg",
+        "product_id": "fa38516c-07f7-4db7-a7fc-1a2603aaaab6",
+        "name_ar": "ظرف شاي ريجيم ايزيس",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206449317-6ig1xp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206449317-6ig1xp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قرفة ايزيس 12لفة.jpg",
+        "product_id": "126d9c37-5c11-4936-b6dc-16c0e104e751",
+        "name_ar": "قرفة ايزيس 12لفة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206449663-n6fcld.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206449663-n6fcld.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قرفة ايزيس-20فتلة.jpg",
+        "product_id": "760438e9-d916-4451-a1de-6560da1bc548",
+        "name_ar": "قرفة ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450048-2roj86.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450048-2roj86.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قرفة و تفاح العطار.jpg",
+        "product_id": "27ccbdbc-6bdf-4643-ad81-ff7d12ec13d7",
+        "name_ar": "قرفة و تفاح العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450452-48t8wh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450452-48t8wh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "قرفة و زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "8f2d1863-d12c-4ab2-bfb7-2b7634be3b47",
+        "name_ar": "قرفة و زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450762-sg6x8w.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206450762-sg6x8w.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كراوية ايزيس-20فتلة.jpg",
+        "product_id": "b7cd60ce-3328-4a21-91bb-ce0b680cae6a",
+        "name_ar": "كراوية ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206451164-clqicl.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206451164-clqicl.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كرفس و بقدونس ايزيس-12فتلة.jpg",
+        "product_id": "bb4001af-7403-4ad3-95a7-da7b3c243253",
+        "name_ar": "كرفس و بقدونس ايزيس/12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206451531-3argwi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206451531-3argwi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كرفس و بقدونس ايزيس-20فتلة.jpg",
+        "product_id": "b584bf9d-d4c0-467e-8fd2-17b545735fa4",
+        "name_ar": "كرفس و بقدونس ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452014-1yh1gr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452014-1yh1gr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كركديه العطار.jpg",
+        "product_id": "18b38581-1df1-4c14-a345-6d6e9eccc5b8",
+        "name_ar": "كركديه العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452393-tx6hi7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452393-tx6hi7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كركديه ايزيس 12فتلة.jpg",
+        "product_id": "773d8ed3-e488-425f-bc4b-e3d1ec743012",
+        "name_ar": "كركديه ايزيس 12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452818-nlzsyk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206452818-nlzsyk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كركديه ايزيس 50لفة.jpg",
+        "product_id": "bef29cf6-b79f-4320-bc43-5bf5fece7e18",
+        "name_ar": "كركديه ايزيس 50لفة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206453229-1cgqjd.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206453229-1cgqjd.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كركديه ايزيس-20فتلة.jpg",
+        "product_id": "433059c8-997d-4fd6-bcca-d5d233964b9d",
+        "name_ar": "كركديه ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206453854-tf1dix.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206453854-tf1dix.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كركديه شربات العطار.jpg",
+        "product_id": "8fc06e6b-bcf1-4933-91af-9fc10b1652fe",
+        "name_ar": "كركديه شربات العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206454481-q6uo2j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206454481-q6uo2j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كمون ليمون ايزيس-20فتلة.jpg",
+        "product_id": "d5553d22-4455-4cae-9366-b67b91bc7de1",
+        "name_ar": "كمون ليمون ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206454864-xgcujq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206454864-xgcujq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كمون و ليمون العطار 12فتلة.jpg",
+        "product_id": "ddf4ef4c-9797-42f8-b88b-045b0389ec58",
+        "name_ar": "كمون و ليمون العطار 12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206455261-d87sb1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206455261-d87sb1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كمون و ليمون العطار 24فتلة.jpg",
+        "product_id": "1d6c15ac-1fd6-44b9-83a4-a83184e5bc85",
+        "name_ar": "كمون و ليمون العطار 24فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206455683-ubrqcl.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206455683-ubrqcl.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "كمون و ليمون و شطة العطار.jpg",
+        "product_id": "53820d35-4013-43c7-8682-4d72788b1610",
+        "name_ar": "كمون و ليمون و شطة العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456125-a16uq2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456125-a16uq2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ليمون و زنجبيل ايزيس-20فتلة.jpg",
+        "product_id": "d54ee0f5-742e-4e84-8ac6-24fa6748cff0",
+        "name_ar": "ليمون و زنجبيل ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456514-fk31hn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456514-fk31hn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ليمون وزنجبيل ايزيس 12 فتلة.jpg",
+        "product_id": "10bcdf90-f33b-41f2-9e8d-7c03fca6e69f",
+        "name_ar": "ليمون وزنجبيل ايزيس 12 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456975-ktj6yn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206456975-ktj6yn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "متة العطار 24ظرف.jpg",
+        "product_id": "ba43cd88-770a-4b80-b3af-b39f44ab5583",
+        "name_ar": "متة العطار 24ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206457728-0xv7p9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206457728-0xv7p9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مليسة العطار.jpg",
+        "product_id": "2e7a8ac3-31d4-4560-85f8-296f56cc7b50",
+        "name_ar": "مليسة العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458129-hk6mgt.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458129-hk6mgt.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مورينجا ايزيس-20فتلة.jpg",
+        "product_id": "68218a16-80ff-4b1a-a12d-5d45db000465",
+        "name_ar": "مورينجا ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458478-ypu3fi.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458478-ypu3fi.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ميرمية ايزيس-20فتلة.jpg",
+        "product_id": "4fddb501-3b40-4961-a749-a3c98cd616d4",
+        "name_ar": "ميرمية ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458843-6uziz1.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206458843-6uziz1.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نعناع ايزيس 50ظرف.jpg",
+        "product_id": "17eeb56c-e8c5-4cb8-a7e2-d2cbbffd67e1",
+        "name_ar": "نعناع ايزيس 50ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459238-33igd3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459238-33igd3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "نعناع ايزيس-20فتلة.jpg",
+        "product_id": "4596293c-1c52-4f93-8ab7-8528bf6c0a4c",
+        "name_ar": "نعناع ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459608-gjtqef.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459608-gjtqef.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون العطار.jpg",
+        "product_id": "8cce3ca7-7812-4ece-a959-3fce6d962dba",
+        "name_ar": "يانسون العطار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459929-9lmr91.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206459929-9lmr91.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون العطار24.jpg",
+        "product_id": "4d48106f-7484-42bc-9bba-eb98f7a04371",
+        "name_ar": "يانسون العطار24",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206460329-zv69ph.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206460329-zv69ph.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ايزيس-100فتلة.jpg",
+        "product_id": "a8ca97d0-9172-4133-a59c-ae0052ece51c",
+        "name_ar": "يانسون ايزيس/100فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206460752-6s85wh.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206460752-6s85wh.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ايزيس-12فتلة.jpg",
+        "product_id": "3379f10c-c4dc-4e53-8767-1ae7c79c8e2c",
+        "name_ar": "يانسون ايزيس/12فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461130-1io8ve.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461130-1io8ve.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ايزيس-20فتلة.jpg",
+        "product_id": "cd870865-25b2-4a87-9913-ebcbdfda7864",
+        "name_ar": "يانسون ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461506-f0o6s0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461506-f0o6s0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ايزيس-50 فتلة.jpg",
+        "product_id": "510fabf7-fd9a-43a4-acd1-67973597a5f2",
+        "name_ar": "يانسون ايزيس/50 فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461870-hyo0vk.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206461870-hyo0vk.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ليمون ايزيس 12ظرف.jpg",
+        "product_id": "4d8f0c8d-3106-4073-a8e5-a66e1d4751ee",
+        "name_ar": "يانسون ليمون ايزيس 12ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462270-xvz41v.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462270-xvz41v.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يانسون ليمون ايزيس-20فتلة.jpg",
+        "product_id": "73f0ab6e-255d-438b-816c-ac54fde4dbf1",
+        "name_ar": "يانسون ليمون ايزيس/20فتلة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462602-nbmojz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462602-nbmojz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "يوحنا امتنان 18ظرف.jpg",
+        "product_id": "f677d3ec-f944-4018-9861-2ea0893cfc34",
+        "name_ar": "يوحنا امتنان 18ظرف",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462947-rnsg44.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206462947-rnsg44.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

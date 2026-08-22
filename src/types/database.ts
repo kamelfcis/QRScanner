@@ -2,8 +2,12 @@ export interface Category {
   id: string;
   name_ar: string;
   name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
   description_ar: string | null;
   description_en: string | null;
+  description_fr: string | null;
+  description_nl: string | null;
   image_url: string | null;
   banner_url: string | null;
   sort_order: number;
@@ -17,8 +21,12 @@ export interface Subcategory {
   category_id: string;
   name_ar: string;
   name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
   description_ar: string | null;
   description_en: string | null;
+  description_fr: string | null;
+  description_nl: string | null;
   image_url: string | null;
   sort_order: number;
   is_visible: boolean;
@@ -32,11 +40,16 @@ export interface Product {
   subcategory_id: string | null;
   name_ar: string;
   name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
   description_ar: string | null;
   description_en: string | null;
+  description_fr: string | null;
+  description_nl: string | null;
   image_url: string | null;
   dining_price: number;
   takeaway_price: number;
+  has_size_options: boolean;
   is_available: boolean;
   is_popular: boolean;
   is_new: boolean;
@@ -158,11 +171,26 @@ export interface RestaurantSettings {
   logo_url: string | null;
   hero_image_url: string | null;
   story_image_url: string | null;
+  story_title_en: string | null;
+  story_title_ar: string | null;
+  story_title_fr: string | null;
+  story_title_nl: string | null;
+  story_p1_en: string | null;
+  story_p1_ar: string | null;
+  story_p1_fr: string | null;
+  story_p1_nl: string | null;
+  story_p2_en: string | null;
+  story_p2_ar: string | null;
+  story_p2_fr: string | null;
+  story_p2_nl: string | null;
   hero_headline: string | null;
   hero_subtitle: string | null;
   tagline: string | null;
   email: string | null;
   google_maps_url: string | null;
+  enable_dine_in?: boolean;
+  enable_takeaway?: boolean;
+  enable_delivery?: boolean;
 }
 
 export interface ThemeSettings {
@@ -178,6 +206,92 @@ export interface HoursSettings {
     close?: string;
     closed?: boolean;
   };
+}
+
+export interface FeatureSettings {
+  ai_product_images: boolean;
+  dashboard_orders: boolean;
+  coupons: boolean;
+  order_prefix?: string;
+}
+
+export type OrderStatus = 'new' | 'preparing' | 'ready' | 'completed' | 'cancelled';
+export type OrderDiningMode = 'dining' | 'takeaway';
+export type OrderFulfillmentType = 'pickup' | 'delivery';
+export type OrderSizeOption = 'small' | 'large';
+
+export interface Order {
+  id: string;
+  order_number: string;
+  status: OrderStatus;
+  dining_mode: OrderDiningMode;
+  fulfillment_type: OrderFulfillmentType | null;
+  table_number: string | null;
+  customer_name: string;
+  customer_phone: string | null;
+  delivery_address: string | null;
+  notes: string | null;
+  subtotal: number;
+  tax: number;
+  service: number;
+  discount_amount: number;
+  coupon_id: string | null;
+  coupon_code: string | null;
+  total: number;
+  currency: string;
+  whatsapp_sent: boolean;
+  staff_acknowledged_at: string | null;
+  locale: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id: string | null;
+  name_ar: string;
+  name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
+  quantity: number;
+  unit_price: number;
+  size_option: OrderSizeOption | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export type CouponDiscountType = 'percentage' | 'fixed';
+
+export interface Coupon {
+  id: string;
+  code: string;
+  discount_type: CouponDiscountType;
+  discount_value: number;
+  min_subtotal: number;
+  max_discount: number | null;
+  starts_at: string | null;
+  ends_at: string | null;
+  max_redemptions: number | null;
+  per_phone_limit: number;
+  is_active: boolean;
+  redeemed_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CouponRedemption {
+  id: string;
+  coupon_id: string;
+  order_id: string;
+  code_snapshot: string;
+  discount_amount: number;
+  phone_key: string | null;
+  created_at: string;
+}
+
+export interface OrderWithItems extends Order {
+  items: OrderItem[];
 }
 
 export interface CategoryWithProducts extends Category {

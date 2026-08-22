@@ -1,0 +1,1565 @@
+{
+  "tenant": "ahlalsham",
+  "supabase_ref": "qfwxghcshhvdozwpmlov",
+  "customer_id": "e8438bc2-e5e9-42a2-9eb0-6d48081740d0",
+  "category": {
+    "id": "85b5dac0-4522-4e03-936c-8a5c55402cae",
+    "name_ar": "المعلبات و المكرونة"
+  },
+  "image_dir": "C:\\Users\\Administrator\\Downloads\\منيو_المعلبات_و_المكرونة\\منيو المعلبات و المكرونة",
+  "counts": {
+    "images_found": 86,
+    "products_in_category": 86,
+    "matched": 86,
+    "uploaded": 0,
+    "skipped_unchanged": 86,
+    "unmatched_images": 0,
+    "unmatched_products": 0,
+    "errors": 0
+  },
+  "sample_matched": [
+    {
+      "file": "الملكة لسان عصفور400غ.jpg",
+      "product_id": "edeeb37e-5261-4b83-bea2-df24ec337b0b",
+      "name_ar": "الملكة لسان عصفور400غ",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "بديل الليمون-اعماق.jpg",
+      "product_id": "58fc81e4-9681-4bd3-a504-85dd85bd705b",
+      "name_ar": "بديل الليمون/اعماق",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة الكمار فاخرة قطع بارد 140 جرام.jpg",
+      "product_id": "8554adf5-1171-4e46-8738-a0d337688e29",
+      "name_ar": "تونة الكمار فاخرة قطع بارد 140 جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة توليدو (185غ)دايت.jpg",
+      "product_id": "c3ae2294-8150-43c3-9361-62bb7da77883",
+      "name_ar": "تونة توليدو (185غ)دايت",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة توليدو عرض(120غ).jpg",
+      "product_id": "0ad1a3b6-8605-4593-a412-16f27bfc0346",
+      "name_ar": "تونة توليدو عرض(120غ)",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة توليدو قطع 140 جرام.jpg",
+      "product_id": "fe9bf651-a950-4a9a-8236-8574561f2c0c",
+      "name_ar": "تونة توليدو قطع 140 جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة توليدو قطعة واحدة 185جرام.jpg",
+      "product_id": "517f2063-d5b1-43ec-aaae-88a7be505303",
+      "name_ar": "تونة توليدو قطعة واحدة 185جرام",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    },
+    {
+      "file": "تونة توليدو مفتت بارد 140غ.jpg",
+      "product_id": "2c38dfcd-4195-429f-85d7-103ce1bf066a",
+      "name_ar": "تونة توليدو مفتت بارد 140غ",
+      "score": 1,
+      "method": "exact_normKey",
+      "had_image_url": true
+    }
+  ],
+  "sample_uploaded": [],
+  "sample_unmatched_images": [],
+  "sample_unmatched_products": [],
+  "errors": [],
+  "dry_run": false,
+  "force": false,
+  "finished_at": "2026-08-20T06:09:08.622Z",
+  "details": {
+    "matched": [
+      {
+        "file": "الملكة لسان عصفور400غ.jpg",
+        "product_id": "edeeb37e-5261-4b83-bea2-df24ec337b0b",
+        "name_ar": "الملكة لسان عصفور400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "بديل الليمون-اعماق.jpg",
+        "product_id": "58fc81e4-9681-4bd3-a504-85dd85bd705b",
+        "name_ar": "بديل الليمون/اعماق",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة الكمار فاخرة قطع بارد 140 جرام.jpg",
+        "product_id": "8554adf5-1171-4e46-8738-a0d337688e29",
+        "name_ar": "تونة الكمار فاخرة قطع بارد 140 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو (185غ)دايت.jpg",
+        "product_id": "c3ae2294-8150-43c3-9361-62bb7da77883",
+        "name_ar": "تونة توليدو (185غ)دايت",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو عرض(120غ).jpg",
+        "product_id": "0ad1a3b6-8605-4593-a412-16f27bfc0346",
+        "name_ar": "تونة توليدو عرض(120غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو قطع 140 جرام.jpg",
+        "product_id": "fe9bf651-a950-4a9a-8236-8574561f2c0c",
+        "name_ar": "تونة توليدو قطع 140 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو قطعة واحدة 185جرام.jpg",
+        "product_id": "517f2063-d5b1-43ec-aaae-88a7be505303",
+        "name_ar": "تونة توليدو قطعة واحدة 185جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو مفتت بارد 140غ.jpg",
+        "product_id": "2c38dfcd-4195-429f-85d7-103ce1bf066a",
+        "name_ar": "تونة توليدو مفتت بارد 140غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة توليدو(185غ)حار.jpg",
+        "product_id": "df78fe91-30bc-4892-9c79-27f706eda198",
+        "name_ar": "تونة توليدو(185غ)حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة قطع فاخرة الكمار.jpg",
+        "product_id": "565f44c1-9de1-480a-bc19-23f37381f21f",
+        "name_ar": "تونة قطع فاخرة الكمار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة قطع AMR بارد 140 جرام.jpg",
+        "product_id": "deb330c0-ae21-47a4-bebb-145a19bba248",
+        "name_ar": "تونة قطع AMR بارد 140 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة قطعة AMR بارد 185 جرام.jpg",
+        "product_id": "fbf373c8-1353-47d5-8d75-06f82a749d2b",
+        "name_ar": "تونة قطعة AMR بارد 185 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة كمارا مفتتة حار200غ.jpg",
+        "product_id": "515b7006-c853-4c40-ad90-836f3e51fa82",
+        "name_ar": "تونة كمارا مفتتة حار200غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة مفتتة  AMR بارد 140 جرام.jpg",
+        "product_id": "86dc7de9-67dd-4c14-ad0c-69d5df93121e",
+        "name_ar": "تونة مفتتة  AMR بارد 140 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة مفتتة الكمار 140 جرام بارد.jpg",
+        "product_id": "4e978b2c-1b11-4012-9acc-55aee5d8d1c1",
+        "name_ar": "تونة مفتتة الكمار 140 جرام بارد",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "تونة مفتتة AMR حار 140 جرام.jpg",
+        "product_id": "051af8ea-cdb9-42e9-8b6c-f70138ca0cec",
+        "name_ar": "تونة مفتتة AMR حار 140 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "حمص400غ AMR.jpg",
+        "product_id": "8e2da8dd-8bb2-4181-a2b1-4a35abb4ef80",
+        "name_ar": "حمص400غ AMR",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خل بلسمك زرزور 250مل.jpg",
+        "product_id": "33f2ce7e-9d66-4287-bcb2-ae64208f7df5",
+        "name_ar": "خل بلسمك زرزور 250مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خل تفاح اكتور 500مل.jpg",
+        "product_id": "78a102b0-52dc-4c46-817c-799e03721d99",
+        "name_ar": "خل تفاح اكتور 500مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خل تفاح الطيبات 330مل.jpg",
+        "product_id": "fca0a034-eb94-4c53-8bae-a59fe7595f58",
+        "name_ar": "خل تفاح الطيبات 330مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خل تفاح اهل الشام 500 جرام.jpg",
+        "product_id": "7a1662a4-fb23-48cc-9fae-5ba56aa7c162",
+        "name_ar": "خل تفاح اهل الشام 500 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "خل تفاح اهل الشام 900غ.jpg",
+        "product_id": "67ceb1b2-2804-46ac-b16b-a2a43905aad3",
+        "name_ar": "خل تفاح اهل الشام 900غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دبس رمان يمامة 300مل.jpg",
+        "product_id": "8f209eae-ef5e-4bdb-923e-2fbbf578f048",
+        "name_ar": "دبس رمان يمامة 300مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دبس رمان يمامة750مل.jpg",
+        "product_id": "f7b4026e-9b2c-4bc6-81cd-6e855ad2dfd1",
+        "name_ar": "دبس رمان يمامة750مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "دقيق شوفان كاندي فود.jpg",
+        "product_id": "21b63b85-f3f3-4922-bed9-e6a57f32c1e6",
+        "name_ar": "دقيق شوفان كاندي فود",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ذرة 400غ AMR.jpg",
+        "product_id": "4d799793-d4dd-4349-9be6-f30f9b9766d0",
+        "name_ar": "ذرة 400غ AMR",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ذرة توليدو(400غ).jpg",
+        "product_id": "a014bec0-174e-44b2-a9c7-d008977e151c",
+        "name_ar": "ذرة توليدو(400غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حار اعماق 150غ.jpg",
+        "product_id": "ad952226-8172-4cf1-81b3-c343b7905902",
+        "name_ar": "زيت حار اعماق 150غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "زيت حار أعماق 350غ.jpg",
+        "product_id": "308f8b34-d3d4-4063-a255-4fa7fcbe4afb",
+        "name_ar": "زيت حار أعماق 350غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سردين مغربي(125غ).jpg",
+        "product_id": "723a44d2-c1eb-47cd-bff6-9931899ba320",
+        "name_ar": "سردين مغربي(125غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سردين مغربي(125غ)حار.jpg",
+        "product_id": "18eb5136-936c-494c-a1e8-62177a4a435f",
+        "name_ar": "سردين مغربي(125غ)حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "سكر بني امتنان(750غ).jpg",
+        "product_id": "02c6db98-f482-4154-9d2e-a9e80814da4c",
+        "name_ar": "سكر بني امتنان(750غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شرائح اناناس AMR (825غ).jpg",
+        "product_id": "fc7cc19d-61fe-422b-b759-7acba4f2cfc2",
+        "name_ar": "شرائح اناناس AMR (825غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شرائح خوخ الاغضان(820غ).jpg",
+        "product_id": "df1aeaab-50bc-4709-96d8-45a34e414d18",
+        "name_ar": "شرائح خوخ الاغضان(820غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شعيرية الملكة (1كغ).jpg",
+        "product_id": "27a018fc-b037-4903-a433-6b6c194414fb",
+        "name_ar": "شعيرية الملكة (1كغ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شعيرية الملكة(400غ).jpg",
+        "product_id": "41e84f79-0eb1-41b3-80c8-fde47f541355",
+        "name_ar": "شعيرية الملكة(400غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شعيرية ايطاليانو(400غ).jpg",
+        "product_id": "16a04015-b95c-4fd3-9338-58e7b36f853d",
+        "name_ar": "شعيرية ايطاليانو(400غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوفان لينو(500غ) سريع.jpg",
+        "product_id": "8b417c0c-70cd-4765-bb14-481191290c4b",
+        "name_ar": "شوفان لينو(500غ) سريع",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "شوفان لينو(500غ)جامبو.jpg",
+        "product_id": "1e712cc7-dc53-4b1e-9ae6-fe35becba7db",
+        "name_ar": "شوفان لينو(500غ)جامبو",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صوص باربيكيو زرزور 350 مل.jpg",
+        "product_id": "1badf123-9d4c-43e7-84f0-61bdf0a5f7cd",
+        "name_ar": "صوص باربيكيو زرزور 350 مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صوص باشن فروت(1.250كغ).jpg",
+        "product_id": "7b789e64-56e0-440d-8295-681ee5c919bc",
+        "name_ar": "صوص باشن فروت(1.250كغ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "صوص صويا الطيبات.jpg",
+        "product_id": "68338581-09b1-4c65-a7e5-36484c5e3971",
+        "name_ar": "صوص صويا الطيبات",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فطر الاغصان800غ.jpg",
+        "product_id": "aa7184eb-d7e9-4020-b8ee-da97ed752cd6",
+        "name_ar": "فطر الاغصان800غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فطر توليدو 400غ.jpg",
+        "product_id": "7b321722-ba0e-430e-a283-d0ef13499ae3",
+        "name_ar": "فطر توليدو 400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فطر توليدو شرائح 800 جرام.jpg",
+        "product_id": "abb7b096-9b88-48ad-91e2-36f0d031d136",
+        "name_ar": "فطر توليدو شرائح 800 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فطر معلب كنانة 400غ.jpg",
+        "product_id": "83c117c6-1cc6-406a-858b-ae8d745a22e1",
+        "name_ar": "فطر معلب كنانة 400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فول توليدو 400غ.jpg",
+        "product_id": "bdccd571-0db5-41d7-af1e-8ffd90df2261",
+        "name_ar": "فول توليدو 400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "فول مدمس سادة A.M.R 400 G.jpg",
+        "product_id": "0da66c66-8bb2-4541-9f21-bbf57aff6032",
+        "name_ar": "فول مدمس سادة A.M.R 400 G",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لازانيا الملكة 400غ.jpg",
+        "product_id": "99913ab1-25c4-459e-bc9c-a3ae54411b1c",
+        "name_ar": "لازانيا الملكة 400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لانشون الدرة 340غ.jpg",
+        "product_id": "73d58694-2600-481b-b63c-2ac58e8b43c7",
+        "name_ar": "لانشون الدرة 340غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لانشون الدرة 850غ.jpg",
+        "product_id": "83989438-db5f-47c3-b550-1941a18570af",
+        "name_ar": "لانشون الدرة 850غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لبان نوفا بالقرفه خالي من السكر.jpg",
+        "product_id": "f1ddfb4e-5409-4dad-96ca-b1e63ecead10",
+        "name_ar": "لبان نوفا بالقرفه خالي من السكر",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لبان نوفا نعناع حار.jpg",
+        "product_id": "43cdb96d-e095-4e52-9560-be365f4b5a96",
+        "name_ar": "لبان نوفا نعناع حار",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "لسان عصفور ايطاليانو(400غ).jpg",
+        "product_id": "833b848d-9836-41b2-af7b-01aee2b13239",
+        "name_ar": "لسان عصفور ايطاليانو(400غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء زهر الطيبات300مل.jpg",
+        "product_id": "fdaf7f89-58dd-4823-a363-0f3ff9f4632b",
+        "name_ar": "ماء زهر الطيبات300مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء زهر يمامة 300مل.jpg",
+        "product_id": "f11b2a6e-22a1-491d-b330-541eac26987a",
+        "name_ar": "ماء زهر يمامة 300مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء ورد الطيبات330م.jpg",
+        "product_id": "6b494996-23b8-41cb-a3b1-a76a6a0520b6",
+        "name_ar": "ماء ورد الطيبات330م",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ماء ورد يمامة 300مل.jpg",
+        "product_id": "0f4c2285-ff6e-4f9c-a75c-c34f988b2669",
+        "name_ar": "ماء ورد يمامة 300مل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مرتديلا بوردن فراخ(320غ).jpg",
+        "product_id": "41eab0af-9f7e-4eb3-919e-cffb89a4cb32",
+        "name_ar": "مرتديلا بوردن فراخ(320غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مرتديلا غولدن فيلدز(800غ).jpg",
+        "product_id": "2c5addaa-9a43-4a4c-be01-d1f3f66c8704",
+        "name_ar": "مرتديلا غولدن فيلدز(800غ)",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مرتديلا هنا 340غ مستطيل.jpg",
+        "product_id": "10bc9cce-a958-496f-ae74-e7aa442cf59d",
+        "name_ar": "مرتديلا هنا 340غ مستطيل",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مرتديلا هنا بقر و دجاج 200 جرام.jpg",
+        "product_id": "ce055c6d-7527-47b4-ace8-0b5bea0a8d51",
+        "name_ar": "مرتديلا هنا بقر و دجاج 200 جرام",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مرتديلا هنا تركية دجاج 380غ مدور.jpg",
+        "product_id": "570f9680-98b7-41df-a635-f9475ecc2334",
+        "name_ar": "مرتديلا هنا تركية دجاج 380غ مدور",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة 400غ مرمرية.jpg",
+        "product_id": "5ac2a295-b77b-4326-8f7a-b8710ba485d0",
+        "name_ar": "مكرونة الملكة 400غ مرمرية",
+        "score": 1,
+        "method": "exact_normKeyStrict",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة خواتم 400جم.jpg",
+        "product_id": "77fd870e-4458-4764-9ff0-d943fca1c547",
+        "name_ar": "مكرونة الملكة خواتم 400جم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(1ك)اسباكيتي.jpg",
+        "product_id": "c4f6e8c4-9b1e-4d2c-8044-8648487c629e",
+        "name_ar": "مكرونة الملكة(1ك)اسباكيتي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(1ك)خواتم.jpg",
+        "product_id": "24e29b4d-1085-4755-b2a2-c0a3260d3f9b",
+        "name_ar": "مكرونة الملكة(1ك)خواتم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(1ك)مرمرية.jpg",
+        "product_id": "b2d511eb-746f-4409-9913-7999e681c046",
+        "name_ar": "مكرونة الملكة(1ك)مرمرية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(1ك)هلالية.jpg",
+        "product_id": "ece8997f-42a5-46ec-8b4b-39c7cbac60ea",
+        "name_ar": "مكرونة الملكة(1ك)هلالية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(400غ)اسباكيتي.jpg",
+        "product_id": "135a115e-9c00-48e5-bb0a-229836523501",
+        "name_ar": "مكرونة الملكة(400غ)اسباكيتي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(400غ)فرن.jpg",
+        "product_id": "7aa1550d-6f2a-4de0-80f5-f9a31219ad59",
+        "name_ar": "مكرونة الملكة(400غ)فرن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(400غ)مرمرية.jpg",
+        "product_id": "92f3e49e-f21a-46aa-ade2-f07fc5ef9323",
+        "name_ar": "مكرونة الملكة(400غ)مرمرية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة الملكة(400غ)هلالية.jpg",
+        "product_id": "596c9774-66e1-489c-acaf-f164bbf6516c",
+        "name_ar": "مكرونة الملكة(400غ)هلالية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400)مرمرية.jpg",
+        "product_id": "415c221e-5dcd-44af-a5f6-4bc5a90db005",
+        "name_ar": "مكرونة ايطاليانو(400)مرمرية",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)اسباكيتي.jpg",
+        "product_id": "88383307-9ae9-4415-82e1-6eff9264ca56",
+        "name_ar": "مكرونة ايطاليانو(400غ)اسباكيتي",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)خواتم.jpg",
+        "product_id": "cb8eaa16-5e45-4e09-94d5-fdad12604f2a",
+        "name_ar": "مكرونة ايطاليانو(400غ)خواتم",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)سوستة.jpg",
+        "product_id": "888c7a63-61f6-48b4-84bd-9b6cd7eab58b",
+        "name_ar": "مكرونة ايطاليانو(400غ)سوستة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)سيربنتيني.jpg",
+        "product_id": "ec9afe44-40e4-4c2d-95d7-4327409a33f5",
+        "name_ar": "مكرونة ايطاليانو(400غ)سيربنتيني",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)صدفة.jpg",
+        "product_id": "79586c7e-9d3b-4c8c-ac33-c10c78d85062",
+        "name_ar": "مكرونة ايطاليانو(400غ)صدفة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)عود.jpg",
+        "product_id": "3ff87a1f-5620-4a76-89c4-54d551d6cc98",
+        "name_ar": "مكرونة ايطاليانو(400غ)عود",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)فرن.jpg",
+        "product_id": "5b92c3c0-20a1-4320-a6ad-3ffcdaa73a9f",
+        "name_ar": "مكرونة ايطاليانو(400غ)فرن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)فوتوتشيني.jpg",
+        "product_id": "72c03a43-12bd-442a-a746-7cfc6069c811",
+        "name_ar": "مكرونة ايطاليانو(400غ)فوتوتشيني",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونة قلم(1ك)الملكة.jpg",
+        "product_id": "f2ea990b-1405-4172-8a5a-c4edfba4ada1",
+        "name_ar": "مكرونة قلم(1ك)الملكة",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "مكرونةالملكة(1ك) فرن.jpg",
+        "product_id": "004202c0-4170-4a75-9039-a5091c0673d3",
+        "name_ar": "مكرونةالملكة(1ك) فرن",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملبن ملكي-24.jpg",
+        "product_id": "102c9207-cba9-4040-bd42-0a41eb2c98e3",
+        "name_ar": "ملبن ملكي/24",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      },
+      {
+        "file": "ملوكي الملكة فرن400غ.jpg",
+        "product_id": "f53e07ce-a2c4-4650-9579-e1651cf3c35a",
+        "name_ar": "ملوكي الملكة فرن400غ",
+        "score": 1,
+        "method": "exact_normKey",
+        "had_image_url": true
+      }
+    ],
+    "uploaded": [],
+    "skipped_unchanged": [
+      {
+        "file": "الملكة لسان عصفور400غ.jpg",
+        "product_id": "edeeb37e-5261-4b83-bea2-df24ec337b0b",
+        "name_ar": "الملكة لسان عصفور400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206098526-gep2az.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206098526-gep2az.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "بديل الليمون-اعماق.jpg",
+        "product_id": "58fc81e4-9681-4bd3-a504-85dd85bd705b",
+        "name_ar": "بديل الليمون/اعماق",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206099627-9vz07x.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206099627-9vz07x.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة الكمار فاخرة قطع بارد 140 جرام.jpg",
+        "product_id": "8554adf5-1171-4e46-8738-a0d337688e29",
+        "name_ar": "تونة الكمار فاخرة قطع بارد 140 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206100191-3e03yv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206100191-3e03yv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو (185غ)دايت.jpg",
+        "product_id": "c3ae2294-8150-43c3-9361-62bb7da77883",
+        "name_ar": "تونة توليدو (185غ)دايت",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206100689-m7lykc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206100689-m7lykc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو عرض(120غ).jpg",
+        "product_id": "0ad1a3b6-8605-4593-a412-16f27bfc0346",
+        "name_ar": "تونة توليدو عرض(120غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101106-69zt2p.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101106-69zt2p.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو قطع 140 جرام.jpg",
+        "product_id": "fe9bf651-a950-4a9a-8236-8574561f2c0c",
+        "name_ar": "تونة توليدو قطع 140 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101506-7u32fq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101506-7u32fq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو قطعة واحدة 185جرام.jpg",
+        "product_id": "517f2063-d5b1-43ec-aaae-88a7be505303",
+        "name_ar": "تونة توليدو قطعة واحدة 185جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101972-n15vr7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206101972-n15vr7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو مفتت بارد 140غ.jpg",
+        "product_id": "2c38dfcd-4195-429f-85d7-103ce1bf066a",
+        "name_ar": "تونة توليدو مفتت بارد 140غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206102401-3zi12d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206102401-3zi12d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة توليدو(185غ)حار.jpg",
+        "product_id": "df78fe91-30bc-4892-9c79-27f706eda198",
+        "name_ar": "تونة توليدو(185غ)حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206102778-tg0d4t.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206102778-tg0d4t.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة قطع فاخرة الكمار.jpg",
+        "product_id": "565f44c1-9de1-480a-bc19-23f37381f21f",
+        "name_ar": "تونة قطع فاخرة الكمار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206103194-4qw2s4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206103194-4qw2s4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة قطع AMR بارد 140 جرام.jpg",
+        "product_id": "deb330c0-ae21-47a4-bebb-145a19bba248",
+        "name_ar": "تونة قطع AMR بارد 140 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206103672-kfdgzs.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206103672-kfdgzs.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة قطعة AMR بارد 185 جرام.jpg",
+        "product_id": "fbf373c8-1353-47d5-8d75-06f82a749d2b",
+        "name_ar": "تونة قطعة AMR بارد 185 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104045-5hhcze.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104045-5hhcze.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة كمارا مفتتة حار200غ.jpg",
+        "product_id": "515b7006-c853-4c40-ad90-836f3e51fa82",
+        "name_ar": "تونة كمارا مفتتة حار200غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104410-nadcvw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104410-nadcvw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة مفتتة  AMR بارد 140 جرام.jpg",
+        "product_id": "86dc7de9-67dd-4c14-ad0c-69d5df93121e",
+        "name_ar": "تونة مفتتة  AMR بارد 140 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104867-zy4sd9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206104867-zy4sd9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة مفتتة الكمار 140 جرام بارد.jpg",
+        "product_id": "4e978b2c-1b11-4012-9acc-55aee5d8d1c1",
+        "name_ar": "تونة مفتتة الكمار 140 جرام بارد",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206105277-0kq3kf.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206105277-0kq3kf.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "تونة مفتتة AMR حار 140 جرام.jpg",
+        "product_id": "051af8ea-cdb9-42e9-8b6c-f70138ca0cec",
+        "name_ar": "تونة مفتتة AMR حار 140 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206105666-xmq563.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206105666-xmq563.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "حمص400غ AMR.jpg",
+        "product_id": "8e2da8dd-8bb2-4181-a2b1-4a35abb4ef80",
+        "name_ar": "حمص400غ AMR",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106073-0ymq7g.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106073-0ymq7g.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خل بلسمك زرزور 250مل.jpg",
+        "product_id": "33f2ce7e-9d66-4287-bcb2-ae64208f7df5",
+        "name_ar": "خل بلسمك زرزور 250مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106456-3ygktw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106456-3ygktw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خل تفاح اكتور 500مل.jpg",
+        "product_id": "78a102b0-52dc-4c46-817c-799e03721d99",
+        "name_ar": "خل تفاح اكتور 500مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106835-rsb6r9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206106835-rsb6r9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خل تفاح الطيبات 330مل.jpg",
+        "product_id": "fca0a034-eb94-4c53-8bae-a59fe7595f58",
+        "name_ar": "خل تفاح الطيبات 330مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206107335-l19irv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206107335-l19irv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خل تفاح اهل الشام 500 جرام.jpg",
+        "product_id": "7a1662a4-fb23-48cc-9fae-5ba56aa7c162",
+        "name_ar": "خل تفاح اهل الشام 500 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206107721-i5k2hj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206107721-i5k2hj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "خل تفاح اهل الشام 900غ.jpg",
+        "product_id": "67ceb1b2-2804-46ac-b16b-a2a43905aad3",
+        "name_ar": "خل تفاح اهل الشام 900غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108076-0530g4.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108076-0530g4.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دبس رمان يمامة 300مل.jpg",
+        "product_id": "8f209eae-ef5e-4bdb-923e-2fbbf578f048",
+        "name_ar": "دبس رمان يمامة 300مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108441-4xtp24.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108441-4xtp24.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دبس رمان يمامة750مل.jpg",
+        "product_id": "f7b4026e-9b2c-4bc6-81cd-6e855ad2dfd1",
+        "name_ar": "دبس رمان يمامة750مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108853-tediui.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206108853-tediui.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "دقيق شوفان كاندي فود.jpg",
+        "product_id": "21b63b85-f3f3-4922-bed9-e6a57f32c1e6",
+        "name_ar": "دقيق شوفان كاندي فود",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206109441-owh295.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206109441-owh295.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ذرة 400غ AMR.jpg",
+        "product_id": "4d799793-d4dd-4349-9be6-f30f9b9766d0",
+        "name_ar": "ذرة 400غ AMR",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206109995-d11rvb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206109995-d11rvb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ذرة توليدو(400غ).jpg",
+        "product_id": "a014bec0-174e-44b2-a9c7-d008977e151c",
+        "name_ar": "ذرة توليدو(400غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206110511-oj9wcz.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206110511-oj9wcz.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حار اعماق 150غ.jpg",
+        "product_id": "ad952226-8172-4cf1-81b3-c343b7905902",
+        "name_ar": "زيت حار اعماق 150غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206110932-fzazfx.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206110932-fzazfx.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "زيت حار أعماق 350غ.jpg",
+        "product_id": "308f8b34-d3d4-4063-a255-4fa7fcbe4afb",
+        "name_ar": "زيت حار أعماق 350غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206111300-hslfpa.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206111300-hslfpa.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سردين مغربي(125غ).jpg",
+        "product_id": "723a44d2-c1eb-47cd-bff6-9931899ba320",
+        "name_ar": "سردين مغربي(125غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206111677-vtwqzs.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206111677-vtwqzs.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سردين مغربي(125غ)حار.jpg",
+        "product_id": "18eb5136-936c-494c-a1e8-62177a4a435f",
+        "name_ar": "سردين مغربي(125غ)حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112151-p3rg3a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112151-p3rg3a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "سكر بني امتنان(750غ).jpg",
+        "product_id": "02c6db98-f482-4154-9d2e-a9e80814da4c",
+        "name_ar": "سكر بني امتنان(750غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112539-qs31te.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112539-qs31te.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شرائح اناناس AMR (825غ).jpg",
+        "product_id": "fc7cc19d-61fe-422b-b759-7acba4f2cfc2",
+        "name_ar": "شرائح اناناس AMR (825غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112998-4byte8.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206112998-4byte8.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شرائح خوخ الاغضان(820غ).jpg",
+        "product_id": "df1aeaab-50bc-4709-96d8-45a34e414d18",
+        "name_ar": "شرائح خوخ الاغضان(820غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206113394-n8f582.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206113394-n8f582.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شعيرية الملكة (1كغ).jpg",
+        "product_id": "27a018fc-b037-4903-a433-6b6c194414fb",
+        "name_ar": "شعيرية الملكة (1كغ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206113797-ebd13c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206113797-ebd13c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شعيرية الملكة(400غ).jpg",
+        "product_id": "41e84f79-0eb1-41b3-80c8-fde47f541355",
+        "name_ar": "شعيرية الملكة(400غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206114245-25stoo.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206114245-25stoo.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شعيرية ايطاليانو(400غ).jpg",
+        "product_id": "16a04015-b95c-4fd3-9338-58e7b36f853d",
+        "name_ar": "شعيرية ايطاليانو(400غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206114736-k94zeb.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206114736-k94zeb.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوفان لينو(500غ) سريع.jpg",
+        "product_id": "8b417c0c-70cd-4765-bb14-481191290c4b",
+        "name_ar": "شوفان لينو(500غ) سريع",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206115238-qls4uc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206115238-qls4uc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "شوفان لينو(500غ)جامبو.jpg",
+        "product_id": "1e712cc7-dc53-4b1e-9ae6-fe35becba7db",
+        "name_ar": "شوفان لينو(500غ)جامبو",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206115635-mahsyw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206115635-mahsyw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صوص باربيكيو زرزور 350 مل.jpg",
+        "product_id": "1badf123-9d4c-43e7-84f0-61bdf0a5f7cd",
+        "name_ar": "صوص باربيكيو زرزور 350 مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116031-1pxws2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116031-1pxws2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صوص باشن فروت(1.250كغ).jpg",
+        "product_id": "7b789e64-56e0-440d-8295-681ee5c919bc",
+        "name_ar": "صوص باشن فروت(1.250كغ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116490-d7fq4d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116490-d7fq4d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "صوص صويا الطيبات.jpg",
+        "product_id": "68338581-09b1-4c65-a7e5-36484c5e3971",
+        "name_ar": "صوص صويا الطيبات",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116899-j8z2wr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206116899-j8z2wr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فطر الاغصان800غ.jpg",
+        "product_id": "aa7184eb-d7e9-4020-b8ee-da97ed752cd6",
+        "name_ar": "فطر الاغصان800غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206117271-fw970d.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206117271-fw970d.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فطر توليدو 400غ.jpg",
+        "product_id": "7b321722-ba0e-430e-a283-d0ef13499ae3",
+        "name_ar": "فطر توليدو 400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206117654-8011rr.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206117654-8011rr.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فطر توليدو شرائح 800 جرام.jpg",
+        "product_id": "abb7b096-9b88-48ad-91e2-36f0d031d136",
+        "name_ar": "فطر توليدو شرائح 800 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206118050-anfi2m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206118050-anfi2m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فطر معلب كنانة 400غ.jpg",
+        "product_id": "83c117c6-1cc6-406a-858b-ae8d745a22e1",
+        "name_ar": "فطر معلب كنانة 400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206118521-70mj4e.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206118521-70mj4e.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فول توليدو 400غ.jpg",
+        "product_id": "bdccd571-0db5-41d7-af1e-8ffd90df2261",
+        "name_ar": "فول توليدو 400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119061-s5zn47.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119061-s5zn47.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "فول مدمس سادة A.M.R 400 G.jpg",
+        "product_id": "0da66c66-8bb2-4541-9f21-bbf57aff6032",
+        "name_ar": "فول مدمس سادة A.M.R 400 G",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119444-ed61he.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119444-ed61he.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لازانيا الملكة 400غ.jpg",
+        "product_id": "99913ab1-25c4-459e-bc9c-a3ae54411b1c",
+        "name_ar": "لازانيا الملكة 400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119832-hub1fv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206119832-hub1fv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لانشون الدرة 340غ.jpg",
+        "product_id": "73d58694-2600-481b-b63c-2ac58e8b43c7",
+        "name_ar": "لانشون الدرة 340غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206120349-75j3o7.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206120349-75j3o7.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لانشون الدرة 850غ.jpg",
+        "product_id": "83989438-db5f-47c3-b550-1941a18570af",
+        "name_ar": "لانشون الدرة 850غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206120790-u9bies.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206120790-u9bies.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لبان نوفا بالقرفه خالي من السكر.jpg",
+        "product_id": "f1ddfb4e-5409-4dad-96ca-b1e63ecead10",
+        "name_ar": "لبان نوفا بالقرفه خالي من السكر",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206121188-1lnrgw.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206121188-1lnrgw.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لبان نوفا نعناع حار.jpg",
+        "product_id": "43cdb96d-e095-4e52-9560-be365f4b5a96",
+        "name_ar": "لبان نوفا نعناع حار",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206121610-udwr7a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206121610-udwr7a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "لسان عصفور ايطاليانو(400غ).jpg",
+        "product_id": "833b848d-9836-41b2-af7b-01aee2b13239",
+        "name_ar": "لسان عصفور ايطاليانو(400غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206122145-07si5j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206122145-07si5j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء زهر الطيبات300مل.jpg",
+        "product_id": "fdaf7f89-58dd-4823-a363-0f3ff9f4632b",
+        "name_ar": "ماء زهر الطيبات300مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206122593-j3fsis.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206122593-j3fsis.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء زهر يمامة 300مل.jpg",
+        "product_id": "f11b2a6e-22a1-491d-b330-541eac26987a",
+        "name_ar": "ماء زهر يمامة 300مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206123390-rq8v0m.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206123390-rq8v0m.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء ورد الطيبات330م.jpg",
+        "product_id": "6b494996-23b8-41cb-a3b1-a76a6a0520b6",
+        "name_ar": "ماء ورد الطيبات330م",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206123776-0spy1c.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206123776-0spy1c.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ماء ورد يمامة 300مل.jpg",
+        "product_id": "0f4c2285-ff6e-4f9c-a75c-c34f988b2669",
+        "name_ar": "ماء ورد يمامة 300مل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206124280-srkxjq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206124280-srkxjq.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مرتديلا بوردن فراخ(320غ).jpg",
+        "product_id": "41eab0af-9f7e-4eb3-919e-cffb89a4cb32",
+        "name_ar": "مرتديلا بوردن فراخ(320غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206124640-e9slk9.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206124640-e9slk9.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مرتديلا غولدن فيلدز(800غ).jpg",
+        "product_id": "2c5addaa-9a43-4a4c-be01-d1f3f66c8704",
+        "name_ar": "مرتديلا غولدن فيلدز(800غ)",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206125038-vwakya.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206125038-vwakya.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مرتديلا هنا 340غ مستطيل.jpg",
+        "product_id": "10bc9cce-a958-496f-ae74-e7aa442cf59d",
+        "name_ar": "مرتديلا هنا 340غ مستطيل",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206125719-jk9dg3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206125719-jk9dg3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مرتديلا هنا بقر و دجاج 200 جرام.jpg",
+        "product_id": "ce055c6d-7527-47b4-ace8-0b5bea0a8d51",
+        "name_ar": "مرتديلا هنا بقر و دجاج 200 جرام",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206126254-3ch7ek.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206126254-3ch7ek.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مرتديلا هنا تركية دجاج 380غ مدور.jpg",
+        "product_id": "570f9680-98b7-41df-a635-f9475ecc2334",
+        "name_ar": "مرتديلا هنا تركية دجاج 380غ مدور",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206126650-jpgqnp.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206126650-jpgqnp.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة 400غ مرمرية.jpg",
+        "product_id": "5ac2a295-b77b-4326-8f7a-b8710ba485d0",
+        "name_ar": "مكرونة الملكة 400غ مرمرية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127056-ss39r2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127056-ss39r2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة خواتم 400جم.jpg",
+        "product_id": "77fd870e-4458-4764-9ff0-d943fca1c547",
+        "name_ar": "مكرونة الملكة خواتم 400جم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127444-wa1xns.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127444-wa1xns.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(1ك)اسباكيتي.jpg",
+        "product_id": "c4f6e8c4-9b1e-4d2c-8044-8648487c629e",
+        "name_ar": "مكرونة الملكة(1ك)اسباكيتي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127831-tvd3n2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206127831-tvd3n2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(1ك)خواتم.jpg",
+        "product_id": "24e29b4d-1085-4755-b2a2-c0a3260d3f9b",
+        "name_ar": "مكرونة الملكة(1ك)خواتم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206128261-ftogrn.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206128261-ftogrn.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(1ك)مرمرية.jpg",
+        "product_id": "b2d511eb-746f-4409-9913-7999e681c046",
+        "name_ar": "مكرونة الملكة(1ك)مرمرية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206128647-z3jjtv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206128647-z3jjtv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(1ك)هلالية.jpg",
+        "product_id": "ece8997f-42a5-46ec-8b4b-39c7cbac60ea",
+        "name_ar": "مكرونة الملكة(1ك)هلالية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206129013-u4l7g5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206129013-u4l7g5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(400غ)اسباكيتي.jpg",
+        "product_id": "135a115e-9c00-48e5-bb0a-229836523501",
+        "name_ar": "مكرونة الملكة(400غ)اسباكيتي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206129638-zu6d92.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206129638-zu6d92.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(400غ)فرن.jpg",
+        "product_id": "7aa1550d-6f2a-4de0-80f5-f9a31219ad59",
+        "name_ar": "مكرونة الملكة(400غ)فرن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130016-28qxv2.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130016-28qxv2.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(400غ)مرمرية.jpg",
+        "product_id": "92f3e49e-f21a-46aa-ade2-f07fc5ef9323",
+        "name_ar": "مكرونة الملكة(400غ)مرمرية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130478-sdp132.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130478-sdp132.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة الملكة(400غ)هلالية.jpg",
+        "product_id": "596c9774-66e1-489c-acaf-f164bbf6516c",
+        "name_ar": "مكرونة الملكة(400غ)هلالية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130863-1u9f0j.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206130863-1u9f0j.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400)مرمرية.jpg",
+        "product_id": "415c221e-5dcd-44af-a5f6-4bc5a90db005",
+        "name_ar": "مكرونة ايطاليانو(400)مرمرية",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206131242-ej8vkl.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206131242-ej8vkl.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)اسباكيتي.jpg",
+        "product_id": "88383307-9ae9-4415-82e1-6eff9264ca56",
+        "name_ar": "مكرونة ايطاليانو(400غ)اسباكيتي",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206131684-rfbyqs.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206131684-rfbyqs.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)خواتم.jpg",
+        "product_id": "cb8eaa16-5e45-4e09-94d5-fdad12604f2a",
+        "name_ar": "مكرونة ايطاليانو(400غ)خواتم",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132150-r3lic5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132150-r3lic5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)سوستة.jpg",
+        "product_id": "888c7a63-61f6-48b4-84bd-9b6cd7eab58b",
+        "name_ar": "مكرونة ايطاليانو(400غ)سوستة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132573-xqh1tc.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132573-xqh1tc.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)سيربنتيني.jpg",
+        "product_id": "ec9afe44-40e4-4c2d-95d7-4327409a33f5",
+        "name_ar": "مكرونة ايطاليانو(400غ)سيربنتيني",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132964-mbq1d3.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206132964-mbq1d3.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)صدفة.jpg",
+        "product_id": "79586c7e-9d3b-4c8c-ac33-c10c78d85062",
+        "name_ar": "مكرونة ايطاليانو(400غ)صدفة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206133604-8qio7a.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206133604-8qio7a.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)عود.jpg",
+        "product_id": "3ff87a1f-5620-4a76-89c4-54d551d6cc98",
+        "name_ar": "مكرونة ايطاليانو(400غ)عود",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134050-dm5bev.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134050-dm5bev.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)فرن.jpg",
+        "product_id": "5b92c3c0-20a1-4320-a6ad-3ffcdaa73a9f",
+        "name_ar": "مكرونة ايطاليانو(400غ)فرن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134513-60fdg5.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134513-60fdg5.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة ايطاليانو(400غ)فوتوتشيني.jpg",
+        "product_id": "72c03a43-12bd-442a-a746-7cfc6069c811",
+        "name_ar": "مكرونة ايطاليانو(400غ)فوتوتشيني",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134905-b9lavv.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206134905-b9lavv.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونة قلم(1ك)الملكة.jpg",
+        "product_id": "f2ea990b-1405-4172-8a5a-c4edfba4ada1",
+        "name_ar": "مكرونة قلم(1ك)الملكة",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206135272-uehjkj.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206135272-uehjkj.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "مكرونةالملكة(1ك) فرن.jpg",
+        "product_id": "004202c0-4170-4a75-9039-a5091c0673d3",
+        "name_ar": "مكرونةالملكة(1ك) فرن",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206135759-lcq5p0.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206135759-lcq5p0.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملبن ملكي-24.jpg",
+        "product_id": "102c9207-cba9-4040-bd42-0a41eb2c98e3",
+        "name_ar": "ملبن ملكي/24",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206136184-ygmu7s.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206136184-ygmu7s.jpg",
+        "reason": "image_url_already_set"
+      },
+      {
+        "file": "ملوكي الملكة فرن400غ.jpg",
+        "product_id": "f53e07ce-a2c4-4650-9579-e1651cf3c35a",
+        "name_ar": "ملوكي الملكة فرن400غ",
+        "score": 1,
+        "previous_image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206136738-5fixnq.jpg",
+        "image_url": "https://qfwxghcshhvdozwpmlov.supabase.co/storage/v1/object/public/products/1787206136738-5fixnq.jpg",
+        "reason": "image_url_already_set"
+      }
+    ],
+    "unmatched_images": [],
+    "unmatched_products": [],
+    "errors": []
+  }
+}

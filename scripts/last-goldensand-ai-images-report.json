@@ -1,0 +1,840 @@
+{
+  "startedAt": "2026-08-15T15:04:51.624Z",
+  "finishedAt": "2026-08-15T15:55:38.646Z",
+  "dryRun": false,
+  "totalCandidates": 93,
+  "processed": 93,
+  "succeeded": 88,
+  "skipped": 0,
+  "failed": 5,
+  "delayMs": 2000,
+  "results": [
+    {
+      "productId": "0c009460-74a6-4571-894b-c9c3d0d849db",
+      "name_en": "Basmati Rice",
+      "name_ar": "رز بسمتي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/0c009460-74a6-4571-894b-c9c3d0d849db/1786806317947.png",
+      "pickedIndex": 1,
+      "scores": [9, 9.5, 7, 9]
+    },
+    {
+      "productId": "8b74e673-3716-43c2-9bd8-f3a1252f21ce",
+      "name_en": "Meat Pasta Casserole",
+      "name_ar": "طاجن مكرونة باللحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8b74e673-3716-43c2-9bd8-f3a1252f21ce/1786806366423.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 7.5, 8]
+    },
+    {
+      "productId": "43a4e88e-9f67-4e0a-9ab6-7e9d2866ee84",
+      "name_en": "Okra with Meat",
+      "name_ar": "بامية باللحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/43a4e88e-9f67-4e0a-9ab6-7e9d2866ee84/1786806398504.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 7.5, 8]
+    },
+    {
+      "productId": "4dcfd401-c78c-4ef3-acdd-9e75ee0ac185",
+      "name_en": "Sesame Falafel – Plain",
+      "name_ar": "طعمية بالسمسم – سادة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/4dcfd401-c78c-4ef3-acdd-9e75ee0ac185/1786806438713.png",
+      "pickedIndex": 1,
+      "scores": [9, 9.5, 9, 8]
+    },
+    {
+      "productId": "333ec651-b2aa-4029-8af7-f404529db693",
+      "name_en": "Baladi Country Salad",
+      "name_ar": "سلطة بلدي حاتي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/333ec651-b2aa-4029-8af7-f404529db693/1786806473119.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7, 7.5, 6.5]
+    },
+    {
+      "productId": "517a7532-a50b-49c8-9f01-1bbc01d687a5",
+      "name_en": "Lemon Mint",
+      "name_ar": "ليمون بالنعناع",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/517a7532-a50b-49c8-9f01-1bbc01d687a5/1786806506024.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7.5, 7, 8]
+    },
+    {
+      "productId": "9ca83be0-3615-44fa-84f6-8098bb9164b9",
+      "name_en": "Baladi Basbousa",
+      "name_ar": "بسبوسة بلدي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/9ca83be0-3615-44fa-84f6-8098bb9164b9/1786806539291.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 8.8, 9.2]
+    },
+    {
+      "productId": "67e308e8-97e9-41cc-96f2-a9564779e827",
+      "name_en": "Extra Mozzarella",
+      "name_ar": "إضافة موتزاريلا",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/67e308e8-97e9-41cc-96f2-a9564779e827/1786806572681.png",
+      "pickedIndex": 3,
+      "scores": [9, 7, 3, 9.5]
+    },
+    {
+      "productId": "494a263b-cb04-4e08-b003-5ef49f6680af",
+      "name_en": "Meat Crepe",
+      "name_ar": "كريب لحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/494a263b-cb04-4e08-b003-5ef49f6680af/1786806607176.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 9, 9.5]
+    },
+    {
+      "productId": "e697f11c-269a-415c-9e12-898b339cbbca",
+      "name_en": "Grilled Chicken",
+      "name_ar": "فراخ مشوية",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/e697f11c-269a-415c-9e12-898b339cbbca/1786806643567.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 8.5, 9]
+    },
+    {
+      "productId": "7846c78f-cbd3-4bb8-b3e7-c026591e18ef",
+      "name_en": "Alexandrian Liver",
+      "name_ar": "كبدة إسكندراني",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/7846c78f-cbd3-4bb8-b3e7-c026591e18ef/1786806679469.png",
+      "pickedIndex": 1,
+      "scores": [6, 10, 7, 5]
+    },
+    {
+      "productId": "9c783fb3-020c-4735-a164-51bde397fab0",
+      "name_en": "Stuffed Grape Leaves",
+      "name_ar": "ورق عنب",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/9c783fb3-020c-4735-a164-51bde397fab0/1786806718700.png",
+      "pickedIndex": 1,
+      "scores": [9.5, 9.8, 9.7, 8.5]
+    },
+    {
+      "productId": "00fe0dc2-e2b0-48dc-8c04-9300d97f0e25",
+      "name_en": "Om Ali Rice",
+      "name_ar": "رز معمر",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/00fe0dc2-e2b0-48dc-8c04-9300d97f0e25/1786806754535.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7.5, 6, 9]
+    },
+    {
+      "productId": "b40d9a19-e0ad-473b-9b0d-15ee602c6be8",
+      "name_en": "Sujuk Pasta Casserole",
+      "name_ar": "طاجن مكرونة بالسجق",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/b40d9a19-e0ad-473b-9b0d-15ee602c6be8/1786806796442.png",
+      "pickedIndex": 0,
+      "scores": [9, 6]
+    },
+    {
+      "productId": "8458a791-d68c-4072-96fb-087e4dc1441e",
+      "name_en": "Peas with Meat",
+      "name_ar": "بسلة باللحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8458a791-d68c-4072-96fb-087e4dc1441e/1786806831035.png",
+      "pickedIndex": 0,
+      "scores": [10, 7, 6, 8]
+    },
+    {
+      "productId": "a1956661-25b3-4169-8808-66b76db69a4c",
+      "name_en": "Sesame Falafel – Stuffed",
+      "name_ar": "طعمية بالسمسم – محشية",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/a1956661-25b3-4169-8808-66b76db69a4c/1786806874998.png",
+      "pickedIndex": 1,
+      "scores": [5, 9.5, 9, 6.5]
+    },
+    {
+      "productId": "5312d1c5-4f2a-4464-b193-1ab641fd80f1",
+      "name_en": "Tahini",
+      "name_ar": "طحينة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/5312d1c5-4f2a-4464-b193-1ab641fd80f1/1786806905473.png",
+      "pickedIndex": 0,
+      "scores": []
+    },
+    {
+      "productId": "a5d536f4-bbbe-4646-a4d7-005d0e83aa91",
+      "name_en": "Tea",
+      "name_ar": "شاي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/a5d536f4-bbbe-4646-a4d7-005d0e83aa91/1786806934788.png",
+      "pickedIndex": 0,
+      "scores": [9, 7, 8.5, 7.5]
+    },
+    {
+      "productId": "8fd7cc52-796c-4699-b43a-24270d742494",
+      "name_en": "Kunafa with Cream",
+      "name_ar": "كنافة بالقشطة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8fd7cc52-796c-4699-b43a-24270d742494/1786806965820.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 9, 7.5]
+    },
+    {
+      "productId": "5eee50f0-7871-4a82-bed6-e123b621dcfc",
+      "name_en": "Extra Sauce",
+      "name_ar": "إضافة صوص",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/5eee50f0-7871-4a82-bed6-e123b621dcfc/1786806994595.png",
+      "pickedIndex": 1,
+      "scores": [6, 10, 2, 5]
+    },
+    {
+      "productId": "bef6d712-44fb-45c8-9a08-0f34e7dd2501",
+      "name_en": "Sausage Crepe",
+      "name_ar": "كريب سوسيس",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/bef6d712-44fb-45c8-9a08-0f34e7dd2501/1786807021023.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 7, 8]
+    },
+    {
+      "productId": "3e34fb03-2bff-4dad-9e56-0b5c79cb7372",
+      "name_en": "Meat Cubes Kebab",
+      "name_ar": "كباب قطع",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/3e34fb03-2bff-4dad-9e56-0b5c79cb7372/1786807047978.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 8, 8]
+    },
+    {
+      "productId": "fff3bcdb-70c9-40ea-a833-0c581eafb20e",
+      "name_en": "Kofta",
+      "name_ar": "كفتة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/fff3bcdb-70c9-40ea-a833-0c581eafb20e/1786807077196.png",
+      "pickedIndex": 0,
+      "scores": [9, 8.5, 7.5, 8.5]
+    },
+    {
+      "productId": "aebe564d-3808-44a7-a9de-cb63a70d2c40",
+      "name_en": "Stuffed Zucchini",
+      "name_ar": "محشي كوسة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/aebe564d-3808-44a7-a9de-cb63a70d2c40/1786807110795.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 9, 7]
+    },
+    {
+      "productId": "dc88c320-44a5-43b5-ae2c-462459a4344f",
+      "name_en": "Vermicelli Rice",
+      "name_ar": "رز بالشعرية",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/dc88c320-44a5-43b5-ae2c-462459a4344f/1786807142055.png",
+      "pickedIndex": 1,
+      "scores": [9, 9.5, 4, 9]
+    },
+    {
+      "productId": "085320c4-47fc-4ffa-8ed6-85fd72890737",
+      "name_en": "Béchamel Pasta Casserole",
+      "name_ar": "طاجن مكرونة بشاميل",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/085320c4-47fc-4ffa-8ed6-85fd72890737/1786807175545.png",
+      "pickedIndex": 3,
+      "scores": [9.5, 7.5, 6, 9.8]
+    },
+    {
+      "productId": "89ab0152-2b45-4c01-965c-2247b80bb56a",
+      "name_en": "Fattah with Lamb Shank",
+      "name_ar": "فتة بالموزة الضاني",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/89ab0152-2b45-4c01-965c-2247b80bb56a/1786807203592.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 8.5]
+    },
+    {
+      "productId": "8318e1d2-41c9-4ab2-9309-f8c5a598ea4a",
+      "name_en": "Foul with Chili Oil",
+      "name_ar": "فول بالزيت الحار",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8318e1d2-41c9-4ab2-9309-f8c5a598ea4a/1786807234702.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 6, 5, 7.5]
+    },
+    {
+      "productId": "518af4de-dfff-4f20-80b9-517358c85253",
+      "name_en": "Hummus",
+      "name_ar": "حمص",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/518af4de-dfff-4f20-80b9-517358c85253/1786807264634.png",
+      "pickedIndex": 0,
+      "scores": [10, 9, 7, 8]
+    },
+    {
+      "productId": "350afa27-cc96-4256-8041-5bc92e286d53",
+      "name_en": "Coffee",
+      "name_ar": "قهوة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/350afa27-cc96-4256-8041-5bc92e286d53/1786807294815.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 8.5, 7.5]
+    },
+    {
+      "productId": "be4af898-fbe0-49f7-b991-1a67d66c04d6",
+      "name_en": "Plain Kunafa",
+      "name_ar": "كنافة سادة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/be4af898-fbe0-49f7-b991-1a67d66c04d6/1786807324864.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 5, 6]
+    },
+    {
+      "productId": "fc54dc24-8f88-43e5-baf6-f955abe46f65",
+      "name_en": "Extra Nuts",
+      "name_ar": "إضافة مكسرات",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/fc54dc24-8f88-43e5-baf6-f955abe46f65/1786807354867.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 6, 8.5]
+    },
+    {
+      "productId": "add8d0c9-037f-4859-8f2d-87fd7d9c348c",
+      "name_en": "Mixed Meat Feteer",
+      "name_ar": "فطيرة مشكل لحوم",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/add8d0c9-037f-4859-8f2d-87fd7d9c348c/1786807387364.png",
+      "pickedIndex": 1,
+      "scores": [9, 10, 8, 6]
+    },
+    {
+      "productId": "ab4f372e-b1be-458e-92c3-56f04d1fda93",
+      "name_en": "Chicken Crepe",
+      "name_ar": "كريب فراخ",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/ab4f372e-b1be-458e-92c3-56f04d1fda93/1786807418560.png",
+      "pickedIndex": 3,
+      "scores": [8, 8.5, 6, 9]
+    },
+    {
+      "productId": "af3ef0d0-45e3-4614-8d9e-810621651cbf",
+      "name_en": "Mixed Grill Platter",
+      "name_ar": "شواية مشكل",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/af3ef0d0-45e3-4614-8d9e-810621651cbf/1786807447526.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 9, 2]
+    },
+    {
+      "productId": "fcafa574-8964-444b-891a-687e78ad899a",
+      "name_en": "Shish Tawook",
+      "name_ar": "شيش طاووق",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/fcafa574-8964-444b-891a-687e78ad899a/1786807484179.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 3, 8.5]
+    },
+    {
+      "productId": "a90ea944-ef26-4d16-8d04-e61575d33703",
+      "name_en": "Stuffed Eggplant",
+      "name_ar": "محشي باذنجان",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/a90ea944-ef26-4d16-8d04-e61575d33703/1786807519876.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 9, 8]
+    },
+    {
+      "productId": "ce5efb5f-4e49-4d11-bc82-c75d5542dfb5",
+      "name_en": "White Rice",
+      "name_ar": "رز أبيض",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/ce5efb5f-4e49-4d11-bc82-c75d5542dfb5/1786807545381.png",
+      "pickedIndex": 2,
+      "scores": [9.5, 8.5, 9.8, 8]
+    },
+    {
+      "productId": "64b9253c-cf34-4b5d-8810-b028daee63cb",
+      "name_en": "Beef Fattah",
+      "name_ar": "فتة لحمة بقري",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/64b9253c-cf34-4b5d-8810-b028daee63cb/1786807581100.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 8.5, 8]
+    },
+    {
+      "productId": "f969437d-1782-41f2-8f2f-7d33efe32ac2",
+      "name_en": "Foul with Mild Oil",
+      "name_ar": "فول بالزيت الحلو",
+      "status": "failed",
+      "error": "Failed to generate product image"
+    },
+    {
+      "productId": "ccc3efcb-cc29-45da-a190-5b73d99b622e",
+      "name_en": "Garlic Cream",
+      "name_ar": "كريمة الثوم",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/ccc3efcb-cc29-45da-a190-5b73d99b622e/1786807646462.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 7, 9]
+    },
+    {
+      "productId": "b40b5d2c-e02d-4f44-bee1-70c17cdfcd98",
+      "name_en": "Banana Milk",
+      "name_ar": "موز باللبن",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/b40b5d2c-e02d-4f44-bee1-70c17cdfcd98/1786807676529.png",
+      "pickedIndex": 0,
+      "scores": [9, 8, 8.5, 7.5]
+    },
+    {
+      "productId": "a6e1426f-0d0a-4cf9-8f77-5e317508f6fb",
+      "name_en": "Harissa with Nuts",
+      "name_ar": "هريسة بالمكسرات",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/a6e1426f-0d0a-4cf9-8f77-5e317508f6fb/1786807726740.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 8.5, 9]
+    },
+    {
+      "productId": "127431c2-2a13-4bab-af8f-9a03512d0436",
+      "name_en": "Meat Feteer",
+      "name_ar": "فطيرة لحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/127431c2-2a13-4bab-af8f-9a03512d0436/1786807757471.png",
+      "pickedIndex": 1,
+      "scores": [9, 9.5, 8.5, 9.5]
+    },
+    {
+      "productId": "1936703c-5a99-431c-ab65-f0d0e9660764",
+      "name_en": "Pastrami Crepe",
+      "name_ar": "كريب بسطرمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/1936703c-5a99-431c-ab65-f0d0e9660764/1786807786270.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 8]
+    },
+    {
+      "productId": "0c2a3db9-2a3f-4a64-a490-9809d9b173bb",
+      "name_en": "Shish Tawook",
+      "name_ar": "شيش طاووق",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/0c2a3db9-2a3f-4a64-a490-9809d9b173bb/1786807823177.png",
+      "pickedIndex": 0,
+      "scores": [9, 8.5, 8, 7.5]
+    },
+    {
+      "productId": "5d7f3bb6-a740-4b1c-b1dd-66d8dcbe5296",
+      "name_en": "Burger",
+      "name_ar": "برجر",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/5d7f3bb6-a740-4b1c-b1dd-66d8dcbe5296/1786807868535.png",
+      "pickedIndex": 2,
+      "scores": [9, 8.5, 9.5, 8]
+    },
+    {
+      "productId": "acf09d7a-2bff-4b5e-a9de-f78fa50663d7",
+      "name_en": "Mixed Stuffed Vegetables",
+      "name_ar": "محشي مشكل",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/acf09d7a-2bff-4b5e-a9de-f78fa50663d7/1786807903123.png",
+      "pickedIndex": 3,
+      "scores": [9, 7, 8, 9.5]
+    },
+    {
+      "productId": "d745f448-3411-4ebb-9a77-5f4b549dd049",
+      "name_en": "Meat with Onions",
+      "name_ar": "لحمة بالبصل",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/d745f448-3411-4ebb-9a77-5f4b549dd049/1786807940114.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 7.5, 5]
+    },
+    {
+      "productId": "ae4e8333-4ea2-42cd-9b56-33545a83d3be",
+      "name_en": "Foul with Ghee",
+      "name_ar": "فول بالسمنة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/ae4e8333-4ea2-42cd-9b56-33545a83d3be/1786807982059.png",
+      "pickedIndex": 0,
+      "scores": [9, 6, 7, 6]
+    },
+    {
+      "productId": "dfd4bf82-2b9f-401a-9cb7-1e7965d5d140",
+      "name_en": "Homemade Green Salad",
+      "name_ar": "سلطة خضراء بيتي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/dfd4bf82-2b9f-401a-9cb7-1e7965d5d140/1786808021486.png",
+      "pickedIndex": 0,
+      "scores": [10, 9, 7, 8]
+    },
+    {
+      "productId": "56710acc-f18d-4c65-abc0-c65a3fc640b3",
+      "name_en": "Fresh Orange Juice",
+      "name_ar": "عصير برتقال فريش",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/56710acc-f18d-4c65-abc0-c65a3fc640b3/1786808050177.png",
+      "pickedIndex": 0,
+      "scores": [9, 8.5, 7.5, 7]
+    },
+    {
+      "productId": "0d7b4c19-fa7d-4a6f-97a9-8d917c25864c",
+      "name_en": "Om Ali",
+      "name_ar": "أم علي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/0d7b4c19-fa7d-4a6f-97a9-8d917c25864c/1786808080912.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 9, 8.5]
+    },
+    {
+      "productId": "f213f5f8-90fd-4689-b25e-a7a5960ff10d",
+      "name_en": "Chicken Feteer",
+      "name_ar": "فطيرة فراخ",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/f213f5f8-90fd-4689-b25e-a7a5960ff10d/1786808111775.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 6.5, 8]
+    },
+    {
+      "productId": "65c13e57-0eab-40b8-910a-c2349c5f8dae",
+      "name_en": "Crispy Chicken Crepe",
+      "name_ar": "كريب كرنشي فراخ",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/65c13e57-0eab-40b8-910a-c2349c5f8dae/1786808138452.png",
+      "pickedIndex": 0,
+      "scores": [9, 8, 6, 7]
+    },
+    {
+      "productId": "e13d5daa-6cbe-4bd6-b9ba-aa6fdae5a7f6",
+      "name_en": "Hawawshi",
+      "name_ar": "حواوشي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/e13d5daa-6cbe-4bd6-b9ba-aa6fdae5a7f6/1786808167742.png",
+      "pickedIndex": 3,
+      "scores": [9.5, 8, 7.5, 9.8]
+    },
+    {
+      "productId": "8bcc92c0-3a25-4db9-9cb9-0dd16746e71b",
+      "name_en": "Mombar",
+      "name_ar": "ممبار",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8bcc92c0-3a25-4db9-9cb9-0dd16746e71b/1786808206007.png",
+      "pickedIndex": 0,
+      "scores": [8, 7, 1, 8]
+    },
+    {
+      "productId": "9f9f59c7-e953-438b-9f74-024991096d8c",
+      "name_en": "Om Ali Rice",
+      "name_ar": "رز معمر",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/9f9f59c7-e953-438b-9f74-024991096d8c/1786808248717.png",
+      "pickedIndex": 2,
+      "scores": [8, 9, 10, 9]
+    },
+    {
+      "productId": "d24d5abe-bb4a-4125-9cc1-8ad34a06718f",
+      "name_en": "Foul with Sujuk",
+      "name_ar": "فول بالسجق",
+      "status": "failed",
+      "error": "Bad Request"
+    },
+    {
+      "productId": "0c74ddf2-d22c-4633-9c66-5bf7fab8d8d6",
+      "name_en": "Ranch Sauce",
+      "name_ar": "صوص الرانش",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/0c74ddf2-d22c-4633-9c66-5bf7fab8d8d6/1786808312268.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 7, 8]
+    },
+    {
+      "productId": "93cf1219-b9d5-4ede-a27b-6cb3ad505fe9",
+      "name_en": "Fakhfakheena",
+      "name_ar": "فخفخينا",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/93cf1219-b9d5-4ede-a27b-6cb3ad505fe9/1786808338469.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 9, 8]
+    },
+    {
+      "productId": "51c4326f-4296-41dd-80ff-8764fc2074ec",
+      "name_en": "Rice Pudding",
+      "name_ar": "رز بلبن",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/51c4326f-4296-41dd-80ff-8764fc2074ec/1786808371343.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 8, 6]
+    },
+    {
+      "productId": "4c2018b4-fa12-4418-9914-5b05abc511c0",
+      "name_en": "Sausage Feteer",
+      "name_ar": "فطيرة سوسيس",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/4c2018b4-fa12-4418-9914-5b05abc511c0/1786808398874.png",
+      "pickedIndex": 0,
+      "scores": [9, 8, 8, 7]
+    },
+    {
+      "productId": "59305023-8a81-48c6-a2a5-9e13a283f58d",
+      "name_en": "Chicken Strips Crepe",
+      "name_ar": "كريب استريبس فراخ",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/59305023-8a81-48c6-a2a5-9e13a283f58d/1786808436319.png",
+      "pickedIndex": 2,
+      "scores": [8, 9.5, 9.5, 7]
+    },
+    {
+      "productId": "5a29b696-4ecb-4b91-b8b8-40dc6529d49b",
+      "name_en": "Meat Samosa",
+      "name_ar": "سمبوسة لحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/5a29b696-4ecb-4b91-b8b8-40dc6529d49b/1786808468808.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 8, 7.5]
+    },
+    {
+      "productId": "dfbbb7f8-4cfd-4b8f-8b2d-c203826cb742",
+      "name_en": "Foul with Eggs",
+      "name_ar": "فول بالبيض",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/dfbbb7f8-4cfd-4b8f-8b2d-c203826cb742/1786808497687.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 8.5, 7.5]
+    },
+    {
+      "productId": "1391d150-62a3-43a7-9ddd-1f9ecbe89dd4",
+      "name_en": "Jujube – Cold / Hot",
+      "name_ar": "عناب – ساقع / ساخن",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/1391d150-62a3-43a7-9ddd-1f9ecbe89dd4/1786808531849.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 8.5, 7.5]
+    },
+    {
+      "productId": "4063bd89-9622-4b93-8f7a-86ee53ea5c06",
+      "name_en": "Plain Layered Feteer",
+      "name_ar": "فطير مشلتت سادة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/4063bd89-9622-4b93-8f7a-86ee53ea5c06/1786808569652.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 6, 5.5, 8]
+    },
+    {
+      "productId": "ac763a0f-08ab-4623-9204-204b166e73af",
+      "name_en": "Mixed Cheese Crepe",
+      "name_ar": "كريب مشكل جبن",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/ac763a0f-08ab-4623-9204-204b166e73af/1786808610205.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8, 7, 6.5]
+    },
+    {
+      "productId": "d31b90ca-260e-432a-be17-34464586c36a",
+      "name_en": "Cheese Samosa",
+      "name_ar": "سمبوسة جبنة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/d31b90ca-260e-432a-be17-34464586c36a/1786808641021.png",
+      "pickedIndex": 0,
+      "scores": []
+    },
+    {
+      "productId": "3024a84a-4b09-48b5-a620-723acf91bf49",
+      "name_en": "Fried Eggplant & Pepper",
+      "name_ar": "باذنجان وفلفل مقلي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/3024a84a-4b09-48b5-a620-723acf91bf49/1786808675005.png",
+      "pickedIndex": 3,
+      "scores": [9, 8, 9, 9.5]
+    },
+    {
+      "productId": "f6661f3f-ba07-415b-bb5e-0985726528c5",
+      "name_en": "Licorice Drink",
+      "name_ar": "عرقسوس",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/f6661f3f-ba07-415b-bb5e-0985726528c5/1786808703222.png",
+      "pickedIndex": 0,
+      "scores": [9, 8.5, 8, 7]
+    },
+    {
+      "productId": "2875644c-b83a-4d64-b060-12bae58562df",
+      "name_en": "Mixed Chicken Crepe",
+      "name_ar": "كريب مشكل فراخ",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/2875644c-b83a-4d64-b060-12bae58562df/1786808735023.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 7.5, 9]
+    },
+    {
+      "productId": "d60d52ec-289e-4649-a54e-9e131e639150",
+      "name_en": "Kibbeh",
+      "name_ar": "كبيبة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/d60d52ec-289e-4649-a54e-9e131e639150/1786808763649.png",
+      "pickedIndex": 3,
+      "scores": [9.5, 9, 8.8, 9.8]
+    },
+    {
+      "productId": "77aa604b-faa1-483f-a848-08b05438f5f7",
+      "name_en": "Grilled Eggplant & Pepper",
+      "name_ar": "باذنجان وفلفل مشوي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/77aa604b-faa1-483f-a848-08b05438f5f7/1786808791676.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 9, 9.5, 8.5]
+    },
+    {
+      "productId": "c8178666-683c-413d-91e2-58f85366c5dc",
+      "name_en": "Tamarind Drink",
+      "name_ar": "تمر هندي",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/c8178666-683c-413d-91e2-58f85366c5dc/1786808822830.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 6, 6.5]
+    },
+    {
+      "productId": "39ca9543-ee20-40da-becb-70fb3527c9bc",
+      "name_en": "Mixed Meat Crepe",
+      "name_ar": "كريب مشكل لحوم",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/39ca9543-ee20-40da-becb-70fb3527c9bc/1786808852621.png",
+      "pickedIndex": 0,
+      "scores": [9, 8, 6, 5]
+    },
+    {
+      "productId": "1a1b8582-7ee4-40e0-9b5c-a6dc1b2151e5",
+      "name_en": "Potatoes with Meat",
+      "name_ar": "بطاطس باللحمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/1a1b8582-7ee4-40e0-9b5c-a6dc1b2151e5/1786808882338.png",
+      "pickedIndex": 3,
+      "scores": [9.5, 9, 8.5, 9.8]
+    },
+    {
+      "productId": "9a6528ba-168d-4eb7-8b60-4096bbe8cdae",
+      "name_en": "French Fries",
+      "name_ar": "بطاطس مقلية",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/9a6528ba-168d-4eb7-8b60-4096bbe8cdae/1786808915078.png",
+      "pickedIndex": 1,
+      "scores": [8, 9.5, 7.5, 8]
+    },
+    {
+      "productId": "6a594799-b19f-4bf0-bd87-a97b196ea230",
+      "name_en": "Sobia",
+      "name_ar": "سوبيا",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/6a594799-b19f-4bf0-bd87-a97b196ea230/1786808942602.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7.5, 5, 3]
+    },
+    {
+      "productId": "56c4314d-1939-4757-8e9e-9957659df995",
+      "name_en": "Mashed Potatoes",
+      "name_ar": "بطاطس مهروسة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/56c4314d-1939-4757-8e9e-9957659df995/1786808979173.png",
+      "pickedIndex": 3,
+      "scores": [6.5, 3.5, 5, 8.5]
+    },
+    {
+      "productId": "cc26b1cf-a55f-4e83-b0b7-4d83c33aa2bf",
+      "name_en": "Carob Drink",
+      "name_ar": "خروب",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/cc26b1cf-a55f-4e83-b0b7-4d83c33aa2bf/1786809010577.png",
+      "pickedIndex": 1,
+      "scores": [8.5, 9, 8.8, 7]
+    },
+    {
+      "productId": "d34ef40c-01af-4a3d-aa11-fe531fb4fe8b",
+      "name_en": "Eggs with Pastrami",
+      "name_ar": "بيض بالبسطرمة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/d34ef40c-01af-4a3d-aa11-fe531fb4fe8b/1786809042139.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7, 9, 6.5]
+    },
+    {
+      "productId": "2b22b01c-9d38-4bef-b6d4-798dbf021d83",
+      "name_en": "Schweppes – All Flavors",
+      "name_ar": "شويبس – جميع الأنواع",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/2b22b01c-9d38-4bef-b6d4-798dbf021d83/1786809073974.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 6.5, 3, 5]
+    },
+    {
+      "productId": "2a5bbb06-461d-4101-9b39-53671a62f692",
+      "name_en": "Feta Cheese with Tomato",
+      "name_ar": "جبنة فيتا بالطماطم",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/2a5bbb06-461d-4101-9b39-53671a62f692/1786809104662.png",
+      "pickedIndex": 1,
+      "scores": [8, 9, 8, 7]
+    },
+    {
+      "productId": "8f37cd63-ae88-41a0-bfee-5d7924f9e156",
+      "name_en": "Rani – All Flavors",
+      "name_ar": "راني – جميع الأنواع",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8f37cd63-ae88-41a0-bfee-5d7924f9e156/1786809130707.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 8.5, 9, 6]
+    },
+    {
+      "productId": "8edca34a-cb10-43ff-a209-b1788c1a3a3b",
+      "name_en": "Boiled Eggs",
+      "name_ar": "بيض مسلوق",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/8edca34a-cb10-43ff-a209-b1788c1a3a3b/1786809158305.png",
+      "pickedIndex": 0,
+      "scores": [9.5, 7, 9, 7.5]
+    },
+    {
+      "productId": "4dd420e1-1dc2-4115-a961-e9d137f92907",
+      "name_en": "Fairouz",
+      "name_ar": "فيروز",
+      "status": "failed",
+      "error": "Failed to generate product image"
+    },
+    {
+      "productId": "83e6ccef-a9cf-423b-9e87-9e04c139176c",
+      "name_en": "Omelette",
+      "name_ar": "بيض أومليت",
+      "status": "failed",
+      "error": "Failed to generate product image"
+    },
+    {
+      "productId": "69df44de-5165-4a95-b927-c03b0279a527",
+      "name_en": "House Juice",
+      "name_ar": "عصير المطعم",
+      "status": "failed",
+      "error": "Failed to generate product image"
+    },
+    {
+      "productId": "0efc5155-17a5-4a27-8ba7-1d48e715b194",
+      "name_en": "Sham Hummus Drink",
+      "name_ar": "حمص الشام",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/0efc5155-17a5-4a27-8ba7-1d48e715b194/1786809269093.png",
+      "pickedIndex": 1,
+      "scores": [8.5, 9, 7.5, 8.5]
+    },
+    {
+      "productId": "e9811590-0db4-4ed3-881b-0fcc1cc10b4d",
+      "name_en": "Belila",
+      "name_ar": "بليلة",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/e9811590-0db4-4ed3-881b-0fcc1cc10b4d/1786809306816.png",
+      "pickedIndex": 0,
+      "scores": [2, 1, 1, 0]
+    },
+    {
+      "productId": "3f56776a-2ab1-4835-9cd6-b5c3ac2bbaea",
+      "name_en": "Fresh Natural Drinks",
+      "name_ar": "مشروبات فريش وطبيعية",
+      "status": "success",
+      "image_url": "https://worxtjqwmlusmttekawu.supabase.co/storage/v1/object/public/products/ai/3f56776a-2ab1-4835-9cd6-b5c3ac2bbaea/1786809335408.png",
+      "pickedIndex": 1,
+      "scores": [3, 9.5, 9, 7.5]
+    }
+  ]
+}

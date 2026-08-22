@@ -6,6 +6,9 @@ import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
+import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
+import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import './globals.css';
 
@@ -43,55 +46,63 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
 
-const baseMetadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: 'Warda Shamya | Digital Restaurant Menu',
-    template: '%s | Warda Shamya',
-  },
-  description:
-    'Warda Shamya Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.',
-  keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', 'Warda Shamya', 'وردة الشامية'],
-  authors: [{ name: 'Warda Shamya' }],
-  creator: 'Warda Shamya',
-  alternates: {
-    languages: {
-      en: SITE_URL,
-      ar: SITE_URL,
-      'x-default': SITE_URL,
-    },
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'ar_SA',
-    alternateLocale: ['en_US'],
-    url: SITE_URL,
-    siteName: 'Warda Shamya',
-    title: 'Warda Shamya | Digital Restaurant Menu',
-    description: 'Premium dining experience with digital menu.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Warda Shamya',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Warda Shamya | Digital Restaurant Menu',
-    description: 'Premium dining experience with digital menu.',
-    images: ['/og-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+function buildRootMetadata(
+  settings: Awaited<ReturnType<typeof fetchRestaurantSettings>>
+): Metadata {
+  const siteNameEn = getSiteNameEn(settings);
+  const siteNameAr = getSiteNameForLocale('ar', settings);
+  const title = `${siteNameEn} | Digital Restaurant Menu`;
 
-export function generateMetadata(): Metadata {
-  return baseMetadata;
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: title,
+      template: `%s | ${siteNameEn}`,
+    },
+    description: `${siteNameEn} Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.`,
+    keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', siteNameEn, siteNameAr],
+    authors: [{ name: siteNameEn }],
+    creator: siteNameEn,
+    alternates: {
+      languages: {
+        en: SITE_URL,
+        ar: SITE_URL,
+        'x-default': SITE_URL,
+      },
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'ar_SA',
+      alternateLocale: ['en_US'],
+      url: SITE_URL,
+      siteName: siteNameEn,
+      title,
+      description: 'Premium dining experience with digital menu.',
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: siteNameEn,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: 'Premium dining experience with digital menu.',
+      images: ['/og-image.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchRestaurantSettings();
+  return buildRootMetadata(settings);
 }
 
 export const viewport: Viewport = {
@@ -135,7 +146,9 @@ export default async function RootLayout({
           <RootI18nProvider initialLocale={locale}>
             <TooltipProvider delay={0}>
               {children}
-              <InstallPrompt />
+              <QueryProvider>
+                <InstallPrompt />
+              </QueryProvider>
               <OfflineIndicator />
             </TooltipProvider>
           </RootI18nProvider>

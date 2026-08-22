@@ -10,8 +10,13 @@ import { Image } from '@/components/shared/Image';
 import { usePopularProducts } from '@/hooks/useProducts';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { useFeaturedItemsCopy } from '@/i18n/config';
 import { cn, getName } from '@/lib/utils';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import type { Product } from '@/types/database';
 
 function preferImageUrl(products: Product[]): Product[] {
@@ -38,9 +43,12 @@ export function FeaturedDishes() {
   const { locale } = useI18n();
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
 
   const sortedProducts = useMemo(() => (products ? preferImageUrl(products) : []), [products]);
+  const titleKey = useFeaturedItemsCopy ? 'signatureItems' : 'signatureDishes';
+  const subtitleKey = useFeaturedItemsCopy ? 'signatureItemsSubtitle' : 'signatureDishesSubtitle';
+  const emptyKey = useFeaturedItemsCopy ? 'noFeaturedItems' : 'noFeaturedDishes';
 
   const badgeLabel = (badge: 'bestseller' | 'popular' | 'new') => {
     if (badge === 'bestseller') return menuT('bestseller');
@@ -59,11 +67,11 @@ export function FeaturedDishes() {
         <MotionSection>
           <div className="mb-10 text-center md:mb-12">
             <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
-              {t('signatureDishes')}
+              {t(titleKey)}
             </h2>
             <div className="bg-brand-accent mx-auto mt-4 h-1 w-20 rounded" />
             <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-sm md:text-base">
-              {t('signatureDishesSubtitle')}
+              {t(subtitleKey)}
             </p>
           </div>
         </MotionSection>
@@ -84,11 +92,17 @@ export function FeaturedDishes() {
             ))}
           </div>
         ) : sortedProducts.length === 0 ? (
-          <p className="text-muted-foreground text-center">{t('noFeaturedDishes')}</p>
+          <p className="text-muted-foreground text-center">{t(emptyKey)}</p>
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
             {sortedProducts.map((product, index) => {
-              const name = getName(locale, product.name_en, product.name_ar);
+              const name = getName(
+                locale,
+                product.name_en,
+                product.name_ar,
+                product.name_fr,
+                product.name_nl
+              );
               const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
               const badge = pickBadge(product);
 

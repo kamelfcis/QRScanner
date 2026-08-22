@@ -1,0 +1,238 @@
+{
+  "dryRun": false,
+  "sections": [
+    {
+      "name_ar": "سندوتش سوري",
+      "category": {
+        "created": true,
+        "id": "a6d59072-4073-40b1-9db2-f04a16742ff7"
+      },
+      "upserted": [
+        {
+          "action": "insert",
+          "name_ar": "ملفوف شاورما",
+          "name_en": "Malfoof Shawarma",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف استريبس",
+          "name_en": "Malfoof Strips",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف كفتة",
+          "name_en": "Malfoof Kofta",
+          "dining_price": 65,
+          "takeaway_price": 100
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف سجق",
+          "name_en": "Malfoof Sujuk",
+          "dining_price": 65,
+          "takeaway_price": 90
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف مكس",
+          "name_en": "Malfoof Mix",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف بطاطس",
+          "name_en": "Malfoof Potato",
+          "dining_price": 45,
+          "takeaway_price": 70
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف شيش طاووق",
+          "name_en": "Malfoof Shish Tawook",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "action": "insert",
+          "name_ar": "ملفوف سوسيس",
+          "name_en": "Malfoof Sausage",
+          "dining_price": 70,
+          "takeaway_price": 90
+        }
+      ],
+      "deleted": [],
+      "unchanged": [],
+      "final": [
+        {
+          "name_ar": "ملفوف شاورما",
+          "name_en": "Malfoof Shawarma",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "name_ar": "ملفوف استريبس",
+          "name_en": "Malfoof Strips",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "name_ar": "ملفوف كفتة",
+          "name_en": "Malfoof Kofta",
+          "dining_price": 65,
+          "takeaway_price": 100
+        },
+        {
+          "name_ar": "ملفوف سجق",
+          "name_en": "Malfoof Sujuk",
+          "dining_price": 65,
+          "takeaway_price": 90
+        },
+        {
+          "name_ar": "ملفوف مكس",
+          "name_en": "Malfoof Mix",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "name_ar": "ملفوف بطاطس",
+          "name_en": "Malfoof Potato",
+          "dining_price": 45,
+          "takeaway_price": 70
+        },
+        {
+          "name_ar": "ملفوف شيش طاووق",
+          "name_en": "Malfoof Shish Tawook",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "name_ar": "ملفوف سوسيس",
+          "name_en": "Malfoof Sausage",
+          "dining_price": 70,
+          "takeaway_price": 90
+        }
+      ]
+    },
+    {
+      "name_ar": "المقبلات",
+      "category": {
+        "created": true,
+        "id": "69846534-1703-4c1a-a409-67b8716a5a76"
+      },
+      "upserted": [
+        {
+          "action": "insert",
+          "name_ar": "فرايز تشيكن",
+          "name_en": "Chicken Fries",
+          "dining_price": 90,
+          "takeaway_price": 90
+        },
+        {
+          "action": "insert",
+          "name_ar": "شيدر فرايز",
+          "name_en": "Cheddar Fries",
+          "dining_price": 50,
+          "takeaway_price": 50
+        }
+      ],
+      "deleted": [],
+      "unchanged": [],
+      "final": [
+        {
+          "name_ar": "فرايز تشيكن",
+          "name_en": "Chicken Fries",
+          "dining_price": 90,
+          "takeaway_price": 90
+        },
+        {
+          "name_ar": "شيدر فرايز",
+          "name_en": "Cheddar Fries",
+          "dining_price": 50,
+          "takeaway_price": 50
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "verify": {
+    "سندوتش سوري": {
+      "expectedCount": 8,
+      "actualCount": 8,
+      "ok": true,
+      "products": [
+        {
+          "name_ar": "ملفوف شاورما",
+          "name_en": "Malfoof Shawarma",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "name_ar": "ملفوف استريبس",
+          "name_en": "Malfoof Strips",
+          "dining_price": 70,
+          "takeaway_price": 110
+        },
+        {
+          "name_ar": "ملفوف كفتة",
+          "name_en": "Malfoof Kofta",
+          "dining_price": 65,
+          "takeaway_price": 100
+        },
+        {
+          "name_ar": "ملفوف سجق",
+          "name_en": "Malfoof Sujuk",
+          "dining_price": 65,
+          "takeaway_price": 90
+        },
+        {
+          "name_ar": "ملفوف مكس",
+          "name_en": "Malfoof Mix",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "name_ar": "ملفوف بطاطس",
+          "name_en": "Malfoof Potato",
+          "dining_price": 45,
+          "takeaway_price": 70
+        },
+        {
+          "name_ar": "ملفوف شيش طاووق",
+          "name_en": "Malfoof Shish Tawook",
+          "dining_price": 80,
+          "takeaway_price": 120
+        },
+        {
+          "name_ar": "ملفوف سوسيس",
+          "name_en": "Malfoof Sausage",
+          "dining_price": 70,
+          "takeaway_price": 90
+        }
+      ]
+    },
+    "المقبلات": {
+      "expectedCount": 2,
+      "actualCount": 2,
+      "ok": true,
+      "products": [
+        {
+          "name_ar": "فرايز تشيكن",
+          "name_en": "Chicken Fries",
+          "dining_price": 90,
+          "takeaway_price": 90
+        },
+        {
+          "name_ar": "شيدر فرايز",
+          "name_en": "Cheddar Fries",
+          "dining_price": 50,
+          "takeaway_price": 50
+        }
+      ]
+    }
+  }
+}
