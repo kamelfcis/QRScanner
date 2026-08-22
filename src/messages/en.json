@@ -199,6 +199,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "shortcuts": "Quick shortcuts",
     "adminDashboard": "Admin Dashboard",
     "todaysScans": "Today's Scans",
     "todaysVisitors": "Today's Visitors",

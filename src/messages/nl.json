@@ -199,6 +199,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "shortcuts": "Snelle snelkoppelingen",
     "adminDashboard": "Beheerdersdashboard",
     "todaysScans": "Scans vandaag",
     "todaysVisitors": "Bezoekers vandaag",

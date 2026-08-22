@@ -199,6 +199,7 @@
   },
   "dashboard": {
     "title": "لوحة التحكم",
+    "shortcuts": "اختصارات سريعة",
     "adminDashboard": "لوحة تحكم الإدارة",
     "todaysScans": "مسحات اليوم",
     "todaysVisitors": "زوار اليوم",

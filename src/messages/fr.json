@@ -199,6 +199,7 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "shortcuts": "Raccourcis rapides",
     "adminDashboard": "Tableau de bord admin",
     "todaysScans": "Scans d'aujourd'hui",
     "todaysVisitors": "Visiteurs d'aujourd'hui",
