@@ -5,7 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DateRangePicker, type Period } from '@/components/dashboard/DateRangePicker';
 import { useDashboardStats } from '@/hooks/useDashboardStats';
-import { useAnalyticsSummary, useTopProducts, useTopCategories, useDiningTakeaway } from '@/hooks/useAnalytics';
+import {
+  useAnalyticsSummary,
+  useTopProducts,
+  useTopCategories,
+  useDiningTakeaway,
+} from '@/hooks/useAnalytics';
 import { useExport } from '@/hooks/useExport';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
@@ -13,10 +18,16 @@ import { Download, Table, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import type { ExportData } from '@/types/database';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useFeaturedItemsCopy } from '@/i18n/config';
 
 export default function ReportsPage() {
   const [period, setPeriod] = useState<Period>('month');
-  const { data: stats, isLoading: statsLoading, error: statsError, refetch: statsRefetch } = useDashboardStats();
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+    refetch: statsRefetch,
+  } = useDashboardStats();
   const { data: summary, isLoading: summaryLoading } = useAnalyticsSummary(period);
   const { data: topProducts, isLoading: productsLoading } = useTopProducts(period);
   const { data: topCategories, isLoading: categoriesLoading } = useTopCategories(period);
@@ -69,7 +80,9 @@ export default function ReportsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('generate')}</p>
+          <p className="text-muted-foreground">
+            {t(useFeaturedItemsCopy ? 'generateSpices' : 'generate')}
+          </p>
         </div>
         <DateRangePicker value={period} onChange={setPeriod} />
       </div>
@@ -92,20 +105,20 @@ export default function ReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('totalProducts')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('totalProducts')}</p>
                 <p className="text-2xl font-bold">{stats?.totalProducts || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('totalCategories')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('totalCategories')}</p>
                 <p className="text-2xl font-bold">{stats?.totalCategories || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('todaysScans')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('todaysScans')}</p>
                 <p className="text-2xl font-bold">{stats?.todaysScans || 0}</p>
               </div>
-              <div className="p-4 border rounded-lg">
-                <p className="text-sm text-muted-foreground">{t('activeOffers')}</p>
+              <div className="rounded-lg border p-4">
+                <p className="text-muted-foreground text-sm">{t('activeOffers')}</p>
                 <p className="text-2xl font-bold">{stats?.totalOffers || 0}</p>
               </div>
             </div>

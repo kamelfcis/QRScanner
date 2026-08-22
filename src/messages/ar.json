@@ -607,6 +607,7 @@
   "reports": {
     "title": "التقارير",
     "generate": "إنشاء وتصدير تقارير المطعم",
+    "generateSpices": "إنشاء وتصدير تقارير العطارة",
     "summary": "ملخص التقرير",
     "csv": "CSV",
     "excel": "Excel",
