@@ -259,7 +259,7 @@
     "logout": "Logout",
     "collapse": "Collapse sidebar",
     "expand": "Expand sidebar",
-    "hoverPeek": "Hover rail to preview menu"
+    "hoverPeek": "Hover sidebar to expand temporarily"
   },
   "qr": {
     "title": "QR Codes",

@@ -259,7 +259,7 @@
     "logout": "Déconnexion",
     "collapse": "Réduire le menu latéral",
     "expand": "Développer le menu latéral",
-    "hoverPeek": "Survolez le rail pour prévisualiser le menu"
+    "hoverPeek": "Survolez la barre latérale pour l'étendre temporairement"
   },
   "qr": {
     "title": "Codes QR",

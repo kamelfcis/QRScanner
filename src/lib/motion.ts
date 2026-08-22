@@ -60,29 +60,6 @@ export const tapScale: TargetAndTransition = {
   scale: 0.97,
 };
 
-/** Collapsed sidebar hover peek — slide from rail edge (x + opacity, not width). */
-export function getSidebarPeekPanelVariants(slideFrom: '-100%' | '100%'): Variants {
-  return {
-    hidden: { opacity: 0, x: slideFrom },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease } },
-    exit: { opacity: 0, x: slideFrom, transition: { duration: 0.2, ease } },
-  };
-}
-
-/** Stagger nav labels inside hover peek overlay only. */
-export const sidebarPeekNavContainer: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.04, delayChildren: 0.04 },
-  },
-};
-
-export const sidebarPeekNavItem: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease } },
-};
-
 /**
  * @deprecated Use fadeInUp — blur filters are not compositor-friendly.
  * Kept as alias for any residual imports.
