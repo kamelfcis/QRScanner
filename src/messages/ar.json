@@ -198,7 +198,8 @@
     "priceFrom": "من {price}",
     "displayPromoHelper": "عرض يظهر للزبائن — ليس كود خصم",
     "displayPromoBadge": "بانر ترويجي",
-    "haveCodeAtCheckout": "لديك كود؟ طبّقه عند إتمام الطلب"
+    "haveCodeAtCheckout": "لديك كود؟ طبّقه عند إتمام الطلب",
+    "checkOrderStatus": "حالة الطلب"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -538,7 +539,44 @@
     "openWhatsApp": "افتح واتساب مرة أخرى",
     "keepCart": "الاحتفاظ بالسلة",
     "clearCart": "إفراغ السلة",
-    "backToMenu": "العودة للقائمة"
+    "backToMenu": "العودة للقائمة",
+    "checkStatus": "تابع حالة الطلب",
+    "saveLinkHint": "احفظ هذا الرابط لتعود إلى تذكرتك لاحقاً."
+  },
+  "orderStatus": {
+    "eyebrow": "تذكرة المطبخ",
+    "title": "حالة الطلب",
+    "lead": "تذكرتك بعد إتمام الطلب. المطبخ يحدّث لوحة المتجر.",
+    "ticketLabel": "التذكرة",
+    "saveLink": "احفظ هذا الرابط لفتح التذكرة مرة أخرى.",
+    "copyLink": "نسخ رابط الحالة",
+    "copied": "تم نسخ الرابط",
+    "copyFailed": "تعذّر النسخ. احفظ الصفحة في المفضلة.",
+    "lookupTitle": "ابحث عن تذكرة حديثة",
+    "lookupLead": "ابحث عن آخر طلب أتممته على هذا الجهاز. لا نبحث في طلبات الزبائن الآخرين.",
+    "phoneLabel": "الهاتف",
+    "phonePlaceholder": "رقم الجوال",
+    "orderNumberLabel": "رقم الطلب (اختياري)",
+    "orderNumberPlaceholder": "AS-0042",
+    "lookup": "بحث",
+    "notFound": "لا توجد تذكرة على هذا الجهاز بهذه البيانات. بعد الطلب، احفظ رابط الحالة.",
+    "noTicket": "لا توجد تذكرة حديثة على هذا الجهاز. أتمم طلباً ثم احفظ رابط الحالة.",
+    "confirmationHint": "هذا الرقم من صفحة التأكيد. تحديثات المطبخ المباشرة تبقى لدى المتجر.",
+    "statusHintNew": "المطبخ استلم تذكرتك.",
+    "statusHintPreparing": "المطبخ يجهّز طلبك.",
+    "statusHintReady": "طلبك جاهز.",
+    "statusHintCompleted": "اكتمل هذا الطلب.",
+    "statusHintCancelled": "أُلغي هذا الطلب. اسأل المتجر إن احتجت مساعدة.",
+    "timelineLabel": "مسار الطلب",
+    "backToMenu": "العودة للقائمة",
+    "openWhatsApp": "افتح واتساب مرة أخرى",
+    "status": {
+      "new": "تم الاستلام",
+      "preparing": "قيد التحضير",
+      "ready": "جاهز",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    }
   },
   "orders": {
     "title": "الطلبات",
