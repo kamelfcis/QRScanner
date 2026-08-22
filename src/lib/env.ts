@@ -21,13 +21,31 @@ const envSchema = z.object({
 });
 
 function validateEnv() {
-  const parsed = envSchema.safeParse(process.env);
+  // Explicit property access so Next.js can inline NEXT_PUBLIC_* at build time.
+  // Passing process.env wholesale fails on the client (no full env object).
+  const rawEnv = {
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_TENANT: process.env.NEXT_PUBLIC_TENANT,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GEMINI_MODEL: process.env.GEMINI_MODEL,
+    GEMINI_IMAGE_MODEL: process.env.GEMINI_IMAGE_MODEL,
+  };
+
+  const parsed = envSchema.safeParse(rawEnv);
   if (!parsed.success) {
     const errors = parsed.error.flatten().fieldErrors;
     const messages = Object.entries(errors)
       .map(([key, value]) => `  ${key}: ${value?.join(', ')}`)
       .join('\n');
-    console.warn(`Env validation warnings:\n${messages}`);
+    // Server-only: avoid false client console noise when process.env is empty.
+    if (typeof window === 'undefined') {
+      console.warn(`Env validation warnings:\n${messages}`);
+    }
     // Return defaults for missing optional fields
     return {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
