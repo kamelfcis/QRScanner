@@ -11,6 +11,7 @@ import {
   subcategoryRelationNameFields,
 } from '@/lib/catalog/keys';
 import { categoryKeys } from './useCategories';
+import { menuKeys } from './useMenuStats';
 
 const supabase = createClient();
 
@@ -166,6 +167,7 @@ export function useCreateProduct() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -189,6 +191,7 @@ export function useUpdateProduct() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -204,6 +207,7 @@ export function useDeleteProduct() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -226,6 +230,7 @@ export function useReorderProducts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -248,6 +253,7 @@ export function useToggleProductAvailability() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }

@@ -45,6 +45,22 @@ export const DASHBOARD_NAV_TONES: Record<string, NavTone> = {
     well: 'bg-zinc-600 dark:bg-zinc-500',
     label: 'text-zinc-700 dark:text-zinc-300',
   },
+  menuCategories: {
+    well: 'bg-teal-600 dark:bg-teal-500',
+    label: 'text-teal-800 dark:text-teal-300',
+  },
+  menuProducts: {
+    well: 'bg-amber-600 dark:bg-amber-500',
+    label: 'text-amber-800 dark:text-amber-300',
+  },
+  menuGallery: {
+    well: 'bg-violet-600 dark:bg-violet-500',
+    label: 'text-violet-800 dark:text-violet-300',
+  },
+  menuOffers: {
+    well: 'bg-rose-600 dark:bg-rose-500',
+    label: 'text-rose-800 dark:text-rose-300',
+  },
 };
 
 export const FALLBACK_NAV_TONE: NavTone = {

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Gallery, GalleryInput } from '@/types';
 import { categoryKeys } from './useCategories';
+import { menuKeys } from './useMenuStats';
 
 const supabase = createClient();
 
@@ -49,11 +50,7 @@ export function useGalleryItem(id: string) {
   return useQuery({
     queryKey: galleryKeys.detail(id),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('gallery').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data as Gallery;
@@ -67,17 +64,14 @@ export function useCreateGalleryItem() {
 
   return useMutation({
     mutationFn: async (input: GalleryInput) => {
-      const { data, error } = await supabase
-        .from('gallery')
-        .insert(input)
-        .select()
-        .single();
+      const { data, error } = await supabase.from('gallery').insert(input).select().single();
 
       if (error) throw error;
       return data as Gallery;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: galleryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -99,6 +93,7 @@ export function useUpdateGalleryItem() {
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: galleryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -113,6 +108,7 @@ export function useDeleteGalleryItem() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: galleryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -135,6 +131,7 @@ export function useReorderGallery() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: galleryKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }

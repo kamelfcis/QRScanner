@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Offer, OfferInput } from '@/types';
+import { menuKeys } from './useMenuStats';
 
 const supabase = createClient();
 
@@ -55,11 +56,7 @@ export function useOffer(id: string) {
   return useQuery({
     queryKey: offerKeys.detail(id),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('offers')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('offers').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data as Offer;
@@ -74,17 +71,14 @@ export function useCreateOffer() {
 
   return useMutation({
     mutationFn: async (input: OfferInput) => {
-      const { data, error } = await supabase
-        .from('offers')
-        .insert(input)
-        .select()
-        .single();
+      const { data, error } = await supabase.from('offers').insert(input).select().single();
 
       if (error) throw error;
       return data as Offer;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: offerKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -107,6 +101,7 @@ export function useUpdateOffer() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: offerKeys.all });
       queryClient.invalidateQueries({ queryKey: offerKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -121,6 +116,7 @@ export function useDeleteOffer() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: offerKeys.all });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }
@@ -143,6 +139,7 @@ export function useToggleOfferActive() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: offerKeys.all });
       queryClient.invalidateQueries({ queryKey: offerKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: menuKeys.all });
     },
   });
 }

@@ -92,6 +92,7 @@ export {
   analyticsKeys,
 } from './useAnalytics';
 export { useDashboardStats, dashboardKeys } from './useDashboardStats';
+export { useMenuStats, menuKeys } from './useMenuStats';
 export { useAdminQueryEnabled } from './useAdminQueryEnabled';
 export { useRealtimeAnalytics } from './useRealtime';
 export {
