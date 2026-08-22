@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ImageIcon, LayoutGrid, Menu, Tag, UtensilsCrossed } from 'lucide-react';
+import { LayoutGrid, Menu, Tag, UtensilsCrossed } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,14 +27,6 @@ const MENU_HUB_SECTIONS = [
     icon: UtensilsCrossed,
   },
   {
-    key: 'menuGallery',
-    href: '/dashboard/menu/gallery',
-    countKey: 'totalGallery',
-    titleKey: 'menuGalleryTitle',
-    descriptionKey: 'menuGalleryDescription',
-    icon: ImageIcon,
-  },
-  {
     key: 'menuOffers',
     href: '/dashboard/menu/offers',
     countKey: 'totalOffers',
@@ -46,8 +38,8 @@ const MENU_HUB_SECTIONS = [
 
 function MenuStatsSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, index) => (
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, index) => (
         <div
           key={index}
           className="bg-card ring-foreground/10 flex min-h-24 flex-col gap-3 rounded-xl px-3 py-3 ring-1"
@@ -108,7 +100,7 @@ export function MenuCommandHeader() {
           ) : isLoading || !stats ? (
             <MenuStatsSkeleton />
           ) : (
-            <nav aria-label={t('menuShortcuts')} className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <nav aria-label={t('menuShortcuts')} className="grid grid-cols-2 gap-3 md:grid-cols-3">
               {MENU_HUB_SECTIONS.map((section) => {
                 const tone = DASHBOARD_NAV_TONES[section.key];
                 const Icon = section.icon;
