@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, Suspense, useMemo, useState } from 'react';
+import { FormEvent, Suspense, useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -17,12 +17,21 @@ import { useClientMounted } from '@/hooks/useClientMounted';
 import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { fadeInUp } from '@/lib/motion';
 import { openWhatsAppUrl } from '@/lib/order/build-order';
+import { useLiveOrderStatus } from '@/hooks/useLiveOrderStatus';
 import {
   buildOrderStatusPath,
   matchLastOrder,
   normalizeOrderQuery,
   readLastOrder,
+  writeLastOrder,
+  type LastOrderSnapshot,
 } from '@/lib/order/last-order';
+import {
+  canFetchLiveStatus,
+  fetchLiveOrderStatus,
+  mergeLiveStatus,
+  type LiveOrderStatus,
+} from '@/lib/order/live-status';
 import { normalizeLocalPhone } from '@/lib/phone/normalize';
 import { cn } from '@/lib/utils';
 
@@ -70,11 +79,13 @@ function OrderStatusContent() {
   const prefersReducedMotion = useReducedMotion();
   const mounted = useClientMounted();
   const detectedDial = useDetectedDialCode(locale);
+  const [, setTicketRev] = useState(0);
   const snapshot = mounted ? readLastOrder() : null;
   const [lookedUpNumber, setLookedUpNumber] = useState('');
   const [phone, setPhone] = useState('');
   const [typedNumber, setTypedNumber] = useState<string | null>(null);
   const [lookupError, setLookupError] = useState<string | null>(null);
+  const [lookupPending, setLookupPending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
   const [waUrl] = useState<string | null>(() => {
@@ -96,25 +107,82 @@ function OrderStatusContent() {
   }, [snapshot, viewedNumber]);
 
   const ticketNumber = viewedNumber || (matched ? (snapshot?.orderNumber ?? '') : '');
+  const livePhone = matched && snapshot?.phone ? snapshot.phone : null;
+  const persistLive = useCallback((next: LiveOrderStatus) => {
+    const current = readLastOrder();
+    if (
+      !current ||
+      normalizeOrderQuery(current.orderNumber) !== normalizeOrderQuery(next.orderNumber)
+    ) {
+      return;
+    }
+    if (
+      current.status === next.status &&
+      current.diningMode === (next.diningMode ?? current.diningMode)
+    ) {
+      return;
+    }
+    writeLastOrder(mergeLiveStatus(current, next));
+    setTicketRev((value) => value + 1);
+  }, []);
+  const live = useLiveOrderStatus(ticketNumber, livePhone, detectedDial.country, persistLive);
+  const displaySnapshot = useMemo(() => {
+    if (
+      live &&
+      ticketNumber &&
+      normalizeOrderQuery(live.orderNumber) === normalizeOrderQuery(ticketNumber)
+    ) {
+      return mergeLiveStatus(matched ? snapshot : null, live);
+    }
+    return matched ? snapshot : null;
+  }, [live, matched, snapshot, ticketNumber]);
   const showTicket = Boolean(ticketNumber);
-  const confirmationOnly = showTicket && !matched;
+  const confirmationOnly = showTicket && !matched && !live;
 
   const statusHref = buildOrderStatusPath(ticketNumber || snapshot?.orderNumber);
 
-  const handleLookup = (event: FormEvent) => {
+  const applyTicket = (nextSnapshot: LastOrderSnapshot) => {
+    writeLastOrder(nextSnapshot);
+    setTicketRev((value) => value + 1);
+    const next = buildOrderStatusPath(nextSnapshot.orderNumber);
+    window.history.replaceState(null, '', next);
+    setTypedNumber(nextSnapshot.orderNumber);
+    setLookedUpNumber(nextSnapshot.orderNumber);
+  };
+
+  const handleLookup = async (event: FormEvent) => {
     event.preventDefault();
     setLookupError(null);
-    const typedNumber = normalizeOrderQuery(orderNumber);
+    const typedOrderNumber = normalizeOrderQuery(orderNumber);
     const typedPhone = phone.trim();
-    if (!typedNumber && !typedPhone) {
+    if (!typedOrderNumber && !typedPhone) {
       setLookupError(t('notFound'));
       return;
     }
 
     const normalizedPhone = typedPhone ? normalizeLocalPhone(typedPhone, detectedDial.country) : '';
+    const lookupPhone = typedPhone ? normalizedPhone || typedPhone : undefined;
+
+    if (canFetchLiveStatus(typedOrderNumber, lookupPhone)) {
+      setLookupPending(true);
+      try {
+        const remote = await fetchLiveOrderStatus(
+          typedOrderNumber,
+          lookupPhone as string,
+          detectedDial.country
+        );
+        if (remote) {
+          applyTicket(mergeLiveStatus(snapshot, remote, lookupPhone));
+          return;
+        }
+      } finally {
+        setLookupPending(false);
+      }
+    }
+
     const found = matchLastOrder(snapshot, {
-      orderNumber: typedNumber || undefined,
-      phone: typedPhone ? normalizedPhone || typedPhone : undefined,
+      orderNumber: typedOrderNumber || undefined,
+      phone: lookupPhone,
     });
 
     if (!found || !snapshot) {
@@ -122,10 +190,7 @@ function OrderStatusContent() {
       return;
     }
 
-    const next = buildOrderStatusPath(snapshot.orderNumber);
-    window.history.replaceState(null, '', next);
-    setTypedNumber(snapshot.orderNumber);
-    setLookedUpNumber(snapshot.orderNumber);
+    applyTicket(snapshot);
   };
 
   const handleCopy = async () => {
@@ -171,8 +236,9 @@ function OrderStatusContent() {
         {showTicket ? (
           <OrderStatusTicket
             orderNumber={ticketNumber}
-            snapshot={matched ? snapshot : null}
+            snapshot={displaySnapshot}
             confirmationOnly={confirmationOnly}
+            isLive={Boolean(live)}
           />
         ) : (
           <div className="rounded-2xl border border-[var(--menu-line)] bg-[var(--menu-surface)] px-5 py-6 text-center">
@@ -277,6 +343,7 @@ function OrderStatusContent() {
             variant="outline"
             className="h-12 w-full rounded-full"
             data-testid="order-status-lookup"
+            disabled={lookupPending}
           >
             {t('lookup')}
           </Button>

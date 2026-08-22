@@ -29,10 +29,12 @@ export function OrderStatusTicket({
   orderNumber,
   snapshot,
   confirmationOnly,
+  isLive,
 }: {
   orderNumber: string;
   snapshot: LastOrderSnapshot | null;
   confirmationOnly?: boolean;
+  isLive?: boolean;
 }) {
   const t = useTranslations('orderStatus');
   const tOrders = useTranslations('orders');
@@ -57,9 +59,19 @@ export function OrderStatusTicket({
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <Badge className={cn('border px-3 py-1 text-sm', COLUMN_TONE[status])}>
-            {t(`status.${status}`)}
-          </Badge>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Badge className={cn('border px-3 py-1 text-sm', COLUMN_TONE[status])}>
+              {t(`status.${status}`)}
+            </Badge>
+            {isLive ? (
+              <span
+                className="text-[11px] font-medium uppercase tracking-wide text-[var(--menu-ink-soft)]"
+                data-testid="order-status-live"
+              >
+                {t('liveFromKitchen')}
+              </span>
+            ) : null}
+          </div>
           <p className="max-w-[36ch] text-center text-sm leading-relaxed text-[var(--menu-ink-soft)]">
             {t(statusHintKey(status))}
           </p>
