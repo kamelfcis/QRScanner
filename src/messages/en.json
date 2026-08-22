@@ -612,7 +612,7 @@
   },
   "reports": {
     "title": "Reports",
-    "generate": "Generate and export restaurant reports",
+    "generate": "Create and export reports for {name}",
     "summary": "Report Summary",
     "csv": "CSV",
     "excel": "Excel",
