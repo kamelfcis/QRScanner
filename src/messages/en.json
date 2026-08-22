@@ -800,6 +800,8 @@
     "kitchenBoard": "Kitchen board",
     "tableView": "Table view",
     "searchPlaceholder": "Search orders (/, f)",
+    "filtersLabel": "Filters",
+    "clearFilters": "Clear filters",
     "status": "Status",
     "allStatuses": "All statuses",
     "new": "New",

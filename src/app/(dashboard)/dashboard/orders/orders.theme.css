@@ -1,0 +1,179 @@
+/* Orders page palette and utilities — Levantine gold + deep green
+   Scope with [data-orders-theme] so styling is local to the Orders page. */
+
+[data-orders-theme] {
+  /* Core tones */
+  --orders-success: #1f6d4a; /* deep green */
+  --orders-warning: #c48a00; /* warm gold */
+  --orders-info: #2f6e55; /* olive-leaning green for 'new' */
+  --orders-danger: #b42318; /* readable red */
+  --orders-muted: #6b6560; /* neutral text */
+
+  /* Derived surfaces */
+  --orders-success-bg: color-mix(in srgb, var(--orders-success) 12%, transparent);
+  --orders-success-brd: color-mix(in srgb, var(--orders-success) 28%, var(--border));
+  --orders-success-fg: color-mix(in srgb, var(--orders-success) 88%, #0a1012);
+
+  --orders-warning-bg: color-mix(in srgb, var(--orders-warning) 12%, transparent);
+  --orders-warning-brd: color-mix(in srgb, var(--orders-warning) 28%, var(--border));
+  --orders-warning-fg: color-mix(in srgb, var(--orders-warning) 85%, #0a1012);
+
+  --orders-info-bg: color-mix(in srgb, var(--orders-info) 12%, transparent);
+  --orders-info-brd: color-mix(in srgb, var(--orders-info) 28%, var(--border));
+  --orders-info-fg: color-mix(in srgb, var(--orders-info) 88%, #0a1012);
+
+  --orders-danger-bg: color-mix(in srgb, var(--orders-danger) 12%, transparent);
+  --orders-danger-brd: color-mix(in srgb, var(--orders-danger) 28%, var(--border));
+  --orders-danger-fg: color-mix(in srgb, var(--orders-danger) 88%, #0a1012);
+
+  --orders-muted-bg: color-mix(in srgb, var(--muted) 60%, transparent);
+  --orders-muted-brd: var(--border);
+  --orders-muted-fg: var(--muted-foreground);
+}
+
+/* KPI tones */
+[data-orders-theme] .kpi--success {
+  color: var(--orders-success-fg);
+  background: var(--orders-success-bg);
+}
+[data-orders-theme] .kpi--warning {
+  color: var(--orders-warning-fg);
+  background: var(--orders-warning-bg);
+}
+[data-orders-theme] .kpi--danger {
+  color: var(--orders-danger-fg);
+  background: var(--orders-danger-bg);
+}
+[data-orders-theme] .kpi--info {
+  color: var(--orders-info-fg);
+  background: var(--orders-info-bg);
+}
+
+/* Chip tones (unselected + selected via aria-pressed) */
+[data-orders-theme] .chip {
+  border-radius: 8px;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--border);
+  background: var(--muted);
+  color: var(--foreground);
+}
+[data-orders-theme] .chip--success {
+  color: var(--orders-success-fg);
+  background: var(--orders-success-bg);
+  border-color: var(--orders-success-brd);
+}
+[data-orders-theme] .chip--warning {
+  color: var(--orders-warning-fg);
+  background: var(--orders-warning-bg);
+  border-color: var(--orders-warning-brd);
+}
+[data-orders-theme] .chip--info {
+  color: var(--orders-info-fg);
+  background: var(--orders-info-bg);
+  border-color: var(--orders-info-brd);
+}
+[data-orders-theme] .chip--danger {
+  color: var(--orders-danger-fg);
+  background: var(--orders-danger-bg);
+  border-color: var(--orders-danger-brd);
+}
+[data-orders-theme] .chip--muted {
+  color: var(--orders-muted-fg);
+  background: var(--orders-muted-bg);
+  border-color: var(--orders-muted-brd);
+}
+
+[data-orders-theme] .chip[aria-pressed='true'].chip--success {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--orders-success) 84%, #000);
+  border-color: color-mix(in srgb, var(--orders-success) 86%, #000);
+}
+[data-orders-theme] .chip[aria-pressed='true'].chip--warning {
+  color: #1a1205;
+  background: color-mix(in srgb, var(--orders-warning) 84%, #000);
+  border-color: color-mix(in srgb, var(--orders-warning) 86%, #000);
+}
+[data-orders-theme] .chip[aria-pressed='true'].chip--info {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--orders-info) 84%, #000);
+  border-color: color-mix(in srgb, var(--orders-info) 86%, #000);
+}
+[data-orders-theme] .chip[aria-pressed='true'].chip--danger {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--orders-danger) 84%, #000);
+  border-color: color-mix(in srgb, var(--orders-danger) 86%, #000);
+}
+[data-orders-theme] .chip[aria-pressed='true'].chip--muted {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--muted-foreground) 40%, #000);
+  border-color: color-mix(in srgb, var(--muted-foreground) 42%, #000);
+}
+
+/* Status badge */
+[data-orders-theme] .status-badge {
+  border-radius: 8px;
+  padding: 0.125rem 0.5rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+}
+[data-orders-theme] .status--success {
+  color: var(--orders-success-fg);
+  background: var(--orders-success-bg);
+  border-color: var(--orders-success-brd);
+}
+[data-orders-theme] .status--warning {
+  color: var(--orders-warning-fg);
+  background: var(--orders-warning-bg);
+  border-color: var(--orders-warning-brd);
+}
+[data-orders-theme] .status--info {
+  color: var(--orders-info-fg);
+  background: var(--orders-info-bg);
+  border-color: var(--orders-info-brd);
+}
+[data-orders-theme] .status--muted {
+  color: var(--orders-muted-fg);
+  background: var(--orders-muted-bg);
+  border-color: var(--orders-muted-brd);
+}
+[data-orders-theme] .status--danger {
+  color: var(--orders-danger-fg);
+  background: var(--orders-danger-bg);
+  border-color: var(--orders-danger-brd);
+}
+
+/* Board column accent — thin top bar */
+[data-orders-theme] .col-accent {
+  position: relative;
+}
+[data-orders-theme] .col-accent::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+[data-orders-theme] .col--info::before {
+  background: color-mix(in srgb, var(--orders-info) 86%, #000);
+}
+[data-orders-theme] .col--warning::before {
+  background: color-mix(in srgb, var(--orders-warning) 86%, #000);
+}
+[data-orders-theme] .col--success::before {
+  background: color-mix(in srgb, var(--orders-success) 86%, #000);
+}
+[data-orders-theme] .col--muted::before {
+  background: color-mix(in srgb, var(--muted-foreground) 46%, #000);
+}
+[data-orders-theme] .col--danger::before {
+  background: color-mix(in srgb, var(--orders-danger) 86%, #000);
+}
+
+/* Table row hover/selected */
+[data-orders-theme] table tr:hover {
+  background: color-mix(in srgb, var(--orders-info-bg) 60%, transparent);
+}
+
