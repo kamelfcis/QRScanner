@@ -18,6 +18,7 @@ import { Download, Table, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import type { ExportData } from '@/types/database';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useI18n } from '@/components/providers/RootI18nProvider';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { getAppNameFallback } from '@/lib/appName';
 import { slugify } from '@/lib/qr/logo-overlay';
@@ -37,8 +38,12 @@ export default function ReportsPage() {
   const { exportCSV, exportExcel, printPage } = useExport();
   const t = useTranslations('reports');
   const tDashboard = useTranslations('dashboard');
+  const { locale } = useI18n();
   const { data: settings } = useRestaurantSettings();
   const reportPrefix = slugify(settings?.name_en || getAppNameFallback());
+  const nameAr = (settings?.name_ar || '').trim();
+  const nameEn = (settings?.name_en || '').trim();
+  const displayName = locale === 'ar' ? nameAr || 'عطارة اهل الشام' : nameEn || 'Ahl Elsham';
 
   const isLoading = statsLoading || summaryLoading || productsLoading || categoriesLoading;
 
@@ -84,7 +89,7 @@ export default function ReportsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('generate')}</p>
+          <p className="text-muted-foreground">{t('generate', { name: displayName })}</p>
         </div>
         <DateRangePicker value={period} onChange={setPeriod} />
       </div>
