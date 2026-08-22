@@ -4,9 +4,11 @@ import { useCallback, useRef } from 'react';
 import Link from 'next/link';
 import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { LogOut } from 'lucide-react';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
+import { sidebarPeekNavContainer, sidebarPeekNavItem } from '@/lib/motion';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,12 +18,14 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { getDashboardNav, type DashboardNavItem } from '@/lib/navigation/dashboardNav';
 import { getNavTone } from '@/lib/navigation/dashboardNavTones';
 import { useSidebarCollapse } from '@/components/dashboard/sidebar/SidebarCollapseContext';
+import { SidebarHoverOverlay } from '@/components/dashboard/sidebar/SidebarHoverOverlay';
 
 const HOVER_LEAVE_DELAY_MS = 150;
 
 type SidebarPanelProps = {
   showLabels: boolean;
   compact: boolean;
+  staggerNavLabels?: boolean;
   name: string;
   logoUrl?: string | null;
   navItems: DashboardNavItem[];
@@ -30,9 +34,59 @@ type SidebarPanelProps = {
   onSignOut: () => Promise<void>;
 };
 
+function SidebarNavLink({
+  item,
+  isActive,
+  label,
+  showLabels,
+  compact,
+}: {
+  item: DashboardNavItem;
+  isActive: boolean;
+  label: string;
+  showLabels: boolean;
+  compact: boolean;
+}) {
+  const tone = getNavTone(item.key);
+  const Icon = item.icon;
+
+  return (
+    <Link
+      href={item.href}
+      aria-current={isActive ? 'page' : undefined}
+      aria-label={compact ? label : undefined}
+      title={compact ? label : undefined}
+      className={cn(
+        'flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
+        showLabels ? 'gap-3 px-3 py-2' : 'min-h-11 justify-center px-0 py-2',
+        isActive ? 'ring-foreground/15 ring-1' : 'hover:bg-muted/50'
+      )}
+    >
+      <span
+        className={cn(
+          'flex size-10 shrink-0 items-center justify-center rounded-xl',
+          tone.well,
+          isActive && 'shadow-md ring-2 ring-white/30 brightness-110'
+        )}
+        aria-hidden="true"
+      >
+        <Icon className="size-5 text-white" strokeWidth={1.5} />
+      </span>
+      {showLabels ? (
+        <span
+          className={cn('truncate font-medium', isActive ? tone.label : 'text-muted-foreground')}
+        >
+          {label}
+        </span>
+      ) : null}
+    </Link>
+  );
+}
+
 function SidebarPanel({
   showLabels,
   compact,
+  staggerNavLabels = false,
   name,
   logoUrl,
   navItems,
@@ -66,50 +120,50 @@ function SidebarPanel({
       </div>
 
       <ScrollArea className={cn('flex-1 py-4', compact ? 'px-1.5' : 'px-3')}>
-        <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-            const label = tSidebar(item.key);
-            const tone = getNavTone(item.key);
-            const Icon = item.icon;
+        {staggerNavLabels ? (
+          <motion.nav
+            className="space-y-1"
+            aria-label={tSidebar('dashboard')}
+            variants={sidebarPeekNavContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const label = tSidebar(item.key);
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? 'page' : undefined}
-                aria-label={compact ? label : undefined}
-                title={compact ? label : undefined}
-                className={cn(
-                  'flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
-                  showLabels ? 'gap-3 px-3 py-2' : 'min-h-11 justify-center px-0 py-2',
-                  isActive ? 'ring-foreground/15 ring-1' : 'hover:bg-muted/50'
-                )}
-              >
-                <span
-                  className={cn(
-                    'flex size-10 shrink-0 items-center justify-center rounded-xl',
-                    tone.well,
-                    isActive && 'shadow-md ring-2 ring-white/30 brightness-110'
-                  )}
-                  aria-hidden="true"
-                >
-                  <Icon className="size-5 text-white" strokeWidth={1.5} />
-                </span>
-                {showLabels ? (
-                  <span
-                    className={cn(
-                      'truncate font-medium',
-                      isActive ? tone.label : 'text-muted-foreground'
-                    )}
-                  >
-                    {label}
-                  </span>
-                ) : null}
-              </Link>
-            );
-          })}
-        </nav>
+              return (
+                <motion.div key={item.href} variants={sidebarPeekNavItem}>
+                  <SidebarNavLink
+                    item={item}
+                    isActive={isActive}
+                    label={label}
+                    showLabels={showLabels}
+                    compact={compact}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.nav>
+        ) : (
+          <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const label = tSidebar(item.key);
+
+              return (
+                <SidebarNavLink
+                  key={item.href}
+                  item={item}
+                  isActive={isActive}
+                  label={label}
+                  showLabels={showLabels}
+                  compact={compact}
+                />
+              );
+            })}
+          </nav>
+        )}
       </ScrollArea>
 
       <div className={cn('border-t', compact ? 'p-2' : 'p-4')}>
@@ -206,19 +260,20 @@ export function DashboardSidebar() {
         <SidebarPanel showLabels={false} compact {...panelProps} />
       </aside>
 
-      {isPeekOpen ? (
-        <aside
-          aria-expanded
-          className={cn(
-            'bg-background fixed inset-y-0 start-0 z-50 hidden w-64 border-r shadow-xl md:block',
-            prefersReducedMotion ? '' : 'motion-reduce:transition-none'
-          )}
-          onMouseEnter={handleHoverEnter}
-          onMouseLeave={handleHoverLeave}
-        >
-          <SidebarPanel showLabels compact={false} {...panelProps} />
-        </aside>
-      ) : null}
+      <SidebarHoverOverlay
+        open={isPeekOpen}
+        slideFrom={locale === 'ar' ? '100%' : '-100%'}
+        prefersReducedMotion={prefersReducedMotion}
+        onHoverEnter={handleHoverEnter}
+        onHoverLeave={handleHoverLeave}
+      >
+        <SidebarPanel
+          showLabels
+          compact={false}
+          staggerNavLabels={!prefersReducedMotion}
+          {...panelProps}
+        />
+      </SidebarHoverOverlay>
     </>
   );
 }
