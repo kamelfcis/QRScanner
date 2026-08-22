@@ -217,6 +217,9 @@ export function CheckoutCoupon({
         <TicketPercent className="h-5 w-5 text-[var(--menu-wine)]" aria-hidden="true" />
         <span className="font-medium">{t('haveCoupon')}</span>
       </button>
+      <p className="mt-1 text-xs leading-relaxed text-[var(--menu-ink-soft)]">
+        {t('offersNotCodesHint')}
+      </p>
 
       {open ? (
         <div className="mt-3 space-y-2">

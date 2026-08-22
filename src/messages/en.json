@@ -197,7 +197,8 @@
     "large": "Large",
     "priceFrom": "From {price}",
     "displayPromoHelper": "Display promo — not a checkout code",
-    "displayPromoBadge": "Promo banner"
+    "displayPromoBadge": "Promo banner",
+    "haveCodeAtCheckout": "Have a code? Apply at checkout"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -491,6 +492,7 @@
     "total": "Total",
     "prepEta": "Estimated prep time: ~{minutes} min",
     "haveCoupon": "Have a coupon?",
+    "offersNotCodesHint": "Menu banners are display only — enter a coupon code here for a discount.",
     "applyCoupon": "Apply",
     "couponApplying": "Checking...",
     "couponPlaceholder": "WELCOME10",

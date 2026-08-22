@@ -197,7 +197,8 @@
     "large": "Grand",
     "priceFrom": "À partir de {price}",
     "displayPromoHelper": "Promo affichée — pas un code de caisse",
-    "displayPromoBadge": "Bannière promo"
+    "displayPromoBadge": "Bannière promo",
+    "haveCodeAtCheckout": "Vous avez un code ? Appliquez-le au paiement"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -491,6 +492,7 @@
     "total": "Total",
     "prepEta": "Temps de préparation estimé : ~{minutes} min",
     "haveCoupon": "Vous avez un coupon ?",
+    "offersNotCodesHint": "Les bannières du menu sont affichées seulement — saisissez un code promo ici pour une réduction.",
     "applyCoupon": "Appliquer",
     "couponApplying": "Vérification…",
     "couponPlaceholder": "WELCOME10",

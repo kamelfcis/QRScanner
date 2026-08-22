@@ -197,7 +197,8 @@
     "large": "Groot",
     "priceFrom": "Vanaf {price}",
     "displayPromoHelper": "Weergavepromo — geen afrekencode",
-    "displayPromoBadge": "Promobanner"
+    "displayPromoBadge": "Promobanner",
+    "haveCodeAtCheckout": "Heb je een code? Pas toe bij afrekenen"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -491,6 +492,7 @@
     "total": "Totaal",
     "prepEta": "Geschatte bereidingstijd: ~{minutes} min",
     "haveCoupon": "Heb je een coupon?",
+    "offersNotCodesHint": "Menubanners zijn alleen ter weergave — vul hier een couponcode in voor korting.",
     "applyCoupon": "Toepassen",
     "couponApplying": "Controleren…",
     "couponPlaceholder": "WELCOME10",
