@@ -12,7 +12,6 @@ export const menuKeys = {
 export type MenuStats = {
   totalCategories: number;
   totalProducts: number;
-  totalGallery: number;
   totalOffers: number;
 };
 
@@ -29,17 +28,15 @@ export function useMenuStats() {
     queryFn: async () => {
       const supabase = createClient();
 
-      const [categoriesRes, productsRes, galleryRes, offersRes] = await Promise.all([
+      const [categoriesRes, productsRes, offersRes] = await Promise.all([
         supabase.from('categories').select('*', { count: 'exact', head: true }),
         supabase.from('products').select('*', { count: 'exact', head: true }),
-        supabase.from('gallery').select('*', { count: 'exact', head: true }),
         supabase.from('offers').select('*', { count: 'exact', head: true }),
       ]);
 
       const responses = [
         ['categories', categoriesRes],
         ['products', productsRes],
-        ['gallery', galleryRes],
         ['offers', offersRes],
       ] as const;
 
@@ -50,7 +47,6 @@ export function useMenuStats() {
       return {
         totalCategories: categoriesRes.count || 0,
         totalProducts: productsRes.count || 0,
-        totalGallery: galleryRes.count || 0,
         totalOffers: offersRes.count || 0,
       } satisfies MenuStats;
     },
