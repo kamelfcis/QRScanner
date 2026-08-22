@@ -256,7 +256,9 @@
     "settings": "Settings",
     "orders": "Orders",
     "coupons": "Coupons",
-    "logout": "Logout"
+    "logout": "Logout",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar"
   },
   "qr": {
     "title": "QR Codes",

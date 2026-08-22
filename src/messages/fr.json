@@ -256,7 +256,9 @@
     "settings": "Paramètres",
     "orders": "Commandes",
     "coupons": "Coupons",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "collapse": "Réduire le menu latéral",
+    "expand": "Développer le menu latéral"
   },
   "qr": {
     "title": "Codes QR",

@@ -256,7 +256,9 @@
     "settings": "Instellingen",
     "orders": "Bestellingen",
     "coupons": "Coupons",
-    "logout": "Uitloggen"
+    "logout": "Uitloggen",
+    "collapse": "Zijbalk inklappen",
+    "expand": "Zijbalk uitklappen"
   },
   "qr": {
     "title": "QR-codes",
