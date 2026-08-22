@@ -799,6 +799,8 @@
     "kitchenBoard": "لوحة المطبخ",
     "tableView": "عرض جدولي",
     "searchPlaceholder": "ابحث في الطلبات (/, f)",
+    "filtersLabel": "الفلاتر",
+    "clearFilters": "مسح المرشحات",
     "status": "الحالة",
     "allStatuses": "كل الحالات",
     "new": "جديد",

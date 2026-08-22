@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { cn, getName } from '@/lib/utils';
+import './orders.theme.css';
 import {
   formatCurrencyAmount,
   getRestaurantCurrency,
@@ -26,6 +27,8 @@ import {
   MessageCircle,
   RefreshCcw,
   Keyboard,
+  Calendar,
+  X,
 } from 'lucide-react';
 
 type OrderStatus = 'new' | 'in_prep' | 'ready' | 'done' | 'cancelled';
@@ -122,7 +125,7 @@ export default function OrdersPage() {
   const kpiTakeawayPercent = stats?.takeawayPercent ?? 0;
 
   return (
-    <div className="space-y-3">
+    <div data-orders-theme className="space-y-3">
       {/* Breadcrumbs + Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
         <Link
@@ -146,26 +149,131 @@ export default function OrdersPage() {
       {/* Toolbar */}
       <Card>
         <CardContent className="flex flex-col gap-2 p-3 sm:p-4">
+          {/* Professional filter bar — always visible */}
           <div className="flex flex-wrap items-center gap-2">
-            <div className="relative">
-              <Search className="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
-              <Input
-                ref={searchRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('searchPlaceholder')}
-                className="pl-8 text-sm"
-                aria-label={t('searchPlaceholder')}
-              />
+            {/* Search */}
+            <div className="flex items-center gap-2">
+              <div className="text-muted-foreground inline-flex items-center gap-1 text-xs font-semibold">
+                <Search className="h-4 w-4" />
+                <span>{tCommon('search')}</span>
+              </div>
+              <div className="relative">
+                <Search className="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
+                <Input
+                  ref={searchRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t('searchPlaceholder')}
+                  className="pl-8 text-sm"
+                  aria-label={t('searchPlaceholder')}
+                />
+              </div>
+              {query ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setQuery('')}
+                  aria-label={tCommon('clear')}
+                >
+                  <X className="mr-1.5 h-3.5 w-3.5" />
+                  {tCommon('clear')}
+                </Button>
+              ) : null}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setQuery('')}
-              aria-label={tCommon('clear')}
-            >
-              {tCommon('clear')}
-            </Button>
+
+            {/* Divider */}
+            <div className="bg-border mx-1 h-5 w-px" aria-hidden />
+
+            {/* Status */}
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="text-muted-foreground inline-flex items-center gap-1 text-xs font-semibold">
+                <Filter className="h-4 w-4" />
+                <span>{t('status')}</span>
+              </div>
+              <ScrollableChipRow
+                className="gap-1"
+                ariaLabel={t('status')}
+                scrollPrevLabel={tDash('paginationPrevious')}
+                scrollNextLabel={tDash('paginationNext')}
+              >
+                <Chip
+                  icon={Filter}
+                  label={t('allStatuses')}
+                  selected={statusFilter === 'all'}
+                  onClick={() => setStatusFilter('all')}
+                />
+                <Chip
+                  label={t('new')}
+                  selected={statusFilter === 'new'}
+                  onClick={() => setStatusFilter('new')}
+                  tone="info"
+                />
+                <Chip
+                  label={t('inPrep')}
+                  selected={statusFilter === 'in_prep'}
+                  onClick={() => setStatusFilter('in_prep')}
+                  tone="warning"
+                />
+                <Chip
+                  label={t('ready')}
+                  selected={statusFilter === 'ready'}
+                  onClick={() => setStatusFilter('ready')}
+                  tone="success"
+                />
+                <Chip
+                  label={t('done')}
+                  selected={statusFilter === 'done'}
+                  onClick={() => setStatusFilter('done')}
+                  tone="muted"
+                />
+                <Chip
+                  label={t('cancelled')}
+                  selected={statusFilter === 'cancelled'}
+                  onClick={() => setStatusFilter('cancelled')}
+                  tone="danger"
+                />
+              </ScrollableChipRow>
+            </div>
+
+            {/* Divider */}
+            <div className="bg-border mx-1 h-5 w-px" aria-hidden />
+
+            {/* Fulfillment */}
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="text-muted-foreground inline-flex items-center gap-1 text-xs font-semibold">
+                {/* reusing Filter icon to avoid extra imports */}
+                <span>{t('fulfillment')}</span>
+              </div>
+              <ScrollableChipRow
+                className="gap-1"
+                ariaLabel={t('fulfillment')}
+                scrollPrevLabel={tDash('paginationPrevious')}
+                scrollNextLabel={tDash('paginationNext')}
+              >
+                <Chip
+                  label={t('dining')}
+                  selected={fulfillmentFilter === 'dining'}
+                  onClick={() => setFulfillmentFilter('dining')}
+                />
+                <Chip
+                  label={t('pickup')}
+                  selected={fulfillmentFilter === 'pickup'}
+                  onClick={() => setFulfillmentFilter('pickup')}
+                />
+                <Chip
+                  label={t('delivery')}
+                  selected={fulfillmentFilter === 'delivery'}
+                  onClick={() => setFulfillmentFilter('delivery')}
+                />
+                <Chip
+                  label={tCommon('all')}
+                  selected={fulfillmentFilter === 'all'}
+                  onClick={() => setFulfillmentFilter('all')}
+                />
+              </ScrollableChipRow>
+            </div>
+
+            {/* Actions — on the far edge */}
             <div className="ml-auto flex items-center gap-2">
               <Button variant="ghost" size="sm" aria-label={t('shortcuts')}>
                 <Keyboard className="mr-2 h-4 w-4" />
@@ -177,70 +285,23 @@ export default function OrdersPage() {
               </Button>
             </div>
           </div>
-          <ScrollableChipRow
-            className="gap-1"
-            ariaLabel={t('status')}
-            scrollPrevLabel={tDash('paginationPrevious')}
-            scrollNextLabel={tDash('paginationNext')}
-          >
-            <Chip
-              icon={Filter}
-              label={t('allStatuses')}
-              selected={statusFilter === 'all'}
-              onClick={() => setStatusFilter('all')}
-            />
-            <Chip
-              label={t('new')}
-              selected={statusFilter === 'new'}
-              onClick={() => setStatusFilter('new')}
-              tone="info"
-            />
-            <Chip
-              label={t('inPrep')}
-              selected={statusFilter === 'in_prep'}
-              onClick={() => setStatusFilter('in_prep')}
-              tone="warning"
-            />
-            <Chip
-              label={t('ready')}
-              selected={statusFilter === 'ready'}
-              onClick={() => setStatusFilter('ready')}
-              tone="success"
-            />
-            <Chip
-              label={t('done')}
-              selected={statusFilter === 'done'}
-              onClick={() => setStatusFilter('done')}
-              tone="muted"
-            />
-            <Chip
-              label={t('cancelled')}
-              selected={statusFilter === 'cancelled'}
-              onClick={() => setStatusFilter('cancelled')}
-              tone="danger"
-            />
-            <div className="bg-border mx-2 h-5 w-px" aria-hidden />
-            <Chip
-              label={t('dining')}
-              selected={fulfillmentFilter === 'dining'}
-              onClick={() => setFulfillmentFilter('dining')}
-            />
-            <Chip
-              label={t('pickup')}
-              selected={fulfillmentFilter === 'pickup'}
-              onClick={() => setFulfillmentFilter('pickup')}
-            />
-            <Chip
-              label={t('delivery')}
-              selected={fulfillmentFilter === 'delivery'}
-              onClick={() => setFulfillmentFilter('delivery')}
-            />
-            <Chip
-              label={tCommon('all')}
-              selected={fulfillmentFilter === 'all'}
-              onClick={() => setFulfillmentFilter('all')}
-            />
-          </ScrollableChipRow>
+
+          {/* Active filters summary */}
+          <ActiveFiltersBar
+            query={query}
+            statusFilter={statusFilter}
+            fulfillmentFilter={fulfillmentFilter}
+            onClearAll={() => {
+              setQuery('');
+              setStatusFilter('all');
+              setFulfillmentFilter('all');
+            }}
+            onClearQuery={() => setQuery('')}
+            onClearStatus={() => setStatusFilter('all')}
+            onClearFulfillment={() => setFulfillmentFilter('all')}
+            t={t}
+            tCommon={tCommon}
+          />
 
           <Tabs value={view} onValueChange={(v) => setView(v as 'board' | 'table')}>
             <TabsList className="h-8">
@@ -286,19 +347,19 @@ function KPI({
 }) {
   const toneClasses =
     tone === 'success'
-      ? 'bg-emerald-500/10 text-emerald-700'
+      ? 'kpi--success'
       : tone === 'warning'
-        ? 'bg-amber-500/10 text-amber-700'
+        ? 'kpi--warning'
         : tone === 'danger'
-          ? 'bg-rose-500/10 text-rose-700'
-          : 'bg-sky-500/10 text-sky-700';
+          ? 'kpi--danger'
+          : 'kpi--info';
   return (
     <Card>
       <CardHeader className="space-y-0 p-3 sm:p-4">
         <CardTitle className="text-muted-foreground text-xs font-medium">{title}</CardTitle>
       </CardHeader>
       <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
-        <div className={cn('text-xl font-bold tabular-nums', toneClasses)}>
+        <div className={cn('text-xl font-bold tabular-nums rounded-md px-2 py-1', toneClasses)}>
           <span dir="ltr">{value}</span>
           {suffix ? <span className="ml-1 text-sm">{suffix}</span> : null}
         </div>
@@ -321,29 +382,19 @@ function Chip({
   icon?: ComponentType<{ className?: string }>;
 }) {
   const base =
-    'rounded-md border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-2';
-  const classes =
+    'chip inline-flex items-center gap-1 text-xs font-medium transition-colors focus-visible:outline-2';
+  const toneClass =
     tone === 'success'
-      ? selected
-        ? 'border-emerald-600 bg-emerald-600 text-white'
-        : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+      ? 'chip--success'
       : tone === 'warning'
-        ? selected
-          ? 'border-amber-600 bg-amber-600 text-white'
-          : 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100'
+        ? 'chip--warning'
         : tone === 'danger'
-          ? selected
-            ? 'border-rose-600 bg-rose-600 text-white'
-            : 'border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100'
+          ? 'chip--danger'
           : tone === 'muted'
-            ? selected
-              ? 'border-muted-foreground bg-muted-foreground text-white'
-              : 'border-border bg-muted/30 text-muted-foreground hover:bg-muted/50'
-            : selected
-              ? 'border-sky-600 bg-sky-600 text-white'
-              : 'border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100';
+            ? 'chip--muted'
+            : 'chip--info';
   return (
-    <button type="button" className={cn(base, classes)} aria-pressed={selected} onClick={onClick}>
+    <button type="button" className={cn(base, toneClass)} aria-pressed={selected} onClick={onClick}>
       {Icon ? <Icon className="mr-1 h-3.5 w-3.5" /> : null}
       {label}
     </button>
@@ -395,7 +446,7 @@ function OrderBoard({
       {columns.map((col) => {
         const colOrders = orders.filter((o) => o.status === col.key);
         return (
-          <Card key={col.key} className="min-h-[200px]">
+          <Card key={col.key} className={cn('min-h-[200px]', 'col-accent', `col--${col.tone}`)}>
             <CardHeader className="p-3">
               <CardTitle className="flex items-center justify-between text-sm">
                 <span>{col.title}</span>
@@ -554,20 +605,83 @@ function OrderTable({
 }
 
 function OrderStatusBadge({ status, t }: { status: OrderStatus; t: (k: string) => string }) {
-  const map: Record<OrderStatus, { label: string; className: string }> = {
-    new: { label: t('new'), className: 'bg-sky-500/10 text-sky-700 border-sky-200' },
-    in_prep: { label: t('inPrep'), className: 'bg-amber-500/10 text-amber-700 border-amber-200' },
-    ready: {
-      label: t('ready'),
-      className: 'bg-emerald-500/10 text-emerald-700 border-emerald-200',
-    },
-    done: { label: t('done'), className: 'bg-muted/50 text-muted-foreground border-border' },
-    cancelled: { label: t('cancelled'), className: 'bg-rose-500/10 text-rose-700 border-rose-200' },
+  const map: Record<OrderStatus, { label: string; tone: 'info' | 'warning' | 'success' | 'muted' | 'danger' }> = {
+    new: { label: t('new'), tone: 'info' },
+    in_prep: { label: t('inPrep'), tone: 'warning' },
+    ready: { label: t('ready'), tone: 'success' },
+    done: { label: t('done'), tone: 'muted' },
+    cancelled: { label: t('cancelled'), tone: 'danger' },
   };
-  const { label, className } = map[status];
+  const { label, tone } = map[status];
   return (
-    <span className={cn('rounded-md border px-2 py-0.5 text-xs font-medium', className)}>
+    <span className={cn('status-badge', `status--${tone}`)}>
       {label}
     </span>
+  );
+}
+
+function ActiveFiltersBar({
+  query,
+  statusFilter,
+  fulfillmentFilter,
+  onClearAll,
+  onClearQuery,
+  onClearStatus,
+  onClearFulfillment,
+  t,
+  tCommon,
+}: {
+  query: string;
+  statusFilter: OrderStatus | 'all';
+  fulfillmentFilter: 'all' | 'dining' | 'pickup' | 'delivery';
+  onClearAll: () => void;
+  onClearQuery: () => void;
+  onClearStatus: () => void;
+  onClearFulfillment: () => void;
+  t: (k: string, values?: Record<string, unknown>) => string;
+  tCommon: (k: string, values?: Record<string, unknown>) => string;
+}) {
+  const active: { key: string; label: string; onClear: () => void }[] = [];
+  if (query) active.push({ key: 'q', label: `${tCommon('search')}: "${query}"`, onClear: onClearQuery });
+  if (statusFilter !== 'all') active.push({ key: 's', label: `${t('status')}: ${t(statusFilter)}`, onClear: onClearStatus });
+  if (fulfillmentFilter !== 'all')
+    active.push({
+      key: 'f',
+      label: `${t('fulfillment')}: ${
+        fulfillmentFilter === 'dining' ? t('dining') : fulfillmentFilter === 'delivery' ? t('delivery') : t('pickup')
+      }`,
+      onClear: onClearFulfillment,
+    });
+  const count = active.length;
+  if (count === 0) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="text-muted-foreground inline-flex items-center gap-1 text-xs font-semibold">
+        <Filter className="h-4 w-4" />
+        <span>{t('filtersLabel', { count })}</span>
+        <Badge className="ml-1" variant="secondary">
+          {count}
+        </Badge>
+      </div>
+      <ul className="flex flex-wrap items-center gap-1">
+        {active.map((f) => (
+          <li key={f.key}>
+            <button
+              type="button"
+              className="chip chip--info inline-flex items-center gap-1 text-xs"
+              onClick={f.onClear}
+              aria-label={tCommon('remove')}
+              title={tCommon('remove')}
+            >
+              {f.label}
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <Button variant="ghost" size="sm" onClick={onClearAll} className="ml-auto h-7 text-xs">
+        {t('clearFilters', { default: 'Clear filters' } as any)}
+      </Button>
+    </div>
   );
 }
