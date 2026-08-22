@@ -120,6 +120,9 @@ export function useDashboardStats() {
         activeUsers: activeUsersRes.count || 0,
         diningPercent,
         takeawayPercent,
+        todaysOrders: totalOrders,
+        todaysDiningOrders: diningRes.count || 0,
+        todaysTakeawayOrders: takeawayRes.count || 0,
       } as DashboardStats;
     },
     refetchInterval: 30000,

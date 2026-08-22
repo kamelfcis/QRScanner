@@ -309,6 +309,10 @@ export interface DashboardStats {
   activeUsers: number;
   diningPercent: number;
   takeawayPercent: number;
+  /** Additional metrics for operator dashboards (optional presence). */
+  todaysOrders?: number;
+  todaysDiningOrders?: number;
+  todaysTakeawayOrders?: number;
 }
 
 export interface AnalyticsSummary {

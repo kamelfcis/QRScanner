@@ -8,6 +8,7 @@ import {
   MessageSquareQuote,
   BarChart3,
   FileText,
+  ShoppingBag,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -20,6 +21,7 @@ export interface DashboardNavItem {
 /** Single source of truth for sidebar + mobile sheet nav */
 export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { key: 'orders', href: '/dashboard/orders', icon: ShoppingBag },
   { key: 'analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { key: 'reports', href: '/dashboard/reports', icon: FileText },
   { key: 'menu', href: '/dashboard/menu', icon: Menu },
