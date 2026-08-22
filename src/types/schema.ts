@@ -310,6 +310,14 @@ export type CouponInput = z.infer<typeof couponSchema>;
 
 export type PlaceOrderInput = z.infer<typeof placeOrderSchema>;
 
+export const customerOrderStatusSchema = z.object({
+  order_number: z.string().trim().min(1).max(32),
+  customer_phone: z.string().trim().min(4).max(40),
+  phone_country: z.string().length(2).optional(),
+});
+
+export type CustomerOrderStatusInput = z.infer<typeof customerOrderStatusSchema>;
+
 export const updateOrderStatusSchema = z.object({
   status: orderStatusSchema,
 });
