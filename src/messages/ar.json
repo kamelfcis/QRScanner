@@ -800,8 +800,11 @@
   },
   "offers": {
     "title": "العروض",
+    "eyebrow": "القائمة · العروض",
+    "description": "أنشئ وجدولة العروض الترويجية لقائمتك.",
     "searchPlaceholder": "ابحث في العروض...",
     "noOffers": "لم يتم العثور على عروض",
+    "emptyDescription": "أضف أول عرض للترويج للعروض الخاصة في القائمة.",
     "addOffer": "إضافة عرض",
     "editOffer": "تعديل العرض",
     "deleteOffer": "حذف العرض",
@@ -811,10 +814,17 @@
     "descriptionEn": "الوصف (إنجليزي)",
     "descriptionAr": "الوصف (عربي)",
     "discountPercent": "نسبة الخصم %",
+    "discountType": "نوع الخصم",
+    "discountTypePercent": "نسبة مئوية",
+    "discountTypeFixed": "مبلغ ثابت ({currency})",
     "validFrom": "الصلاحية من",
     "validUntil": "الصلاحية حتى",
     "addImage": "إضافة صورة",
-    "active": "نشط"
+    "image": "الصورة",
+    "active": "نشط",
+    "statsLabel": "إحصاءات العروض",
+    "statTotal": "إجمالي العروض",
+    "statActive": "نشطة"
   },
   "reports": {
     "title": "التقارير",
