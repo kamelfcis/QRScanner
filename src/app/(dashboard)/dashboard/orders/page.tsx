@@ -79,6 +79,7 @@ export default function OrdersPage() {
     'all' | 'dining' | 'pickup' | 'delivery'
   >('all');
   const [view, setView] = useState<'board' | 'table'>('board');
+  const [topTab, setTopTab] = useState<'today' | 'cancelled'>('today');
 
   // Search shortcut: / or f focuses the search
   const searchRef = useRef<HTMLInputElement>(null);
@@ -103,6 +104,7 @@ export default function OrdersPage() {
 
   const filtered = useMemo(() => {
     return orders.filter((o) => {
+      const matchesTopTab = topTab === 'today' ? true : o.status === 'cancelled';
       const matchesQuery =
         !query ||
         o.id.toLowerCase().includes(query.toLowerCase()) ||
@@ -115,9 +117,9 @@ export default function OrdersPage() {
           : fulfillmentFilter === 'dining'
             ? o.diningMode === 'dining'
             : o.diningMode === 'takeaway' && o.fulfillment === fulfillmentFilter;
-      return matchesQuery && matchesStatus && matchesFulfillment;
+      return matchesTopTab && matchesQuery && matchesStatus && matchesFulfillment;
     });
-  }, [orders, query, statusFilter, fulfillmentFilter]);
+  }, [orders, query, statusFilter, fulfillmentFilter, topTab]);
 
   const kpiTodayOrders = stats?.todaysOrders ?? 0;
   const kpiDiningPercent = stats?.diningPercent ?? 0;
@@ -125,17 +127,93 @@ export default function OrdersPage() {
 
   return (
     <div data-orders-theme className="space-y-3">
-      {/* Breadcrumbs + Toolbar */}
-      <div className="flex flex-wrap items-center gap-2">
-        <Link
-          href="/dashboard"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center text-sm focus-visible:outline-2"
+      {/* Header */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-muted-foreground text-xs font-semibold uppercase tracking-[0.18em]">
+            {t('kitchenBoard')}
+          </p>
+          <h1 className="font-heading mt-1 flex items-center gap-2 text-2xl font-semibold">
+            <span>{t('title')}</span>
+            <span
+              className="live-indicator inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium"
+              aria-label={locale === 'ar' ? 'مباشر' : 'Live'}
+              title={locale === 'ar' ? 'مباشر' : 'Live'}
+            >
+              <span className="relative inline-flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-500 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              <span>{t('live')}</span>
+            </span>
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">{t('noOrdersHint')}</p>
+        </div>
+        {/* Segmented control: Today / Cancelled */}
+        <div
+          className="segmented inline-flex items-center rounded-full p-1"
+          role="tablist"
+          aria-label={t('title')}
         >
-          <ArrowLeft className="mx-1 h-4 w-4" />
-          {tSidebar('dashboard')}
-        </Link>
-        <ChevronRight className="text-muted-foreground h-4 w-4" aria-hidden="true" />
-        <h1 className="font-heading text-xl font-bold">{t('title')}</h1>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={topTab === 'today'}
+            className="segmented__btn inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium"
+            onClick={() => {
+              setTopTab('today');
+              setStatusFilter('all');
+            }}
+          >
+            {/* Calendar icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              aria-hidden="true"
+            >
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+              <line x1="16" x2="16" y1="2" y2="6" />
+              <line x1="8" x2="8" y1="2" y2="6" />
+              <line x1="3" x2="21" y1="10" y2="10" />
+            </svg>
+            <span className="ltr:ml-0 rtl:mr-0">{t('today')}</span>
+            <CountBadge count={orders.length} />
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={topTab === 'cancelled'}
+            className="segmented__btn inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium"
+            onClick={() => {
+              setTopTab('cancelled');
+              setStatusFilter('all');
+            }}
+          >
+            {/* Ban icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="m4.9 4.9 14.2 14.2" />
+            </svg>
+            <span className="ltr:ml-0 rtl:mr-0">{t('cancelled')}</span>
+            <CountBadge count={orders.filter((o) => o.status === 'cancelled').length} />
+          </button>
+        </div>
       </div>
 
       {/* KPIs */}
@@ -330,6 +408,18 @@ export default function OrdersPage() {
         />
       )}
     </div>
+  );
+}
+
+function CountBadge({ count }: { count?: number }) {
+  if (typeof count !== 'number') return null;
+  return (
+    <span
+      className="segmented__count ml-1 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1 text-[10px] tabular-nums"
+      aria-hidden="true"
+    >
+      {count}
+    </span>
   );
 }
 

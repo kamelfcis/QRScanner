@@ -814,6 +814,7 @@
     "pickup": "Pickup",
     "delivery": "Delivery",
     "today": "Today",
+    "live": "Live",
     "kpisToday": "Today",
     "ordersToday": "Orders today",
     "diningOrders": "Dining",
