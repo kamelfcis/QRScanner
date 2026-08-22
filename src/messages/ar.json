@@ -197,7 +197,8 @@
     "large": "كبير",
     "priceFrom": "من {price}",
     "displayPromoHelper": "عرض يظهر للزبائن — ليس كود خصم",
-    "displayPromoBadge": "بانر ترويجي"
+    "displayPromoBadge": "بانر ترويجي",
+    "haveCodeAtCheckout": "لديك كود؟ طبّقه عند إتمام الطلب"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -491,6 +492,7 @@
     "total": "الإجمالي",
     "prepEta": "وقت التحضير المتوقع: ~{minutes} دقيقة",
     "haveCoupon": "هل لديك كوبون؟",
+    "offersNotCodesHint": "بانرات القائمة للعرض فقط — أدخل كود الخصم هنا للحصول على تخفيض.",
     "applyCoupon": "تطبيق",
     "couponApplying": "جاري التحقق...",
     "couponPlaceholder": "WELCOME10",

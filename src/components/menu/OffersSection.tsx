@@ -1,13 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useActiveOffers } from '@/hooks/useOffers';
-import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { Image } from '@/components/shared/Image';
 import { MotionSection } from '@/components/shared/motion';
 import { Badge } from '@/components/ui/badge';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { useCartStore } from '@/stores/cart-store';
 import { cn, getName } from '@/lib/utils';
 import {
   formatCurrencyAmount,
@@ -19,6 +21,39 @@ import { staggerContainer, staggerItem } from '@/lib/motion';
 interface OffersSectionProps {
   /** Compact chip strip when a category is selected */
   compact?: boolean;
+}
+
+function CouponCheckoutHint({ className }: { className?: string }) {
+  const t = useTranslations('menu');
+  const { data: features } = useFeatureSettings();
+  const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const couponsEnabled = features?.coupons === true;
+
+  if (!couponsEnabled) return null;
+
+  const label = t('haveCodeAtCheckout');
+
+  if (cartCount > 0) {
+    return (
+      <Link
+        href="/checkout"
+        className={cn(
+          'inline-flex min-h-11 max-w-full touch-manipulation items-center text-[10px] leading-tight text-[var(--menu-wine)] underline-offset-4 hover:underline sm:text-xs',
+          className
+        )}
+      >
+        {label}
+      </Link>
+    );
+  }
+
+  return (
+    <p
+      className={cn('text-[10px] leading-tight text-[var(--menu-ink-soft)] sm:text-xs', className)}
+    >
+      {label}
+    </p>
+  );
 }
 
 export function OffersSection({ compact = false }: OffersSectionProps) {
@@ -36,12 +71,13 @@ export function OffersSection({ compact = false }: OffersSectionProps) {
     return (
       <section className="border-b border-[var(--menu-line)] bg-[var(--menu-surface)]">
         <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-5">
-          <div className="mb-1.5 flex items-center gap-2">
+          <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
             <p className="menu-eyebrow shrink-0 text-[var(--menu-ink-soft)]">{t('offers')}</p>
-            <span aria-hidden className="menu-rule h-px flex-1" />
+            <span aria-hidden className="menu-rule hidden h-px flex-1 sm:block" />
             <p className="text-[10px] leading-tight text-[var(--menu-ink-soft)] sm:text-xs">
               {t('displayPromoHelper')}
             </p>
+            <CouponCheckoutHint className="ms-auto" />
           </div>
           <div className="scrollbar-none flex gap-2 overflow-x-auto pb-0.5">
             {offers.map((offer) => {
@@ -81,7 +117,10 @@ export function OffersSection({ compact = false }: OffersSectionProps) {
           </h2>
           <span aria-hidden className="menu-rule h-px flex-1" />
         </div>
-        <p className="mb-3 text-xs text-[var(--menu-ink-soft)]">{t('displayPromoHelper')}</p>
+        <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <p className="text-xs text-[var(--menu-ink-soft)]">{t('displayPromoHelper')}</p>
+          <CouponCheckoutHint />
+        </div>
         <motion.div
           initial={prefersReducedMotion ? undefined : 'hidden'}
           whileInView="visible"
