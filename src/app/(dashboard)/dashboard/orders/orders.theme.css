@@ -177,3 +177,28 @@
   background: color-mix(in srgb, var(--orders-info-bg) 60%, transparent);
 }
 
+/* Segmented control (Today / Cancelled) */
+[data-orders-theme] .segmented {
+  background: var(--muted);
+  border: 1px solid var(--border);
+}
+[data-orders-theme] .segmented__btn {
+  color: var(--foreground);
+}
+[data-orders-theme] .segmented__btn[aria-selected='true'] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+[data-orders-theme] .segmented__count {
+  color: var(--orders-muted-fg);
+  background: var(--orders-muted-bg);
+  border: 1px solid var(--orders-muted-brd);
+}
+
+/* Live indicator subtle border tweak for theming harmony */
+[data-orders-theme] .live-indicator {
+  border-color: var(--orders-info-brd);
+  background: color-mix(in srgb, var(--orders-info-bg) 30%, transparent);
+}
+
