@@ -800,8 +800,11 @@
   },
   "offers": {
     "title": "Offers",
+    "eyebrow": "Menu · Offers",
+    "description": "Create and schedule promotional offers for your menu.",
     "searchPlaceholder": "Search offers...",
     "noOffers": "No offers found",
+    "emptyDescription": "Add your first offer to promote specials on the menu.",
     "addOffer": "Add Offer",
     "editOffer": "Edit Offer",
     "deleteOffer": "Delete Offer",
@@ -811,10 +814,17 @@
     "descriptionEn": "Description (English)",
     "descriptionAr": "Description (Arabic)",
     "discountPercent": "Discount %",
+    "discountType": "Discount type",
+    "discountTypePercent": "Percentage",
+    "discountTypeFixed": "Fixed ({currency})",
     "validFrom": "Valid From",
     "validUntil": "Valid Until",
     "addImage": "Add Image",
-    "active": "Active"
+    "image": "Image",
+    "active": "Active",
+    "statsLabel": "Offer counts",
+    "statTotal": "Total offers",
+    "statActive": "Active"
   },
   "reports": {
     "title": "Reports",

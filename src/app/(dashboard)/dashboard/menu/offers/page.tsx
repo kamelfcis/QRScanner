@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   useAllOffers,
   useCreateOffer,
@@ -25,17 +25,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight, Upload } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Image } from '@/components/shared/Image';
-import { format } from 'date-fns';
+import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import type { Offer, OfferInput } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { getRestaurantCurrency } from '@/lib/order/format-currency';
 import { useRestaurantSettings } from '@/hooks/useSettings';
+import { OffersCommandHeader } from '@/components/dashboard/menu/OffersCommandHeader';
+import { OffersList } from '@/components/dashboard/menu/OffersList';
 
 const defaultFormData: OfferInput = {
   title_en: '',
@@ -67,6 +65,12 @@ export default function OffersPage() {
   const updateOffer = useUpdateOffer();
   const deleteOffer = useDeleteOffer();
   const toggleOffer = useToggleOfferActive();
+
+  const totalCount = offers?.length ?? 0;
+  const activeCount = useMemo(
+    () => offers?.filter((offer) => offer.is_active).length ?? 0,
+    [offers]
+  );
 
   const openCreateDialog = () => {
     setEditingOffer(null);
@@ -152,122 +156,26 @@ export default function OffersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('searchPlaceholder')}</p>
-        </div>
-        <Button onClick={openCreateDialog}>
-          <Plus className="mr-2 h-4 w-4" />
-          {t('addOffer')}
-        </Button>
-      </div>
+      <OffersCommandHeader
+        totalCount={totalCount}
+        activeCount={activeCount}
+        onAddOffer={openCreateDialog}
+      />
 
       {!offers?.length ? (
         <EmptyState
           title={t('noOffers')}
-          description={t('searchPlaceholder')}
+          description={t('emptyDescription')}
           action={{ label: t('addOffer'), onClick: openCreateDialog }}
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {offers.map((offer) => (
-            <Card key={offer.id} className="overflow-hidden">
-              {offer.image_url && (
-                <div className="aspect-video w-full overflow-hidden">
-                  <Image
-                    src={offer.image_url}
-                    alt={offer.title_en}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-              )}
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="text-lg">{offer.title_en}</CardTitle>
-                    <p className="text-muted-foreground text-sm" dir="rtl">
-                      {offer.title_ar}
-                    </p>
-                  </div>
-                  <Badge variant={offer.is_active ? 'default' : 'secondary'}>
-                    {offer.is_active ? tCommon('active') : tCommon('inactive')}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {offer.description_en && (
-                  <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">
-                    {offer.description_en}
-                  </p>
-                )}
-                <div className="mb-4 flex items-center gap-4">
-                  <div>
-                    <p className="text-muted-foreground text-xs">{tCommon('discount')}</p>
-                    <p className="text-primary font-semibold">
-                      {offer.discount_type === 'percentage'
-                        ? `${offer.discount_value}%`
-                        : formatCurrencyAmount(offer.discount_value, currency, { plain: true })}
-                    </p>
-                  </div>
-                  {offer.start_date && (
-                    <div>
-                      <p className="text-muted-foreground text-xs">{t('validFrom')}</p>
-                      <p className="text-sm">{format(new Date(offer.start_date), 'MMM d, yyyy')}</p>
-                    </div>
-                  )}
-                  {offer.end_date && (
-                    <div>
-                      <p className="text-muted-foreground text-xs">{t('validUntil')}</p>
-                      <p className="text-sm">{format(new Date(offer.end_date), 'MMM d, yyyy')}</p>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() =>
-                      toggleOffer.mutate({ id: offer.id, is_active: !offer.is_active })
-                    }
-                    aria-label={
-                      offer.is_active
-                        ? `Deactivate ${offer.title_en}`
-                        : `Activate ${offer.title_en}`
-                    }
-                  >
-                    {offer.is_active ? (
-                      <ToggleRight className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <ToggleLeft className="text-muted-foreground h-4 w-4" />
-                    )}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() => openEditDialog(offer)}
-                    aria-label={`${tCommon('edit')} ${offer.title_en}`}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-destructive h-8 w-8"
-                    onClick={() => setDeleteId(offer.id)}
-                    aria-label={`${tCommon('delete')} ${offer.title_en}`}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <OffersList
+          offers={offers}
+          currency={currency}
+          onEdit={openEditDialog}
+          onDelete={setDeleteId}
+          onToggle={(offer) => toggleOffer.mutate({ id: offer.id, is_active: !offer.is_active })}
+        />
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -276,11 +184,12 @@ export default function OffersPage() {
             <DialogTitle>{editingOffer ? t('editOffer') : t('addOffer')}</DialogTitle>
             <DialogDescription>{editingOffer ? t('editOffer') : t('addOffer')}</DialogDescription>
           </DialogHeader>
-          <div className="max-h-[60vh] space-y-4 overflow-y-auto pr-2">
+          <div className="max-h-[60vh] space-y-4 overflow-y-auto pe-2">
             <div className="space-y-2">
               <Label htmlFor="title_en">{t('titleEn')} *</Label>
               <Input
                 id="title_en"
+                className="min-h-11"
                 value={formData.title_en}
                 onChange={(e) => setFormData((prev) => ({ ...prev, title_en: e.target.value }))}
               />
@@ -290,6 +199,7 @@ export default function OffersPage() {
               <Input
                 id="title_ar"
                 dir="rtl"
+                className="min-h-11"
                 value={formData.title_ar}
                 onChange={(e) => setFormData((prev) => ({ ...prev, title_ar: e.target.value }))}
               />
@@ -316,15 +226,16 @@ export default function OffersPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Image</Label>
-              <div className="flex items-center gap-2">
+              <Label>{t('image')}</Label>
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   type="button"
                   variant="outline"
+                  className="min-h-11"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
                 >
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Upload className="me-2 h-4 w-4" />
                   {uploading ? tCommon('uploading') : t('addImage')}
                 </Button>
                 <input
@@ -334,32 +245,32 @@ export default function OffersPage() {
                   className="hidden"
                   onChange={handleImageUpload}
                 />
-                {formData.image_url && (
+                {formData.image_url ? (
                   <span className="text-muted-foreground text-xs">{tCommon('upload')}</span>
-                )}
+                ) : null}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label>Discount Type</Label>
-                <div className="flex gap-2">
+                <Label>{t('discountType')}</Label>
+                <div className="flex flex-wrap gap-2">
                   <Button
                     type="button"
                     variant={formData.discount_type === 'percentage' ? 'default' : 'outline'}
-                    size="sm"
+                    className="min-h-11"
                     onClick={() =>
                       setFormData((prev) => ({ ...prev, discount_type: 'percentage' }))
                     }
                   >
-                    Percentage
+                    {t('discountTypePercent')}
                   </Button>
                   <Button
                     type="button"
                     variant={formData.discount_type === 'fixed' ? 'default' : 'outline'}
-                    size="sm"
+                    className="min-h-11"
                     onClick={() => setFormData((prev) => ({ ...prev, discount_type: 'fixed' }))}
                   >
-                    Fixed ({currency})
+                    {t('discountTypeFixed', { currency })}
                   </Button>
                 </div>
               </div>
@@ -370,6 +281,7 @@ export default function OffersPage() {
                   type="number"
                   min="0"
                   max={formData.discount_type === 'percentage' ? 100 : undefined}
+                  className="min-h-11"
                   value={formData.discount_value}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -380,12 +292,13 @@ export default function OffersPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="start_date">{t('validFrom')}</Label>
                 <Input
                   id="start_date"
                   type="date"
+                  className="min-h-11"
                   value={formData.start_date || ''}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, start_date: e.target.value || null }))
@@ -397,6 +310,7 @@ export default function OffersPage() {
                 <Input
                   id="end_date"
                   type="date"
+                  className="min-h-11"
                   value={formData.end_date || ''}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, end_date: e.target.value || null }))
@@ -404,7 +318,7 @@ export default function OffersPage() {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex min-h-11 items-center justify-between gap-3">
               <Label htmlFor="is_active">{t('active')}</Label>
               <Switch
                 id="is_active"
@@ -416,10 +330,11 @@ export default function OffersPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+            <Button variant="outline" className="min-h-11" onClick={() => setDialogOpen(false)}>
               {tCommon('cancel')}
             </Button>
             <Button
+              className="min-h-11"
               onClick={handleSubmit}
               disabled={createOffer.isPending || updateOffer.isPending || uploading}
             >
