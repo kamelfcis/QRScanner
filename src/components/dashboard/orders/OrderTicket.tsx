@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   ChevronDown,
@@ -108,8 +108,11 @@ export function OrderTicket({
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
   const [flipped, setFlipped] = useState(false);
   const [receiptBusy, setReceiptBusy] = useState(false);
+  const [receiptScale, setReceiptScale] = useState(1);
+  const [receiptWellHeight, setReceiptWellHeight] = useState<number>();
   const flipBackRef = useRef<HTMLButtonElement>(null);
   const frontPrintRef = useRef<HTMLButtonElement>(null);
+  const wellRef = useRef<HTMLDivElement>(null);
   const hadFlipped = useRef(false);
 
   const nextStatus: OrderStatus | null =
@@ -160,6 +163,27 @@ export function OrderTicket({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [flipped]);
 
+  useLayoutEffect(() => {
+    if (!flipped) return;
+    const well = wellRef.current;
+    if (!well) return;
+
+    const measure = () => {
+      const slip = document.getElementById(receiptDomId(order.id));
+      if (!slip) return;
+      const nextScale = Math.min(1, well.clientWidth / (slip.scrollWidth || 1));
+      setReceiptScale(nextScale);
+      setReceiptWellHeight(slip.scrollHeight * nextScale);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(well);
+    const slip = document.getElementById(receiptDomId(order.id));
+    if (slip) observer.observe(slip);
+    return () => observer.disconnect();
+  }, [flipped, order.id, order.items.length]);
+
   const runReceiptAction = async (mode: 'print' | 'pdf') => {
     const node = document.getElementById(receiptDomId(order.id));
     if (!node) {
@@ -189,10 +213,10 @@ export function OrderTicket({
     });
 
   return (
-    <div className="perspective-[1000px]">
+    <div className="perspective-[1000px] w-full min-w-0">
       <div
         className={cn(
-          'transform-3d relative transition-transform duration-500 ease-out motion-reduce:transition-none',
+          'transform-3d relative w-full min-w-0 transition-transform duration-500 ease-out motion-reduce:transition-none',
           flipped && 'rotate-y-180 motion-reduce:rotate-y-0 rtl:-rotate-y-180'
         )}
       >
@@ -487,7 +511,7 @@ export function OrderTicket({
           aria-hidden={!flipped}
           inert={!flipped}
           className={cn(
-            'bg-background backface-hidden rotate-y-180 motion-reduce:rotate-y-0 rtl:-rotate-y-180 rounded-xl border shadow-sm',
+            'bg-background backface-hidden rotate-y-180 motion-reduce:rotate-y-0 rtl:-rotate-y-180 w-full min-w-0 overflow-hidden rounded-xl border shadow-sm',
             flipped
               ? 'relative'
               : 'pointer-events-none absolute inset-x-0 top-0 motion-reduce:hidden'
@@ -515,14 +539,28 @@ export function OrderTicket({
               </Button>
             </div>
 
-            <div className="receipt-preview-well bg-muted mx-auto w-full max-w-[80mm] rounded-lg p-2 [&_.order-receipt-slip]:w-full [&_.order-receipt-slip]:max-w-full">
-              <OrderReceipt
-                order={order}
-                settings={settings}
-                locale={locale}
-                currencyLocale={currencyLocale}
-                t={t}
-              />
+            <div className="bg-muted w-full min-w-0 rounded-lg p-2">
+              <div
+                ref={wellRef}
+                className="receipt-preview-well flex w-full min-w-0 items-start justify-center overflow-hidden"
+                style={receiptWellHeight != null ? { height: receiptWellHeight } : undefined}
+              >
+                <div
+                  className="inline-block"
+                  style={{
+                    transform: `scale(${receiptScale})`,
+                    transformOrigin: 'top center',
+                  }}
+                >
+                  <OrderReceipt
+                    order={order}
+                    settings={settings}
+                    locale={locale}
+                    currencyLocale={currencyLocale}
+                    t={t}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
