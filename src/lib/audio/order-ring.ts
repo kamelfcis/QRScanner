@@ -51,6 +51,26 @@ export function isOrderRingBlocked(): boolean {
   return Boolean(reducedMotion);
 }
 
+export const ORDERS_RING_UNLOCKED_KEY = 'orders-ring-unlocked';
+
+export function isOrdersRingSessionUnlocked(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.sessionStorage.getItem(ORDERS_RING_UNLOCKED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function persistOrdersRingUnlocked(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.setItem(ORDERS_RING_UNLOCKED_KEY, '1');
+  } catch {
+    // private mode / quota
+  }
+}
+
 export async function resumeOrderRingAudio(): Promise<boolean> {
   const ctx = getAudioContext();
   if (!ctx) return false;
@@ -64,9 +84,14 @@ export function startOrderRing(options?: { prefersReducedMotion?: boolean }) {
   reducedMotion = options?.prefersReducedMotion === true;
   if (reducedMotion) return;
 
+  if (ringActive && ringTimer) {
+    void resumeOrderRingAudio();
+    return;
+  }
+
   ringActive = true;
   void resumeOrderRingAudio().then((ok) => {
-    if (ok && ringActive) scheduleLoop();
+    if (ok && ringActive && !ringTimer) scheduleLoop();
   });
 }
 

@@ -23,7 +23,13 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { buildStoredOrderWhatsApp, openWhatsAppUrl } from '@/lib/order/build-order';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
-import { resumeOrderRingAudio, startOrderRing, stopOrderRing } from '@/lib/audio/order-ring';
+import {
+  isOrdersRingSessionUnlocked,
+  persistOrdersRingUnlocked,
+  resumeOrderRingAudio,
+  startOrderRing,
+  stopOrderRing,
+} from '@/lib/audio/order-ring';
 import { cn } from '@/lib/utils';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
 import type { OrderStatus, OrderWithItems } from '@/types/database';
@@ -81,17 +87,50 @@ export default function OrdersPage() {
   const unacknowledged = useMemo(() => (orders ?? []).filter(isUnacknowledged), [orders]);
 
   useEffect(() => {
-    if (unacknowledged.length === 0) {
-      stopOrderRing();
-      return;
-    }
+    if (prefersReducedMotion) return;
 
-    if (prefersReducedMotion) {
+    let unlocked = false;
+    const hasUnacked = unacknowledged.length > 0;
+
+    const unlockFromGesture = () => {
+      if (unlocked) return;
+      void resumeOrderRingAudio().then((ok) => {
+        if (!ok) return;
+        unlocked = true;
+        persistOrdersRingUnlocked();
+        setSoundBlocked(false);
+        if (hasUnacked) {
+          startOrderRing({ prefersReducedMotion: false });
+        }
+        window.removeEventListener('pointerdown', unlockFromGesture, true);
+        window.removeEventListener('keydown', unlockFromGesture, true);
+      });
+    };
+
+    window.addEventListener('pointerdown', unlockFromGesture, true);
+    window.addEventListener('keydown', unlockFromGesture, true);
+    return () => {
+      window.removeEventListener('pointerdown', unlockFromGesture, true);
+      window.removeEventListener('keydown', unlockFromGesture, true);
+    };
+  }, [prefersReducedMotion, unacknowledged.length]);
+
+  useEffect(() => {
+    if (unacknowledged.length === 0 || prefersReducedMotion) {
       stopOrderRing();
       return;
     }
 
     startOrderRing({ prefersReducedMotion });
+
+    if (isOrdersRingSessionUnlocked()) {
+      void resumeOrderRingAudio().then((ok) => {
+        setSoundBlocked(!ok);
+        if (ok) startOrderRing({ prefersReducedMotion });
+      });
+      return;
+    }
+
     void resumeOrderRingAudio().then((ok) => {
       setSoundBlocked(!ok);
     });
@@ -202,6 +241,7 @@ export default function OrdersPage() {
   const handleEnableSound = async () => {
     const ok = await resumeOrderRingAudio();
     if (ok) {
+      persistOrdersRingUnlocked();
       setSoundBlocked(false);
       if (unacknowledged.length > 0) {
         startOrderRing({ prefersReducedMotion });
