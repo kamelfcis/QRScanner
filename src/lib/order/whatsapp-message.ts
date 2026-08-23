@@ -26,6 +26,7 @@ export interface WhatsAppMessageInput {
   orderNotes?: string | null;
   prepTimeMinutes?: number | null;
   couponCode?: string | null;
+  deliveryFee?: number | null;
 }
 
 const SEP = '────────────────';
@@ -47,6 +48,7 @@ interface MessageLabels {
   discount: (code?: string | null) => string;
   tax: (rate: number) => string;
   service: (rate: number) => string;
+  deliveryFee: string;
   total: string;
   name: string;
   phone: string;
@@ -68,6 +70,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `الخصم (${code})` : 'الخصم'),
     tax: (rate) => `الضريبة (${rate}%)`,
     service: (rate) => `رسوم الخدمة (${rate}%)`,
+    deliveryFee: 'خدمة توصيل',
     total: 'الإجمالي',
     name: 'الاسم',
     phone: 'الهاتف',
@@ -87,6 +90,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Discount (${code})` : 'Discount'),
     tax: (rate) => `Tax (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Delivery fee',
     total: 'Total',
     name: 'Name',
     phone: 'Phone',
@@ -106,6 +110,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Réduction (${code})` : 'Réduction'),
     tax: (rate) => `TVA (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Livraison',
     total: 'Total',
     name: 'Nom',
     phone: 'Téléphone',
@@ -125,6 +130,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Korting (${code})` : 'Korting'),
     tax: (rate) => `BTW (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Bezorgkosten',
     total: 'Totaal',
     name: 'Naam',
     phone: 'Telefoon',
@@ -157,6 +163,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     orderNotes,
     prepTimeMinutes,
     couponCode,
+    deliveryFee,
   } = input;
 
   const labels = LABELS[locale];
@@ -203,6 +210,9 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     lines.push(
       `${labels.service(totals.serviceRate)}: ${formatMoney(totals.service, currency, locale)}`
     );
+  }
+  if ((deliveryFee ?? 0) > 0) {
+    lines.push(`${labels.deliveryFee}: ${formatMoney(deliveryFee ?? 0, currency, locale)}`);
   }
   lines.push(`*${labels.total}: ${formatMoney(totals.total, currency, locale)}*`);
 

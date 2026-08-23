@@ -151,6 +151,14 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
           </span>
         </div>
       ) : null}
+      {Number(order.delivery_fee) > 0 ? (
+        <div className="receipt-row">
+          <span>{t('receiptDelivery')}</span>
+          <span className="receipt-num">
+            {money(Number(order.delivery_fee), order.currency, currencyLocale)}
+          </span>
+        </div>
+      ) : null}
 
       <hr className="receipt-rule-double" />
       <div className="receipt-row">

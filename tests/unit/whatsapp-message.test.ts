@@ -138,6 +138,31 @@ describe('buildWhatsAppMessage', () => {
     expect(msg).not.toContain('الطاولة');
   });
 
+  it('includes a delivery fee line after service when staff saved a fee', () => {
+    const msg = buildWhatsAppMessage({
+      locale: 'ar',
+      mode: 'takeaway',
+      fulfillmentType: 'delivery',
+      deliveryAddress: 'المعادي',
+      items: [{ name: 'جمبري', quantity: 1, unitPrice: 80 }],
+      totals: {
+        ...totals,
+        subtotal: 80,
+        tax: 0,
+        service: 0,
+        total: 105,
+        applyTax: false,
+        applyService: false,
+      },
+      currency: 'EGP',
+      customerName: 'أحمد',
+      deliveryFee: 25,
+    });
+
+    expect(msg).toContain('خدمة توصيل: 25 EGP');
+    expect(msg).toContain('*الإجمالي: 105 EGP*');
+  });
+
   it('includes pickup label without address for takeaway pickup orders', () => {
     const msg = buildWhatsAppMessage({
       locale: 'en',

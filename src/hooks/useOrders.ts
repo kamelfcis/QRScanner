@@ -117,6 +117,27 @@ export function useAcknowledgeOrder() {
   });
 }
 
+export function useSetOrderDeliveryFee() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, delivery_fee }: { id: string; delivery_fee: number }) => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('orders')
+        .update({ delivery_fee })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Order;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+    },
+  });
+}
+
 export function useMarkOrderWhatsAppSent() {
   const queryClient = useQueryClient();
 

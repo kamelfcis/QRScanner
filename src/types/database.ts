@@ -237,6 +237,7 @@ export interface Order {
   discount_amount: number;
   coupon_id: string | null;
   coupon_code: string | null;
+  delivery_fee: number;
   total: number;
   currency: string;
   whatsapp_sent: boolean;

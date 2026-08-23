@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { useSetOrderDeliveryFee } from '@/hooks/useOrders';
 import { Image } from '@/components/shared/Image';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
@@ -31,8 +33,79 @@ function isUnacknowledged(order: OrderWithItems): boolean {
   return order.status === 'new' && !order.staff_acknowledged_at;
 }
 
+function formatFeeDraft(value: number | null | undefined): string {
+  const amount = Number(value ?? 0);
+  return amount > 0 ? String(amount) : '';
+}
+
+function parseDeliveryFee(value: string): number {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return 0;
+  return Math.round(Math.min(99999.99, Math.max(0, amount)) * 100) / 100;
+}
+
 function firstName(fullName: string): string {
   return fullName.trim().split(/\s+/)[0] ?? fullName;
+}
+
+function DeliveryFeeField({
+  orderId,
+  deliveryFee,
+  busy,
+  t,
+}: {
+  orderId: string;
+  deliveryFee: number | null | undefined;
+  busy: boolean;
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const [feeDraft, setFeeDraft] = useState(() => formatFeeDraft(deliveryFee));
+  const setDeliveryFee = useSetOrderDeliveryFee();
+
+  return (
+    <div className="grid gap-2">
+      <label htmlFor={`delivery-fee-${orderId}`} className="text-sm font-medium">
+        {t('deliveryFee')}
+      </label>
+      <div className="flex items-stretch gap-2">
+        <Input
+          id={`delivery-fee-${orderId}`}
+          type="number"
+          inputMode="decimal"
+          min={0}
+          max={99999.99}
+          step="0.01"
+          dir="ltr"
+          className="min-h-11"
+          value={feeDraft}
+          disabled={busy || setDeliveryFee.isPending}
+          aria-label={t('deliveryFee')}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => setFeeDraft(e.target.value)}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          className="min-h-11 shrink-0 px-4"
+          disabled={busy || setDeliveryFee.isPending}
+          onClick={(e) => {
+            e.stopPropagation();
+            const nextFee = parseDeliveryFee(feeDraft);
+            setDeliveryFee.mutate(
+              { id: orderId, delivery_fee: nextFee },
+              {
+                onError: () => {
+                  toast.error(t('saveDeliveryFeeFailed'));
+                },
+              }
+            );
+          }}
+        >
+          {t('saveDeliveryFee')}
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 function totalItemCount(items: OrderWithItems['items']): number {
@@ -182,7 +255,7 @@ export function OrderTicket({
     const slip = document.getElementById(receiptDomId(order.id));
     if (slip) observer.observe(slip);
     return () => observer.disconnect();
-  }, [flipped, order.id, order.items.length]);
+  }, [flipped, order.id, order.items.length, order.delivery_fee, order.total]);
 
   const runReceiptAction = async (mode: 'print' | 'pdf') => {
     const node = document.getElementById(receiptDomId(order.id));
@@ -427,6 +500,16 @@ export function OrderTicket({
                       locale: currencyLocale,
                     })}
                   </p>
+                ) : null}
+
+                {order.fulfillment_type === 'delivery' ? (
+                  <DeliveryFeeField
+                    key={`${order.id}-${Number(order.delivery_fee ?? 0)}`}
+                    orderId={order.id}
+                    deliveryFee={order.delivery_fee}
+                    busy={busy}
+                    t={t}
+                  />
                 ) : null}
 
                 <div className="grid gap-2">
