@@ -627,6 +627,8 @@
     "cleanupOrders": "تنظيف الطلبات",
     "cleanupOrdersDescription": "احذف الطلبات في نطاق تاريخ. لا يغيّر فلاتر لوحة المطبخ.",
     "printReceipt": "طباعة",
+    "receiptPreview": "معاينة الإيصال",
+    "flipBack": "رجوع",
     "downloadReceipt": "تحميل PDF",
     "printFailed": "تعذر فتح نافذة الطباعة.",
     "downloadFailed": "تعذر تحميل الإيصال.",

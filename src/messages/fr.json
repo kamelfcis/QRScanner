@@ -627,6 +627,8 @@
     "cleanupOrders": "Nettoyer les commandes",
     "cleanupOrdersDescription": "Supprimez définitivement les commandes d'une plage de dates. Cela ne change pas les filtres du tableau cuisine.",
     "printReceipt": "Imprimer",
+    "receiptPreview": "Aperçu du ticket",
+    "flipBack": "Retour",
     "downloadReceipt": "Télécharger PDF",
     "printFailed": "Impossible d'ouvrir la boîte de dialogue d'impression.",
     "downloadFailed": "Impossible de télécharger le ticket.",

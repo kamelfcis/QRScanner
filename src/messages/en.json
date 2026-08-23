@@ -627,6 +627,8 @@
     "cleanupOrders": "Clean up orders",
     "cleanupOrdersDescription": "Permanently delete orders in a date range. This does not change the live board filters.",
     "printReceipt": "Print",
+    "receiptPreview": "Receipt preview",
+    "flipBack": "Back",
     "downloadReceipt": "Download PDF",
     "printFailed": "Could not open the print dialog.",
     "downloadFailed": "Could not download the receipt.",

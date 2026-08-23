@@ -627,6 +627,8 @@
     "cleanupOrders": "Bestellingen opschonen",
     "cleanupOrdersDescription": "Verwijder bestellingen in een datumbereik permanent. Dit verandert de keukenfilters niet.",
     "printReceipt": "Afdrukken",
+    "receiptPreview": "Ticketvoorbeeld",
+    "flipBack": "Terug",
     "downloadReceipt": "PDF downloaden",
     "printFailed": "Het afdrukvenster kon niet worden geopend.",
     "downloadFailed": "Het ticket kon niet worden gedownload.",

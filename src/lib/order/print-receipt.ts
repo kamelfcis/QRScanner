@@ -120,8 +120,8 @@ export const RECEIPT_SLIP_CSS = `
 }
 `;
 
-function waitForImages(doc: Document): Promise<void> {
-  const images = Array.from(doc.images);
+function waitForImages(root: ParentNode): Promise<void> {
+  const images = Array.from(root.querySelectorAll('img'));
   return Promise.all(
     images.map((img) => {
       if (img.complete) return Promise.resolve();
@@ -131,6 +131,30 @@ function waitForImages(doc: Document): Promise<void> {
       });
     })
   ).then(() => undefined);
+}
+
+function mountUntransformedReceiptClone(element: HTMLElement): {
+  host: HTMLElement;
+  clone: HTMLElement;
+} {
+  const host = document.createElement('div');
+  host.setAttribute('aria-hidden', 'true');
+  host.style.position = 'fixed';
+  host.style.left = '-2000px';
+  host.style.top = '0';
+  host.style.width = `${RECEIPT_WIDTH_MM}mm`;
+  host.style.background = '#ffffff';
+  host.style.transform = 'none';
+  host.style.backfaceVisibility = 'visible';
+  host.style.pointerEvents = 'none';
+
+  const clone = element.cloneNode(true) as HTMLElement;
+  clone.removeAttribute('id');
+  clone.style.transform = 'none';
+  clone.style.backfaceVisibility = 'visible';
+  host.appendChild(clone);
+  document.body.appendChild(host);
+  return { host, clone };
 }
 
 export async function printReceiptElement(element: HTMLElement): Promise<void> {
@@ -190,21 +214,28 @@ export async function downloadReceiptPdf(element: HTMLElement, orderNumber: stri
     import('jspdf'),
   ]);
 
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff',
-    width: element.scrollWidth,
-    windowWidth: element.scrollWidth,
-  });
+  const { host, clone } = mountUntransformedReceiptClone(element);
+  try {
+    await waitForImages(clone);
 
-  const imgData = canvas.toDataURL('image/png');
-  const pageHeightMm = Math.max((canvas.height * RECEIPT_WIDTH_MM) / canvas.width, 40);
-  const pdf = new jsPDF({
-    orientation: 'p',
-    unit: 'mm',
-    format: [RECEIPT_WIDTH_MM, pageHeightMm],
-  });
-  pdf.addImage(imgData, 'PNG', 0, 0, RECEIPT_WIDTH_MM, pageHeightMm);
-  pdf.save(receiptPdfFilename(orderNumber));
+    const canvas = await html2canvas(clone, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      width: clone.scrollWidth,
+      windowWidth: clone.scrollWidth,
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pageHeightMm = Math.max((canvas.height * RECEIPT_WIDTH_MM) / canvas.width, 40);
+    const pdf = new jsPDF({
+      orientation: 'p',
+      unit: 'mm',
+      format: [RECEIPT_WIDTH_MM, pageHeightMm],
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, RECEIPT_WIDTH_MM, pageHeightMm);
+    pdf.save(receiptPdfFilename(orderNumber));
+  } finally {
+    host.remove();
+  }
 }
