@@ -1,6 +1,7 @@
 import type { RestaurantSettings } from '@/types';
 
 import type { Locale } from '@/i18n/config';
+import { buildCustomerWhatsAppUrl } from '@/lib/phone/normalize';
 
 export const DEFAULT_CONTACT = {
   address_ar: 'مصر',
@@ -21,7 +22,7 @@ export function resolveContactAddress(
 }
 
 export function formatWhatsAppUrl(whatsapp: string): string {
-  return `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`;
+  return buildCustomerWhatsAppUrl(whatsapp);
 }
 
 export function getMapEmbedUrl(url: string | null | undefined): string | null {

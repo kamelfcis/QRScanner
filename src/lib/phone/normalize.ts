@@ -30,8 +30,14 @@ export function normalizeLocalPhone(local: string, countryCode: string): string 
 
 /** Normalize any phone string to wa.me-compatible international digits. */
 export function toWhatsAppDigits(phone: string, defaultCountry = DEFAULT_COUNTRY): string {
-  const digits = digitsOnly(phone);
+  let digits = digitsOnly(phone);
   if (!digits) return '';
+
+  // `00` is the international access prefix (same meaning as `+`).
+  if (digits.startsWith('00')) {
+    digits = digits.slice(2);
+    if (!digits) return '';
+  }
 
   for (const entry of dialCodesByLengthDesc()) {
     if (digits.startsWith(entry.dialCode) && digits.length >= entry.minLength) {

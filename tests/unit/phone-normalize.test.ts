@@ -38,6 +38,19 @@ describe('toWhatsAppDigits', () => {
   it('normalizes prefixed plus numbers', () => {
     expect(toWhatsAppDigits('+20 150 153 4655')).toBe('201501534655');
   });
+
+  it('strips 00 international prefix for Belgian numbers', () => {
+    expect(toWhatsAppDigits('0032491060364')).toBe('32491060364');
+  });
+
+  it('normalizes Belgian plus-prefixed numbers', () => {
+    expect(toWhatsAppDigits('+32 491 06 03 64')).toBe('32491060364');
+  });
+
+  it('still normalizes Egyptian local 010 numbers after 00-prefix handling', () => {
+    expect(toWhatsAppDigits('01001234567', 'EG')).toBe('201001234567');
+    expect(toWhatsAppDigits('01012345678', 'EG')).toBe('201012345678');
+  });
 });
 
 describe('formatDisplayPhone', () => {

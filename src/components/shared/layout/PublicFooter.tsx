@@ -6,6 +6,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getRestaurantDisplayName } from '@/lib/appName';
 import { resolveContactAddress } from '@/lib/contact/defaults';
+import { buildCustomerWhatsAppUrl } from '@/lib/phone/normalize';
 
 export function PublicFooter() {
   const { data: settings } = useRestaurantSettings();
@@ -15,6 +16,7 @@ export function PublicFooter() {
 
   const name = getRestaurantDisplayName(locale, settings);
   const address = resolveContactAddress(settings, locale);
+  const whatsappHref = settings?.whatsapp ? buildCustomerWhatsAppUrl(settings.whatsapp) : '';
 
   return (
     <footer className="bg-muted/50 border-t">
@@ -132,9 +134,9 @@ export function PublicFooter() {
                   <Smartphone className="h-5 w-5" />
                 </a>
               )}
-              {settings?.whatsapp && (
+              {whatsappHref && (
                 <a
-                  href={`https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`}
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
