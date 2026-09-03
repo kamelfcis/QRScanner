@@ -897,18 +897,20 @@ export default function ProductsPage() {
         secondaryActions={
           aiProductImagesEnabled && totalProducts > 0 ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-11 shrink-0 self-start"
-                  disabled={batchRunning}
-                >
-                  <Sparkles className="me-2 h-4 w-4" aria-hidden="true" />
-                  {t('aiImagesBulkMenu')}
-                  <ChevronDown className="ms-2 h-4 w-4" aria-hidden="true" />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-11 shrink-0 self-start"
+                    disabled={batchRunning}
+                  >
+                    <Sparkles className="me-2 h-4 w-4" aria-hidden="true" />
+                    {t('aiImagesBulkMenu')}
+                    <ChevronDown className="ms-2 h-4 w-4" aria-hidden="true" />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   disabled={missingImageCount === 0 || batchRunning}
