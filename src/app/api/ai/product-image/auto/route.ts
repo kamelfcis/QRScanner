@@ -63,6 +63,7 @@ export async function POST(request: Request) {
 
     const body = await request.json().catch(() => null);
     productId = asTrimmedString(body?.productId);
+    const force = body?.force === true;
     if (!productId) {
       return jsonError('productId is required', 400, 'product_id_required');
     }
@@ -97,7 +98,7 @@ export async function POST(request: Request) {
       ? getName('en', category.name_en, category.name_ar, category.name_fr, category.name_nl)
       : '';
 
-    const result = await autoAssignProductImage(supabase, product, categoryName);
+    const result = await autoAssignProductImage(supabase, product, categoryName, { force });
 
     if (result.skipped) {
       return NextResponse.json({

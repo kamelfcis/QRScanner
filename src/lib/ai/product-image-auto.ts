@@ -186,9 +186,10 @@ export async function pickBestProductImageCandidate(
 export async function autoAssignProductImage(
   supabase: SupabaseClient,
   product: AutoAssignProductInput,
-  categoryName: string
+  categoryName: string,
+  options?: { force?: boolean }
 ): Promise<AutoAssignResult> {
-  if (product.image_url?.trim()) {
+  if (!options?.force && product.image_url?.trim()) {
     return { skipped: true, productId: product.id, reason: 'already_has_image' };
   }
 

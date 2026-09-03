@@ -22,7 +22,17 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
-import { Search, Upload, X, Images, FilterX, Sparkles, Wand2 } from 'lucide-react';
+import {
+  Search,
+  Upload,
+  X,
+  Images,
+  FilterX,
+  Sparkles,
+  Wand2,
+  Loader2,
+  ChevronDown,
+} from 'lucide-react';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
 import { Label } from '@/components/ui/label';
@@ -68,6 +78,13 @@ import {
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
+import { useProductAiImage } from '@/hooks/useProductAiImage';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 type ProductForm = z.input<typeof productSchema>;
 
@@ -523,6 +540,7 @@ export default function ProductsPage() {
   const [storagePickerFormType, setStoragePickerFormType] = useState<'create' | 'edit'>('create');
   const [storagePickerSession, setStoragePickerSession] = useState(0);
   const [batchConfirmOpen, setBatchConfirmOpen] = useState(false);
+  const [batchMode, setBatchMode] = useState<'missing' | 'all'>('missing');
   const [batchRunning, setBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0, name: '' });
   const [batchErrors, setBatchErrors] = useState<
@@ -602,9 +620,18 @@ export default function ProductsPage() {
   const productsWithoutImages = products?.filter((product) => !product.image_url?.trim()) ?? [];
   const missingImageCount = productsWithoutImages.length;
   const estimatedBatchMinutes = Math.max(1, Math.ceil((missingImageCount * 45) / 60));
+  const estimatedAllBatchMinutes = Math.max(1, Math.ceil((totalProducts * 45) / 60));
 
-  const runBatchGeneration = async () => {
-    const targets = productsWithoutImages;
+  const productAi = useProductAiImage({
+    t,
+    applyImage: async (productId, url) => {
+      await updateProduct.mutateAsync({ id: productId, input: { image_url: url } });
+      await refetch();
+    },
+  });
+
+  const runBatchGeneration = async (mode: 'missing' | 'all') => {
+    const targets = mode === 'missing' ? productsWithoutImages : (products ?? []);
     if (targets.length === 0) return;
 
     batchCancelRef.current = false;
@@ -633,7 +660,10 @@ export default function ProductsPage() {
         const response = await fetch('/api/ai/product-image/auto', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ productId: product.id }),
+          body: JSON.stringify({
+            productId: product.id,
+            ...(mode === 'all' ? { force: true } : {}),
+          }),
         });
         const payload = (await response.json().catch(() => ({}))) as {
           error?: string;
@@ -865,17 +895,41 @@ export default function ProductsPage() {
         onAddProduct={openCreateDialog}
         addDisabled={batchRunning}
         secondaryActions={
-          aiProductImagesEnabled && missingImageCount > 0 ? (
-            <Button
-              type="button"
-              variant="outline"
-              className="min-h-11 shrink-0 self-start"
-              disabled={batchRunning}
-              onClick={() => setBatchConfirmOpen(true)}
-            >
-              <Sparkles className="me-2 h-4 w-4" aria-hidden="true" />
-              {t('generateAllMissingImages')}
-            </Button>
+          aiProductImagesEnabled && totalProducts > 0 ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-11 shrink-0 self-start"
+                  disabled={batchRunning}
+                >
+                  <Sparkles className="me-2 h-4 w-4" aria-hidden="true" />
+                  {t('aiImagesBulkMenu')}
+                  <ChevronDown className="ms-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  disabled={missingImageCount === 0 || batchRunning}
+                  onClick={() => {
+                    setBatchMode('missing');
+                    setBatchConfirmOpen(true);
+                  }}
+                >
+                  {t('generateMissingImages', { count: missingImageCount })}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={batchRunning}
+                  onClick={() => {
+                    setBatchMode('all');
+                    setBatchConfirmOpen(true);
+                  }}
+                >
+                  {t('regenerateAllImages', { count: totalProducts })}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : null
         }
       />
@@ -1177,6 +1231,62 @@ export default function ProductsPage() {
                       </td>
                       <td className="p-3">
                         <div className="flex items-center justify-end gap-1">
+                          {aiProductImagesEnabled && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                disabled={
+                                  batchRunning ||
+                                  productAi.isProductBusy(product.id) ||
+                                  !(product.name_ar?.trim() || product.name_en?.trim())
+                                }
+                                aria-label={t('rowGenerateWithAi', { name: productName })}
+                                title={t('generateWithAi')}
+                                onClick={() =>
+                                  void productAi.runGeneration(
+                                    product,
+                                    'generate',
+                                    categoryName !== '—' ? categoryName : ''
+                                  )
+                                }
+                              >
+                                {productAi.isProductBusy(product.id) &&
+                                productAi.aiMode === 'generate' ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Sparkles className="h-4 w-4" />
+                                )}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                disabled={
+                                  batchRunning ||
+                                  productAi.isProductBusy(product.id) ||
+                                  !product.image_url?.trim()
+                                }
+                                aria-label={t('rowEnhanceWithAi', { name: productName })}
+                                title={t('enhanceWithAi')}
+                                onClick={() =>
+                                  void productAi.runGeneration(
+                                    product,
+                                    'enhance',
+                                    categoryName !== '—' ? categoryName : ''
+                                  )
+                                }
+                              >
+                                {productAi.isProductBusy(product.id) &&
+                                productAi.aiMode === 'enhance' ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Wand2 className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </>
+                          )}
                           <Switch
                             checked={product.is_available}
                             onCheckedChange={() => handleToggleAvailability(product)}
@@ -1575,13 +1685,24 @@ export default function ProductsPage() {
       <ConfirmDialog
         open={batchConfirmOpen}
         onOpenChange={setBatchConfirmOpen}
-        title={t('batchConfirmTitle')}
-        description={t('batchConfirmDescription', {
-          count: String(missingImageCount),
-          minutes: String(estimatedBatchMinutes),
-        })}
-        confirmLabel={t('generateAllMissingImages')}
-        onConfirm={() => void runBatchGeneration()}
+        title={batchMode === 'all' ? t('batchRegenerateConfirmTitle') : t('batchConfirmTitle')}
+        description={
+          batchMode === 'all'
+            ? t('batchRegenerateConfirmDescription', {
+                count: String(totalProducts),
+                minutes: String(estimatedAllBatchMinutes),
+              })
+            : t('batchConfirmDescription', {
+                count: String(missingImageCount),
+                minutes: String(estimatedBatchMinutes),
+              })
+        }
+        confirmLabel={
+          batchMode === 'all'
+            ? t('regenerateAllImages', { count: totalProducts })
+            : t('generateAllMissingImages')
+        }
+        onConfirm={() => void runBatchGeneration(batchMode)}
         loading={batchRunning}
       />
 
@@ -1637,6 +1758,20 @@ export default function ProductsPage() {
         onConfirm={handleDelete}
         loading={deleteProduct.isPending}
       />
+
+      {aiProductImagesEnabled && (
+        <AiProductImageDialog
+          open={productAi.aiOpen}
+          onOpenChange={productAi.setAiOpen}
+          mode={productAi.aiMode}
+          loading={productAi.aiLoading}
+          images={productAi.aiImages}
+          onRegenerate={productAi.regenerateActive}
+          onUseImage={productAi.handleUseImage}
+          t={t}
+          tCommon={tCommon}
+        />
+      )}
 
       <StorageImagePickerDialog
         key={storagePickerSession}
