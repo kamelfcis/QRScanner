@@ -60,8 +60,14 @@ import {
 import { ProductsCommandHeader } from '@/components/dashboard/menu/ProductsCommandHeader';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
-import { hasExtendedMenuLocales, hasProductSizeOptions } from '@/i18n/config';
+import {
+  hasExtendedMenuLocales,
+  hasProductSizeOptions,
+  hasProductWeightOptions,
+} from '@/i18n/config';
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
+import { computeWeightPrice } from '@/lib/order/weight-price';
+import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
 
 type ProductForm = z.input<typeof productSchema>;
 
@@ -79,6 +85,9 @@ const defaultFormValues: ProductForm = {
   dining_price: 0,
   takeaway_price: 0,
   has_size_options: false,
+  use_weight_pricing: false,
+  price_per_kg: null,
+  weight_options_g: '',
   is_available: true,
   is_popular: false,
   is_new: false,
@@ -302,6 +311,18 @@ function ProductThumbnail({
   );
 }
 
+function parseWeightOptionsG(raw: string | undefined | null): number[] {
+  if (!raw?.trim()) return [];
+  return raw
+    .split(/[,،\s]+/)
+    .map((part) => Number(part.trim()))
+    .filter((n) => Number.isFinite(n) && n > 0);
+}
+
+function formatWeightOptionsG(weights: number[] | null | undefined): string {
+  return weights?.length ? weights.join(', ') : '';
+}
+
 function ProductPriceFields({
   form,
   currency,
@@ -314,17 +335,96 @@ function ProductPriceFields({
   t: (key: string, values?: Record<string, string | number>) => string;
 }) {
   const hasSizeOptions = hasProductSizeOptions && form.watch('has_size_options');
+  const useWeightPricing = hasProductWeightOptions && form.watch('use_weight_pricing');
   const singlePrice = form.watch('dining_price');
+  const pricePerKg = form.watch('price_per_kg');
+  const weightOptionsRaw = form.watch('weight_options_g');
 
   useEffect(() => {
-    if (!hasSizeOptions) {
+    if (!hasSizeOptions && !useWeightPricing) {
       form.setValue('takeaway_price', singlePrice, { shouldValidate: true });
     }
-  }, [hasSizeOptions, singlePrice, form]);
+  }, [hasSizeOptions, useWeightPricing, singlePrice, form]);
+
+  useEffect(() => {
+    if (!useWeightPricing || pricePerKg == null) return;
+    const weights = parseWeightOptionsG(weightOptionsRaw);
+    if (!weights.length) return;
+    const minPrice = Math.min(...weights.map((g) => computeWeightPrice(Number(pricePerKg), g)));
+    form.setValue('dining_price', minPrice, { shouldValidate: true });
+    form.setValue('takeaway_price', minPrice, { shouldValidate: true });
+  }, [useWeightPricing, pricePerKg, weightOptionsRaw, form]);
 
   return (
     <div className="space-y-4">
-      {hasProductSizeOptions ? (
+      {hasProductWeightOptions ? (
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={useWeightPricing}
+            onCheckedChange={(checked) => {
+              form.setValue('use_weight_pricing', checked, { shouldDirty: true });
+              if (checked) {
+                form.setValue('has_size_options', false, { shouldDirty: true });
+              } else {
+                form.setValue('price_per_kg', null, { shouldDirty: true });
+                form.setValue('weight_options_g', '', { shouldDirty: true });
+              }
+            }}
+            id={`${idPrefix}-weight-pricing`}
+          />
+          <Label htmlFor={`${idPrefix}-weight-pricing`}>{t('enableWeightPricing')}</Label>
+        </div>
+      ) : null}
+
+      {useWeightPricing ? (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-price-per-kg`}>
+              {t('pricePerKg')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-price-per-kg`}
+              type="number"
+              min={0}
+              step={1}
+              {...form.register('price_per_kg', {
+                setValueAs: (value) => {
+                  if (value === '' || value == null) return null;
+                  const next = Number(value);
+                  return Number.isFinite(next) ? next : null;
+                },
+              })}
+            />
+            {form.formState.errors.price_per_kg && (
+              <p className="text-destructive text-sm">
+                {form.formState.errors.price_per_kg.message}
+              </p>
+            )}
+          </div>
+          <input type="hidden" {...form.register('weight_options_g')} />
+          <WeightOptionsEditor
+            value={parseWeightOptionsG(weightOptionsRaw)}
+            onChange={(weights) =>
+              form.setValue('weight_options_g', weights.length ? weights.join(', ') : '', {
+                shouldDirty: true,
+                shouldValidate: true,
+              })
+            }
+            pricePerKg={pricePerKg ?? null}
+            currency={currency}
+            idPrefix={idPrefix}
+            error={form.formState.errors.weight_options_g?.message}
+            t={t}
+          />
+          <p className="text-muted-foreground text-xs">
+            {t('weightPricingListHint', {
+              price: formatCurrencyAmount(form.watch('dining_price'), currency, { plain: true }),
+            })}
+          </p>
+        </div>
+      ) : null}
+
+      {hasProductSizeOptions && !useWeightPricing ? (
         <div className="flex items-center gap-2">
           <Switch
             checked={hasSizeOptions}
@@ -337,7 +437,7 @@ function ProductPriceFields({
         </div>
       ) : null}
 
-      {hasSizeOptions ? (
+      {!useWeightPricing && hasSizeOptions ? (
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor={`${idPrefix}-small`}>
@@ -372,7 +472,7 @@ function ProductPriceFields({
             )}
           </div>
         </div>
-      ) : (
+      ) : !useWeightPricing ? (
         <div className="space-y-2">
           <Label htmlFor={`${idPrefix}-price`}>
             {t('price')} ({currency}) *
@@ -387,7 +487,7 @@ function ProductPriceFields({
             <p className="text-destructive text-sm">{form.formState.errors.dining_price.message}</p>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -577,6 +677,9 @@ export default function ProductsPage() {
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
       has_size_options: product.has_size_options ?? false,
+      use_weight_pricing: Boolean(product.price_per_kg && product.weight_options_g?.length),
+      price_per_kg: product.price_per_kg ?? null,
+      weight_options_g: formatWeightOptionsG(product.weight_options_g),
       is_available: product.is_available,
       is_popular: product.is_popular,
       is_new: product.is_new,
@@ -656,11 +759,38 @@ export default function ProductsPage() {
 
   const prepareProductPayload = (data: ProductForm): ProductInput => {
     const payload = { ...(data as ProductInput) };
-    if (!hasProductSizeOptions || !payload.has_size_options) {
-      const price = payload.dining_price;
-      payload.dining_price = price;
-      payload.takeaway_price = price;
+    const weights = parseWeightOptionsG(data.weight_options_g);
+
+    if (
+      hasProductWeightOptions &&
+      data.use_weight_pricing &&
+      weights.length &&
+      data.price_per_kg != null
+    ) {
+      const minPrice = Math.min(
+        ...weights.map((g) => computeWeightPrice(Number(data.price_per_kg), g))
+      );
+      payload.dining_price = minPrice;
+      payload.takeaway_price = minPrice;
+      payload.price_per_kg = Number(data.price_per_kg);
+      (payload as { weight_options_g?: number[] | null }).weight_options_g = weights;
+    } else if (hasProductWeightOptions) {
+      payload.price_per_kg = null;
+      (payload as { weight_options_g?: number[] | null }).weight_options_g = null;
     }
+
+    if (!hasProductSizeOptions || !payload.has_size_options) {
+      if (!data.use_weight_pricing) {
+        const price = payload.dining_price;
+        payload.dining_price = price;
+        payload.takeaway_price = price;
+      }
+      if (!data.use_weight_pricing) {
+        payload.has_size_options = false;
+      }
+    }
+
+    delete (payload as Record<string, unknown>).use_weight_pricing;
     return stripUnsupportedProductWriteFields(payload);
   };
 
@@ -979,7 +1109,22 @@ export default function ProductsPage() {
                       </td>
                       <td className="p-3">
                         <div className="space-y-0.5 tabular-nums">
-                          {product.has_size_options ? (
+                          {product.price_per_kg != null && product.weight_options_g?.length ? (
+                            <>
+                              <p className="text-muted-foreground text-xs">{t('pricePerKg')}</p>
+                              <p className="font-semibold">
+                                {formatCurrencyAmount(product.price_per_kg, currency, {
+                                  plain: true,
+                                })}
+                              </p>
+                              <p className="text-muted-foreground text-xs">{t('fromPrice')}</p>
+                              <p className="text-muted-foreground font-medium">
+                                {formatCurrencyAmount(product.dining_price, currency, {
+                                  plain: true,
+                                })}
+                              </p>
+                            </>
+                          ) : product.has_size_options ? (
                             <>
                               <p className="text-muted-foreground text-xs">{t('smallPrice')}</p>
                               <p className="font-semibold">

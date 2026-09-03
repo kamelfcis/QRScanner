@@ -1,4 +1,8 @@
-import { hasExtendedMenuLocales, hasProductSizeOptions } from '@/i18n/config';
+import {
+  hasExtendedMenuLocales,
+  hasProductSizeOptions,
+  hasProductWeightOptions,
+} from '@/i18n/config';
 
 export const categoryKeys = {
   all: ['categories'] as const,
@@ -28,8 +32,9 @@ export const subcategoryRelationNameFields = hasExtendedMenuLocales
 export const categoryListFields = `id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, banner_url, sort_order, is_visible`;
 
 const productSizeField = hasProductSizeOptions ? 'has_size_options, ' : '';
+const productWeightFields = hasProductWeightOptions ? 'price_per_kg, weight_options_g, ' : '';
 
-export const popularProductFields = `id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, dining_price, takeaway_price, ${productSizeField}is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at`;
+export const popularProductFields = `id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, dining_price, takeaway_price, ${productSizeField}${productWeightFields}is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at`;
 
 /** Dashboard product reads/writes — same tenant-safe columns as popularProductFields. */
 export const productTableFields = popularProductFields;
@@ -41,18 +46,32 @@ const EXTENDED_LOCALE_WRITE_KEYS = [
   'description_nl',
 ] as const;
 
-/** Drop product columns this tenant’s schema does not have (no migration 016 / 018). */
-export function stripUnsupportedProductWriteFields<T extends object>(input: T): T {
+function stripExtendedLocaleWriteFields<T extends object>(input: T): T {
   const next = { ...(input as Record<string, unknown>) };
   if (!hasExtendedMenuLocales) {
     for (const key of EXTENDED_LOCALE_WRITE_KEYS) {
       delete next[key];
     }
   }
+  return next as T;
+}
+
+/** Drop product columns this tenant’s schema does not have (no migration 016 / 018). */
+export function stripUnsupportedProductWriteFields<T extends object>(input: T): T {
+  const next = stripExtendedLocaleWriteFields(input) as Record<string, unknown>;
   if (!hasProductSizeOptions) {
     delete next.has_size_options;
   }
+  if (!hasProductWeightOptions) {
+    delete next.price_per_kg;
+    delete next.weight_options_g;
+  }
   return next as T;
+}
+
+/** Drop category/subcategory FR/NL columns when this deployment is ar/en only. */
+export function stripUnsupportedCategoryWriteFields<T extends object>(input: T): T {
+  return stripExtendedLocaleWriteFields(input);
 }
 
 /** Narrow select for public menu catalog — avoids select('*') fan-out */
@@ -63,7 +82,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
   ),
   products:products!category_id(
     id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields},
-    image_url, dining_price, takeaway_price, ${productSizeField}is_available, is_popular, is_new, is_bestseller,
+    image_url, dining_price, takeaway_price, ${productSizeField}${productWeightFields}is_available, is_popular, is_new, is_bestseller,
     is_spicy, sort_order, created_at, updated_at,
     gallery:product_gallery(id, product_id, image_url, sort_order, created_at)
   )

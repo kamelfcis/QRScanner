@@ -32,6 +32,9 @@ export const hasExtendedMenuLocales =
 const tenant = process.env.NEXT_PUBLIC_TENANT;
 export const hasProductSizeOptions = tenant !== 'aklet' && tenant !== 'harameen';
 
+/** When true, per-kg products expose gram weight picker (migration 025 — hettsamaka only). */
+export const hasProductWeightOptions = tenant === 'hettsamaka';
+
 /** When false, hide landing "Signature Dishes" section (NEXT_PUBLIC_HIDE_FEATURED_DISHES=true). */
 export const showLandingFeaturedDishes = process.env.NEXT_PUBLIC_HIDE_FEATURED_DISHES !== 'true';
 

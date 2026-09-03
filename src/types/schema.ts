@@ -50,6 +50,10 @@ export const productSchema = z
     dining_price: z.number().min(0, 'Price must be positive'),
     takeaway_price: z.number().min(0, 'Price must be positive'),
     has_size_options: z.boolean().default(false),
+    use_weight_pricing: z.boolean().default(false),
+    price_per_kg: z.number().min(0).nullable().optional(),
+    /** Comma-separated gram weights in the dashboard form (e.g. "350,400,500"). */
+    weight_options_g: z.string().optional(),
     is_available: z.boolean().default(true),
     is_popular: z.boolean().default(false),
     is_new: z.boolean().default(false),
@@ -60,6 +64,17 @@ export const productSchema = z
   .refine((data) => !data.has_size_options || data.takeaway_price >= data.dining_price, {
     message: 'Large price must be greater than or equal to small price',
     path: ['takeaway_price'],
+  })
+  .refine(
+    (data) => !data.use_weight_pricing || (data.price_per_kg != null && data.price_per_kg > 0),
+    {
+      message: 'Price per kg is required for weight-based pricing',
+      path: ['price_per_kg'],
+    }
+  )
+  .refine((data) => !data.use_weight_pricing || Boolean(data.weight_options_g?.trim()), {
+    message: 'Select at least one weight option',
+    path: ['weight_options_g'],
   });
 
 export type ProductInput = z.infer<typeof productSchema>;
@@ -234,6 +249,7 @@ export const placeOrderItemSchema = z.object({
   product_id: z.string().uuid(),
   quantity: z.number().int().min(1).max(99),
   size_option: orderSizeOptionSchema.nullable().optional(),
+  weight_grams: z.number().int().min(1).max(10000).nullable().optional(),
   notes: z.string().max(200).nullable().optional(),
 });
 

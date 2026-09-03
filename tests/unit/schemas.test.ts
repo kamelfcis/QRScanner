@@ -57,6 +57,7 @@ describe('productSchema', () => {
     dining_price: 25,
     takeaway_price: 22,
     has_size_options: false,
+    use_weight_pricing: false,
     is_available: true,
     is_popular: false,
     is_new: false,
@@ -88,6 +89,42 @@ describe('productSchema', () => {
   it('rejects invalid UUID for category_id', () => {
     const result = productSchema.safeParse({ ...validProduct, category_id: 'not-a-uuid' });
     expect(result.success).toBe(false);
+  });
+
+  it('requires price per kg when weight pricing is enabled', () => {
+    const result = productSchema.safeParse({
+      ...validProduct,
+      use_weight_pricing: true,
+      price_per_kg: null,
+      weight_options_g: '500',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.some((i) => i.path.includes('price_per_kg'))).toBe(true);
+    }
+  });
+
+  it('requires weight options when weight pricing is enabled', () => {
+    const result = productSchema.safeParse({
+      ...validProduct,
+      use_weight_pricing: true,
+      price_per_kg: 200,
+      weight_options_g: '',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.some((i) => i.path.includes('weight_options_g'))).toBe(true);
+    }
+  });
+
+  it('accepts weight pricing with price per kg and weight options', () => {
+    const result = productSchema.safeParse({
+      ...validProduct,
+      use_weight_pricing: true,
+      price_per_kg: 200,
+      weight_options_g: '350, 500',
+    });
+    expect(result.success).toBe(true);
   });
 });
 
