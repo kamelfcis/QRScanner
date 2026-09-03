@@ -323,6 +323,25 @@ function formatWeightOptionsG(weights: number[] | null | undefined): string {
   return weights?.length ? weights.join(', ') : '';
 }
 
+type CategoryOption = {
+  id: string;
+  name_en: string;
+  name_ar: string;
+  name_fr?: string | null;
+  name_nl?: string | null;
+};
+
+function getCategoryLabel(
+  categoryId: string | undefined,
+  categories: CategoryOption[] | undefined,
+  locale: string
+): string {
+  if (!categoryId) return '';
+  const category = categories?.find((c) => c.id === categoryId);
+  if (!category) return '';
+  return getName(locale, category.name_en, category.name_ar, category.name_fr, category.name_nl);
+}
+
 function ProductPriceFields({
   form,
   currency,
@@ -1296,7 +1315,9 @@ export default function ProductsPage() {
                 }
               >
                 <SelectTrigger id="create-category">
-                  <SelectValue placeholder={t('selectCategory')} />
+                  <SelectValue placeholder={t('selectCategory')}>
+                    {getCategoryLabel(createForm.watch('category_id'), categories, locale)}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
@@ -1469,7 +1490,9 @@ export default function ProductsPage() {
                 }
               >
                 <SelectTrigger id="edit-category">
-                  <SelectValue />
+                  <SelectValue placeholder={t('selectCategory')}>
+                    {getCategoryLabel(editForm.watch('category_id'), categories, locale)}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
