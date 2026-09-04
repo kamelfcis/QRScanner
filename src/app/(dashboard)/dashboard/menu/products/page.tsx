@@ -30,8 +30,9 @@ import {
   FilterX,
   Sparkles,
   Wand2,
-  Loader2,
   ChevronDown,
+  LayoutGrid,
+  Table2,
 } from 'lucide-react';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { uploadImage, generateStoragePath } from '@/lib/upload';
@@ -46,7 +47,6 @@ import {
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
-import { Pencil, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -56,7 +56,7 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import type { Product } from '@/types';
+import type { Product, ProductWithGallery } from '@/types';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { cn, getName } from '@/lib/utils';
@@ -78,6 +78,15 @@ import {
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
+import {
+  ProductAdminCard,
+  ProductPriceSummary,
+} from '@/components/dashboard/products/ProductAdminCard';
+import {
+  ProductRowActions,
+  productAiCategoryName,
+} from '@/components/dashboard/products/ProductRowActions';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useProductAiImage } from '@/hooks/useProductAiImage';
 import {
   DropdownMenu,
@@ -348,6 +357,34 @@ type CategoryOption = {
   name_nl?: string | null;
 };
 
+type ProductsViewMode = 'cards' | 'table';
+
+const PRODUCTS_VIEW_STORAGE_KEY = 'hettsamaka-products-view';
+
+function getProductListLabels(
+  product: ProductWithGallery,
+  locale: string
+): { productName: string; secondaryName: string; categoryName: string } {
+  const productName = getName(
+    locale,
+    product.name_en,
+    product.name_ar,
+    product.name_fr,
+    product.name_nl
+  );
+  const secondaryName = locale === 'ar' ? product.name_en : product.name_ar || product.name_en;
+  const categoryName = product.category
+    ? getName(
+        locale,
+        product.category.name_en,
+        product.category.name_ar,
+        product.category.name_fr,
+        product.category.name_nl
+      )
+    : '—';
+  return { productName, secondaryName, categoryName };
+}
+
 function getCategoryLabel(
   categoryId: string | undefined,
   categories: CategoryOption[] | undefined,
@@ -530,6 +567,11 @@ function ProductPriceFields({
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [storedView, setStoredView] = useLocalStorage<ProductsViewMode>(
+    PRODUCTS_VIEW_STORAGE_KEY,
+    'cards'
+  );
+  const viewMode: ProductsViewMode = storedView === 'table' ? 'table' : 'cards';
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [quickFilter, setQuickFilter] = useState<'all' | 'unavailable' | 'no_image'>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -1046,18 +1088,54 @@ export default function ProductsPage() {
                 : t('showingCount', { count: visibleCount, total: totalProducts })}
             </p>
           )}
-          {hasActiveFilters && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={clearFilters}
-              className="text-muted-foreground hover:text-foreground h-8 shrink-0 px-2 text-xs"
+          <div className="ms-auto flex flex-wrap items-center gap-2">
+            {hasActiveFilters && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-muted-foreground hover:text-foreground min-h-11 shrink-0 px-2 text-xs md:h-8 md:min-h-8"
+              >
+                <FilterX className="me-1.5 h-3.5 w-3.5" aria-hidden />
+                {t('clearFilters')}
+              </Button>
+            )}
+            <div
+              role="radiogroup"
+              aria-label={t('viewModeLabel')}
+              className="border-border/60 bg-muted/30 inline-flex rounded-lg border p-0.5"
             >
-              <FilterX className="me-1.5 h-3.5 w-3.5" aria-hidden />
-              {t('clearFilters')}
-            </Button>
-          )}
+              {(
+                [
+                  { id: 'cards' as const, label: t('viewCards'), icon: LayoutGrid },
+                  { id: 'table' as const, label: t('viewTable'), icon: Table2 },
+                ] as const
+              ).map((option) => {
+                const isActive = viewMode === option.id;
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isActive}
+                    aria-label={option.label}
+                    title={option.label}
+                    onClick={() => setStoredView(option.id)}
+                    className={cn(
+                      'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md transition-colors',
+                      isActive
+                        ? 'border-brand-accent bg-brand-accent text-black shadow-[0_0_16px_-4px_rgba(255,183,0,0.5)]'
+                        : 'text-muted-foreground hover:text-foreground'
+                    )}
+                  >
+                    <Icon className="h-4 w-4" aria-hidden />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1069,6 +1147,72 @@ export default function ProductsPage() {
             !hasActiveFilters ? { label: t('addProduct'), onClick: openCreateDialog } : undefined
           }
         />
+      ) : viewMode === 'cards' ? (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {paginatedProducts.map((product) => {
+              const { productName, secondaryName, categoryName } = getProductListLabels(
+                product,
+                locale
+              );
+              return (
+                <ProductAdminCard
+                  key={product.id}
+                  product={product}
+                  productName={productName}
+                  secondaryName={secondaryName}
+                  categoryName={categoryName}
+                  currency={currency}
+                  locale={locale}
+                  t={t}
+                  tMenu={tMenu}
+                  actions={
+                    <ProductRowActions
+                      product={product}
+                      productName={productName}
+                      density="comfortable"
+                      aiEnabled={aiProductImagesEnabled}
+                      batchRunning={batchRunning}
+                      isAiBusy={productAi.isProductBusy(product.id)}
+                      aiMode={productAi.aiMode}
+                      onGenerate={() =>
+                        void productAi.runGeneration(
+                          product,
+                          'generate',
+                          productAiCategoryName(categoryName)
+                        )
+                      }
+                      onEnhance={() =>
+                        void productAi.runGeneration(
+                          product,
+                          'enhance',
+                          productAiCategoryName(categoryName)
+                        )
+                      }
+                      onToggleAvailability={() => handleToggleAvailability(product)}
+                      onEdit={() => openEditDialog(product)}
+                      onDelete={() => setDeleteId(product.id)}
+                      t={t}
+                      tCommon={tCommon}
+                    />
+                  }
+                />
+              );
+            })}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            pageSizeOptions={pageSizeOptions}
+            totalItems={filteredCount}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            className="border-border/60 bg-card/80 rounded-lg border"
+          />
+        </div>
       ) : (
         <Card className="border-border/60 bg-card/80 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
@@ -1097,24 +1241,10 @@ export default function ProductsPage() {
               </thead>
               <tbody>
                 {paginatedProducts.map((product) => {
-                  const productName = getName(
-                    locale,
-                    product.name_en,
-                    product.name_ar,
-                    product.name_fr,
-                    product.name_nl
+                  const { productName, secondaryName, categoryName } = getProductListLabels(
+                    product,
+                    locale
                   );
-                  const secondaryName =
-                    locale === 'ar' ? product.name_en : product.name_ar || product.name_en;
-                  const categoryName = product.category
-                    ? getName(
-                        locale,
-                        product.category.name_en,
-                        product.category.name_ar,
-                        product.category.name_fr,
-                        product.category.name_nl
-                      )
-                    : '—';
 
                   return (
                     <tr
@@ -1183,48 +1313,7 @@ export default function ProductsPage() {
                         </span>
                       </td>
                       <td className="p-3">
-                        <div className="space-y-0.5 tabular-nums">
-                          {product.price_per_kg != null && product.weight_options_g?.length ? (
-                            <>
-                              <p className="text-muted-foreground text-xs">{t('pricePerKg')}</p>
-                              <p className="font-semibold">
-                                {formatCurrencyAmount(product.price_per_kg, currency, {
-                                  plain: true,
-                                })}
-                              </p>
-                              <p className="text-muted-foreground text-xs">{t('fromPrice')}</p>
-                              <p className="text-muted-foreground font-medium">
-                                {formatCurrencyAmount(product.dining_price, currency, {
-                                  plain: true,
-                                })}
-                              </p>
-                            </>
-                          ) : product.has_size_options ? (
-                            <>
-                              <p className="text-muted-foreground text-xs">{t('smallPrice')}</p>
-                              <p className="font-semibold">
-                                {formatCurrencyAmount(product.dining_price, currency, {
-                                  plain: true,
-                                })}
-                              </p>
-                              <p className="text-muted-foreground text-xs">{t('largePrice')}</p>
-                              <p className="text-muted-foreground font-medium">
-                                {formatCurrencyAmount(product.takeaway_price, currency, {
-                                  plain: true,
-                                })}
-                              </p>
-                            </>
-                          ) : (
-                            <>
-                              <p className="text-muted-foreground text-xs">{t('price')}</p>
-                              <p className="font-semibold">
-                                {formatCurrencyAmount(product.dining_price, currency, {
-                                  plain: true,
-                                })}
-                              </p>
-                            </>
-                          )}
-                        </div>
+                        <ProductPriceSummary product={product} currency={currency} t={t} />
                       </td>
                       <td className="hidden p-3 md:table-cell">
                         <Badge variant={product.is_available ? 'default' : 'secondary'}>
@@ -1232,87 +1321,34 @@ export default function ProductsPage() {
                         </Badge>
                       </td>
                       <td className="p-3">
-                        <div className="flex items-center justify-end gap-1">
-                          {aiProductImagesEnabled && (
-                            <>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                disabled={
-                                  batchRunning ||
-                                  productAi.isProductBusy(product.id) ||
-                                  !(product.name_ar?.trim() || product.name_en?.trim())
-                                }
-                                aria-label={t('rowGenerateWithAi', { name: productName })}
-                                title={t('generateWithAi')}
-                                onClick={() =>
-                                  void productAi.runGeneration(
-                                    product,
-                                    'generate',
-                                    categoryName !== '—' ? categoryName : ''
-                                  )
-                                }
-                              >
-                                {productAi.isProductBusy(product.id) &&
-                                productAi.aiMode === 'generate' ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                  <Sparkles className="h-4 w-4" />
-                                )}
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                disabled={
-                                  batchRunning ||
-                                  productAi.isProductBusy(product.id) ||
-                                  !product.image_url?.trim()
-                                }
-                                aria-label={t('rowEnhanceWithAi', { name: productName })}
-                                title={t('enhanceWithAi')}
-                                onClick={() =>
-                                  void productAi.runGeneration(
-                                    product,
-                                    'enhance',
-                                    categoryName !== '—' ? categoryName : ''
-                                  )
-                                }
-                              >
-                                {productAi.isProductBusy(product.id) &&
-                                productAi.aiMode === 'enhance' ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                  <Wand2 className="h-4 w-4" />
-                                )}
-                              </Button>
-                            </>
-                          )}
-                          <Switch
-                            checked={product.is_available}
-                            onCheckedChange={() => handleToggleAvailability(product)}
-                            aria-label={`${t('available')} — ${productName}`}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            aria-label={`${tCommon('edit')} ${productName}`}
-                            onClick={() => openEditDialog(product)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-destructive h-8 w-8"
-                            onClick={() => setDeleteId(product.id)}
-                            aria-label={`${tCommon('delete')} ${productName}`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <ProductRowActions
+                          product={product}
+                          productName={productName}
+                          density="compact"
+                          aiEnabled={aiProductImagesEnabled}
+                          batchRunning={batchRunning}
+                          isAiBusy={productAi.isProductBusy(product.id)}
+                          aiMode={productAi.aiMode}
+                          onGenerate={() =>
+                            void productAi.runGeneration(
+                              product,
+                              'generate',
+                              productAiCategoryName(categoryName)
+                            )
+                          }
+                          onEnhance={() =>
+                            void productAi.runGeneration(
+                              product,
+                              'enhance',
+                              productAiCategoryName(categoryName)
+                            )
+                          }
+                          onToggleAvailability={() => handleToggleAvailability(product)}
+                          onEdit={() => openEditDialog(product)}
+                          onDelete={() => setDeleteId(product.id)}
+                          t={t}
+                          tCommon={tCommon}
+                        />
                       </td>
                     </tr>
                   );
