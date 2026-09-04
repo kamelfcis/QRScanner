@@ -37,6 +37,11 @@ import {
   trackOrderWhatsApp,
 } from '@/lib/analytics';
 import { haptic } from '@/lib/haptics';
+import {
+  ORDER_SUCCESS_SOUND_KEY,
+  playOrderSuccessSound,
+  resumeOrderSuccessAudio,
+} from '@/lib/audio/order-success';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { normalizeLocalPhone, formatDisplayPhone } from '@/lib/phone/normalize';
@@ -48,6 +53,7 @@ export default function CheckoutPage() {
   const { locale } = useI18n();
   const t = useTranslations('checkout');
   const tCart = useTranslations('cart');
+  const tMenu = useTranslations('menu');
   const tCommon = useTranslations('common');
   const prefersReducedMotion = useReducedMotion();
   const { data: settings, isLoading } = useRestaurantSettings();
@@ -133,6 +139,7 @@ export default function CheckoutPage() {
         product_id: item.productId,
         quantity: item.quantity,
         size_option: item.has_size_options ? item.sizeOption : null,
+        weight_grams: item.weightGrams ?? null,
         notes: item.notes || null,
       })),
     [items]
@@ -156,6 +163,25 @@ export default function CheckoutPage() {
       setTrackedStart(true);
     }
   }, [trackedStart, items, totals.total]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let primed = false;
+    const primeFromGesture = () => {
+      if (primed) return;
+      void resumeOrderSuccessAudio().then((ok) => {
+        if (!ok) return;
+        primed = true;
+        window.removeEventListener('pointerdown', primeFromGesture, true);
+      });
+    };
+
+    window.addEventListener('pointerdown', primeFromGesture, true);
+    return () => {
+      window.removeEventListener('pointerdown', primeFromGesture, true);
+    };
+  }, [prefersReducedMotion]);
 
   const resolveErrors = (codes: ReturnType<typeof validateOrder>['codes']) => {
     return codes.map((code) => {
@@ -203,6 +229,8 @@ export default function CheckoutPage() {
 
     if (!settings) return;
 
+    void resumeOrderSuccessAudio();
+
     setSubmitting(true);
     setErrors([]);
 
@@ -223,6 +251,7 @@ export default function CheckoutPage() {
               product_id: item.productId,
               quantity: item.quantity,
               size_option: item.has_size_options ? item.sizeOption : null,
+              weight_grams: item.weightGrams ?? null,
               notes: item.notes || null,
             })),
             dining_mode: diningMode,
@@ -340,7 +369,13 @@ export default function CheckoutPage() {
       const params = new URLSearchParams();
       if (built) params.set('sent', '1');
       if (orderNumber) params.set('order', orderNumber);
+      playOrderSuccessSound({ prefersReducedMotion });
       haptic.success();
+      try {
+        sessionStorage.setItem(ORDER_SUCCESS_SOUND_KEY, '1');
+      } catch {
+        // private mode / quota
+      }
       router.push(`/order-success${params.size ? `?${params.toString()}` : ''}`);
     } catch {
       setErrors([dashboardOrders ? t('placeFailed') : t('whatsappMissing')]);
@@ -486,6 +521,10 @@ export default function CheckoutPage() {
                         {item.has_size_options && item.sizeOption ? (
                           <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
                             {item.sizeOption === 'small' ? tCart('small') : tCart('large')}
+                          </span>
+                        ) : item.weightGrams != null ? (
+                          <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
+                            {tMenu('grams', { grams: item.weightGrams })}
                           </span>
                         ) : null}
                       </p>

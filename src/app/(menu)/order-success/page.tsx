@@ -14,6 +14,7 @@ import { fadeInUp, scaleIn } from '@/lib/motion';
 import { openWhatsAppUrl } from '@/lib/order/build-order';
 import { buildOrderStatusPath } from '@/lib/order/last-order';
 import { cn } from '@/lib/utils';
+import { ORDER_SUCCESS_SOUND_KEY, playOrderSuccessSound } from '@/lib/audio/order-success';
 
 export default function OrderSuccessPage() {
   return (
@@ -46,6 +47,17 @@ function OrderSuccessContent() {
       return null;
     }
   });
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    try {
+      if (sessionStorage.getItem(ORDER_SUCCESS_SOUND_KEY) !== '1') return;
+      sessionStorage.removeItem(ORDER_SUCCESS_SOUND_KEY);
+      playOrderSuccessSound({ prefersReducedMotion });
+    } catch {
+      // private mode / quota
+    }
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     if (!sent) return;
