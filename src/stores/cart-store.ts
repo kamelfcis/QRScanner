@@ -2,13 +2,14 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { haptic } from '@/lib/haptics';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
 export type CartSizeOption = 'small' | 'large' | null;
 
 export interface CartItem {
-  /** Stable line id: productId + optional size + notes key */
+  /** Stable line id: productId + optional size/weight + notes key */
   id: string;
   productId: string;
   name_en: string;
@@ -19,7 +20,10 @@ export interface CartItem {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
   sizeOption: CartSizeOption;
+  weightGrams?: number | null;
   quantity: number;
   notes: string;
 }
@@ -52,9 +56,15 @@ function notesKey(notes: string): string {
 export function makeCartLineId(
   productId: string,
   notes: string,
-  sizeOption: CartSizeOption = null
+  sizeOption: CartSizeOption = null,
+  weightGrams: number | null = null
 ): string {
   const key = notesKey(notes);
+  const weightKey = weightGrams != null ? `${weightGrams}g` : '';
+  if (weightKey && sizeOption && key) return `${productId}::${weightKey}::${sizeOption}::${key}`;
+  if (weightKey && sizeOption) return `${productId}::${weightKey}::${sizeOption}`;
+  if (weightKey && key) return `${productId}::${weightKey}::${key}`;
+  if (weightKey) return `${productId}::${weightKey}`;
   if (sizeOption && key) return `${productId}::${sizeOption}::${key}`;
   if (sizeOption) return `${productId}::${sizeOption}`;
   if (key) return `${productId}::${key}`;
@@ -81,7 +91,9 @@ export const useCartStore = create<CartState>()(
         const qty = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
         const sizeOption = item.sizeOption ?? null;
-        const id = makeCartLineId(item.productId, notes, sizeOption);
+        const weightGrams = item.weightGrams ?? null;
+        const id = makeCartLineId(item.productId, notes, sizeOption, weightGrams);
+        haptic.addToCart();
         set((state) => {
           const existing = state.items.find((i) => i.id === id);
           if (existing) {
@@ -103,7 +115,10 @@ export const useCartStore = create<CartState>()(
                 dining_price: item.dining_price,
                 takeaway_price: item.takeaway_price,
                 has_size_options: item.has_size_options ?? false,
+                price_per_kg: item.price_per_kg ?? null,
+                weight_options_g: item.weight_options_g ?? null,
                 sizeOption,
+                weightGrams,
                 quantity: qty,
                 notes,
               },
@@ -134,7 +149,12 @@ export const useCartStore = create<CartState>()(
           const current = state.items.find((i) => i.id === id);
           if (!current) return state;
 
-          const newId = makeCartLineId(current.productId, trimmed, current.sizeOption);
+          const newId = makeCartLineId(
+            current.productId,
+            trimmed,
+            current.sizeOption,
+            current.weightGrams ?? null
+          );
           if (newId === id) {
             return {
               items: state.items.map((i) => (i.id === id ? { ...i, notes: trimmed } : i)),

@@ -27,6 +27,7 @@ export function vibrateIfSupported(pattern: VibrationPattern): void {
 export const haptic = {
   tick: () => vibrateIfSupported(8),
   confirm: () => vibrateIfSupported(12),
+  addToCart: () => vibrateIfSupported([10, 40, 15]),
   remove: () => vibrateIfSupported([18, 40, 18]),
   success: () => vibrateIfSupported([12, 50, 20]),
   error: () => vibrateIfSupported([30, 40, 30]),

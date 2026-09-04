@@ -110,7 +110,6 @@ export function ProductCard({
       notes: withNotes,
     });
     trackAddToCart(product.id, qty, diningMode);
-    haptic.confirm();
     setPulse(true);
     window.setTimeout(() => setPulse(false), 400);
     setQty(1);
@@ -196,6 +195,7 @@ export function ProductCard({
             whileTap={prefersReducedMotion ? undefined : { scale: 0.85 }}
             onClick={(e) => {
               e.stopPropagation();
+              haptic.tick();
               onToggleFavorite(product);
             }}
             className={cn(
