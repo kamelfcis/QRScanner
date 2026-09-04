@@ -50,6 +50,8 @@ export interface Product {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
   is_available: boolean;
   is_popular: boolean;
   is_new: boolean;
@@ -258,6 +260,7 @@ export interface OrderItem {
   quantity: number;
   unit_price: number;
   size_option: OrderSizeOption | null;
+  weight_grams?: number | null;
   notes: string | null;
   created_at: string;
   /** Joined from products at fetch time; not stored on order_items */
