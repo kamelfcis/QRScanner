@@ -28,6 +28,7 @@ import {
 } from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -65,9 +66,12 @@ export function ProductCard({
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  // false/null/undefined → quick-add; only explicit true opens ProductSheet for sizes
+  // false/null/undefined → quick-add; size or weight options open ProductSheet
   const hasSizeOptions = product.has_size_options === true;
-  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
+  const needsPicker = hasSizeOptions || hasWeightOptions(product);
+  const fromPrice = minWeightPrice(product);
+  const activePrice =
+    fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const minPrice = Math.min(product.dining_price, product.takeaway_price);
   const maxPrice = Math.max(product.dining_price, product.takeaway_price);
@@ -90,7 +94,7 @@ export function ProductCard({
     : '';
 
   const handleAdd = (withNotes: string) => {
-    if (!product.is_available || hasSizeOptions) return;
+    if (!product.is_available || needsPicker) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
@@ -123,7 +127,7 @@ export function ProductCard({
   };
 
   const startLongPress = () => {
-    if (hasSizeOptions) return;
+    if (needsPicker) return;
     longPressFired.current = false;
     clearLongPress();
     longPressTimer.current = setTimeout(() => {
@@ -133,7 +137,7 @@ export function ProductCard({
   };
 
   const handleMobileAddClick = () => {
-    if (hasSizeOptions) {
+    if (needsPicker) {
       onImageClick(product);
       return;
     }
@@ -253,6 +257,15 @@ export function ProductCard({
                     {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })}
                   </p>
                 )
+              ) : fromPrice != null ? (
+                <p
+                  className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                  dir="ltr"
+                >
+                  {t('priceFrom', {
+                    price: formatCurrencyAmount(fromPrice, currency, { locale: currencyLocale }),
+                  })}
+                </p>
               ) : (
                 <>
                   <p
@@ -286,10 +299,16 @@ export function ProductCard({
                   handleMobileAddClick();
                 }}
                 className="flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
-                aria-label={hasSizeOptions ? t('selectSize') : tCart('addToCart')}
-                data-testid={hasSizeOptions ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
+                aria-label={
+                  needsPicker
+                    ? hasSizeOptions
+                      ? t('selectSize')
+                      : t('selectWeight')
+                    : tCart('addToCart')
+                }
+                data-testid={needsPicker ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
               >
-                {hasSizeOptions ? (
+                {needsPicker ? (
                   <ShoppingCart className="h-4 w-4" aria-hidden="true" />
                 ) : (
                   <Plus className="h-5 w-5" aria-hidden="true" strokeWidth={2.5} />
@@ -301,7 +320,7 @@ export function ProductCard({
           {product.is_available && (
             <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
-                {!hasSizeOptions && (
+                {!needsPicker && (
                   <div
                     className="inline-flex min-h-11 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
                     role="group"
@@ -342,16 +361,26 @@ export function ProductCard({
                   <Button
                     type="button"
                     className="min-h-11 w-full touch-manipulation rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-                    onClick={() => (hasSizeOptions ? onImageClick(product) : handleAdd(''))}
-                    data-testid={hasSizeOptions ? 'open-product-sheet' : 'add-to-cart'}
-                    aria-label={hasSizeOptions ? t('selectSize') : tCart('addToCart')}
+                    onClick={() => (needsPicker ? onImageClick(product) : handleAdd(''))}
+                    data-testid={needsPicker ? 'open-product-sheet' : 'add-to-cart'}
+                    aria-label={
+                      needsPicker
+                        ? hasSizeOptions
+                          ? t('selectSize')
+                          : t('selectWeight')
+                        : tCart('addToCart')
+                    }
                   >
-                    {hasSizeOptions ? (
+                    {needsPicker ? (
                       <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
                     ) : (
                       <Plus className="me-1.5 h-3.5 w-3.5" aria-hidden="true" strokeWidth={2.5} />
                     )}
-                    {hasSizeOptions ? t('selectSize') : tCart('addToCart')}
+                    {needsPicker
+                      ? hasSizeOptions
+                        ? t('selectSize')
+                        : t('selectWeight')
+                      : tCart('addToCart')}
                   </Button>
                 </motion.div>
               </div>
@@ -359,7 +388,7 @@ export function ProductCard({
               <button
                 type="button"
                 className="min-h-11 touch-manipulation self-start px-0.5 text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
-                onClick={() => (hasSizeOptions ? onImageClick(product) : setNotesOpen(true))}
+                onClick={() => (needsPicker ? onImageClick(product) : setNotesOpen(true))}
               >
                 {tCart('itemNotes')}
               </button>
