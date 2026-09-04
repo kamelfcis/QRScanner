@@ -360,7 +360,7 @@ export function ProductCard({
                 >
                   <Button
                     type="button"
-                    className="min-h-11 w-full touch-manipulation rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+                    className="min-h-11 w-full touch-manipulation items-center justify-center gap-2 overflow-visible rounded-full bg-[var(--menu-wine)] px-5 py-2 text-[13px] font-medium leading-snug text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
                     onClick={() => (needsPicker ? onImageClick(product) : handleAdd(''))}
                     data-testid={needsPicker ? 'open-product-sheet' : 'add-to-cart'}
                     aria-label={
@@ -372,15 +372,17 @@ export function ProductCard({
                     }
                   >
                     {needsPicker ? (
-                      <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
+                      <ShoppingCart className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                     ) : (
-                      <Plus className="me-1.5 h-3.5 w-3.5" aria-hidden="true" strokeWidth={2.5} />
+                      <Plus className="h-3.5 w-3.5 shrink-0" aria-hidden="true" strokeWidth={2.5} />
                     )}
-                    {needsPicker
-                      ? hasSizeOptions
-                        ? t('selectSize')
-                        : t('selectWeight')
-                      : tCart('addToCart')}
+                    <span className="whitespace-nowrap">
+                      {needsPicker
+                        ? hasSizeOptions
+                          ? t('selectSize')
+                          : t('selectWeight')
+                        : tCart('addToCart')}
+                    </span>
                   </Button>
                 </motion.div>
               </div>
