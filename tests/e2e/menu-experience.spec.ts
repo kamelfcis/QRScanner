@@ -58,8 +58,9 @@ test.describe('Menu Experience', () => {
     await page.goto('/welcome?table=7');
     await expect(page).toHaveURL(/welcome/);
     await expect(page.getByText(/7/)).toBeVisible();
-    await expect(page.getByTestId('welcome-dine-in')).toBeVisible();
-    await expect(page.getByTestId('welcome-takeaway')).toBeVisible();
+    await expect(page.getByTestId('welcome-delivery')).toBeVisible();
+    await expect(page.getByTestId('welcome-dine-in')).toHaveCount(0);
+    await expect(page.getByTestId('welcome-takeaway')).toHaveCount(0);
   });
 
   test('welcome skip=1 with table redirects to menu', async ({ page }) => {

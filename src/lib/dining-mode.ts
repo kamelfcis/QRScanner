@@ -1,4 +1,5 @@
 import type { CartDiningMode } from '@/stores/cart-store';
+import { isDeliveryOnlyMode } from '@/lib/fulfillment-mode';
 
 /** URL query values accepted for order type */
 export type DiningModeParam = 'dining' | 'dine_in' | 'takeaway';
@@ -28,6 +29,7 @@ export function toDiningModeParam(mode: CartDiningMode): DiningModeParam {
 }
 
 export function readStoredDiningMode(): CartDiningMode {
+  if (isDeliveryOnlyMode()) return 'takeaway';
   if (typeof window === 'undefined') return 'dining';
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved === 'dining' || saved === 'takeaway') return saved;

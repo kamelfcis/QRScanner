@@ -53,8 +53,8 @@ test.describe('QR Ordering & WhatsApp Checkout', () => {
     await expect(page.getByText(/4/)).toBeVisible();
 
     await Promise.all([
-      page.waitForURL(/\/menu\?.*mode=dine_in/, { timeout: 60_000 }),
-      page.getByTestId('welcome-dine-in').click(),
+      page.waitForURL(/\/menu\?.*mode=takeaway/, { timeout: 60_000 }),
+      page.getByTestId('welcome-delivery').click(),
     ]);
     await expect(page).toHaveURL(/table=4/);
 

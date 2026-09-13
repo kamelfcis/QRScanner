@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
 import {
   buildMenuUrl,
   parseDiningModeParam,
@@ -50,6 +50,12 @@ describe('buildMenuUrl', () => {
 describe('dining mode persistence', () => {
   beforeEach(() => {
     localStorage.clear();
+    vi.stubEnv('NEXT_PUBLIC_FULFILLMENT_MODE', 'default');
+    vi.stubEnv('NEXT_PUBLIC_TENANT', 'warda');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it('reads and writes localStorage', () => {
@@ -62,6 +68,13 @@ describe('dining mode persistence', () => {
     expect(readStoredTableNumber()).toBeNull();
     persistTableNumber('7');
     expect(readStoredTableNumber()).toBe('7');
+  });
+
+  it('forces takeaway when Harameen is delivery-only', () => {
+    persistDiningMode('dining');
+    vi.stubEnv('NEXT_PUBLIC_FULFILLMENT_MODE', 'delivery_only');
+    vi.stubEnv('NEXT_PUBLIC_TENANT', 'harameen');
+    expect(readStoredDiningMode()).toBe('takeaway');
   });
 });
 
