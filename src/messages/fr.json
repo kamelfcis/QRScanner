@@ -600,6 +600,8 @@
     "delivery": "Livraison",
     "pickup": "Retrait",
     "table": "Table",
+    "orderDate": "Date",
+    "orderTime": "Heure",
     "small": "Petit",
     "large": "Grand",
     "sendWhatsApp": "Envoyer WhatsApp",

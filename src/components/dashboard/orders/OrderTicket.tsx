@@ -319,9 +319,14 @@ export function OrderTicket({
                 <p className="font-heading text-lg font-semibold tabular-nums">
                   {order.order_number}
                 </p>
-                <p className="text-muted-foreground text-xs">
-                  {formatLocaleDate(order.created_at, 'HH:mm', locale)}
-                </p>
+                <time dateTime={order.created_at} className="text-muted-foreground block text-xs">
+                  <span className="block">
+                    {t('orderDate')}: {formatLocaleDate(order.created_at, 'd MMMM yyyy', locale)}
+                  </span>
+                  <span className="block tabular-nums">
+                    {t('orderTime')}: {formatLocaleDate(order.created_at, 'HH:mm', locale)}
+                  </span>
+                </time>
               </div>
               <div className="flex shrink-0 items-center gap-1.5">
                 <Badge className={cn('border', COLUMN_TONE[order.status])}>
@@ -439,6 +444,10 @@ export function OrderTicket({
                           {item.size_option ? (
                             <span className="text-muted-foreground ms-1 text-xs">
                               ({item.size_option === 'small' ? t('small') : t('large')})
+                            </span>
+                          ) : item.weight_grams != null ? (
+                            <span className="text-muted-foreground ms-1 text-xs">
+                              ({item.weight_grams}g)
                             </span>
                           ) : null}
                         </p>

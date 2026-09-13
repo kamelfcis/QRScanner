@@ -600,6 +600,8 @@
     "delivery": "توصيل",
     "pickup": "استلام",
     "table": "الطاولة",
+    "orderDate": "التاريخ",
+    "orderTime": "الوقت",
     "small": "صغير",
     "large": "كبير",
     "sendWhatsApp": "إرسال واتساب",

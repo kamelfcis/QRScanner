@@ -600,6 +600,8 @@
     "delivery": "Bezorging",
     "pickup": "Afhalen",
     "table": "Tafel",
+    "orderDate": "Datum",
+    "orderTime": "Tijd",
     "small": "Klein",
     "large": "Groot",
     "sendWhatsApp": "WhatsApp versturen",

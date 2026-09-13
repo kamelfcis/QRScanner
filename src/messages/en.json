@@ -600,6 +600,8 @@
     "delivery": "Delivery",
     "pickup": "Pickup",
     "table": "Table",
+    "orderDate": "Date",
+    "orderTime": "Time",
     "small": "Small",
     "large": "Large",
     "sendWhatsApp": "Send WhatsApp",
