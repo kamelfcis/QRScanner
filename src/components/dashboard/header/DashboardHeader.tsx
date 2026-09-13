@@ -30,7 +30,7 @@ export function DashboardHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: settings } = useRestaurantSettings();
   const { data: features } = useFeatureSettings();
-  const navItems = getDashboardNav(features);
+  const navItems = getDashboardNav(features, settings);
   const { locale } = useI18n();
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');

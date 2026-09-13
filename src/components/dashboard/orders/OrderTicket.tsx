@@ -511,6 +511,15 @@ export function OrderTicket({
                   </p>
                 ) : null}
 
+                {Number(order.delivery_fee) > 0 ? (
+                  <p className="text-muted-foreground text-end text-xs tabular-nums">
+                    {t('deliveryFee')}:{' '}
+                    {formatCurrencyAmount(Number(order.delivery_fee), order.currency, {
+                      locale: currencyLocale,
+                    })}
+                  </p>
+                ) : null}
+
                 {order.fulfillment_type === 'delivery' ? (
                   <DeliveryFeeField
                     key={`${order.id}-${Number(order.delivery_fee ?? 0)}`}

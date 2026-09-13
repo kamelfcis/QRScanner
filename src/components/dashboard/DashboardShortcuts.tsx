@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useFeatureSettings } from '@/hooks/useSettings';
+import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
@@ -9,9 +9,10 @@ import { DASHBOARD_NAV_TONES, FALLBACK_NAV_TONE } from '@/lib/navigation/dashboa
 
 export function DashboardShortcuts() {
   const { data: features } = useFeatureSettings();
+  const { data: settings } = useRestaurantSettings();
   const t = useTranslations('dashboard');
   const tSidebar = useTranslations('sidebar');
-  const items = getDashboardNav(features).filter((item) => item.href !== '/dashboard');
+  const items = getDashboardNav(features, settings).filter((item) => item.href !== '/dashboard');
 
   if (items.length === 0) return null;
 

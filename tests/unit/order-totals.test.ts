@@ -18,7 +18,24 @@ describe('calculateOrderTotals', () => {
     expect(totals.subtotal).toBe(60);
     expect(totals.tax).toBe(9);
     expect(totals.service).toBe(6);
+    expect(totals.deliveryFee).toBe(0);
     expect(totals.total).toBe(75);
+  });
+
+  it('includes delivery fee after tax and service', () => {
+    const totals = calculateOrderTotals(
+      items,
+      {
+        tax_rate: 15,
+        service_charge_rate: 10,
+        apply_tax: true,
+        apply_service_charge: true,
+      },
+      null,
+      25
+    );
+    expect(totals.deliveryFee).toBe(25);
+    expect(totals.total).toBe(100);
   });
 
   it('applies a percentage coupon to subtotal then tax and service', () => {
@@ -117,6 +134,23 @@ describe('calculateOrderTotals', () => {
     expect(totals.applyService).toBe(true);
     expect(totals.total).toBe(75);
   });
+
+  it('adds delivery fee on top of coupon-adjusted totals', () => {
+    const totals = calculateOrderTotals(
+      items,
+      {
+        tax_rate: 15,
+        service_charge_rate: 10,
+        apply_tax: true,
+        apply_service_charge: true,
+      },
+      { type: 'fixed', value: 10 },
+      15
+    );
+    expect(totals.discount).toBe(10);
+    expect(totals.deliveryFee).toBe(15);
+    expect(totals.total).toBe(72.5);
+  });
 });
 
 describe('getUnitPrice', () => {
@@ -146,6 +180,33 @@ describe('getCartLineUnitPrice', () => {
         'takeaway'
       )
     ).toBe(25);
+  });
+});
+
+describe('validateOrder delivery location', () => {
+  it('requires a delivery location when delivery is selected', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 50,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresDeliveryLocation: true,
+      deliveryLocationId: null,
+    });
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('address_required');
+  });
+
+  it('passes when a delivery location is selected', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 50,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresDeliveryLocation: true,
+      deliveryLocationId: '11111111-1111-1111-1111-111111111111',
+    });
+    expect(result.valid).toBe(true);
   });
 });
 

@@ -201,7 +201,7 @@ export function DashboardSidebar() {
   const { signOut } = useAuth();
   const { data: settings } = useRestaurantSettings();
   const { data: features } = useFeatureSettings();
-  const navItems = getDashboardNav(features);
+  const navItems = getDashboardNav(features, settings);
   const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
   const { collapsed, setHoverExpanded, isPeekOpen, isFullyOpen } = useSidebarCollapse();

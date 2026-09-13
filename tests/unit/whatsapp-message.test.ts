@@ -8,6 +8,7 @@ const totals: OrderTotals = {
   discount: 0,
   tax: 9,
   service: 6,
+  deliveryFee: 0,
   total: 75,
   taxRate: 15,
   serviceRate: 10,

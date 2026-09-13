@@ -25,6 +25,7 @@ export interface OrderTotals {
   discount: number;
   tax: number;
   service: number;
+  deliveryFee: number;
   total: number;
   taxRate: number;
   serviceRate: number;
@@ -58,7 +59,8 @@ export function calculateCouponDiscount(
 export function calculateOrderTotals(
   items: TotalsCartItem[],
   settings?: TotalsSettings | null,
-  coupon?: CouponDiscountInput | null
+  coupon?: CouponDiscountInput | null,
+  deliveryFee = 0
 ): OrderTotals {
   const subtotal = roundMoney(items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0));
   const discount = calculateCouponDiscount(subtotal, coupon);
@@ -71,13 +73,15 @@ export function calculateOrderTotals(
 
   const tax = applyTax ? roundMoney(taxable * (taxRate / 100)) : 0;
   const service = applyService ? roundMoney(taxable * (serviceRate / 100)) : 0;
-  const total = roundMoney(taxable + tax + service);
+  const fee = roundMoney(Math.max(0, deliveryFee));
+  const total = roundMoney(taxable + tax + service + fee);
 
   return {
     subtotal,
     discount,
     tax,
     service,
+    deliveryFee: fee,
     total,
     taxRate,
     serviceRate,

@@ -222,6 +222,19 @@ export type OrderDiningMode = 'dining' | 'takeaway';
 export type OrderFulfillmentType = 'pickup' | 'delivery';
 export type OrderSizeOption = 'small' | 'large';
 
+export interface DeliveryLocation {
+  id: string;
+  name_ar: string;
+  name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
+  delivery_fee: number;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Order {
   id: string;
   order_number: string;
@@ -232,6 +245,7 @@ export interface Order {
   customer_name: string;
   customer_phone: string | null;
   delivery_address: string | null;
+  delivery_location_id: string | null;
   notes: string | null;
   subtotal: number;
   tax: number;

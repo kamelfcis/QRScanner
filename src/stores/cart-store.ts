@@ -32,6 +32,8 @@ export interface CartMeta {
   diningMode: CartDiningMode;
   tableNumber: string | null;
   fulfillmentType: FulfillmentType;
+  deliveryLocationId: string | null;
+  deliveryAddressDetails: string;
   deliveryAddress: string;
   customerName: string;
   customerPhone: string;
@@ -75,6 +77,8 @@ const initialMeta: CartMeta = {
   diningMode: 'dining',
   tableNumber: null,
   fulfillmentType: 'pickup',
+  deliveryLocationId: null,
+  deliveryAddressDetails: '',
   deliveryAddress: '',
   customerName: '',
   customerPhone: '',
@@ -182,6 +186,8 @@ export const useCartStore = create<CartState>()(
         set({
           items: [],
           fulfillmentType: 'pickup',
+          deliveryLocationId: null,
+          deliveryAddressDetails: '',
           deliveryAddress: '',
           customerName: '',
           customerPhone: '',
@@ -202,6 +208,8 @@ export const useCartStore = create<CartState>()(
         diningMode: state.diningMode,
         tableNumber: state.tableNumber,
         fulfillmentType: state.fulfillmentType,
+        deliveryLocationId: state.deliveryLocationId,
+        deliveryAddressDetails: state.deliveryAddressDetails,
         deliveryAddress: state.deliveryAddress,
         customerName: state.customerName,
         customerPhone: state.customerPhone,

@@ -12,6 +12,9 @@ export interface OrderValidationInput {
   /** When true, delivery address is required (takeaway + delivery). */
   requiresDeliveryAddress?: boolean;
   deliveryAddress?: string | null;
+  /** When true, delivery location is required (takeaway + delivery). */
+  requiresDeliveryLocation?: boolean;
+  deliveryLocationId?: string | null;
 }
 
 export interface OrderValidationResult {
@@ -44,7 +47,9 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
     codes.push('whatsapp_missing');
   }
   if (!input.customerName?.trim()) codes.push('name_required');
-  if (input.requiresDeliveryAddress && !input.deliveryAddress?.trim()) {
+  if (input.requiresDeliveryLocation && !input.deliveryLocationId?.trim()) {
+    codes.push('address_required');
+  } else if (input.requiresDeliveryAddress && !input.deliveryAddress?.trim()) {
     codes.push('address_required');
   }
   if (minOrder > 0 && input.subtotal < minOrder) {

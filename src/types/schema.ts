@@ -273,6 +273,8 @@ export const placeOrderSchema = z.object({
   customer_phone: z.string().max(40).nullable().optional(),
   phone_country: z.string().length(2).optional(),
   delivery_address: z.string().max(500).nullable().optional(),
+  delivery_location_id: z.string().uuid().nullable().optional(),
+  delivery_address_details: z.string().max(400).nullable().optional(),
   notes: z.string().max(200).nullable().optional(),
   locale: z.enum(['en', 'ar', 'fr', 'nl']).default('en'),
   whatsapp_sent: z.boolean().optional(),
@@ -323,6 +325,18 @@ export const couponSchema = z
   });
 
 export type CouponInput = z.infer<typeof couponSchema>;
+
+export const deliveryLocationSchema = z.object({
+  name_ar: z.string().min(1, 'Arabic name is required').max(255),
+  name_en: z.string().min(1, 'English name is required').max(255),
+  name_fr: z.string().max(255).optional().nullable(),
+  name_nl: z.string().max(255).optional().nullable(),
+  delivery_fee: z.number().min(0, 'Fee must be zero or positive'),
+  is_active: z.boolean().default(true),
+  sort_order: z.number().int().min(0).default(0),
+});
+
+export type DeliveryLocationInput = z.infer<typeof deliveryLocationSchema>;
 
 export type PlaceOrderInput = z.infer<typeof placeOrderSchema>;
 

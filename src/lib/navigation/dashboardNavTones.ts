@@ -13,6 +13,10 @@ export const DASHBOARD_NAV_TONES: Record<string, NavTone> = {
     well: 'bg-rose-600 dark:bg-rose-500',
     label: 'text-rose-800 dark:text-rose-300',
   },
+  deliveryLocations: {
+    well: 'bg-orange-600 dark:bg-orange-500',
+    label: 'text-orange-800 dark:text-orange-300',
+  },
   analytics: {
     well: 'bg-indigo-600 dark:bg-indigo-500',
     label: 'text-indigo-800 dark:text-indigo-300',

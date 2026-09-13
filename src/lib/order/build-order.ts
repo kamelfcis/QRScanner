@@ -17,6 +17,7 @@ export interface BuildOrderInput {
   tableNumber?: string | null;
   fulfillmentType?: FulfillmentType | null;
   deliveryAddress?: string | null;
+  deliveryFee?: number | null;
   customerName: string;
   customerPhone?: string | null;
   orderNotes?: string | null;
@@ -53,7 +54,8 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
   const totals = calculateOrderTotals(
     priced.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
     input.settings,
-    input.coupon
+    input.coupon,
+    input.deliveryFee ?? 0
   );
 
   const message = buildWhatsAppMessage({
@@ -75,6 +77,7 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     orderNotes: input.orderNotes,
     prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
     couponCode: input.couponCode,
+    deliveryFee: totals.deliveryFee,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);
@@ -117,6 +120,7 @@ export function buildStoredOrderWhatsApp(input: {
     discount: Number(input.order.discount_amount ?? 0),
     tax: Number(input.order.tax),
     service: Number(input.order.service),
+    deliveryFee: Number(input.order.delivery_fee ?? 0),
     total: Number(input.order.total),
     taxRate: 0,
     serviceRate: 0,

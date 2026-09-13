@@ -9,6 +9,13 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/shared/Image';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -47,6 +54,11 @@ import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { normalizeLocalPhone, formatDisplayPhone } from '@/lib/phone/normalize';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
 import { writeLastOrder } from '@/lib/order/last-order';
+import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
+import {
+  buildDeliveryAddressSnapshot,
+  getDeliveryLocationLabel,
+} from '@/lib/order/delivery-location';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -65,7 +77,8 @@ export default function CheckoutPage() {
   const diningMode = useCartStore((s) => s.diningMode);
   const tableNumber = useCartStore((s) => s.tableNumber);
   const fulfillmentType = useCartStore((s) => s.fulfillmentType);
-  const deliveryAddress = useCartStore((s) => s.deliveryAddress);
+  const deliveryLocationId = useCartStore((s) => s.deliveryLocationId);
+  const deliveryAddressDetails = useCartStore((s) => s.deliveryAddressDetails);
   const customerName = useCartStore((s) => s.customerName);
   const customerPhone = useCartStore((s) => s.customerPhone);
   const orderNotes = useCartStore((s) => s.orderNotes);
@@ -84,8 +97,9 @@ export default function CheckoutPage() {
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const whatsappConfigured = Boolean(normalizeWhatsAppPhone(settings?.whatsapp || ''));
   const isTakeaway = diningMode === 'takeaway';
-  const requiresDeliveryAddress = isTakeaway && fulfillmentType === 'delivery';
+  const requiresDelivery = isTakeaway && fulfillmentType === 'delivery';
   const requireWhatsApp = !dashboardOrders;
+  const { data: deliveryLocations, isLoading: locationsLoading } = useDeliveryLocations();
 
   useEffect(() => {
     if (!orderModes.dineIn && diningMode !== 'takeaway') {
@@ -99,7 +113,9 @@ export default function CheckoutPage() {
       const fallback = fulfillmentOptions[0];
       setMeta({
         fulfillmentType: fallback,
-        ...(fallback === 'pickup' ? { deliveryAddress: '' } : {}),
+        ...(fallback === 'pickup'
+          ? { deliveryLocationId: null, deliveryAddressDetails: '', deliveryAddress: '' }
+          : {}),
       });
     }
   }, [isTakeaway, fulfillmentOptions, fulfillmentType, setMeta]);
@@ -113,13 +129,22 @@ export default function CheckoutPage() {
     [items, diningMode]
   );
 
+  const selectedLocation = useMemo(
+    () => deliveryLocations?.find((loc) => loc.id === deliveryLocationId) ?? null,
+    [deliveryLocations, deliveryLocationId]
+  );
+
+  const deliveryFee = requiresDelivery && selectedLocation ? Number(selectedLocation.delivery_fee) : 0;
+
   const localTotals = useMemo(
     () =>
       calculateOrderTotals(
         pricedItems.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
-        settings
+        settings,
+        null,
+        deliveryFee
       ),
-    [pricedItems, settings]
+    [pricedItems, settings, deliveryFee]
   );
 
   const totals = appliedCoupon
@@ -129,9 +154,18 @@ export default function CheckoutPage() {
         discount: appliedCoupon.discountAmount,
         tax: appliedCoupon.tax,
         service: appliedCoupon.service,
-        total: appliedCoupon.total,
+        deliveryFee,
+        total: appliedCoupon.total + deliveryFee,
       }
     : localTotals;
+
+  const composedDeliveryAddress = useMemo(() => {
+    if (!requiresDelivery || !selectedLocation) return null;
+    return buildDeliveryAddressSnapshot(locale, selectedLocation, deliveryAddressDetails);
+  }, [requiresDelivery, selectedLocation, deliveryAddressDetails, locale]);
+
+  const noActiveLocations =
+    requiresDelivery && !locationsLoading && (deliveryLocations?.length ?? 0) === 0;
 
   const previewItems = useMemo(
     () =>
@@ -218,8 +252,8 @@ export default function CheckoutPage() {
       whatsappConfigured,
       requireWhatsApp,
       hasItems: items.length > 0,
-      requiresDeliveryAddress,
-      deliveryAddress,
+      requiresDeliveryLocation: requiresDelivery,
+      deliveryLocationId,
     });
 
     if (!result.valid) {
@@ -260,7 +294,8 @@ export default function CheckoutPage() {
             customer_name: customerName,
             customer_phone: normalizedPhone,
             phone_country: detectedDial.country,
-            delivery_address: requiresDeliveryAddress ? deliveryAddress : null,
+            delivery_location_id: requiresDelivery ? deliveryLocationId : null,
+            delivery_address_details: requiresDelivery ? deliveryAddressDetails || null : null,
             notes: orderNotes || null,
             locale: toCurrencyLocale(locale),
             whatsapp_sent: sendWhatsApp,
@@ -282,6 +317,7 @@ export default function CheckoutPage() {
           if (code === 'rate_limited') setErrors([t('rateLimited')]);
           else if (code === 'product_unavailable') setErrors([t('productUnavailable')]);
           else if (code === 'feature_disabled') setErrors([t('boardUnavailable')]);
+          else if (code === 'address_required') setErrors([t('addressRequired')]);
           else if (code === 'min_order') {
             setErrors(
               appliedCoupon
@@ -322,7 +358,8 @@ export default function CheckoutPage() {
             diningMode,
             tableNumber,
             fulfillmentType: isTakeaway ? fulfillmentType : null,
-            deliveryAddress: requiresDeliveryAddress ? deliveryAddress : null,
+            deliveryAddress: composedDeliveryAddress,
+            deliveryFee,
             customerName,
             customerPhone: displayPhone,
             orderNotes,
@@ -601,6 +638,14 @@ export default function CheckoutPage() {
                 </span>
               </div>
             )}
+            {totals.deliveryFee > 0 && (
+              <div className="text-muted-foreground flex justify-between text-sm">
+                <span>{t('deliveryFee')}</span>
+                <span className="tabular-nums">
+                  {formatCurrencyAmount(totals.deliveryFee, currency, { locale: currencyLocale })}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between border-t border-[var(--menu-line)] pt-3 text-base font-bold">
               <span>{t('total')}</span>
               <span className="font-heading text-lg font-semibold tabular-nums text-[var(--menu-wine)]">
@@ -642,7 +687,13 @@ export default function CheckoutPage() {
                           onClick={() =>
                             setMeta({
                               fulfillmentType: value as FulfillmentType,
-                              ...(value === 'pickup' ? { deliveryAddress: '' } : {}),
+                              ...(value === 'pickup'
+                                ? {
+                                    deliveryLocationId: null,
+                                    deliveryAddressDetails: '',
+                                    deliveryAddress: '',
+                                  }
+                                : {}),
                             })
                           }
                           className={cn(
@@ -661,20 +712,57 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {requiresDeliveryAddress && (
-              <div className="space-y-2">
-                <Label htmlFor="delivery-address">
-                  {t('deliveryAddress')} <span className="text-destructive">*</span>
-                </Label>
-                <Textarea
-                  id="delivery-address"
-                  required
-                  value={deliveryAddress}
-                  placeholder={t('deliveryAddressPlaceholder')}
-                  onChange={(e) => setMeta({ deliveryAddress: e.target.value })}
-                  rows={3}
-                  data-testid="checkout-address"
-                />
+            {requiresDelivery && (
+              <div className="space-y-3">
+                {noActiveLocations ? (
+                  <div
+                    role="alert"
+                    className="bg-destructive/10 text-destructive rounded-md p-3 text-sm"
+                  >
+                    {t('noDeliveryLocations')}
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="delivery-location">
+                        {t('deliveryLocation')} <span className="text-destructive">*</span>
+                      </Label>
+                      <Select
+                        value={deliveryLocationId ?? ''}
+                        onValueChange={(value) => setMeta({ deliveryLocationId: value || null })}
+                      >
+                        <SelectTrigger
+                          id="delivery-location"
+                          className="h-11 min-h-11 w-full"
+                          data-testid="checkout-location"
+                        >
+                          <SelectValue placeholder={t('deliveryLocationPlaceholder')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {(deliveryLocations ?? []).map((location) => (
+                            <SelectItem key={location.id} value={location.id}>
+                              {getDeliveryLocationLabel(locale, location)} —{' '}
+                              {formatCurrencyAmount(Number(location.delivery_fee), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="delivery-details">{t('deliveryDetails')}</Label>
+                      <Textarea
+                        id="delivery-details"
+                        value={deliveryAddressDetails}
+                        placeholder={t('deliveryDetailsPlaceholder')}
+                        onChange={(e) => setMeta({ deliveryAddressDetails: e.target.value })}
+                        rows={3}
+                        data-testid="checkout-address-details"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
@@ -760,7 +848,9 @@ export default function CheckoutPage() {
           <Button
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-            disabled={submitting || (!dashboardOrders && !whatsappConfigured)}
+            disabled={
+              submitting || noActiveLocations || (!dashboardOrders && !whatsappConfigured)
+            }
             onClick={handleConfirm}
             data-testid="checkout-confirm"
           >

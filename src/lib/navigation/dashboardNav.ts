@@ -10,15 +10,17 @@ import {
   FileText,
   ClipboardList,
   TicketPercent,
+  Truck,
   type LucideIcon,
 } from 'lucide-react';
-import type { FeatureSettings } from '@/types/database';
+import type { FeatureSettings, RestaurantSettings } from '@/types/database';
 
 export interface DashboardNavItem {
   key: string;
   href: string;
   icon: LucideIcon;
   featureFlag?: keyof FeatureSettings;
+  restaurantFlag?: keyof Pick<RestaurantSettings, 'enable_delivery'>;
 }
 
 /** Single source of truth for sidebar + mobile sheet nav */
@@ -31,6 +33,12 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     featureFlag: 'dashboard_orders',
   },
   { key: 'coupons', href: '/dashboard/coupons', icon: TicketPercent, featureFlag: 'coupons' },
+  {
+    key: 'deliveryLocations',
+    href: '/dashboard/delivery-locations',
+    icon: Truck,
+    restaurantFlag: 'enable_delivery',
+  },
   { key: 'analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { key: 'reports', href: '/dashboard/reports', icon: FileText },
   { key: 'menu', href: '/dashboard/menu', icon: Menu },
@@ -41,9 +49,13 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];
 
-export function getDashboardNav(features?: FeatureSettings | null): DashboardNavItem[] {
+export function getDashboardNav(
+  features?: FeatureSettings | null,
+  restaurant?: Pick<RestaurantSettings, 'enable_delivery'> | null
+): DashboardNavItem[] {
   return DASHBOARD_NAV.filter((item) => {
-    if (!item.featureFlag) return true;
-    return features?.[item.featureFlag] === true;
+    if (item.featureFlag && features?.[item.featureFlag] !== true) return false;
+    if (item.restaurantFlag && restaurant?.[item.restaurantFlag] !== true) return false;
+    return true;
   });
 }
