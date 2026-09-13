@@ -57,7 +57,7 @@ import { writeLastOrder } from '@/lib/order/last-order';
 import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
 import {
   buildDeliveryAddressSnapshot,
-  getDeliveryLocationLabel,
+  formatDeliveryLocationOption,
 } from '@/lib/order/delivery-location';
 
 export default function CheckoutPage() {
@@ -736,15 +736,26 @@ export default function CheckoutPage() {
                           className="h-11 min-h-11 w-full"
                           data-testid="checkout-location"
                         >
-                          <SelectValue placeholder={t('deliveryLocationPlaceholder')} />
+                          <SelectValue placeholder={t('deliveryLocationPlaceholder')}>
+                            {selectedLocation
+                              ? formatDeliveryLocationOption(
+                                  locale,
+                                  selectedLocation,
+                                  currency,
+                                  currencyLocale
+                                )
+                              : ''}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           {(deliveryLocations ?? []).map((location) => (
                             <SelectItem key={location.id} value={location.id}>
-                              {getDeliveryLocationLabel(locale, location)} —{' '}
-                              {formatCurrencyAmount(Number(location.delivery_fee), currency, {
-                                locale: currencyLocale,
-                              })}
+                              {formatDeliveryLocationOption(
+                                locale,
+                                location,
+                                currency,
+                                currencyLocale
+                              )}
                             </SelectItem>
                           ))}
                         </SelectContent>
