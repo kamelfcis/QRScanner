@@ -154,6 +154,12 @@ export function buildStoredOrderWhatsApp(input: {
   return { totals, message, whatsappUrl, currency };
 }
 
+function formatWeightGrams(locale: MessageLocale, grams: number): string {
+  if (locale === 'ar') return `${grams} جم`;
+  if (locale === 'en') return `${grams}g`;
+  return `${grams} g`;
+}
+
 function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
   const base = getLocalizedText(locale, {
     en: item.name_en,
@@ -161,10 +167,14 @@ function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
     fr: item.name_fr,
     nl: item.name_nl,
   });
+  let name = base;
   if (item.size_option) {
-    return `${base} (${SIZE_LABELS[locale][item.size_option]})`;
+    name = `${name} (${SIZE_LABELS[locale][item.size_option]})`;
   }
-  return base;
+  if (item.weight_grams != null) {
+    name = `${name} (${formatWeightGrams(locale, item.weight_grams)})`;
+  }
+  return name;
 }
 
 function formatCartItemName(item: CartItem, locale: MessageLocale): string {
@@ -174,9 +184,12 @@ function formatCartItemName(item: CartItem, locale: MessageLocale): string {
     fr: item.name_fr,
     nl: item.name_nl,
   });
+  let name = base;
   if (item.has_size_options && item.sizeOption) {
-    const sizeLabel = SIZE_LABELS[locale][item.sizeOption];
-    return `${base} (${sizeLabel})`;
+    name = `${name} (${SIZE_LABELS[locale][item.sizeOption]})`;
   }
-  return base;
+  if (item.weightGrams != null) {
+    name = `${name} (${formatWeightGrams(locale, item.weightGrams)})`;
+  }
+  return name;
 }

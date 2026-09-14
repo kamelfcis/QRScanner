@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest';
+import { buildOrderPayload, buildStoredOrderWhatsApp } from '@/lib/order/build-order';
 import { buildWhatsAppMessage } from '@/lib/order/whatsapp-message';
 import { buildWhatsAppUrl, normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import type { OrderTotals } from '@/lib/order/totals';
+import type { CartItem } from '@/stores/cart-store';
+import type { Order, OrderItem } from '@/types/database';
 
 const totals: OrderTotals = {
   subtotal: 60,
@@ -177,5 +180,146 @@ describe('buildWhatsAppMessage', () => {
 
     expect(msg).toContain('Order type: Pickup at restaurant');
     expect(msg).not.toContain('Address:');
+  });
+});
+
+const orderSettings = {
+  whatsapp: '+201001234567',
+  currency: 'EGP',
+  tax_rate: 0,
+  service_charge_rate: 0,
+  apply_tax: false,
+  apply_service: false,
+  prep_time_minutes: 25,
+};
+
+const baseCartItem: CartItem = {
+  id: 'p1',
+  productId: 'p1',
+  name_en: 'Bouri',
+  name_ar: 'بوري',
+  image_url: null,
+  dining_price: 120,
+  takeaway_price: 120,
+  has_size_options: false,
+  sizeOption: null,
+  quantity: 1,
+  notes: '',
+};
+
+describe('WhatsApp weight labels', () => {
+  it('includes English weight label from cart checkout payload', () => {
+    const { message } = buildOrderPayload({
+      items: [{ ...baseCartItem, weightGrams: 500 }],
+      diningMode: 'takeaway',
+      customerName: 'Omar',
+      locale: 'en',
+      settings: orderSettings,
+    });
+
+    expect(message).toContain('1x Bouri (500g) — 120 EGP');
+  });
+
+  it('includes Arabic weight label from cart checkout payload', () => {
+    const { message } = buildOrderPayload({
+      items: [{ ...baseCartItem, weightGrams: 500 }],
+      diningMode: 'takeaway',
+      customerName: 'أحمد',
+      locale: 'ar',
+      settings: orderSettings,
+    });
+
+    expect(message).toContain('1× بوري (500 جم) — 120 EGP');
+  });
+
+  it('includes size and weight together on cart items', () => {
+    const { message } = buildOrderPayload({
+      items: [
+        {
+          ...baseCartItem,
+          name_en: 'Fish',
+          name_ar: 'سمك',
+          has_size_options: true,
+          sizeOption: 'large',
+          weightGrams: 1000,
+        },
+      ],
+      diningMode: 'takeaway',
+      customerName: 'Omar',
+      locale: 'ar',
+      settings: orderSettings,
+    });
+
+    expect(message).toContain('1× سمك (كبير) (1000 جم) — 120 EGP');
+  });
+
+  it('omits weight suffix when weightGrams is not set', () => {
+    const { message } = buildOrderPayload({
+      items: [baseCartItem],
+      diningMode: 'takeaway',
+      customerName: 'Omar',
+      locale: 'en',
+      settings: orderSettings,
+    });
+
+    expect(message).toContain('1x Bouri — 120 EGP');
+    expect(message).not.toContain('(500g)');
+  });
+
+  it('includes weight label from stored order items', () => {
+    const order: Order = {
+      id: 'o1',
+      order_number: '1001',
+      status: 'pending',
+      dining_mode: 'takeaway',
+      fulfillment_type: 'pickup',
+      table_number: null,
+      customer_name: 'Omar',
+      customer_phone: null,
+      delivery_address: null,
+      delivery_location_id: null,
+      notes: null,
+      subtotal: 450,
+      tax: 0,
+      service: 0,
+      discount_amount: 0,
+      coupon_id: null,
+      coupon_code: null,
+      delivery_fee: 0,
+      total: 450,
+      currency: 'EGP',
+      whatsapp_sent: false,
+      staff_acknowledged_at: null,
+      locale: 'en',
+      created_at: '2026-01-01T00:00:00Z',
+      updated_at: '2026-01-01T00:00:00Z',
+    };
+
+    const items: OrderItem[] = [
+      {
+        id: 'oi1',
+        order_id: 'o1',
+        product_id: 'p1',
+        name_en: 'Bouri',
+        name_ar: 'بوري',
+        name_fr: null,
+        name_nl: null,
+        quantity: 1,
+        unit_price: 450,
+        size_option: null,
+        weight_grams: 1000,
+        notes: null,
+        created_at: '2026-01-01T00:00:00Z',
+      },
+    ];
+
+    const { message } = buildStoredOrderWhatsApp({
+      order,
+      items,
+      locale: 'en',
+      settings: { whatsapp: '+201001234567', prep_time_minutes: 25 },
+    });
+
+    expect(message).toContain('1x Bouri (1000g) — 450 EGP');
   });
 });
