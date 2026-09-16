@@ -685,7 +685,11 @@
     "staffSelectLocation": "اختر المنطقة",
     "staffDeliveryDetails": "المبنى، الدور، ملاحظات (اختياري)",
     "staffDeliveryRequired": "اختر منطقة التوصيل.",
-    "staffWeightGrams": "{grams} جم"
+    "staffWeightGrams": "{grams} جم",
+    "staffAddToTicket": "إضافة للطلب",
+    "staffSelectSize": "اختر الحجم",
+    "staffSelectWeight": "اختر الوزن",
+    "staffCancelPicker": "إلغاء"
   },
   "deliveryLocations": {
     "title": "مناطق التوصيل",

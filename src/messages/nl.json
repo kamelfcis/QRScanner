@@ -685,7 +685,11 @@
     "staffSelectLocation": "Kies een zone",
     "staffDeliveryDetails": "Gebouw, verdieping, notities (optioneel)",
     "staffDeliveryRequired": "Kies een bezorgzone.",
-    "staffWeightGrams": "{grams} g"
+    "staffWeightGrams": "{grams} g",
+    "staffAddToTicket": "Toevoegen aan ticket",
+    "staffSelectSize": "Kies maat",
+    "staffSelectWeight": "Kies gewicht",
+    "staffCancelPicker": "Annuleren"
   },
   "deliveryLocations": {
     "title": "Bezorgzones",

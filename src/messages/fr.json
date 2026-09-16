@@ -685,7 +685,11 @@
     "staffSelectLocation": "Choisir une zone",
     "staffDeliveryDetails": "Immeuble, étage, notes (facultatif)",
     "staffDeliveryRequired": "Choisissez une zone de livraison.",
-    "staffWeightGrams": "{grams} g"
+    "staffWeightGrams": "{grams} g",
+    "staffAddToTicket": "Ajouter au ticket",
+    "staffSelectSize": "Choisir la taille",
+    "staffSelectWeight": "Choisir le poids",
+    "staffCancelPicker": "Annuler"
   },
   "deliveryLocations": {
     "title": "Zones de livraison",

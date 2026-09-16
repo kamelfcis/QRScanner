@@ -31,6 +31,11 @@ import {
 import { Image } from '@/components/shared/Image';
 import { CheckoutCoupon, type AppliedCoupon } from '@/components/checkout/CheckoutCoupon';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
+import {
+  StaffProductPickerPanel,
+  type StaffPendingProduct,
+  type StaffSizeOption,
+} from '@/components/dashboard/orders/StaffProductPickerPanel';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
 import {
@@ -78,11 +83,6 @@ interface StaffTicketLine {
 interface StaffOrderComposerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
-
-interface PendingProduct {
-  product: StaffCatalogProduct;
-  mode: 'size' | 'weight' | 'add';
 }
 
 function makeStaffLineId(
@@ -172,7 +172,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const [deliveryAddressDetails, setDeliveryAddressDetails] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
-  const [pending, setPending] = useState<PendingProduct | null>(null);
+  const [pending, setPending] = useState<StaffPendingProduct | null>(null);
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
 
   const currency = getRestaurantCurrency(settings?.currency);
@@ -320,15 +320,28 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   );
 
   const handleProductTap = (product: StaffCatalogProduct) => {
-    if (product.has_size_options) {
-      setPending({ product, mode: 'size' });
-      return;
-    }
-    if (hasWeightOptions(product)) {
-      setPending({ product, mode: 'weight' });
+    const needsSize = product.has_size_options;
+    const needsWeight = hasWeightOptions(product);
+    if (needsSize || needsWeight) {
+      setPending({
+        product,
+        selectedSize: needsSize ? 'small' : null,
+        selectedWeight: needsWeight ? (product.weight_options_g?.[0] ?? null) : null,
+      });
       return;
     }
     addLine(product, {});
+  };
+
+  const handleConfirmPending = () => {
+    if (!pending) return;
+    const { product, selectedSize, selectedWeight } = pending;
+    const needsSize = product.has_size_options;
+    const needsWeight = hasWeightOptions(product);
+    if (needsSize && !selectedSize) return;
+    if (needsWeight && selectedWeight == null) return;
+    addLine(product, { sizeOption: selectedSize, weightGrams: selectedWeight });
+    setPending(null);
   };
 
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -433,15 +446,30 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         ))}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border p-2">
-        {catalogLoading ? (
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border">
+        {pending ? (
+          <StaffProductPickerPanel
+            pending={pending}
+            locale={locale}
+            currency={currency}
+            currencyLocale={currencyLocale}
+            onSizeChange={(size) =>
+              setPending((prev) => (prev ? { ...prev, selectedSize: size } : null))
+            }
+            onWeightChange={(grams) =>
+              setPending((prev) => (prev ? { ...prev, selectedWeight: grams } : null))
+            }
+            onConfirm={handleConfirmPending}
+            onCancel={() => setPending(null)}
+          />
+        ) : catalogLoading ? (
           <p className="text-muted-foreground p-4 text-center text-sm">{tCommon('loading')}</p>
         ) : flatProducts.length === 0 ? (
           <p className="text-muted-foreground p-4 text-center text-sm">{t('staffEmptyCatalog')}</p>
         ) : filteredProducts.length === 0 ? (
           <p className="text-muted-foreground p-4 text-center text-sm">{tMenu('noProducts')}</p>
         ) : (
-          <ul className="space-y-1">
+          <ul className="space-y-1 p-2">
             {filteredProducts.map((product) => {
               const name = getName(
                 locale,
@@ -640,7 +668,9 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                           ? t('small')
                           : t('large')
                         : null}
-                      {line.weightGrams != null ? ` · ${line.weightGrams}g` : null}
+                      {line.weightGrams != null
+                        ? ` · ${tMenu('grams', { grams: line.weightGrams })}`
+                        : null}
                     </p>
                     <p className="mt-1 text-sm tabular-nums">
                       {formatCurrencyAmount(line.unitPrice * line.quantity, currency, {
@@ -803,66 +833,6 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     </div>
   );
 
-  const pickerDialog = pending ? (
-    <Dialog open onOpenChange={() => setPending(null)}>
-      <DialogContent className="max-w-sm">
-        <DialogHeader>
-          <DialogTitle>
-            {getName(
-              locale,
-              pending.product.name_en,
-              pending.product.name_ar,
-              pending.product.name_fr,
-              pending.product.name_nl
-            )}
-          </DialogTitle>
-          <DialogDescription>{t('staffChooseOption')}</DialogDescription>
-        </DialogHeader>
-        {pending.mode === 'size' ? (
-          <div className="grid grid-cols-2 gap-2">
-            {(['small', 'large'] as const).map((size) => (
-              <Button
-                key={size}
-                type="button"
-                variant="outline"
-                className="min-h-11"
-                onClick={() => {
-                  addLine(pending.product, { sizeOption: size });
-                  setPending(null);
-                }}
-              >
-                {size === 'small' ? t('small') : t('large')}
-              </Button>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-2">
-            {(pending.product.weight_options_g ?? []).map((grams) => (
-              <Button
-                key={grams}
-                type="button"
-                variant="outline"
-                className="min-h-11"
-                onClick={() => {
-                  addLine(pending.product, { weightGrams: grams });
-                  setPending(null);
-                }}
-              >
-                {tMenu('grams', { grams })}
-                {' · '}
-                {formatCurrencyAmount(
-                  computeWeightPrice(Number(pending.product.price_per_kg), grams),
-                  currency,
-                  { locale: currencyLocale }
-                )}
-              </Button>
-            ))}
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
-  ) : null;
-
   const hiddenReceipt =
     printOrder && settings ? (
       <div className="pointer-events-none fixed start-[-9999px] top-0" aria-hidden="true">
@@ -880,7 +850,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     return (
       <>
         <Dialog open={open} onOpenChange={handleOpenChange}>
-          <DialogContent className="flex max-h-[90vh] max-w-5xl flex-col gap-4 overflow-hidden">
+          <DialogContent className="flex max-h-[90vh] w-[min(96vw,1400px)] max-w-7xl flex-col gap-4 overflow-hidden">
             <DialogHeader>
               <DialogTitle>{t('newStaffOrder')}</DialogTitle>
               <DialogDescription>{t('staffComposerDescription')}</DialogDescription>
@@ -888,7 +858,6 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
             {body}
           </DialogContent>
         </Dialog>
-        {pickerDialog}
         {hiddenReceipt}
       </>
     );
@@ -905,7 +874,6 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           {body}
         </SheetContent>
       </Sheet>
-      {pickerDialog}
       {hiddenReceipt}
     </>
   );
