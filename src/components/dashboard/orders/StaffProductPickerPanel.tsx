@@ -82,7 +82,7 @@ export function StaffProductPickerPanel({
                     type="button"
                     onClick={() => onSizeChange(size)}
                     className={cn(
-                      'min-h-11 rounded-xl border px-3 py-2.5 text-start motion-reduce:transition-none',
+                      'focus-visible:ring-ring min-h-11 touch-manipulation rounded-xl border px-3 py-2.5 text-start focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
                       selected
                         ? 'border-secondary bg-secondary/10 text-secondary'
                         : 'border-border hover:bg-muted/50'
@@ -119,7 +119,7 @@ export function StaffProductPickerPanel({
                     type="button"
                     onClick={() => onWeightChange(grams)}
                     className={cn(
-                      'min-h-11 rounded-xl border px-2 py-2 text-center motion-reduce:transition-none',
+                      'focus-visible:ring-ring min-h-11 touch-manipulation rounded-xl border px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
                       selected
                         ? 'border-secondary bg-secondary/10 text-secondary'
                         : 'border-border hover:bg-muted/50'

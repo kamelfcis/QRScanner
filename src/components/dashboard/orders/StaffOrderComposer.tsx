@@ -362,6 +362,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     lines.length > 0 &&
     customerName.trim().length > 0 &&
     !noActiveLocations &&
+    !(requiresDelivery && !deliveryLocationId) &&
     !placeOrder.isPending;
 
   const handleSubmit = async () => {
@@ -432,7 +433,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           type="button"
           onClick={() => setCategoryId(null)}
           className={cn(
-            'focus-visible:ring-ring inline-flex min-h-11 shrink-0 items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
+            'focus-visible:ring-ring inline-flex min-h-11 shrink-0 touch-manipulation items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
             categoryId === null
               ? 'border-secondary bg-secondary text-secondary-foreground'
               : 'border-border text-muted-foreground'
@@ -446,7 +447,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
             type="button"
             onClick={() => setCategoryId(cat.id)}
             className={cn(
-              'focus-visible:ring-ring inline-flex min-h-11 shrink-0 items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
+              'focus-visible:ring-ring inline-flex min-h-11 shrink-0 touch-manipulation items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
               categoryId === cat.id
                 ? 'border-secondary bg-secondary text-secondary-foreground'
                 : 'border-border text-muted-foreground'
@@ -512,7 +513,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                   <button
                     type="button"
                     onClick={() => handleProductTap(product)}
-                    className="hover:bg-muted/70 flex min-h-11 w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-start motion-reduce:transition-none"
+                    className="hover:bg-muted/70 focus-visible:ring-ring flex min-h-11 w-full touch-manipulation items-center gap-2.5 rounded-lg px-2 py-1.5 text-start focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none"
                   >
                     {product.image_url ? (
                       <div className="relative size-10 shrink-0 overflow-hidden rounded-md">
@@ -580,8 +581,9 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           <button
             type="button"
             onClick={() => setDiningMode('dining')}
+            aria-pressed={diningMode === 'dining'}
             className={cn(
-              'min-h-11 rounded-lg border px-3 text-sm font-medium',
+              'focus-visible:ring-ring min-h-11 touch-manipulation rounded-lg border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2',
               diningMode === 'dining'
                 ? 'border-secondary bg-secondary/10 text-secondary'
                 : 'border-border text-muted-foreground'
@@ -592,8 +594,9 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           <button
             type="button"
             onClick={() => setDiningMode('takeaway')}
+            aria-pressed={diningMode === 'takeaway'}
             className={cn(
-              'min-h-11 rounded-lg border px-3 text-sm font-medium',
+              'focus-visible:ring-ring min-h-11 touch-manipulation rounded-lg border px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2',
               diningMode === 'takeaway'
                 ? 'border-secondary bg-secondary/10 text-secondary'
                 : 'border-border text-muted-foreground'
@@ -615,8 +618,9 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                     setFulfillmentType(value);
                     if (value === 'pickup') setDeliveryLocationId(null);
                   }}
+                  aria-pressed={fulfillmentType === value}
                   className={cn(
-                    'flex min-h-11 items-center justify-center gap-1.5 rounded-lg border px-2 text-xs font-medium',
+                    'focus-visible:ring-ring flex min-h-11 touch-manipulation items-center justify-center gap-1.5 rounded-lg border px-2 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
                     fulfillmentType === value
                       ? 'border-secondary bg-secondary/10 text-secondary'
                       : 'border-border text-muted-foreground'
@@ -850,6 +854,9 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           {lines.length > 0 && !customerName.trim() ? (
             <p className="text-destructive text-xs">{tCheckout('customerName')}</p>
           ) : null}
+          {requiresDelivery && !deliveryLocationId && !noActiveLocations ? (
+            <p className="text-destructive text-xs">{t('staffDeliveryRequired')}</p>
+          ) : null}
           <div className="space-y-0.5 text-sm">
             <div className="flex justify-between">
               <span>{tCheckout('subtotal')}</span>
@@ -912,7 +919,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           aria-selected={mobilePane === item.id}
           onClick={() => setMobilePane(item.id)}
           className={cn(
-            'inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-medium',
+            'focus-visible:ring-ring inline-flex min-h-11 touch-manipulation items-center justify-center gap-1.5 rounded-full px-3 text-sm font-medium focus-visible:outline-none focus-visible:ring-2',
             mobilePane === item.id
               ? 'bg-secondary text-secondary-foreground shadow-sm'
               : 'text-muted-foreground'
@@ -938,6 +945,15 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           {tCheckout('customerName')}
         </button>
       ) : null}
+      {requiresDelivery && !deliveryLocationId && !noActiveLocations ? (
+        <button
+          type="button"
+          className="text-destructive text-start text-xs underline-offset-2 hover:underline"
+          onClick={() => setMobilePane('ticket')}
+        >
+          {t('staffDeliveryRequired')}
+        </button>
+      ) : null}
       <div className="flex items-end justify-between gap-3 text-sm">
         <span className="text-muted-foreground">{tCheckout('total')}</span>
         <span className="font-heading text-base font-semibold tabular-nums">
@@ -956,7 +972,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   );
 
   const header = (
-    <div className="space-y-0.5 px-10 sm:pe-10 sm:ps-0">
+    <div className="space-y-0.5 px-10">
       <h2 className="font-heading text-base font-semibold leading-none">{t('newStaffOrder')}</h2>
       <p className="text-muted-foreground hidden text-xs sm:block">
         {t('staffComposerDescription')}
