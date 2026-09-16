@@ -380,7 +380,7 @@ export default function OrdersPage() {
         prefersReducedMotion={prefersReducedMotion}
         onStatusFocus={handleStatusFocus}
         onCleanup={() => setCleanupOpen(true)}
-        onNewOrder={() => setComposerOpen(true)}
+        onNewStaffOrder={() => setComposerOpen(true)}
       />
 
       {tab === 'cancelled' ? (
