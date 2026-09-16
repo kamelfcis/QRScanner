@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Image } from '@/components/shared/Image';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import type { StaffCatalogProduct } from '@/hooks/useStaffOrder';
-import { formatCurrencyAmount } from '@/lib/order/format-currency';
+import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-currency';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
 import { cn, getName } from '@/lib/utils';
 
@@ -21,7 +21,7 @@ interface StaffProductPickerPanelProps {
   pending: StaffPendingProduct;
   locale: string;
   currency: string;
-  currencyLocale: string;
+  currencyLocale: CurrencyLocale;
   onSizeChange: (size: StaffSizeOption) => void;
   onWeightChange: (grams: number) => void;
   onConfirm: () => void;
