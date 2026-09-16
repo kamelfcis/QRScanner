@@ -670,7 +670,22 @@
     "deleteRangeSuccess": "Deleted {count, plural, one {# order} other {# orders}}.",
     "deleteRangeEmpty": "No orders match this range.",
     "deleteRangeTooWide": "Date range cannot exceed 365 days.",
-    "discount": "Discount"
+    "discount": "Discount",
+    "newStaffOrder": "New order",
+    "staffComposerDescription": "Build a walk-in or phone ticket, save it to the kitchen, then print.",
+    "staffSearchPlaceholder": "Search the menu",
+    "staffAllCategories": "All",
+    "staffChooseOption": "Choose size or weight",
+    "staffEmptyCatalog": "No available dishes match this search.",
+    "staffEmptyTicket": "Tap a dish to add it to the ticket.",
+    "staffSavePrint": "Save & print",
+    "staffSaving": "Saving…",
+    "staffOrderSaved": "Saved {number}",
+    "staffNoDeliveryLocations": "Add an active delivery zone before taking delivery orders.",
+    "staffSelectLocation": "Choose a zone",
+    "staffDeliveryDetails": "Building, floor, notes (optional)",
+    "staffDeliveryRequired": "Choose a delivery zone.",
+    "staffWeightGrams": "{grams} g"
   },
   "deliveryLocations": {
     "title": "Delivery areas",

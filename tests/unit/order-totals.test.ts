@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { calculateOrderTotals, getCartLineUnitPrice, getUnitPrice } from '@/lib/order/totals';
+import { computeWeightPrice } from '@/lib/order/weight-price';
+import { computeWeightPrice, getStaffLineUnitPrice } from '@/lib/order/weight-price';
 import { validateOrder } from '@/lib/order/validation';
 
 describe('calculateOrderTotals', () => {
@@ -135,6 +137,40 @@ describe('calculateOrderTotals', () => {
     expect(totals.total).toBe(75);
   });
 
+  it('prices a kilo line then adds delivery fee and coupon', () => {
+    const unit = computeWeightPrice(200, 500);
+    expect(unit).toBe(100);
+    expect(
+      getStaffLineUnitPrice(
+        {
+          dining_price: 80,
+          takeaway_price: 80,
+          price_per_kg: 200,
+          has_size_options: false,
+        },
+        'takeaway',
+        null,
+        500
+      )
+    ).toBe(100);
+
+    const totals = calculateOrderTotals(
+      [{ quantity: 1, unitPrice: unit }],
+      {
+        tax_rate: 0,
+        service_charge_rate: 0,
+        apply_tax: false,
+        apply_service_charge: false,
+      },
+      { type: 'percentage', value: 10 },
+      25
+    );
+    expect(totals.subtotal).toBe(100);
+    expect(totals.discount).toBe(10);
+    expect(totals.deliveryFee).toBe(25);
+    expect(totals.total).toBe(115);
+  });
+
   it('adds delivery fee on top of coupon-adjusted totals', () => {
     const totals = calculateOrderTotals(
       items,
@@ -150,6 +186,30 @@ describe('calculateOrderTotals', () => {
     expect(totals.discount).toBe(10);
     expect(totals.deliveryFee).toBe(15);
     expect(totals.total).toBe(72.5);
+  });
+});
+
+describe('weight line totals preview', () => {
+  it('includes weight-priced line, delivery fee, and coupon in staff POS preview', () => {
+    const unitPrice = computeWeightPrice(200, 500);
+    expect(unitPrice).toBe(100);
+
+    const totals = calculateOrderTotals(
+      [{ quantity: 1, unitPrice }],
+      {
+        tax_rate: 15,
+        service_charge_rate: 10,
+        apply_tax: true,
+        apply_service_charge: true,
+      },
+      { type: 'fixed', value: 10 },
+      25
+    );
+
+    expect(totals.subtotal).toBe(100);
+    expect(totals.discount).toBe(10);
+    expect(totals.deliveryFee).toBe(25);
+    expect(totals.total).toBe(128.5);
   });
 });
 

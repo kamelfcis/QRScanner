@@ -670,7 +670,22 @@
     "deleteRangeSuccess": "{count, plural, one {# bestelling verwijderd} other {# bestellingen verwijderd}}.",
     "deleteRangeEmpty": "Geen bestellingen in dit bereik.",
     "deleteRangeTooWide": "Datumbereik mag niet langer zijn dan 365 dagen.",
-    "discount": "Korting"
+    "discount": "Korting",
+    "newStaffOrder": "Nieuwe bestelling",
+    "staffComposerDescription": "Maak een ticket voor ter plaatse of telefonisch, sla op voor de keuken en print.",
+    "staffSearchPlaceholder": "Zoek in het menu",
+    "staffAllCategories": "Alles",
+    "staffChooseOption": "Kies maat of gewicht",
+    "staffEmptyCatalog": "Geen beschikbare gerechten voor deze zoekopdracht.",
+    "staffEmptyTicket": "Tik op een gerecht om het aan het ticket toe te voegen.",
+    "staffSavePrint": "Opslaan en printen",
+    "staffSaving": "Opslaan…",
+    "staffOrderSaved": "{number} opgeslagen",
+    "staffNoDeliveryLocations": "Voeg een actieve bezorgzone toe vóór bezorgbestellingen.",
+    "staffSelectLocation": "Kies een zone",
+    "staffDeliveryDetails": "Gebouw, verdieping, notities (optioneel)",
+    "staffDeliveryRequired": "Kies een bezorgzone.",
+    "staffWeightGrams": "{grams} g"
   },
   "deliveryLocations": {
     "title": "Bezorgzones",

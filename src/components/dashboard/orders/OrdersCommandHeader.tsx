@@ -1,6 +1,7 @@
 'use client';
 
-import { ClipboardList, Trash2 } from 'lucide-react';
+import { ClipboardList, Plus, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 import type { OrderStatus } from '@/types/database';
@@ -22,6 +23,7 @@ interface OrdersCommandHeaderProps {
   formattedRevenue: string;
   prefersReducedMotion: boolean;
   onStatusFocus: (status: OrderStatus) => void;
+  onNewStaffOrder: () => void;
   onCleanup: () => void;
 }
 
@@ -35,6 +37,7 @@ export function OrdersCommandHeader({
   formattedRevenue,
   prefersReducedMotion,
   onStatusFocus,
+  onNewStaffOrder,
   onCleanup,
 }: OrdersCommandHeaderProps) {
   const t = useTranslations('orders');
@@ -75,7 +78,11 @@ export function OrdersCommandHeader({
             <p className="text-muted-foreground mt-1 max-w-prose text-sm">{t('description')}</p>
           </div>
 
-          <div className="flex items-center gap-1.5 self-start">
+          <div className="flex flex-wrap items-center gap-1.5 self-start">
+            <Button type="button" className="min-h-11 gap-2" onClick={onNewStaffOrder}>
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              {t('newStaffOrder')}
+            </Button>
             <button
               type="button"
               onClick={onCleanup}

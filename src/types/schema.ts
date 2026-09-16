@@ -340,6 +340,24 @@ export type DeliveryLocationInput = z.infer<typeof deliveryLocationSchema>;
 
 export type PlaceOrderInput = z.infer<typeof placeOrderSchema>;
 
+export const staffPlaceOrderSchema = placeOrderSchema
+  .omit({ whatsapp_sent: true })
+  .superRefine((data, ctx) => {
+    if (
+      data.dining_mode === 'takeaway' &&
+      data.fulfillment_type === 'delivery' &&
+      !data.delivery_location_id
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'address_required',
+        path: ['delivery_location_id'],
+      });
+    }
+  });
+
+export type StaffPlaceOrderInput = z.infer<typeof staffPlaceOrderSchema>;
+
 export const customerOrderStatusSchema = z.object({
   order_number: z.string().trim().min(1).max(32),
   customer_phone: z.string().trim().min(4).max(40),

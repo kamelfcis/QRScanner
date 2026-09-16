@@ -670,7 +670,22 @@
     "deleteRangeSuccess": "تم حذف {count, plural, one {# طلب} other {# طلبات}}.",
     "deleteRangeEmpty": "لا توجد طلبات في هذا النطاق.",
     "deleteRangeTooWide": "لا يمكن أن يتجاوز النطاق 365 يوماً.",
-    "discount": "الخصم"
+    "discount": "الخصم",
+    "newStaffOrder": "طلب جديد",
+    "staffComposerDescription": "أنشئ تذكرة للعميل في المحل أو بالهاتف، احفظها للمطبخ ثم اطبع.",
+    "staffSearchPlaceholder": "ابحث في القائمة",
+    "staffAllCategories": "الكل",
+    "staffChooseOption": "اختر الحجم أو الوزن",
+    "staffEmptyCatalog": "لا توجد أصناف متاحة تطابق البحث.",
+    "staffEmptyTicket": "اضغط صنفاً لإضافته إلى التذكرة.",
+    "staffSavePrint": "حفظ وطباعة",
+    "staffSaving": "جارٍ الحفظ…",
+    "staffOrderSaved": "تم حفظ {number}",
+    "staffNoDeliveryLocations": "أضف منطقة توصيل نشطة قبل طلبات التوصيل.",
+    "staffSelectLocation": "اختر المنطقة",
+    "staffDeliveryDetails": "المبنى، الدور، ملاحظات (اختياري)",
+    "staffDeliveryRequired": "اختر منطقة التوصيل.",
+    "staffWeightGrams": "{grams} جم"
   },
   "deliveryLocations": {
     "title": "مناطق التوصيل",

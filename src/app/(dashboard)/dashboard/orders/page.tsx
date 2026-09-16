@@ -39,6 +39,7 @@ import {
 } from '@/components/dashboard/orders/OrdersCommandHeader';
 import { OrderTicket } from '@/components/dashboard/orders/OrderTicket';
 import { OrdersCleanupDialog } from '@/components/dashboard/orders/OrdersCleanupDialog';
+import { StaffOrderComposer } from '@/components/dashboard/orders/StaffOrderComposer';
 import { ACTIVE_COLUMNS, COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isSameLocalDay(iso: string): boolean {
@@ -73,6 +74,7 @@ export default function OrdersPage() {
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [soundBlocked, setSoundBlocked] = useState(false);
   const [cleanupOpen, setCleanupOpen] = useState(false);
+  const [composerOpen, setComposerOpen] = useState(false);
   const [deletingOrder, setDeletingOrder] = useState<OrderWithItems | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
   const primed = useRef(false);
@@ -378,6 +380,7 @@ export default function OrdersPage() {
         prefersReducedMotion={prefersReducedMotion}
         onStatusFocus={handleStatusFocus}
         onCleanup={() => setCleanupOpen(true)}
+        onNewOrder={() => setComposerOpen(true)}
       />
 
       {tab === 'cancelled' ? (
@@ -473,6 +476,7 @@ export default function OrdersPage() {
       />
 
       <OrdersCleanupDialog open={cleanupOpen} onOpenChange={setCleanupOpen} />
+      <StaffOrderComposer open={composerOpen} onOpenChange={setComposerOpen} />
     </div>
   );
 }

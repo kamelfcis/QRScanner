@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatOrderNumber, normalizeOrderPrefix } from '@/lib/order/order-number';
-import { placeOrderSchema } from '@/types/schema';
+import { placeOrderSchema, staffPlaceOrderSchema } from '@/types/schema';
 
 describe('formatOrderNumber', () => {
   it('pads the sequence and uses a prefix', () => {
@@ -32,5 +32,35 @@ describe('placeOrderSchema', () => {
       customer_name: 'Ali',
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('staffPlaceOrderSchema', () => {
+  const productId = '123e4567-e89b-12d3-a456-426614174000';
+
+  it('accepts a staff payload without whatsapp_sent', () => {
+    const result = staffPlaceOrderSchema.safeParse({
+      items: [{ product_id: productId, quantity: 1, weight_grams: 500 }],
+      dining_mode: 'takeaway',
+      fulfillment_type: 'pickup',
+      customer_name: 'Walk-in',
+      locale: 'ar',
+      coupon_code: 'save10',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.coupon_code).toBe('SAVE10');
+  });
+
+  it('rejects delivery without delivery_location_id', () => {
+    const result = staffPlaceOrderSchema.safeParse({
+      items: [{ product_id: productId, quantity: 1 }],
+      dining_mode: 'takeaway',
+      fulfillment_type: 'delivery',
+      customer_name: 'Ali',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.some((issue) => issue.message === 'address_required')).toBe(true);
+    }
   });
 });

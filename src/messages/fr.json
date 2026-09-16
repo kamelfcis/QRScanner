@@ -670,7 +670,22 @@
     "deleteRangeSuccess": "{count, plural, one {# commande supprimée} other {# commandes supprimées}}.",
     "deleteRangeEmpty": "Aucune commande ne correspond à cette plage.",
     "deleteRangeTooWide": "La plage ne peut pas dépasser 365 jours.",
-    "discount": "Réduction"
+    "discount": "Réduction",
+    "newStaffOrder": "Nouvelle commande",
+    "staffComposerDescription": "Créez un ticket sur place ou par téléphone, enregistrez-le pour la cuisine, puis imprimez.",
+    "staffSearchPlaceholder": "Rechercher le menu",
+    "staffAllCategories": "Tout",
+    "staffChooseOption": "Choisir la taille ou le poids",
+    "staffEmptyCatalog": "Aucun plat disponible ne correspond à cette recherche.",
+    "staffEmptyTicket": "Touchez un plat pour l’ajouter au ticket.",
+    "staffSavePrint": "Enregistrer et imprimer",
+    "staffSaving": "Enregistrement…",
+    "staffOrderSaved": "{number} enregistrée",
+    "staffNoDeliveryLocations": "Ajoutez une zone de livraison active avant les commandes à livrer.",
+    "staffSelectLocation": "Choisir une zone",
+    "staffDeliveryDetails": "Immeuble, étage, notes (facultatif)",
+    "staffDeliveryRequired": "Choisissez une zone de livraison.",
+    "staffWeightGrams": "{grams} g"
   },
   "deliveryLocations": {
     "title": "Zones de livraison",

@@ -9,6 +9,7 @@ import {
   loginSchema,
   couponSchema,
   placeOrderSchema,
+  staffPlaceOrderSchema,
   type CategoryInput,
   type ProductInput,
   type OfferInput,
@@ -296,6 +297,32 @@ describe('couponSchema', () => {
       discount_value: 150,
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('staffPlaceOrderSchema', () => {
+  const base = {
+    items: [{ product_id: '550e8400-e29b-41d4-a716-446655440000', quantity: 1 }],
+    dining_mode: 'takeaway' as const,
+    fulfillment_type: 'delivery' as const,
+    customer_name: 'Ali',
+    locale: 'en' as const,
+  };
+
+  it('accepts a valid staff payload', () => {
+    const result = staffPlaceOrderSchema.safeParse({
+      ...base,
+      delivery_location_id: '660e8400-e29b-41d4-a716-446655440001',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects delivery without delivery_location_id', () => {
+    const result = staffPlaceOrderSchema.safeParse(base);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.some((i) => i.path.includes('delivery_location_id'))).toBe(true);
+    }
   });
 });
 
