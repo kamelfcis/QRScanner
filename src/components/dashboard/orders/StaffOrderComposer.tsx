@@ -61,6 +61,7 @@ import type { StaffPlaceOrderInput } from '@/types/schema';
 
 type FulfillmentType = 'pickup' | 'delivery';
 type SizeOption = 'small' | 'large';
+type MobilePane = 'catalog' | 'ticket';
 
 interface StaffTicketLine {
   lineId: string;
@@ -174,6 +175,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
   const [pending, setPending] = useState<StaffPendingProduct | null>(null);
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const [mobilePane, setMobilePane] = useState<MobilePane>('catalog');
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = toCurrencyLocale(locale);
@@ -194,6 +196,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setOrderNotes('');
     setAppliedCoupon(null);
     setPending(null);
+    setMobilePane('catalog');
   }, []);
 
   useEffect(() => {
@@ -293,6 +296,8 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
 
   const noActiveLocations =
     requiresDelivery && !locationsLoading && (deliveryLocations?.length ?? 0) === 0;
+
+  const ticketQty = useMemo(() => lines.reduce((sum, line) => sum + line.quantity, 0), [lines]);
 
   const addLine = useCallback(
     (
@@ -402,7 +407,13 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   };
 
   const catalogPanel = (
-    <div className="flex min-h-0 flex-1 flex-col gap-3">
+    <div
+      className={cn(
+        'h-full min-h-0 flex-col gap-2',
+        mobilePane === 'catalog' ? 'flex' : 'hidden',
+        'md:flex'
+      )}
+    >
       <div className="relative">
         <Search className="text-muted-foreground pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2" />
         <Input
@@ -416,12 +427,12 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:thin]">
         <button
           type="button"
           onClick={() => setCategoryId(null)}
           className={cn(
-            'rounded-full border px-3 py-1 text-xs font-medium',
+            'focus-visible:ring-ring inline-flex min-h-11 shrink-0 items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
             categoryId === null
               ? 'border-secondary bg-secondary text-secondary-foreground'
               : 'border-border text-muted-foreground'
@@ -435,7 +446,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
             type="button"
             onClick={() => setCategoryId(cat.id)}
             className={cn(
-              'rounded-full border px-3 py-1 text-xs font-medium',
+              'focus-visible:ring-ring inline-flex min-h-11 shrink-0 items-center rounded-full border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2',
               categoryId === cat.id
                 ? 'border-secondary bg-secondary text-secondary-foreground'
                 : 'border-border text-muted-foreground'
@@ -446,14 +457,14 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         ))}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border">
         {pending ? (
           <StaffProductPickerPanel
             pending={pending}
             locale={locale}
             currency={currency}
             currencyLocale={currencyLocale}
-            onSizeChange={(size) =>
+            onSizeChange={(size: StaffSizeOption) =>
               setPending((prev) => (prev ? { ...prev, selectedSize: size } : null))
             }
             onWeightChange={(grams) =>
@@ -469,7 +480,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         ) : filteredProducts.length === 0 ? (
           <p className="text-muted-foreground p-4 text-center text-sm">{tMenu('noProducts')}</p>
         ) : (
-          <ul className="space-y-1 p-2">
+          <ul className="grid min-h-0 flex-1 grid-cols-1 gap-px overflow-y-auto p-1 sm:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((product) => {
               const name = getName(
                 locale,
@@ -478,7 +489,8 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                 product.name_fr,
                 product.name_nl
               );
-              const previewPrice = hasWeightOptions(product)
+              const weighted = hasWeightOptions(product);
+              const previewPrice = weighted
                 ? product.weight_options_g?.length
                   ? computeWeightPrice(
                       Number(product.price_per_kg),
@@ -500,31 +512,40 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                   <button
                     type="button"
                     onClick={() => handleProductTap(product)}
-                    className="hover:bg-muted flex w-full items-center gap-3 rounded-lg px-2 py-2 text-start transition-colors"
+                    className="hover:bg-muted/70 flex min-h-11 w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-start motion-reduce:transition-none"
                   >
                     {product.image_url ? (
-                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md">
+                      <div className="relative size-10 shrink-0 overflow-hidden rounded-md">
                         <Image
                           src={product.image_url}
                           alt=""
                           fill
-                          sizes="44px"
+                          sizes="40px"
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="bg-muted h-11 w-11 shrink-0 rounded-md" />
+                      <div className="bg-muted size-10 shrink-0 rounded-md" />
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{name}</p>
-                      {previewPrice != null ? (
-                        <p className="text-muted-foreground text-xs tabular-nums">
-                          {formatCurrencyAmount(previewPrice, currency, { locale: currencyLocale })}
-                          {hasWeightOptions(product)
-                            ? ` · ${t('staffWeightGrams', { grams: product.weight_options_g?.[0] ?? 0 })}`
-                            : ''}
-                        </p>
-                      ) : null}
+                      <p className="truncate text-sm font-medium leading-tight">{name}</p>
+                      <p className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 text-xs">
+                        {previewPrice != null ? (
+                          <span className="tabular-nums">
+                            {formatCurrencyAmount(previewPrice, currency, {
+                              locale: currencyLocale,
+                            })}
+                            {weighted
+                              ? ` · ${t('staffWeightGrams', { grams: product.weight_options_g?.[0] ?? 0 })}`
+                              : ''}
+                          </span>
+                        ) : null}
+                        {weighted || product.has_size_options ? (
+                          <span className="text-secondary font-semibold uppercase tracking-wide">
+                            {weighted ? t('staffWeightHint') : t('staffSizeHint')}
+                          </span>
+                        ) : null}
+                      </p>
                     </div>
                   </button>
                 </li>
@@ -537,284 +558,392 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   );
 
   const ticketPanel = (
-    <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div className="grid grid-cols-2 gap-2">
-        <button
-          type="button"
-          onClick={() => setDiningMode('dining')}
-          className={cn(
-            'min-h-11 rounded-lg border px-3 text-sm font-medium',
-            diningMode === 'dining'
-              ? 'border-secondary bg-secondary/10 text-secondary'
-              : 'border-border text-muted-foreground'
-          )}
-        >
-          {t('dining')}
-        </button>
-        <button
-          type="button"
-          onClick={() => setDiningMode('takeaway')}
-          className={cn(
-            'min-h-11 rounded-lg border px-3 text-sm font-medium',
-            diningMode === 'takeaway'
-              ? 'border-secondary bg-secondary/10 text-secondary'
-              : 'border-border text-muted-foreground'
-          )}
-        >
-          {t('takeaway')}
-        </button>
-      </div>
-
-      {isTakeaway ? (
-        <div className="grid grid-cols-2 gap-2">
-          {(['pickup', 'delivery'] as const).map((value) => {
-            const Icon = value === 'pickup' ? Store : Truck;
-            return (
-              <button
-                key={value}
-                type="button"
-                onClick={() => {
-                  setFulfillmentType(value);
-                  if (value === 'pickup') setDeliveryLocationId(null);
-                }}
-                className={cn(
-                  'flex min-h-11 flex-col items-center justify-center gap-1 rounded-lg border px-2 text-xs font-medium',
-                  fulfillmentType === value
-                    ? 'border-secondary bg-secondary/10 text-secondary'
-                    : 'border-border text-muted-foreground'
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {t(value)}
-              </button>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="space-y-1.5">
-          <Label htmlFor="staff-table">{t('table')}</Label>
-          <Input
-            id="staff-table"
-            value={tableNumber}
-            onChange={(e) => setTableNumber(e.target.value)}
-            placeholder="5"
-            className="min-h-11"
-          />
-        </div>
+    <div
+      className={cn(
+        'bg-card relative h-full min-h-0 flex-col overflow-hidden rounded-xl border',
+        mobilePane === 'ticket' ? 'flex' : 'hidden',
+        'md:flex'
       )}
+    >
+      <div aria-hidden="true" className="bg-secondary absolute inset-y-0 start-0 w-1.5" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.05] dark:opacity-[0.08]"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(to bottom, transparent, transparent 27px, currentColor 27px, currentColor 28px)',
+        }}
+      />
 
-      {requiresDelivery ? (
-        <div className="space-y-3">
-          {noActiveLocations ? (
-            <p className="text-destructive text-sm">{t('staffNoDeliveryLocations')}</p>
-          ) : (
-            <>
-              <div className="space-y-1.5">
-                <Label htmlFor="staff-delivery-location">{tCheckout('deliveryLocation')}</Label>
-                <Select
-                  value={deliveryLocationId ?? ''}
-                  onValueChange={(value) => setDeliveryLocationId(value || null)}
-                >
-                  <SelectTrigger id="staff-delivery-location" className="min-h-11 w-full">
-                    <SelectValue placeholder={tCheckout('deliveryLocationPlaceholder')}>
-                      {selectedLocation
-                        ? formatDeliveryLocationOption(
-                            locale,
-                            selectedLocation,
-                            currency,
-                            currencyLocale
-                          )
-                        : ''}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(deliveryLocations ?? []).map((location) => (
-                      <SelectItem key={location.id} value={location.id}>
-                        {formatDeliveryLocationOption(locale, location, currency, currencyLocale)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="staff-delivery-details">{tCheckout('deliveryDetails')}</Label>
-                <Textarea
-                  id="staff-delivery-details"
-                  value={deliveryAddressDetails}
-                  onChange={(e) => setDeliveryAddressDetails(e.target.value)}
-                  placeholder={tCheckout('deliveryDetailsPlaceholder')}
-                  rows={2}
-                />
-              </div>
-            </>
-          )}
+      <div className="relative flex min-h-0 flex-1 flex-col gap-2.5 p-3 ps-4">
+        <div className="grid grid-cols-2 gap-1.5">
+          <button
+            type="button"
+            onClick={() => setDiningMode('dining')}
+            className={cn(
+              'min-h-11 rounded-lg border px-3 text-sm font-medium',
+              diningMode === 'dining'
+                ? 'border-secondary bg-secondary/10 text-secondary'
+                : 'border-border text-muted-foreground'
+            )}
+          >
+            {t('dining')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setDiningMode('takeaway')}
+            className={cn(
+              'min-h-11 rounded-lg border px-3 text-sm font-medium',
+              diningMode === 'takeaway'
+                ? 'border-secondary bg-secondary/10 text-secondary'
+                : 'border-border text-muted-foreground'
+            )}
+          >
+            {t('takeaway')}
+          </button>
         </div>
-      ) : null}
 
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border">
-        {lines.length === 0 ? (
-          <p className="text-muted-foreground p-4 text-center text-sm">{t('staffEmptyTicket')}</p>
-        ) : (
-          <ul className="divide-y">
-            {pricedLines.map((line) => {
-              const name = getName(locale, line.name_en, line.name_ar, line.name_fr, line.name_nl);
+        {isTakeaway ? (
+          <div className="grid grid-cols-2 gap-1.5">
+            {(['pickup', 'delivery'] as const).map((value) => {
+              const Icon = value === 'pickup' ? Store : Truck;
               return (
-                <li key={line.lineId} className="flex items-start gap-2 p-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">{name}</p>
-                    <p className="text-muted-foreground text-xs">
-                      {line.sizeOption
-                        ? line.sizeOption === 'small'
-                          ? t('small')
-                          : t('large')
-                        : null}
-                      {line.weightGrams != null
-                        ? ` · ${tMenu('grams', { grams: line.weightGrams })}`
-                        : null}
-                    </p>
-                    <p className="mt-1 text-sm tabular-nums">
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => {
+                    setFulfillmentType(value);
+                    if (value === 'pickup') setDeliveryLocationId(null);
+                  }}
+                  className={cn(
+                    'flex min-h-11 items-center justify-center gap-1.5 rounded-lg border px-2 text-xs font-medium',
+                    fulfillmentType === value
+                      ? 'border-secondary bg-secondary/10 text-secondary'
+                      : 'border-border text-muted-foreground'
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {t(value)}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="space-y-1">
+            <Label htmlFor="staff-table" className="text-xs">
+              {t('table')}
+            </Label>
+            <Input
+              id="staff-table"
+              value={tableNumber}
+              onChange={(e) => setTableNumber(e.target.value)}
+              placeholder="5"
+              className="min-h-11"
+            />
+          </div>
+        )}
+
+        {requiresDelivery ? (
+          <div className="space-y-2">
+            {noActiveLocations ? (
+              <p className="text-destructive text-sm">{t('staffNoDeliveryLocations')}</p>
+            ) : (
+              <>
+                <div className="space-y-1">
+                  <Label htmlFor="staff-delivery-location" className="text-xs">
+                    {tCheckout('deliveryLocation')}
+                  </Label>
+                  <Select
+                    value={deliveryLocationId ?? ''}
+                    onValueChange={(value) => setDeliveryLocationId(value || null)}
+                  >
+                    <SelectTrigger id="staff-delivery-location" className="min-h-11 w-full">
+                      <SelectValue placeholder={tCheckout('deliveryLocationPlaceholder')}>
+                        {selectedLocation
+                          ? formatDeliveryLocationOption(
+                              locale,
+                              selectedLocation,
+                              currency,
+                              currencyLocale
+                            )
+                          : ''}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(deliveryLocations ?? []).map((location) => (
+                        <SelectItem key={location.id} value={location.id}>
+                          {formatDeliveryLocationOption(locale, location, currency, currencyLocale)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="staff-delivery-details" className="text-xs">
+                    {tCheckout('deliveryDetails')}
+                  </Label>
+                  <Textarea
+                    id="staff-delivery-details"
+                    value={deliveryAddressDetails}
+                    onChange={(e) => setDeliveryAddressDetails(e.target.value)}
+                    placeholder={tCheckout('deliveryDetailsPlaceholder')}
+                    rows={2}
+                    className="min-h-11"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        ) : null}
+
+        <div className="bg-background/70 min-h-0 flex-1 overflow-y-auto rounded-lg border">
+          {lines.length === 0 ? (
+            <p className="text-muted-foreground p-6 text-center text-sm">{t('staffEmptyTicket')}</p>
+          ) : (
+            <ul>
+              {pricedLines.map((line) => {
+                const name = getName(
+                  locale,
+                  line.name_en,
+                  line.name_ar,
+                  line.name_fr,
+                  line.name_nl
+                );
+                const optionLabel = [
+                  line.sizeOption ? (line.sizeOption === 'small' ? t('small') : t('large')) : null,
+                  line.weightGrams != null ? tMenu('grams', { grams: line.weightGrams }) : null,
+                ]
+                  .filter(Boolean)
+                  .join(' · ');
+                return (
+                  <li
+                    key={line.lineId}
+                    className="hover:bg-muted/50 flex flex-wrap items-start gap-2 border-b border-dashed px-2.5 py-2 last:border-b-0 motion-reduce:transition-none"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm leading-snug">
+                        <span className="font-heading tabular-nums">{line.quantity}×</span> {name}
+                      </p>
+                      {optionLabel ? (
+                        <p className="text-muted-foreground text-xs">{optionLabel}</p>
+                      ) : null}
+                    </div>
+                    <p className="font-heading shrink-0 text-sm font-semibold tabular-nums">
                       {formatCurrencyAmount(line.unitPrice * line.quantity, currency, {
                         locale: currencyLocale,
                       })}
                     </p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      aria-label={tCart('decreaseQty')}
-                      onClick={() =>
-                        setLines((prev) =>
-                          prev
-                            .map((item) =>
+                    <div className="flex w-full items-center justify-end gap-0.5 sm:w-auto">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        className="min-h-11 min-w-11"
+                        aria-label={tCart('decreaseQty')}
+                        onClick={() =>
+                          setLines((prev) =>
+                            prev
+                              .map((item) =>
+                                item.lineId === line.lineId
+                                  ? { ...item, quantity: item.quantity - 1 }
+                                  : item
+                              )
+                              .filter((item) => item.quantity > 0)
+                          )
+                        }
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        className="min-h-11 min-w-11"
+                        aria-label={tCart('increaseQty')}
+                        disabled={line.quantity >= 99}
+                        onClick={() =>
+                          setLines((prev) =>
+                            prev.map((item) =>
                               item.lineId === line.lineId
-                                ? { ...item, quantity: item.quantity - 1 }
+                                ? { ...item, quantity: Math.min(99, item.quantity + 1) }
                                 : item
                             )
-                            .filter((item) => item.quantity > 0)
-                        )
-                      }
-                    >
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    <span className="min-w-6 text-center text-sm tabular-nums">
-                      {line.quantity}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      aria-label={tCart('increaseQty')}
-                      disabled={line.quantity >= 99}
-                      onClick={() =>
-                        setLines((prev) =>
-                          prev.map((item) =>
-                            item.lineId === line.lineId
-                              ? { ...item, quantity: Math.min(99, item.quantity + 1) }
-                              : item
                           )
-                        )
-                      }
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label={tCommon('remove')}
-                      onClick={() =>
-                        setLines((prev) => prev.filter((item) => item.lineId !== line.lineId))
-                      }
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </div>
+                        }
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        className="min-h-11 min-w-11"
+                        aria-label={tCommon('remove')}
+                        onClick={() =>
+                          setLines((prev) => prev.filter((item) => item.lineId !== line.lineId))
+                        }
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="staff-customer-name">{tCheckout('customerName')}</Label>
-          <Input
-            id="staff-customer-name"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+        <div className="grid gap-2 sm:grid-cols-2">
+          <div className="space-y-1">
+            <Label htmlFor="staff-customer-name" className="text-xs">
+              {tCheckout('customerName')}
+            </Label>
+            <Input
+              id="staff-customer-name"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              className="min-h-11"
+              required
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="staff-customer-phone" className="text-xs">
+              {tCheckout('customerPhone')}
+            </Label>
+            <Input
+              id="staff-customer-phone"
+              value={customerPhone}
+              onChange={(e) => setCustomerPhone(e.target.value)}
+              className="min-h-11"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor="staff-notes" className="text-xs">
+            {tCheckout('orderNotes')}
+          </Label>
+          <Textarea
+            id="staff-notes"
+            value={orderNotes}
+            onChange={(e) => setOrderNotes(e.target.value)}
+            rows={2}
             className="min-h-11"
-            required
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="staff-customer-phone">{tCheckout('customerPhone')}</Label>
-          <Input
-            id="staff-customer-phone"
-            value={customerPhone}
-            onChange={(e) => setCustomerPhone(e.target.value)}
-            className="min-h-11"
+
+        {couponsEnabled && lines.length > 0 ? (
+          <CheckoutCoupon
+            items={previewItems}
+            diningMode={diningMode}
+            customerPhone={customerPhone}
+            phoneCountry="EG"
+            currency={currency}
+            currencyLocale={currencyLocale}
+            applied={appliedCoupon}
+            onApplied={setAppliedCoupon}
+            onRemoved={() => setAppliedCoupon(null)}
           />
+        ) : null}
+
+        <div className="bg-card/95 sticky bottom-0 mt-auto hidden space-y-2 border-t pt-2 backdrop-blur-sm motion-reduce:backdrop-blur-none md:block">
+          {lines.length > 0 && !customerName.trim() ? (
+            <p className="text-destructive text-xs">{tCheckout('customerName')}</p>
+          ) : null}
+          <div className="space-y-0.5 text-sm">
+            <div className="flex justify-between">
+              <span>{tCheckout('subtotal')}</span>
+              <span className="tabular-nums">
+                {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
+              </span>
+            </div>
+            {totals.discount > 0 ? (
+              <div className="flex justify-between text-emerald-700 dark:text-emerald-300">
+                <span>{t('discount')}</span>
+                <span className="tabular-nums">
+                  −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
+                </span>
+              </div>
+            ) : null}
+            {totals.deliveryFee > 0 ? (
+              <div className="flex justify-between">
+                <span>{tCheckout('deliveryFee')}</span>
+                <span className="tabular-nums">
+                  {formatCurrencyAmount(totals.deliveryFee, currency, { locale: currencyLocale })}
+                </span>
+              </div>
+            ) : null}
+            <div className="flex justify-between font-semibold">
+              <span>{tCheckout('total')}</span>
+              <span className="font-heading tabular-nums">
+                {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
+              </span>
+            </div>
+          </div>
+          <Button
+            type="button"
+            className="min-h-11 w-full"
+            disabled={!canSubmit}
+            onClick={() => void handleSubmit()}
+          >
+            {placeOrder.isPending ? t('staffSaving') : t('staffSavePrint')}
+          </Button>
         </div>
       </div>
+    </div>
+  );
 
-      <div className="space-y-1.5">
-        <Label htmlFor="staff-notes">{tCheckout('orderNotes')}</Label>
-        <Textarea
-          id="staff-notes"
-          value={orderNotes}
-          onChange={(e) => setOrderNotes(e.target.value)}
-          rows={2}
-        />
-      </div>
+  const mobileTabs = (
+    <div
+      className="bg-muted/80 grid grid-cols-2 gap-1 rounded-full p-1 md:hidden"
+      role="tablist"
+      aria-label={t('newStaffOrder')}
+    >
+      {(
+        [
+          { id: 'catalog' as const, label: t('staffPaneMenu') },
+          { id: 'ticket' as const, label: t('staffPaneTicket'), count: ticketQty },
+        ] as const
+      ).map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          role="tab"
+          aria-selected={mobilePane === item.id}
+          onClick={() => setMobilePane(item.id)}
+          className={cn(
+            'inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-medium',
+            mobilePane === item.id
+              ? 'bg-secondary text-secondary-foreground shadow-sm'
+              : 'text-muted-foreground'
+          )}
+        >
+          {item.label}
+          {'count' in item && item.count > 0 ? (
+            <span className="tabular-nums">({item.count})</span>
+          ) : null}
+        </button>
+      ))}
+    </div>
+  );
 
-      {couponsEnabled && lines.length > 0 ? (
-        <CheckoutCoupon
-          items={previewItems}
-          diningMode={diningMode}
-          customerPhone={customerPhone}
-          phoneCountry="EG"
-          currency={currency}
-          currencyLocale={currencyLocale}
-          applied={appliedCoupon}
-          onApplied={setAppliedCoupon}
-          onRemoved={() => setAppliedCoupon(null)}
-        />
+  const mobileFooter = (
+    <div className="border-border bg-card sticky bottom-0 z-10 space-y-2 border-t pt-2 md:hidden">
+      {lines.length > 0 && !customerName.trim() ? (
+        <button
+          type="button"
+          className="text-destructive text-start text-xs underline-offset-2 hover:underline"
+          onClick={() => setMobilePane('ticket')}
+        >
+          {tCheckout('customerName')}
+        </button>
       ) : null}
-
-      <div className="bg-muted/40 space-y-1 rounded-xl border p-3 text-sm">
-        <div className="flex justify-between">
-          <span>{tCheckout('subtotal')}</span>
-          <span className="tabular-nums">
-            {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
-          </span>
-        </div>
-        {totals.discount > 0 ? (
-          <div className="flex justify-between text-emerald-700 dark:text-emerald-300">
-            <span>{t('discount')}</span>
-            <span className="tabular-nums">
-              −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
-            </span>
-          </div>
-        ) : null}
-        {totals.deliveryFee > 0 ? (
-          <div className="flex justify-between">
-            <span>{tCheckout('deliveryFee')}</span>
-            <span className="tabular-nums">
-              {formatCurrencyAmount(totals.deliveryFee, currency, { locale: currencyLocale })}
-            </span>
-          </div>
-        ) : null}
-        <div className="flex justify-between font-semibold">
-          <span>{tCheckout('total')}</span>
-          <span className="tabular-nums">
-            {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
-          </span>
-        </div>
+      <div className="flex items-end justify-between gap-3 text-sm">
+        <span className="text-muted-foreground">{tCheckout('total')}</span>
+        <span className="font-heading text-base font-semibold tabular-nums">
+          {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
+        </span>
       </div>
-
       <Button
         type="button"
         className="min-h-11 w-full"
@@ -826,10 +955,23 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     </div>
   );
 
+  const header = (
+    <div className="space-y-0.5 px-10 sm:pe-10 sm:ps-0">
+      <h2 className="font-heading text-base font-semibold leading-none">{t('newStaffOrder')}</h2>
+      <p className="text-muted-foreground hidden text-xs sm:block">
+        {t('staffComposerDescription')}
+      </p>
+    </div>
+  );
+
   const body = (
-    <div className="grid min-h-0 flex-1 gap-4 md:grid-cols-2 md:gap-6">
-      {catalogPanel}
-      {ticketPanel}
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      {mobileTabs}
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 md:grid-cols-[minmax(0,55%)_minmax(0,45%)] lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-4">
+        {catalogPanel}
+        {ticketPanel}
+      </div>
+      {mobileFooter}
     </div>
   );
 
@@ -846,14 +988,23 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
       </div>
     ) : null;
 
+  const overlayClass =
+    'bg-black/50 supports-backdrop-filter:backdrop-blur-sm motion-reduce:backdrop-blur-none';
+
   if (isDesktop) {
     return (
       <>
         <Dialog open={open} onOpenChange={handleOpenChange}>
-          <DialogContent className="flex max-h-[90vh] w-[min(96vw,1400px)] max-w-7xl flex-col gap-4 overflow-hidden">
-            <DialogHeader>
-              <DialogTitle>{t('newStaffOrder')}</DialogTitle>
-              <DialogDescription>{t('staffComposerDescription')}</DialogDescription>
+          <DialogContent
+            overlayClassName={overlayClass}
+            className="flex h-[min(92dvh,900px)] w-[min(98vw,1600px)] max-w-[min(98vw,1600px)] flex-col gap-3 overflow-hidden rounded-2xl p-4 shadow-2xl motion-reduce:animate-none sm:max-w-[min(98vw,1600px)]"
+          >
+            <DialogHeader className="gap-0">
+              <DialogTitle className="sr-only">{t('newStaffOrder')}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {t('staffComposerDescription')}
+              </DialogDescription>
+              {header}
             </DialogHeader>
             {body}
           </DialogContent>
@@ -866,10 +1017,15 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   return (
     <>
       <Sheet open={open} onOpenChange={handleOpenChange}>
-        <SheetContent side="bottom" className="flex h-[95vh] flex-col gap-4 overflow-hidden">
-          <SheetHeader>
-            <SheetTitle>{t('newStaffOrder')}</SheetTitle>
-            <SheetDescription>{t('staffComposerDescription')}</SheetDescription>
+        <SheetContent
+          side="bottom"
+          overlayClassName={overlayClass}
+          className="flex h-[100dvh] max-h-[100dvh] flex-col gap-3 overflow-hidden rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl data-[side=bottom]:h-[100dvh] data-[side=bottom]:max-h-[100dvh] motion-reduce:transition-none"
+        >
+          <SheetHeader className="p-0">
+            <SheetTitle className="sr-only">{t('newStaffOrder')}</SheetTitle>
+            <SheetDescription className="sr-only">{t('staffComposerDescription')}</SheetDescription>
+            {header}
           </SheetHeader>
           {body}
         </SheetContent>
