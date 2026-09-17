@@ -8,8 +8,15 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { KitchenCard } from '@/components/dashboard/kitchen/KitchenCard';
-import { useAcknowledgeOrder, useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
-import { useFeatureSettings } from '@/hooks/useSettings';
+import {
+  useAcknowledgeOrder,
+  useMarkOrderReadyWhatsAppSent,
+  useOrders,
+  useUpdateOrderStatus,
+} from '@/hooks/useOrders';
+import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
+import { openOrderReadyWhatsApp } from '@/lib/order/ready-whatsapp';
+import type { MessageLocale } from '@/lib/order/whatsapp-message';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import type { OrderStatus, OrderWithItems } from '@/types/database';
 
@@ -24,9 +31,11 @@ export default function KitchenPage() {
   const tOrders = useTranslations('orders');
   const tCommon = useTranslations('common');
   const { data: features, isLoading: featuresLoading } = useFeatureSettings();
+  const { data: settings } = useRestaurantSettings();
   const { data: orders, isLoading, error, refetch } = useOrders();
   const updateStatus = useUpdateOrderStatus();
   const acknowledgeOrder = useAcknowledgeOrder();
+  const markReadyWhatsApp = useMarkOrderReadyWhatsAppSent();
 
   useEffect(() => {
     if (featuresLoading) return;
@@ -57,6 +66,16 @@ export default function KitchenPage() {
         await acknowledgeOrder.mutateAsync(order.id);
       }
       await updateStatus.mutateAsync({ id: order.id, status });
+      if (status === 'ready' && settings) {
+        const opened = openOrderReadyWhatsApp({
+          order,
+          locale: locale as MessageLocale,
+          settings,
+        });
+        if (opened) {
+          await markReadyWhatsApp.mutateAsync(order.id);
+        }
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : tCommon('error'));
     }

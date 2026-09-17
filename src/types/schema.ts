@@ -213,6 +213,8 @@ export const settingsSchema = z.object({
     prep_time_minutes: z.number().int().min(0).max(240).default(25),
     minimum_order: z.number().min(0).default(0),
     accepting_orders: z.boolean().default(true),
+    auto_print_kitchen_ticket: z.boolean().default(false),
+    whatsapp_on_ready: z.boolean().default(true),
     max_order_notes_length: z.number().int().min(0).max(1000).default(200),
     apply_tax: z.boolean().default(true),
     apply_service_charge: z.boolean().default(true),

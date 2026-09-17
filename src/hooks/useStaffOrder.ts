@@ -13,6 +13,10 @@ export const staffOrderCatalogKeys = {
   all: ['staff-order-catalog'] as const,
 };
 
+export const staffOrderReceiptKeys = {
+  detail: (orderId: string) => ['staff-order-receipt', orderId] as const,
+};
+
 export interface StaffCatalogProduct {
   id: string;
   category_id: string;

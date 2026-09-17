@@ -6,6 +6,7 @@ import { Download, Printer, Table } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
+import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 import { SalesDateFilter } from '@/components/dashboard/reports/SalesDateFilter';
 import { SalesLedger } from '@/components/dashboard/reports/SalesLedger';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -13,6 +14,11 @@ import { useExport } from '@/hooks/useExport';
 import { useSalesReport } from '@/hooks/useSalesReport';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { getDateRange } from '@/hooks/useAnalytics';
+import {
+  getPriorPeriodCustomRange,
+  isComparableReportPeriod,
+  pctChange,
+} from '@/lib/analytics/compare-period';
 import { dateOnlyFromDate, type SalesReportPeriod } from '@/lib/order/sales-range';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { cn } from '@/lib/utils';
@@ -33,11 +39,24 @@ export default function ReportsPage() {
   const { exportCSV, exportExcel, printPage } = useExport();
   const currencyLocale = toCurrencyLocale(locale);
 
+  const comparable = isComparableReportPeriod(period);
+  const priorRange = comparable ? getPriorPeriodCustomRange(period) : null;
+
   const { data, isPending, isFetching, error, refetch, bounds } = useSalesReport(period, {
     from,
     to,
   });
+  const {
+    data: priorData,
+    isPending: priorPending,
+    isFetching: priorFetching,
+  } = useSalesReport('custom', {
+    from: priorRange?.from ?? '',
+    to: priorRange?.to ?? '',
+    enabled: comparable && Boolean(priorRange),
+  });
   const showInlineLoading = bounds.ok && !data && (isPending || isFetching);
+  const priorLoading = comparable && (priorPending || priorFetching);
 
   const rangeError = useMemo(() => {
     if (bounds.ok) return null;
@@ -47,8 +66,21 @@ export default function ReportsPage() {
   }, [bounds, t]);
 
   const kpis = data?.kpis;
+  const priorKpis = priorData?.kpis;
   const orders = data?.orders ?? [];
   const currency = settings?.currency ?? orders[0]?.currency ?? 'EGP';
+
+  const compare = useMemo(() => {
+    if (!comparable) return null;
+    return {
+      revenue: pctChange(kpis?.revenue ?? 0, priorKpis?.revenue ?? 0),
+      orders: pctChange(kpis?.orderCount ?? 0, priorKpis?.orderCount ?? 0),
+      cancelled: pctChange(kpis?.cancelledCount ?? 0, priorKpis?.cancelledCount ?? 0),
+      average: pctChange(kpis?.averageOrderValue ?? 0, priorKpis?.averageOrderValue ?? 0),
+      delivery: pctChange(kpis?.deliveryCount ?? 0, priorKpis?.deliveryCount ?? 0),
+      discounts: pctChange(kpis?.discounts ?? 0, priorKpis?.discounts ?? 0),
+    };
+  }, [comparable, kpis, priorKpis]);
 
   const applyPreset = (next: Exclude<SalesReportPeriod, 'custom'>) => {
     const range = getDateRange(next);
@@ -147,6 +179,9 @@ export default function ReportsPage() {
             <ReportsContentSkeleton summaryLabel={t('summary')} />
           ) : (
             <>
+              {comparable ? (
+                <p className="text-muted-foreground text-sm">{t('comparePrevious')}</p>
+              ) : null}
               <section
                 aria-label={t('summary')}
                 className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
@@ -156,25 +191,55 @@ export default function ReportsPage() {
                   value={formatCurrencyAmount(kpis?.revenue ?? 0, currency, {
                     locale: currencyLocale,
                   })}
+                  compare={compare?.revenue ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
                 />
-                <KpiCard label={t('orderCount')} value={String(kpis?.orderCount ?? 0)} />
+                <KpiCard
+                  label={t('orderCount')}
+                  value={String(kpis?.orderCount ?? 0)}
+                  compare={compare?.orders ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
+                />
                 <KpiCard
                   label={t('cancelledCount')}
                   value={String(kpis?.cancelledCount ?? 0)}
                   danger
+                  compare={compare?.cancelled ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
                 />
                 <KpiCard
                   label={t('averageOrder')}
                   value={formatCurrencyAmount(kpis?.averageOrderValue ?? 0, currency, {
                     locale: currencyLocale,
                   })}
+                  compare={compare?.average ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
                 />
-                <KpiCard label={t('deliveryCount')} value={String(kpis?.deliveryCount ?? 0)} />
+                <KpiCard
+                  label={t('deliveryCount')}
+                  value={String(kpis?.deliveryCount ?? 0)}
+                  compare={compare?.delivery ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
+                />
                 <KpiCard
                   label={t('discounts')}
                   value={formatCurrencyAmount(kpis?.discounts ?? 0, currency, {
                     locale: currencyLocale,
                   })}
+                  compare={compare?.discounts ?? null}
+                  showCompare={comparable && !priorLoading}
+                  vsLabel={t('vsPrevious')}
+                  noCompareLabel={t('noCompare')}
                 />
               </section>
 
@@ -225,10 +290,18 @@ function KpiCard({
   label,
   value,
   danger = false,
+  compare = null,
+  showCompare = false,
+  vsLabel,
+  noCompareLabel,
 }: {
   label: string;
   value: string;
   danger?: boolean;
+  compare?: number | null;
+  showCompare?: boolean;
+  vsLabel?: string;
+  noCompareLabel?: string;
 }) {
   return (
     <div
@@ -248,6 +321,11 @@ function KpiCard({
       >
         {value}
       </p>
+      {showCompare && vsLabel && noCompareLabel ? (
+        <div className="mt-1.5">
+          <CompareBadge value={compare} vsLabel={vsLabel} noCompareLabel={noCompareLabel} />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -14,6 +14,7 @@ import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import {
   useAcknowledgeOrder,
   useDeleteOrder,
+  useMarkOrderReadyWhatsAppSent,
   useMarkOrderWhatsAppSent,
   useOrders,
   useUpdateOrderStatus,
@@ -22,6 +23,7 @@ import { useOrderAlerts } from '@/hooks/useOrderAlerts';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { buildStoredOrderWhatsApp, openWhatsAppUrl } from '@/lib/order/build-order';
+import { openOrderReadyWhatsApp } from '@/lib/order/ready-whatsapp';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { cn } from '@/lib/utils';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
@@ -61,6 +63,7 @@ export default function OrdersPage() {
   const updateStatus = useUpdateOrderStatus();
   const acknowledgeOrder = useAcknowledgeOrder();
   const markWhatsApp = useMarkOrderWhatsAppSent();
+  const markReadyWhatsApp = useMarkOrderReadyWhatsAppSent();
   const deleteOrder = useDeleteOrder();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
@@ -180,6 +183,16 @@ export default function OrdersPage() {
         await acknowledgeOrder.mutateAsync(order.id);
       }
       await updateStatus.mutateAsync({ id: order.id, status });
+      if (status === 'ready' && settings) {
+        const opened = openOrderReadyWhatsApp({
+          order,
+          locale: locale as MessageLocale,
+          settings,
+        });
+        if (opened) {
+          await markReadyWhatsApp.mutateAsync(order.id);
+        }
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : tCommon('error'));
     }

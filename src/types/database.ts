@@ -169,6 +169,10 @@ export interface RestaurantSettings {
   minimum_order: number;
   /** When false, customer checkout is paused; staff POS still accepts orders. */
   accepting_orders?: boolean;
+  /** When true, auto-print kitchen ticket on new dashboard orders (hettsamaka Tier 2). */
+  auto_print_kitchen_ticket?: boolean;
+  /** When true, open WhatsApp to notify customer when order is marked ready. */
+  whatsapp_on_ready?: boolean;
   max_order_notes_length: number;
   apply_tax: boolean;
   apply_service_charge: boolean;
@@ -260,6 +264,7 @@ export interface Order {
   total: number;
   currency: string;
   whatsapp_sent: boolean;
+  ready_whatsapp_sent_at?: string | null;
   staff_acknowledged_at: string | null;
   locale: string;
   created_at: string;

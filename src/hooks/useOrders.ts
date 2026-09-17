@@ -197,6 +197,27 @@ export function useMarkOrderWhatsAppSent() {
   });
 }
 
+export function useMarkOrderReadyWhatsAppSent() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('orders')
+        .update({ ready_whatsapp_sent_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Order;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+    },
+  });
+}
+
 export function useDeleteOrder() {
   const queryClient = useQueryClient();
 

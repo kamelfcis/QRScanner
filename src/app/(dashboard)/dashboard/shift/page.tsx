@@ -18,30 +18,8 @@ import { getDateRange } from '@/hooks/useAnalytics';
 import { dateOnlyFromDate } from '@/lib/order/sales-range';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { formatLocaleDate } from '@/lib/dateLocale';
-import { cn } from '@/lib/utils';
-
-function pctChange(today: number, yesterday: number): number | null {
-  if (yesterday === 0) return today === 0 ? 0 : null;
-  return ((today - yesterday) / yesterday) * 100;
-}
-
-function CompareBadge({ value }: { value: number | null }) {
-  const t = useTranslations('shift');
-  if (value === null)
-    return <span className="text-muted-foreground text-xs">{t('noCompare')}</span>;
-  const positive = value >= 0;
-  return (
-    <span
-      className={cn(
-        'text-xs font-medium tabular-nums',
-        positive ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
-      )}
-    >
-      {positive ? '+' : ''}
-      {value.toFixed(1)}% {t('vsYesterday')}
-    </span>
-  );
-}
+import { pctChange } from '@/lib/analytics/compare-period';
+import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 
 export default function ShiftPage() {
   const { locale } = useI18n();
@@ -194,7 +172,11 @@ export default function ShiftPage() {
             )}
             {!todayPending && !yesterdayPending && card.compare !== null ? (
               <div className="mt-2">
-                <CompareBadge value={card.compare} />
+                <CompareBadge
+                  value={card.compare}
+                  vsLabel={t('vsYesterday')}
+                  noCompareLabel={t('noCompare')}
+                />
               </div>
             ) : null}
           </div>
