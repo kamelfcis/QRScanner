@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -12,9 +12,22 @@ import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp, scaleIn } from '@/lib/motion';
 import { openWhatsAppUrl } from '@/lib/order/build-order';
-import { buildOrderStatusPath } from '@/lib/order/last-order';
+import {
+  buildOrderStatusPath,
+  cartLinesToLastOrderItems,
+  readLastOrder,
+  writeLastOrder,
+} from '@/lib/order/last-order';
 import { cn } from '@/lib/utils';
 import { ORDER_SUCCESS_SOUND_KEY, playOrderSuccessSound } from '@/lib/audio/order-success';
+import { hasHettSamakaTier3 } from '@/i18n/config';
+import {
+  estimateReadyTime,
+  formatReadyTimeRange,
+  type PrepFulfillmentType,
+} from '@/lib/order/estimate-ready-time';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useI18n } from '@/components/providers/RootI18nProvider';
 
 export default function OrderSuccessPage() {
   return (
@@ -35,9 +48,16 @@ function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const sent = searchParams.get('sent') === '1';
   const orderNumber = searchParams.get('order');
+  const itemCountParam = Number(searchParams.get('items') ?? '0');
+  const fulfillmentParam = searchParams.get('fulfillment') as PrepFulfillmentType | 'dining' | null;
   const t = useTranslations('orderSuccess');
+  const { locale } = useI18n();
+  const { data: settings } = useRestaurantSettings();
   const prefersReducedMotion = useReducedMotion();
   const clear = useCartStore((s) => s.clear);
+  const cartItems = useCartStore((s) => s.items);
+  const diningMode = useCartStore((s) => s.diningMode);
+  const fulfillmentType = useCartStore((s) => s.fulfillmentType);
   const [returned, setReturned] = useState(false);
   const [waUrl] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
@@ -58,6 +78,49 @@ function OrderSuccessContent() {
       // private mode / quota
     }
   }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!hasHettSamakaTier3 || cartItems.length === 0) return;
+    const existing = readLastOrder();
+    if (existing?.items?.length) return;
+    writeLastOrder({
+      ...(existing ?? {
+        orderNumber: orderNumber ?? `SNAP-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+        status: 'new' as const,
+        placedAt: new Date().toISOString(),
+      }),
+      items: cartLinesToLastOrderItems(cartItems),
+      diningMode,
+      fulfillmentType: diningMode === 'takeaway' ? fulfillmentType : null,
+    });
+  }, [cartItems, diningMode, fulfillmentType, orderNumber]);
+
+  const readyEstimate = useMemo(() => {
+    if (!hasHettSamakaTier3) return null;
+    const itemCount =
+      itemCountParam > 0 ? itemCountParam : cartItems.reduce((n, i) => n + i.quantity, 0);
+    if (itemCount <= 0) return null;
+    const fulfillment: PrepFulfillmentType =
+      fulfillmentParam === 'delivery' ||
+      fulfillmentParam === 'pickup' ||
+      fulfillmentParam === 'dining'
+        ? fulfillmentParam
+        : diningMode === 'takeaway'
+          ? fulfillmentType
+          : 'dining';
+    return estimateReadyTime({
+      itemCount,
+      fulfillmentType: fulfillment,
+      basePrepMinutes: settings?.prep_time_minutes,
+    });
+  }, [
+    itemCountParam,
+    cartItems,
+    fulfillmentParam,
+    diningMode,
+    fulfillmentType,
+    settings?.prep_time_minutes,
+  ]);
 
   useEffect(() => {
     if (!sent) return;
@@ -134,6 +197,16 @@ function OrderSuccessContent() {
           <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
             {description}
           </p>
+          {readyEstimate ? (
+            <p
+              className="mx-auto max-w-[38ch] rounded-full border border-[var(--menu-line)] bg-[var(--menu-surface)] px-4 py-2 text-sm font-medium text-[var(--menu-wine)]"
+              data-testid="ready-time-estimate"
+            >
+              {t('readyEstimate', {
+                range: formatReadyTimeRange(readyEstimate, locale),
+              })}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-3">

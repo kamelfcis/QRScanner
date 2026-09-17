@@ -134,7 +134,7 @@ export function OrderTicket({
   onAcknowledge: (id: string) => void;
   onStatus: (order: OrderWithItems, status: OrderStatus) => void;
   onWhatsApp: (order: OrderWithItems) => void;
-  onDelete: (order: OrderWithItems) => void;
+  onDelete?: (order: OrderWithItems) => void;
 }) {
   const needsAck = isUnacknowledged(order);
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
@@ -554,18 +554,20 @@ export function OrderTicket({
                     <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />
                     {order.whatsapp_sent ? t('sendWhatsAppAgain') : t('sendWhatsApp')}
                   </Button>
-                  <Button
-                    variant="destructive"
-                    className="min-h-11"
-                    disabled={busy}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(order);
-                    }}
-                  >
-                    <Trash2 className="me-2 h-4 w-4" aria-hidden="true" />
-                    {t('deleteOrder')}
-                  </Button>
+                  {onDelete ? (
+                    <Button
+                      variant="destructive"
+                      className="min-h-11"
+                      disabled={busy}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(order);
+                      }}
+                    >
+                      <Trash2 className="me-2 h-4 w-4" aria-hidden="true" />
+                      {t('deleteOrder')}
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </div>

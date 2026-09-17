@@ -53,14 +53,15 @@ import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { normalizeLocalPhone, formatDisplayPhone } from '@/lib/phone/normalize';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
-import { writeLastOrder } from '@/lib/order/last-order';
+import { cartLinesToLastOrderItems, writeLastOrder } from '@/lib/order/last-order';
+import { useOpeningHoursStatus } from '@/hooks/useOpeningHoursStatus';
 import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
 import {
   buildDeliveryAddressSnapshot,
   formatDeliveryLocationOption,
 } from '@/lib/order/delivery-location';
 import { resolveEffectiveMinimumOrder } from '@/lib/order/delivery-min-order';
-import { hasHettSamakaTier1 } from '@/i18n/config';
+import { hasHettSamakaTier3 } from '@/i18n/config';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -142,7 +143,7 @@ export default function CheckoutPage() {
     () => resolveEffectiveMinimumOrder(settings?.minimum_order ?? 0, selectedLocation),
     [settings?.minimum_order, selectedLocation]
   );
-  const ordersClosed = hasHettSamakaTier1 && settings?.accepting_orders === false;
+  const { paused: orderingBlocked, outsideHours } = useOpeningHoursStatus();
 
   const localTotals = useMemo(
     () =>
@@ -271,8 +272,8 @@ export default function CheckoutPage() {
 
     if (!settings) return;
 
-    if (ordersClosed) {
-      setErrors([t('ordersClosed')]);
+    if (orderingBlocked) {
+      setErrors([outsideHours && hasHettSamakaTier3 ? tMenu('closedNowTitle') : t('ordersClosed')]);
       return;
     }
 
@@ -363,6 +364,18 @@ export default function CheckoutPage() {
           placedAt: new Date().toISOString(),
           total: typeof payload.total === 'number' ? payload.total : undefined,
           currency: payload.currency,
+          ...(hasHettSamakaTier3 ? { items: cartLinesToLastOrderItems(items) } : {}),
+        });
+      } else if (hasHettSamakaTier3 && normalizedPhone) {
+        writeLastOrder({
+          orderNumber: `WA-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+          phone: normalizedPhone,
+          customerName,
+          status: 'new',
+          diningMode,
+          fulfillmentType: isTakeaway ? fulfillmentType : null,
+          placedAt: new Date().toISOString(),
+          items: cartLinesToLastOrderItems(items),
         });
       }
 
@@ -420,6 +433,14 @@ export default function CheckoutPage() {
       const params = new URLSearchParams();
       if (built) params.set('sent', '1');
       if (orderNumber) params.set('order', orderNumber);
+      if (hasHettSamakaTier3) {
+        const itemCount = items.reduce((n, i) => n + i.quantity, 0);
+        params.set('items', String(itemCount));
+        params.set(
+          'fulfillment',
+          isTakeaway ? fulfillmentType : diningMode === 'dining' ? 'dining' : 'pickup'
+        );
+      }
       playOrderSuccessSound({ prefersReducedMotion });
       haptic.success();
       try {
@@ -522,12 +543,12 @@ export default function CheckoutPage() {
             />
           </div>
 
-          {ordersClosed && (
+          {orderingBlocked && (
             <div
               role="alert"
               className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100"
             >
-              {t('ordersClosed')}
+              {outsideHours && hasHettSamakaTier3 ? tMenu('closedNowTitle') : t('ordersClosed')}
             </div>
           )}
 
@@ -884,7 +905,7 @@ export default function CheckoutPage() {
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
             disabled={
               submitting ||
-              ordersClosed ||
+              orderingBlocked ||
               noActiveLocations ||
               (!dashboardOrders && !whatsappConfigured)
             }

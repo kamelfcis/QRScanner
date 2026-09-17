@@ -154,6 +154,9 @@
     "new": "Nouveau",
     "bestseller": "Best-seller",
     "ordersPausedTitle": "Commande en ligne suspendue",
+    "closedNowTitle": "Fermé pour le moment",
+    "closedNowDescription": "Nous ouvrons à {time} {day}. Vous pouvez parcourir le menu.",
+    "closedNowDescriptionToday": "Nous sommes fermés. Consultez nos horaires.",
     "ordersPausedDescription": "Vous pouvez parcourir le menu. Contactez le restaurant pour commander.",
     "noProducts": "Aucun produit disponible dans cette catégorie",
     "searchPlaceholder": "Rechercher dans le menu…",
@@ -285,6 +288,7 @@
     "kitchen": "Cuisine",
     "shift": "Clôture de shift",
     "coupons": "Coupons",
+    "expenses": "Dépenses",
     "deliveryLocations": "Zones de livraison",
     "logout": "Déconnexion",
     "collapse": "Réduire le menu latéral",
@@ -489,7 +493,11 @@
     "total": "Total",
     "itemsInOrder": "{count} articles dans votre commande",
     "small": "Petit",
-    "large": "Grand"
+    "large": "Grand",
+    "repeatLastOrder": "Répéter la dernière commande",
+    "repeatLastOrderSuccess": "{count} articles ajoutés au panier",
+    "repeatLastOrderPartial": "{added} ajoutés — {skipped} indisponibles",
+    "repeatLastOrderNone": "Aucun article de la dernière commande n'est disponible"
   },
   "checkout": {
     "title": "Paiement",
@@ -574,7 +582,8 @@
     "clearCart": "Clear cart",
     "backToMenu": "Retour au menu",
     "checkStatus": "Suivre la commande",
-    "saveLinkHint": "Enregistrez ce lien pour retrouver votre ticket plus tard."
+    "saveLinkHint": "Enregistrez ce lien pour retrouver votre ticket plus tard.",
+    "readyEstimate": "Prêt estimé dans {range} min"
   },
   "orderStatus": {
     "eyebrow": "Ticket cuisine",
@@ -757,7 +766,30 @@
     "takeawayCount": "Commandes à emporter",
     "vsYesterday": "vs hier",
     "noCompare": "Pas de données hier",
-    "recentCloses": "Clôtures récentes"
+    "recentCloses": "Clôtures récentes",
+    "expensesToday": "Dépenses aujourd'hui",
+    "netToday": "Net du jour (ventes − dépenses)",
+    "netMonth": "Net du mois"
+  },
+  "expenses": {
+    "title": "Dépenses",
+    "eyebrow": "Registre",
+    "description": "Suivez les coûts quotidiens et le net par rapport aux ventes.",
+    "addExpense": "Ajouter une dépense",
+    "editExpense": "Modifier la dépense",
+    "deleteExpense": "Supprimer la dépense",
+    "deleteConfirm": "Supprimer cette entrée ?",
+    "amount": "Montant",
+    "category": "Catégorie",
+    "date": "Date",
+    "descriptionLabel": "Notes",
+    "monthTotal": "Total pour {month}",
+    "empty": "Aucune dépense ce mois-ci",
+    "emptyDescription": "Ajoutez loyer, fournitures, etc.",
+    "created": "Dépense enregistrée",
+    "updated": "Dépense mise à jour",
+    "deleted": "Dépense supprimée",
+    "validation": "Entrez une catégorie et un montant valide"
   },
   "deliveryLocations": {
     "title": "Zones de livraison",
@@ -1084,6 +1116,12 @@
     "colStatus": "Statut",
     "colCoupon": "Coupon",
     "colTotal": "Total",
+    "colSubtotal": "Sous-total",
+    "colDelivery": "Livraison",
+    "colDiscount": "Remise",
+    "exportMonthLabel": "Export comptable — {month}",
+    "exportMonthCsv": "Exporter le mois (CSV)",
+    "exportMonthExcel": "Exporter le mois (Excel)",
     "periodLabel": "Période",
     "generatedAt": "Généré le",
     "from": "Du",

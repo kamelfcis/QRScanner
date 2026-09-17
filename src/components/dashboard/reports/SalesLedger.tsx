@@ -41,6 +41,7 @@ interface SalesLedgerProps {
   locale: string;
   currencyLocale: CurrencyLocale;
   settings?: RestaurantSettings | null;
+  allowDelete?: boolean;
   t: CopyFn;
   tOrders: CopyFn;
   tMenu: CopyFn;
@@ -79,7 +80,7 @@ function OrderActions({
   reprintLabel: string;
   deleteLabel: string;
   onPrint: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }) {
   return (
     <div className="flex flex-wrap gap-2 border-t pt-3">
@@ -95,18 +96,20 @@ function OrderActions({
         <Printer className="me-1.5 h-4 w-4" aria-hidden="true" />
         {reprintLabel}
       </Button>
-      <Button
-        type="button"
-        variant="destructive"
-        className="min-h-11 flex-1 touch-manipulation sm:flex-none"
-        onClick={(event) => {
-          event.stopPropagation();
-          onDelete();
-        }}
-      >
-        <Trash2 className="me-1.5 h-4 w-4" aria-hidden="true" />
-        {deleteLabel}
-      </Button>
+      {onDelete ? (
+        <Button
+          type="button"
+          variant="destructive"
+          className="min-h-11 flex-1 touch-manipulation sm:flex-none"
+          onClick={(event) => {
+            event.stopPropagation();
+            onDelete();
+          }}
+        >
+          <Trash2 className="me-1.5 h-4 w-4" aria-hidden="true" />
+          {deleteLabel}
+        </Button>
+      ) : null}
     </div>
   );
 }
@@ -199,7 +202,7 @@ function SalesOrderDetail({
   tMenu: CopyFn;
   tCommon: CopyFn;
   onPrint: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }) {
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: detailQueryKey(orderId),
@@ -470,6 +473,7 @@ export function SalesLedger({
   locale,
   currencyLocale,
   settings,
+  allowDelete = true,
   t,
   tOrders,
   tMenu,
@@ -548,7 +552,7 @@ export function SalesLedger({
                 expanded={expandedId === order.id}
                 onToggle={() => setExpandedId((id) => (id === order.id ? null : order.id))}
                 onPrint={() => void handlePrint(order.id)}
-                onDelete={() => setDeleting(order)}
+                onDelete={allowDelete ? () => setDeleting(order) : undefined}
                 onPrefetch={() => prefetchDetail(order.id)}
                 locale={locale}
                 currencyLocale={currencyLocale}
@@ -570,7 +574,7 @@ export function SalesLedger({
               expanded={expandedId === order.id}
               onToggle={() => setExpandedId((id) => (id === order.id ? null : order.id))}
               onPrint={() => void handlePrint(order.id)}
-              onDelete={() => setDeleting(order)}
+              onDelete={allowDelete ? () => setDeleting(order) : undefined}
               locale={locale}
               currencyLocale={currencyLocale}
               t={t}
@@ -583,7 +587,7 @@ export function SalesLedger({
       </ul>
 
       <ConfirmDialog
-        open={!!deleting}
+        open={allowDelete && !!deleting}
         onOpenChange={(open) => {
           if (!open) setDeleting(null);
         }}
@@ -629,7 +633,7 @@ function SalesOrderCard({
   expanded: boolean;
   onToggle: () => void;
   onPrint: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   locale: string;
   currencyLocale: CurrencyLocale;
   t: CopyFn;
@@ -741,7 +745,7 @@ function SalesOrderRows({
   expanded: boolean;
   onToggle: () => void;
   onPrint: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   onPrefetch: () => void;
   locale: string;
   currencyLocale: CurrencyLocale;

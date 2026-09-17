@@ -1,7 +1,26 @@
 import { digitsOnly } from '@/lib/phone/normalize';
+import type { CartSizeOption } from '@/stores/cart-store';
 import type { OrderStatus } from '@/types/database';
 
 export const LAST_ORDER_STORAGE_KEY = 'warda-last-order';
+
+export type LastOrderLineItem = {
+  productId: string;
+  name_en: string;
+  name_ar: string;
+  name_fr?: string | null;
+  name_nl?: string | null;
+  image_url: string | null;
+  dining_price: number;
+  takeaway_price: number;
+  has_size_options: boolean;
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
+  sizeOption: CartSizeOption;
+  weightGrams?: number | null;
+  quantity: number;
+  notes: string;
+};
 
 export type LastOrderSnapshot = {
   orderNumber: string;
@@ -14,6 +33,8 @@ export type LastOrderSnapshot = {
   placedAt: string;
   total?: number;
   currency?: string;
+  /** Cart lines for "repeat last order" (hettsamaka tier 3 quick win). */
+  items?: LastOrderLineItem[];
 };
 
 export function normalizeOrderQuery(value: string | null | undefined): string {
@@ -75,6 +96,44 @@ export function matchLastOrder(
   if (wantNumber && wantNumber !== normalizeOrderQuery(snapshot.orderNumber)) return false;
   if (wantPhone && !phonesMatch(snapshot.phone, wantPhone)) return false;
   return true;
+}
+
+export function cartLinesToLastOrderItems(
+  items: Array<{
+    productId: string;
+    name_en: string;
+    name_ar: string;
+    name_fr?: string | null;
+    name_nl?: string | null;
+    image_url: string | null;
+    dining_price: number;
+    takeaway_price: number;
+    has_size_options: boolean;
+    price_per_kg?: number | null;
+    weight_options_g?: number[] | null;
+    sizeOption: CartSizeOption;
+    weightGrams?: number | null;
+    quantity: number;
+    notes: string;
+  }>
+): LastOrderLineItem[] {
+  return items.map((item) => ({
+    productId: item.productId,
+    name_en: item.name_en,
+    name_ar: item.name_ar,
+    name_fr: item.name_fr,
+    name_nl: item.name_nl,
+    image_url: item.image_url,
+    dining_price: item.dining_price,
+    takeaway_price: item.takeaway_price,
+    has_size_options: item.has_size_options,
+    price_per_kg: item.price_per_kg,
+    weight_options_g: item.weight_options_g,
+    sizeOption: item.sizeOption,
+    weightGrams: item.weightGrams ?? null,
+    quantity: item.quantity,
+    notes: item.notes,
+  }));
 }
 
 export function buildOrderStatusPath(orderNumber?: string | null): string {

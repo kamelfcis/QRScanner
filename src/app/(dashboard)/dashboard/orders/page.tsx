@@ -36,6 +36,8 @@ import { OrderTicket } from '@/components/dashboard/orders/OrderTicket';
 import { OrdersCleanupDialog } from '@/components/dashboard/orders/OrdersCleanupDialog';
 import { StaffOrderComposer } from '@/components/dashboard/orders/StaffOrderComposer';
 import { ACTIVE_COLUMNS, COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
+import { useStaffRole } from '@/hooks/useStaffRole';
+import { canHardDeleteOrders } from '@/lib/staff/roles';
 
 function isSameLocalDay(iso: string): boolean {
   const date = new Date(iso);
@@ -65,6 +67,8 @@ export default function OrdersPage() {
   const markWhatsApp = useMarkOrderWhatsAppSent();
   const markReadyWhatsApp = useMarkOrderReadyWhatsAppSent();
   const deleteOrder = useDeleteOrder();
+  const { data: staffRole } = useStaffRole();
+  const allowHardDelete = canHardDeleteOrders(staffRole);
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);
@@ -300,7 +304,7 @@ export default function OrdersPage() {
         formattedRevenue={formattedRevenue}
         prefersReducedMotion={prefersReducedMotion}
         onStatusFocus={handleStatusFocus}
-        onCleanup={() => setCleanupOpen(true)}
+        onCleanup={allowHardDelete ? () => setCleanupOpen(true) : undefined}
         onNewStaffOrder={() => setComposerOpen(true)}
       />
 
@@ -322,7 +326,7 @@ export default function OrdersPage() {
                 onAcknowledge={handleAcknowledge}
                 onStatus={handleStatus}
                 onWhatsApp={handleWhatsApp}
-                onDelete={setDeletingOrder}
+                onDelete={allowHardDelete ? setDeletingOrder : undefined}
               />
             ))}
           </div>
@@ -365,7 +369,7 @@ export default function OrdersPage() {
                       onAcknowledge={handleAcknowledge}
                       onStatus={handleStatus}
                       onWhatsApp={handleWhatsApp}
-                      onDelete={setDeletingOrder}
+                      onDelete={allowHardDelete ? setDeletingOrder : undefined}
                     />
                   ))
                 )}

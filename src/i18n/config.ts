@@ -38,6 +38,9 @@ export const hasProductWeightOptions = tenant === 'hettsamaka';
 /** Tier 1+2 ops features (hettsamaka only): top sellers, accepting_orders, reports compare, auto kitchen print, ready WhatsApp. */
 export const hasHettSamakaTier1 = tenant === 'hettsamaka';
 
+/** Tier 3 ops (hettsamaka only): quick wins, expenses ledger, staff roles, web push. */
+export const hasHettSamakaTier3 = tenant === 'hettsamaka';
+
 /** When false, hide landing "Signature Dishes" section (NEXT_PUBLIC_HIDE_FEATURED_DISHES=true). */
 export const showLandingFeaturedDishes = process.env.NEXT_PUBLIC_HIDE_FEATURED_DISHES !== 'true';
 

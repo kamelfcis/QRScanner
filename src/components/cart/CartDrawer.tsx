@@ -20,6 +20,7 @@ import { getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
 import { haptic } from '@/lib/haptics';
 import { Image } from '@/components/shared/Image';
+import { RepeatLastOrderButton } from '@/components/menu/RepeatLastOrderButton';
 
 interface CartDrawerProps {
   open: boolean;
@@ -235,6 +236,11 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
               </div>
 
               <div className="border-t border-[var(--menu-line)] bg-[var(--menu-paper)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+                <RepeatLastOrderButton
+                  fullWidth
+                  variant="outline"
+                  className="mb-3 rounded-full border-[var(--menu-line-strong)]"
+                />
                 <div className="mb-3 flex items-center justify-between text-sm">
                   <span className="text-[var(--menu-ink-soft)]">{t('subtotal')}</span>
                   <span

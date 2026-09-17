@@ -155,6 +155,9 @@
     "bestseller": "Bestseller",
     "ordersPausedTitle": "Online ordering is paused",
     "ordersPausedDescription": "You can still browse the menu. Please contact the restaurant to place an order.",
+    "closedNowTitle": "Closed now",
+    "closedNowDescription": "We open at {time} on {day}. You can still browse the menu.",
+    "closedNowDescriptionToday": "We are closed right now. Please check our opening hours.",
     "noProducts": "No products available in this category",
     "searchPlaceholder": "Search menu...",
     "searchMenu": "Search menu",
@@ -285,6 +288,7 @@
     "kitchen": "Kitchen",
     "shift": "Shift close",
     "coupons": "Coupons",
+    "expenses": "Expenses",
     "deliveryLocations": "Delivery areas",
     "logout": "Logout",
     "collapse": "Collapse sidebar",
@@ -489,7 +493,11 @@
     "total": "Total",
     "itemsInOrder": "{count} items in your order",
     "small": "Small",
-    "large": "Large"
+    "large": "Large",
+    "repeatLastOrder": "Repeat last order",
+    "repeatLastOrderSuccess": "Added {count} items to your cart",
+    "repeatLastOrderPartial": "Added {added} items — {skipped} unavailable",
+    "repeatLastOrderNone": "Nothing from your last order is available right now"
   },
   "checkout": {
     "title": "Checkout",
@@ -574,7 +582,8 @@
     "clearCart": "Clear cart",
     "backToMenu": "Back to menu",
     "checkStatus": "Check order status",
-    "saveLinkHint": "Save this link to find your ticket later."
+    "saveLinkHint": "Save this link to find your ticket later.",
+    "readyEstimate": "Estimated ready in {range} min"
   },
   "orderStatus": {
     "eyebrow": "Kitchen ticket",
@@ -757,7 +766,30 @@
     "takeawayCount": "Takeaway orders",
     "vsYesterday": "vs yesterday",
     "noCompare": "No yesterday data",
-    "recentCloses": "Recent shift closes"
+    "recentCloses": "Recent shift closes",
+    "expensesToday": "Expenses today",
+    "netToday": "Net today (sales − expenses)",
+    "netMonth": "Net this month"
+  },
+  "expenses": {
+    "title": "Expenses",
+    "eyebrow": "Ledger",
+    "description": "Track daily costs and see rough net against sales on the shift page.",
+    "addExpense": "Add expense",
+    "editExpense": "Edit expense",
+    "deleteExpense": "Delete expense",
+    "deleteConfirm": "Remove this expense entry?",
+    "amount": "Amount",
+    "category": "Category",
+    "date": "Date",
+    "descriptionLabel": "Notes",
+    "monthTotal": "Total for {month}",
+    "empty": "No expenses this month",
+    "emptyDescription": "Add rent, supplies, or other costs to track net profit.",
+    "created": "Expense saved",
+    "updated": "Expense updated",
+    "deleted": "Expense deleted",
+    "validation": "Enter a category and valid amount"
   },
   "deliveryLocations": {
     "title": "Delivery areas",
@@ -1085,6 +1117,12 @@
     "colStatus": "Status",
     "colCoupon": "Coupon",
     "colTotal": "Total",
+    "colSubtotal": "Subtotal",
+    "colDelivery": "Delivery",
+    "colDiscount": "Discount",
+    "exportMonthLabel": "Accountant export — {month}",
+    "exportMonthCsv": "Export month (CSV)",
+    "exportMonthExcel": "Export month (Excel)",
     "periodLabel": "Period",
     "generatedAt": "Generated",
     "from": "From",

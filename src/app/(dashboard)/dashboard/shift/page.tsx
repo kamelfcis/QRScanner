@@ -20,6 +20,9 @@ import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-curre
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { pctChange } from '@/lib/analytics/compare-period';
 import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
+import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
+import { hasHettSamakaTier3 } from '@/i18n/config';
+import { useExpensesForMonth, useExpensesForRange, sumExpenses } from '@/hooks/useExpenses';
 
 export default function ShiftPage() {
   const { locale } = useI18n();
@@ -34,8 +37,12 @@ export default function ShiftPage() {
   const [notes, setNotes] = useState('');
 
   const todayBounds = getDateRange('today');
+  const todayStamp = dateOnlyFromDate(new Date());
   const yesterday = subDays(new Date(), 1);
   const yesterdayStamp = dateOnlyFromDate(yesterday);
+  const now = new Date();
+  const expenseYear = now.getFullYear();
+  const expenseMonth = now.getMonth() + 1;
 
   const {
     data: todayData,
@@ -46,6 +53,15 @@ export default function ShiftPage() {
   const { data: yesterdayData, isPending: yesterdayPending } = useSalesReport('custom', {
     from: yesterdayStamp,
     to: yesterdayStamp,
+  });
+  const { data: todayExpenses } = useExpensesForRange(todayStamp, todayStamp, hasHettSamakaTier3);
+  const { data: monthExpenses } = useExpensesForMonth(expenseYear, expenseMonth);
+  const monthFrom = dateOnlyFromDate(new Date(expenseYear, expenseMonth - 1, 1));
+  const monthTo = dateOnlyFromDate(new Date(expenseYear, expenseMonth, 0));
+  const { data: monthSales } = useSalesReport('custom', {
+    from: monthFrom,
+    to: monthTo,
+    enabled: hasHettSamakaTier3,
   });
 
   const currencyLocale = toCurrencyLocale(locale);
@@ -61,6 +77,10 @@ export default function ShiftPage() {
     }),
     [kpis, yesterdayKpis]
   );
+
+  const todayExpenseTotal = sumExpenses(todayExpenses);
+  const monthExpenseTotal = sumExpenses(monthExpenses);
+  const todayNet = (kpis?.revenue ?? 0) - todayExpenseTotal;
 
   const kpiCards = [
     {
@@ -95,6 +115,29 @@ export default function ShiftPage() {
       }),
       compare: null,
     },
+    ...(hasHettSamakaTier3
+      ? [
+          {
+            label: t('expensesToday'),
+            value: formatCurrencyAmount(todayExpenseTotal, currency, { locale: currencyLocale }),
+            compare: null,
+          },
+          {
+            label: t('netToday'),
+            value: formatCurrencyAmount(todayNet, currency, { locale: currencyLocale }),
+            compare: null,
+          },
+          {
+            label: t('netMonth'),
+            value: formatCurrencyAmount(
+              (monthSales?.kpis.revenue ?? 0) - monthExpenseTotal,
+              currency,
+              { locale: currencyLocale }
+            ),
+            compare: null,
+          },
+        ]
+      : []),
   ];
 
   const handleCloseShift = async () => {
@@ -126,25 +169,28 @@ export default function ShiftPage() {
           <h1 className="font-heading mt-1 text-2xl font-semibold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1 text-sm">{t('description')}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="min-h-11"
-            onClick={() => printPage('shift-summary')}
-          >
-            <Printer className="me-2 h-4 w-4" aria-hidden="true" />
-            {t('printSummary')}
-          </Button>
-          <Button
-            type="button"
-            className="min-h-11"
-            disabled={!kpis || closeShift.isPending}
-            onClick={() => setConfirmOpen(true)}
-          >
-            <Scale className="me-2 h-4 w-4" aria-hidden="true" />
-            {t('closeShift')}
-          </Button>
+        <div className="flex flex-col items-stretch gap-3 sm:items-end">
+          <AccountantMonthExport />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="min-h-11"
+              onClick={() => printPage('shift-summary')}
+            >
+              <Printer className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('printSummary')}
+            </Button>
+            <Button
+              type="button"
+              className="min-h-11"
+              disabled={!kpis || closeShift.isPending}
+              onClick={() => setConfirmOpen(true)}
+            >
+              <Scale className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('closeShift')}
+            </Button>
+          </div>
         </div>
       </div>
 

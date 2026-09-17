@@ -155,6 +155,9 @@
     "bestseller": "الأكثر مبيعاً",
     "ordersPausedTitle": "الطلب الإلكتروني متوقف مؤقتاً",
     "ordersPausedDescription": "يمكنك تصفح المنيو. تواصل مع المطعم لإتمام الطلب.",
+    "closedNowTitle": "مغلق الآن",
+    "closedNowDescription": "نفتح الساعة {time} يوم {day}. يمكنك تصفح المنيو.",
+    "closedNowDescriptionToday": "المطعم مغلق الآن. راجع مواعيد العمل.",
     "noProducts": "لا توجد أطباق متاحة في هذا التصنيف",
     "searchPlaceholder": "ابحث في القائمة...",
     "searchMenu": "بحث في القائمة",
@@ -285,6 +288,7 @@
     "kitchen": "المطبخ",
     "shift": "إغلاق الوردية",
     "coupons": "الكوبونات",
+    "expenses": "المصروفات",
     "deliveryLocations": "مناطق التوصيل",
     "logout": "تسجيل الخروج",
     "collapse": "طي القائمة الجانبية",
@@ -489,7 +493,11 @@
     "total": "الإجمالي",
     "itemsInOrder": "{count} أطباق في طلبك",
     "small": "صغير",
-    "large": "كبير"
+    "large": "كبير",
+    "repeatLastOrder": "إعادة آخر طلب",
+    "repeatLastOrderSuccess": "تمت إضافة {count} أصناف للسلة",
+    "repeatLastOrderPartial": "أضفنا {added} — {skipped} غير متاح",
+    "repeatLastOrderNone": "لا توجد أصناف متاحة من آخر طلب"
   },
   "checkout": {
     "title": "إتمام الطلب",
@@ -574,7 +582,8 @@
     "clearCart": "إفراغ السلة",
     "backToMenu": "العودة للقائمة",
     "checkStatus": "تابع حالة الطلب",
-    "saveLinkHint": "احفظ هذا الرابط لتعود إلى تذكرتك لاحقاً."
+    "saveLinkHint": "احفظ هذا الرابط لتعود إلى تذكرتك لاحقاً.",
+    "readyEstimate": "الوقت المتوقع للتجهيز {range} دقيقة"
   },
   "orderStatus": {
     "eyebrow": "تذكرة المطبخ",
@@ -757,7 +766,30 @@
     "takeawayCount": "طلبات سفري",
     "vsYesterday": "مقارنة بالأمس",
     "noCompare": "لا بيانات للأمس",
-    "recentCloses": "إغلاقات وردية حديثة"
+    "recentCloses": "إغلاقات وردية حديثة",
+    "expensesToday": "مصروفات اليوم",
+    "netToday": "صافي اليوم (مبيعات − مصروفات)",
+    "netMonth": "صافي الشهر"
+  },
+  "expenses": {
+    "title": "المصروفات",
+    "eyebrow": "دفتر المصروفات",
+    "description": "سجّل التكاليف اليومية وراقب الصافي مقابل المبيعات في صفحة الوردية.",
+    "addExpense": "إضافة مصروف",
+    "editExpense": "تعديل مصروف",
+    "deleteExpense": "حذف مصروف",
+    "deleteConfirm": "حذف هذا المصروف؟",
+    "amount": "المبلغ",
+    "category": "التصنيف",
+    "date": "التاريخ",
+    "descriptionLabel": "ملاحظات",
+    "monthTotal": "إجمالي {month}",
+    "empty": "لا مصروفات هذا الشهر",
+    "emptyDescription": "أضف إيجاراً أو مستلزمات لتتبع صافي الربح.",
+    "created": "تم حفظ المصروف",
+    "updated": "تم تحديث المصروف",
+    "deleted": "تم حذف المصروف",
+    "validation": "أدخل تصنيفاً ومبلغاً صحيحاً"
   },
   "deliveryLocations": {
     "title": "مناطق التوصيل",
@@ -1085,6 +1117,12 @@
     "colStatus": "الحالة",
     "colCoupon": "الكوبون",
     "colTotal": "الإجمالي",
+    "colSubtotal": "المجموع الفرعي",
+    "colDelivery": "التوصيل",
+    "colDiscount": "الخصم",
+    "exportMonthLabel": "تصدير محاسبي — {month}",
+    "exportMonthCsv": "تصدير الشهر (CSV)",
+    "exportMonthExcel": "تصدير الشهر (Excel)",
     "periodLabel": "الفترة",
     "generatedAt": "تاريخ الإنشاء",
     "from": "من",

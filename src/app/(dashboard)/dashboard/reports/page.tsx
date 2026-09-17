@@ -23,6 +23,9 @@ import { dateOnlyFromDate, type SalesReportPeriod } from '@/lib/order/sales-rang
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { cn } from '@/lib/utils';
 import type { ExportData } from '@/types/database';
+import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
+import { useStaffRole } from '@/hooks/useStaffRole';
+import { canHardDeleteOrders } from '@/lib/staff/roles';
 
 const todayStamp = () => dateOnlyFromDate(new Date());
 
@@ -36,6 +39,7 @@ export default function ReportsPage() {
   const tMenu = useTranslations('menu');
   const tCommon = useTranslations('common');
   const { data: settings } = useRestaurantSettings();
+  const { data: staffRole } = useStaffRole();
   const { exportCSV, exportExcel, printPage } = useExport();
   const currencyLocale = toCurrencyLocale(locale);
 
@@ -134,31 +138,34 @@ export default function ReportsPage() {
           <h1 className="font-heading text-2xl font-bold md:text-3xl">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">{subtitle}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="min-h-11"
-            onClick={() => exportCSV(generateReport())}
-          >
-            <Download className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('csv')}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="min-h-11"
-            onClick={() => exportExcel(generateReport())}
-          >
-            <Table className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('excel')}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="min-h-11"
-            onClick={() => printPage('report-content')}
-          >
-            <Printer className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('print')}
-          </Button>
+        <div className="flex flex-col items-stretch gap-3 sm:items-end">
+          <AccountantMonthExport />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-11"
+              onClick={() => exportCSV(generateReport())}
+            >
+              <Download className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('csv')}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-11"
+              onClick={() => exportExcel(generateReport())}
+            >
+              <Table className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('excel')}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-11"
+              onClick={() => printPage('report-content')}
+            >
+              <Printer className="me-1 h-3.5 w-3.5" aria-hidden="true" /> {t('print')}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -248,6 +255,7 @@ export default function ReportsPage() {
                 locale={locale}
                 currencyLocale={currencyLocale}
                 settings={settings}
+                allowDelete={canHardDeleteOrders(staffRole)}
                 t={t}
                 tOrders={tOrders}
                 tMenu={tMenu}

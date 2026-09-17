@@ -24,7 +24,7 @@ interface OrdersCommandHeaderProps {
   prefersReducedMotion: boolean;
   onStatusFocus: (status: OrderStatus) => void;
   onNewStaffOrder: () => void;
-  onCleanup: () => void;
+  onCleanup?: () => void;
 }
 
 export function OrdersCommandHeader({
@@ -83,18 +83,20 @@ export function OrdersCommandHeader({
               <Plus className="h-4 w-4" aria-hidden="true" />
               {t('newStaffOrder')}
             </Button>
-            <button
-              type="button"
-              onClick={onCleanup}
-              aria-label={t('cleanupOrders')}
-              className={cn(
-                'text-muted-foreground hover:text-foreground hover:bg-muted',
-                'inline-flex min-h-11 min-w-11 items-center justify-center rounded-full',
-                'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
-              )}
-            >
-              <Trash2 className="h-4 w-4" aria-hidden="true" />
-            </button>
+            {onCleanup ? (
+              <button
+                type="button"
+                onClick={onCleanup}
+                aria-label={t('cleanupOrders')}
+                className={cn(
+                  'text-muted-foreground hover:text-foreground hover:bg-muted',
+                  'inline-flex min-h-11 min-w-11 items-center justify-center rounded-full',
+                  'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+                )}
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+              </button>
+            ) : null}
             <div
               className="bg-muted/80 inline-flex rounded-full p-1"
               role="tablist"

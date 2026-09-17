@@ -27,7 +27,7 @@ export interface SalesReportData {
 }
 
 const ORDER_SELECT =
-  'id, order_number, status, dining_mode, fulfillment_type, customer_name, customer_phone, discount_amount, coupon_code, total, currency, created_at';
+  'id, order_number, status, dining_mode, fulfillment_type, customer_name, customer_phone, subtotal, delivery_fee, discount_amount, coupon_code, total, currency, created_at';
 
 async function fetchOrdersInRange(startIso: string, endIso: string): Promise<Order[]> {
   const supabase = createClient();

@@ -154,6 +154,9 @@
     "new": "Nieuw",
     "bestseller": "Bestseller",
     "ordersPausedTitle": "Online bestellen gepauzeerd",
+    "closedNowTitle": "Nu gesloten",
+    "closedNowDescription": "We openen om {time} op {day}. Je kunt het menu bekijken.",
+    "closedNowDescriptionToday": "We zijn nu gesloten. Bekijk onze openingstijden.",
     "ordersPausedDescription": "U kunt het menu bekijken. Neem contact op met het restaurant om te bestellen.",
     "noProducts": "Geen producten beschikbaar in deze categorie",
     "searchPlaceholder": "Menu doorzoeken…",
@@ -285,6 +288,7 @@
     "kitchen": "Keuken",
     "shift": "Dienst afsluiten",
     "coupons": "Coupons",
+    "expenses": "Uitgaven",
     "deliveryLocations": "Bezorgzones",
     "logout": "Uitloggen",
     "collapse": "Zijbalk inklappen",
@@ -489,7 +493,11 @@
     "total": "Totaal",
     "itemsInOrder": "{count} items in uw bestelling",
     "small": "Klein",
-    "large": "Groot"
+    "large": "Groot",
+    "repeatLastOrder": "Laatste bestelling herhalen",
+    "repeatLastOrderSuccess": "{count} items toegevoegd",
+    "repeatLastOrderPartial": "{added} toegevoegd — {skipped} niet beschikbaar",
+    "repeatLastOrderNone": "Geen items uit je laatste bestelling beschikbaar"
   },
   "checkout": {
     "title": "Afrekenen",
@@ -574,7 +582,8 @@
     "clearCart": "Clear cart",
     "backToMenu": "Terug naar menu",
     "checkStatus": "Bestelstatus bekijken",
-    "saveLinkHint": "Bewaar deze link om je ticket later terug te vinden."
+    "saveLinkHint": "Bewaar deze link om je ticket later terug te vinden.",
+    "readyEstimate": "Geschat klaar over {range} min"
   },
   "orderStatus": {
     "eyebrow": "Keukenticket",
@@ -757,7 +766,30 @@
     "takeawayCount": "Afhaalbestellingen",
     "vsYesterday": "vs gisteren",
     "noCompare": "Geen gegevens van gisteren",
-    "recentCloses": "Recente dienstafsluitingen"
+    "recentCloses": "Recente dienstafsluitingen",
+    "expensesToday": "Uitgaven vandaag",
+    "netToday": "Netto vandaag (omzet − uitgaven)",
+    "netMonth": "Netto deze maand"
+  },
+  "expenses": {
+    "title": "Uitgaven",
+    "eyebrow": "Kasboek",
+    "description": "Houd dagelijkse kosten bij en zie netto t.o.v. omzet op de shift-pagina.",
+    "addExpense": "Uitgave toevoegen",
+    "editExpense": "Uitgave bewerken",
+    "deleteExpense": "Uitgave verwijderen",
+    "deleteConfirm": "Deze uitgave verwijderen?",
+    "amount": "Bedrag",
+    "category": "Categorie",
+    "date": "Datum",
+    "descriptionLabel": "Notities",
+    "monthTotal": "Totaal voor {month}",
+    "empty": "Geen uitgaven deze maand",
+    "emptyDescription": "Voeg huur, inkoop of andere kosten toe.",
+    "created": "Uitgave opgeslagen",
+    "updated": "Uitgave bijgewerkt",
+    "deleted": "Uitgave verwijderd",
+    "validation": "Voer een categorie en geldig bedrag in"
   },
   "deliveryLocations": {
     "title": "Bezorgzones",
@@ -1084,6 +1116,12 @@
     "colStatus": "Status",
     "colCoupon": "Coupon",
     "colTotal": "Totaal",
+    "colSubtotal": "Subtotaal",
+    "colDelivery": "Bezorging",
+    "colDiscount": "Korting",
+    "exportMonthLabel": "Boekhoudexport — {month}",
+    "exportMonthCsv": "Maand exporteren (CSV)",
+    "exportMonthExcel": "Maand exporteren (Excel)",
     "periodLabel": "Periode",
     "generatedAt": "Gegenereerd",
     "from": "Van",
