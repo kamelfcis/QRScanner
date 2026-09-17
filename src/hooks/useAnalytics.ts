@@ -11,6 +11,7 @@ import {
   endOfWeek,
   startOfMonth,
   endOfMonth,
+  startOfYear,
 } from 'date-fns';
 import type {
   AnalyticsSummary,
@@ -80,9 +81,9 @@ export function getDateRange(period: string) {
     case 'month':
       return { start: startOfMonth(now), end: endOfDay(now) };
     case 'year':
-      return { start: subDays(now, 365), end: endOfDay(now) };
+      return { start: startOfYear(now), end: endOfDay(now) };
     default:
-      return { start: subDays(now, 30), end: endOfDay(now) };
+      return { start: startOfDay(subDays(now, 30)), end: endOfDay(now) };
   }
 }
 

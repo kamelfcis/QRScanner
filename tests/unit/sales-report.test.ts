@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getDateRange } from '@/hooks/useAnalytics';
 import { computeSalesKpis } from '@/lib/order/sales-kpis';
 import { resolveCustomSalesBounds } from '@/lib/order/sales-range';
 import type { Order } from '@/types/database';
@@ -14,6 +15,8 @@ function order(partial: Partial<Order>): Order {
     customer_name: 'Guest',
     customer_phone: '201000000000',
     delivery_address: null,
+    delivery_location_id: null,
+    delivery_fee: 0,
     notes: null,
     subtotal: 100,
     tax: 0,
@@ -64,6 +67,26 @@ describe('computeSalesKpis', () => {
     expect(kpis.revenue).toBe(0);
     expect(kpis.averageOrderValue).toBe(0);
     expect(kpis.deliveryCount).toBe(0);
+  });
+});
+
+describe('getDateRange', () => {
+  it('returns stable ISO bounds for year within the same day', () => {
+    const first = getDateRange('year');
+    const second = getDateRange('year');
+
+    expect(first.start.toISOString()).toBe(second.start.toISOString());
+    expect(first.end.toISOString()).toBe(second.end.toISOString());
+  });
+
+  it('starts the year range at Jan 1 00:00:00 local time', () => {
+    const { start } = getDateRange('year');
+
+    expect(start.getMonth()).toBe(0);
+    expect(start.getDate()).toBe(1);
+    expect(start.getHours()).toBe(0);
+    expect(start.getMinutes()).toBe(0);
+    expect(start.getSeconds()).toBe(0);
   });
 });
 

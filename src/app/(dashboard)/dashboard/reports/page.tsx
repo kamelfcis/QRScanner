@@ -4,8 +4,8 @@ import { useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { Download, Printer, Table } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
-import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { SalesDateFilter } from '@/components/dashboard/reports/SalesDateFilter';
 import { SalesLedger } from '@/components/dashboard/reports/SalesLedger';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -33,7 +33,11 @@ export default function ReportsPage() {
   const { exportCSV, exportExcel, printPage } = useExport();
   const currencyLocale = toCurrencyLocale(locale);
 
-  const { data, isLoading, error, refetch, bounds } = useSalesReport(period, { from, to });
+  const { data, isPending, isFetching, error, refetch, bounds } = useSalesReport(period, {
+    from,
+    to,
+  });
+  const showInlineLoading = bounds.ok && !data && (isPending || isFetching);
 
   const rangeError = useMemo(() => {
     if (bounds.ok) return null;
@@ -84,7 +88,6 @@ export default function ReportsPage() {
     filename: `sales-${from}-${to}`,
   });
 
-  if (isLoading && bounds.ok) return <LoadingPage />;
   if (error) return <ErrorState error={error} retry={refetch} />;
 
   const subtitle = period === 'today' ? t('salesToday') : t('rangeLabel', { from, to });
@@ -140,52 +143,81 @@ export default function ReportsPage() {
 
       <div id="report-content" className="space-y-6">
         {bounds.ok ? (
-          <>
-            <section
-              aria-label={t('summary')}
-              className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
-            >
-              <KpiCard
-                label={t('grossSales')}
-                value={formatCurrencyAmount(kpis?.revenue ?? 0, currency, {
-                  locale: currencyLocale,
-                })}
-              />
-              <KpiCard label={t('orderCount')} value={String(kpis?.orderCount ?? 0)} />
-              <KpiCard
-                label={t('cancelledCount')}
-                value={String(kpis?.cancelledCount ?? 0)}
-                danger
-              />
-              <KpiCard
-                label={t('averageOrder')}
-                value={formatCurrencyAmount(kpis?.averageOrderValue ?? 0, currency, {
-                  locale: currencyLocale,
-                })}
-              />
-              <KpiCard label={t('deliveryCount')} value={String(kpis?.deliveryCount ?? 0)} />
-              <KpiCard
-                label={t('discounts')}
-                value={formatCurrencyAmount(kpis?.discounts ?? 0, currency, {
-                  locale: currencyLocale,
-                })}
-              />
-            </section>
+          showInlineLoading ? (
+            <ReportsContentSkeleton summaryLabel={t('summary')} />
+          ) : (
+            <>
+              <section
+                aria-label={t('summary')}
+                className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
+              >
+                <KpiCard
+                  label={t('grossSales')}
+                  value={formatCurrencyAmount(kpis?.revenue ?? 0, currency, {
+                    locale: currencyLocale,
+                  })}
+                />
+                <KpiCard label={t('orderCount')} value={String(kpis?.orderCount ?? 0)} />
+                <KpiCard
+                  label={t('cancelledCount')}
+                  value={String(kpis?.cancelledCount ?? 0)}
+                  danger
+                />
+                <KpiCard
+                  label={t('averageOrder')}
+                  value={formatCurrencyAmount(kpis?.averageOrderValue ?? 0, currency, {
+                    locale: currencyLocale,
+                  })}
+                />
+                <KpiCard label={t('deliveryCount')} value={String(kpis?.deliveryCount ?? 0)} />
+                <KpiCard
+                  label={t('discounts')}
+                  value={formatCurrencyAmount(kpis?.discounts ?? 0, currency, {
+                    locale: currencyLocale,
+                  })}
+                />
+              </section>
 
-            <SalesLedger
-              orders={orders}
-              locale={locale}
-              currencyLocale={currencyLocale}
-              settings={settings}
-              t={t}
-              tOrders={tOrders}
-              tMenu={tMenu}
-              tCommon={tCommon}
-            />
-          </>
+              <SalesLedger
+                orders={orders}
+                locale={locale}
+                currencyLocale={currencyLocale}
+                settings={settings}
+                t={t}
+                tOrders={tOrders}
+                tMenu={tMenu}
+                tCommon={tCommon}
+              />
+            </>
+          )
         ) : null}
       </div>
     </div>
+  );
+}
+
+function ReportsContentSkeleton({ summaryLabel }: { summaryLabel: string }) {
+  return (
+    <>
+      <section
+        aria-busy="true"
+        aria-label={summaryLabel}
+        className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
+      >
+        {Array.from({ length: 6 }, (_, i) => (
+          <div key={i} className="border-border bg-card rounded-xl border px-3 py-3">
+            <Skeleton className="h-3 w-16" />
+            <Skeleton className="mt-2 h-7 w-20" />
+          </div>
+        ))}
+      </section>
+      <div className="border-border bg-card space-y-3 rounded-xl border p-4">
+        <Skeleton className="h-5 w-40" />
+        {Array.from({ length: 5 }, (_, i) => (
+          <Skeleton key={i} className="h-12 w-full rounded-lg" />
+        ))}
+      </div>
+    </>
   );
 }
 
