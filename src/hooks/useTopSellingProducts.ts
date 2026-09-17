@@ -9,6 +9,7 @@ import {
   TOP_SELLING_BADGE_LIMIT,
   type TopSellingProduct,
 } from '@/lib/order/top-selling';
+import { hasHettSamakaTier1 } from '@/i18n/config';
 
 const supabase = createClient();
 
@@ -51,6 +52,7 @@ export function useTopSellingProducts(
   return useQuery({
     queryKey: topSellingKeys.list(days, limit),
     queryFn: () => fetchTopSelling(days, limit),
+    enabled: hasHettSamakaTier1,
     staleTime: 5 * 60_000,
   });
 }
