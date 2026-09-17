@@ -34,11 +34,7 @@ export function KitchenCard({
 }) {
   const needsAck = isUnacknowledged(order);
   const nextStatus: OrderStatus | null =
-    order.status === 'new'
-      ? 'preparing'
-      : order.status === 'preparing'
-        ? 'ready'
-        : null;
+    order.status === 'new' ? 'preparing' : order.status === 'preparing' ? 'ready' : null;
 
   const relativeTime = formatDistanceToNow(new Date(order.created_at), {
     addSuffix: true,
@@ -130,7 +126,13 @@ export function KitchenCard({
             {t(`action.${nextStatus}`)}
           </Button>
         ) : null}
-        <KitchenPrintButton order={order} locale={locale} t={t} disabled={busy} className="w-full" />
+        <KitchenPrintButton
+          order={order}
+          locale={locale}
+          t={t}
+          disabled={busy}
+          className="w-full"
+        />
       </div>
     </article>
   );

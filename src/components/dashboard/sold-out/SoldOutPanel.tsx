@@ -37,18 +37,20 @@ export function SoldOutPanel({
 
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return (catalog ?? []).flatMap((category) =>
-      category.products.map((product) => ({
-        category,
-        product,
-        name: getLocalizedText(locale, {
-          en: product.name_en,
-          ar: product.name_ar,
-          fr: product.name_fr,
-          nl: product.name_nl,
-        }),
-      }))
-    ).filter((row) => !needle || row.name.toLowerCase().includes(needle));
+    return (catalog ?? [])
+      .flatMap((category) =>
+        category.products.map((product) => ({
+          category,
+          product,
+          name: getLocalizedText(locale, {
+            en: product.name_en,
+            ar: product.name_ar,
+            fr: product.name_fr,
+            nl: product.name_nl,
+          }),
+        }))
+      )
+      .filter((row) => !needle || row.name.toLowerCase().includes(needle));
   }, [catalog, locale, query]);
 
   const soldOutCount = rows.filter((row) => !row.product.is_available).length;
@@ -87,7 +89,10 @@ export function SoldOutPanel({
           </span>
         ) : null}
       </SheetTrigger>
-      <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="flex w-full flex-col gap-0 sm:max-w-md">
+      <SheetContent
+        side={dir === 'rtl' ? 'left' : 'right'}
+        className="flex w-full flex-col gap-0 sm:max-w-md"
+      >
         <SheetHeader className="border-b pb-4">
           <SheetTitle>{t('title')}</SheetTitle>
           <SheetDescription>{t('description')}</SheetDescription>

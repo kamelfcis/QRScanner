@@ -24,11 +24,7 @@ export function formatKitchenItemLine(
   });
 
   const sizeLabel =
-    item.size_option === 'small'
-      ? t('small')
-      : item.size_option === 'large'
-        ? t('large')
-        : null;
+    item.size_option === 'small' ? t('small') : item.size_option === 'large' ? t('large') : null;
 
   return {
     quantity: item.quantity,

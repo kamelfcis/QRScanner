@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  formatKitchenFulfillment,
-  formatKitchenItemLine,
-} from '@/lib/order/kitchen-ticket-format';
+import { formatKitchenFulfillment, formatKitchenItemLine } from '@/lib/order/kitchen-ticket-format';
 
 const t = (key: string) =>
   (

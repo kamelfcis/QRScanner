@@ -27,7 +27,8 @@ function pctChange(today: number, yesterday: number): number | null {
 
 function CompareBadge({ value }: { value: number | null }) {
   const t = useTranslations('shift');
-  if (value === null) return <span className="text-muted-foreground text-xs">{t('noCompare')}</span>;
+  if (value === null)
+    return <span className="text-muted-foreground text-xs">{t('noCompare')}</span>;
   const positive = value >= 0;
   return (
     <span
@@ -205,16 +206,23 @@ export default function ShiftPage() {
           <h2 className="font-heading text-lg font-semibold">{t('recentCloses')}</h2>
           <ul className="divide-y rounded-xl border">
             {recentCloses.map((row) => (
-              <li key={row.id} className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <li
+                key={row.id}
+                className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+              >
                 <div>
                   <p className="font-medium tabular-nums">
                     {formatLocaleDate(row.closed_at, 'd MMM yyyy HH:mm', locale)}
                   </p>
                   <p className="text-muted-foreground text-sm">
                     {tReports('orderCount')}: {row.snapshot.kpis.orderCount} ·{' '}
-                    {formatCurrencyAmount(row.snapshot.kpis.revenue, row.snapshot.currency ?? currency, {
-                      locale: currencyLocale,
-                    })}
+                    {formatCurrencyAmount(
+                      row.snapshot.kpis.revenue,
+                      row.snapshot.currency ?? currency,
+                      {
+                        locale: currencyLocale,
+                      }
+                    )}
                   </p>
                 </div>
                 {row.notes ? (

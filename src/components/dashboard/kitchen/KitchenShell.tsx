@@ -13,13 +13,18 @@ export function KitchenShell({ children }: { children: React.ReactNode }) {
   const { soundBlocked, enableSound, prefersReducedMotion, unacknowledged } = useOrderAlerts();
 
   return (
-    <div className="bg-muted/20 flex h-screen h-dvh flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]">
+    <div className="bg-muted/20 flex h-dvh h-screen flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]">
       <header className="bg-background/95 supports-backdrop-filter:backdrop-blur-sm sticky top-0 z-30 border-b px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
-            <ChefHat className="text-amber-700 h-7 w-7 shrink-0 dark:text-amber-400" aria-hidden="true" />
+            <ChefHat
+              className="h-7 w-7 shrink-0 text-amber-700 dark:text-amber-400"
+              aria-hidden="true"
+            />
             <div className="min-w-0">
-              <h1 className="font-heading truncate text-lg font-semibold sm:text-xl">{t('title')}</h1>
+              <h1 className="font-heading truncate text-lg font-semibold sm:text-xl">
+                {t('title')}
+              </h1>
               <p className="text-muted-foreground truncate text-xs sm:text-sm">{t('subtitle')}</p>
             </div>
           </div>
@@ -37,12 +42,16 @@ export function KitchenShell({ children }: { children: React.ReactNode }) {
               </Button>
             ) : null}
             {unacknowledged.length > 0 ? (
-              <span className="bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-100 inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold tabular-nums">
+              <span className="inline-flex min-h-9 items-center rounded-full bg-amber-100 px-3 text-xs font-semibold tabular-nums text-amber-900 dark:bg-amber-950 dark:text-amber-100">
                 {t('awaitingCount', { count: unacknowledged.length })}
               </span>
             ) : null}
             <SoldOutPanel />
-            <Button render={<Link href="/dashboard/orders" />} variant="secondary" className="min-h-11">
+            <Button
+              render={<Link href="/dashboard/orders" />}
+              variant="secondary"
+              className="min-h-11"
+            >
               <ArrowLeft className="me-2 h-4 w-4 rtl:rotate-180" aria-hidden="true" />
               {t('backToOrders')}
             </Button>

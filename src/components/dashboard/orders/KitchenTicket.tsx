@@ -1,10 +1,7 @@
 'use client';
 
 import { formatLocaleDate } from '@/lib/dateLocale';
-import {
-  formatKitchenFulfillment,
-  formatKitchenItemLine,
-} from '@/lib/order/kitchen-ticket-format';
+import { formatKitchenFulfillment, formatKitchenItemLine } from '@/lib/order/kitchen-ticket-format';
 import { kitchenDomId, RECEIPT_SLIP_CSS } from '@/lib/order/print-receipt';
 import type { OrderWithItems } from '@/types/database';
 

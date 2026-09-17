@@ -1,3 +1,5 @@
 export function isStaffAppPath(pathname: string): boolean {
-  return pathname === '/kitchen' || pathname.startsWith('/kitchen/') || pathname.startsWith('/dashboard');
+  return (
+    pathname === '/kitchen' || pathname.startsWith('/kitchen/') || pathname.startsWith('/dashboard')
+  );
 }
