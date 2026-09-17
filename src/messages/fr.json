@@ -85,6 +85,8 @@
     "heatmaps": "Cartes thermiques",
     "orderNow": "Commander",
     "orders": "Commandes",
+    "kitchen": "Cuisine",
+    "shift": "Clôture de shift",
     "coupons": "Coupons"
   },
   "landing": {
@@ -271,6 +273,8 @@
     "tables": "Tables",
     "settings": "Paramètres",
     "orders": "Commandes",
+    "kitchen": "Cuisine",
+    "shift": "Clôture de shift",
     "coupons": "Coupons",
     "deliveryLocations": "Zones de livraison",
     "logout": "Déconnexion",
@@ -638,6 +642,8 @@
     "cleanupOrders": "Nettoyer les commandes",
     "cleanupOrdersDescription": "Supprimez définitivement les commandes d'une plage de dates. Cela ne change pas les filtres du tableau cuisine.",
     "printReceipt": "Imprimer",
+    "printKitchen": "Imprimer cuisine",
+    "printKitchenFailed": "Impossible d'imprimer le ticket cuisine.",
     "receiptPreview": "Aperçu du ticket",
     "flipBack": "Retour",
     "downloadReceipt": "Télécharger PDF",
@@ -694,6 +700,44 @@
     "staffSelectSize": "Choisir la taille",
     "staffSelectWeight": "Choisir le poids",
     "staffCancelPicker": "Annuler"
+  },
+  "kitchen": {
+    "title": "Écran cuisine",
+    "subtitle": "Tickets en direct pour les commandes nouvelles et en préparation",
+    "backToOrders": "Tableau des commandes",
+    "viewKitchen": "Ouvrir la cuisine",
+    "openKitchenBoard": "Voir sur l'écran cuisine",
+    "awaitingCount": "{count, plural, one {# en attente de validation} other {# en attente de validation}}",
+    "emptyNew": "Aucun ticket nouveau",
+    "emptyPreparing": "Rien au passe",
+    "emptyTitle": "Le passe est vide",
+    "emptyDescription": "Les nouveaux tickets apparaissent dès qu'un client commande."
+  },
+  "soldOut": {
+    "title": "Épuisé",
+    "description": "Masquer les plats du menu public jusqu'à retour en stock.",
+    "searchPlaceholder": "Rechercher un plat…",
+    "empty": "Aucun plat correspondant",
+    "markSoldOut": "Marquer épuisé",
+    "markAvailable": "Marquer disponible",
+    "markedSoldOut": "Retiré du menu",
+    "backInStock": "De retour au menu"
+  },
+  "shift": {
+    "title": "Clôture de shift",
+    "eyebrow": "Passation quotidienne",
+    "description": "Consultez les ventes du jour, comparez à hier et enregistrez un instantané.",
+    "closeShift": "Clôturer le shift",
+    "closeConfirm": "Enregistrer un instantané des KPI du jour ? Les commandes restent visibles dans Rapports.",
+    "closeSuccess": "Instantané de shift enregistré",
+    "printSummary": "Imprimer le résumé",
+    "notesLabel": "Notes de passation (optionnel)",
+    "notesPlaceholder": "Caisse, incidents, préparation…",
+    "diningCount": "Commandes sur place",
+    "takeawayCount": "Commandes à emporter",
+    "vsYesterday": "vs hier",
+    "noCompare": "Pas de données hier",
+    "recentCloses": "Clôtures récentes"
   },
   "deliveryLocations": {
     "title": "Zones de livraison",

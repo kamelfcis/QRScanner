@@ -59,11 +59,12 @@ function normalizeOrderItem(item: RawOrderItem): OrderItem {
   return { ...rest, image_url: products?.image_url ?? null };
 }
 
-export function useStaffOrderCatalog() {
+export function useStaffOrderCatalog(options?: { includeUnavailable?: boolean }) {
   const enabled = useAdminQueryEnabled();
+  const includeUnavailable = options?.includeUnavailable ?? false;
 
   return useQuery({
-    queryKey: staffOrderCatalogKeys.all,
+    queryKey: [...staffOrderCatalogKeys.all, includeUnavailable] as const,
     enabled,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -77,7 +78,7 @@ export function useStaffOrderCatalog() {
       return (data ?? []).map((row) => ({
         ...row,
         products: (row.products ?? [])
-          .filter((p: StaffCatalogProduct) => p.is_available)
+          .filter((p: StaffCatalogProduct) => includeUnavailable || p.is_available)
           .sort(
             (a: StaffCatalogProduct, b: StaffCatalogProduct) =>
               a.sort_order - b.sort_order || a.name_en.localeCompare(b.name_en)

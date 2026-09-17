@@ -19,8 +19,10 @@ export async function middleware(request: NextRequest) {
   }
   response.headers.set('x-locale', detected);
 
-  // Protect dashboard routes — require authenticated session
-  if (pathname.startsWith('/dashboard')) {
+  const isStaffRoute = pathname.startsWith('/dashboard') || pathname.startsWith('/kitchen');
+
+  // Protect staff routes — require authenticated session
+  if (isStaffRoute) {
     if (!user) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = '/login';
@@ -33,7 +35,11 @@ export async function middleware(request: NextRequest) {
   if (pathname === '/login' && user) {
     const redirectTo = request.nextUrl.searchParams.get('redirect') || '/dashboard';
     const dashboardUrl = request.nextUrl.clone();
-    dashboardUrl.pathname = redirectTo.startsWith('/dashboard') ? redirectTo : '/dashboard';
+    const safeRedirect =
+      redirectTo.startsWith('/dashboard') || redirectTo.startsWith('/kitchen')
+        ? redirectTo
+        : '/dashboard';
+    dashboardUrl.pathname = safeRedirect;
     dashboardUrl.search = '';
     return NextResponse.redirect(dashboardUrl);
   }

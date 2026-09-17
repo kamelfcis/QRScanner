@@ -9,6 +9,14 @@ export const DASHBOARD_NAV_TONES: Record<string, NavTone> = {
     well: 'bg-amber-600 dark:bg-amber-500',
     label: 'text-amber-800 dark:text-amber-300',
   },
+  kitchen: {
+    well: 'bg-orange-700 dark:bg-orange-600',
+    label: 'text-orange-900 dark:text-orange-300',
+  },
+  shift: {
+    well: 'bg-emerald-700 dark:bg-emerald-600',
+    label: 'text-emerald-900 dark:text-emerald-300',
+  },
   coupons: {
     well: 'bg-rose-600 dark:bg-rose-500',
     label: 'text-rose-800 dark:text-rose-300',

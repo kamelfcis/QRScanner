@@ -25,6 +25,7 @@ import { downloadReceiptPdf, printReceiptElement, receiptDomId } from '@/lib/ord
 import { cn, getLocalizedText } from '@/lib/utils';
 import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
+import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
 import { COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isUnacknowledged(order: OrderWithItems): boolean {
@@ -534,6 +535,13 @@ export function OrderTicket({
                       {t('downloadReceipt')}
                     </Button>
                   </div>
+                  <KitchenPrintButton
+                    order={order}
+                    locale={locale}
+                    t={t}
+                    disabled={busy || receiptBusy}
+                    className="w-full"
+                  />
                   <Button
                     variant="secondary"
                     className="min-h-11"

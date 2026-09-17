@@ -5,6 +5,10 @@ export function receiptDomId(orderId: string): string {
   return `order-receipt-${orderId}`;
 }
 
+export function kitchenDomId(orderId: string): string {
+  return `kitchen-ticket-${orderId}`;
+}
+
 export function receiptPdfFilename(orderNumber: string): string {
   const safe = orderNumber.replace(/[^\w.-]+/g, '-').replace(/^-+|-+$/g, '');
   return `receipt-${safe || 'order'}.pdf`;

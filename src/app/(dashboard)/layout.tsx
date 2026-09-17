@@ -1,14 +1,16 @@
-import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { Providers } from '@/components/providers/Providers';
+import { OrderAlertsProvider } from '@/hooks/useOrderAlerts';
 import { Toaster } from 'sonner';
 
 export const dynamic = 'force-dynamic';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardGroupLayout({ children }: { children: React.ReactNode }) {
   return (
     <Providers>
-      <DashboardShell>{children}</DashboardShell>
-      <Toaster position="top-right" richColors closeButton />
+      <OrderAlertsProvider>
+        {children}
+        <Toaster position="top-right" richColors closeButton />
+      </OrderAlertsProvider>
     </Providers>
   );
 }

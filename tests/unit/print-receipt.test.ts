@@ -3,11 +3,16 @@ import {
   RECEIPT_PAGE_MARGIN_MM,
   RECEIPT_PRINT_PAGE_CSS,
   RECEIPT_WIDTH_MM,
+  kitchenDomId,
   receiptDomId,
   receiptPdfFilename,
 } from '@/lib/order/print-receipt';
 
 describe('receipt helpers', () => {
+  it('builds a stable kitchen ticket DOM id', () => {
+    expect(kitchenDomId('abc-123')).toBe('kitchen-ticket-abc-123');
+  });
+
   it('builds a stable DOM id from the order id', () => {
     expect(receiptDomId('abc-123')).toBe('order-receipt-abc-123');
   });

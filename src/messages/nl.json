@@ -85,6 +85,8 @@
     "heatmaps": "Heatmaps",
     "orderNow": "Nu bestellen",
     "orders": "Bestellingen",
+    "kitchen": "Keuken",
+    "shift": "Dienst afsluiten",
     "coupons": "Coupons"
   },
   "landing": {
@@ -271,6 +273,8 @@
     "tables": "Tafels",
     "settings": "Instellingen",
     "orders": "Bestellingen",
+    "kitchen": "Keuken",
+    "shift": "Dienst afsluiten",
     "coupons": "Coupons",
     "deliveryLocations": "Bezorgzones",
     "logout": "Uitloggen",
@@ -638,6 +642,8 @@
     "cleanupOrders": "Bestellingen opschonen",
     "cleanupOrdersDescription": "Verwijder bestellingen in een datumbereik permanent. Dit verandert de keukenfilters niet.",
     "printReceipt": "Afdrukken",
+    "printKitchen": "Keukenbon",
+    "printKitchenFailed": "Keukenbon kon niet worden afgedrukt.",
     "receiptPreview": "Ticketvoorbeeld",
     "flipBack": "Terug",
     "downloadReceipt": "PDF downloaden",
@@ -694,6 +700,44 @@
     "staffSelectSize": "Kies maat",
     "staffSelectWeight": "Kies gewicht",
     "staffCancelPicker": "Annuleren"
+  },
+  "kitchen": {
+    "title": "Keukenscherm",
+    "subtitle": "Live tickets voor nieuwe en lopende bestellingen",
+    "backToOrders": "Bestellingenboard",
+    "viewKitchen": "Keuken openen",
+    "openKitchenBoard": "Bekijk op het keukenscherm",
+    "awaitingCount": "{count, plural, one {# wacht op bevestiging} other {# wachten op bevestiging}}",
+    "emptyNew": "Geen nieuwe tickets",
+    "emptyPreparing": "Niets op de pass",
+    "emptyTitle": "De pass is leeg",
+    "emptyDescription": "Nieuwe tickets verschijnen hier zodra gasten bestellen."
+  },
+  "soldOut": {
+    "title": "Uitverkocht",
+    "description": "Verberg gerechten op het publieke menu tot ze weer op voorraad zijn.",
+    "searchPlaceholder": "Zoek gerechten…",
+    "empty": "Geen gerechten gevonden",
+    "markSoldOut": "Markeer uitverkocht",
+    "markAvailable": "Markeer beschikbaar",
+    "markedSoldOut": "Uit menu gehaald",
+    "backInStock": "Weer op het menu"
+  },
+  "shift": {
+    "title": "Dienst afsluiten",
+    "eyebrow": "Dagelijkse overdracht",
+    "description": "Bekijk de verkoop van vandaag, vergelijk met gisteren en sla een momentopname op.",
+    "closeShift": "Dienst sluiten",
+    "closeConfirm": "Momentopname van de KPI's van vandaag opslaan? Bestellingen blijven in Rapporten.",
+    "closeSuccess": "Dienstmomentopname opgeslagen",
+    "printSummary": "Samenvatting afdrukken",
+    "notesLabel": "Overdrachtnotities (optioneel)",
+    "notesPlaceholder": "Kassa, issues, prep…",
+    "diningCount": "Bestellingen ter plaatse",
+    "takeawayCount": "Afhaalbestellingen",
+    "vsYesterday": "vs gisteren",
+    "noCompare": "Geen gegevens van gisteren",
+    "recentCloses": "Recente dienstafsluitingen"
   },
   "deliveryLocations": {
     "title": "Bezorgzones",

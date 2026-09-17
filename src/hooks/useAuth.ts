@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { isStaffAppPath } from '@/lib/auth/staff-path';
 import type { User, AuthError } from '@supabase/supabase-js';
 
 const supabase = createClient();
@@ -76,7 +77,7 @@ export function useAuth() {
       setState({ user: data.user, loading: false, error: null });
       const params = new URLSearchParams(window.location.search);
       const redirect = params.get('redirect');
-      router.push(redirect && redirect.startsWith('/dashboard') ? redirect : '/dashboard');
+      router.push(redirect && isStaffAppPath(redirect) ? redirect : '/dashboard');
       return data;
     },
     [router]

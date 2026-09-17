@@ -11,6 +11,8 @@ import {
   ClipboardList,
   TicketPercent,
   Truck,
+  ChefHat,
+  Scale,
   type LucideIcon,
 } from 'lucide-react';
 import type { FeatureSettings, RestaurantSettings } from '@/types/database';
@@ -32,6 +34,12 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     icon: ClipboardList,
     featureFlag: 'dashboard_orders',
   },
+  {
+    key: 'kitchen',
+    href: '/kitchen',
+    icon: ChefHat,
+    featureFlag: 'dashboard_orders',
+  },
   { key: 'coupons', href: '/dashboard/coupons', icon: TicketPercent, featureFlag: 'coupons' },
   {
     key: 'deliveryLocations',
@@ -41,6 +49,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   },
   { key: 'analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { key: 'reports', href: '/dashboard/reports', icon: FileText },
+  { key: 'shift', href: '/dashboard/shift', icon: Scale },
   { key: 'menu', href: '/dashboard/menu', icon: Menu },
   { key: 'import', href: '/dashboard/import', icon: FileUp },
   { key: 'testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },

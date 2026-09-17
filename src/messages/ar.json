@@ -85,6 +85,8 @@
     "heatmaps": "خريطة الحرارة",
     "orderNow": "اطلب الآن",
     "orders": "الطلبات",
+    "kitchen": "المطبخ",
+    "shift": "إغلاق الوردية",
     "coupons": "الكوبونات"
   },
   "landing": {
@@ -271,6 +273,8 @@
     "tables": "الطاولات",
     "settings": "الإعدادات",
     "orders": "الطلبات",
+    "kitchen": "المطبخ",
+    "shift": "إغلاق الوردية",
     "coupons": "الكوبونات",
     "deliveryLocations": "مناطق التوصيل",
     "logout": "تسجيل الخروج",
@@ -638,6 +642,8 @@
     "cleanupOrders": "تنظيف الطلبات",
     "cleanupOrdersDescription": "احذف الطلبات في نطاق تاريخ. لا يغيّر فلاتر لوحة المطبخ.",
     "printReceipt": "طباعة",
+    "printKitchen": "طباعة المطبخ",
+    "printKitchenFailed": "تعذرت طباعة تذكرة المطبخ.",
     "receiptPreview": "معاينة الإيصال",
     "flipBack": "رجوع",
     "downloadReceipt": "تحميل PDF",
@@ -694,6 +700,44 @@
     "staffSelectSize": "اختر الحجم",
     "staffSelectWeight": "اختر الوزن",
     "staffCancelPicker": "إلغاء"
+  },
+  "kitchen": {
+    "title": "شاشة المطبخ",
+    "subtitle": "تذاكر مباشرة للطلبات الجديدة وقيد التحضير",
+    "backToOrders": "لوحة الطلبات",
+    "viewKitchen": "فتح المطبخ",
+    "openKitchenBoard": "عرض على شاشة المطبخ",
+    "awaitingCount": "{count, plural, one {طلب # بانتظار المراجعة} other {# طلبات بانتظار المراجعة}}",
+    "emptyNew": "لا توجد تذاكر جديدة",
+    "emptyPreparing": "لا شيء على خط التقديم",
+    "emptyTitle": "خط المطبخ فارغ",
+    "emptyDescription": "تظهر التذاكر الجديدة هنا فور طلب الزبائن."
+  },
+  "soldOut": {
+    "title": "نفد من المخزون",
+    "description": "إخفاء الأطباق من قائمة الزبائن حتى تعود للمتوفر.",
+    "searchPlaceholder": "ابحث عن الأطباق…",
+    "empty": "لا توجد أطباق مطابقة",
+    "markSoldOut": "تعليم كنفد",
+    "markAvailable": "تعليم كمتوفر",
+    "markedSoldOut": "تم إخفاؤه من القائمة",
+    "backInStock": "عاد للقائمة"
+  },
+  "shift": {
+    "title": "إغلاق الوردية",
+    "eyebrow": "تسليم يومي",
+    "description": "راجع مبيعات اليوم، قارن بالأمس، واحفظ لقطة للوردية.",
+    "closeShift": "إغلاق الوردية",
+    "closeConfirm": "حفظ لقطة لمؤشرات اليوم؟ يمكنك متابعة الطلبات في التقارير.",
+    "closeSuccess": "تم حفظ لقطة الوردية",
+    "printSummary": "طباعة الملخص",
+    "notesLabel": "ملاحظات التسليم (اختياري)",
+    "notesPlaceholder": "عدّ النقد، ملاحظات، تحضير…",
+    "diningCount": "طلبات داخل المطعم",
+    "takeawayCount": "طلبات سفري",
+    "vsYesterday": "مقارنة بالأمس",
+    "noCompare": "لا بيانات للأمس",
+    "recentCloses": "إغلاقات وردية حديثة"
   },
   "deliveryLocations": {
     "title": "مناطق التوصيل",

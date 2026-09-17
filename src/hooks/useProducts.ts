@@ -250,10 +250,11 @@ export function useToggleProductAvailability() {
       if (error) throw error;
       return data as unknown as Product;
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
+      queryClient.invalidateQueries({ queryKey: ['staff-order-catalog'] as const });
     },
   });
 }

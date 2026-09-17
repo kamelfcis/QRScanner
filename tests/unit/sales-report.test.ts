@@ -55,6 +55,19 @@ describe('computeSalesKpis', () => {
     expect(kpis.discounts).toBe(20);
     expect(kpis.averageOrderValue).toBe(150);
     expect(kpis.deliveryCount).toBe(1);
+    expect(kpis.diningCount).toBe(0);
+    expect(kpis.takeawayCount).toBe(2);
+  });
+
+  it('counts dining and takeaway on billable orders only', () => {
+    const kpis = computeSalesKpis([
+      order({ id: '1', dining_mode: 'dining', fulfillment_type: 'pickup' }),
+      order({ id: '2', dining_mode: 'takeaway', fulfillment_type: 'delivery' }),
+      order({ id: '3', status: 'cancelled', dining_mode: 'dining' }),
+    ]);
+
+    expect(kpis.diningCount).toBe(1);
+    expect(kpis.takeawayCount).toBe(1);
   });
 
   it('returns zero averages when every order is cancelled', () => {

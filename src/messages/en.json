@@ -85,6 +85,8 @@
     "heatmaps": "Heatmaps",
     "orderNow": "Order Now",
     "orders": "Orders",
+    "kitchen": "Kitchen",
+    "shift": "Shift close",
     "coupons": "Coupons"
   },
   "landing": {
@@ -271,6 +273,8 @@
     "tables": "Tables",
     "settings": "Settings",
     "orders": "Orders",
+    "kitchen": "Kitchen",
+    "shift": "Shift close",
     "coupons": "Coupons",
     "deliveryLocations": "Delivery areas",
     "logout": "Logout",
@@ -638,6 +642,8 @@
     "cleanupOrders": "Clean up orders",
     "cleanupOrdersDescription": "Permanently delete orders in a date range. This does not change the live board filters.",
     "printReceipt": "Print",
+    "printKitchen": "Print kitchen",
+    "printKitchenFailed": "Could not print the kitchen ticket.",
     "receiptPreview": "Receipt preview",
     "flipBack": "Back",
     "downloadReceipt": "Download PDF",
@@ -694,6 +700,44 @@
     "staffSelectSize": "Choose size",
     "staffSelectWeight": "Choose weight",
     "staffCancelPicker": "Cancel"
+  },
+  "kitchen": {
+    "title": "Kitchen display",
+    "subtitle": "Live tickets for new and preparing orders",
+    "backToOrders": "Orders board",
+    "viewKitchen": "Open kitchen",
+    "openKitchenBoard": "View on the kitchen display",
+    "awaitingCount": "{count, plural, one {# awaiting review} other {# awaiting review}}",
+    "emptyNew": "No new tickets",
+    "emptyPreparing": "Nothing on the pass",
+    "emptyTitle": "The rail is clear",
+    "emptyDescription": "New tickets land here as soon as guests order."
+  },
+  "soldOut": {
+    "title": "Sold out",
+    "description": "Hide dishes from the public menu until they are back in stock.",
+    "searchPlaceholder": "Search dishes…",
+    "empty": "No dishes match this search",
+    "markSoldOut": "Mark sold out",
+    "markAvailable": "Mark available",
+    "markedSoldOut": "Marked sold out on the menu",
+    "backInStock": "Back on the menu"
+  },
+  "shift": {
+    "title": "Shift close",
+    "eyebrow": "Daily handoff",
+    "description": "Review today's sales, compare with yesterday, and save a shift snapshot.",
+    "closeShift": "Close shift",
+    "closeConfirm": "Save a snapshot of today's KPIs? You can still view orders in Reports.",
+    "closeSuccess": "Shift snapshot saved",
+    "printSummary": "Print summary",
+    "notesLabel": "Handoff notes (optional)",
+    "notesPlaceholder": "Cash drawer count, issues, prep notes…",
+    "diningCount": "Dine-in orders",
+    "takeawayCount": "Takeaway orders",
+    "vsYesterday": "vs yesterday",
+    "noCompare": "No yesterday data",
+    "recentCloses": "Recent shift closes"
   },
   "deliveryLocations": {
     "title": "Delivery areas",

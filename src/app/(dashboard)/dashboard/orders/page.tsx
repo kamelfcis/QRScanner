@@ -9,6 +9,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
+import { SoldOutPanel } from '@/components/dashboard/sold-out/SoldOutPanel';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import {
   useAcknowledgeOrder,
@@ -18,18 +19,11 @@ import {
   useRealtimeOrders,
   useUpdateOrderStatus,
 } from '@/hooks/useOrders';
+import { useOrderAlerts } from '@/hooks/useOrderAlerts';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
 import { buildStoredOrderWhatsApp, openWhatsAppUrl } from '@/lib/order/build-order';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
-import {
-  isOrdersRingSessionUnlocked,
-  persistOrdersRingUnlocked,
-  resumeOrderRingAudio,
-  startOrderRing,
-  stopOrderRing,
-} from '@/lib/audio/order-ring';
 import { cn } from '@/lib/utils';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
 import type { OrderStatus, OrderWithItems } from '@/types/database';
@@ -61,7 +55,7 @@ export default function OrdersPage() {
   const { locale } = useI18n();
   const t = useTranslations('orders');
   const tCommon = useTranslations('common');
-  const prefersReducedMotion = useReducedMotion();
+  const { unacknowledged, soundBlocked, enableSound, prefersReducedMotion } = useOrderAlerts();
   const { data: features, isLoading: featuresLoading } = useFeatureSettings();
   const { data: settings } = useRestaurantSettings();
   const { data: orders, isLoading, error, refetch } = useOrders();
@@ -72,12 +66,10 @@ export default function OrdersPage() {
   useRealtimeOrders();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
-  const [soundBlocked, setSoundBlocked] = useState(false);
   const [cleanupOpen, setCleanupOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
   const [deletingOrder, setDeletingOrder] = useState<OrderWithItems | null>(null);
-  const seenIds = useRef<Set<string>>(new Set());
-  const primed = useRef(false);
+  const pendingColumn = useRef<OrderStatus | null>(null);
 
   useEffect(() => {
     if (featuresLoading) return;
@@ -85,79 +77,6 @@ export default function OrdersPage() {
       router.replace('/dashboard');
     }
   }, [features, featuresLoading, router]);
-
-  const unacknowledged = useMemo(() => (orders ?? []).filter(isUnacknowledged), [orders]);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-
-    let unlocked = false;
-    const hasUnacked = unacknowledged.length > 0;
-
-    const unlockFromGesture = () => {
-      if (unlocked) return;
-      void resumeOrderRingAudio().then((ok) => {
-        if (!ok) return;
-        unlocked = true;
-        persistOrdersRingUnlocked();
-        setSoundBlocked(false);
-        if (hasUnacked) {
-          startOrderRing({ prefersReducedMotion: false });
-        }
-        window.removeEventListener('pointerdown', unlockFromGesture, true);
-        window.removeEventListener('keydown', unlockFromGesture, true);
-      });
-    };
-
-    window.addEventListener('pointerdown', unlockFromGesture, true);
-    window.addEventListener('keydown', unlockFromGesture, true);
-    return () => {
-      window.removeEventListener('pointerdown', unlockFromGesture, true);
-      window.removeEventListener('keydown', unlockFromGesture, true);
-    };
-  }, [prefersReducedMotion, unacknowledged.length]);
-
-  useEffect(() => {
-    if (unacknowledged.length === 0 || prefersReducedMotion) {
-      stopOrderRing();
-      return;
-    }
-
-    startOrderRing({ prefersReducedMotion });
-
-    if (isOrdersRingSessionUnlocked()) {
-      void resumeOrderRingAudio().then((ok) => {
-        setSoundBlocked(!ok);
-        if (ok) startOrderRing({ prefersReducedMotion });
-      });
-      return;
-    }
-
-    void resumeOrderRingAudio().then((ok) => {
-      setSoundBlocked(!ok);
-    });
-  }, [unacknowledged.length, prefersReducedMotion]);
-
-  useEffect(() => {
-    return () => {
-      stopOrderRing();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!orders) return;
-    const incoming = orders.filter((order) => order.status === 'new');
-    if (!primed.current) {
-      incoming.forEach((order) => seenIds.current.add(order.id));
-      primed.current = true;
-      return;
-    }
-    const fresh = incoming.filter((order) => !seenIds.current.has(order.id));
-    if (fresh.length > 0) {
-      fresh.forEach((order) => seenIds.current.add(order.id));
-      toast.message(t('newOrderToast', { number: fresh[0].order_number }));
-    }
-  }, [orders, t]);
 
   const visible = useMemo(() => {
     const list = orders ?? [];
@@ -204,8 +123,6 @@ export default function OrdersPage() {
     [todayActive]
   );
 
-  const pendingColumn = useRef<OrderStatus | null>(null);
-
   const scrollToColumn = useCallback(
     (status: OrderStatus) => {
       const el = document.getElementById(ordersColumnId(status));
@@ -239,17 +156,6 @@ export default function OrdersPage() {
     const frame = requestAnimationFrame(() => scrollToColumn(status));
     return () => cancelAnimationFrame(frame);
   }, [tab, scrollToColumn]);
-
-  const handleEnableSound = async () => {
-    const ok = await resumeOrderRingAudio();
-    if (ok) {
-      persistOrdersRingUnlocked();
-      setSoundBlocked(false);
-      if (unacknowledged.length > 0) {
-        startOrderRing({ prefersReducedMotion });
-      }
-    }
-  };
 
   const handleAcknowledge = useCallback(
     async (id: string) => {
@@ -361,13 +267,17 @@ export default function OrdersPage() {
             <Button
               variant="outline"
               className="min-h-11 w-full sm:w-auto"
-              onClick={() => void handleEnableSound()}
+              onClick={() => void enableSound()}
             >
               {t('enableSound')}
             </Button>
           ) : null}
         </div>
       ) : null}
+
+      <div className="flex justify-end">
+        <SoldOutPanel triggerClassName="sm:w-auto" />
+      </div>
 
       <OrdersCommandHeader
         tab={tab}
