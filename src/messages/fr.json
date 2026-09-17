@@ -1032,6 +1032,10 @@
     "invalidRange": "La date de début doit précéder ou égaler la date de fin.",
     "rangeTooWide": "Choisissez une période de 365 jours ou moins.",
     "orderNotes": "Notes",
+    "detailTitle": "Détails de la commande",
+    "lineTotal": "Total ligne",
+    "orderSummary": "Récapitulatif",
+    "retryLoad": "Réessayer",
     "period": {
       "today": "Aujourd'hui",
       "week": "Cette semaine",

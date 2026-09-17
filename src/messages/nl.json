@@ -1032,6 +1032,10 @@
     "invalidRange": "De van-datum moet op of vóór de tot-datum liggen.",
     "rangeTooWide": "Kies een bereik van 365 dagen of minder.",
     "orderNotes": "Notities",
+    "detailTitle": "Besteldetails",
+    "lineTotal": "Regeltotaal",
+    "orderSummary": "Bestellingsoverzicht",
+    "retryLoad": "Opnieuw proberen",
     "period": {
       "today": "Vandaag",
       "week": "Deze week",

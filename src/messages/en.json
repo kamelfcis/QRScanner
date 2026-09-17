@@ -1033,6 +1033,10 @@
     "invalidRange": "From date must be on or before to date.",
     "rangeTooWide": "Choose a range of 365 days or less.",
     "orderNotes": "Notes",
+    "detailTitle": "Order details",
+    "lineTotal": "Line total",
+    "orderSummary": "Order summary",
+    "retryLoad": "Retry",
     "period": {
       "today": "Today",
       "week": "This week",

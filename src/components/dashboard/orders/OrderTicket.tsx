@@ -13,11 +13,11 @@ import {
   ShoppingBag,
   Trash2,
 } from 'lucide-react';
+import { ItemThumb, MAX_ITEM_THUMBS } from '@/components/dashboard/orders/ItemThumb';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useSetOrderDeliveryFee } from '@/hooks/useOrders';
-import { Image } from '@/components/shared/Image';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { buildCustomerWhatsAppUrl, formatDisplayPhone } from '@/lib/phone/normalize';
@@ -26,8 +26,6 @@ import { cn, getLocalizedText } from '@/lib/utils';
 import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
-
-const MAX_THUMBS = 4;
 
 function isUnacknowledged(order: OrderWithItems): boolean {
   return order.status === 'new' && !order.staff_acknowledged_at;
@@ -112,46 +110,6 @@ function totalItemCount(items: OrderWithItems['items']): number {
   return items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-function ItemPlaceholder({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn(
-        'bg-muted flex shrink-0 items-center justify-center rounded-lg border',
-        className
-      )}
-    >
-      <UtensilsCrossed className="text-muted-foreground/50 h-4 w-4" aria-hidden="true" />
-    </div>
-  );
-}
-
-function ItemThumb({
-  imageUrl,
-  alt,
-  size,
-  className,
-}: {
-  imageUrl: string | null | undefined;
-  alt: string;
-  size: 'sm' | 'md';
-  className?: string;
-}) {
-  const dim = size === 'sm' ? 'size-11' : 'size-12';
-  if (!imageUrl) {
-    return <ItemPlaceholder className={cn(dim, className)} />;
-  }
-  return (
-    <Image
-      src={imageUrl}
-      alt={alt}
-      width={size === 'sm' ? 44 : 48}
-      height={size === 'sm' ? 44 : 48}
-      className={cn('rounded-lg object-cover', dim, className)}
-      containerClassName={cn('shrink-0 rounded-lg', dim, className)}
-    />
-  );
-}
-
 export function OrderTicket({
   order,
   locale,
@@ -200,8 +158,8 @@ export function OrderTicket({
   const customerWaUrl = order.customer_phone ? buildCustomerWhatsAppUrl(order.customer_phone) : '';
   const displayPhone = order.customer_phone ? formatDisplayPhone(order.customer_phone) : '';
   const itemCount = totalItemCount(order.items);
-  const thumbs = order.items.slice(0, MAX_THUMBS);
-  const leftover = order.items.length - MAX_THUMBS;
+  const thumbs = order.items.slice(0, MAX_ITEM_THUMBS);
+  const leftover = order.items.length - MAX_ITEM_THUMBS;
   const formattedTotal = formatCurrencyAmount(Number(order.total), order.currency, {
     locale: currencyLocale,
   });
