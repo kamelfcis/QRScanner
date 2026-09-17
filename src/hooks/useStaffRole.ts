@@ -26,7 +26,10 @@ async function fetchMyStaffRole(): Promise<StaffRole> {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) {
+    console.warn('[useStaffRole] staff_profiles query failed, defaulting to admin:', error.message);
+    return 'admin';
+  }
   const role = data?.role;
   if (role === 'cashier' || role === 'admin') return role;
   return 'admin';
@@ -40,6 +43,7 @@ export function useStaffRole() {
     queryFn: fetchMyStaffRole,
     enabled,
     staleTime: 5 * 60_000,
+    retry: false,
     ...(hasHettSamakaTier3 ? {} : { initialData: 'admin' as const }),
   });
 }
