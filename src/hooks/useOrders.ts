@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
+import { salesReportKeys } from './useSalesReport';
 import { rangeUpperExclusive, toRangeBounds } from '@/lib/order/delete-range';
 import type { Order, OrderItem, OrderStatus, OrderWithItems } from '@/types/database';
 
@@ -170,6 +171,7 @@ export function useDeleteOrder() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      queryClient.invalidateQueries({ queryKey: salesReportKeys.all });
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
     },
   });

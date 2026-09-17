@@ -106,5 +106,6 @@ export {
   fetchStaffOrderForReceipt,
   staffOrderCatalogKeys,
 } from './useStaffOrder';
+export { useSalesReport, salesReportKeys } from './useSalesReport';
 export { useExport } from './useExport';
 export { useSearchTracking } from './useSearchTracking';

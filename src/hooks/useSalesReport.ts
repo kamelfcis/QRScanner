@@ -5,14 +5,20 @@ import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { getDateRange } from './useAnalytics';
 import { computeSalesKpis, type SalesReportKpis } from '@/lib/order/sales-kpis';
+import {
+  resolveCustomSalesBounds,
+  type SalesReportBoundsResult,
+  type SalesReportPeriod,
+} from '@/lib/order/sales-range';
 import type { Order } from '@/types/database';
 
 export { computeSalesKpis };
 export type { SalesReportKpis };
+export type { SalesReportPeriod };
 
 export const salesReportKeys = {
   all: ['sales-report'] as const,
-  period: (period: string) => [...salesReportKeys.all, period] as const,
+  range: (startIso: string, endIso: string) => [...salesReportKeys.all, startIso, endIso] as const,
 };
 
 export interface SalesReportData {
@@ -47,18 +53,37 @@ async function fetchOrdersInRange(startIso: string, endIso: string): Promise<Ord
   return orders;
 }
 
-export function useSalesReport(period: string = 'month', options?: { enabled?: boolean }) {
-  const adminEnabled = useAdminQueryEnabled();
-  const enabled = adminEnabled && options?.enabled !== false;
+export function resolveSalesReportBounds(
+  period: SalesReportPeriod,
+  from?: string,
+  to?: string
+): SalesReportBoundsResult {
+  if (period !== 'custom') {
+    const { start, end } = getDateRange(period);
+    return { ok: true, start, end };
+  }
+  return resolveCustomSalesBounds(from, to);
+}
 
-  return useQuery({
-    queryKey: salesReportKeys.period(period),
+export function useSalesReport(
+  period: SalesReportPeriod = 'today',
+  options?: { enabled?: boolean; from?: string; to?: string }
+) {
+  const adminEnabled = useAdminQueryEnabled();
+  const bounds = resolveSalesReportBounds(period, options?.from, options?.to);
+  const startIso = bounds.ok ? bounds.start.toISOString() : 'invalid';
+  const endIso = bounds.ok ? bounds.end.toISOString() : 'invalid';
+  const enabled = adminEnabled && options?.enabled !== false && bounds.ok;
+
+  const query = useQuery({
+    queryKey: salesReportKeys.range(startIso, endIso),
     enabled,
     queryFn: async (): Promise<SalesReportData> => {
-      const { start, end } = getDateRange(period);
-      const orders = await fetchOrdersInRange(start.toISOString(), end.toISOString());
+      const orders = await fetchOrdersInRange(startIso, endIso);
       return { orders, kpis: computeSalesKpis(orders) };
     },
     staleTime: 30 * 1000,
   });
+
+  return { ...query, bounds };
 }

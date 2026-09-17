@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { computeSalesKpis } from '@/lib/order/sales-kpis';
+import { resolveCustomSalesBounds } from '@/lib/order/sales-range';
 import type { Order } from '@/types/database';
 
 function order(partial: Partial<Order>): Order {
@@ -46,6 +47,7 @@ describe('computeSalesKpis', () => {
     ]);
 
     expect(kpis.orderCount).toBe(3);
+    expect(kpis.cancelledCount).toBe(1);
     expect(kpis.revenue).toBe(300);
     expect(kpis.discounts).toBe(20);
     expect(kpis.averageOrderValue).toBe(150);
@@ -58,8 +60,33 @@ describe('computeSalesKpis', () => {
     ]);
 
     expect(kpis.orderCount).toBe(1);
+    expect(kpis.cancelledCount).toBe(1);
     expect(kpis.revenue).toBe(0);
     expect(kpis.averageOrderValue).toBe(0);
     expect(kpis.deliveryCount).toBe(0);
+  });
+});
+
+describe('resolveCustomSalesBounds', () => {
+  it('resolves custom from/to in local start/end of day', () => {
+    const bounds = resolveCustomSalesBounds('2026-09-01', '2026-09-03');
+    expect(bounds.ok).toBe(true);
+    if (!bounds.ok) return;
+    expect(bounds.start.getHours()).toBe(0);
+    expect(bounds.start.getMinutes()).toBe(0);
+    expect(bounds.end.getHours()).toBe(23);
+    expect(bounds.end.getDate()).toBe(3);
+    expect(bounds.start.toISOString()).not.toBe(bounds.end.toISOString());
+  });
+
+  it('rejects inverted and oversized custom ranges', () => {
+    expect(resolveCustomSalesBounds('2026-09-10', '2026-09-01')).toEqual({
+      ok: false,
+      error: 'invalid_range',
+    });
+    expect(resolveCustomSalesBounds('2025-01-01', '2026-12-31')).toEqual({
+      ok: false,
+      error: 'range_too_wide',
+    });
   });
 });
