@@ -16,7 +16,6 @@ import {
   useDeleteOrder,
   useMarkOrderWhatsAppSent,
   useOrders,
-  useRealtimeOrders,
   useUpdateOrderStatus,
 } from '@/hooks/useOrders';
 import { useOrderAlerts } from '@/hooks/useOrderAlerts';
@@ -63,7 +62,6 @@ export default function OrdersPage() {
   const acknowledgeOrder = useAcknowledgeOrder();
   const markWhatsApp = useMarkOrderWhatsAppSent();
   const deleteOrder = useDeleteOrder();
-  useRealtimeOrders();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);

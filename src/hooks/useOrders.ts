@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { salesReportKeys } from './useSalesReport';
@@ -52,6 +53,20 @@ export function useOrders() {
   });
 }
 
+const ORDER_BOARD_CHANNEL = 'order-board-changes';
+
+type OrderBoardSubscription = {
+  channel: RealtimeChannel;
+  refCount: number;
+  listeners: Set<() => void>;
+};
+
+let orderBoardSubscription: OrderBoardSubscription | null = null;
+
+function notifyOrderBoardListeners() {
+  orderBoardSubscription?.listeners.forEach((listener) => listener());
+}
+
 export function useRealtimeOrders() {
   const queryClient = useQueryClient();
   const enabled = useAdminQueryEnabled();
@@ -63,15 +78,37 @@ export function useRealtimeOrders() {
 
   useEffect(() => {
     if (!enabled) return;
+
     const supabase = createClient();
-    const channel = supabase
-      .channel('order-board-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, invalidate)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'order_items' }, invalidate)
-      .subscribe();
+
+    if (!orderBoardSubscription) {
+      const channel = supabase
+        .channel(ORDER_BOARD_CHANNEL)
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'orders' },
+          notifyOrderBoardListeners
+        )
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'order_items' },
+          notifyOrderBoardListeners
+        )
+        .subscribe();
+      orderBoardSubscription = { channel, refCount: 0, listeners: new Set() };
+    }
+
+    orderBoardSubscription.refCount++;
+    orderBoardSubscription.listeners.add(invalidate);
 
     return () => {
-      supabase.removeChannel(channel);
+      if (!orderBoardSubscription) return;
+      orderBoardSubscription.listeners.delete(invalidate);
+      orderBoardSubscription.refCount--;
+      if (orderBoardSubscription.refCount <= 0) {
+        supabase.removeChannel(orderBoardSubscription.channel);
+        orderBoardSubscription = null;
+      }
     };
   }, [enabled, invalidate]);
 }

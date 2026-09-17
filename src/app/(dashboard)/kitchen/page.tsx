@@ -8,12 +8,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { KitchenCard } from '@/components/dashboard/kitchen/KitchenCard';
-import {
-  useAcknowledgeOrder,
-  useOrders,
-  useRealtimeOrders,
-  useUpdateOrderStatus,
-} from '@/hooks/useOrders';
+import { useAcknowledgeOrder, useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
 import { useFeatureSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import type { OrderStatus, OrderWithItems } from '@/types/database';
@@ -32,7 +27,6 @@ export default function KitchenPage() {
   const { data: orders, isLoading, error, refetch } = useOrders();
   const updateStatus = useUpdateOrderStatus();
   const acknowledgeOrder = useAcknowledgeOrder();
-  useRealtimeOrders();
 
   useEffect(() => {
     if (featuresLoading) return;
