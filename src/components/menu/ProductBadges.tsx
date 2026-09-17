@@ -7,9 +7,9 @@ import type { Product } from '@/types/database';
 
 export type ProductBadge = 'popular' | 'new' | 'bestseller' | 'spicy';
 
-export function pickBadges(product: Product): ProductBadge[] {
+export function pickBadges(product: Product, liveBestseller = false): ProductBadge[] {
   const badges: ProductBadge[] = [];
-  if (product.is_bestseller) badges.push('bestseller');
+  if (product.is_bestseller || liveBestseller) badges.push('bestseller');
   else if (product.is_popular) badges.push('popular');
   if (product.is_new && badges.length < 2) badges.push('new');
   if (product.is_spicy && badges.length < 2) badges.push('spicy');

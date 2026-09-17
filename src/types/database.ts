@@ -167,6 +167,8 @@ export interface RestaurantSettings {
   service_charge_rate: number;
   prep_time_minutes: number;
   minimum_order: number;
+  /** When false, customer checkout is paused; staff POS still accepts orders. */
+  accepting_orders?: boolean;
   max_order_notes_length: number;
   apply_tax: boolean;
   apply_service_charge: boolean;
@@ -229,6 +231,7 @@ export interface DeliveryLocation {
   name_fr: string | null;
   name_nl: string | null;
   delivery_fee: number;
+  minimum_order: number;
   is_active: boolean;
   sort_order: number;
   created_at: string;

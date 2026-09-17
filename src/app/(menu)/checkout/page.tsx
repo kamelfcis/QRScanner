@@ -59,6 +59,8 @@ import {
   buildDeliveryAddressSnapshot,
   formatDeliveryLocationOption,
 } from '@/lib/order/delivery-location';
+import { resolveEffectiveMinimumOrder } from '@/lib/order/delivery-min-order';
+import { hasHettSamakaTier1 } from '@/i18n/config';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -134,7 +136,13 @@ export default function CheckoutPage() {
     [deliveryLocations, deliveryLocationId]
   );
 
-  const deliveryFee = requiresDelivery && selectedLocation ? Number(selectedLocation.delivery_fee) : 0;
+  const deliveryFee =
+    requiresDelivery && selectedLocation ? Number(selectedLocation.delivery_fee) : 0;
+  const effectiveMinimumOrder = useMemo(
+    () => resolveEffectiveMinimumOrder(settings?.minimum_order ?? 0, selectedLocation),
+    [settings?.minimum_order, selectedLocation]
+  );
+  const ordersClosed = hasHettSamakaTier1 && settings?.accepting_orders === false;
 
   const localTotals = useMemo(
     () =>
@@ -230,7 +238,7 @@ export default function CheckoutPage() {
           return t('addressRequired');
         case 'min_order':
           return t('minOrder', {
-            amount: formatCurrencyNumber(settings?.minimum_order ?? 0, currencyLocale),
+            amount: formatCurrencyNumber(effectiveMinimumOrder, currencyLocale),
             currency,
           });
         case 'notes_too_long':
@@ -247,7 +255,7 @@ export default function CheckoutPage() {
       orderNotes,
       itemNotes: items.map((i) => i.notes),
       subtotal: totals.subtotal,
-      minimumOrder: settings?.minimum_order ?? 0,
+      minimumOrder: effectiveMinimumOrder,
       maxOrderNotesLength: maxNotes,
       whatsappConfigured,
       requireWhatsApp,
@@ -262,6 +270,11 @@ export default function CheckoutPage() {
     }
 
     if (!settings) return;
+
+    if (ordersClosed) {
+      setErrors([t('ordersClosed')]);
+      return;
+    }
 
     void resumeOrderSuccessAudio();
 
@@ -317,6 +330,7 @@ export default function CheckoutPage() {
           if (code === 'rate_limited') setErrors([t('rateLimited')]);
           else if (code === 'product_unavailable') setErrors([t('productUnavailable')]);
           else if (code === 'feature_disabled') setErrors([t('boardUnavailable')]);
+          else if (code === 'orders_closed') setErrors([t('ordersClosed')]);
           else if (code === 'address_required') setErrors([t('addressRequired')]);
           else if (code === 'min_order') {
             setErrors(
@@ -324,7 +338,7 @@ export default function CheckoutPage() {
                 ? [t('couponMinOrder')]
                 : [
                     t('minOrder', {
-                      amount: formatCurrencyNumber(settings?.minimum_order ?? 0, currencyLocale),
+                      amount: formatCurrencyNumber(effectiveMinimumOrder, currencyLocale),
                       currency,
                     }),
                   ]
@@ -507,6 +521,15 @@ export default function CheckoutPage() {
               className="size-11 shrink-0 rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]"
             />
           </div>
+
+          {ordersClosed && (
+            <div
+              role="alert"
+              className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100"
+            >
+              {t('ordersClosed')}
+            </div>
+          )}
 
           {!whatsappConfigured && (
             <div role="alert" className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
@@ -860,7 +883,10 @@ export default function CheckoutPage() {
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
             disabled={
-              submitting || noActiveLocations || (!dashboardOrders && !whatsappConfigured)
+              submitting ||
+              ordersClosed ||
+              noActiveLocations ||
+              (!dashboardOrders && !whatsappConfigured)
             }
             onClick={handleConfirm}
             data-testid="checkout-confirm"

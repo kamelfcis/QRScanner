@@ -29,6 +29,7 @@ import {
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
+import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -66,6 +67,7 @@ export function ProductCard({
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
+  const topSellingIds = useTopSellingBadgeIds();
   // false/null/undefined → quick-add; size or weight options open ProductSheet
   const hasSizeOptions = product.has_size_options === true;
   const needsPicker = hasSizeOptions || hasWeightOptions(product);
@@ -75,7 +77,7 @@ export function ProductCard({
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const minPrice = Math.min(product.dining_price, product.takeaway_price);
   const maxPrice = Math.max(product.dining_price, product.takeaway_price);
-  const badges = pickBadges(product);
+  const badges = pickBadges(product, topSellingIds.includes(product.id));
   const productName = getName(
     locale,
     product.name_en,

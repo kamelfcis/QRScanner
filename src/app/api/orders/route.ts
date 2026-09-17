@@ -14,6 +14,7 @@ const ERROR_STATUS: Record<string, number> = {
   address_required: 400,
   notes_too_long: 400,
   min_order: 400,
+  orders_closed: 403,
   product_unavailable: 409,
   invalid_payload: 400,
   invalid_coupon: 400,

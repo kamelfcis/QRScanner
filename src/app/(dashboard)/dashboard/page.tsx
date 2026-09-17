@@ -19,6 +19,7 @@ import { useTodayHourlyVisitors } from '@/hooks/useAnalytics';
 import { useRealtimeAnalytics } from '@/hooks/useRealtime';
 import { DashboardShortcuts } from '@/components/dashboard/DashboardShortcuts';
 import { DashboardNeedsAttention } from '@/components/dashboard/DashboardNeedsAttention';
+import { TopSellingProductsCard } from '@/components/dashboard/TopSellingProductsCard';
 import { KPICard } from '@/components/dashboard/kpi';
 import { LineAreaChart, PieDonutChart, ChartCard } from '@/components/dashboard/charts';
 import dynamic from 'next/dynamic';
@@ -197,6 +198,8 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      <TopSellingProductsCard />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">

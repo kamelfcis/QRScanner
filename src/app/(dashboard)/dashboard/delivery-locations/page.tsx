@@ -42,6 +42,7 @@ const emptyForm = {
   name_fr: '',
   name_nl: '',
   delivery_fee: 0,
+  minimum_order: 0,
   sort_order: 0,
   is_active: true,
 };
@@ -92,6 +93,7 @@ export default function DeliveryLocationsPage() {
       name_fr: location.name_fr ?? '',
       name_nl: location.name_nl ?? '',
       delivery_fee: Number(location.delivery_fee),
+      minimum_order: Number(location.minimum_order ?? 0),
       sort_order: location.sort_order,
       is_active: location.is_active,
     });
@@ -106,6 +108,7 @@ export default function DeliveryLocationsPage() {
       name_fr: form.name_fr.trim() || null,
       name_nl: form.name_nl.trim() || null,
       delivery_fee: Number(form.delivery_fee),
+      minimum_order: Number(form.minimum_order) || 0,
       sort_order: Number(form.sort_order) || 0,
       is_active: form.is_active,
     };
@@ -199,6 +202,17 @@ export default function DeliveryLocationsPage() {
                       <p className="text-muted-foreground mb-1 flex items-center gap-1.5 text-xs uppercase tracking-[0.16em]">
                         <MapPin className="h-3.5 w-3.5" />
                         {formatCurrencyAmount(Number(location.delivery_fee), currency)}
+                        {Number(location.minimum_order ?? 0) > 0 ? (
+                          <span className="normal-case tracking-normal">
+                            ·{' '}
+                            {t('minimumOrderShort', {
+                              amount: formatCurrencyAmount(
+                                Number(location.minimum_order),
+                                currency
+                              ),
+                            })}
+                          </span>
+                        ) : null}
                       </p>
                       <CardTitle className="font-heading truncate tracking-[0.08em]">
                         {displayName}
@@ -322,6 +336,24 @@ export default function DeliveryLocationsPage() {
                 ) : null}
               </div>
               <div className="space-y-2">
+                <Label htmlFor="minimum-order">{t('minimumOrder')}</Label>
+                <Input
+                  id="minimum-order"
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  className="h-11 min-h-11"
+                  value={form.minimum_order}
+                  onChange={(event) =>
+                    setForm({ ...form, minimum_order: Number(event.target.value) })
+                  }
+                />
+                <p className="text-muted-foreground text-xs">{t('minimumOrderHint')}</p>
+                {formErrors.minimum_order ? (
+                  <p className="text-destructive text-sm">{formErrors.minimum_order}</p>
+                ) : null}
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="sort-order">{t('sortOrderLabel')}</Label>
                 <Input
                   id="sort-order"
@@ -329,9 +361,7 @@ export default function DeliveryLocationsPage() {
                   min={0}
                   className="h-11 min-h-11"
                   value={form.sort_order}
-                  onChange={(event) =>
-                    setForm({ ...form, sort_order: Number(event.target.value) })
-                  }
+                  onChange={(event) => setForm({ ...form, sort_order: Number(event.target.value) })}
                 />
               </div>
             </div>

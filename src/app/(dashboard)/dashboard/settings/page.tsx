@@ -25,6 +25,7 @@ import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
 import { resolveOrderModes, validateOrderModes } from '@/lib/order/order-modes';
+import { hasHettSamakaTier1 } from '@/i18n/config';
 
 const DAYS = [
   'monday',
@@ -1064,6 +1065,30 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {hasHettSamakaTier1 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('acceptingOrders')}</CardTitle>
+                <CardDescription>{t('acceptingOrdersDescription')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="accepting_orders">{t('acceptingOrdersLabel')}</Label>
+                    <p className="text-muted-foreground text-sm">{t('acceptingOrdersHint')}</p>
+                  </div>
+                  <Switch
+                    id="accepting_orders"
+                    checked={form.accepting_orders !== false}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => ({ ...prev, accepting_orders: checked }))
+                    }
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ) : null}
 
           <Card>
             <CardHeader>

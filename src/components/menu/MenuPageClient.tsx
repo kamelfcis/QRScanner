@@ -37,12 +37,16 @@ import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
 import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
+import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
+import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
 
 export function MenuPageClient() {
   return (
-    <Suspense fallback={<MenuSkeleton />}>
-      <MenuContent />
-    </Suspense>
+    <TopSellingProvider>
+      <Suspense fallback={<MenuSkeleton />}>
+        <MenuContent />
+      </Suspense>
+    </TopSellingProvider>
   );
 }
 
@@ -217,6 +221,7 @@ function MenuContent() {
     >
       <MenuThemeScope />
       <QrScanTracker />
+      <OrdersPausedBanner />
 
       <MenuHeader
         tableParam={tableParam}
