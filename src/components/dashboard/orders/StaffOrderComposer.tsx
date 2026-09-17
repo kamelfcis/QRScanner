@@ -29,7 +29,11 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Image } from '@/components/shared/Image';
-import { CheckoutCoupon, type AppliedCoupon } from '@/components/checkout/CheckoutCoupon';
+import {
+  CheckoutCoupon,
+  previewCheckoutDiscounts,
+  type AppliedCoupon,
+} from '@/components/checkout/CheckoutCoupon';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import {
   StaffProductPickerPanel,
@@ -173,6 +177,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const [deliveryAddressDetails, setDeliveryAddressDetails] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
+  const [autoDiscount, setAutoDiscount] = useState<AppliedCoupon | null>(null);
   const [pending, setPending] = useState<StaffPendingProduct | null>(null);
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
   const [mobilePane, setMobilePane] = useState<MobilePane>('catalog');
@@ -195,6 +200,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setDeliveryAddressDetails('');
     setOrderNotes('');
     setAppliedCoupon(null);
+    setAutoDiscount(null);
     setPending(null);
     setMobilePane('catalog');
   }, []);
@@ -271,14 +277,15 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     [pricedLines, settings, deliveryFee]
   );
 
-  const totals = appliedCoupon
+  const previewedDiscount = appliedCoupon ?? autoDiscount;
+  const totals = previewedDiscount
     ? {
         ...localTotals,
-        subtotal: appliedCoupon.subtotal,
-        discount: appliedCoupon.discountAmount,
-        tax: appliedCoupon.tax,
-        service: appliedCoupon.service,
-        total: appliedCoupon.total + deliveryFee,
+        subtotal: previewedDiscount.subtotal,
+        discount: previewedDiscount.discountAmount,
+        tax: previewedDiscount.tax,
+        service: previewedDiscount.service,
+        total: previewedDiscount.total + deliveryFee,
       }
     : localTotals;
 
@@ -293,6 +300,33 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
       })),
     [lines]
   );
+
+  useEffect(() => {
+    if (!couponsEnabled || !open) {
+      setAutoDiscount(null);
+      return;
+    }
+    if (appliedCoupon?.code) return;
+    if (previewItems.length === 0) {
+      setAutoDiscount(null);
+      return;
+    }
+
+    let cancelled = false;
+    void previewCheckoutDiscounts({
+      items: previewItems,
+      diningMode,
+      customerPhone,
+      phoneCountry: 'EG',
+      couponCode: null,
+    }).then((preview) => {
+      if (!cancelled) setAutoDiscount(preview);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [appliedCoupon?.code, couponsEnabled, customerPhone, diningMode, open, previewItems]);
 
   const noActiveLocations =
     requiresDelivery && !locationsLoading && (deliveryLocations?.length ?? 0) === 0;

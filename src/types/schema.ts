@@ -287,12 +287,7 @@ export const placeOrderSchema = z.object({
 export const couponPreviewSchema = z.object({
   items: z.array(placeOrderItemSchema).min(1).max(50),
   dining_mode: orderDiningModeSchema,
-  coupon_code: z
-    .string()
-    .trim()
-    .min(2)
-    .max(32)
-    .transform((value) => value.toUpperCase()),
+  coupon_code: couponCodeValue,
   customer_phone: z.string().max(40).nullable().optional(),
   phone_country: z.string().length(2).optional(),
 });
@@ -308,7 +303,7 @@ export const couponSchema = z
       .max(32)
       .regex(/^[A-Za-z0-9][A-Za-z0-9_-]{1,31}$/, 'Use letters, numbers, hyphen, or underscore')
       .transform((value) => value.toUpperCase()),
-    discount_type: z.enum(['percentage', 'fixed']),
+    discount_type: z.enum(['percentage', 'fixed', 'bogo']),
     discount_value: z.number().positive('Discount must be greater than 0'),
     min_subtotal: z.number().min(0).default(0),
     max_discount: z.number().min(0).nullable().optional(),
@@ -317,11 +312,26 @@ export const couponSchema = z
     max_redemptions: z.number().int().min(1).nullable().optional(),
     per_phone_limit: z.number().int().min(1).default(1),
     is_active: z.boolean().default(true),
+    requires_code: z.boolean().default(true),
+    is_stackable: z.boolean().default(false),
+    bogo_buy: z.number().int().min(1).nullable().optional(),
+    bogo_get: z.number().int().min(1).nullable().optional(),
+    product_ids: z.array(z.string().uuid()).nullable().optional(),
+    min_quantity: z.number().int().min(0).default(0),
   })
   .refine((data) => data.discount_type !== 'percentage' || data.discount_value <= 100, {
     message: 'Percentage discount cannot exceed 100%',
     path: ['discount_value'],
   })
+  .refine(
+    (data) =>
+      data.discount_type !== 'bogo' ||
+      (data.bogo_buy != null && data.bogo_buy >= 1 && data.bogo_get != null && data.bogo_get >= 1),
+    {
+      message: 'BOGO requires buy and get quantities',
+      path: ['bogo_buy'],
+    }
+  )
   .refine((data) => !data.starts_at || !data.ends_at || data.ends_at >= data.starts_at, {
     message: 'End date must be after start date',
     path: ['ends_at'],

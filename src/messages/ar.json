@@ -272,7 +272,11 @@
     "paginationGoToPage": "الانتقال إلى الصفحة {page}",
     "paginationPageOf": "صفحة {page} من {total}",
     "paginationRowsPerPage": "عدد الصفوف",
-    "paginationShowingRange": "عرض {start}–{end} من {total}"
+    "paginationShowingRange": "عرض {start}–{end} من {total}",
+    "pushPromptTitle": "فعّل تنبيهات الطلبات على هذا الجهاز",
+    "pushPromptBody": "حتى لو أُغلقت لوحة التحكم أو كان الهاتف مقفلاً.",
+    "pushEnable": "تفعيل الإشعارات",
+    "pushNotNow": "ليس الآن"
   },
   "sidebar": {
     "dashboard": "لوحة التحكم",
@@ -528,6 +532,7 @@
     "subtotal": "المجموع الفرعي",
     "discount": "الخصم",
     "discountWithCode": "الخصم ({code})",
+    "autoDiscount": "خصم تلقائي ({code})",
     "tax": "الضريبة ({rate}%)",
     "service": "رسوم الخدمة ({rate}%)",
     "total": "الإجمالي",
@@ -840,6 +845,15 @@
     "copyFailed": "تعذر نسخ الكود",
     "typePercent": "خصم ٪",
     "typeFixed": "مبلغ ثابت",
+    "typeBogo": "اشتري واحصل",
+    "bogoBuy": "كمية الشراء",
+    "bogoGet": "مجاناً",
+    "bogoOff": "اشترِ {buy} واحصل على {get}",
+    "automatic": "تلقائي",
+    "automaticToggle": "يُطبّق تلقائياً (بدون كود)",
+    "internalCodeHint": "كود داخلي للمراجعة — الزبون لا يدخله.",
+    "stackable": "قابل للجمع",
+    "stackableToggle": "يمكن جمعه مع خصومات أخرى",
     "value": "القيمة",
     "minSubtotal": "الحد الأدنى للمجموع",
     "maxDiscount": "أقصى خصم",
@@ -1328,5 +1342,13 @@
     "deliveryDesc": "نوصل لك أطباقك المفضلة إلى باب منزلك",
     "tagline": "رحلة ذوق عبر تقاليد المطبخ اللبناني والسوري",
     "heroAlt": "صورة بطل {name}"
+  },
+  "push": {
+    "promptTitle": "تنبيهات الطلبات على هذا الجهاز",
+    "promptBody": "فعّل الإشعارات لتصلك الطلبات الجديدة حتى عندما تكون لوحة التحكم في الخلفية.",
+    "enable": "تفعيل التنبيهات",
+    "subscribing": "جاري التفعيل…",
+    "notNow": "ليس الآن",
+    "dismiss": "إغلاق"
   }
 }

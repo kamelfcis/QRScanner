@@ -72,6 +72,8 @@ export async function POST(request: Request) {
       return jsonError('Invalid coupon payload', 400, 'invalid_payload');
     }
 
+    const hasCode = Boolean(parsed.data.coupon_code);
+
     const phoneCountry = resolveCountryCode(
       parsed.data.phone_country ?? getCountryFromRequest(request)
     );
@@ -105,19 +107,39 @@ export async function POST(request: Request) {
       discount_type?: string | null;
       discount_value?: number | null;
       discount_amount?: number | null;
+      applications?: Array<{
+        code?: string;
+        discount_amount?: number;
+        discount_type?: string;
+        discount_value?: number;
+        requires_code?: boolean;
+        automatic?: boolean;
+        is_stackable?: boolean;
+      }> | null;
       subtotal?: number | null;
       tax?: number | null;
       service?: number | null;
       total?: number | null;
     };
 
+    const applications = (preview.applications ?? []).map((app) => ({
+      code: app.code ?? null,
+      discount_amount: Number(app.discount_amount ?? 0),
+      discount_type: app.discount_type ?? null,
+      discount_value: app.discount_value ?? null,
+      requires_code:
+        app.requires_code != null ? app.requires_code !== false : app.automatic !== true,
+      is_stackable: app.is_stackable === true,
+    }));
+
     return NextResponse.json({
-      valid: preview.valid === true,
+      valid: hasCode ? preview.valid === true : true,
       error: preview.error ?? null,
-      code: preview.code ?? parsed.data.coupon_code,
+      code: preview.code ?? parsed.data.coupon_code ?? null,
       discount_type: preview.discount_type ?? null,
       discount_value: preview.discount_value ?? null,
       discount_amount: Number(preview.discount_amount ?? 0),
+      applications,
       subtotal: Number(preview.subtotal ?? 0),
       tax: Number(preview.tax ?? 0),
       service: Number(preview.service ?? 0),

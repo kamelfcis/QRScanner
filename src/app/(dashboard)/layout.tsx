@@ -1,4 +1,5 @@
 import { Providers } from '@/components/providers/Providers';
+import { PushSubscribePrompt } from '@/components/dashboard/PushSubscribePrompt';
 import { OrderAlertsProvider } from '@/hooks/useOrderAlerts';
 import { Toaster } from 'sonner';
 
@@ -8,6 +9,7 @@ export default function DashboardGroupLayout({ children }: { children: React.Rea
   return (
     <Providers>
       <OrderAlertsProvider>
+        <PushSubscribePrompt />
         {children}
         <Toaster position="top-right" richColors closeButton />
       </OrderAlertsProvider>

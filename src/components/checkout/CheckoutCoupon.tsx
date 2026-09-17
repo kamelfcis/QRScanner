@@ -11,21 +11,31 @@ import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-cu
 import { cn } from '@/lib/utils';
 import type { DiningMode } from '@/lib/order/totals';
 
-export interface AppliedCoupon {
+export interface DiscountApplicationLine {
   code: string;
   discountAmount: number;
-  discountType: 'percentage' | 'fixed' | null;
+  discountType: 'percentage' | 'fixed' | 'bogo' | null;
+  discountValue: number | null;
+  requiresCode: boolean;
+}
+
+export interface AppliedCoupon {
+  code: string | null;
+  discountAmount: number;
+  discountType: 'percentage' | 'fixed' | 'bogo' | null;
   discountValue: number | null;
   subtotal: number;
   tax: number;
   service: number;
   total: number;
+  applications?: DiscountApplicationLine[];
 }
 
 interface PreviewCartItem {
   product_id: string;
   quantity: number;
   size_option?: 'small' | 'large' | null;
+  weight_grams?: number | null;
   notes?: string | null;
 }
 
@@ -45,13 +55,66 @@ interface PreviewResponse {
   valid?: boolean;
   error?: string | null;
   code?: string | null;
-  discount_type?: 'percentage' | 'fixed' | null;
+  discount_type?: 'percentage' | 'fixed' | 'bogo' | null;
   discount_value?: number | null;
   discount_amount?: number;
+  applications?: Array<{
+    code?: string | null;
+    discount_amount?: number;
+    discount_type?: 'percentage' | 'fixed' | 'bogo' | null;
+    discount_value?: number | null;
+    requires_code?: boolean;
+    automatic?: boolean;
+  }>;
   subtotal?: number;
   tax?: number;
   service?: number;
   total?: number;
+}
+
+function mapPreview(payload: PreviewResponse, fallbackCode?: string | null): AppliedCoupon {
+  const applications = (payload.applications ?? []).map((app) => ({
+    code: app.code ?? '',
+    discountAmount: Number(app.discount_amount ?? 0),
+    discountType: app.discount_type ?? null,
+    discountValue: app.discount_value ?? null,
+    requiresCode: app.requires_code != null ? app.requires_code !== false : app.automatic !== true,
+  }));
+
+  return {
+    code: payload.code ?? fallbackCode ?? null,
+    discountAmount: Number(payload.discount_amount ?? 0),
+    discountType: payload.discount_type ?? null,
+    discountValue: payload.discount_value ?? null,
+    subtotal: Number(payload.subtotal ?? 0),
+    tax: Number(payload.tax ?? 0),
+    service: Number(payload.service ?? 0),
+    total: Number(payload.total ?? 0),
+    applications,
+  };
+}
+
+export async function previewCheckoutDiscounts(input: {
+  items: PreviewCartItem[];
+  diningMode: DiningMode;
+  customerPhone: string;
+  phoneCountry: string;
+  couponCode?: string | null;
+}): Promise<AppliedCoupon | null> {
+  const response = await fetch('/api/coupons/preview', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      items: input.items,
+      dining_mode: input.diningMode,
+      coupon_code: input.couponCode ?? null,
+      customer_phone: input.customerPhone || null,
+      phone_country: input.phoneCountry,
+    }),
+  });
+  const payload = (await response.json().catch(() => null)) as PreviewResponse | null;
+  if (!response.ok || !payload?.valid) return null;
+  return mapPreview(payload, input.couponCode ?? null);
 }
 
 export function CheckoutCoupon({
@@ -72,7 +135,10 @@ export function CheckoutCoupon({
   const [busy, setBusy] = useState(false);
 
   const cartKey = `${diningMode}|${customerPhone}|${phoneCountry}|${items
-    .map((item) => `${item.product_id}:${item.quantity}:${item.size_option ?? ''}`)
+    .map(
+      (item) =>
+        `${item.product_id}:${item.quantity}:${item.size_option ?? ''}:${item.weight_grams ?? ''}`
+    )
     .join(',')}`;
 
   const preview = useCallback(
@@ -113,16 +179,7 @@ export function CheckoutCoupon({
           if (options?.haptic) haptic.error();
           return;
         }
-        onApplied({
-          code: payload.code ?? trimmed,
-          discountAmount: Number(payload.discount_amount ?? 0),
-          discountType: payload.discount_type ?? null,
-          discountValue: payload.discount_value ?? null,
-          subtotal: Number(payload.subtotal ?? 0),
-          tax: Number(payload.tax ?? 0),
-          service: Number(payload.service ?? 0),
-          total: Number(payload.total ?? 0),
-        });
+        onApplied(mapPreview(payload, trimmed));
         if (options?.haptic) haptic.success();
       } catch {
         setError(t('couponApplyFailed'));
@@ -137,7 +194,7 @@ export function CheckoutCoupon({
 
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect -- sync applied coupon into local field state */
-    if (applied) {
+    if (applied?.code) {
       setOpen(true);
       setCode(applied.code);
       setError(null);
@@ -146,7 +203,7 @@ export function CheckoutCoupon({
 
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect -- revalidate preview when cart changes */
-    if (!applied) return;
+    if (!applied?.code) return;
     void preview(applied.code);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- revalidate when the cart or phone changes
   }, [cartKey]);
@@ -158,7 +215,7 @@ export function CheckoutCoupon({
     onRemoved();
   };
 
-  if (applied) {
+  if (applied && applied.code) {
     return (
       <section
         className="rounded-xl border border-dashed border-[var(--menu-gold-soft)] bg-[var(--menu-gold-wash)] px-4 py-3"

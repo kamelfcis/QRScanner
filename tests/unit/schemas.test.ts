@@ -298,6 +298,19 @@ describe('couponSchema', () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it('accepts automatic BOGO coupons', () => {
+    const result = couponSchema.safeParse({
+      code: 'AUTOBOGO',
+      discount_type: 'bogo',
+      discount_value: 1,
+      bogo_buy: 2,
+      bogo_get: 1,
+      requires_code: false,
+      is_stackable: true,
+    });
+    expect(result.success).toBe(true);
+  });
 });
 
 describe('staffPlaceOrderSchema', () => {

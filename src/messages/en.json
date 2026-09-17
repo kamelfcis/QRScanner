@@ -272,7 +272,11 @@
     "paginationGoToPage": "Go to page {page}",
     "paginationPageOf": "Page {page} of {total}",
     "paginationRowsPerPage": "Rows per page",
-    "paginationShowingRange": "Showing {start}–{end} of {total}"
+    "paginationShowingRange": "Showing {start}–{end} of {total}",
+    "pushPromptTitle": "Get new-order alerts on this device",
+    "pushPromptBody": "Even if the dashboard tab is closed or the phone is locked.",
+    "pushEnable": "Enable notifications",
+    "pushNotNow": "Not now"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -528,6 +532,7 @@
     "subtotal": "Subtotal",
     "discount": "Discount",
     "discountWithCode": "Discount ({code})",
+    "autoDiscount": "Auto discount ({code})",
     "tax": "Tax ({rate}%)",
     "service": "Service ({rate}%)",
     "total": "Total",
@@ -840,6 +845,15 @@
     "copyFailed": "Could not copy the code",
     "typePercent": "% off",
     "typeFixed": "Amount off",
+    "typeBogo": "BOGO",
+    "bogoBuy": "Buy quantity",
+    "bogoGet": "Get free",
+    "bogoOff": "Buy {buy} get {get}",
+    "automatic": "Automatic",
+    "automaticToggle": "Apply automatically (no code at checkout)",
+    "internalCodeHint": "Internal audit code — guests do not enter this.",
+    "stackable": "Stackable",
+    "stackableToggle": "Can combine with other discounts",
     "value": "Value",
     "minSubtotal": "Minimum subtotal",
     "maxDiscount": "Max discount",
@@ -1305,6 +1319,14 @@
     "maxLength": "Must be at most {max} characters",
     "mustBeNumber": "Must be a number",
     "mustBePositive": "Must be a positive number"
+  },
+  "push": {
+    "promptTitle": "Get order alerts on this device",
+    "promptBody": "Enable notifications so new orders reach you even when the dashboard is in the background.",
+    "enable": "Enable alerts",
+    "subscribing": "Enabling…",
+    "notNow": "Not now",
+    "dismiss": "Dismiss"
   },
   "welcome": {
     "welcomeTo": "Welcome to {name}",

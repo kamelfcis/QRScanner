@@ -272,7 +272,11 @@
     "paginationGoToPage": "Go to page {page}",
     "paginationPageOf": "Page {page} of {total}",
     "paginationRowsPerPage": "Rows per page",
-    "paginationShowingRange": "Showing {start}–{end} of {total}"
+    "paginationShowingRange": "Showing {start}–{end} of {total}",
+    "pushPromptTitle": "Nieuwe bestellingen op dit apparaat ontvangen",
+    "pushPromptBody": "Ook als het dashboard-tabblad gesloten is of de telefoon vergrendeld.",
+    "pushEnable": "Meldingen inschakelen",
+    "pushNotNow": "Niet nu"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -528,6 +532,7 @@
     "subtotal": "Subtotaal",
     "discount": "Korting",
     "discountWithCode": "Korting ({code})",
+    "autoDiscount": "Automatische korting ({code})",
     "tax": "BTW ({rate}%)",
     "service": "Service ({rate}%)",
     "total": "Totaal",
@@ -840,6 +845,15 @@
     "copyFailed": "Kon de code niet kopiëren",
     "typePercent": "% korting",
     "typeFixed": "Vast bedrag",
+    "typeBogo": "BOGO",
+    "bogoBuy": "Koop aantal",
+    "bogoGet": "Gratis",
+    "bogoOff": "Koop {buy}, krijg {get}",
+    "automatic": "Automatisch",
+    "automaticToggle": "Automatisch toepassen (geen code)",
+    "internalCodeHint": "Interne auditcode — gasten voeren dit niet in.",
+    "stackable": "Combineerbaar",
+    "stackableToggle": "Kan gecombineerd worden met andere kortingen",
     "value": "Waarde",
     "minSubtotal": "Minimum subtotaal",
     "maxDiscount": "Maximale korting",
@@ -1327,5 +1341,13 @@
     "deliveryDesc": "We brengen uw favoriete gerechten aan huis",
     "tagline": "Een culinaire reis door Libanese en Syrische tradities",
     "heroAlt": "Hero-afbeelding restaurant {name}"
+  },
+  "push": {
+    "promptTitle": "Ordermeldingen op dit apparaat",
+    "promptBody": "Schakel meldingen in om nieuwe bestellingen te ontvangen, ook op de achtergrond.",
+    "enable": "Meldingen inschakelen",
+    "subscribing": "Bezig…",
+    "notNow": "Niet nu",
+    "dismiss": "Sluiten"
   }
 }

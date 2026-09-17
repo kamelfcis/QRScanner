@@ -49,6 +49,11 @@ const emptyForm = {
   max_redemptions: '' as number | '',
   per_phone_limit: 1,
   is_active: true,
+  requires_code: true,
+  is_stackable: false,
+  bogo_buy: 2,
+  bogo_get: 1,
+  min_quantity: 0,
 };
 
 function toDatetimeLocal(iso: string | null): string {
@@ -129,6 +134,11 @@ export default function CouponsPage() {
       max_redemptions: coupon.max_redemptions == null ? '' : coupon.max_redemptions,
       per_phone_limit: coupon.per_phone_limit,
       is_active: coupon.is_active,
+      requires_code: coupon.requires_code !== false,
+      is_stackable: coupon.is_stackable === true,
+      bogo_buy: coupon.bogo_buy ?? 2,
+      bogo_get: coupon.bogo_get ?? 1,
+      min_quantity: coupon.min_quantity ?? 0,
     });
     setFormErrors({});
     setDialogOpen(true);
@@ -138,7 +148,8 @@ export default function CouponsPage() {
     const input: CouponInput = {
       code: form.code,
       discount_type: form.discount_type,
-      discount_value: Number(form.discount_value),
+      discount_value:
+        form.discount_type === 'bogo' ? Number(form.bogo_get) || 1 : Number(form.discount_value),
       min_subtotal: Number(form.min_subtotal) || 0,
       max_discount: form.max_discount === '' ? null : Number(form.max_discount),
       starts_at: fromDatetimeLocal(form.starts_at),
@@ -146,6 +157,11 @@ export default function CouponsPage() {
       max_redemptions: form.max_redemptions === '' ? null : Number(form.max_redemptions),
       per_phone_limit: Number(form.per_phone_limit) || 1,
       is_active: form.is_active,
+      requires_code: form.requires_code,
+      is_stackable: form.is_stackable,
+      bogo_buy: form.discount_type === 'bogo' ? Number(form.bogo_buy) : null,
+      bogo_get: form.discount_type === 'bogo' ? Number(form.bogo_get) : null,
+      min_quantity: Number(form.min_quantity) || 0,
     };
 
     const parsed = couponSchema.safeParse(input);
@@ -269,9 +285,14 @@ export default function CouponsPage() {
                         <TicketPercent className="h-3.5 w-3.5" />
                         {coupon.discount_type === 'percentage'
                           ? t('percentOff', { value: Number(coupon.discount_value) })
-                          : t('amountOff', {
-                              amount: formatCurrencyAmount(Number(coupon.discount_value), currency),
-                            })}
+                          : coupon.discount_type === 'bogo'
+                            ? t('bogoOff', {
+                                buy: coupon.bogo_buy ?? 0,
+                                get: coupon.bogo_get ?? 0,
+                              })
+                            : t('amountOff', {
+                                amount: formatCurrencyAmount(Number(coupon.discount_value), currency),
+                              })}
                       </p>
                       <CardTitle className="font-heading truncate tracking-[0.14em]">
                         {coupon.code}
@@ -284,6 +305,18 @@ export default function CouponsPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <p className="text-muted-foreground text-sm">{uses}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {!coupon.requires_code ? (
+                      <Badge variant="outline" className="border-0 bg-sky-500/10 text-sky-800">
+                        {t('automatic')}
+                      </Badge>
+                    ) : null}
+                    {coupon.is_stackable ? (
+                      <Badge variant="outline" className="border-0 bg-violet-500/10 text-violet-800">
+                        {t('stackable')}
+                      </Badge>
+                    ) : null}
+                  </div>
                   <p className="text-muted-foreground text-xs">
                     {t('perPhone', { count: coupon.per_phone_limit })}
                   </p>
@@ -358,10 +391,12 @@ export default function CouponsPage() {
               </div>
               {formErrors.code ? (
                 <p className="text-destructive text-sm">{formErrors.code}</p>
+              ) : !form.requires_code ? (
+                <p className="text-muted-foreground text-xs">{t('internalCodeHint')}</p>
               ) : null}
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <Button
                 type="button"
                 variant={form.discount_type === 'percentage' ? 'default' : 'outline'}
@@ -378,25 +413,64 @@ export default function CouponsPage() {
               >
                 {t('typeFixed')}
               </Button>
+              <Button
+                type="button"
+                variant={form.discount_type === 'bogo' ? 'default' : 'outline'}
+                className="min-h-11"
+                onClick={() => setForm({ ...form, discount_type: 'bogo', discount_value: 1 })}
+              >
+                {t('typeBogo')}
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="discount-value">{t('value')}</Label>
-                <Input
-                  id="discount-value"
-                  type="number"
-                  min={0}
-                  className="h-11 min-h-11"
-                  value={form.discount_value}
-                  onChange={(event) =>
-                    setForm({ ...form, discount_value: Number(event.target.value) })
-                  }
-                />
-                {formErrors.discount_value ? (
-                  <p className="text-destructive text-sm">{formErrors.discount_value}</p>
-                ) : null}
-              </div>
+              {form.discount_type === 'bogo' ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="bogo-buy">{t('bogoBuy')}</Label>
+                    <Input
+                      id="bogo-buy"
+                      type="number"
+                      min={1}
+                      className="h-11 min-h-11"
+                      value={form.bogo_buy}
+                      onChange={(event) =>
+                        setForm({ ...form, bogo_buy: Number(event.target.value) })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bogo-get">{t('bogoGet')}</Label>
+                    <Input
+                      id="bogo-get"
+                      type="number"
+                      min={1}
+                      className="h-11 min-h-11"
+                      value={form.bogo_get}
+                      onChange={(event) =>
+                        setForm({ ...form, bogo_get: Number(event.target.value) })
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <Label htmlFor="discount-value">{t('value')}</Label>
+                  <Input
+                    id="discount-value"
+                    type="number"
+                    min={0}
+                    className="h-11 min-h-11"
+                    value={form.discount_value}
+                    onChange={(event) =>
+                      setForm({ ...form, discount_value: Number(event.target.value) })
+                    }
+                  />
+                  {formErrors.discount_value ? (
+                    <p className="text-destructive text-sm">{formErrors.discount_value}</p>
+                  ) : null}
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="min-subtotal">{t('minSubtotal')}</Label>
                 <Input
@@ -483,13 +557,31 @@ export default function CouponsPage() {
               </div>
             </div>
 
-            <div className="flex min-h-11 items-center gap-3">
-              <Switch
-                id="coupon-active"
-                checked={form.is_active}
-                onCheckedChange={(value) => setForm({ ...form, is_active: value })}
-              />
-              <Label htmlFor="coupon-active">{tCommon('active')}</Label>
+            <div className="space-y-3">
+              <div className="flex min-h-11 items-center gap-3">
+                <Switch
+                  id="coupon-active"
+                  checked={form.is_active}
+                  onCheckedChange={(value) => setForm({ ...form, is_active: value })}
+                />
+                <Label htmlFor="coupon-active">{tCommon('active')}</Label>
+              </div>
+              <div className="flex min-h-11 items-center gap-3">
+                <Switch
+                  id="coupon-automatic"
+                  checked={!form.requires_code}
+                  onCheckedChange={(value) => setForm({ ...form, requires_code: !value })}
+                />
+                <Label htmlFor="coupon-automatic">{t('automaticToggle')}</Label>
+              </div>
+              <div className="flex min-h-11 items-center gap-3">
+                <Switch
+                  id="coupon-stackable"
+                  checked={form.is_stackable}
+                  onCheckedChange={(value) => setForm({ ...form, is_stackable: value })}
+                />
+                <Label htmlFor="coupon-stackable">{t('stackableToggle')}</Label>
+              </div>
             </div>
           </div>
           <DialogFooter>

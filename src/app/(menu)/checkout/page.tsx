@@ -27,7 +27,11 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp } from '@/lib/motion';
 import { getName, cn } from '@/lib/utils';
 import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
-import { CheckoutCoupon, type AppliedCoupon } from '@/components/checkout/CheckoutCoupon';
+import {
+  CheckoutCoupon,
+  previewCheckoutDiscounts,
+  type AppliedCoupon,
+} from '@/components/checkout/CheckoutCoupon';
 import { couponErrorMessageKey, isCouponErrorCode } from '@/lib/order/coupon-errors';
 import {
   formatCurrencyAmount,
@@ -90,7 +94,9 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
-  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
+  const [manualCoupon, setManualCoupon] = useState<AppliedCoupon | null>(null);
+  const [autoDiscount, setAutoDiscount] = useState<AppliedCoupon | null>(null);
+  const appliedCoupon = manualCoupon ?? autoDiscount;
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = toCurrencyLocale(locale);
@@ -189,12 +195,54 @@ export default function CheckoutPage() {
   );
 
   const handleCouponApplied = useCallback((coupon: AppliedCoupon) => {
-    setAppliedCoupon(coupon);
+    setManualCoupon(coupon);
   }, []);
 
   const handleCouponRemoved = useCallback(() => {
-    setAppliedCoupon(null);
+    setManualCoupon(null);
   }, []);
+
+  const discountCartKey = `${diningMode}|${customerPhone}|${previewItems
+    .map(
+      (item) =>
+        `${item.product_id}:${item.quantity}:${item.size_option ?? ''}:${item.weight_grams ?? ''}`
+    )
+    .join(',')}|${manualCoupon?.code ?? ''}`;
+
+  useEffect(() => {
+    if (!couponsEnabled) {
+      setAutoDiscount(null);
+      return;
+    }
+    if (manualCoupon?.code) return;
+    if (previewItems.length === 0) {
+      setAutoDiscount(null);
+      return;
+    }
+
+    let cancelled = false;
+    void previewCheckoutDiscounts({
+      items: previewItems,
+      diningMode,
+      customerPhone,
+      phoneCountry: detectedDial.country,
+      couponCode: null,
+    }).then((preview) => {
+      if (!cancelled) setAutoDiscount(preview);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    couponsEnabled,
+    customerPhone,
+    detectedDial.country,
+    diningMode,
+    discountCartKey,
+    manualCoupon?.code,
+    previewItems,
+  ]);
 
   useEffect(() => {
     if (!trackedStart && items.length > 0) {
@@ -313,7 +361,7 @@ export default function CheckoutPage() {
             notes: orderNotes || null,
             locale: toCurrencyLocale(locale),
             whatsapp_sent: sendWhatsApp,
-            coupon_code: appliedCoupon?.code ?? null,
+            coupon_code: manualCoupon?.code ?? null,
           }),
         });
 
@@ -346,7 +394,7 @@ export default function CheckoutPage() {
             );
           } else if (isCouponErrorCode(code)) {
             setErrors([t(couponErrorMessageKey(code))]);
-            setAppliedCoupon(null);
+            setManualCoupon(null);
           } else setErrors([t('placeFailed')]);
           setSubmitting(false);
           return;
@@ -401,7 +449,10 @@ export default function CheckoutPage() {
               prep_time_minutes: settings.prep_time_minutes ?? 25,
             },
             coupon:
-              appliedCoupon && appliedCoupon.discountType
+              appliedCoupon &&
+              appliedCoupon.discountType &&
+              (appliedCoupon.discountType === 'percentage' ||
+                appliedCoupon.discountType === 'fixed')
                 ? {
                     type: appliedCoupon.discountType,
                     value: appliedCoupon.discountValue ?? 0,
@@ -641,7 +692,7 @@ export default function CheckoutPage() {
               phoneCountry={detectedDial.country}
               currency={currency}
               currencyLocale={currencyLocale}
-              applied={appliedCoupon}
+              applied={manualCoupon}
               onApplied={handleCouponApplied}
               onRemoved={handleCouponRemoved}
             />
@@ -654,18 +705,38 @@ export default function CheckoutPage() {
                 {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
               </span>
             </div>
-            {totals.discount > 0 && (
-              <div className="flex justify-between text-sm text-[var(--menu-wine)]">
-                <span>
-                  {appliedCoupon?.code
-                    ? t('discountWithCode', { code: appliedCoupon.code })
-                    : t('discount')}
-                </span>
-                <span className="tabular-nums">
-                  −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
-                </span>
-              </div>
-            )}
+            {totals.discount > 0 &&
+              (appliedCoupon?.applications?.length
+                ? appliedCoupon.applications.map((line) => (
+                    <div
+                      key={`${line.code}-${line.discountAmount}`}
+                      className="flex justify-between text-sm text-[var(--menu-wine)]"
+                    >
+                      <span>
+                        {line.requiresCode
+                          ? t('discountWithCode', { code: line.code })
+                          : t('autoDiscount', { code: line.code })}
+                      </span>
+                      <span className="tabular-nums">
+                        −
+                        {formatCurrencyAmount(line.discountAmount, currency, {
+                          locale: currencyLocale,
+                        })}
+                      </span>
+                    </div>
+                  ))
+                : (
+                    <div className="flex justify-between text-sm text-[var(--menu-wine)]">
+                      <span>
+                        {appliedCoupon?.code
+                          ? t('discountWithCode', { code: appliedCoupon.code })
+                          : t('discount')}
+                      </span>
+                      <span className="tabular-nums">
+                        −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
+                      </span>
+                    </div>
+                  ))}
             {totals.applyTax && totals.tax > 0 && (
               <div className="text-muted-foreground flex justify-between text-sm">
                 <span>{t('tax', { rate: totals.taxRate })}</span>

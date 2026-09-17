@@ -272,7 +272,11 @@
     "paginationGoToPage": "Go to page {page}",
     "paginationPageOf": "Page {page} of {total}",
     "paginationRowsPerPage": "Rows per page",
-    "paginationShowingRange": "Showing {start}–{end} of {total}"
+    "paginationShowingRange": "Showing {start}–{end} of {total}",
+    "pushPromptTitle": "Recevoir les nouvelles commandes sur cet appareil",
+    "pushPromptBody": "Même si l’onglet du tableau de bord est fermé ou le téléphone verrouillé.",
+    "pushEnable": "Activer les notifications",
+    "pushNotNow": "Pas maintenant"
   },
   "sidebar": {
     "dashboard": "Tableau de bord",
@@ -528,6 +532,7 @@
     "subtotal": "Sous-total",
     "discount": "Réduction",
     "discountWithCode": "Réduction ({code})",
+    "autoDiscount": "Réduction auto ({code})",
     "tax": "TVA ({rate}%)",
     "service": "Service ({rate}%)",
     "total": "Total",
@@ -840,6 +845,15 @@
     "copyFailed": "Impossible de copier le code",
     "typePercent": "% de réduction",
     "typeFixed": "Montant fixe",
+    "typeBogo": "BOGO",
+    "bogoBuy": "Quantité achetée",
+    "bogoGet": "Gratuit",
+    "bogoOff": "Achetez {buy}, recevez {get}",
+    "automatic": "Automatique",
+    "automaticToggle": "Appliquer automatiquement (sans code)",
+    "internalCodeHint": "Code interne d’audit — le client ne le saisit pas.",
+    "stackable": "Cumulable",
+    "stackableToggle": "Peut se cumuler avec d'autres réductions",
     "value": "Valeur",
     "minSubtotal": "Sous-total minimum",
     "maxDiscount": "Réduction max",
@@ -1327,5 +1341,13 @@
     "deliveryDesc": "Nous livrons vos plats préférés à votre porte",
     "tagline": "Un voyage culinaire à travers les traditions libanaises et syriennes",
     "heroAlt": "Image héro du restaurant {name}"
+  },
+  "push": {
+    "promptTitle": "Alertes de commande sur cet appareil",
+    "promptBody": "Activez les notifications pour recevoir les nouvelles commandes même en arrière-plan.",
+    "enable": "Activer les alertes",
+    "subscribing": "Activation…",
+    "notNow": "Plus tard",
+    "dismiss": "Fermer"
   }
 }

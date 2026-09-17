@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { resolveCountryCode } from '@/lib/phone/country-dial';
 import { normalizeLocalPhone } from '@/lib/phone/normalize';
+import { sendNewOrderPushes } from '@/lib/push/send-new-order-pushes';
 import { staffPlaceOrderSchema } from '@/types/schema';
 
 export const runtime = 'nodejs';
@@ -97,6 +98,14 @@ export async function POST(request: Request) {
     if (error) {
       const code = extractRpcCode(error.message) ?? 'invalid_payload';
       return jsonError(error.message || 'Failed to place order', ERROR_STATUS[code] ?? 400, code);
+    }
+
+    const result = data as { id?: string; order_number?: string };
+    if (result.id && result.order_number) {
+      const placed = { orderId: result.id, orderNumber: result.order_number };
+      after(() => {
+        void sendNewOrderPushes(placed);
+      });
     }
 
     return NextResponse.json(data);

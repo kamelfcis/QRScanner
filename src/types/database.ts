@@ -242,6 +242,16 @@ export interface DeliveryLocation {
   updated_at: string;
 }
 
+export interface PushSubscriptionRecord {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string | null;
+  created_at: string;
+}
+
 export interface Order {
   id: string;
   order_number: string;
@@ -289,7 +299,7 @@ export interface OrderItem {
   image_url?: string | null;
 }
 
-export type CouponDiscountType = 'percentage' | 'fixed';
+export type CouponDiscountType = 'percentage' | 'fixed' | 'bogo';
 
 export interface Coupon {
   id: string;
@@ -304,8 +314,24 @@ export interface Coupon {
   per_phone_limit: number;
   is_active: boolean;
   redeemed_count: number;
+  requires_code: boolean;
+  is_stackable: boolean;
+  bogo_buy: number | null;
+  bogo_get: number | null;
+  product_ids: string[] | null;
+  min_quantity: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface PushSubscription {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string | null;
+  created_at: string;
 }
 
 export interface CouponRedemption {
