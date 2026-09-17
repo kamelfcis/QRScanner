@@ -2,7 +2,7 @@ import path from 'node:path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['pdf-parse', '@napi-rs/canvas'],
+  serverExternalPackages: ['pdf-parse', '@napi-rs/canvas', 'web-push'],
   // Prevent Turbopack from mis-inferring workspace root (can crash long-running `next dev`)
   turbopack: {
     root: path.join(__dirname),
