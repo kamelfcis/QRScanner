@@ -261,12 +261,13 @@ export default function OrdersPage() {
   return (
     <div className="space-y-5">
       {hasHettSamakaTier3 ? (
-        <CashierActionTiles
-          unackedCount={unacknowledged.length}
-          onNewOrder={() => setComposerOpen(true)}
-          onFocusNew={() => handleStatusFocus('new')}
-          onOpenSoldOut={() => setSoldOutOpen(true)}
-        />
+        <>
+          <CashierActionTiles
+            onNewOrder={() => setComposerOpen(true)}
+            onOpenSoldOut={() => setSoldOutOpen(true)}
+          />
+          <SoldOutPanel open={soldOutOpen} onOpenChange={setSoldOutOpen} hideTrigger />
+        </>
       ) : null}
 
       {unacknowledged.length > 0 ? (
@@ -310,17 +311,7 @@ export default function OrdersPage() {
         </div>
       ) : null}
 
-      {hasHettSamakaTier3 ? (
-        <>
-          <CashierActionTiles
-            unackedCount={unacknowledged.length}
-            onNewOrder={() => setComposerOpen(true)}
-            onFocusNew={() => handleStatusFocus('new')}
-            onOpenSoldOut={() => setSoldOutOpen(true)}
-          />
-          <SoldOutPanel open={soldOutOpen} onOpenChange={setSoldOutOpen} hideTrigger />
-        </>
-      ) : (
+      {hasHettSamakaTier3 ? null : (
         <div className="flex justify-end">
           <SoldOutPanel triggerClassName="sm:w-auto" />
         </div>
