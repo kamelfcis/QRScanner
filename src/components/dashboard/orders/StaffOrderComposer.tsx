@@ -214,11 +214,15 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         }
         requestAnimationFrame(() => searchRef.current?.focus());
       } else {
+        if (pending) {
+          setPending(null);
+          return;
+        }
         resetForm();
       }
       onOpenChange(next);
     },
-    [onOpenChange, resetForm, t]
+    [onOpenChange, pending, resetForm, t]
   );
 
   useEffect(() => {
@@ -1074,7 +1078,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
 
   const body = (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      {mobileTabs}
+      {!pending ? mobileTabs : null}
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 md:grid-cols-[minmax(0,55%)_minmax(0,45%)] lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-4">
         {catalogPanel}
         {ticketPanel}

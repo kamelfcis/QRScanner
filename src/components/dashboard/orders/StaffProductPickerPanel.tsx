@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Image } from '@/components/shared/Image';
@@ -51,8 +52,16 @@ export function StaffProductPickerPanel({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="min-h-0 flex-1 overflow-y-auto p-3">
-        <div className="flex items-center gap-3">
+      <div className="bg-card sticky top-0 z-10 border-b">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="focus-visible:ring-ring flex min-h-12 w-full touch-manipulation items-center gap-2 px-3 py-2 text-start focus-visible:outline-none focus-visible:ring-2"
+        >
+          <ChevronRight className="size-5 shrink-0 rtl:rotate-180" aria-hidden="true" />
+          <span className="text-sm font-medium">{t('staffBackToMenu')}</span>
+        </button>
+        <div className="flex items-center gap-3 px-3 pb-3">
           {product.image_url ? (
             <div className="relative size-12 shrink-0 overflow-hidden rounded-lg">
               <Image src={product.image_url} alt="" fill sizes="48px" className="object-cover" />
@@ -67,9 +76,11 @@ export function StaffProductPickerPanel({
             </p>
           </div>
         </div>
+      </div>
 
+      <div className="min-h-0 flex-1 overflow-y-auto p-3">
         {needsSize ? (
-          <div className="mt-4 space-y-2">
+          <div className="space-y-2">
             <Label className="text-muted-foreground text-xs">{t('staffSelectSize')}</Label>
             <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('staffSelectSize')}>
               {(['small', 'large'] as const).map((size) => {
@@ -82,7 +93,7 @@ export function StaffProductPickerPanel({
                     type="button"
                     onClick={() => onSizeChange(size)}
                     className={cn(
-                      'focus-visible:ring-ring min-h-11 touch-manipulation rounded-xl border px-3 py-2.5 text-start focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
+                      'focus-visible:ring-ring min-h-12 touch-manipulation rounded-xl border px-3 py-2.5 text-start focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
                       selected
                         ? 'border-secondary bg-secondary/10 text-secondary'
                         : 'border-border hover:bg-muted/50'
@@ -103,7 +114,7 @@ export function StaffProductPickerPanel({
         ) : null}
 
         {needsWeight ? (
-          <div className="mt-4 space-y-2">
+          <div className={cn('space-y-2', needsSize && 'mt-4')}>
             <Label className="text-muted-foreground text-xs">{t('staffSelectWeight')}</Label>
             <div
               className="grid grid-cols-3 gap-2 sm:grid-cols-4"
@@ -119,7 +130,7 @@ export function StaffProductPickerPanel({
                     type="button"
                     onClick={() => onWeightChange(grams)}
                     className={cn(
-                      'focus-visible:ring-ring min-h-11 touch-manipulation rounded-xl border px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
+                      'focus-visible:ring-ring min-h-12 touch-manipulation rounded-xl border px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none',
                       selected
                         ? 'border-secondary bg-secondary/10 text-secondary'
                         : 'border-border hover:bg-muted/50'
@@ -139,12 +150,12 @@ export function StaffProductPickerPanel({
       </div>
 
       <div className="bg-card sticky bottom-0 flex gap-2 border-t p-3">
-        <Button type="button" variant="outline" className="min-h-11 flex-1" onClick={onCancel}>
-          {t('staffCancelPicker')}
+        <Button type="button" variant="outline" className="min-h-12 flex-1" onClick={onCancel}>
+          {t('staffBackToMenu')}
         </Button>
         <Button
           type="button"
-          className="min-h-11 flex-1"
+          className="min-h-12 flex-1"
           disabled={!canConfirm}
           onClick={onConfirm}
         >
