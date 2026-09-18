@@ -733,7 +733,14 @@
     "staffAddToTicket": "Ajouter au ticket",
     "staffSelectSize": "Choisir la taille",
     "staffSelectWeight": "Choisir le poids",
-    "staffCancelPicker": "Annuler"
+    "staffCancelPicker": "Annuler",
+    "staffWalkInName": "Comptoir",
+    "cashierTilePad": "Raccourcis caisse",
+    "cashierTileNewOrder": "Nouvelle commande",
+    "cashierTileUnacked": "Nouveau",
+    "cashierTileKitchen": "Cuisine",
+    "cashierTileShift": "Clôture",
+    "cashierTileSoldOut": "Épuisé"
   },
   "kitchen": {
     "title": "Écran cuisine",

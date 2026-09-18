@@ -6,14 +6,22 @@ import { Button } from '@/components/ui/button';
 import { SoldOutPanel } from '@/components/dashboard/sold-out/SoldOutPanel';
 import { useOrderAlerts } from '@/hooks/useOrderAlerts';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { CashierBottomNav, useShowCashierBottomNav } from '@/components/dashboard/CashierBottomNav';
+import { cn } from '@/lib/utils';
 
 export function KitchenShell({ children }: { children: React.ReactNode }) {
   const t = useTranslations('kitchen');
   const tOrders = useTranslations('orders');
+  const showCashierNav = useShowCashierBottomNav();
   const { soundBlocked, enableSound, prefersReducedMotion, unacknowledged } = useOrderAlerts();
 
   return (
-    <div className="bg-muted/20 flex h-dvh h-screen flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]">
+    <div
+      className={cn(
+        'bg-muted/20 flex h-dvh h-screen flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]',
+        showCashierNav && 'max-md:pb-[calc(3.5rem+env(safe-area-inset-bottom))]'
+      )}
+    >
       <header className="bg-background/95 supports-backdrop-filter:backdrop-blur-sm sticky top-0 z-30 border-b px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
@@ -66,6 +74,7 @@ export function KitchenShell({ children }: { children: React.ReactNode }) {
       >
         {children}
       </main>
+      <CashierBottomNav />
     </div>
   );
 }

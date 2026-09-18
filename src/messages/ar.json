@@ -733,7 +733,14 @@
     "staffAddToTicket": "إضافة للطلب",
     "staffSelectSize": "اختر الحجم",
     "staffSelectWeight": "اختر الوزن",
-    "staffCancelPicker": "إلغاء"
+    "staffCancelPicker": "إلغاء",
+    "staffWalkInName": "كاشير",
+    "cashierTilePad": "اختصارات الكاشير",
+    "cashierTileNewOrder": "طلب جديد",
+    "cashierTileUnacked": "جديد",
+    "cashierTileKitchen": "مطبخ",
+    "cashierTileShift": "شفت",
+    "cashierTileSoldOut": "نفد"
   },
   "kitchen": {
     "title": "شاشة المطبخ",

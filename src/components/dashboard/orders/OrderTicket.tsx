@@ -26,7 +26,8 @@ import { cn, getLocalizedText } from '@/lib/utils';
 import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
-import { COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
+import { hasHettSamakaTier3 } from '@/i18n/config';
+import { COLUMN_TONE, NEXT_STATUS_ACTION_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isUnacknowledged(order: OrderWithItems): boolean {
   return order.status === 'new' && !order.staff_acknowledged_at;
@@ -267,7 +268,7 @@ export function OrderTicket({
             type="button"
             className={cn(
               'hover:bg-muted/40 flex min-h-11 w-full flex-col gap-2 rounded-t-xl p-3 text-start transition-colors duration-200 motion-reduce:transition-none',
-              !expanded && 'rounded-b-xl'
+              !expanded && !needsAck && !nextStatus && 'rounded-b-xl'
             )}
             aria-expanded={expanded}
             aria-label={expanded ? t('collapseItems') : t('expandItems')}
@@ -275,7 +276,12 @@ export function OrderTicket({
           >
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className="font-heading text-lg font-semibold tabular-nums">
+                <p
+                  className={cn(
+                    'font-heading text-lg font-semibold tabular-nums',
+                    hasHettSamakaTier3 && 'text-[#1C1917] dark:text-stone-100'
+                  )}
+                >
                   {order.order_number}
                 </p>
                 <time dateTime={order.created_at} className="text-muted-foreground block text-xs">
@@ -356,10 +362,17 @@ export function OrderTicket({
           </button>
 
           {needsAck || nextStatus ? (
-            <div className="grid gap-2 px-3 pb-3">
+            <div
+              className="grid gap-2 border-t px-3 py-3"
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
               {needsAck ? (
                 <Button
-                  className="min-h-11 bg-amber-600 text-white hover:bg-amber-700"
+                  className={cn(
+                    'min-h-12 w-full text-base font-semibold',
+                    hasHettSamakaTier3 && 'bg-[#D97706] text-white hover:bg-amber-700'
+                  )}
                   disabled={busy}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -371,7 +384,11 @@ export function OrderTicket({
               ) : null}
               {nextStatus ? (
                 <Button
-                  className="min-h-11"
+                  className={cn(
+                    'min-h-12 w-full text-base font-semibold',
+                    hasHettSamakaTier3 &&
+                      (NEXT_STATUS_ACTION_TONE[nextStatus] ?? 'bg-primary text-primary-foreground')
+                  )}
                   disabled={busy}
                   onClick={(e) => {
                     e.stopPropagation();

@@ -733,7 +733,14 @@
     "staffAddToTicket": "Add to ticket",
     "staffSelectSize": "Choose size",
     "staffSelectWeight": "Choose weight",
-    "staffCancelPicker": "Cancel"
+    "staffCancelPicker": "Cancel",
+    "staffWalkInName": "Walk-in",
+    "cashierTilePad": "Cashier shortcuts",
+    "cashierTileNewOrder": "New order",
+    "cashierTileUnacked": "New",
+    "cashierTileKitchen": "Kitchen",
+    "cashierTileShift": "Shift",
+    "cashierTileSoldOut": "Sold out"
   },
   "kitchen": {
     "title": "Kitchen display",

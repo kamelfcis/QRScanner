@@ -77,7 +77,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];
 
-const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shift']);
+export const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shift']);
 
 export function getDashboardNav(
   features?: FeatureSettings | null,

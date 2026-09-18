@@ -50,6 +50,7 @@ import {
 } from '@/hooks/useStaffOrder';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { hasHettSamakaTier3 } from '@/i18n/config';
 import { formatDeliveryLocationOption } from '@/lib/order/delivery-location';
 import {
   formatCurrencyAmount,
@@ -194,7 +195,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setDiningMode('dining');
     setFulfillmentType('pickup');
     setTableNumber('');
-    setCustomerName('');
+    setCustomerName(hasHettSamakaTier3 ? t('staffWalkInName') : '');
     setCustomerPhone('');
     setDeliveryLocationId(null);
     setDeliveryAddressDetails('');
@@ -203,20 +204,21 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setAutoDiscount(null);
     setPending(null);
     setMobilePane('catalog');
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const frame = requestAnimationFrame(() => searchRef.current?.focus());
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
+  }, [t]);
 
   const handleOpenChange = useCallback(
     (next: boolean) => {
-      if (!next) resetForm();
+      if (next) {
+        if (hasHettSamakaTier3) {
+          setCustomerName(t('staffWalkInName'));
+        }
+        requestAnimationFrame(() => searchRef.current?.focus());
+      } else {
+        resetForm();
+      }
       onOpenChange(next);
     },
-    [onOpenChange, resetForm]
+    [onOpenChange, resetForm, t]
   );
 
   useEffect(() => {
@@ -266,29 +268,6 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     [lines, diningMode]
   );
 
-  const localTotals = useMemo(
-    () =>
-      calculateOrderTotals(
-        pricedLines.map((line) => ({ quantity: line.quantity, unitPrice: line.unitPrice })),
-        settings,
-        null,
-        deliveryFee
-      ),
-    [pricedLines, settings, deliveryFee]
-  );
-
-  const previewedDiscount = appliedCoupon ?? autoDiscount;
-  const totals = previewedDiscount
-    ? {
-        ...localTotals,
-        subtotal: previewedDiscount.subtotal,
-        discount: previewedDiscount.discountAmount,
-        tax: previewedDiscount.tax,
-        service: previewedDiscount.service,
-        total: previewedDiscount.total + deliveryFee,
-      }
-    : localTotals;
-
   const previewItems = useMemo(
     () =>
       lines.map((line) => ({
@@ -301,16 +280,11 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     [lines]
   );
 
+  const autoDiscountEligible =
+    couponsEnabled && open && !appliedCoupon?.code && previewItems.length > 0;
+
   useEffect(() => {
-    if (!couponsEnabled || !open) {
-      setAutoDiscount(null);
-      return;
-    }
-    if (appliedCoupon?.code) return;
-    if (previewItems.length === 0) {
-      setAutoDiscount(null);
-      return;
-    }
+    if (!autoDiscountEligible) return;
 
     let cancelled = false;
     void previewCheckoutDiscounts({
@@ -326,7 +300,32 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     return () => {
       cancelled = true;
     };
-  }, [appliedCoupon?.code, couponsEnabled, customerPhone, diningMode, open, previewItems]);
+  }, [autoDiscountEligible, customerPhone, diningMode, previewItems]);
+
+  const effectiveAutoDiscount = autoDiscountEligible ? autoDiscount : null;
+
+  const localTotals = useMemo(
+    () =>
+      calculateOrderTotals(
+        pricedLines.map((line) => ({ quantity: line.quantity, unitPrice: line.unitPrice })),
+        settings,
+        null,
+        deliveryFee
+      ),
+    [pricedLines, settings, deliveryFee]
+  );
+
+  const previewedDiscount = appliedCoupon ?? effectiveAutoDiscount;
+  const totals = previewedDiscount
+    ? {
+        ...localTotals,
+        subtotal: previewedDiscount.subtotal,
+        discount: previewedDiscount.discountAmount,
+        tax: previewedDiscount.tax,
+        service: previewedDiscount.service,
+        total: previewedDiscount.total + deliveryFee,
+      }
+    : localTotals;
 
   const noActiveLocations =
     requiresDelivery && !locationsLoading && (deliveryLocations?.length ?? 0) === 0;
@@ -462,7 +461,14 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         />
       </div>
 
-      <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:thin]">
+      <div
+        className={cn(
+          'gap-1.5',
+          hasHettSamakaTier3
+            ? 'flex max-h-[5.75rem] flex-wrap overflow-y-auto'
+            : '-mx-1 flex overflow-x-auto px-1 pb-0.5 [scrollbar-width:thin]'
+        )}
+      >
         <button
           type="button"
           onClick={() => setCategoryId(null)}
@@ -515,7 +521,14 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         ) : filteredProducts.length === 0 ? (
           <p className="text-muted-foreground p-4 text-center text-sm">{tMenu('noProducts')}</p>
         ) : (
-          <ul className="grid min-h-0 flex-1 grid-cols-1 gap-px overflow-y-auto p-1 sm:grid-cols-2 xl:grid-cols-3">
+          <ul
+            className={cn(
+              'grid min-h-0 flex-1 overflow-y-auto',
+              hasHettSamakaTier3
+                ? 'grid-cols-2 gap-2 p-2 sm:grid-cols-3 xl:grid-cols-4'
+                : 'grid-cols-1 gap-px p-1 sm:grid-cols-2 xl:grid-cols-3'
+            )}
+          >
             {filteredProducts.map((product) => {
               const name = getName(
                 locale,
@@ -541,6 +554,51 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                     },
                     diningMode
                   );
+
+              if (hasHettSamakaTier3) {
+                return (
+                  <li key={product.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleProductTap(product)}
+                      className="hover:bg-muted/60 focus-visible:ring-ring bg-card flex aspect-square min-h-20 w-full touch-manipulation flex-col overflow-hidden rounded-xl border text-start shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 motion-reduce:transition-none"
+                    >
+                      {product.image_url ? (
+                        <div className="relative min-h-0 w-full flex-1 overflow-hidden">
+                          <Image
+                            src={product.image_url}
+                            alt=""
+                            fill
+                            sizes="(max-width: 640px) 45vw, 160px"
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-muted min-h-0 w-full flex-1" />
+                      )}
+                      <div className="shrink-0 border-t px-2 py-1.5">
+                        <p className="font-heading line-clamp-2 text-xs font-semibold leading-tight">
+                          {name}
+                        </p>
+                        <p className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-1 text-[0.65rem]">
+                          {previewPrice != null ? (
+                            <span className="text-foreground font-semibold tabular-nums">
+                              {formatCurrencyAmount(previewPrice, currency, {
+                                locale: currencyLocale,
+                              })}
+                            </span>
+                          ) : null}
+                          {weighted || product.has_size_options ? (
+                            <span className="text-secondary font-semibold uppercase tracking-wide">
+                              {weighted ? t('staffWeightHint') : t('staffSizeHint')}
+                            </span>
+                          ) : null}
+                        </p>
+                      </div>
+                    </button>
+                  </li>
+                );
+              }
 
               return (
                 <li key={product.id}>

@@ -35,7 +35,14 @@ import {
 import { OrderTicket } from '@/components/dashboard/orders/OrderTicket';
 import { OrdersCleanupDialog } from '@/components/dashboard/orders/OrdersCleanupDialog';
 import { StaffOrderComposer } from '@/components/dashboard/orders/StaffOrderComposer';
-import { ACTIVE_COLUMNS, COLUMN_TONE } from '@/components/dashboard/orders/column-tone';
+import { CashierActionTiles } from '@/components/dashboard/orders/CashierActionTiles';
+import {
+  ACTIVE_COLUMNS,
+  COLUMN_STAMP,
+  COLUMN_TONE,
+  COLUMN_TONE_POS,
+} from '@/components/dashboard/orders/column-tone';
+import { hasHettSamakaTier3 } from '@/i18n/config';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
 
@@ -73,6 +80,7 @@ export default function OrdersPage() {
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [soldOutOpen, setSoldOutOpen] = useState(false);
   const [deletingOrder, setDeletingOrder] = useState<OrderWithItems | null>(null);
   const pendingColumn = useRef<OrderStatus | null>(null);
 
@@ -252,10 +260,22 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-5">
+      {hasHettSamakaTier3 ? (
+        <CashierActionTiles
+          unackedCount={unacknowledged.length}
+          onNewOrder={() => setComposerOpen(true)}
+          onFocusNew={() => handleStatusFocus('new')}
+          onOpenSoldOut={() => setSoldOutOpen(true)}
+        />
+      ) : null}
+
       {unacknowledged.length > 0 ? (
         <div
           role="alert"
-          className="sticky top-0 z-20 flex flex-col gap-3 rounded-xl border border-amber-400/80 bg-amber-50 p-4 shadow-sm dark:bg-amber-950/40"
+          className={cn(
+            'flex flex-col gap-3 rounded-xl border border-amber-400/80 bg-amber-50 p-4 shadow-sm dark:bg-amber-950/40',
+            !hasHettSamakaTier3 && 'sticky top-0 z-20'
+          )}
         >
           <div className="flex items-start gap-3">
             <BellRing
@@ -271,7 +291,7 @@ export default function OrdersPage() {
               </p>
             </div>
             <Button
-              className="min-h-11 shrink-0"
+              className="min-h-12 shrink-0"
               disabled={busy}
               onClick={() => void handleAcknowledgeAll()}
             >
@@ -290,9 +310,21 @@ export default function OrdersPage() {
         </div>
       ) : null}
 
-      <div className="flex justify-end">
-        <SoldOutPanel triggerClassName="sm:w-auto" />
-      </div>
+      {hasHettSamakaTier3 ? (
+        <>
+          <CashierActionTiles
+            unackedCount={unacknowledged.length}
+            onNewOrder={() => setComposerOpen(true)}
+            onFocusNew={() => handleStatusFocus('new')}
+            onOpenSoldOut={() => setSoldOutOpen(true)}
+          />
+          <SoldOutPanel open={soldOutOpen} onOpenChange={setSoldOutOpen} hideTrigger />
+        </>
+      ) : (
+        <div className="flex justify-end">
+          <SoldOutPanel triggerClassName="sm:w-auto" />
+        </div>
+      )}
 
       <OrdersCommandHeader
         tab={tab}
@@ -306,6 +338,7 @@ export default function OrdersPage() {
         onStatusFocus={handleStatusFocus}
         onCleanup={allowHardDelete ? () => setCleanupOpen(true) : undefined}
         onNewStaffOrder={() => setComposerOpen(true)}
+        compact={hasHettSamakaTier3}
       />
 
       {tab === 'cancelled' ? (
@@ -338,13 +371,16 @@ export default function OrdersPage() {
               id={ordersColumnId(status)}
               key={status}
               tabIndex={-1}
-              className="bg-muted/30 focus-visible:ring-ring min-w-[280px] snap-start scroll-mt-24 rounded-2xl border p-3 outline-none focus-visible:ring-2 md:min-w-0"
+              className={cn(
+                'focus-visible:ring-ring min-w-[280px] snap-start scroll-mt-24 rounded-2xl border p-3 outline-none focus-visible:ring-2 md:min-w-0',
+                hasHettSamakaTier3 ? COLUMN_STAMP[status] : 'bg-muted/30'
+              )}
               aria-label={t(`status.${status}`)}
             >
               <div
                 className={cn(
                   'mb-3 flex items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5',
-                  COLUMN_TONE[status]
+                  hasHettSamakaTier3 ? COLUMN_TONE_POS[status] : COLUMN_TONE[status]
                 )}
               >
                 <h2 className="text-sm font-semibold">{t(`status.${status}`)}</h2>
@@ -402,6 +438,9 @@ export default function OrdersPage() {
 
       <OrdersCleanupDialog open={cleanupOpen} onOpenChange={setCleanupOpen} />
       <StaffOrderComposer open={composerOpen} onOpenChange={setComposerOpen} />
+      {hasHettSamakaTier3 ? (
+        <SoldOutPanel hideTrigger open={soldOutOpen} onOpenChange={setSoldOutOpen} />
+      ) : null}
     </div>
   );
 }

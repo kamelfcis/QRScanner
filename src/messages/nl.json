@@ -733,7 +733,14 @@
     "staffAddToTicket": "Toevoegen aan ticket",
     "staffSelectSize": "Kies maat",
     "staffSelectWeight": "Kies gewicht",
-    "staffCancelPicker": "Annuleren"
+    "staffCancelPicker": "Annuleren",
+    "staffWalkInName": "Balie",
+    "cashierTilePad": "Kassa snelkoppelingen",
+    "cashierTileNewOrder": "Nieuwe bestelling",
+    "cashierTileUnacked": "Nieuw",
+    "cashierTileKitchen": "Keuken",
+    "cashierTileShift": "Dienst",
+    "cashierTileSoldOut": "Uitverkocht"
   },
   "kitchen": {
     "title": "Keukenscherm",

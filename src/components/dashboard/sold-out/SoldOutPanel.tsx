@@ -23,11 +23,25 @@ import { cn } from '@/lib/utils';
 export function SoldOutPanel({
   triggerClassName,
   variant = 'outline',
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger = false,
 }: {
   triggerClassName?: string;
   variant?: 'outline' | 'secondary' | 'default';
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+
+  const handleOpenChange = (next: boolean) => {
+    if (!isControlled) setInternalOpen(next);
+    onOpenChange?.(next);
+  };
+
   const [query, setQuery] = useState('');
   const { locale, dir } = useI18n();
   const t = useTranslations('soldOut');
@@ -70,25 +84,27 @@ export function SoldOutPanel({
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
-        render={
-          <Button
-            type="button"
-            variant={variant}
-            className={cn('min-h-11', triggerClassName)}
-            aria-label={t('title')}
-          />
-        }
-      >
-        <Ban className="me-2 h-4 w-4 shrink-0" aria-hidden="true" />
-        {t('title')}
-        {soldOutCount > 0 ? (
-          <span className="bg-destructive/15 text-destructive ms-2 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums">
-            {soldOutCount}
-          </span>
-        ) : null}
-      </SheetTrigger>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
+      {!hideTrigger ? (
+        <SheetTrigger
+          render={
+            <Button
+              type="button"
+              variant={variant}
+              className={cn('min-h-11', triggerClassName)}
+              aria-label={t('title')}
+            />
+          }
+        >
+          <Ban className="me-2 h-4 w-4 shrink-0" aria-hidden="true" />
+          {t('title')}
+          {soldOutCount > 0 ? (
+            <span className="bg-destructive/15 text-destructive ms-2 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums">
+              {soldOutCount}
+            </span>
+          ) : null}
+        </SheetTrigger>
+      ) : null}
       <SheetContent
         side={dir === 'rtl' ? 'left' : 'right'}
         className="flex w-full flex-col gap-0 sm:max-w-md"
