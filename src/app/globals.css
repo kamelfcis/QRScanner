@@ -984,3 +984,7 @@ textarea,
     transform: none;
   }
 }
+
+@utility unicode-bidi-plaintext {
+  unicode-bidi: plaintext;
+}

@@ -122,6 +122,11 @@ export const RECEIPT_SLIP_CSS = `
   color: #5c5c5c;
   letter-spacing: 0.35em;
 }
+.order-receipt-slip .receipt-phone {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: left;
+}
 `;
 
 function waitForImages(root: ParentNode): Promise<void> {

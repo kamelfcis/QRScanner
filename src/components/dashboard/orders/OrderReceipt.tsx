@@ -61,7 +61,11 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
       ) : null}
       <p className="receipt-shop">{shopName}</p>
       {address ? <p className="receipt-meta">{address}</p> : null}
-      {shopPhone ? <p className="receipt-meta">{shopPhone}</p> : null}
+      {shopPhone ? (
+        <p className="receipt-meta receipt-phone" dir="ltr">
+          {shopPhone}
+        </p>
+      ) : null}
 
       <hr className="receipt-rule" />
 
@@ -173,7 +177,7 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
         {order.customer_name}
       </p>
       {customerPhone ? (
-        <p className="receipt-meta" style={{ textAlign: 'start' }}>
+        <p className="receipt-meta receipt-phone" dir="ltr">
           {customerPhone}
         </p>
       ) : null}
