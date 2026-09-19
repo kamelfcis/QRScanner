@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getConfiguredImageApiKey, isAiImageGenerationConfigured } from '@/lib/ai/image-provider';
 import { ProductImageAiError, sanitizeErrorMessage } from '@/lib/ai/product-image';
 import { autoAssignProductImage } from '@/lib/ai/product-image-auto';
 import { categoryRelationNameFields } from '@/lib/catalog/keys';
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!process.env.GEMINI_API_KEY?.trim()) {
+    if (!isAiImageGenerationConfigured()) {
       return jsonError('AI image generation is not configured', 503, 'not_configured');
     }
 
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
       scores: result.scores,
     });
   } catch (err) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = getConfiguredImageApiKey() ?? undefined;
     if (err instanceof ProductImageAiError) {
       const message = sanitizeErrorMessage(err.message, apiKey);
       return jsonError(message, err.status, err.code, productId || undefined);

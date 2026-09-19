@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getConfiguredImageApiKey, isAiImageGenerationConfigured } from '@/lib/ai/image-provider';
 import {
   ProductImageAiError,
   buildEnhancePrompt,
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!process.env.GEMINI_API_KEY?.trim()) {
+    if (!isAiImageGenerationConfigured()) {
       return jsonError('AI image generation is not configured', 503, 'not_configured');
     }
 
@@ -99,7 +100,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ images: uploaded });
   } catch (err) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = getConfiguredImageApiKey() ?? undefined;
     if (err instanceof ProductImageAiError) {
       const message = sanitizeErrorMessage(err.message, apiKey);
       return jsonError(message, err.status, err.code);

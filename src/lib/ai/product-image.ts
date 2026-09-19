@@ -1,3 +1,5 @@
+import { getAiImageProvider, getConfiguredImageApiKey } from '@/lib/ai/image-provider';
+
 const DEFAULT_IMAGE_MODEL = 'gemini-2.5-flash-image';
 const CANDIDATE_COUNT = 4;
 const REQUEST_TIMEOUT_MS = 25_000;
@@ -46,7 +48,7 @@ function getApiKey(): string {
       500
     );
   }
-  const key = process.env.GEMINI_API_KEY?.trim();
+  const key = getConfiguredImageApiKey();
   if (!key) {
     throw new ProductImageAiError('AI image generation is not configured', 'not_configured', 503);
   }
@@ -66,6 +68,8 @@ export function sanitizeErrorMessage(message: string, apiKey?: string): string {
   out = out.replace(/x-goog-api-key["'\s:=]+[^&\s"'\\]+/gi, 'x-goog-api-key=[redacted]');
   out = out.replace(/AIza[0-9A-Za-z_-]+/g, '[redacted]');
   out = out.replace(/AQ\.[0-9A-Za-z_-]+/g, '[redacted]');
+  out = out.replace(/sk-proj-[0-9A-Za-z_-]+/g, '[redacted]');
+  out = out.replace(/sk-[0-9A-Za-z_-]+/g, '[redacted]');
   return out;
 }
 
@@ -208,7 +212,7 @@ function extractInlineImage(parts: GeminiPart[] | undefined): GeneratedImageByte
   return null;
 }
 
-async function generateProductImageCandidate(
+async function generateGeminiProductImageCandidate(
   prompt: string,
   sourceImage?: SourceImageBytes
 ): Promise<GeneratedImageBytes> {
@@ -290,6 +294,17 @@ async function generateProductImageCandidate(
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function generateProductImageCandidate(
+  prompt: string,
+  sourceImage?: SourceImageBytes
+): Promise<GeneratedImageBytes> {
+  if (getAiImageProvider() === 'openai') {
+    const { generateOpenAiProductImageCandidate } = await import('@/lib/ai/openai-product-image');
+    return generateOpenAiProductImageCandidate(prompt, sourceImage);
+  }
+  return generateGeminiProductImageCandidate(prompt, sourceImage);
 }
 
 export async function generateProductImageCandidates(

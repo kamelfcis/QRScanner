@@ -1,4 +1,6 @@
+import OpenAI from 'openai';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { getAiImageProvider } from '@/lib/ai/image-provider';
 import {
   ProductImageAiError,
   buildGeneratePrompt,
@@ -9,7 +11,8 @@ import {
 } from '@/lib/ai/product-image';
 import { uploadAiProductImage } from '@/lib/ai/product-image-storage';
 
-const DEFAULT_VISION_MODEL = 'gemini-2.5-flash';
+const DEFAULT_GEMINI_VISION_MODEL = 'gemini-2.5-flash';
+const DEFAULT_OPENAI_VISION_MODEL = 'gpt-4o-mini';
 const RANKING_TIMEOUT_MS = 25_000;
 
 export interface PickBestResult {
@@ -36,7 +39,7 @@ export type AutoAssignResult =
       scores: number[];
     };
 
-function getApiKey(): string {
+function getGeminiApiKey(): string {
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) {
     throw new ProductImageAiError('AI image generation is not configured', 'not_configured', 503);
@@ -44,8 +47,20 @@ function getApiKey(): string {
   return key;
 }
 
-function getVisionModel(): string {
-  return process.env.GEMINI_VISION_MODEL?.trim() || DEFAULT_VISION_MODEL;
+function getOpenAiApiKey(): string {
+  const key = process.env.OPENAI_API_KEY?.trim();
+  if (!key) {
+    throw new ProductImageAiError('AI image generation is not configured', 'not_configured', 503);
+  }
+  return key;
+}
+
+function getGeminiVisionModel(): string {
+  return process.env.GEMINI_VISION_MODEL?.trim() || DEFAULT_GEMINI_VISION_MODEL;
+}
+
+function getOpenAiVisionModel(): string {
+  return process.env.OPENAI_VISION_MODEL?.trim() || DEFAULT_OPENAI_VISION_MODEL;
 }
 
 function buildRankingPrompt(input: ProductImagePromptInput, candidateCount: number): string {
@@ -104,19 +119,12 @@ function parseRankingResponse(text: string, candidateCount: number): PickBestRes
   }
 }
 
-export async function pickBestProductImageCandidate(
+async function pickBestWithGeminiVision(
   input: ProductImagePromptInput,
   candidates: GeneratedImageBytes[]
 ): Promise<PickBestResult> {
-  if (candidates.length === 0) {
-    throw new ProductImageAiError('Failed to generate product image', 'generation_failed', 500);
-  }
-  if (candidates.length === 1) {
-    return { bestIndex: 0, scores: [10] };
-  }
-
-  const apiKey = getApiKey();
-  const model = getVisionModel();
+  const apiKey = getGeminiApiKey();
+  const model = getGeminiVisionModel();
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
 
   const parts: Array<Record<string, unknown>> = [
@@ -151,7 +159,7 @@ export async function pickBestProductImageCandidate(
     const rawText = await response.text();
     if (!response.ok) {
       console.warn(
-        '[ai/product-image-auto] ranking failed, using first candidate:',
+        '[ai/product-image-auto] Gemini ranking failed, using first candidate:',
         sanitizeErrorMessage(rawText, apiKey)
       );
       return { bestIndex: 0, scores: [] };
@@ -176,11 +184,75 @@ export async function pickBestProductImageCandidate(
 
     return parseRankingResponse(text, candidates.length);
   } catch (err) {
-    console.warn('[ai/product-image-auto] ranking error, using first candidate:', err);
+    console.warn('[ai/product-image-auto] Gemini ranking error, using first candidate:', err);
     return { bestIndex: 0, scores: [] };
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function pickBestWithOpenAiVision(
+  input: ProductImagePromptInput,
+  candidates: GeneratedImageBytes[]
+): Promise<PickBestResult> {
+  const apiKey = getOpenAiApiKey();
+  const model = getOpenAiVisionModel();
+  const client = new OpenAI({ apiKey, timeout: RANKING_TIMEOUT_MS });
+
+  try {
+    const response = await client.chat.completions.create({
+      model,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: buildRankingPrompt(input, candidates.length) },
+            ...candidates.map(
+              (candidate) =>
+                ({
+                  type: 'image_url',
+                  image_url: {
+                    url: `data:${candidate.mimeType};base64,${candidate.data.toString('base64')}`,
+                  },
+                }) as const
+            ),
+          ],
+        },
+      ],
+      response_format: { type: 'json_object' },
+    });
+
+    const text = response.choices[0]?.message?.content?.trim();
+    if (!text) {
+      return { bestIndex: 0, scores: [] };
+    }
+
+    return parseRankingResponse(text, candidates.length);
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : String(err);
+    console.warn(
+      '[ai/product-image-auto] OpenAI ranking failed, using first candidate:',
+      sanitizeErrorMessage(raw, apiKey)
+    );
+    return { bestIndex: 0, scores: [] };
+  }
+}
+
+export async function pickBestProductImageCandidate(
+  input: ProductImagePromptInput,
+  candidates: GeneratedImageBytes[]
+): Promise<PickBestResult> {
+  if (candidates.length === 0) {
+    throw new ProductImageAiError('Failed to generate product image', 'generation_failed', 500);
+  }
+  if (candidates.length === 1) {
+    return { bestIndex: 0, scores: [10] };
+  }
+
+  if (getAiImageProvider() === 'openai') {
+    return pickBestWithOpenAiVision(input, candidates);
+  }
+  return pickBestWithGeminiVision(input, candidates);
 }
 
 export async function autoAssignProductImage(
