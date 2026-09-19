@@ -8,6 +8,7 @@ import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
+import { isAiImageGenerationConfigured } from '../src/lib/ai/image-provider';
 import { autoAssignProductImage } from '../src/lib/ai/product-image-auto';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -114,8 +115,10 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   loadLocalEnv();
 
-  if (!process.env.GEMINI_API_KEY?.trim() && !args.dryRun) {
-    throw new Error('GEMINI_API_KEY is required (set in .env.local or environment)');
+  if (!isAiImageGenerationConfigured() && !args.dryRun) {
+    throw new Error(
+      'AI image generation is not configured (set GEMINI_API_KEY or OPENAI_API_KEY with AI_IMAGE_PROVIDER=openai)'
+    );
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
