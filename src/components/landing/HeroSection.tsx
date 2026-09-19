@@ -12,7 +12,7 @@ import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
-import { getHeroImageUrlOrFallback } from '@/lib/hero-image';
+import { getHeroImageUrlOrNull } from '@/lib/hero-image';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -41,7 +41,7 @@ export function HeroSection() {
 
   const featuredImages = gallery?.filter((item) => item.is_featured && item.image_url) || [];
   const hasCarousel = featuredImages.length > 0;
-  const heroImage = getHeroImageUrlOrFallback(settings?.hero_image_url);
+  const heroImage = getHeroImageUrlOrNull(settings?.hero_image_url);
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const heroAriaLabel = `${t('heroWelcome')} ${name}`;
@@ -125,7 +125,7 @@ export function HeroSection() {
               />
             </motion.div>
           </AnimatePresence>
-        ) : (
+        ) : heroImage ? (
           <NextImage
             src={heroImage}
             alt={name}
@@ -137,7 +137,7 @@ export function HeroSection() {
               !prefersReducedMotion && 'landing-hero-image'
             )}
           />
-        )}
+        ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/45" />
       </div>
 

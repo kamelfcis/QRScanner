@@ -17,6 +17,7 @@ export function PublicFooter() {
   const name = getRestaurantDisplayName(locale, settings);
   const address = resolveContactAddress(settings, locale);
   const whatsappHref = settings?.whatsapp ? buildCustomerWhatsAppUrl(settings.whatsapp) : '';
+  const tagline = settings?.tagline?.trim() || t('premiumDining');
 
   return (
     <footer className="bg-muted/50 border-t">
@@ -29,7 +30,7 @@ export function PublicFooter() {
               )}
               <h3 className="text-primary font-heading text-lg font-bold">{name}</h3>
             </div>
-            <p className="text-muted-foreground mt-2 text-sm">{t('premiumDining')}</p>
+            <p className="text-muted-foreground mt-2 text-sm">{tagline}</p>
           </div>
 
           <div>

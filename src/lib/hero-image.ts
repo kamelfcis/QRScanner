@@ -29,11 +29,18 @@ export function getHeroImageUrl(heroImageUrl?: string | null): string | null {
   return tenantDefaultHero();
 }
 
-/** @deprecated Prefer getHeroImageUrl; kept for callers that require a non-null string. */
+/** Returns hero URL or null when none is configured (no Warda fallback for non-warda tenants). */
+export function getHeroImageUrlOrNull(heroImageUrl?: string | null): string | null {
+  return getHeroImageUrl(heroImageUrl);
+}
+
+/** @deprecated Prefer getHeroImageUrlOrNull; kept for callers that require a non-null string. */
 export const DEFAULT_HERO = WARDA_DEFAULT_HERO;
 
 export function getHeroImageUrlOrFallback(heroImageUrl?: string | null): string {
-  return getHeroImageUrl(heroImageUrl) ?? WARDA_DEFAULT_HERO;
+  const url = getHeroImageUrl(heroImageUrl);
+  if (url) return url;
+  return tenantDefaultHero() ?? WARDA_DEFAULT_HERO;
 }
 
 export function getTenantIdForHero(): string | undefined {
