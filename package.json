@@ -11,7 +11,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,mdx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,mdx}\"",
     "prepare": "husky",
-    "check": "npm run type-check && npm run lint"
+    "check": "npm run type-check && npm run lint",
+    "test": "vitest run"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -53,6 +54,7 @@
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

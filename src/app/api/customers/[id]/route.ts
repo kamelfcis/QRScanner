@@ -5,11 +5,9 @@ import { getRegistrationLogoPublicUrl } from '@/lib/engaz/customer-logo';
 import { isToggleableCustomerStatus } from '@/lib/engaz/status';
 import type { CustomerStatus } from '@/lib/engaz/types';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
+import { resolveLiveLogos } from '@/server/customers/resolve-live-logos';
 import { syncVercelForCustomerStatus } from '@/server/provision/customer-status';
-import {
-  DeleteCustomerError,
-  deleteCustomerRecord,
-} from '@/server/provision/delete-customer';
+import { DeleteCustomerError, deleteCustomerRecord } from '@/server/provision/delete-customer';
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -108,10 +106,15 @@ export async function GET(_request: Request, ctx: Ctx) {
     }
   }
 
+  const liveLogos = await resolveLiveLogos([id]);
+  const registrationLogoUrl = getRegistrationLogoPublicUrl(merged.logo_path);
+
   return NextResponse.json({
     customer: {
       ...merged,
-      logo_url: getRegistrationLogoPublicUrl(merged.logo_path),
+      registration_logo_url: registrationLogoUrl,
+      live_logo_url: liveLogos.get(id) ?? null,
+      logo_url: registrationLogoUrl,
     },
     jobs: jobs || [],
     latestJob: latestJob || null,

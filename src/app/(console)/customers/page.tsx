@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CustomersView } from '@/components/engaz/CustomersView';
 import { getRegistrationLogoPublicUrl } from '@/lib/engaz/customer-logo';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
+import { resolveLiveLogos } from '@/server/customers/resolve-live-logos';
 
 export default async function CustomersPage() {
   await requireSuperAdmin();
@@ -11,9 +12,13 @@ export default async function CustomersPage() {
     .select('*')
     .order('created_at', { ascending: false });
 
-  const rows = (customers || []).map((c) => ({
+  const customerList = customers || [];
+  const liveLogos = await resolveLiveLogos(customerList.map((c) => c.id));
+
+  const rows = customerList.map((c) => ({
     ...c,
-    logo_url: getRegistrationLogoPublicUrl(c.logo_path),
+    registration_logo_url: getRegistrationLogoPublicUrl(c.logo_path),
+    live_logo_url: liveLogos.get(c.id) ?? null,
   }));
 
   return (

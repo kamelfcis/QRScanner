@@ -2,26 +2,26 @@
 
 import { useMemo, useState } from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { customerLogoFallbackLetter, getCustomerFaviconUrls } from '@/lib/engaz/customer-logo';
+import { buildLogoCandidates, customerLogoFallbackLetter } from '@/lib/engaz/customer-logo';
 import { cn } from '@/lib/utils';
 
 type CustomerLogoProps = {
-  productionUrl: string | null;
   displayName: string;
-  logoUrl?: string | null;
+  liveLogoUrl?: string | null;
+  registrationLogoUrl?: string | null;
   size?: 'default' | 'sm' | 'lg' | 'xl' | '2xl';
 };
 
 export function CustomerLogo({
-  productionUrl,
   displayName,
-  logoUrl,
+  liveLogoUrl,
+  registrationLogoUrl,
   size = 'sm',
 }: CustomerLogoProps) {
-  const candidates = useMemo(() => {
-    const favicons = getCustomerFaviconUrls(productionUrl);
-    return logoUrl ? [logoUrl, ...favicons] : favicons;
-  }, [logoUrl, productionUrl]);
+  const candidates = useMemo(
+    () => buildLogoCandidates({ liveLogoUrl, registrationLogoUrl }),
+    [liveLogoUrl, registrationLogoUrl]
+  );
   const [candidateIndex, setCandidateIndex] = useState(0);
   const src = candidates[candidateIndex] ?? null;
 
@@ -29,9 +29,11 @@ export function CustomerLogo({
     setCandidateIndex((index) => index + 1);
   }
 
+  const showFallback = candidateIndex >= candidates.length;
+
   return (
     <Avatar size={size}>
-      {src ? (
+      {!showFallback && src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}

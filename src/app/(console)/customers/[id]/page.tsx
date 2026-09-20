@@ -31,6 +31,8 @@ type Detail = {
     city: string | null;
     logo_path: string | null;
     logo_url: string | null;
+    live_logo_url: string | null;
+    registration_logo_url: string | null;
     menu_path: string | null;
     registration_source: string | null;
     onboarding_notes: string | null;
@@ -315,9 +317,9 @@ export default function CustomerDetailPage() {
             <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <div className="flex items-center gap-3 sm:col-span-2 lg:col-span-3">
                 <CustomerLogo
-                  productionUrl={c.production_url}
                   displayName={c.display_name_en}
-                  logoUrl={c.logo_url}
+                  liveLogoUrl={c.live_logo_url}
+                  registrationLogoUrl={c.registration_logo_url ?? c.logo_url}
                   size="2xl"
                 />
                 <div className="text-muted-foreground text-xs">
@@ -333,7 +335,7 @@ export default function CustomerDetailPage() {
               {c.onboarding_notes && (
                 <div className="sm:col-span-2 lg:col-span-3">
                   <div className="text-muted-foreground text-xs">Notes</div>
-                  <div className="text-sm whitespace-pre-wrap">{c.onboarding_notes}</div>
+                  <div className="whitespace-pre-wrap text-sm">{c.onboarding_notes}</div>
                 </div>
               )}
               <div>

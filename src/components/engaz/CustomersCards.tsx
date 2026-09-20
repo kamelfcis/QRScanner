@@ -53,10 +53,10 @@ export function CustomersCards({
           >
             <div className="flex items-start gap-4">
               <CustomerLogo
-                key={c.logo_url ?? c.production_url ?? c.id}
-                productionUrl={c.production_url}
+                key={c.live_logo_url ?? c.registration_logo_url ?? c.id}
                 displayName={c.display_name_en}
-                logoUrl={c.logo_url}
+                liveLogoUrl={c.live_logo_url}
+                registrationLogoUrl={c.registration_logo_url}
                 size="2xl"
               />
               <div className="min-w-0 flex-1 space-y-1">

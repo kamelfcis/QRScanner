@@ -1,3 +1,5 @@
+export const CUSTOMER_LOGO_PLACEHOLDER_PATH = '/brand/customer-logo-placeholder.svg';
+
 export function getRegistrationLogoPublicUrl(logoPath: string | null | undefined): string | null {
   if (!logoPath) return null;
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '');
@@ -5,6 +7,22 @@ export function getRegistrationLogoPublicUrl(logoPath: string | null | undefined
   return `${base}/storage/v1/object/public/registration-logos/${logoPath}`;
 }
 
+export function getCustomerLogoPlaceholderPath(): string {
+  return CUSTOMER_LOGO_PLACEHOLDER_PATH;
+}
+
+export function buildLogoCandidates(options: {
+  liveLogoUrl?: string | null;
+  registrationLogoUrl?: string | null;
+}): string[] {
+  const candidates: string[] = [];
+  if (options.liveLogoUrl) candidates.push(options.liveLogoUrl);
+  if (options.registrationLogoUrl) candidates.push(options.registrationLogoUrl);
+  candidates.push(getCustomerLogoPlaceholderPath());
+  return candidates;
+}
+
+/** @deprecated Not used in CustomerLogo fallback chain; kept for optional debug tooling. */
 export function getCustomerFaviconUrls(productionUrl: string | null): string[] {
   if (!productionUrl) {
     return [];

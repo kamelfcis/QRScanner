@@ -18,7 +18,8 @@ export type CustomerListItem = {
   production_url: string | null;
   registration_source?: string | null;
   owner_email?: string | null;
-  logo_url?: string | null;
+  live_logo_url?: string | null;
+  registration_logo_url?: string | null;
   created_at?: string | null;
 };
 
@@ -64,10 +65,10 @@ export function CustomersTable({
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <CustomerLogo
-                      key={c.logo_url ?? c.production_url ?? c.id}
-                      productionUrl={c.production_url}
+                      key={c.live_logo_url ?? c.registration_logo_url ?? c.id}
                       displayName={c.display_name_en}
-                      logoUrl={c.logo_url}
+                      liveLogoUrl={c.live_logo_url}
+                      registrationLogoUrl={c.registration_logo_url}
                       size="xl"
                     />
                     <div className="min-w-0">
