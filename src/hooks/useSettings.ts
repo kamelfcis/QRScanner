@@ -138,6 +138,14 @@ export function useUpdateSettings() {
   });
 }
 
+async function revalidateRestaurantSettingsCache(): Promise<void> {
+  try {
+    await fetch('/api/settings/revalidate', { method: 'POST' });
+  } catch {
+    // Non-blocking: icon cache will still refresh on TTL
+  }
+}
+
 export function useUpdateRestaurantSettings() {
   const queryClient = useQueryClient();
 
@@ -164,8 +172,9 @@ export function useUpdateRestaurantSettings() {
       if (error) throw error;
       return data.value as unknown as RestaurantSettings;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      await revalidateRestaurantSettingsCache();
     },
   });
 }

@@ -4,8 +4,10 @@ import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings'
 
 export const SITE_ICON_REVALIDATE = 300;
 
+const DEFAULT_ICON_PATH = path.join(process.cwd(), 'public/engaz-default-icon.svg');
+
 async function readFallbackSvg(): Promise<Response> {
-  const svg = await readFile(path.join(process.cwd(), 'public/favicon.svg'));
+  const svg = await readFile(DEFAULT_ICON_PATH);
   return new Response(svg, {
     headers: {
       'Content-Type': 'image/svg+xml',
