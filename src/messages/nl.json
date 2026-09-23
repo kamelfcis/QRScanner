@@ -1297,7 +1297,13 @@
     "title": "U bent offline",
     "description": "Controleer uw internetverbinding en probeer opnieuw.",
     "goHome": "Terug naar home",
-    "youAreOffline": "You are offline. Some features may be unavailable."
+    "tryAgain": "Opnieuw proberen",
+    "youAreOffline": "U bent offline. Sommige functies zijn mogelijk niet beschikbaar.",
+    "cachedMenu": "Opgeslagen menu — offline",
+    "viewMenu": "Menu bekijken",
+    "dashboardBlocked": "Offline — acties uitgeschakeld tot de verbinding terugkeert",
+    "staleData": "Weerspiegelt mogelijk niet de laatste updates",
+    "menuOfflineHint": "Offline — uw opgeslagen menu is mogelijk nog beschikbaar"
   },
   "pwa": {
     "installTitle": "{name} installeren",

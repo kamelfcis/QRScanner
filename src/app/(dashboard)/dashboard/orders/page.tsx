@@ -45,6 +45,7 @@ import {
 import { hasHettSamakaTier3 } from '@/i18n/config';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
+import { useDashboardOffline } from '@/components/dashboard/DashboardOfflineGuard';
 
 function isSameLocalDay(iso: string): boolean {
   const date = new Date(iso);
@@ -76,6 +77,7 @@ export default function OrdersPage() {
   const deleteOrder = useDeleteOrder();
   const { data: staffRole } = useStaffRole();
   const allowHardDelete = canHardDeleteOrders(staffRole);
+  const { mutationsBlocked: offlineBlocked } = useDashboardOffline();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);
@@ -253,6 +255,7 @@ export default function OrdersPage() {
   const currency = settings?.currency ?? todayActive[0]?.currency;
   const formattedRevenue = formatCurrencyAmount(todayRevenue, currency, { locale: currencyLocale });
   const busy =
+    offlineBlocked ||
     updateStatus.isPending ||
     markWhatsApp.isPending ||
     acknowledgeOrder.isPending ||
@@ -263,6 +266,7 @@ export default function OrdersPage() {
       {hasHettSamakaTier3 ? (
         <>
           <CashierActionTiles
+            disabled={offlineBlocked}
             onNewOrder={() => setComposerOpen(true)}
             onOpenSoldOut={() => setSoldOutOpen(true)}
           />

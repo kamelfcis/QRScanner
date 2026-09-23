@@ -1,10 +1,6 @@
-const CACHE_NAME = 'doctorburger-v1';
-const STATIC_ASSETS = [
-  '/',
-  '/menu',
-  '/offline',
-  '/icons/icon.svg',
-];
+importScripts('/sw-routing.js');
+
+const { CACHE_NAME, STATIC_ASSETS, getRouteStrategy } = self.SwRouting;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -17,42 +13,95 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
       Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
+        cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
       )
     )
   );
   self.clients.claim();
 });
 
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  const response = await fetch(request);
+  if (response && response.status === 200) {
+    const clone = response.clone();
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, clone);
+  }
+  return response;
+}
+
+async function networkFirstDocument(request) {
+  try {
+    const response = await fetch(request);
+    if (response && response.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    const offline = await caches.match('/offline');
+    if (offline) return offline;
+    throw new Error('Offline');
+  }
+}
+
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const request = event.request;
+  if (request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin && !url.hostname.includes('supabase')) {
+    return;
+  }
 
-      return fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
+  const strategy = getRouteStrategy(url, request);
+
+  if (strategy === 'network-only') return;
+
+  if (strategy === 'cache-first') {
+    event.respondWith(cacheFirst(request));
+    return;
+  }
+
+  if (strategy === 'stale-while-revalidate') {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(request);
+
+        const refresh = fetch(request)
+          .then((response) => {
+            if (response && response.status === 200) {
+              cache.put(request, response.clone());
+            }
             return response;
-          }
+          })
+          .catch(() => null);
 
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+        if (cached) {
+          event.waitUntil(refresh);
+          return cached;
+        }
 
-          return response;
-        })
-        .catch(() => {
-          if (event.request.destination === 'document') {
-            return caches.match('/offline');
-          }
+        const response = await refresh;
+        if (response) return response;
+        return new Response(JSON.stringify({ error: 'Offline' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
         });
-    })
-  );
+      })()
+    );
+    return;
+  }
+
+  if (strategy === 'network-first') {
+    event.respondWith(networkFirstDocument(request));
+  }
 });
 
 self.addEventListener('push', (event) => {

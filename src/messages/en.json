@@ -1298,7 +1298,13 @@
     "title": "You are offline",
     "description": "Please check your internet connection and try again.",
     "goHome": "Go back home",
-    "youAreOffline": "You are offline. Some features may be unavailable."
+    "tryAgain": "Try again",
+    "youAreOffline": "You are offline. Some features may be unavailable.",
+    "cachedMenu": "Saved menu — offline",
+    "viewMenu": "View menu",
+    "dashboardBlocked": "Offline — actions disabled until connection returns",
+    "staleData": "May not reflect the latest updates",
+    "menuOfflineHint": "Offline — your saved menu may still be available"
   },
   "pwa": {
     "installTitle": "Install {name}",

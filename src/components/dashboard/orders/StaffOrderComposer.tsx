@@ -51,6 +51,7 @@ import {
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { hasHettSamakaTier3 } from '@/i18n/config';
+import { useDashboardOffline } from '@/components/dashboard/DashboardOfflineGuard';
 import { formatDeliveryLocationOption } from '@/lib/order/delivery-location';
 import {
   formatCurrencyAmount,
@@ -163,6 +164,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const { data: catalog, isLoading: catalogLoading } = useStaffOrderCatalog();
   const { data: deliveryLocations, isLoading: locationsLoading } = useDeliveryLocations();
   const placeOrder = usePlaceStaffOrder();
+  const { mutationsBlocked: offlineBlocked } = useDashboardOffline();
 
   const couponsEnabled = features?.coupons === true;
 
@@ -400,7 +402,8 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     customerName.trim().length > 0 &&
     !noActiveLocations &&
     !(requiresDelivery && !deliveryLocationId) &&
-    !placeOrder.isPending;
+    !placeOrder.isPending &&
+    !offlineBlocked;
 
   const handleSubmit = async () => {
     if (!canSubmit) return;

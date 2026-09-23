@@ -2,8 +2,13 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getCartStorageKey, migrateLegacyCartStorage } from '@/lib/cart/storage-key';
 import { playSound } from '@/lib/ux/sound';
 import { triggerHaptic } from '@/lib/ux/haptic';
+
+if (typeof window !== 'undefined') {
+  migrateLegacyCartStorage();
+}
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
@@ -204,7 +209,7 @@ export const useCartStore = create<CartState>()(
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
     }),
     {
-      name: 'warda-cart-v1',
+      name: getCartStorageKey(),
       partialize: (state) => ({
         items: state.items,
         diningMode: state.diningMode,

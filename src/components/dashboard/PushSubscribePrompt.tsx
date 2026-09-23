@@ -5,6 +5,7 @@ import { Bell, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { hasHettSamakaTier3 } from '@/i18n/config';
+import { ensureServiceWorkerRegistered } from '@/components/pwa/ServiceWorkerRegistrar';
 import { cn } from '@/lib/utils';
 
 const DISMISS_KEY = 'hettsamaka:push-prompt-dismissed';
@@ -21,8 +22,8 @@ function urlBase64ToUint8Array(base64String: string): BufferSource {
 }
 
 async function persistPushSubscription(vapidPublicKey: string) {
-  const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-  await navigator.serviceWorker.ready;
+  const registration = await ensureServiceWorkerRegistered();
+  if (!registration) throw new Error('Service worker unavailable');
 
   const subscription = await registration.pushManager.subscribe({
     userVisibleOnly: true,
@@ -122,8 +123,8 @@ export function PushSubscribePrompt() {
   return (
     <div
       className={cn(
-        'fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-xl border bg-background p-4 shadow-lg',
-        'sm:inset-x-auto sm:end-6 sm:bottom-6'
+        'bg-background fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-xl border p-4 shadow-lg',
+        'sm:inset-x-auto sm:bottom-6 sm:end-6'
       )}
       role="dialog"
       aria-labelledby="push-prompt-title"

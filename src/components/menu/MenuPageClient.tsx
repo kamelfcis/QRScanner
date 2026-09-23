@@ -40,6 +40,8 @@ import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
 import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
 import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
+import { useOfflineMenuFallback, useWarmMenuSnapshot } from '@/hooks/useMenuSnapshot';
+import { hasOfflinePwa } from '@/i18n/config';
 
 export function MenuPageClient() {
   return (
@@ -58,6 +60,12 @@ function MenuContent() {
   const modeParam = searchParams.get('mode');
   const cartParam = searchParams.get('cart');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
+  const { categories: displayCategories, isCachedView } = useOfflineMenuFallback(
+    categories,
+    isLoading,
+    error
+  );
+  useWarmMenuSnapshot(Boolean(categories?.length));
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [spyCategory, setSpyCategory] = useState<string | null>(null);
@@ -69,6 +77,7 @@ function MenuContent() {
   const orderModes = useMemo(() => resolveOrderModes(settings), [settings]);
   const { locale } = useI18n();
   const t = useTranslations('menu');
+  const tOffline = useTranslations('offline');
   const setMeta = useCartStore((s) => s.setMeta);
 
   // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
@@ -101,11 +110,11 @@ function MenuContent() {
   }, [diningMode, setMeta]);
 
   useEffect(() => {
-    if (activeCategory && categories) {
-      const cat = categories.find((c) => c.id === activeCategory);
+    if (activeCategory && displayCategories) {
+      const cat = displayCategories.find((c) => c.id === activeCategory);
       if (cat) trackCategoryView(cat.id, cat.name_en, cat.name_ar);
     }
-  }, [activeCategory, categories]);
+  }, [activeCategory, displayCategories]);
 
   useEffect(() => {
     if (tableParam) {
@@ -117,7 +126,7 @@ function MenuContent() {
   }, [tableParam, setMeta]);
 
   useEffect(() => {
-    if (!settings) return;
+    if (!settings || isCachedView) return;
     const options = getFulfillmentOptions(orderModes);
     if (options.length === 0) return;
     const current = useCartStore.getState().fulfillmentType;
@@ -127,7 +136,7 @@ function MenuContent() {
       fulfillmentType: fallback,
       ...(fallback === 'pickup' ? { deliveryAddress: '' } : {}),
     });
-  }, [settings, orderModes, setMeta]);
+  }, [settings, orderModes, setMeta, isCachedView]);
 
   useEffect(() => {
     if (cartParam !== '1') return;
@@ -183,8 +192,8 @@ function MenuContent() {
 
   const handleRecentlyViewedClick = useCallback(
     (productId: string) => {
-      if (!categories) return;
-      for (const cat of categories) {
+      if (!displayCategories) return;
+      for (const cat of displayCategories) {
         const found = cat.products.find((p) => p.id === productId);
         if (found) {
           handleProductClick(found);
@@ -192,16 +201,16 @@ function MenuContent() {
         }
       }
     },
-    [categories, handleProductClick]
+    [displayCategories, handleProductClick]
   );
 
   const categoryIds = useMemo(
-    () => (categories ?? []).map((category) => category.id),
-    [categories]
+    () => (displayCategories ?? []).map((category) => category.id),
+    [displayCategories]
   );
   const { setTapGuard } = useCategoryScrollSpy({
     categoryIds,
-    enabled: Boolean(categories?.length) && activeCategory === null,
+    enabled: Boolean(displayCategories?.length) && activeCategory === null,
     onActiveChange: setSpyCategory,
   });
 
@@ -221,7 +230,7 @@ function MenuContent() {
   const navActiveCategory = activeCategory ?? spyCategory;
 
   const filteredCategories = useMemo(() => {
-    const catalog = categories ?? [];
+    const catalog = displayCategories ?? [];
     if (activeCategory) {
       return catalog.filter((c) => c.id === activeCategory);
     }
@@ -229,8 +238,8 @@ function MenuContent() {
       ...category,
       products: shuffleCopy(category.products, allShuffleSeed ^ hashSeed(category.id)),
     }));
-  }, [activeCategory, categories, allShuffleSeed]);
-  const hasCatalog = Boolean(categories?.length);
+  }, [activeCategory, displayCategories, allShuffleSeed]);
+  const hasCatalog = Boolean(displayCategories?.length);
 
   return (
     <div
@@ -240,6 +249,18 @@ function MenuContent() {
       <MenuThemeScope />
       <QrScanTracker />
       <OrdersPausedBanner />
+
+      {isCachedView ? (
+        <div
+          role="status"
+          className="border-b border-amber-200/80 bg-amber-50 px-4 py-2 text-center text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100"
+        >
+          {tOffline('cachedMenu')}
+          {hasOfflinePwa ? (
+            <span className="text-muted-foreground ms-2 text-xs">({tOffline('staleData')})</span>
+          ) : null}
+        </div>
+      ) : null}
 
       <MenuHeader
         tableParam={tableParam}
@@ -261,7 +282,7 @@ function MenuContent() {
 
       {hasCatalog && (
         <CategoryNav
-          categories={categories!}
+          categories={displayCategories!}
           activeCategory={navActiveCategory}
           onCategoryChange={handleCategoryChange}
         />
@@ -271,7 +292,7 @@ function MenuContent() {
 
       {isLoading && <MenuGridSkeleton />}
 
-      {!isLoading && error && (
+      {!isLoading && error && !hasCatalog && (
         <div className="mx-auto max-w-6xl px-4 py-16">
           <ErrorState error={error} retry={refetch} />
         </div>

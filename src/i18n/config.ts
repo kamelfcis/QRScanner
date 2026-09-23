@@ -41,6 +41,9 @@ export const hasHettSamakaTier1 = tenant === 'hettsamaka';
 /** Tier 3 ops (hettsamaka only): quick wins, expenses ledger, staff roles, web push. */
 export const hasHettSamakaTier3 = tenant === 'hettsamaka';
 
+/** Offline PWA: cached menu snapshot, RQ persist, dashboard write guard (hettsamaka only). */
+export const hasOfflinePwa = tenant === 'hettsamaka';
+
 /** When false, hide landing "Signature Dishes" section (NEXT_PUBLIC_HIDE_FEATURED_DISHES=true). */
 export const showLandingFeaturedDishes = process.env.NEXT_PUBLIC_HIDE_FEATURED_DISHES !== 'true';
 

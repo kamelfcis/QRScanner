@@ -1297,7 +1297,13 @@
     "title": "Vous êtes hors ligne",
     "description": "Vérifiez votre connexion Internet et réessayez.",
     "goHome": "Retour à l'accueil",
-    "youAreOffline": "You are offline. Some features may be unavailable."
+    "tryAgain": "Réessayer",
+    "youAreOffline": "Vous êtes hors ligne. Certaines fonctionnalités peuvent être indisponibles.",
+    "cachedMenu": "Menu enregistré — hors ligne",
+    "viewMenu": "Voir le menu",
+    "dashboardBlocked": "Hors ligne — actions désactivées jusqu'au retour du réseau",
+    "staleData": "Peut ne pas refléter les dernières mises à jour",
+    "menuOfflineHint": "Hors ligne — votre menu enregistré peut rester disponible"
   },
   "pwa": {
     "installTitle": "Installer {name}",

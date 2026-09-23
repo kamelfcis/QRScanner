@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { getCartStorageKey } from '@/lib/cart/storage-key';
 import { makeCartLineId, useCartStore } from '@/stores/cart-store';
 
 const sample = {
@@ -89,16 +90,19 @@ describe('useCartStore', () => {
       fulfillmentType: 'delivery',
       deliveryAddress: '123 Main St',
     });
-    const raw = localStorage.getItem('aklet-cart-v1');
+    const storageKey = useCartStore.persist.getOptions().name ?? getCartStorageKey();
+    expect(storageKey).toBe(getCartStorageKey());
+    const raw = localStorage.getItem(storageKey);
     const parsed = JSON.parse(raw!);
     expect(parsed.state.fulfillmentType).toBe('delivery');
     expect(parsed.state.deliveryAddress).toBe('123 Main St');
   });
 
-  it('persists to localStorage under warda-cart-v1', () => {
+  it('persists to localStorage under tenant-scoped cart key', () => {
     useCartStore.getState().addItem({ ...sample, quantity: 1 });
     useCartStore.getState().setMeta({ diningMode: 'takeaway', tableNumber: '3' });
-    const raw = localStorage.getItem('warda-cart-v1');
+    const storageKey = useCartStore.persist.getOptions().name ?? getCartStorageKey();
+    const raw = localStorage.getItem(storageKey);
     expect(raw).toBeTruthy();
     const parsed = JSON.parse(raw!);
     expect(parsed.state.items).toHaveLength(1);

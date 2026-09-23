@@ -47,7 +47,9 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     name: `${displayName} - Restaurant`,
     short_name: shortName,
     description: `${displayName} - Digital restaurant menu. Browse dishes, view offers, and order online.`,
-    start_url: '/',
+    start_url:
+      process.env.NEXT_PUBLIC_PWA_START_URL ||
+      (process.env.NEXT_PUBLIC_TENANT === 'hettsamaka' ? '/menu' : '/'),
     display: 'standalone',
     background_color: theme.background_color,
     theme_color: theme.primary_color,

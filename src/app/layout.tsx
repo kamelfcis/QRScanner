@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
+import { ServiceWorkerRegistrar } from '@/components/pwa/ServiceWorkerRegistrar';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
@@ -147,6 +148,7 @@ export default async function RootLayout({
             <TooltipProvider delay={0}>
               {children}
               <QueryProvider>
+                <ServiceWorkerRegistrar />
                 <InstallPrompt />
               </QueryProvider>
               <OfflineIndicator />

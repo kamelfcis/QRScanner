@@ -22,6 +22,7 @@ import { pctChange } from '@/lib/analytics/compare-period';
 import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
 import { hasHettSamakaTier3 } from '@/i18n/config';
+import { useDashboardOffline } from '@/components/dashboard/DashboardOfflineGuard';
 import { useExpensesForMonth, useExpensesForRange, sumExpenses } from '@/hooks/useExpenses';
 
 export default function ShiftPage() {
@@ -32,6 +33,7 @@ export default function ShiftPage() {
   const { data: settings } = useRestaurantSettings();
   const { printPage } = useExport();
   const closeShift = useCloseShift();
+  const { mutationsBlocked: offlineBlocked } = useDashboardOffline();
   const { data: recentCloses } = useRecentShiftCloses();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [notes, setNotes] = useState('');
@@ -184,7 +186,7 @@ export default function ShiftPage() {
             <Button
               type="button"
               className="min-h-11"
-              disabled={!kpis || closeShift.isPending}
+              disabled={!kpis || closeShift.isPending || offlineBlocked}
               onClick={() => setConfirmOpen(true)}
             >
               <Scale className="me-2 h-4 w-4" aria-hidden="true" />
