@@ -28,6 +28,16 @@ export const scaleIn: Variants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.45, ease } },
 };
 
+/** Light checkmark entrance. Callers must skip this when reduced motion is on. */
+export const successSpringIn: Variants = {
+  hidden: { opacity: 0, scale: 0.72 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 420, damping: 22, mass: 0.65 },
+  },
+};
+
 export const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
