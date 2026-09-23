@@ -108,10 +108,13 @@ describe('buildWhatsAppMessage', () => {
       currency: 'SAR',
       customerName: 'سارة',
       prepTimeMinutes: 20,
+      orderNumber: 'HS-1042',
     });
 
     expect(msg).toContain('*طلب جديد — تيك أواي*');
+    expect(msg).toContain('*رقم الطلب: HS-1042*');
     expect(msg).toContain('1× شاورما — 22 SAR');
+    expect(msg).toContain('*الإجمالي:');
     expect(msg).toContain('الاسم: سارة');
     expect(msg).toContain('وقت التحضير المتوقع: ~20 دقيقة');
     expect(msg).not.toContain('رسوم الخدمة');
@@ -321,5 +324,7 @@ describe('WhatsApp weight labels', () => {
     });
 
     expect(message).toContain('1x Bouri (1000g) — 450 EGP');
+    expect(message).toContain('*Order #: 1001*');
+    expect(message).toContain('*Total: 450 EGP*');
   });
 });
