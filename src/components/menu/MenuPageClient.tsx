@@ -220,17 +220,14 @@ function MenuContent() {
 
       {filteredCategories.length > 0 && (
         <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
-          {filteredCategories.map((category) => {
+          {filteredCategories.map((category, categoryIndex) => {
             const categoryName = getName(locale, category.name_en, category.name_ar);
             const categoryDescription = category.description_en
               ? getName(locale, category.description_en, category.description_ar)
               : '';
 
             return (
-              <section
-                key={category.id}
-                className="mb-9 [contain-intrinsic-size:auto_600px] [content-visibility:auto] last:mb-0 sm:mb-12"
-              >
+              <section key={category.id} className="mb-9 last:mb-0 sm:mb-12">
                 <header className="mb-4 sm:mb-5">
                   <div className="flex items-center gap-3">
                     <h2
@@ -249,13 +246,16 @@ function MenuContent() {
                 </header>
 
                 {category.products.length > 0 ? (
-                  <ProductGrid
-                    products={category.products}
-                    diningMode={diningMode}
-                    isFavorite={isFavorite}
-                    onToggleFavorite={toggleFavorite}
-                    onImageClick={handleProductClick}
-                  />
+                  <div className="[contain-intrinsic-size:auto_600px] [content-visibility:auto]">
+                    <ProductGrid
+                      products={category.products}
+                      diningMode={diningMode}
+                      isFavorite={isFavorite}
+                      onToggleFavorite={toggleFavorite}
+                      onImageClick={handleProductClick}
+                      prioritizeImages={categoryIndex === 0}
+                    />
+                  </div>
                 ) : (
                   <p className="rounded-xl border border-dashed border-[var(--menu-line-strong)] px-4 py-8 text-center text-sm text-[var(--menu-ink-soft)]">
                     {t('emptyCategory')}
