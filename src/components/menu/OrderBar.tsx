@@ -51,7 +51,7 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 48, opacity: 0 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-background/95 fixed inset-x-0 bottom-0 z-40 border-t border-[var(--menu-line)] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--menu-line)] bg-[var(--menu-surface)] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden"
         >
           <button
             type="button"
