@@ -33,7 +33,8 @@ export interface WhatsAppMessageInput {
 const SEP = '────────────────';
 
 function formatMoney(value: number, currency: string, locale: MessageLocale): string {
-  return formatCurrencyAmount(value, currency, { locale, plain: true });
+  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  return formatCurrencyAmount(value, currency, { locale: currencyLocale, plain: true });
 }
 
 interface MessageLabels {
@@ -210,11 +211,6 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   lines.push(SEP);
   lines.push(`${labels.subtotal}: ${formatMoney(totals.subtotal, currency, locale)}`);
-  if (totals.discount > 0) {
-    lines.push(
-      `${labels.discount(couponCode)}: −${formatMoney(totals.discount, currency, locale)}`
-    );
-  }
   if (totals.applyTax && totals.tax > 0) {
     lines.push(`${labels.tax(totals.taxRate)}: ${formatMoney(totals.tax, currency, locale)}`);
   }
