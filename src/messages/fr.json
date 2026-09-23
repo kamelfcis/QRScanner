@@ -449,7 +449,7 @@
     "enableTakeaway": "Takeaway (تيك أواي)",
     "enableTakeawayHint": "Pickup orders with takeaway pricing",
     "enableDelivery": "Delivery (توصيل)",
-    "enableDeliveryHint": "Home delivery — shown on welcome when takeaway is off",
+    "enableDeliveryHint": "Home delivery — shown on welcome when dine-in is off",
     "acceptingOrders": "Commandes clients",
     "acceptingOrdersDescription": "Suspendez le checkout en ligne ; le personnel peut toujours saisir des commandes.",
     "acceptingOrdersLabel": "Accepter les commandes clients",
