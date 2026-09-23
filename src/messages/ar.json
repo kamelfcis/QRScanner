@@ -447,7 +447,7 @@
     "enableTakeaway": "تيك أواي (Takeaway)",
     "enableTakeawayHint": "طلبات الاستلام بأسعار التيك أواي",
     "enableDelivery": "توصيل (Delivery)",
-    "enableDeliveryHint": "التوصيل للمنزل — يظهر في الترحيب عند إيقاف الصالة",
+    "enableDeliveryHint": "التوصيل للمنزل — يظهر في الترحيب عند إيقاف تيك أواي",
     "acceptingOrders": "استقبال طلبات العملاء",
     "acceptingOrdersDescription": "أوقف الطلب الإلكتروني بينما يمكن للموظفين إدخال الطلبات من لوحة التحكم.",
     "acceptingOrdersLabel": "قبول طلبات العملاء",

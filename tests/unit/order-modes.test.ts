@@ -66,7 +66,7 @@ describe('getWelcomeCards', () => {
     ).toEqual(['takeaway', 'delivery']);
   });
 
-  it('omits disabled cards when dine-in is enabled', () => {
+  it('shows dine-in only when takeaway and delivery are disabled', () => {
     expect(
       getWelcomeCards(
         resolveOrderModes({
@@ -75,6 +75,18 @@ describe('getWelcomeCards', () => {
         })
       )
     ).toEqual(['dine-in']);
+  });
+
+  it('shows dine-in and delivery when takeaway is disabled', () => {
+    expect(
+      getWelcomeCards(
+        resolveOrderModes({
+          enable_dine_in: true,
+          enable_takeaway: false,
+          enable_delivery: true,
+        })
+      )
+    ).toEqual(['dine-in', 'delivery']);
   });
 });
 

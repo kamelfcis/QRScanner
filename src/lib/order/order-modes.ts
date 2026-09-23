@@ -20,9 +20,9 @@ export function resolveOrderModes(settings?: Partial<RestaurantSettings> | null)
 /** Which cards to render on `/welcome`. */
 export function getWelcomeCards(modes: OrderModes): WelcomeCardId[] {
   if (modes.dineIn) {
-    const cards: WelcomeCardId[] = [];
-    if (modes.dineIn) cards.push('dine-in');
+    const cards: WelcomeCardId[] = ['dine-in'];
     if (modes.takeaway) cards.push('takeaway');
+    else if (modes.delivery) cards.push('delivery');
     return cards;
   }
 
