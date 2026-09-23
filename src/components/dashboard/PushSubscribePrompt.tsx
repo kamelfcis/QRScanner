@@ -4,10 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Bell, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
-const DISMISS_KEY = 'hettsamaka:push-prompt-dismissed';
+const tenant = process.env.NEXT_PUBLIC_TENANT ?? 'default';
+const DISMISS_KEY = `${tenant}:push-prompt-dismissed`;
 
 function urlBase64ToUint8Array(base64String: string): BufferSource {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -54,7 +55,7 @@ export function PushSubscribePrompt() {
   const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY?.trim() || '';
 
   useEffect(() => {
-    if (!hasHettSamakaTier3 || !vapidPublicKey) return;
+    if (!hasDailyOps || !vapidPublicKey) return;
     if (typeof window === 'undefined') return;
     if (
       !('Notification' in window) ||
@@ -117,13 +118,13 @@ export function PushSubscribePrompt() {
     }
   }, [dismiss, vapidPublicKey]);
 
-  if (!hasHettSamakaTier3 || !visible) return null;
+  if (!hasDailyOps || !visible) return null;
 
   return (
     <div
       className={cn(
-        'fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-xl border bg-background p-4 shadow-lg',
-        'sm:inset-x-auto sm:end-6 sm:bottom-6'
+        'bg-background fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-xl border p-4 shadow-lg',
+        'sm:inset-x-auto sm:bottom-6 sm:end-6'
       )}
       role="dialog"
       aria-labelledby="push-prompt-title"

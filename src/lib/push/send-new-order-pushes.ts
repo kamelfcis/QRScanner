@@ -1,5 +1,5 @@
 import webpush from 'web-push';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 interface SendNewOrderPushesInput {
@@ -20,7 +20,7 @@ function getVapidConfig() {
  */
 export async function sendNewOrderPushes(input: SendNewOrderPushesInput): Promise<void> {
   try {
-    if (!hasHettSamakaTier3) return;
+    if (!hasDailyOps) return;
 
     const vapid = getVapidConfig();
     const admin = createAdminClient();

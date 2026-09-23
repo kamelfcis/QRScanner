@@ -835,6 +835,8 @@
     "closeShift": "Close shift",
     "closeConfirm": "Save a snapshot of today's KPIs? You can still view orders in Reports.",
     "closeSuccess": "Shift snapshot saved",
+    "closeAlreadyToday": "Today's shift was already closed — see recent closes below.",
+    "closeAlreadyTodayShort": "Closed today",
     "printSummary": "Print summary",
     "notesLabel": "Handoff notes (optional)",
     "notesPlaceholder": "Cash drawer count, issues, prep notes…",

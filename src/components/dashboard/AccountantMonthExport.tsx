@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useExport } from '@/hooks/useExport';
 import { useSalesReport } from '@/hooks/useSalesReport';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { buildAccountantExport, monthExportFilename } from '@/lib/order/accountant-export';
 import { dateOnlyFromDate } from '@/lib/order/sales-range';
 
@@ -28,10 +28,10 @@ export function AccountantMonthExport() {
   const { data, isFetching } = useSalesReport('custom', {
     from: bounds.from,
     to: bounds.to,
-    enabled: hasHettSamakaTier3,
+    enabled: hasDailyOps,
   });
 
-  if (!hasHettSamakaTier3) return null;
+  if (!hasDailyOps) return null;
 
   const exportMonth = (kind: 'csv' | 'excel') => {
     const orders = data?.orders ?? [];

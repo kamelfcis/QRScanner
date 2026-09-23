@@ -835,6 +835,8 @@
     "closeShift": "Dienst sluiten",
     "closeConfirm": "Momentopname van de KPI's van vandaag opslaan? Bestellingen blijven in Rapporten.",
     "closeSuccess": "Dienstmomentopname opgeslagen",
+    "closeAlreadyToday": "De dienst van vandaag is al afgesloten — zie recente afsluitingen hieronder.",
+    "closeAlreadyTodayShort": "Vandaag afgesloten",
     "printSummary": "Samenvatting afdrukken",
     "notesLabel": "Overdrachtnotities (optioneel)",
     "notesPlaceholder": "Kassa, issues, prep…",

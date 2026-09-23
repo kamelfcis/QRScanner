@@ -185,6 +185,8 @@ export function OrderTicket({
   const canEditOrder =
     hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
 
+  const receiptActionLabel = order.paid_at ? t('reprint') : t('printReceipt');
+
   const unflip = () => setFlipped(false);
 
   const handleEditError = (err: unknown) => {
@@ -701,14 +703,14 @@ export function OrderTicket({
                       className="min-h-11 whitespace-normal"
                       disabled={busy || receiptBusy}
                       aria-pressed={flipped}
-                      aria-label={t('printReceipt')}
+                      aria-label={receiptActionLabel}
                       onClick={(e) => {
                         e.stopPropagation();
                         flipToReceipt();
                       }}
                     >
                       <Printer className="me-2 h-4 w-4" aria-hidden="true" />
-                      {t('printReceipt')}
+                      {receiptActionLabel}
                     </Button>
                     <Button
                       type="button"
@@ -827,14 +829,14 @@ export function OrderTicket({
                 type="button"
                 className="min-h-11 whitespace-normal"
                 disabled={busy || receiptBusy}
-                aria-label={t('printReceipt')}
+                aria-label={receiptActionLabel}
                 onClick={(e) => {
                   e.stopPropagation();
                   void runReceiptAction('print');
                 }}
               >
                 <Printer className="me-2 h-4 w-4" aria-hidden="true" />
-                {t('printReceipt')}
+                {receiptActionLabel}
               </Button>
               <Button
                 type="button"

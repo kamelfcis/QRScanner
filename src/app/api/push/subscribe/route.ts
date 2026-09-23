@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 
 export const runtime = 'nodejs';
 
@@ -19,7 +19,7 @@ function jsonError(error: string, status: number, code?: string) {
 
 export async function POST(request: Request) {
   try {
-    if (!hasHettSamakaTier3) {
+    if (!hasDailyOps) {
       return jsonError('Not found', 404, 'not_found');
     }
 

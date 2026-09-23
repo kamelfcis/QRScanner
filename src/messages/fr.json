@@ -835,6 +835,8 @@
     "closeShift": "Clôturer le shift",
     "closeConfirm": "Enregistrer un instantané des KPI du jour ? Les commandes restent visibles dans Rapports.",
     "closeSuccess": "Instantané de shift enregistré",
+    "closeAlreadyToday": "Le service du jour est déjà clôturé — voir les clôtures récentes ci-dessous.",
+    "closeAlreadyTodayShort": "Clôturé aujourd'hui",
     "printSummary": "Imprimer le résumé",
     "notesLabel": "Notes de passation (optionnel)",
     "notesPlaceholder": "Caisse, incidents, préparation…",

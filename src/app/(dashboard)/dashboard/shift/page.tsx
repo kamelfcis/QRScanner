@@ -22,7 +22,7 @@ import { formatLocaleDate } from '@/lib/dateLocale';
 import { pctChange } from '@/lib/analytics/compare-period';
 import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
-import { hasDailyOps, hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { useExpensesForMonth, useExpensesForRange, sumExpenses } from '@/hooks/useExpenses';
 import {
   buildOrderItemsMap,
@@ -112,6 +112,11 @@ export default function ShiftPage() {
   );
 
   const todayNet = dailyBreakdown?.netRevenue ?? (kpis?.revenue ?? 0) - todayExpenseTotal;
+
+  const todayAlreadyClosed = useMemo(() => {
+    if (!hasDailyOps || !recentCloses?.length) return false;
+    return recentCloses.some((row) => isSameLocalDay(row.closed_at));
+  }, [recentCloses]);
 
   const kpiCards = [
     {
@@ -214,6 +219,10 @@ export default function ShiftPage() {
 
   const handleCloseShift = async () => {
     if (!kpis) return;
+    if (todayAlreadyClosed) {
+      toast.error(t('closeAlreadyToday'));
+      return;
+    }
     try {
       await closeShift.mutateAsync({
         period_start: todayBounds.start.toISOString(),
@@ -260,15 +269,31 @@ export default function ShiftPage() {
             <Button
               type="button"
               className="min-h-11"
-              disabled={!kpis || closeShift.isPending}
-              onClick={() => setConfirmOpen(true)}
+              disabled={!kpis || closeShift.isPending || todayAlreadyClosed}
+              title={todayAlreadyClosed ? t('closeAlreadyToday') : undefined}
+              onClick={() => {
+                if (todayAlreadyClosed) {
+                  toast.error(t('closeAlreadyToday'));
+                  return;
+                }
+                setConfirmOpen(true);
+              }}
             >
               <Scale className="me-2 h-4 w-4" aria-hidden="true" />
-              {t('closeShift')}
+              {todayAlreadyClosed ? t('closeAlreadyTodayShort') : t('closeShift')}
             </Button>
           </div>
         </div>
       </div>
+
+      {todayAlreadyClosed ? (
+        <div
+          className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"
+          role="status"
+        >
+          {t('closeAlreadyToday')}
+        </div>
+      ) : null}
 
       <div className="bg-card rounded-xl border p-4 shadow-sm">
         <label htmlFor="shift-notes" className="text-sm font-medium">
