@@ -37,17 +37,13 @@ import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
 import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
-import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
-import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
 import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
 
 export function MenuPageClient() {
   return (
-    <TopSellingProvider>
-      <Suspense fallback={<MenuSkeleton />}>
-        <MenuContent />
-      </Suspense>
-    </TopSellingProvider>
+    <Suspense fallback={<MenuSkeleton />}>
+      <MenuContent />
+    </Suspense>
   );
 }
 
@@ -71,7 +67,7 @@ function MenuContent() {
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
 
-  // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
+  // URL only on first render ? localStorage sync runs in useEffect to avoid hydration #418.
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
     return parseDiningModeParam(modeParam) ?? 'dining';
   });
@@ -239,7 +235,6 @@ function MenuContent() {
     >
       <MenuThemeScope />
       <QrScanTracker />
-      <OrdersPausedBanner />
 
       <MenuHeader
         tableParam={tableParam}
