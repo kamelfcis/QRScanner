@@ -62,15 +62,16 @@ export function PaymentClosePanel({
           onSuccess?.();
         },
         onError: (err) => {
-          const code = err instanceof Error ? err.message : 'payment_failed';
+          const message = err instanceof Error ? err.message : '';
           const known = [
             'already_paid',
             'insufficient_cash',
             'invalid_payment_method',
             'order_cancelled',
             'shift_closed',
-          ];
-          toast.error(known.includes(code) ? t(`paymentError.${code}`) : t('paymentError.generic'));
+          ] as const;
+          const code = known.find((item) => message.includes(item));
+          toast.error(code ? t(`paymentError.${code}`) : t('paymentError.generic'));
         },
       }
     );

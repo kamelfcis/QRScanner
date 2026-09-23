@@ -13,11 +13,6 @@ export interface DailyOpsBreakdown {
   netRevenue: number;
 }
 
-function lineTotal(item: Pick<OrderItem, 'quantity' | 'unit_price' | 'voided_at'>): number {
-  if (item.voided_at) return 0;
-  return Number(item.unit_price) * item.quantity;
-}
-
 export function sumVoidedItems(items: OrderItem[]): number {
   return items.reduce((sum, item) => {
     if (!item.voided_at) return sum;
@@ -53,20 +48,24 @@ export function computeDailyOpsBreakdown(
     voidTotal += voidedLineTotal;
     voidCount += items.filter((item) => item.voided_at).length;
 
-    grossRevenue += Number(order.total);
+    grossRevenue += Math.max(0, Number(order.total) - voidedLineTotal);
+
+    const isCashier =
+      order.order_channel === 'cashier' ||
+      (order.order_channel == null && Boolean(order.payment_method));
+    if (isCashier) cashierOrderCount += 1;
+    else onlineOrderCount += 1;
 
     if (order.payment_method) {
-      cashierOrderCount += 1;
       const method = order.payment_method as PaymentMethod;
-      if (method === 'cash') cashTotal += Number(order.total);
-      else if (method === 'card') cardTotal += Number(order.total);
-      else if (method === 'instapay') instapayTotal += Number(order.total);
-    } else {
-      onlineOrderCount += 1;
+      const tender = Math.max(0, Number(order.total) - voidedLineTotal);
+      if (method === 'cash') cashTotal += tender;
+      else if (method === 'card') cardTotal += tender;
+      else if (method === 'instapay') instapayTotal += tender;
     }
   }
 
-  const netRevenue = grossRevenue - voidTotal - expenseTotal;
+  const netRevenue = grossRevenue - expenseTotal;
 
   return {
     onlineOrderCount,

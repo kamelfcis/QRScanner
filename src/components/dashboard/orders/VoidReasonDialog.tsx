@@ -63,12 +63,18 @@ export function VoidReasonDialog({
           />
         </div>
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11"
+            onClick={() => handleOpenChange(false)}
+          >
             {cancelLabel}
           </Button>
           <Button
             type="button"
             variant="destructive"
+            className="min-h-11"
             disabled={loading || reason.trim().length === 0}
             onClick={() => onConfirm(reason.trim())}
           >

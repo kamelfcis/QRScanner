@@ -3,14 +3,14 @@
 import { Clock, PauseCircle } from 'lucide-react';
 import { useOpeningHoursStatus } from '@/hooks/useOpeningHoursStatus';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasHettSamakaTier1 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 
 export function OrdersPausedBanner() {
   const t = useTranslations('menu');
   const tDays = useTranslations('days');
   const { enabled, paused, manualPause, outsideHours, nextOpen } = useOpeningHoursStatus();
 
-  if (!hasHettSamakaTier1) return null;
+  if (!hasDailyOps) return null;
   if (!paused) return null;
 
   const isHoursClosed = enabled && outsideHours && !manualPause;

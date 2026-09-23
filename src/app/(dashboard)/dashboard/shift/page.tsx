@@ -198,6 +198,12 @@ export default function ShiftPage() {
           }),
         },
         {
+          label: t('expensesToday'),
+          value: formatCurrencyAmount(todayExpenseTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
           label: t('voidsTotal'),
           value: formatCurrencyAmount(dailyBreakdown.voidTotal, currency, {
             locale: currencyLocale,

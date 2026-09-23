@@ -174,17 +174,15 @@ export function OrderTicket({
   });
 
   const needsRegisterPayment =
-    hasDailyOps &&
-    order.status === 'ready' &&
-    !order.paid_at &&
-    order.fulfillment_type !== 'delivery';
+    hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
 
   const unflip = () => setFlipped(false);
 
   const handleVoidError = (err: unknown) => {
-    const code = err instanceof Error ? err.message : 'void_failed';
-    const known = ['reason_required', 'shift_closed', 'already_voided'];
-    toast.error(known.includes(code) ? t(`voidError.${code}`) : t('voidError.generic'));
+    const message = err instanceof Error ? err.message : '';
+    const known = ['reason_required', 'shift_closed', 'already_voided'] as const;
+    const code = known.find((item) => message.includes(item));
+    toast.error(code ? t(`voidError.${code}`) : t('voidError.generic'));
   };
 
   const flipToReceipt = () => {
@@ -401,14 +399,15 @@ export function OrderTicket({
                   {t('acknowledge')}
                 </Button>
               ) : null}
-              {nextStatus === 'completed' && needsRegisterPayment ? (
+              {needsRegisterPayment ? (
                 <PaymentClosePanel
                   order={order}
                   currencyLocale={currencyLocale}
                   busy={busy}
                   t={t}
                 />
-              ) : nextStatus ? (
+              ) : null}
+              {nextStatus ? (
                 <Button
                   className={cn(
                     'min-h-12 w-full text-base font-semibold',

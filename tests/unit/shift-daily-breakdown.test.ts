@@ -66,8 +66,8 @@ describe('computeDailyOpsBreakdown', () => {
 
     expect(breakdown.cashierOrderCount).toBe(1);
     expect(breakdown.onlineOrderCount).toBe(1);
-    expect(breakdown.cashTotal).toBe(100);
+    expect(breakdown.cashTotal).toBe(80);
     expect(breakdown.voidTotal).toBe(100);
-    expect(breakdown.netRevenue).toBe(40);
+    expect(breakdown.netRevenue).toBe(120);
   });
 });

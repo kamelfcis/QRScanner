@@ -57,6 +57,7 @@ import {
   getRestaurantCurrency,
   toCurrencyLocale,
 } from '@/lib/order/format-currency';
+import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePanel';
 import { printReceiptElement, receiptDomId } from '@/lib/order/print-receipt';
 import { calculateOrderTotals, getCartLineUnitPrice, type DiningMode } from '@/lib/order/totals';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
@@ -181,6 +182,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const [autoDiscount, setAutoDiscount] = useState<AppliedCoupon | null>(null);
   const [pending, setPending] = useState<StaffPendingProduct | null>(null);
   const [printOrder, setPrintOrder] = useState<OrderWithItems | null>(null);
+  const [collectOrder, setCollectOrder] = useState<OrderWithItems | null>(null);
   const [mobilePane, setMobilePane] = useState<MobilePane>('catalog');
 
   const currency = getRestaurantCurrency(settings?.currency);
@@ -203,6 +205,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setAppliedCoupon(null);
     setAutoDiscount(null);
     setPending(null);
+    setCollectOrder(null);
     setMobilePane('catalog');
   }, [t]);
 
@@ -402,6 +405,12 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     !(requiresDelivery && !deliveryLocationId) &&
     !placeOrder.isPending;
 
+  const finishCollect = (order: OrderWithItems) => {
+    setCollectOrder(null);
+    handleOpenChange(false);
+    setPrintOrder(order);
+  };
+
   const handleSubmit = async () => {
     if (!canSubmit) return;
 
@@ -428,8 +437,13 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     try {
       const result = await placeOrder.mutateAsync(payload);
       toast.success(t('staffOrderSaved', { number: result.order_number }));
-      handleOpenChange(false);
       const fullOrder = await fetchStaffOrderForReceipt(result.id);
+      if (hasDailyOps) {
+        setCollectOrder(fullOrder);
+        setMobilePane('ticket');
+        return;
+      }
+      handleOpenChange(false);
       setPrintOrder(fullOrder);
     } catch (err) {
       const code = err instanceof Error ? err.message : 'place_failed';
@@ -983,14 +997,36 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
               </span>
             </div>
           </div>
-          <Button
-            type="button"
-            className="min-h-11 w-full"
-            disabled={!canSubmit}
-            onClick={() => void handleSubmit()}
-          >
-            {placeOrder.isPending ? t('staffSaving') : t('staffSavePrint')}
-          </Button>
+          {collectOrder ? (
+            <>
+              <PaymentClosePanel
+                order={collectOrder}
+                currencyLocale={currencyLocale}
+                busy={placeOrder.isPending}
+                t={t}
+                onSuccess={() => {
+                  void fetchStaffOrderForReceipt(collectOrder.id).then(finishCollect);
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 w-full"
+                onClick={() => finishCollect(collectOrder)}
+              >
+                {t('paymentPrintUnpaid')}
+              </Button>
+            </>
+          ) : (
+            <Button
+              type="button"
+              className="min-h-11 w-full"
+              disabled={!canSubmit}
+              onClick={() => void handleSubmit()}
+            >
+              {placeOrder.isPending ? t('staffSaving') : t('staffSavePrint')}
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -1056,14 +1092,36 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
         </span>
       </div>
-      <Button
-        type="button"
-        className="min-h-11 w-full"
-        disabled={!canSubmit}
-        onClick={() => void handleSubmit()}
-      >
-        {placeOrder.isPending ? t('staffSaving') : t('staffSavePrint')}
-      </Button>
+      {collectOrder ? (
+        <>
+          <PaymentClosePanel
+            order={collectOrder}
+            currencyLocale={currencyLocale}
+            busy={placeOrder.isPending}
+            t={t}
+            onSuccess={() => {
+              void fetchStaffOrderForReceipt(collectOrder.id).then(finishCollect);
+            }}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 w-full"
+            onClick={() => finishCollect(collectOrder)}
+          >
+            {t('paymentPrintUnpaid')}
+          </Button>
+        </>
+      ) : (
+        <Button
+          type="button"
+          className="min-h-11 w-full"
+          disabled={!canSubmit}
+          onClick={() => void handleSubmit()}
+        >
+          {placeOrder.isPending ? t('staffSaving') : t('staffSavePrint')}
+        </Button>
+      )}
     </div>
   );
 

@@ -8,12 +8,19 @@ ALTER TABLE public.orders
   ADD COLUMN IF NOT EXISTS amount_received NUMERIC(10, 2),
   ADD COLUMN IF NOT EXISTS change_due NUMERIC(10, 2),
   ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ,
-  ADD COLUMN IF NOT EXISTS void_reason TEXT;
+  ADD COLUMN IF NOT EXISTS void_reason TEXT,
+  ADD COLUMN IF NOT EXISTS order_channel VARCHAR(20) NOT NULL DEFAULT 'online';
 
 ALTER TABLE public.orders DROP CONSTRAINT IF EXISTS orders_payment_method_check;
 ALTER TABLE public.orders
   ADD CONSTRAINT orders_payment_method_check CHECK (
     payment_method IS NULL OR payment_method IN ('cash', 'card', 'instapay')
+  );
+
+ALTER TABLE public.orders DROP CONSTRAINT IF EXISTS orders_order_channel_check;
+ALTER TABLE public.orders
+  ADD CONSTRAINT orders_order_channel_check CHECK (
+    order_channel IN ('online', 'cashier')
   );
 
 ALTER TABLE public.order_items
@@ -94,6 +101,8 @@ BEGIN
     NEW.void_reason := OLD.void_reason;
   END IF;
 
+  NEW.order_channel := OLD.order_channel;
+
   IF NEW.delivery_fee IS DISTINCT FROM OLD.delivery_fee THEN
     NEW.delivery_fee := round(greatest(least(COALESCE(NEW.delivery_fee, 0), 99999.99), 0), 2);
     NEW.total := round(
@@ -168,7 +177,6 @@ BEGIN
     amount_received = v_received,
     change_due = v_change,
     paid_at = now(),
-    status = 'completed',
     updated_at = now()
   WHERE id = p_order_id;
 
@@ -178,7 +186,7 @@ BEGIN
     'amount_received', v_received,
     'change_due', v_change,
     'paid_at', now(),
-    'status', 'completed',
+    'status', v_order.status,
     'total', v_order.total
   );
 END;
@@ -279,10 +287,31 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION public.assert_order_not_in_closed_shift(timestamptz) FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.close_order_payment(uuid, text, numeric) FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.void_order_item(uuid, text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.void_order(uuid, text) FROM PUBLIC;
+CREATE OR REPLACE FUNCTION public.stamp_order_channel()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = public
+AS $$
+BEGIN
+  IF auth.uid() IS NOT NULL THEN
+    NEW.order_channel := 'cashier';
+  ELSIF NEW.order_channel IS NULL OR btrim(NEW.order_channel) = '' THEN
+    NEW.order_channel := 'online';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS orders_stamp_channel ON public.orders;
+CREATE TRIGGER orders_stamp_channel
+  BEFORE INSERT ON public.orders
+  FOR EACH ROW EXECUTE FUNCTION public.stamp_order_channel();
+
+REVOKE ALL ON FUNCTION public.assert_order_not_in_closed_shift(timestamptz) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.stamp_order_channel() FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.close_order_payment(uuid, text, numeric) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.void_order_item(uuid, text) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.void_order(uuid, text) FROM PUBLIC, anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION public.close_order_payment(uuid, text, numeric) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.void_order_item(uuid, text) TO authenticated;

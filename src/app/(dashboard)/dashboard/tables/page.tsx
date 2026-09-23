@@ -101,7 +101,7 @@ export default function TablesPage() {
           <h1 className="text-2xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground">{t('description')}</p>
         </div>
-        <Button onClick={openCreate}>
+        <Button className="min-h-11" onClick={openCreate}>
           <Plus className="mr-2 h-4 w-4" />
           {t('addTable')}
         </Button>
@@ -135,7 +135,7 @@ export default function TablesPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-11 w-11"
                       onClick={() => openEdit(table)}
                       aria-label={t('editTableAria')}
                     >
@@ -144,7 +144,7 @@ export default function TablesPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-11 w-11"
                       onClick={() => setDeletingTable(table)}
                       aria-label={t('deleteTableAria')}
                     >
