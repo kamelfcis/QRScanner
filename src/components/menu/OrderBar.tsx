@@ -58,7 +58,7 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
             onClick={onOpenCart}
             aria-label={tCart('openCart')}
             data-testid="cart-fab"
-            className="flex h-[3.25rem] w-full items-center justify-between gap-3 rounded-full bg-[var(--menu-wine)] px-4 py-3 text-[#FDF7F0] shadow-[0_6px_20px_-10px_rgba(107,15,26,0.9)]"
+            className="flex h-14 min-h-11 w-full touch-manipulation items-center justify-between gap-3 rounded-full bg-[var(--menu-wine)] px-4 py-3 text-[#FDF7F0] shadow-[0_6px_20px_-10px_rgba(107,15,26,0.9)] transition-transform duration-150 active:scale-[0.98] motion-reduce:active:scale-100"
           >
             <span className="flex items-center gap-2.5">
               <span className="bg-[#FDF7F0]/16 relative flex h-7 w-7 items-center justify-center rounded-full">
@@ -67,7 +67,10 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
               <span className="text-sm font-semibold" aria-live="polite">
                 {tCart('viewOrder')}
               </span>
-              <span className="bg-[#FDF7F0]/18 rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums">
+              <span
+                key={count}
+                className="cart-badge-pop bg-[#FDF7F0]/18 rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums"
+              >
                 {count}
               </span>
             </span>
