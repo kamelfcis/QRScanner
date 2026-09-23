@@ -456,6 +456,7 @@
     "acceptingOrdersHint": "Uit: menu blijft zichtbaar, maar checkout voor klanten is geblokkeerd.",
     "opsAutomation": "Ops-automatisering",
     "opsAutomationDescription": "Keukenprint en klantmelding wanneer de bestelling klaar is.",
+    "kitchenPrint": "Keukenprint",
     "autoPrintKitchenLabel": "Keukenticket automatisch printen",
     "autoPrintKitchenHint": "Bij een nieuwe bestelling op het dashboard één keer het keukenticket printen (niet op het keukenscherm).",
     "whatsappOnReadyLabel": "WhatsApp bij bestelling klaar",
@@ -746,7 +747,43 @@
     "cashierTileNewOrder": "Nieuwe bestelling",
     "cashierTileKitchen": "Keuken",
     "cashierTileShift": "Dienst",
-    "cashierTileSoldOut": "Uitverkocht"
+    "cashierTileSoldOut": "Uitverkocht",
+    "paymentCloseTitle": "Betaling afsluiten",
+    "paymentCloseAndComplete": "Innen & afronden",
+    "paymentClosing": "Bezig…",
+    "paymentCloseSuccess": "Betaling geregistreerd",
+    "paymentMethodLabel": "Betaling",
+    "paymentAmountReceived": "Ontvangen",
+    "paymentChangeDue": "Wisselgeld",
+    "paymentInsufficientCash": "Bedrag moet totaal dekken",
+    "paymentMethod": {
+      "cash": "Contant",
+      "card": "Kaart",
+      "instapay": "Instapay"
+    },
+    "paymentError": {
+      "generic": "Betaling kon niet worden afgesloten",
+      "already_paid": "Bestelling is al betaald",
+      "insufficient_cash": "Onvoldoende contant",
+      "invalid_payment_method": "Ongeldige betaalmethode",
+      "order_cancelled": "Bestelling geannuleerd",
+      "shift_closed": "Dienst al afgesloten"
+    },
+    "voidOrder": "Bestelling annuleren",
+    "voidOrderConfirm": "{number} annuleren? Uitgesloten van netto vandaag.",
+    "voidOrderSuccess": "Bestelling geannuleerd",
+    "voidLine": "Regel annuleren",
+    "voidLineConfirm": "Deze regel annuleren? Blijft zichtbaar voor audit.",
+    "voidLineSuccess": "Regel geannuleerd",
+    "voidReasonLabel": "Reden (verplicht)",
+    "voidReasonPlaceholder": "Verkeerd item, klant gewijzigd…",
+    "voidCancel": "Annuleren",
+    "voidError": {
+      "generic": "Annuleren mislukt",
+      "reason_required": "Voer een reden in",
+      "shift_closed": "Dienst al afgesloten",
+      "already_voided": "Al geannuleerd"
+    }
   },
   "kitchen": {
     "title": "Keukenscherm",
@@ -787,7 +824,17 @@
     "recentCloses": "Recente dienstafsluitingen",
     "expensesToday": "Uitgaven vandaag",
     "netToday": "Netto vandaag (omzet − uitgaven)",
-    "netMonth": "Netto deze maand"
+    "netMonth": "Netto deze maand",
+    "dailySheetTitle": "Dagafsluiting",
+    "dailySheetDescription": "Totalen van vandaag. Annuleringen zijn uitgesloten van netto.",
+    "onlineOrders": "Online bestellingen",
+    "cashierOrders": "Kassa-bestellingen",
+    "cashTotal": "Contant",
+    "cardTotal": "Kaart",
+    "instapayTotal": "Instapay",
+    "voidsTotal": "Annuleringen",
+    "voidsCount": "Geannuleerde regels",
+    "netAfterVoids": "Netto (omzet − uitgaven − annuleringen)"
   },
   "expenses": {
     "title": "Uitgaven",
@@ -911,7 +958,10 @@
     "active": "Actief",
     "confirmDelete": "Are you sure you want to delete this table?",
     "editTableAria": "Bewerken table",
-    "deleteTableAria": "Verwijderen table"
+    "deleteTableAria": "Verwijderen table",
+    "free": "Vrij",
+    "occupied": "Bezet",
+    "openOrder": "Open bestelling {number}"
   },
   "testimonials": {
     "title": "Getuigenissen",

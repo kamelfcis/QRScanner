@@ -21,7 +21,7 @@ import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canAccessExpenses } from '@/lib/staff/roles';
 import {
@@ -69,7 +69,7 @@ export default function ExpensesPage() {
   const monthLabel = format(new Date(year, month - 1, 1), 'MMMM yyyy');
 
   useEffect(() => {
-    if (!hasHettSamakaTier3) {
+    if (!hasDailyOps) {
       router.replace('/dashboard');
       return;
     }
@@ -138,7 +138,7 @@ export default function ExpensesPage() {
     }
   };
 
-  if (!hasHettSamakaTier3 || roleLoading) return <LoadingPage />;
+  if (!hasDailyOps || roleLoading) return <LoadingPage />;
   if (error) return <ErrorState error={error} retry={refetch} />;
 
   return (

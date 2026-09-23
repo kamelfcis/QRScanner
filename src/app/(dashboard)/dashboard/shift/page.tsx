@@ -14,6 +14,7 @@ import { useSalesReport } from '@/hooks/useSalesReport';
 import { useCloseShift, useRecentShiftCloses } from '@/hooks/useShiftClose';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useExport } from '@/hooks/useExport';
+import { useOrders } from '@/hooks/useOrders';
 import { getDateRange } from '@/hooks/useAnalytics';
 import { dateOnlyFromDate } from '@/lib/order/sales-range';
 import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-currency';
@@ -21,8 +22,23 @@ import { formatLocaleDate } from '@/lib/dateLocale';
 import { pctChange } from '@/lib/analytics/compare-period';
 import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps, hasHettSamakaTier3 } from '@/i18n/config';
 import { useExpensesForMonth, useExpensesForRange, sumExpenses } from '@/hooks/useExpenses';
+import {
+  buildOrderItemsMap,
+  computeDailyOpsBreakdown,
+  type DailyOpsBreakdown,
+} from '@/lib/order/shift-daily-breakdown';
+
+function isSameLocalDay(iso: string): boolean {
+  const date = new Date(iso);
+  const now = new Date();
+  return (
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate()
+  );
+}
 
 export default function ShiftPage() {
   const { locale } = useI18n();
@@ -33,6 +49,7 @@ export default function ShiftPage() {
   const { printPage } = useExport();
   const closeShift = useCloseShift();
   const { data: recentCloses } = useRecentShiftCloses();
+  const { data: allOrders } = useOrders();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [notes, setNotes] = useState('');
 
@@ -54,7 +71,7 @@ export default function ShiftPage() {
     from: yesterdayStamp,
     to: yesterdayStamp,
   });
-  const { data: todayExpenses } = useExpensesForRange(todayStamp, todayStamp, hasHettSamakaTier3);
+  const { data: todayExpenses } = useExpensesForRange(todayStamp, todayStamp, hasDailyOps);
   const { data: monthExpenses } = useExpensesForMonth(expenseYear, expenseMonth);
   const monthFrom = dateOnlyFromDate(new Date(expenseYear, expenseMonth - 1, 1));
   const monthTo = dateOnlyFromDate(new Date(expenseYear, expenseMonth, 0));
@@ -69,6 +86,22 @@ export default function ShiftPage() {
   const kpis = todayData?.kpis;
   const yesterdayKpis = yesterdayData?.kpis;
 
+  const todayOrdersWithItems = useMemo(
+    () => (allOrders ?? []).filter((order) => isSameLocalDay(order.created_at)),
+    [allOrders]
+  );
+
+  const todayExpenseTotal = sumExpenses(todayExpenses);
+
+  const dailyBreakdown: DailyOpsBreakdown | null = useMemo(() => {
+    if (!hasDailyOps) return null;
+    return computeDailyOpsBreakdown(
+      todayOrdersWithItems,
+      buildOrderItemsMap(todayOrdersWithItems),
+      todayExpenseTotal
+    );
+  }, [todayOrdersWithItems, todayExpenseTotal]);
+
   const compare = useMemo(
     () => ({
       revenue: pctChange(kpis?.revenue ?? 0, yesterdayKpis?.revenue ?? 0),
@@ -78,9 +111,7 @@ export default function ShiftPage() {
     [kpis, yesterdayKpis]
   );
 
-  const todayExpenseTotal = sumExpenses(todayExpenses);
-  const monthExpenseTotal = sumExpenses(monthExpenses);
-  const todayNet = (kpis?.revenue ?? 0) - todayExpenseTotal;
+  const todayNet = dailyBreakdown?.netRevenue ?? (kpis?.revenue ?? 0) - todayExpenseTotal;
 
   const kpiCards = [
     {
@@ -115,7 +146,7 @@ export default function ShiftPage() {
       }),
       compare: null,
     },
-    ...(hasHettSamakaTier3
+    ...(hasDailyOps
       ? [
           {
             label: t('expensesToday'),
@@ -127,18 +158,57 @@ export default function ShiftPage() {
             value: formatCurrencyAmount(todayNet, currency, { locale: currencyLocale }),
             compare: null,
           },
-          {
-            label: t('netMonth'),
-            value: formatCurrencyAmount(
-              (monthSales?.kpis.revenue ?? 0) - monthExpenseTotal,
-              currency,
-              { locale: currencyLocale }
-            ),
-            compare: null,
-          },
+          ...(hasHettSamakaTier3
+            ? [
+                {
+                  label: t('netMonth'),
+                  value: formatCurrencyAmount(
+                    (monthSales?.kpis.revenue ?? 0) - sumExpenses(monthExpenses),
+                    currency,
+                    { locale: currencyLocale }
+                  ),
+                  compare: null,
+                },
+              ]
+            : []),
         ]
       : []),
   ];
+
+  const breakdownCards = dailyBreakdown
+    ? [
+        { label: t('onlineOrders'), value: String(dailyBreakdown.onlineOrderCount) },
+        { label: t('cashierOrders'), value: String(dailyBreakdown.cashierOrderCount) },
+        {
+          label: t('cashTotal'),
+          value: formatCurrencyAmount(dailyBreakdown.cashTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
+          label: t('cardTotal'),
+          value: formatCurrencyAmount(dailyBreakdown.cardTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
+          label: t('instapayTotal'),
+          value: formatCurrencyAmount(dailyBreakdown.instapayTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
+          label: t('voidsTotal'),
+          value: formatCurrencyAmount(dailyBreakdown.voidTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
+          label: t('voidsCount'),
+          value: String(dailyBreakdown.voidCount),
+        },
+      ]
+    : [];
 
   const handleCloseShift = async () => {
     if (!kpis) return;
@@ -146,7 +216,11 @@ export default function ShiftPage() {
       await closeShift.mutateAsync({
         period_start: todayBounds.start.toISOString(),
         period_end: todayBounds.end.toISOString(),
-        snapshot: { kpis, currency },
+        snapshot: {
+          kpis,
+          currency,
+          ...(dailyBreakdown ? { dailyOps: dailyBreakdown } : {}),
+        },
         notes: notes.trim() || null,
       });
       toast.success(t('closeSuccess'));
@@ -160,7 +234,7 @@ export default function ShiftPage() {
   if (todayError) return <ErrorState error={todayError} retry={refetchToday} />;
 
   return (
-    <div id="shift-summary" className="space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-muted-foreground font-heading text-xs uppercase tracking-[0.18em]">
@@ -207,26 +281,57 @@ export default function ShiftPage() {
         />
       </div>
 
-      <div id="shift-summary" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {kpiCards.map((card) => (
-          <div key={card.label} className="bg-card rounded-xl border p-4 shadow-sm">
-            <p className="text-muted-foreground text-sm">{card.label}</p>
-            {todayPending ? (
-              <Skeleton className="mt-2 h-8 w-24" />
-            ) : (
-              <p className="font-heading mt-1 text-2xl font-semibold tabular-nums">{card.value}</p>
-            )}
-            {!todayPending && !yesterdayPending && card.compare !== null ? (
-              <div className="mt-2">
-                <CompareBadge
-                  value={card.compare}
-                  vsLabel={t('vsYesterday')}
-                  noCompareLabel={t('noCompare')}
-                />
+      <div id="shift-summary" className="space-y-6">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {kpiCards.map((card) => (
+            <div key={card.label} className="bg-card rounded-xl border p-4 shadow-sm">
+              <p className="text-muted-foreground text-sm">{card.label}</p>
+              {todayPending ? (
+                <Skeleton className="mt-2 h-8 w-24" />
+              ) : (
+                <p className="font-heading mt-1 text-2xl font-semibold tabular-nums">
+                  {card.value}
+                </p>
+              )}
+              {!todayPending && !yesterdayPending && card.compare !== null ? (
+                <div className="mt-2">
+                  <CompareBadge
+                    value={card.compare}
+                    vsLabel={t('vsYesterday')}
+                    noCompareLabel={t('noCompare')}
+                  />
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        {hasDailyOps && breakdownCards.length > 0 ? (
+          <section className="space-y-3">
+            <h2 className="font-heading text-lg font-semibold">{t('dailySheetTitle')}</h2>
+            <p className="text-muted-foreground text-sm">{t('dailySheetDescription')}</p>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {breakdownCards.map((card) => (
+                <div key={card.label} className="bg-card rounded-xl border p-4 shadow-sm">
+                  <p className="text-muted-foreground text-sm">{card.label}</p>
+                  <p className="font-heading mt-1 text-xl font-semibold tabular-nums">
+                    {card.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {dailyBreakdown ? (
+              <div className="bg-card rounded-xl border p-4 shadow-sm print:break-inside-avoid">
+                <p className="text-muted-foreground text-sm">{t('netAfterVoids')}</p>
+                <p className="font-heading mt-1 text-2xl font-semibold tabular-nums">
+                  {formatCurrencyAmount(dailyBreakdown.netRevenue, currency, {
+                    locale: currencyLocale,
+                  })}
+                </p>
               </div>
             ) : null}
-          </div>
-        ))}
+          </section>
+        ) : null}
       </div>
 
       {recentCloses && recentCloses.length > 0 ? (

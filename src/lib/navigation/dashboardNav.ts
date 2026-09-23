@@ -16,7 +16,7 @@ import {
   Wallet,
   type LucideIcon,
 } from 'lucide-react';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { canAccessExpenses, canManageCoupons, type StaffRole } from '@/lib/staff/roles';
 import type { FeatureSettings, RestaurantSettings } from '@/types/database';
 
@@ -26,9 +26,9 @@ export interface DashboardNavItem {
   icon: LucideIcon;
   featureFlag?: keyof FeatureSettings;
   restaurantFlag?: keyof Pick<RestaurantSettings, 'enable_delivery'>;
-  /** When set, only these roles see the item (tier 3 hettsamaka). */
+  /** When set, only these roles see the item (daily ops tenants). */
   roles?: StaffRole[];
-  tier3Only?: boolean;
+  dailyOpsOnly?: boolean;
 }
 
 /** Single source of truth for sidebar + mobile sheet nav */
@@ -57,7 +57,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     key: 'expenses',
     href: '/dashboard/expenses',
     icon: Wallet,
-    tier3Only: true,
+    dailyOpsOnly: true,
     roles: ['admin'],
   },
   {
@@ -85,10 +85,10 @@ export function getDashboardNav(
   role: StaffRole = 'admin'
 ): DashboardNavItem[] {
   return DASHBOARD_NAV.filter((item) => {
-    if (item.tier3Only && !hasHettSamakaTier3) return false;
+    if (item.dailyOpsOnly && !hasDailyOps) return false;
     if (item.featureFlag && features?.[item.featureFlag] !== true) return false;
     if (item.restaurantFlag && restaurant?.[item.restaurantFlag] !== true) return false;
-    if (hasHettSamakaTier3 && role === 'cashier') {
+    if (hasDailyOps && role === 'cashier') {
       if (!CASHIER_NAV_KEYS.has(item.key)) return false;
     }
     if (item.roles && !item.roles.includes(role)) return false;

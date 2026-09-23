@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 
 export interface Expense {
   id: string;
@@ -58,7 +58,7 @@ export function useExpensesForMonth(year: number, month: number) {
   return useQuery({
     queryKey: expenseKeys.month(year, month),
     queryFn: () => fetchExpensesInRange(from, to),
-    enabled: adminEnabled && hasHettSamakaTier3,
+    enabled: adminEnabled && hasDailyOps,
   });
 }
 
@@ -68,7 +68,7 @@ export function useExpensesForRange(from: string, to: string, enabled = true) {
   return useQuery({
     queryKey: expenseKeys.range(from, to),
     queryFn: () => fetchExpensesInRange(from, to),
-    enabled: adminEnabled && hasHettSamakaTier3 && enabled && Boolean(from && to),
+    enabled: adminEnabled && hasDailyOps && enabled && Boolean(from && to),
   });
 }
 

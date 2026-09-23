@@ -127,6 +127,10 @@ export const RECEIPT_SLIP_CSS = `
   unicode-bidi: plaintext;
   text-align: left;
 }
+.order-receipt-slip .receipt-payment {
+  margin-top: 6px;
+  font-size: 11px;
+}
 `;
 
 function waitForImages(root: ParentNode): Promise<void> {

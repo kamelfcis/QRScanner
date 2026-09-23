@@ -4,12 +4,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import type { SalesReportKpis } from '@/lib/order/sales-kpis';
+import type { DailyOpsBreakdown } from '@/lib/order/shift-daily-breakdown';
 
 const supabase = createClient();
 
 export interface ShiftCloseSnapshot {
   kpis: SalesReportKpis;
   currency?: string;
+  dailyOps?: DailyOpsBreakdown;
 }
 
 export interface ShiftCloseRow {

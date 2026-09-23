@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CASHIER_NAV_KEYS, getDashboardNav } from '@/lib/navigation/dashboardNav';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 export function useShowCashierBottomNav(): boolean {
   const pathname = usePathname();
   const { data: role } = useStaffRole();
-  if (!hasHettSamakaTier3) return false;
+  if (!hasDailyOps) return false;
   const onOrders = pathname === '/dashboard/orders' || pathname.startsWith('/dashboard/orders/');
   return role === 'cashier' || onOrders;
 }

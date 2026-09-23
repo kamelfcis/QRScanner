@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import type { StaffRole } from '@/lib/staff/roles';
 
 export type { StaffRole };
@@ -36,7 +36,7 @@ async function fetchMyStaffRole(): Promise<StaffRole> {
 }
 
 export function useStaffRole() {
-  const enabled = useAdminQueryEnabled() && hasHettSamakaTier3;
+  const enabled = useAdminQueryEnabled() && hasDailyOps;
 
   return useQuery<StaffRole>({
     queryKey: staffRoleKeys.me(),
@@ -44,6 +44,6 @@ export function useStaffRole() {
     enabled,
     staleTime: 5 * 60_000,
     retry: false,
-    ...(hasHettSamakaTier3 ? {} : { initialData: 'admin' as const }),
+    ...(hasDailyOps ? {} : { initialData: 'admin' as const }),
   });
 }

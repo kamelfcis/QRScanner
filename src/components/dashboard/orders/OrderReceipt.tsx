@@ -171,6 +171,30 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
           {money(Number(order.total), order.currency, currencyLocale)}
         </span>
       </div>
+      {order.payment_method ? (
+        <>
+          <div className="receipt-row" style={{ marginTop: 6 }}>
+            <span>{t('paymentMethodLabel')}</span>
+            <span>{t(`paymentMethod.${order.payment_method}`)}</span>
+          </div>
+          {order.payment_method === 'cash' ? (
+            <>
+              <div className="receipt-row">
+                <span>{t('paymentAmountReceived')}</span>
+                <span className="receipt-num">
+                  {money(Number(order.amount_received ?? 0), order.currency, currencyLocale)}
+                </span>
+              </div>
+              <div className="receipt-row">
+                <span>{t('paymentChangeDue')}</span>
+                <span className="receipt-num">
+                  {money(Number(order.change_due ?? 0), order.currency, currencyLocale)}
+                </span>
+              </div>
+            </>
+          ) : null}
+        </>
+      ) : null}
       <hr className="receipt-rule-double" />
 
       <p className="receipt-meta" style={{ textAlign: 'start', marginTop: 8 }}>

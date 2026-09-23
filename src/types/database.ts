@@ -227,6 +227,7 @@ export type OrderStatus = 'new' | 'preparing' | 'ready' | 'completed' | 'cancell
 export type OrderDiningMode = 'dining' | 'takeaway';
 export type OrderFulfillmentType = 'pickup' | 'delivery';
 export type OrderSizeOption = 'small' | 'large';
+export type OrderPaymentMethod = 'cash' | 'card' | 'instapay';
 
 export interface DeliveryLocation {
   id: string;
@@ -276,6 +277,11 @@ export interface Order {
   whatsapp_sent: boolean;
   ready_whatsapp_sent_at?: string | null;
   staff_acknowledged_at: string | null;
+  payment_method?: OrderPaymentMethod | null;
+  amount_received?: number | null;
+  change_due?: number | null;
+  paid_at?: string | null;
+  void_reason?: string | null;
   locale: string;
   created_at: string;
   updated_at: string;
@@ -294,6 +300,8 @@ export interface OrderItem {
   size_option: OrderSizeOption | null;
   weight_grams?: number | null;
   notes: string | null;
+  voided_at?: string | null;
+  void_reason?: string | null;
   created_at: string;
   /** Joined from products at fetch time; not stored on order_items */
   image_url?: string | null;

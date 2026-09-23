@@ -456,6 +456,7 @@
     "acceptingOrdersHint": "Désactivé : le menu reste visible mais le checkout client est bloqué.",
     "opsAutomation": "Automatisation ops",
     "opsAutomationDescription": "Impression cuisine et notification client à la commande prête.",
+    "kitchenPrint": "Impression cuisine",
     "autoPrintKitchenLabel": "Impression auto ticket cuisine",
     "autoPrintKitchenHint": "À chaque nouvelle commande sur le tableau de bord, imprimer le ticket cuisine une fois (pas sur l'écran cuisine).",
     "whatsappOnReadyLabel": "WhatsApp commande prête",
@@ -746,7 +747,43 @@
     "cashierTileNewOrder": "Nouvelle commande",
     "cashierTileKitchen": "Cuisine",
     "cashierTileShift": "Clôture",
-    "cashierTileSoldOut": "Épuisé"
+    "cashierTileSoldOut": "Épuisé",
+    "paymentCloseTitle": "Clôturer le paiement",
+    "paymentCloseAndComplete": "Encaisser et terminer",
+    "paymentClosing": "Clôture…",
+    "paymentCloseSuccess": "Paiement enregistré",
+    "paymentMethodLabel": "Paiement",
+    "paymentAmountReceived": "Reçu",
+    "paymentChangeDue": "Monnaie",
+    "paymentInsufficientCash": "Le montant doit couvrir le total",
+    "paymentMethod": {
+      "cash": "Espèces",
+      "card": "Carte",
+      "instapay": "Instapay"
+    },
+    "paymentError": {
+      "generic": "Impossible de clôturer le paiement",
+      "already_paid": "Commande déjà payée",
+      "insufficient_cash": "Espèces insuffisantes",
+      "invalid_payment_method": "Méthode de paiement invalide",
+      "order_cancelled": "Commande annulée",
+      "shift_closed": "Service déjà clôturé"
+    },
+    "voidOrder": "Annuler la commande",
+    "voidOrderConfirm": "Annuler {number} ? Exclu du net du jour.",
+    "voidOrderSuccess": "Commande annulée",
+    "voidLine": "Annuler la ligne",
+    "voidLineConfirm": "Annuler cette ligne ? Elle reste visible pour audit.",
+    "voidLineSuccess": "Ligne annulée",
+    "voidReasonLabel": "Motif (obligatoire)",
+    "voidReasonPlaceholder": "Erreur, changement client…",
+    "voidCancel": "Annuler",
+    "voidError": {
+      "generic": "Impossible d'annuler",
+      "reason_required": "Saisissez un motif",
+      "shift_closed": "Service déjà clôturé",
+      "already_voided": "Déjà annulé"
+    }
   },
   "kitchen": {
     "title": "Écran cuisine",
@@ -787,7 +824,17 @@
     "recentCloses": "Clôtures récentes",
     "expensesToday": "Dépenses aujourd'hui",
     "netToday": "Net du jour (ventes − dépenses)",
-    "netMonth": "Net du mois"
+    "netMonth": "Net du mois",
+    "dailySheetTitle": "Feuille de fin de journée",
+    "dailySheetDescription": "Totaux du jour. Les annulations sont exclues du net.",
+    "onlineOrders": "Commandes en ligne",
+    "cashierOrders": "Commandes caisse",
+    "cashTotal": "Espèces",
+    "cardTotal": "Carte",
+    "instapayTotal": "Instapay",
+    "voidsTotal": "Annulations",
+    "voidsCount": "Lignes annulées",
+    "netAfterVoids": "Net (ventes − dépenses − annulations)"
   },
   "expenses": {
     "title": "Dépenses",
@@ -911,7 +958,10 @@
     "active": "Actif",
     "confirmDelete": "Are you sure you want to delete this table?",
     "editTableAria": "Modifier table",
-    "deleteTableAria": "Supprimer table"
+    "deleteTableAria": "Supprimer table",
+    "free": "Libre",
+    "occupied": "Occupée",
+    "openOrder": "Commande {number}"
   },
   "testimonials": {
     "title": "Témoignages",

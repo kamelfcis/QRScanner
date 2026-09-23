@@ -5,7 +5,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { restaurantTableSchema } from '@/types/schema';
 import type { z } from 'zod';
-import { useRestaurantTables, useCreateTable, useUpdateTable, useDeleteTable } from '@/hooks/useRestaurantTables';
+import {
+  useRestaurantTables,
+  useCreateTable,
+  useUpdateTable,
+  useDeleteTable,
+} from '@/hooks/useRestaurantTables';
+import { useTableOccupancy } from '@/hooks/useTableOccupancy';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
@@ -15,13 +21,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { RestaurantTable } from '@/types';
 import { Plus, Table, Pencil, Trash2, Loader2 } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { hasDailyOps } from '@/i18n/config';
+import { cn } from '@/lib/utils';
 
 export default function TablesPage() {
   const { data: tables, isLoading, error, refetch } = useRestaurantTables();
+  const { occupancyByTable } = useTableOccupancy();
   const createMutation = useCreateTable();
   const updateMutation = useUpdateTable();
   const deleteMutation = useDeleteTable();
@@ -99,41 +109,75 @@ export default function TablesPage() {
 
       {!tables?.length ? (
         <EmptyState
-          icon={<Table className="h-12 w-12 text-muted-foreground/50" />}
+          icon={<Table className="text-muted-foreground/50 h-12 w-12" />}
           title={t('noTables')}
           description={t('noTablesDescription')}
           action={{ label: t('addTable'), onClick: openCreate }}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tables.map((table) => (
-            <Card key={table.id}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg font-semibold">
-                  {t('tableNumber', { number: table.table_number })}
-                </CardTitle>
-                <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(table)} aria-label={t('editTableAria')}>
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDeletingTable(table)} aria-label={t('deleteTableAria')}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {table.internal_name && (
-                  <p className="text-sm font-medium">{table.internal_name}</p>
-                )}
-                {table.description && (
-                  <p className="text-sm text-muted-foreground">{table.description}</p>
-                )}
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {table.is_active ? tCommon('active') : tCommon('inactive')}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {tables.map((table) => {
+            const occupancy = hasDailyOps
+              ? occupancyByTable.get(String(table.table_number))
+              : undefined;
+            const occupied = Boolean(occupancy);
+
+            return (
+              <Card
+                key={table.id}
+                className={cn(occupied && 'border-amber-400/70 ring-1 ring-amber-400/30')}
+              >
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-lg font-semibold">
+                    {t('tableNumber', { number: table.table_number })}
+                  </CardTitle>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => openEdit(table)}
+                      aria-label={t('editTableAria')}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => setDeletingTable(table)}
+                      aria-label={t('deleteTableAria')}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {hasDailyOps ? (
+                    <div className="mb-3">
+                      <Badge variant={occupied ? 'default' : 'secondary'}>
+                        {occupied ? t('occupied') : t('free')}
+                      </Badge>
+                      {occupancy ? (
+                        <p className="text-muted-foreground mt-2 text-sm tabular-nums">
+                          {t('openOrder', { number: occupancy.orderNumber })}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : null}
+                  {table.internal_name && (
+                    <p className="text-sm font-medium">{table.internal_name}</p>
+                  )}
+                  {table.description && (
+                    <p className="text-muted-foreground text-sm">{table.description}</p>
+                  )}
+                  <p className="text-muted-foreground mt-2 text-xs">
+                    {table.is_active ? tCommon('active') : tCommon('inactive')}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -152,18 +196,26 @@ export default function TablesPage() {
                 {...register('table_number', { valueAsNumber: true })}
               />
               {errors.table_number && (
-                <p className="text-sm text-destructive">{errors.table_number.message}</p>
+                <p className="text-destructive text-sm">{errors.table_number.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="internal_name">{t('internalName')}</Label>
-              <Input id="internal_name" {...register('internal_name')} placeholder={t('internalNamePlaceholder')} />
+              <Input
+                id="internal_name"
+                {...register('internal_name')}
+                placeholder={t('internalNamePlaceholder')}
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="description">{t('description')}</Label>
-              <Input id="description" {...register('description')} placeholder={t('descriptionPlaceholder')} />
+              <Input
+                id="description"
+                {...register('description')}
+                placeholder={t('descriptionPlaceholder')}
+              />
             </div>
 
             <div className="flex items-center gap-2">

@@ -26,7 +26,10 @@ import { cn, getLocalizedText } from '@/lib/utils';
 import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePanel';
+import { VoidReasonDialog } from '@/components/dashboard/orders/VoidReasonDialog';
+import { hasDailyOps } from '@/i18n/config';
+import { useVoidOrder, useVoidOrderItem } from '@/hooks/useOrderPayment';
 import { COLUMN_TONE, NEXT_STATUS_ACTION_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isUnacknowledged(order: OrderWithItems): boolean {
@@ -138,9 +141,13 @@ export function OrderTicket({
   onDelete?: (order: OrderWithItems) => void;
 }) {
   const needsAck = isUnacknowledged(order);
+  const voidOrder = useVoidOrder();
+  const voidOrderItem = useVoidOrderItem();
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
   const [flipped, setFlipped] = useState(false);
   const [receiptBusy, setReceiptBusy] = useState(false);
+  const [voidOrderOpen, setVoidOrderOpen] = useState(false);
+  const [voidItemId, setVoidItemId] = useState<string | null>(null);
   const [receiptScale, setReceiptScale] = useState(1);
   const [receiptWellHeight, setReceiptWellHeight] = useState<number>();
   const flipBackRef = useRef<HTMLButtonElement>(null);
@@ -166,7 +173,19 @@ export function OrderTicket({
     locale: currencyLocale,
   });
 
+  const needsRegisterPayment =
+    hasDailyOps &&
+    order.status === 'ready' &&
+    !order.paid_at &&
+    order.fulfillment_type !== 'delivery';
+
   const unflip = () => setFlipped(false);
+
+  const handleVoidError = (err: unknown) => {
+    const code = err instanceof Error ? err.message : 'void_failed';
+    const known = ['reason_required', 'shift_closed', 'already_voided'];
+    toast.error(known.includes(code) ? t(`voidError.${code}`) : t('voidError.generic'));
+  };
 
   const flipToReceipt = () => {
     setExpanded(true);
@@ -279,7 +298,7 @@ export function OrderTicket({
                 <p
                   className={cn(
                     'font-heading text-lg font-semibold tabular-nums',
-                    hasHettSamakaTier3 && 'text-[#1C1917] dark:text-stone-100'
+                    hasDailyOps && 'text-[#1C1917] dark:text-stone-100'
                   )}
                 >
                   {order.order_number}
@@ -371,7 +390,7 @@ export function OrderTicket({
                 <Button
                   className={cn(
                     'min-h-12 w-full text-base font-semibold',
-                    hasHettSamakaTier3 && 'bg-[#D97706] text-white hover:bg-amber-700'
+                    hasDailyOps && 'bg-[#D97706] text-white hover:bg-amber-700'
                   )}
                   disabled={busy}
                   onClick={(e) => {
@@ -382,11 +401,18 @@ export function OrderTicket({
                   {t('acknowledge')}
                 </Button>
               ) : null}
-              {nextStatus ? (
+              {nextStatus === 'completed' && needsRegisterPayment ? (
+                <PaymentClosePanel
+                  order={order}
+                  currencyLocale={currencyLocale}
+                  busy={busy}
+                  t={t}
+                />
+              ) : nextStatus ? (
                 <Button
                   className={cn(
                     'min-h-12 w-full text-base font-semibold',
-                    hasHettSamakaTier3 &&
+                    hasDailyOps &&
                       (NEXT_STATUS_ACTION_TONE[nextStatus] ?? 'bg-primary text-primary-foreground')
                   )}
                   disabled={busy}
@@ -414,7 +440,7 @@ export function OrderTicket({
                     <li key={item.id} className="flex items-start gap-2.5">
                       <ItemThumb imageUrl={item.image_url} alt={localizedName(item)} size="md" />
                       <div className="min-w-0 flex-1">
-                        <p>
+                        <p className={cn(item.voided_at && 'text-muted-foreground line-through')}>
                           <span className="tabular-nums">{item.quantity}×</span>{' '}
                           {localizedName(item)}
                           {item.size_option ? (
@@ -427,10 +453,28 @@ export function OrderTicket({
                             </span>
                           ) : null}
                         </p>
+                        {item.void_reason ? (
+                          <p className="text-destructive text-xs">{item.void_reason}</p>
+                        ) : null}
                         {item.notes ? (
                           <p className="text-muted-foreground text-xs">{item.notes}</p>
                         ) : null}
                       </div>
+                      {hasDailyOps && !item.voided_at && order.status !== 'cancelled' ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive min-h-9 shrink-0 px-2 text-xs"
+                          disabled={busy || voidOrderItem.isPending}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setVoidItemId(item.id);
+                          }}
+                        >
+                          {t('voidLine')}
+                        </Button>
+                      ) : null}
                     </li>
                   ))}
                 </ul>
@@ -496,6 +540,34 @@ export function OrderTicket({
                   </p>
                 ) : null}
 
+                {order.paid_at && order.payment_method ? (
+                  <div className="bg-muted/50 space-y-1 rounded-lg p-2 text-xs">
+                    <p>
+                      {t('paymentMethodLabel')}: {t(`paymentMethod.${order.payment_method}`)}
+                    </p>
+                    {order.payment_method === 'cash' ? (
+                      <>
+                        <p className="tabular-nums">
+                          {t('paymentAmountReceived')}:{' '}
+                          {formatCurrencyAmount(
+                            Number(order.amount_received ?? 0),
+                            order.currency,
+                            {
+                              locale: currencyLocale,
+                            }
+                          )}
+                        </p>
+                        <p className="tabular-nums">
+                          {t('paymentChangeDue')}:{' '}
+                          {formatCurrencyAmount(Number(order.change_due ?? 0), order.currency, {
+                            locale: currencyLocale,
+                          })}
+                        </p>
+                      </>
+                    ) : null}
+                  </div>
+                ) : null}
+
                 {order.fulfillment_type === 'delivery' ? (
                   <DeliveryFeeField
                     key={`${order.id}-${Number(order.delivery_fee ?? 0)}`}
@@ -507,7 +579,19 @@ export function OrderTicket({
                 ) : null}
 
                 <div className="grid gap-2">
-                  {order.status !== 'cancelled' && order.status !== 'completed' ? (
+                  {hasDailyOps && order.status !== 'cancelled' && order.status !== 'completed' ? (
+                    <Button
+                      variant="outline"
+                      className="min-h-11"
+                      disabled={busy || voidOrder.isPending}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setVoidOrderOpen(true);
+                      }}
+                    >
+                      {t('voidOrder')}
+                    </Button>
+                  ) : order.status !== 'cancelled' && order.status !== 'completed' ? (
                     <Button
                       variant="outline"
                       className="min-h-11"
@@ -678,6 +762,57 @@ export function OrderTicket({
           </div>
         </div>
       </div>
+
+      <VoidReasonDialog
+        open={voidOrderOpen}
+        onOpenChange={setVoidOrderOpen}
+        title={t('voidOrder')}
+        description={t('voidOrderConfirm', { number: order.order_number })}
+        confirmLabel={t('voidOrder')}
+        cancelLabel={t('voidCancel')}
+        reasonLabel={t('voidReasonLabel')}
+        reasonPlaceholder={t('voidReasonPlaceholder')}
+        loading={voidOrder.isPending}
+        onConfirm={(reason) => {
+          voidOrder.mutate(
+            { orderId: order.id, reason },
+            {
+              onSuccess: () => {
+                toast.success(t('voidOrderSuccess'));
+                setVoidOrderOpen(false);
+              },
+              onError: handleVoidError,
+            }
+          );
+        }}
+      />
+
+      <VoidReasonDialog
+        open={voidItemId != null}
+        onOpenChange={(open) => {
+          if (!open) setVoidItemId(null);
+        }}
+        title={t('voidLine')}
+        description={t('voidLineConfirm')}
+        confirmLabel={t('voidLine')}
+        cancelLabel={t('voidCancel')}
+        reasonLabel={t('voidReasonLabel')}
+        reasonPlaceholder={t('voidReasonPlaceholder')}
+        loading={voidOrderItem.isPending}
+        onConfirm={(reason) => {
+          if (!voidItemId) return;
+          voidOrderItem.mutate(
+            { itemId: voidItemId, reason },
+            {
+              onSuccess: () => {
+                toast.success(t('voidLineSuccess'));
+                setVoidItemId(null);
+              },
+              onError: handleVoidError,
+            }
+          );
+        }}
+      />
     </div>
   );
 }

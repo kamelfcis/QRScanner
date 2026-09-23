@@ -1,4 +1,4 @@
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 
 export type StaffRole = 'admin' | 'cashier';
 
@@ -6,7 +6,7 @@ const CASHIER_PREFIXES = ['/dashboard/orders', '/dashboard/shift', '/kitchen'] a
 
 /** Paths cashiers may access (orders, kitchen, shift, sold-out via orders/kitchen). */
 export function isCashierPathAllowed(pathname: string): boolean {
-  if (!hasHettSamakaTier3) return true;
+  if (!hasDailyOps) return true;
   if (pathname === '/dashboard') return true;
   return CASHIER_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
@@ -19,16 +19,16 @@ export function isAdminOnlyDashboardPath(pathname: string): boolean {
 }
 
 export function canHardDeleteOrders(role: StaffRole | null | undefined): boolean {
-  if (!hasHettSamakaTier3) return true;
+  if (!hasDailyOps) return true;
   return role !== 'cashier';
 }
 
 export function canManageCoupons(role: StaffRole | null | undefined): boolean {
-  if (!hasHettSamakaTier3) return true;
+  if (!hasDailyOps) return true;
   return role !== 'cashier';
 }
 
 export function canAccessExpenses(role: StaffRole | null | undefined): boolean {
-  if (!hasHettSamakaTier3) return true;
+  if (!hasDailyOps) return true;
   return role !== 'cashier';
 }

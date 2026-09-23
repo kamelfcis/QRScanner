@@ -456,6 +456,7 @@
     "acceptingOrdersHint": "عند الإيقاف، يبقى المنيو ظاهراً لكن الدفع محظور للعملاء.",
     "opsAutomation": "أتمتة التشغيل",
     "opsAutomationDescription": "طباعة المطبخ وإشعار العميل عند جاهزية الطلب.",
+    "kitchenPrint": "طباعة المطبخ",
     "autoPrintKitchenLabel": "طباعة تذكرة المطبخ تلقائياً",
     "autoPrintKitchenHint": "عند وصول طلب جديد في لوحة التحكم، تُطبع تذكرة المطبخ مرة واحدة (وليس في شاشة المطبخ).",
     "whatsappOnReadyLabel": "واتساب عند جاهزية الطلب",
@@ -746,7 +747,43 @@
     "cashierTileNewOrder": "طلب جديد",
     "cashierTileKitchen": "مطبخ",
     "cashierTileShift": "شفت",
-    "cashierTileSoldOut": "نفد"
+    "cashierTileSoldOut": "نفد",
+    "paymentCloseTitle": "إغلاق الدفع",
+    "paymentCloseAndComplete": "تحصيل وإتمام",
+    "paymentClosing": "جاري الإغلاق…",
+    "paymentCloseSuccess": "تم تسجيل الدفع",
+    "paymentMethodLabel": "طريقة الدفع",
+    "paymentAmountReceived": "المبلغ المستلم",
+    "paymentChangeDue": "الباقي",
+    "paymentInsufficientCash": "المبلغ يجب أن يغطي الإجمالي",
+    "paymentMethod": {
+      "cash": "نقدي",
+      "card": "بطاقة",
+      "instapay": "إنستاباي"
+    },
+    "paymentError": {
+      "generic": "تعذر إغلاق الدفع",
+      "already_paid": "تم دفع هذا الطلب مسبقاً",
+      "insufficient_cash": "المبلغ النقدي أقل من الإجمالي",
+      "invalid_payment_method": "اختر طريقة دفع صحيحة",
+      "order_cancelled": "تم إلغاء هذا الطلب",
+      "shift_closed": "الوردية مغلقة لهذا الطلب"
+    },
+    "voidOrder": "إلغاء الطلب",
+    "voidOrderConfirm": "إلغاء {number}؟ يُستبعد من صافي اليوم.",
+    "voidOrderSuccess": "تم إلغاء الطلب",
+    "voidLine": "إلغاء السطر",
+    "voidLineConfirm": "إلغاء هذا السطر؟ يبقى في الفاتورة للمراجعة.",
+    "voidLineSuccess": "تم إلغاء السطر",
+    "voidReasonLabel": "السبب (مطلوب)",
+    "voidReasonPlaceholder": "خطأ في الطلب، تغيير من العميل…",
+    "voidCancel": "إلغاء",
+    "voidError": {
+      "generic": "تعذر الإلغاء",
+      "reason_required": "أدخل سبباً",
+      "shift_closed": "الوردية مغلقة لهذا الطلب",
+      "already_voided": "تم الإلغاء مسبقاً"
+    }
   },
   "kitchen": {
     "title": "شاشة المطبخ",
@@ -787,7 +824,17 @@
     "recentCloses": "إغلاقات وردية حديثة",
     "expensesToday": "مصروفات اليوم",
     "netToday": "صافي اليوم (مبيعات − مصروفات)",
-    "netMonth": "صافي الشهر"
+    "netMonth": "صافي الشهر",
+    "dailySheetTitle": "كشف نهاية اليوم",
+    "dailySheetDescription": "إجماليات اليوم. الملغيات مستبعدة من الصافي.",
+    "onlineOrders": "طلبات أونلاين",
+    "cashierOrders": "طلبات الكاشير",
+    "cashTotal": "نقدي",
+    "cardTotal": "بطاقة",
+    "instapayTotal": "إنستاباي",
+    "voidsTotal": "ملغيات",
+    "voidsCount": "أسطر ملغاة",
+    "netAfterVoids": "الصافي (مبيعات − مصروفات − ملغيات)"
   },
   "expenses": {
     "title": "المصروفات",
@@ -912,7 +959,10 @@
     "active": "نشط",
     "confirmDelete": "هل أنت متأكد من حذف هذه الطاولة؟",
     "editTableAria": "تعديل الطاولة",
-    "deleteTableAria": "حذف الطاولة"
+    "deleteTableAria": "حذف الطاولة",
+    "free": "فارغة",
+    "occupied": "مشغولة",
+    "openOrder": "طلب مفتوح {number}"
   },
   "testimonials": {
     "title": "الشهادات",

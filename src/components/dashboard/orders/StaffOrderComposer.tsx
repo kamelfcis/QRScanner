@@ -50,7 +50,7 @@ import {
 } from '@/hooks/useStaffOrder';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { formatDeliveryLocationOption } from '@/lib/order/delivery-location';
 import {
   formatCurrencyAmount,
@@ -195,7 +195,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
     setDiningMode('dining');
     setFulfillmentType('pickup');
     setTableNumber('');
-    setCustomerName(hasHettSamakaTier3 ? t('staffWalkInName') : '');
+    setCustomerName(hasDailyOps ? t('staffWalkInName') : '');
     setCustomerPhone('');
     setDeliveryLocationId(null);
     setDeliveryAddressDetails('');
@@ -209,7 +209,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const handleOpenChange = useCallback(
     (next: boolean) => {
       if (next) {
-        if (hasHettSamakaTier3) {
+        if (hasDailyOps) {
           setCustomerName(t('staffWalkInName'));
         }
         requestAnimationFrame(() => searchRef.current?.focus());
@@ -468,7 +468,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
       <div
         className={cn(
           'gap-1.5',
-          hasHettSamakaTier3
+          hasDailyOps
             ? 'flex max-h-[5.75rem] flex-wrap overflow-y-auto'
             : '-mx-1 flex overflow-x-auto px-1 pb-0.5 [scrollbar-width:thin]'
         )}
@@ -528,7 +528,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
           <ul
             className={cn(
               'grid min-h-0 flex-1 overflow-y-auto',
-              hasHettSamakaTier3
+              hasDailyOps
                 ? 'grid-cols-2 gap-2 p-2 sm:grid-cols-3 xl:grid-cols-4'
                 : 'grid-cols-1 gap-px p-1 sm:grid-cols-2 xl:grid-cols-3'
             )}
@@ -559,7 +559,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                     diningMode
                   );
 
-              if (hasHettSamakaTier3) {
+              if (hasDailyOps) {
                 return (
                   <li key={product.id}>
                     <button

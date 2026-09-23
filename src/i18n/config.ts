@@ -35,6 +35,9 @@ export const hasProductSizeOptions = tenant !== 'aklet' && tenant !== 'harameen'
 /** When true, per-kg products expose gram weight picker (migration 025 — hettsamaka only). */
 export const hasProductWeightOptions = tenant === 'hettsamaka';
 
+/** Cashier, shift sheet, expenses, pause-orders, kitchen print, sold-out (hettsamaka + ala-keefak). */
+export const hasDailyOps = tenant === 'hettsamaka' || tenant === 'ala-keefak';
+
 /** Tier 1+2 ops features (hettsamaka only): top sellers, accepting_orders, reports compare, auto kitchen print, ready WhatsApp. */
 export const hasHettSamakaTier1 = tenant === 'hettsamaka';
 

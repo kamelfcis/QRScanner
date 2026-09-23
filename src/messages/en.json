@@ -456,6 +456,7 @@
     "acceptingOrdersHint": "When off, the menu stays visible but checkout is blocked for customers.",
     "opsAutomation": "Ops automation",
     "opsAutomationDescription": "Kitchen printing and customer notifications for order workflow.",
+    "kitchenPrint": "Kitchen print",
     "autoPrintKitchenLabel": "Auto-print kitchen ticket",
     "autoPrintKitchenHint": "When a new order arrives on the dashboard, print the kitchen ticket once (not on the kitchen board).",
     "whatsappOnReadyLabel": "WhatsApp when order is ready",
@@ -746,7 +747,43 @@
     "cashierTileNewOrder": "New order",
     "cashierTileKitchen": "Kitchen",
     "cashierTileShift": "Shift",
-    "cashierTileSoldOut": "Sold out"
+    "cashierTileSoldOut": "Sold out",
+    "paymentCloseTitle": "Close payment",
+    "paymentCloseAndComplete": "Collect & complete",
+    "paymentClosing": "Closing…",
+    "paymentCloseSuccess": "Payment recorded",
+    "paymentMethodLabel": "Payment",
+    "paymentAmountReceived": "Received",
+    "paymentChangeDue": "Change",
+    "paymentInsufficientCash": "Amount must cover the total",
+    "paymentMethod": {
+      "cash": "Cash",
+      "card": "Card",
+      "instapay": "Instapay"
+    },
+    "paymentError": {
+      "generic": "Could not close payment",
+      "already_paid": "This order is already paid",
+      "insufficient_cash": "Cash received is less than the total",
+      "invalid_payment_method": "Choose a valid payment method",
+      "order_cancelled": "This order was cancelled",
+      "shift_closed": "Shift already closed for this order"
+    },
+    "voidOrder": "Void order",
+    "voidOrderConfirm": "Void {number}? This excludes it from today’s net.",
+    "voidOrderSuccess": "Order voided",
+    "voidLine": "Void line",
+    "voidLineConfirm": "Void this line? It stays on the ticket for audit.",
+    "voidLineSuccess": "Line voided",
+    "voidReasonLabel": "Reason (required)",
+    "voidReasonPlaceholder": "Wrong item, customer changed mind…",
+    "voidCancel": "Cancel",
+    "voidError": {
+      "generic": "Could not void",
+      "reason_required": "Enter a reason",
+      "shift_closed": "Shift already closed for this order",
+      "already_voided": "Already voided"
+    }
   },
   "kitchen": {
     "title": "Kitchen display",
@@ -787,7 +824,17 @@
     "recentCloses": "Recent shift closes",
     "expensesToday": "Expenses today",
     "netToday": "Net today (sales − expenses)",
-    "netMonth": "Net this month"
+    "netMonth": "Net this month",
+    "dailySheetTitle": "End-of-day sheet",
+    "dailySheetDescription": "Register totals for today. Voids are excluded from net.",
+    "onlineOrders": "Online orders",
+    "cashierOrders": "Cashier orders",
+    "cashTotal": "Cash",
+    "cardTotal": "Card",
+    "instapayTotal": "Instapay",
+    "voidsTotal": "Voids",
+    "voidsCount": "Void lines",
+    "netAfterVoids": "Net (sales − expenses − voids)"
   },
   "expenses": {
     "title": "Expenses",
@@ -912,7 +959,10 @@
     "active": "Active",
     "confirmDelete": "Are you sure you want to delete this table?",
     "editTableAria": "Edit table",
-    "deleteTableAria": "Delete table"
+    "deleteTableAria": "Delete table",
+    "free": "Free",
+    "occupied": "Occupied",
+    "openOrder": "Open order {number}"
   },
   "testimonials": {
     "title": "Testimonials",

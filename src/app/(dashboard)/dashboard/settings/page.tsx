@@ -25,7 +25,7 @@ import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
 import { resolveOrderModes, validateOrderModes } from '@/lib/order/order-modes';
-import { hasHettSamakaTier1 } from '@/i18n/config';
+import { hasDailyOps, hasHettSamakaTier1 } from '@/i18n/config';
 
 const DAYS = [
   'monday',
@@ -1097,21 +1097,6 @@ export default function SettingsPage() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-0.5">
-                      <Label htmlFor="auto_print_kitchen_ticket">
-                        {t('autoPrintKitchenLabel')}
-                      </Label>
-                      <p className="text-muted-foreground text-sm">{t('autoPrintKitchenHint')}</p>
-                    </div>
-                    <Switch
-                      id="auto_print_kitchen_ticket"
-                      checked={form.auto_print_kitchen_ticket === true}
-                      onCheckedChange={(checked) =>
-                        setForm((prev) => ({ ...prev, auto_print_kitchen_ticket: checked }))
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="space-y-0.5">
                       <Label htmlFor="whatsapp_on_ready">{t('whatsappOnReadyLabel')}</Label>
                       <p className="text-muted-foreground text-sm">{t('whatsappOnReadyHint')}</p>
                     </div>
@@ -1126,6 +1111,29 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
             </>
+          ) : null}
+
+          {hasDailyOps ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('kitchenPrint')}</CardTitle>
+                <CardDescription>{t('autoPrintKitchenHint')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="auto_print_kitchen_ticket">{t('autoPrintKitchenLabel')}</Label>
+                  </div>
+                  <Switch
+                    id="auto_print_kitchen_ticket"
+                    checked={form.auto_print_kitchen_ticket === true}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => ({ ...prev, auto_print_kitchen_ticket: checked }))
+                    }
+                  />
+                </div>
+              </CardContent>
+            </Card>
           ) : null}
 
           <Card>

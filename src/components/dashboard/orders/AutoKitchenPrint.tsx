@@ -7,7 +7,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useOrders, useRealtimeOrders } from '@/hooks/useOrders';
 import { fetchStaffOrderForReceipt, staffOrderReceiptKeys } from '@/hooks/useStaffOrder';
-import { hasHettSamakaTier1 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { kitchenDomId, printReceiptElement } from '@/lib/order/print-receipt';
 import type { OrderWithItems } from '@/types/database';
 
@@ -28,7 +28,7 @@ export function AutoKitchenPrint() {
   const printingRef = useRef(false);
 
   const enabled =
-    hasHettSamakaTier1 &&
+    hasDailyOps &&
     features?.dashboard_orders === true &&
     settings?.auto_print_kitchen_ticket === true;
 

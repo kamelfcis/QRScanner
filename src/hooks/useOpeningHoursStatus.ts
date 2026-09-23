@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useHoursSettings, useRestaurantSettings } from '@/hooks/useSettings';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import {
   getNextOpenInfo,
   isCustomerOrderingPaused,
@@ -14,7 +14,7 @@ export function useOpeningHoursStatus(now: Date = new Date()) {
   const { data: hours } = useHoursSettings();
 
   return useMemo(() => {
-    if (!hasHettSamakaTier3) {
+    if (!hasDailyOps) {
       return {
         enabled: false,
         paused: settings?.accepting_orders === false,

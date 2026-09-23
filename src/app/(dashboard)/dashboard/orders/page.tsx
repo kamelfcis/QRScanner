@@ -42,7 +42,7 @@ import {
   COLUMN_TONE,
   COLUMN_TONE_POS,
 } from '@/components/dashboard/orders/column-tone';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
 
@@ -260,7 +260,7 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-5">
-      {hasHettSamakaTier3 ? (
+      {hasDailyOps ? (
         <>
           <CashierActionTiles
             onNewOrder={() => setComposerOpen(true)}
@@ -275,7 +275,7 @@ export default function OrdersPage() {
           role="alert"
           className={cn(
             'flex flex-col gap-3 rounded-xl border border-amber-400/80 bg-amber-50 p-4 shadow-sm dark:bg-amber-950/40',
-            !hasHettSamakaTier3 && 'sticky top-0 z-20'
+            !hasDailyOps && 'sticky top-0 z-20'
           )}
         >
           <div className="flex items-start gap-3">
@@ -311,7 +311,7 @@ export default function OrdersPage() {
         </div>
       ) : null}
 
-      {hasHettSamakaTier3 ? null : (
+      {hasDailyOps ? null : (
         <div className="flex justify-end">
           <SoldOutPanel triggerClassName="sm:w-auto" />
         </div>
@@ -329,7 +329,7 @@ export default function OrdersPage() {
         onStatusFocus={handleStatusFocus}
         onCleanup={allowHardDelete ? () => setCleanupOpen(true) : undefined}
         onNewStaffOrder={() => setComposerOpen(true)}
-        compact={hasHettSamakaTier3}
+        compact={hasDailyOps}
       />
 
       {tab === 'cancelled' ? (
@@ -364,14 +364,14 @@ export default function OrdersPage() {
               tabIndex={-1}
               className={cn(
                 'focus-visible:ring-ring min-w-[280px] snap-start scroll-mt-24 rounded-2xl border p-3 outline-none focus-visible:ring-2 md:min-w-0',
-                hasHettSamakaTier3 ? COLUMN_STAMP[status] : 'bg-muted/30'
+                hasDailyOps ? COLUMN_STAMP[status] : 'bg-muted/30'
               )}
               aria-label={t(`status.${status}`)}
             >
               <div
                 className={cn(
                   'mb-3 flex items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5',
-                  hasHettSamakaTier3 ? COLUMN_TONE_POS[status] : COLUMN_TONE[status]
+                  hasDailyOps ? COLUMN_TONE_POS[status] : COLUMN_TONE[status]
                 )}
               >
                 <h2 className="text-sm font-semibold">{t(`status.${status}`)}</h2>
@@ -429,7 +429,7 @@ export default function OrdersPage() {
 
       <OrdersCleanupDialog open={cleanupOpen} onOpenChange={setCleanupOpen} />
       <StaffOrderComposer open={composerOpen} onOpenChange={setComposerOpen} />
-      {hasHettSamakaTier3 ? (
+      {hasDailyOps ? (
         <SoldOutPanel hideTrigger open={soldOutOpen} onOpenChange={setSoldOutOpen} />
       ) : null}
     </div>
