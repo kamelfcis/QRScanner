@@ -1,7 +1,8 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Heart, MessageCircle, Search, ShoppingCart } from 'lucide-react';
+import { Heart, Search, ShoppingCart } from 'lucide-react';
+import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
@@ -51,15 +52,6 @@ export function MenuHeader({
     settings?.name_ar || tCommon('appName')
   );
 
-  const whatsapp = settings?.whatsapp?.replace(/[^0-9]/g, '');
-  const waiterMessage = tableParam
-    ? encodeURIComponent(
-        locale === 'ar'
-          ? `مرحباً، أحتاج مساعدة في الطاولة رقم ${tableParam}`
-          : `Hello, I need assistance at table ${tableParam}`
-      )
-    : '';
-
   const headerClassName =
     'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
 
@@ -99,20 +91,10 @@ export function MenuHeader({
 
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
-          {whatsapp && tableParam && (
-            <a
-              href={`https://wa.me/${whatsapp}?text=${waiterMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(iconButton, 'hidden sm:inline-flex')}
-              aria-label={t('callWaiter')}
-            >
-              <MessageCircle className="h-[18px] w-[18px]" aria-hidden="true" />
-            </a>
-          )}
+          <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
 
           {favoriteCount > 0 && (
             <span

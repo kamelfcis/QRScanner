@@ -169,6 +169,7 @@ function MenuContent() {
         tableParam={tableParam}
         diningMode={diningMode}
         onDiningModeChange={handleDiningModeChange}
+        onSearchOpen={() => setSearchOpen(true)}
       />
 
       {hasCatalog && (
