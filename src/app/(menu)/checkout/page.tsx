@@ -29,7 +29,11 @@ import {
   toCurrencyLocale,
 } from '@/lib/order/format-currency';
 import { validateOrder } from '@/lib/order/validation';
-import { buildOrderPayload, openWhatsAppUrl } from '@/lib/order/build-order';
+import {
+  buildOrderPayload,
+  openWhatsAppUrl,
+  WHATSAPP_POPUP_BLOCKED_KEY,
+} from '@/lib/order/build-order';
 import {
   trackCheckoutStart,
   trackDiningOrder,
@@ -315,6 +319,7 @@ export default function CheckoutPage() {
                   }
                 : null,
             couponCode: appliedCoupon?.code ?? null,
+            orderNumber,
           })
         : null;
 
@@ -330,11 +335,17 @@ export default function CheckoutPage() {
 
         try {
           sessionStorage.setItem('warda-last-wa-url', built.whatsappUrl);
+          const opened = openWhatsAppUrl(built.whatsappUrl, { navigateOnBlock: false });
+          sessionStorage.setItem(WHATSAPP_POPUP_BLOCKED_KEY, opened ? '0' : '1');
         } catch {
           // ignore
         }
-
-        openWhatsAppUrl(built.whatsappUrl);
+      } else {
+        try {
+          sessionStorage.removeItem(WHATSAPP_POPUP_BLOCKED_KEY);
+        } catch {
+          // ignore
+        }
       }
 
       const params = new URLSearchParams();

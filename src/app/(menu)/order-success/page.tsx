@@ -10,8 +10,8 @@ import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore } from '@/stores/cart-store';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { fadeInUp, scaleIn } from '@/lib/motion';
-import { openWhatsAppUrl } from '@/lib/order/build-order';
+import { fadeInUp, successSpringIn } from '@/lib/motion';
+import { openWhatsAppUrl, WHATSAPP_POPUP_BLOCKED_KEY } from '@/lib/order/build-order';
 import { buildOrderStatusPath } from '@/lib/order/last-order';
 import { cn } from '@/lib/utils';
 
@@ -44,6 +44,14 @@ function OrderSuccessContent() {
       return sessionStorage.getItem('warda-last-wa-url');
     } catch {
       return null;
+    }
+  });
+  const [waBlocked] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return sessionStorage.getItem(WHATSAPP_POPUP_BLOCKED_KEY) === '1';
+    } catch {
+      return false;
     }
   });
 
@@ -87,6 +95,7 @@ function OrderSuccessContent() {
     clear();
     try {
       sessionStorage.removeItem('warda-last-wa-url');
+      sessionStorage.removeItem(WHATSAPP_POPUP_BLOCKED_KEY);
     } catch {
       // ignore
     }
@@ -106,8 +115,8 @@ function OrderSuccessContent() {
         className="w-full max-w-md space-y-6 text-center"
       >
         <motion.div
-          variants={prefersReducedMotion ? undefined : scaleIn}
-          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)]"
+          variants={prefersReducedMotion ? undefined : successSpringIn}
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)] ring-4 ring-[var(--menu-gold-wash)]"
         >
           <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
         </motion.div>
@@ -122,9 +131,28 @@ function OrderSuccessContent() {
           <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
             {description}
           </p>
+          {waBlocked && waUrl ? (
+            <p
+              role="alert"
+              className="mx-auto max-w-[38ch] text-sm font-medium leading-relaxed text-[var(--menu-wine)]"
+            >
+              {t('whatsappNotOpened')}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-3">
+          {waUrl && waBlocked ? (
+            <Button
+              size="lg"
+              className="h-12 min-h-11 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+              onClick={() => openWhatsAppUrl(waUrl, { navigateOnBlock: false })}
+              data-testid="reopen-whatsapp"
+            >
+              <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('openWhatsAppNow')}
+            </Button>
+          ) : null}
           {orderNumber ? (
             <Link
               href={buildOrderStatusPath(orderNumber)}
@@ -143,7 +171,7 @@ function OrderSuccessContent() {
               {t('saveLinkHint')}
             </p>
           ) : null}
-          {waUrl && (
+          {waUrl && !waBlocked && (
             <Button
               size="lg"
               variant={orderNumber ? 'outline' : 'default'}

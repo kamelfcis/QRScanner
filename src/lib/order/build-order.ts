@@ -33,6 +33,7 @@ export interface BuildOrderInput {
   >;
   coupon?: CouponDiscountInput | null;
   couponCode?: string | null;
+  orderNumber?: string | null;
 }
 
 export interface BuiltOrder {
@@ -75,6 +76,7 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     orderNotes: input.orderNotes,
     prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
     couponCode: input.couponCode,
+    orderNumber: input.orderNumber,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);
@@ -82,12 +84,16 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
   return { totals, message, whatsappUrl, currency };
 }
 
-export function openWhatsAppUrl(url: string): boolean {
+export const WHATSAPP_POPUP_BLOCKED_KEY = 'warda-wa-popup-blocked';
+
+export function openWhatsAppUrl(url: string, options?: { navigateOnBlock?: boolean }): boolean {
   // Do not pass "noopener" as a window feature — modern browsers then return null
   // even when the tab opened, which would falsely trigger same-tab fallback.
   const popup = window.open(url, '_blank');
   if (!popup || popup.closed) {
-    window.location.href = url;
+    if (options?.navigateOnBlock !== false) {
+      window.location.href = url;
+    }
     return false;
   }
   try {
@@ -143,6 +149,7 @@ export function buildStoredOrderWhatsApp(input: {
     orderNotes: input.order.notes,
     prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
     couponCode: input.order.coupon_code,
+    orderNumber: input.order.order_number,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);

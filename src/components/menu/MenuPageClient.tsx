@@ -36,6 +36,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
 import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
+import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
 
 export function MenuPageClient() {
   return (
@@ -54,6 +55,7 @@ function MenuContent() {
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [spyCategory, setSpyCategory] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
@@ -187,6 +189,24 @@ function MenuContent() {
     [categories, handleProductClick]
   );
 
+  const categoryIds = useMemo(
+    () => (categories ?? []).map((category) => category.id),
+    [categories]
+  );
+  const { setTapGuard } = useCategoryScrollSpy({
+    categoryIds,
+    enabled: Boolean(categories?.length) && activeCategory === null,
+    onActiveChange: setSpyCategory,
+  });
+  const handleCategoryChange = useCallback(
+    (next: string | null) => {
+      setTapGuard(next);
+      setActiveCategory(next);
+    },
+    [setTapGuard]
+  );
+  const navActiveCategory = activeCategory ?? spyCategory;
+
   const filteredCategories = activeCategory
     ? (categories ?? []).filter((c) => c.id === activeCategory)
     : (categories ?? []);
@@ -221,8 +241,8 @@ function MenuContent() {
       {hasCatalog && (
         <CategoryNav
           categories={categories!}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
+          activeCategory={navActiveCategory}
+          onCategoryChange={handleCategoryChange}
         />
       )}
 
