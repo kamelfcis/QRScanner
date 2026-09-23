@@ -17,6 +17,42 @@ export function resolveOrderModes(settings?: Partial<RestaurantSettings> | null)
   };
 }
 
+/** Segmented control on `/menu` when dine-in is enabled (mirrors welcome cards). */
+export function getMenuModeToggleOptions(modes: OrderModes): WelcomeCardId[] {
+  if (!modes.dineIn) return [];
+  return getWelcomeCards(modes);
+}
+
+export function shouldShowMenuModeToggle(modes: OrderModes): boolean {
+  return getMenuModeToggleOptions(modes).length >= 2;
+}
+
+/** Map cart state to the active menu toggle segment. */
+export function resolveMenuModeToggleSelection(
+  modes: OrderModes,
+  diningMode: 'dining' | 'takeaway',
+  fulfillmentType: FulfillmentType
+): WelcomeCardId {
+  if (diningMode === 'dining') return 'dine-in';
+  if (modes.delivery && fulfillmentType === 'delivery') return 'delivery';
+  return 'takeaway';
+}
+
+/** Apply a menu toggle segment (same semantics as welcome cards). */
+export function applyMenuModeToggleSelection(cardId: WelcomeCardId): {
+  diningMode: 'dining' | 'takeaway';
+  fulfillmentType: FulfillmentType | null;
+} {
+  switch (cardId) {
+    case 'dine-in':
+      return { diningMode: 'dining', fulfillmentType: null };
+    case 'takeaway':
+      return { diningMode: 'takeaway', fulfillmentType: 'pickup' };
+    case 'delivery':
+      return { diningMode: 'takeaway', fulfillmentType: 'delivery' };
+  }
+}
+
 /** Which cards to render on `/welcome`. */
 export function getWelcomeCards(modes: OrderModes): WelcomeCardId[] {
   if (modes.dineIn) {

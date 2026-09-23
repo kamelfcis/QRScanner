@@ -15,13 +15,19 @@ import { useClientMounted } from '@/hooks/useClientMounted';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { resolveOrderModes } from '@/lib/order/order-modes';
+import {
+  resolveOrderModes,
+  shouldShowMenuModeToggle,
+  type WelcomeCardId,
+} from '@/lib/order/order-modes';
 import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
+import type { FulfillmentType } from '@/stores/cart-store';
 
 interface MenuHeaderProps {
   tableParam: string | null;
   diningMode: 'dining' | 'takeaway';
-  onDiningModeChange: (mode: 'dining' | 'takeaway') => void;
+  fulfillmentType: FulfillmentType;
+  onModeSelect: (cardId: WelcomeCardId) => void;
   onSearchOpen: () => void;
   onCartOpen: () => void;
   favoriteCount: number;
@@ -33,14 +39,15 @@ const iconButton =
 export function MenuHeader({
   tableParam,
   diningMode,
-  onDiningModeChange,
+  fulfillmentType,
+  onModeSelect,
   onSearchOpen,
   onCartOpen,
   favoriteCount,
 }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
   const orderModes = resolveOrderModes(settings);
-  const showDiningToggle = orderModes.dineIn;
+  const showDiningToggle = shouldShowMenuModeToggle(orderModes);
   const prefersReducedMotion = useReducedMotion();
   const isDesktop = useIsDesktop();
   const animateEntrance = isDesktop && !prefersReducedMotion;
@@ -87,15 +94,17 @@ export function MenuHeader({
         <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
           {showDiningToggle ? (
             <DiningModeToggle
-              value={diningMode}
-              onChange={onDiningModeChange}
+              orderModes={orderModes}
+              diningMode={diningMode}
+              fulfillmentType={fulfillmentType}
+              onSelect={onModeSelect}
               className="hidden sm:inline-flex"
             />
           ) : null}
 
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
           <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />

@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  applyMenuModeToggleSelection,
   getFulfillmentOptions,
+  getMenuModeToggleOptions,
   getWelcomeCards,
+  resolveMenuModeToggleSelection,
   resolveOrderModes,
+  shouldShowMenuModeToggle,
   validateOrderModes,
 } from '@/lib/order/order-modes';
 
@@ -87,6 +91,88 @@ describe('getWelcomeCards', () => {
         })
       )
     ).toEqual(['dine-in', 'delivery']);
+  });
+});
+
+describe('getMenuModeToggleOptions', () => {
+  it('mirrors welcome cards when dine-in is enabled', () => {
+    expect(getMenuModeToggleOptions(resolveOrderModes(null))).toEqual(['dine-in', 'takeaway']);
+    expect(
+      getMenuModeToggleOptions(
+        resolveOrderModes({
+          enable_dine_in: true,
+          enable_takeaway: false,
+          enable_delivery: true,
+        })
+      )
+    ).toEqual(['dine-in', 'delivery']);
+  });
+
+  it('returns empty when dine-in is disabled', () => {
+    expect(
+      getMenuModeToggleOptions(
+        resolveOrderModes({
+          enable_dine_in: false,
+          enable_takeaway: true,
+          enable_delivery: true,
+        })
+      )
+    ).toEqual([]);
+  });
+});
+
+describe('shouldShowMenuModeToggle', () => {
+  it('shows only when two or more dine-in menu modes exist', () => {
+    expect(shouldShowMenuModeToggle(resolveOrderModes(null))).toBe(true);
+    expect(
+      shouldShowMenuModeToggle(
+        resolveOrderModes({
+          enable_dine_in: true,
+          enable_takeaway: false,
+          enable_delivery: true,
+        })
+      )
+    ).toBe(true);
+    expect(
+      shouldShowMenuModeToggle(
+        resolveOrderModes({
+          enable_dine_in: true,
+          enable_takeaway: false,
+        })
+      )
+    ).toBe(false);
+  });
+});
+
+describe('resolveMenuModeToggleSelection', () => {
+  it('maps cart state to toggle segments', () => {
+    const alaKeefak = resolveOrderModes({
+      enable_dine_in: true,
+      enable_takeaway: false,
+      enable_delivery: true,
+    });
+    expect(resolveMenuModeToggleSelection(alaKeefak, 'dining', 'pickup')).toBe('dine-in');
+    expect(resolveMenuModeToggleSelection(alaKeefak, 'takeaway', 'delivery')).toBe('delivery');
+    expect(resolveMenuModeToggleSelection(resolveOrderModes(null), 'takeaway', 'pickup')).toBe(
+      'takeaway'
+    );
+  });
+});
+
+describe('applyMenuModeToggleSelection', () => {
+  it('matches welcome card semantics', () => {
+    expect(applyMenuModeToggleSelection('dine-in')).toEqual({
+      diningMode: 'dining',
+      fulfillmentType: null,
+    });
+    expect(applyMenuModeToggleSelection('takeaway')).toEqual({
+      diningMode: 'takeaway',
+      fulfillmentType: 'pickup',
+    });
+    expect(applyMenuModeToggleSelection('delivery')).toEqual({
+      diningMode: 'takeaway',
+      fulfillmentType: 'delivery',
+    });
   });
 });
 

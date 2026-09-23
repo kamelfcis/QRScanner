@@ -6,12 +6,18 @@ import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { resolveOrderModes } from '@/lib/order/order-modes';
+import {
+  resolveOrderModes,
+  shouldShowMenuModeToggle,
+  type WelcomeCardId,
+} from '@/lib/order/order-modes';
+import type { FulfillmentType } from '@/stores/cart-store';
 
 interface MenuUtilityBarProps {
   tableParam: string | null;
   diningMode: 'dining' | 'takeaway';
-  onDiningModeChange: (mode: 'dining' | 'takeaway') => void;
+  fulfillmentType: FulfillmentType;
+  onModeSelect: (cardId: WelcomeCardId) => void;
   onSearchOpen: () => void;
 }
 
@@ -22,19 +28,25 @@ interface MenuUtilityBarProps {
 export function MenuUtilityBar({
   tableParam,
   diningMode,
-  onDiningModeChange,
+  fulfillmentType,
+  onModeSelect,
   onSearchOpen,
 }: MenuUtilityBarProps) {
   const { data: settings } = useRestaurantSettings();
   const orderModes = resolveOrderModes(settings);
-  const showDiningToggle = orderModes.dineIn;
+  const showDiningToggle = shouldShowMenuModeToggle(orderModes);
   const t = useTranslations('menu');
 
   return (
     <div className="border-b border-[var(--menu-line)] bg-[var(--menu-paper)] sm:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5">
         {showDiningToggle ? (
-          <DiningModeToggle value={diningMode} onChange={onDiningModeChange} />
+          <DiningModeToggle
+            orderModes={orderModes}
+            diningMode={diningMode}
+            fulfillmentType={fulfillmentType}
+            onSelect={onModeSelect}
+          />
         ) : (
           <button
             type="button"
@@ -58,13 +70,10 @@ export function MenuUtilityBar({
               <Search className="h-[18px] w-[18px]" aria-hidden="true" />
             </button>
           ) : null}
-          <MenuContactButtons
-            tableParam={tableParam}
-            buttonClassName="text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]"
-          />
+          <MenuContactButtons tableParam={tableParam} />
           <LanguageSwitcher
             variant="ghost"
-            className="size-11 rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]"
+            className="size-11 rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)]"
           />
         </div>
       </div>

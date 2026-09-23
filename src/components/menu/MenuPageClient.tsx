@@ -35,7 +35,12 @@ import type { Product } from '@/types/database';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
-import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
+import {
+  applyMenuModeToggleSelection,
+  getFulfillmentOptions,
+  resolveOrderModes,
+  type WelcomeCardId,
+} from '@/lib/order/order-modes';
 import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
 import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
@@ -68,6 +73,7 @@ function MenuContent() {
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
+  const fulfillmentType = useCartStore((s) => s.fulfillmentType);
 
   // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
@@ -150,11 +156,22 @@ function MenuContent() {
     return unsub;
   }, [cartParam, router]);
 
-  const handleDiningModeChange = useCallback(
-    (mode: 'dining' | 'takeaway') => {
-      setDiningMode(mode);
-      persistDiningMode(mode);
-      setMeta({ diningMode: mode });
+  const handleModeSelect = useCallback(
+    (cardId: WelcomeCardId) => {
+      const next = applyMenuModeToggleSelection(cardId);
+      setDiningMode(next.diningMode);
+      persistDiningMode(next.diningMode);
+      setMeta({
+        diningMode: next.diningMode,
+        ...(next.fulfillmentType
+          ? { fulfillmentType: next.fulfillmentType }
+          : {
+              fulfillmentType: 'pickup',
+              deliveryAddress: '',
+              deliveryLocationId: null,
+              deliveryAddressDetails: '',
+            }),
+      });
     },
     [setMeta]
   );
@@ -226,7 +243,8 @@ function MenuContent() {
       <MenuHeader
         tableParam={tableParam}
         diningMode={diningMode}
-        onDiningModeChange={handleDiningModeChange}
+        fulfillmentType={fulfillmentType}
+        onModeSelect={handleModeSelect}
         onSearchOpen={() => setSearchOpen(true)}
         onCartOpen={openCart}
         favoriteCount={favoriteCount}
@@ -237,7 +255,8 @@ function MenuContent() {
       <MenuUtilityBar
         tableParam={tableParam}
         diningMode={diningMode}
-        onDiningModeChange={handleDiningModeChange}
+        fulfillmentType={fulfillmentType}
+        onModeSelect={handleModeSelect}
         onSearchOpen={() => setSearchOpen(true)}
       />
 
