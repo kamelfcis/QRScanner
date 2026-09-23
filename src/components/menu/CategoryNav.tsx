@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { getName, cn } from '@/lib/utils';
@@ -23,8 +24,12 @@ const chipClassName = (isActive: boolean) =>
 
 export function CategoryNav({ categories, activeCategory, onCategoryChange }: CategoryNavProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
   const { locale } = useI18n();
   const t = useTranslations('menu');
+
+  const scrollBehavior =
+    prefersReducedMotion || !isDesktop ? ('instant' as const) : ('smooth' as const);
 
   const handleClick = (categoryId: string | null) => {
     onCategoryChange(categoryId);
@@ -32,14 +37,14 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
       const section = document.getElementById(`category-${categoryId}`);
       if (section) {
         section.scrollIntoView({
-          behavior: prefersReducedMotion ? 'instant' : 'smooth',
+          behavior: scrollBehavior,
           block: 'start',
         });
       }
     } else {
       window.scrollTo({
         top: 0,
-        behavior: prefersReducedMotion ? 'instant' : 'smooth',
+        behavior: scrollBehavior,
       });
     }
   };
@@ -69,7 +74,7 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
   };
 
   return (
-    <nav className="bg-background/94 sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] backdrop-blur-md">
+    <nav className="md:bg-background/94 sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] bg-[var(--menu-paper)] md:backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-3 sm:px-5">
         <ScrollableChipRow
           ariaLabel={t('menuCategories')}
@@ -78,8 +83,9 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
           activeChipId={activeCategory ?? 'all'}
           chipIdAttribute="data-category-id"
           scrollClassName="gap-5 sm:gap-7"
-          fadeFromClassName="from-background"
+          fadeFromClassName="from-[var(--menu-paper)] md:from-background"
           arrowClassName="h-9 w-9 border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-ink-soft)] hover:border-[var(--menu-gold-soft)] hover:text-[var(--menu-ink)]"
+          hideArrowsBelowMd
           itemCount={categories.length}
         >
           {renderChip(null, t('allCategories'))}

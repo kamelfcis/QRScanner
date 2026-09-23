@@ -21,6 +21,8 @@ export interface ScrollableChipRowProps {
   fadeFromClassName?: string;
   /** Override styling of the prev/next affordances */
   arrowClassName?: string;
+  /** Phone menus swipe the row; hide the arrow buttons below md. */
+  hideArrowsBelowMd?: boolean;
   /** Re-run scroll metrics when this changes (e.g. item count) */
   itemCount?: number;
 }
@@ -36,12 +38,14 @@ export function ScrollableChipRow({
   scrollClassName,
   fadeFromClassName = 'from-background/90',
   arrowClassName,
+  hideArrowsBelowMd = false,
   itemCount,
 }: ScrollableChipRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollStart, setCanScrollStart] = useState(false);
   const [canScrollEnd, setCanScrollEnd] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const scrollBehavior = prefersReducedMotion ? ('instant' as const) : ('smooth' as const);
 
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
@@ -77,9 +81,9 @@ export function ScrollableChipRow({
     activeEl.scrollIntoView({
       inline: 'center',
       block: 'nearest',
-      behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      behavior: scrollBehavior,
     });
-  }, [activeChipId, chipIdAttribute, prefersReducedMotion, itemCount]);
+  }, [activeChipId, chipIdAttribute, scrollBehavior, itemCount]);
 
   const scrollByAmount = (direction: 'start' | 'end') => {
     const el = scrollRef.current;
@@ -89,7 +93,7 @@ export function ScrollableChipRow({
     const amount = direction === 'start' ? -200 * dir : 200 * dir;
     el.scrollBy({
       left: amount,
-      behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      behavior: scrollBehavior,
     });
   };
 
@@ -98,7 +102,7 @@ export function ScrollableChipRow({
       event.preventDefault();
       scrollRef.current?.scrollTo({
         left: getInlineScrollDirection() === 1 ? 0 : scrollRef.current.scrollWidth,
-        behavior: prefersReducedMotion ? 'instant' : 'smooth',
+        behavior: scrollBehavior,
       });
     } else if (event.key === 'End') {
       event.preventDefault();
@@ -107,7 +111,7 @@ export function ScrollableChipRow({
       const dir = getInlineScrollDirection();
       el.scrollTo({
         left: dir === 1 ? el.scrollWidth : 0,
-        behavior: prefersReducedMotion ? 'instant' : 'smooth',
+        behavior: scrollBehavior,
       });
     }
   };
@@ -139,8 +143,9 @@ export function ScrollableChipRow({
           onClick={() => scrollByAmount('start')}
           aria-label={scrollPrevLabel}
           className={cn(
-            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute start-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-            arrowClassName
+            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute start-0 z-20 h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            arrowClassName,
+            hideArrowsBelowMd ? 'hidden md:flex' : 'flex'
           )}
         >
           <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
@@ -150,10 +155,10 @@ export function ScrollableChipRow({
       <div
         ref={scrollRef}
         className={cn(
-          'scrollbar-none flex flex-1 gap-2 overflow-x-auto',
+          'scrollbar-none flex flex-1 touch-pan-x gap-2 overflow-x-auto',
           'pe-[max(1rem,env(safe-area-inset-right))] ps-[max(0px,env(safe-area-inset-left))]',
-          canScrollStart && 'ps-12',
-          canScrollEnd && 'pe-12',
+          canScrollStart && (hideArrowsBelowMd ? 'md:ps-12' : 'ps-12'),
+          canScrollEnd && (hideArrowsBelowMd ? 'md:pe-12' : 'pe-12'),
           scrollClassName
         )}
         role="tablist"
@@ -169,8 +174,9 @@ export function ScrollableChipRow({
           onClick={() => scrollByAmount('end')}
           aria-label={scrollNextLabel}
           className={cn(
-            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute end-0 z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-            arrowClassName
+            'border-border/60 bg-background/95 text-foreground hover:border-brand-accent/40 hover:text-brand-accent focus-visible:ring-ring absolute end-0 z-20 h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            arrowClassName,
+            hideArrowsBelowMd ? 'hidden md:flex' : 'flex'
           )}
         >
           <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
