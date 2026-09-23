@@ -164,12 +164,13 @@ export default function TablesPage() {
                           <p className="text-muted-foreground text-sm tabular-nums">
                             {t('openOrder', { number: occupancy.orderNumber })}
                           </p>
-                          <Button variant="outline" size="sm" className="min-h-9 w-full" asChild>
-                            <Link href={`/dashboard/orders?order=${occupancy.orderId}`}>
-                              <ExternalLink className="me-2 h-3.5 w-3.5" aria-hidden="true" />
-                              {t('viewOpenOrder')}
-                            </Link>
-                          </Button>
+                          <Link
+                            href={`/dashboard/orders?order=${occupancy.orderId}`}
+                            className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex min-h-9 w-full items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors"
+                          >
+                            <ExternalLink className="me-2 h-3.5 w-3.5" aria-hidden="true" />
+                            {t('viewOpenOrder')}
+                          </Link>
                         </div>
                       ) : null}
                     </div>
