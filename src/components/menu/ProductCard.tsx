@@ -21,6 +21,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
 import { haptic } from '@/lib/haptics';
+import { triggerHaptic } from '@/lib/ux/haptic';
 import {
   formatCurrencyAmount,
   getRestaurantCurrency,
@@ -37,6 +38,7 @@ interface ProductCardProps {
   onToggleFavorite: (product: Product) => void;
   onImageClick: (product: Product) => void;
   onAddedToCart?: () => void;
+  priority?: boolean;
 }
 
 export function ProductCard({
@@ -46,6 +48,7 @@ export function ProductCard({
   onToggleFavorite,
   onImageClick,
   onAddedToCart,
+  priority = false,
 }: ProductCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
@@ -159,6 +162,7 @@ export function ProductCard({
                 src={product.image_url}
                 alt={productName}
                 fill
+                priority={priority}
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-500 ease-out motion-reduce:transition-none sm:group-hover:scale-[1.04] motion-reduce:sm:group-hover:scale-100"
                 containerClassName="absolute inset-0 h-full w-full"
@@ -309,8 +313,11 @@ export function ProductCard({
                   >
                     <button
                       type="button"
-                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
-                      onClick={() => setQty((q) => Math.max(1, q - 1))}
+                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100"
+                      onClick={() => {
+                        triggerHaptic('light');
+                        setQty((q) => Math.max(1, q - 1));
+                      }}
                       aria-label={tCart('decreaseQty')}
                       disabled={qty <= 1}
                     >
@@ -325,8 +332,11 @@ export function ProductCard({
                     </span>
                     <button
                       type="button"
-                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-                      onClick={() => setQty((q) => q + 1)}
+                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 motion-reduce:active:scale-100"
+                      onClick={() => {
+                        triggerHaptic('light');
+                        setQty((q) => q + 1);
+                      }}
                       aria-label={tCart('increaseQty')}
                     >
                       <Plus className="h-3.5 w-3.5" aria-hidden="true" />

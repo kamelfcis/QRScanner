@@ -1,8 +1,9 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import { Heart, Receipt, Search, ShoppingCart } from 'lucide-react';
+import { Heart, Receipt, Search, ShoppingCart, Volume2, VolumeX } from 'lucide-react';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -17,6 +18,11 @@ import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveOrderModes } from '@/lib/order/order-modes';
 import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
+import { isSoundEnabled, playSound, setSoundEnabled, subscribeSoundEnabled } from '@/lib/ux/sound';
+
+function soundOnServer() {
+  return true;
+}
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -48,6 +54,7 @@ export function MenuHeader({
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
   const mounted = useClientMounted();
+  const soundOn = useSyncExternalStore(subscribeSoundEnabled, isSoundEnabled, soundOnServer);
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
   const lastOrder = mounted ? readLastOrder() : null;
@@ -125,6 +132,25 @@ export function MenuHeader({
           <button
             type="button"
             className={iconButton}
+            onClick={() => {
+              const next = !soundOn;
+              setSoundEnabled(next);
+              if (next) playSound('add');
+            }}
+            aria-pressed={soundOn}
+            aria-label={soundOn ? t('soundMute') : t('soundUnmute')}
+            data-testid="menu-sound-toggle"
+          >
+            {soundOn ? (
+              <Volume2 className="h-[18px] w-[18px]" aria-hidden="true" />
+            ) : (
+              <VolumeX className="h-[18px] w-[18px]" aria-hidden="true" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={iconButton}
             onClick={onSearchOpen}
             aria-label={t('searchMenu')}
           >
@@ -145,16 +171,13 @@ export function MenuHeader({
               </span>
             )}
             {showCartCount && (
-              <motion.span
+              <span
                 key={cartCount}
-                initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
+                className="cart-badge-pop absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
                 data-testid="cart-badge"
               >
                 {cartCount > 99 ? '99+' : cartCount}
-              </motion.span>
+              </span>
             )}
           </button>
         </div>
