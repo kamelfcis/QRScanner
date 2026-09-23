@@ -1,8 +1,7 @@
 'use client';
 
 import NextImage from 'next/image';
-import Link from 'next/link';
-import { Heart, Receipt, Search, ShoppingCart } from 'lucide-react';
+import { Heart, Search, ShoppingCart } from 'lucide-react';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -12,11 +11,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
-import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { resolveOrderModes } from '@/lib/order/order-modes';
-import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -39,20 +35,22 @@ export function MenuHeader({
   favoriteCount,
 }: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
-  const orderModes = resolveOrderModes(settings);
-  const showDiningToggle = orderModes.dineIn;
   const prefersReducedMotion = useReducedMotion();
   const isDesktop = useIsDesktop();
   const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
+  const tCommon = useTranslations('common');
   const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
-  const lastOrder = mounted ? readLastOrder() : null;
 
-  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
+  const name = getName(
+    locale,
+    settings?.name_en || tCommon('appName'),
+    settings?.name_ar || tCommon('appName')
+  );
 
   const headerClassName =
     'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
@@ -85,17 +83,15 @@ export function MenuHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
-          {showDiningToggle ? (
-            <DiningModeToggle
-              value={diningMode}
-              onChange={onDiningModeChange}
-              className="hidden sm:inline-flex"
-            />
-          ) : null}
+          <DiningModeToggle
+            value={diningMode}
+            onChange={onDiningModeChange}
+            className="hidden sm:inline-flex"
+          />
 
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
           <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
@@ -110,17 +106,6 @@ export function MenuHeader({
               {favoriteCount}
             </span>
           )}
-
-          {lastOrder ? (
-            <Link
-              href={buildOrderStatusPath(lastOrder.orderNumber)}
-              className={iconButton}
-              aria-label={t('checkOrderStatus')}
-              data-testid="header-order-status"
-            >
-              <Receipt className="h-[18px] w-[18px]" aria-hidden="true" />
-            </Link>
-          ) : null}
 
           <button
             type="button"
