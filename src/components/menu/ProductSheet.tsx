@@ -16,6 +16,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore, type CartSizeOption } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
 import { haptic } from '@/lib/haptics';
+import { triggerHaptic } from '@/lib/ux/haptic';
 import {
   formatCurrencyAmount,
   getRestaurantCurrency,
@@ -344,8 +345,11 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       >
         <button
           type="button"
-          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
-          onClick={() => setQty((q) => Math.max(1, q - 1))}
+          className="flex h-11 w-11 items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100"
+          onClick={() => {
+            triggerHaptic('light');
+            setQty((q) => Math.max(1, q - 1));
+          }}
           aria-label={tCart('decreaseQty')}
           disabled={qty <= 1}
         >
@@ -359,8 +363,11 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         </span>
         <button
           type="button"
-          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-          onClick={() => setQty((q) => q + 1)}
+          className="flex h-11 w-11 items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 motion-reduce:active:scale-100"
+          onClick={() => {
+            triggerHaptic('light');
+            setQty((q) => q + 1);
+          }}
           aria-label={tCart('increaseQty')}
         >
           <Plus className="h-4 w-4" aria-hidden="true" />

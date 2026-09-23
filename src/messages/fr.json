@@ -161,6 +161,8 @@
     "noProducts": "Aucun produit disponible dans cette catégorie",
     "searchPlaceholder": "Rechercher dans le menu…",
     "searchMenu": "Rechercher dans le menu",
+    "soundMute": "Couper le son",
+    "soundUnmute": "Activer le son",
     "searchMenuItems": "Rechercher des plats",
     "closeSearch": "Fermer la recherche",
     "favorites": "Favoris",
@@ -560,7 +562,9 @@
     "outcomeSaveOrder": "Nous enregistrerons votre commande pour le magasin.",
     "outcomeThenWhatsApp": "Ensuite vous pourrez l'envoyer via WhatsApp.",
     "outcomeWhatsAppOnly": "Cela ouvrira WhatsApp pour envoyer votre commande.",
-    "placeFailed": "Impossible d'enregistrer la commande. Réessayez.",
+    "placeFailed": "Un petit problème est survenu. Réessayez.",
+    "networkError": "La connexion semble faible. Réessayez.",
+    "retry": "Réessayer",
     "rateLimited": "Trop de commandes pour le moment. Attendez quelques minutes.",
     "productUnavailable": "Un article n'est plus disponible. Mettez à jour votre panier.",
     "boardUnavailable": "La commande en ligne est temporairement indisponible.",
@@ -573,7 +577,8 @@
     "notesTooLong": "Les notes doivent contenir au maximum {max} caractères.",
     "backToMenu": "Retour au menu",
     "backToCart": "Retour au panier",
-    "reviewCart": "Revoir le panier"
+    "reviewCart": "Revoir le panier",
+    "yourDetails": "Vos coordonnées"
   },
   "orderSuccess": {
     "readyTitle": "Commande ready to send",
@@ -583,6 +588,8 @@
     "placedTitle": "Commande reçue",
     "placedDescription": "La cuisine a {number}. Vous pouvez continuer ou vider le panier.",
     "openWhatsApp": "Ouvrir WhatsApp again",
+    "openWhatsAppNow": "Ouvrir WhatsApp",
+    "whatsappNotOpened": "WhatsApp ne s'est pas ouvert automatiquement. Appuyez sur le bouton ci-dessous.",
     "keepCart": "Keep cart",
     "clearCart": "Clear cart",
     "backToMenu": "Retour au menu",

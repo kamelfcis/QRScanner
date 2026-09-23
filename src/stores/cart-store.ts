@@ -2,7 +2,8 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { haptic } from '@/lib/haptics';
+import { playSound } from '@/lib/ux/sound';
+import { triggerHaptic } from '@/lib/ux/haptic';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
@@ -97,7 +98,8 @@ export const useCartStore = create<CartState>()(
         const sizeOption = item.sizeOption ?? null;
         const weightGrams = item.weightGrams ?? null;
         const id = makeCartLineId(item.productId, notes, sizeOption, weightGrams);
-        haptic.addToCart();
+        triggerHaptic('light');
+        playSound('add');
         set((state) => {
           const existing = state.items.find((i) => i.id === id);
           if (existing) {
