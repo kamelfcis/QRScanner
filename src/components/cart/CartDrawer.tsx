@@ -15,6 +15,7 @@ import {
   formatCurrencyAmount,
   getRestaurantCurrency,
   toCurrencyLocale,
+  type CurrencyLocale,
 } from '@/lib/order/format-currency';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
@@ -42,7 +43,7 @@ const REMOVE_FADE_MS = 180;
 interface CartLineProps {
   item: CartItem & { unitPrice: number };
   currency: string;
-  currencyLocale: string;
+  currencyLocale: CurrencyLocale;
   maxNotes: number;
   onDecrease: () => void;
   onIncrease: () => void;
