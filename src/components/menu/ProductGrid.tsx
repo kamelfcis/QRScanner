@@ -14,8 +14,6 @@ interface ProductGridProps {
   onToggleFavorite: (product: Product) => void;
   onImageClick: (product: Product) => void;
   onAddedToCart?: () => void;
-  /** First two photos in this grid only — used on the first visible section for LCP. */
-  prioritizeImages?: boolean;
   className?: string;
 }
 
@@ -26,7 +24,6 @@ export function ProductGrid({
   onToggleFavorite,
   onImageClick,
   onAddedToCart,
-  prioritizeImages = false,
   className,
 }: ProductGridProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -37,7 +34,7 @@ export function ProductGrid({
     <div
       className={cn('grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4', className)}
     >
-      {products.map((product, index) => {
+      {products.map((product) => {
         const card = (
           <ProductCard
             product={product}
@@ -46,7 +43,6 @@ export function ProductGrid({
             onToggleFavorite={onToggleFavorite}
             onImageClick={onImageClick}
             onAddedToCart={onAddedToCart}
-            priority={prioritizeImages && index < 2}
           />
         );
 
