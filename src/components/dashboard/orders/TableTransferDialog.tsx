@@ -64,7 +64,11 @@ export function TableTransferDialog({
         </DialogHeader>
         <div className="space-y-2">
           <Label htmlFor="transfer-table">{tableLabel}</Label>
-          <Select value={selected} onValueChange={setSelected} disabled={isLoading || loading}>
+          <Select
+            value={selected}
+            onValueChange={(value) => setSelected(value ?? '')}
+            disabled={isLoading || loading}
+          >
             <SelectTrigger id="transfer-table" className="min-h-11">
               <SelectValue placeholder={tablePlaceholder} />
             </SelectTrigger>
