@@ -1,105 +1,184 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Languages, MessageCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Heart, Receipt, Search, ShoppingCart } from 'lucide-react';
+import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { getName } from '@/lib/utils';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
+import { useCartStore } from '@/stores/cart-store';
+import { useClientMounted } from '@/hooks/useClientMounted';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { resolveOrderModes } from '@/lib/order/order-modes';
+import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
 
 interface MenuHeaderProps {
   tableParam: string | null;
+  diningMode: 'dining' | 'takeaway';
+  onDiningModeChange: (mode: 'dining' | 'takeaway') => void;
+  onSearchOpen: () => void;
+  onCartOpen: () => void;
+  favoriteCount: number;
 }
 
-/**
- * Short market header: identity only. Search, categories and cart live in the
- * sticky toolbar below so the brand bar can scroll away.
- */
-export function MenuHeader({ tableParam }: MenuHeaderProps) {
+const iconButton =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
+
+export function MenuHeader({
+  tableParam,
+  diningMode,
+  onDiningModeChange,
+  onSearchOpen,
+  onCartOpen,
+  favoriteCount,
+}: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
+  const orderModes = resolveOrderModes(settings);
+  const showDiningToggle = orderModes.dineIn;
   const prefersReducedMotion = useReducedMotion();
-  const { locale, setLocale } = useI18n();
+  const isDesktop = useIsDesktop();
+  const animateEntrance = isDesktop && !prefersReducedMotion;
+  const { locale } = useI18n();
   const t = useTranslations('menu');
-  const tCommon = useTranslations('common');
+  const tCart = useTranslations('cart');
+  const mounted = useClientMounted();
+  const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const showCartCount = mounted && cartCount > 0;
+  const lastOrder = mounted ? readLastOrder() : null;
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
-  const subtitle =
-    settings?.hero_subtitle?.trim() || settings?.tagline?.trim() || t('marketTagline');
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
-  const whatsapp = settings?.whatsapp?.replace(/[^0-9]/g, '');
-  const inquiryMessage = encodeURIComponent(
-    locale === 'ar'
-      ? 'مرحباً، أرغب في الاستفسار عن منتجات الجملة'
-      : 'Hello, I would like to ask about wholesale products'
-  );
+  const headerClassName =
+    'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
 
-  return (
-    <motion.header
-      initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="border-b border-[var(--hm-line)] bg-[var(--hm-surface)] pt-[env(safe-area-inset-top)]"
-    >
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-4 sm:py-3">
-        {settings?.logo_url ? (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[var(--hm-radius-sm)] border border-[var(--hm-line)] bg-white p-1">
-            <NextImage
-              src={settings.logo_url}
-              alt={name}
-              width={44}
-              height={44}
-              className="h-full w-full object-contain"
-              priority
-            />
-          </span>
-        ) : null}
+  const headerInner = (
+    <>
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:h-16 sm:px-5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          {settings?.logo_url ? (
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] p-1 sm:h-10 sm:w-10">
+              <NextImage
+                src={settings.logo_url}
+                alt=""
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
+              />
+            </span>
+          ) : null}
 
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <h1 className="font-heading truncate text-[15px] font-bold leading-tight text-[var(--hm-ink)] sm:text-lg">
+          <div className="min-w-0">
+            <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
               {name}
             </h1>
-            {tableParam && (
-              <Badge variant="secondary" className="shrink-0 text-[10px]">
-                {t('tableNumber', { number: tableParam })}
-              </Badge>
-            )}
+            <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
+              {t('menuLead')}
+              {tableParam ? ` · ${t('tableNumber', { number: tableParam })}` : ''}
+            </p>
           </div>
-          <p className="truncate text-[11px] leading-snug text-[var(--hm-ink-soft)] sm:text-xs">
-            {subtitle}
-          </p>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1">
-          {whatsapp && (
-            <a
-              href={`https://wa.me/${whatsapp}?text=${inquiryMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--hm-radius-sm)] text-[#128C4A] transition-colors hover:bg-[var(--hm-surface-muted)]"
-              aria-label={t('contactSales')}
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
+          {showDiningToggle ? (
+            <DiningModeToggle
+              value={diningMode}
+              onChange={onDiningModeChange}
+              className="hidden sm:inline-flex"
+            />
+          ) : null}
+
+          <LanguageSwitcher
+            variant="ghost"
+            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+          />
+
+          <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
+
+          {favoriteCount > 0 && (
+            <span
+              role="status"
+              aria-label={t('favoritesCount', { count: favoriteCount })}
+              className="hidden items-center gap-1.5 rounded-full border border-[var(--menu-line-strong)] px-2.5 py-1 text-xs tabular-nums text-[var(--menu-wine)] sm:inline-flex"
             >
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
-            </a>
+              <Heart className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+              {favoriteCount}
+            </span>
           )}
+
+          {lastOrder ? (
+            <Link
+              href={buildOrderStatusPath(lastOrder.orderNumber)}
+              className={iconButton}
+              aria-label={t('checkOrderStatus')}
+              data-testid="header-order-status"
+            >
+              <Receipt className="h-[18px] w-[18px]" aria-hidden="true" />
+            </Link>
+          ) : null}
 
           <button
             type="button"
-            onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
-            className="inline-flex h-10 items-center gap-1.5 rounded-[var(--hm-radius-sm)] px-2.5 text-xs font-semibold text-[var(--hm-ink-soft)] transition-colors hover:bg-[var(--hm-surface-muted)] hover:text-[var(--hm-ink)]"
-            aria-label={t('switchLanguage')}
+            className={iconButton}
+            onClick={onSearchOpen}
+            aria-label={t('searchMenu')}
           >
-            <Languages className="h-4 w-4" aria-hidden="true" />
-            {locale === 'ar' ? 'EN' : 'ع'}
+            <Search className="h-[18px] w-[18px]" aria-hidden="true" />
+          </button>
+
+          <button
+            type="button"
+            className={cn(iconButton, 'relative')}
+            onClick={onCartOpen}
+            aria-label={tCart('cartCount', { count: showCartCount ? cartCount : 0 })}
+            data-testid="cart-button"
+          >
+            <ShoppingCart className="h-[18px] w-[18px]" aria-hidden="true" />
+            {mounted && (
+              <span className="sr-only" aria-live="polite">
+                {tCart('cartCount', { count: cartCount })}
+              </span>
+            )}
+            {showCartCount && (
+              <motion.span
+                key={cartCount}
+                initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
+                data-testid="cart-badge"
+              >
+                {cartCount > 99 ? '99+' : cartCount}
+              </motion.span>
+            )}
           </button>
         </div>
       </div>
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
+      />
+    </>
+  );
+
+  if (!animateEntrance) {
+    return <header className={headerClassName}>{headerInner}</header>;
+  }
+
+  return (
+    <motion.header
+      initial={{ y: -24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className={headerClassName}
+    >
+      {headerInner}
     </motion.header>
   );
 }
