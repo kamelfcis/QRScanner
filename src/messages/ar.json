@@ -154,6 +154,8 @@
     "noProducts": "لا توجد أطباق متاحة في هذا التصنيف",
     "searchPlaceholder": "ابحث في القائمة...",
     "searchMenu": "بحث في القائمة",
+    "soundMute": "كتم الصوت",
+    "soundUnmute": "تشغيل الصوت",
     "searchMenuItems": "البحث في أطباق القائمة",
     "closeSearch": "إغلاق البحث",
     "favorites": "المفضلة",
@@ -516,6 +518,7 @@
     "outcomeThenWhatsApp": "ثم يمكنك إرساله عبر واتساب.",
     "outcomeWhatsAppOnly": "سيُفتح واتساب لإرسال طلبك.",
     "placeFailed": "تعذر حفظ الطلب. يرجى المحاولة مرة أخرى.",
+    "retry": "إعادة المحاولة",
     "rateLimited": "طلبات كثيرة الآن. انتظر دقائق ثم أعد المحاولة.",
     "productUnavailable": "أحد الأصناف لم يعد متاحاً. حدّث سلتك.",
     "boardUnavailable": "الطلب عبر الموقع غير متاح مؤقتاً.",
@@ -527,7 +530,8 @@
     "notesTooLong": "يجب ألا تتجاوز الملاحظات {max} حرفاً.",
     "backToMenu": "العودة للقائمة",
     "backToCart": "العودة للسلة",
-    "reviewCart": "مراجعة العربة"
+    "reviewCart": "مراجعة العربة",
+    "yourDetails": "بياناتك"
   },
   "orderSuccess": {
     "readyTitle": "الطلب جاهز للإرسال",
@@ -537,6 +541,7 @@
     "placedTitle": "تم استلام الطلب",
     "placedDescription": "المطبخ استلم {number}. يمكنك متابعة التسوق أو إفراغ السلة.",
     "openWhatsApp": "افتح واتساب مرة أخرى",
+    "openWhatsAppNow": "فتح واتساب",
     "keepCart": "الاحتفاظ بالسلة",
     "clearCart": "إفراغ السلة",
     "backToMenu": "العودة للقائمة",
