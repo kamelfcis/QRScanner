@@ -9,6 +9,7 @@ import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
@@ -41,6 +42,8 @@ export function MenuHeader({
   const orderModes = resolveOrderModes(settings);
   const showDiningToggle = orderModes.dineIn;
   const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
+  const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
@@ -51,13 +54,11 @@ export function MenuHeader({
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
-  return (
-    <motion.header
-      initial={prefersReducedMotion ? undefined : { y: -24, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-background/92 sticky top-0 z-40 pt-[env(safe-area-inset-top)] backdrop-blur-md"
-    >
+  const headerClassName =
+    'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
+
+  const headerInner = (
+    <>
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:h-16 sm:px-5">
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
           {settings?.logo_url ? (
@@ -163,6 +164,21 @@ export function MenuHeader({
         aria-hidden
         className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
       />
+    </>
+  );
+
+  if (!animateEntrance) {
+    return <header className={headerClassName}>{headerInner}</header>;
+  }
+
+  return (
+    <motion.header
+      initial={{ y: -24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className={headerClassName}
+    >
+      {headerInner}
     </motion.header>
   );
 }

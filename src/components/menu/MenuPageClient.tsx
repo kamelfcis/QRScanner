@@ -217,7 +217,7 @@ function MenuContent() {
   return (
     <div
       data-menu-theme
-      className="min-h-screen bg-[var(--menu-paper)] pb-24 md:pb-[env(safe-area-inset-bottom)]"
+      className="min-h-screen touch-pan-y bg-[var(--menu-paper)] pb-24 md:pb-[env(safe-area-inset-bottom)]"
     >
       <MenuThemeScope />
       <QrScanTracker />
@@ -286,7 +286,10 @@ function MenuContent() {
               : '';
 
             return (
-              <section key={category.id} className="mb-9 last:mb-0 sm:mb-12">
+              <section
+                key={category.id}
+                className="mb-9 [contain-intrinsic-size:auto_600px] [content-visibility:auto] last:mb-0 sm:mb-12"
+              >
                 <header className="mb-4 sm:mb-5">
                   <div className="flex items-center gap-3">
                     <h2
