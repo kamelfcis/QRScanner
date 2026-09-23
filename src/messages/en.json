@@ -783,7 +783,35 @@
       "generic": "Could not void",
       "reason_required": "Enter a reason",
       "shift_closed": "Shift already closed for this order",
-      "already_voided": "Already voided"
+      "already_voided": "Already voided",
+      "already_paid": "Order is paid — use refund instead"
+    },
+    "refundOrder": "Refund",
+    "refundOrderConfirm": "Refund {number}? Excluded from today's net; payment record kept.",
+    "refundOrderSuccess": "Order refunded",
+    "refundReasonLabel": "Refund reason",
+    "refundReasonPlaceholder": "Customer request, wrong charge…",
+    "refundedAt": "Refunded at",
+    "refundError": {
+      "generic": "Could not refund",
+      "reason_required": "Enter a reason",
+      "shift_closed": "Shift already closed for this order",
+      "already_refunded": "Already refunded",
+      "not_paid": "Order is not paid",
+      "already_paid": "Use void for unpaid orders"
+    },
+    "transferTable": "Transfer table",
+    "transferTableConfirm": "Move {number} to another table?",
+    "transferTableTarget": "New table",
+    "transferTablePlaceholder": "Choose a free table",
+    "transferTableConfirmAction": "Transfer",
+    "transferTableSuccess": "Moved to table {table}",
+    "transferError": {
+      "generic": "Could not transfer table",
+      "table_occupied": "Table is occupied",
+      "shift_closed": "Shift already closed for this order",
+      "order_closed": "Order is closed",
+      "already_paid": "Cannot transfer after payment"
     },
     "editAddItems": "Add items",
     "editAddItemsTitle": "Add items — {number}",
@@ -816,7 +844,13 @@
     "emptyNew": "No new tickets",
     "emptyPreparing": "Nothing on the pass",
     "emptyTitle": "The rail is clear",
-    "emptyDescription": "New tickets land here as soon as guests order."
+    "emptyDescription": "New tickets land here as soon as guests order.",
+    "column": {
+      "new": "New",
+      "preparing": "Preparing"
+    },
+    "channelCashier": "Cashier",
+    "channelOnline": "Online"
   },
   "soldOut": {
     "title": "Sold out",
@@ -857,7 +891,9 @@
     "instapayTotal": "Instapay",
     "voidsTotal": "Voids",
     "voidsCount": "Void lines",
-    "netAfterVoids": "Net (sales − expenses − voids)"
+    "refundsTotal": "Refunds",
+    "refundsCount": "Refunded orders",
+    "netAfterVoids": "Net (sales − expenses − voids − refunds)"
   },
   "expenses": {
     "title": "Expenses",
@@ -985,7 +1021,8 @@
     "deleteTableAria": "Delete table",
     "free": "Free",
     "occupied": "Occupied",
-    "openOrder": "Open order {number}"
+    "openOrder": "Open order {number}",
+    "viewOpenOrder": "View order"
   },
   "testimonials": {
     "title": "Testimonials",

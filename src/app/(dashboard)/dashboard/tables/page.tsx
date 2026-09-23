@@ -24,7 +24,8 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { RestaurantTable } from '@/types';
-import { Plus, Table, Pencil, Trash2, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Plus, Table, Pencil, Trash2, Loader2, ExternalLink } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { hasDailyOps } from '@/i18n/config';
 import { cn } from '@/lib/utils';
@@ -159,9 +160,17 @@ export default function TablesPage() {
                         {occupied ? t('occupied') : t('free')}
                       </Badge>
                       {occupancy ? (
-                        <p className="text-muted-foreground mt-2 text-sm tabular-nums">
-                          {t('openOrder', { number: occupancy.orderNumber })}
-                        </p>
+                        <div className="mt-2 space-y-2">
+                          <p className="text-muted-foreground text-sm tabular-nums">
+                            {t('openOrder', { number: occupancy.orderNumber })}
+                          </p>
+                          <Button variant="outline" size="sm" className="min-h-9 w-full" asChild>
+                            <Link href={`/dashboard/orders?order=${occupancy.orderId}`}>
+                              <ExternalLink className="me-2 h-3.5 w-3.5" aria-hidden="true" />
+                              {t('viewOpenOrder')}
+                            </Link>
+                          </Button>
+                        </div>
                       ) : null}
                     </div>
                   ) : null}

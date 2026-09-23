@@ -44,10 +44,15 @@ export default function KitchenPage() {
     }
   }, [features, featuresLoading, router]);
 
-  const tickets = useMemo(
-    () => (orders ?? []).filter((order) => order.status === 'new' || order.status === 'preparing'),
-    [orders]
-  );
+  const { newTickets, preparingTickets } = useMemo(() => {
+    const list = (orders ?? []).filter(
+      (order) => order.status === 'new' || order.status === 'preparing'
+    );
+    return {
+      newTickets: list.filter((order) => order.status === 'new'),
+      preparingTickets: list.filter((order) => order.status === 'preparing'),
+    };
+  }, [orders]);
 
   const handleAcknowledge = useCallback(
     async (id: string) => {
@@ -88,8 +93,9 @@ export default function KitchenPage() {
   if (error) return <ErrorState error={error} retry={refetch} />;
 
   const busy = updateStatus.isPending || acknowledgeOrder.isPending;
+  const totalTickets = newTickets.length + preparingTickets.length;
 
-  if (tickets.length === 0) {
+  if (totalTickets === 0) {
     return (
       <EmptyState
         icon={<ChefHat className="text-muted-foreground/50 h-12 w-12" aria-hidden="true" />}
@@ -99,19 +105,39 @@ export default function KitchenPage() {
     );
   }
 
+  const renderColumn = (status: 'new' | 'preparing', tickets: OrderWithItems[]) => (
+    <section className="min-w-0 space-y-3" aria-label={t(`column.${status}`)}>
+      <div className="bg-muted/40 flex items-center justify-between rounded-xl border px-3 py-2">
+        <h2 className="font-heading text-sm font-semibold">{t(`column.${status}`)}</h2>
+        <span className="text-xs font-bold tabular-nums">{tickets.length}</span>
+      </div>
+      {tickets.length === 0 ? (
+        <p className="text-muted-foreground px-1 py-8 text-center text-sm">
+          {status === 'new' ? t('emptyNew') : t('emptyPreparing')}
+        </p>
+      ) : (
+        <div className="grid gap-4">
+          {tickets.map((order) => (
+            <KitchenCard
+              key={order.id}
+              order={order}
+              locale={locale}
+              t={tOrders}
+              tKitchen={t}
+              busy={busy}
+              onAcknowledge={handleAcknowledge}
+              onStatus={handleStatus}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {tickets.map((order) => (
-        <KitchenCard
-          key={order.id}
-          order={order}
-          locale={locale}
-          t={tOrders}
-          busy={busy}
-          onAcknowledge={handleAcknowledge}
-          onStatus={handleStatus}
-        />
-      ))}
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {renderColumn('new', newTickets)}
+      {renderColumn('preparing', preparingTickets)}
     </div>
   );
 }

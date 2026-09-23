@@ -30,10 +30,13 @@ import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
 import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePanel';
 import { VoidReasonDialog } from '@/components/dashboard/orders/VoidReasonDialog';
+import { TableTransferDialog } from '@/components/dashboard/orders/TableTransferDialog';
 import { OrderAddItemsDialog } from '@/components/dashboard/orders/OrderAddItemsDialog';
 import { hasDailyOps } from '@/i18n/config';
 import { useUpdateOrderItemQuantity } from '@/hooks/useOrderEdit';
 import { useVoidOrder, useVoidOrderItem } from '@/hooks/useOrderPayment';
+import { useOrderRefund } from '@/hooks/useOrderRefund';
+import { useTableTransfer } from '@/hooks/useTableTransfer';
 import { COLUMN_TONE, NEXT_STATUS_ACTION_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isUnacknowledged(order: OrderWithItems): boolean {
@@ -147,11 +150,15 @@ export function OrderTicket({
   const needsAck = isUnacknowledged(order);
   const voidOrder = useVoidOrder();
   const voidOrderItem = useVoidOrderItem();
+  const refundOrder = useOrderRefund();
+  const transferTable = useTableTransfer();
   const updateQty = useUpdateOrderItemQuantity();
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
   const [flipped, setFlipped] = useState(false);
   const [receiptBusy, setReceiptBusy] = useState(false);
   const [voidOrderOpen, setVoidOrderOpen] = useState(false);
+  const [refundOpen, setRefundOpen] = useState(false);
+  const [transferOpen, setTransferOpen] = useState(false);
   const [voidItemId, setVoidItemId] = useState<string | null>(null);
   const [addItemsOpen, setAddItemsOpen] = useState(false);
   const [receiptScale, setReceiptScale] = useState(1);
@@ -183,6 +190,19 @@ export function OrderTicket({
     hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
 
   const canEditOrder =
+    hasDailyOps &&
+    !order.paid_at &&
+    !order.refunded_at &&
+    order.status !== 'cancelled' &&
+    order.status !== 'completed';
+
+  const canTransferTable =
+    canEditOrder && order.dining_mode === 'dining' && Boolean(order.table_number);
+
+  const canRefundOrder =
+    hasDailyOps && Boolean(order.paid_at) && !order.refunded_at && order.status !== 'cancelled';
+
+  const canVoidOrder =
     hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
 
   const receiptActionLabel = order.paid_at ? t('reprint') : t('printReceipt');
@@ -215,9 +235,29 @@ export function OrderTicket({
 
   const handleVoidError = (err: unknown) => {
     const message = err instanceof Error ? err.message : '';
-    const known = ['reason_required', 'shift_closed', 'already_voided'] as const;
+    const known = ['reason_required', 'shift_closed', 'already_voided', 'already_paid'] as const;
     const code = known.find((item) => message.includes(item));
     toast.error(code ? t(`voidError.${code}`) : t('voidError.generic'));
+  };
+
+  const handleRefundError = (err: unknown) => {
+    const message = err instanceof Error ? err.message : '';
+    const known = [
+      'reason_required',
+      'shift_closed',
+      'already_refunded',
+      'not_paid',
+      'already_paid',
+    ] as const;
+    const code = known.find((item) => message.includes(item));
+    toast.error(code ? t(`refundError.${code}`) : t('refundError.generic'));
+  };
+
+  const handleTransferError = (err: unknown) => {
+    const message = err instanceof Error ? err.message : '';
+    const known = ['table_occupied', 'shift_closed', 'order_closed', 'already_paid'] as const;
+    const code = known.find((item) => message.includes(item));
+    toast.error(code ? t(`transferError.${code}`) : t('transferError.generic'));
   };
 
   const flipToReceipt = () => {
@@ -306,6 +346,7 @@ export function OrderTicket({
         )}
       >
         <article
+          id={`order-ticket-${order.id}`}
           className={cn(
             'bg-background backface-hidden rounded-xl border shadow-sm transition-colors duration-200 motion-reduce:transition-none',
             flipped
@@ -643,6 +684,17 @@ export function OrderTicket({
                         </p>
                       </>
                     ) : null}
+                    {order.refunded_at ? (
+                      <>
+                        <p className="text-destructive">
+                          {t('refundReasonLabel')}: {order.refund_reason}
+                        </p>
+                        <p className="text-muted-foreground tabular-nums">
+                          {t('refundedAt')}:{' '}
+                          {formatLocaleDate(order.refunded_at, 'd MMM yyyy HH:mm', locale)}
+                        </p>
+                      </>
+                    ) : null}
                   </div>
                 ) : null}
 
@@ -670,7 +722,33 @@ export function OrderTicket({
                       {t('editAddItems')}
                     </Button>
                   ) : null}
-                  {hasDailyOps && order.status !== 'cancelled' && order.status !== 'completed' ? (
+                  {canTransferTable ? (
+                    <Button
+                      variant="outline"
+                      className="min-h-11"
+                      disabled={busy || transferTable.isPending}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTransferOpen(true);
+                      }}
+                    >
+                      {t('transferTable')}
+                    </Button>
+                  ) : null}
+                  {canRefundOrder ? (
+                    <Button
+                      variant="outline"
+                      className="text-destructive min-h-11"
+                      disabled={busy || refundOrder.isPending}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRefundOpen(true);
+                      }}
+                    >
+                      {t('refundOrder')}
+                    </Button>
+                  ) : null}
+                  {canVoidOrder ? (
                     <Button
                       variant="outline"
                       className="min-h-11"
@@ -682,7 +760,9 @@ export function OrderTicket({
                     >
                       {t('voidOrder')}
                     </Button>
-                  ) : order.status !== 'cancelled' && order.status !== 'completed' ? (
+                  ) : !hasDailyOps &&
+                    order.status !== 'cancelled' &&
+                    order.status !== 'completed' ? (
                     <Button
                       variant="outline"
                       className="min-h-11"
@@ -910,6 +990,55 @@ export function OrderTicket({
         onOpenChange={setAddItemsOpen}
         locale={locale}
         currencyLocale={currencyLocale}
+      />
+
+      <VoidReasonDialog
+        open={refundOpen}
+        onOpenChange={setRefundOpen}
+        title={t('refundOrder')}
+        description={t('refundOrderConfirm', { number: order.order_number })}
+        confirmLabel={t('refundOrder')}
+        cancelLabel={t('voidCancel')}
+        reasonLabel={t('refundReasonLabel')}
+        reasonPlaceholder={t('refundReasonPlaceholder')}
+        loading={refundOrder.isPending}
+        onConfirm={(reason) => {
+          refundOrder.mutate(
+            { orderId: order.id, reason },
+            {
+              onSuccess: () => {
+                toast.success(t('refundOrderSuccess'));
+                setRefundOpen(false);
+              },
+              onError: handleRefundError,
+            }
+          );
+        }}
+      />
+
+      <TableTransferDialog
+        open={transferOpen}
+        onOpenChange={setTransferOpen}
+        currentTableNumber={order.table_number}
+        title={t('transferTable')}
+        description={t('transferTableConfirm', { number: order.order_number })}
+        tableLabel={t('transferTableTarget')}
+        tablePlaceholder={t('transferTablePlaceholder')}
+        confirmLabel={t('transferTableConfirmAction')}
+        cancelLabel={t('voidCancel')}
+        loading={transferTable.isPending}
+        onConfirm={(tableNumber) => {
+          transferTable.mutate(
+            { orderId: order.id, tableNumber },
+            {
+              onSuccess: () => {
+                toast.success(t('transferTableSuccess', { table: tableNumber }));
+                setTransferOpen(false);
+              },
+              onError: handleTransferError,
+            }
+          );
+        }}
       />
     </div>
   );

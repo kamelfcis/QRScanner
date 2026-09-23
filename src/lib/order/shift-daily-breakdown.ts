@@ -9,6 +9,8 @@ export interface DailyOpsBreakdown {
   instapayTotal: number;
   voidTotal: number;
   voidCount: number;
+  refundTotal: number;
+  refundCount: number;
   grossRevenue: number;
   netRevenue: number;
 }
@@ -32,9 +34,32 @@ export function computeDailyOpsBreakdown(
   let instapayTotal = 0;
   let voidTotal = 0;
   let voidCount = 0;
+  let refundTotal = 0;
+  let refundCount = 0;
   let grossRevenue = 0;
 
   for (const order of orders) {
+    if (order.refunded_at) {
+      refundTotal += Number(order.total);
+      refundCount += 1;
+      grossRevenue += Number(order.total);
+
+      const isCashier =
+        order.order_channel === 'cashier' ||
+        (order.order_channel == null && Boolean(order.payment_method));
+      if (isCashier) cashierOrderCount += 1;
+      else onlineOrderCount += 1;
+
+      if (order.payment_method) {
+        const method = order.payment_method as PaymentMethod;
+        const tender = Number(order.total);
+        if (method === 'cash') cashTotal += tender;
+        else if (method === 'card') cardTotal += tender;
+        else if (method === 'instapay') instapayTotal += tender;
+      }
+      continue;
+    }
+
     if (order.status === 'cancelled') {
       if (order.void_reason) {
         voidTotal += Number(order.total);
@@ -65,7 +90,7 @@ export function computeDailyOpsBreakdown(
     }
   }
 
-  const netRevenue = grossRevenue - expenseTotal;
+  const netRevenue = grossRevenue - refundTotal - expenseTotal;
 
   return {
     onlineOrderCount,
@@ -75,6 +100,8 @@ export function computeDailyOpsBreakdown(
     instapayTotal,
     voidTotal,
     voidCount,
+    refundTotal,
+    refundCount,
     grossRevenue,
     netRevenue,
   };

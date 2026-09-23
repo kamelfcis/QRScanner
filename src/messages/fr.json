@@ -783,7 +783,35 @@
       "generic": "Impossible d'annuler",
       "reason_required": "Saisissez un motif",
       "shift_closed": "Service déjà clôturé",
-      "already_voided": "Déjà annulé"
+      "already_voided": "Déjà annulé",
+      "already_paid": "Commande payée — utilisez le remboursement"
+    },
+    "refundOrder": "Rembourser",
+    "refundOrderConfirm": "Rembourser {number} ? Exclu du net du jour ; paiement conservé.",
+    "refundOrderSuccess": "Commande remboursée",
+    "refundReasonLabel": "Motif du remboursement",
+    "refundReasonPlaceholder": "Demande client, erreur d'encaissement…",
+    "refundedAt": "Remboursé le",
+    "refundError": {
+      "generic": "Remboursement impossible",
+      "reason_required": "Saisissez un motif",
+      "shift_closed": "Service déjà clôturé",
+      "already_refunded": "Déjà remboursé",
+      "not_paid": "Commande non payée",
+      "already_paid": "Utilisez l'annulation pour les commandes impayées"
+    },
+    "transferTable": "Changer de table",
+    "transferTableConfirm": "Déplacer {number} vers une autre table ?",
+    "transferTableTarget": "Nouvelle table",
+    "transferTablePlaceholder": "Choisir une table libre",
+    "transferTableConfirmAction": "Déplacer",
+    "transferTableSuccess": "Déplacé vers la table {table}",
+    "transferError": {
+      "generic": "Transfert impossible",
+      "table_occupied": "Table occupée",
+      "shift_closed": "Service déjà clôturé",
+      "order_closed": "Commande clôturée",
+      "already_paid": "Impossible après paiement"
     },
     "editAddItems": "Ajouter des articles",
     "editAddItemsTitle": "Ajouter — {number}",
@@ -816,7 +844,13 @@
     "emptyNew": "Aucun ticket nouveau",
     "emptyPreparing": "Rien au passe",
     "emptyTitle": "Le passe est vide",
-    "emptyDescription": "Les nouveaux tickets apparaissent dès qu'un client commande."
+    "emptyDescription": "Les nouveaux tickets apparaissent dès qu'un client commande.",
+    "column": {
+      "new": "Nouveau",
+      "preparing": "En préparation"
+    },
+    "channelCashier": "Caisse",
+    "channelOnline": "En ligne"
   },
   "soldOut": {
     "title": "Épuisé",
@@ -857,7 +891,9 @@
     "instapayTotal": "Instapay",
     "voidsTotal": "Annulations",
     "voidsCount": "Lignes annulées",
-    "netAfterVoids": "Net (ventes − dépenses − annulations)"
+    "refundsTotal": "Remboursements",
+    "refundsCount": "Commandes remboursées",
+    "netAfterVoids": "Net (ventes − dépenses − annulations − remboursements)"
   },
   "expenses": {
     "title": "Dépenses",
@@ -984,7 +1020,8 @@
     "deleteTableAria": "Supprimer table",
     "free": "Libre",
     "occupied": "Occupée",
-    "openOrder": "Commande {number}"
+    "openOrder": "Commande {number}",
+    "viewOpenOrder": "Voir la commande"
   },
   "testimonials": {
     "title": "Témoignages",

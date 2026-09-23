@@ -214,6 +214,16 @@ export default function ShiftPage() {
           label: t('voidsCount'),
           value: String(dailyBreakdown.voidCount),
         },
+        {
+          label: t('refundsTotal'),
+          value: formatCurrencyAmount(dailyBreakdown.refundTotal, currency, {
+            locale: currencyLocale,
+          }),
+        },
+        {
+          label: t('refundsCount'),
+          value: String(dailyBreakdown.refundCount),
+        },
       ]
     : [];
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { BellRing } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,6 +62,8 @@ function isUnacknowledged(order: OrderWithItems): boolean {
 
 export default function OrdersPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const highlightOrderId = searchParams.get('order');
   const { locale } = useI18n();
   const t = useTranslations('orders');
   const tCommon = useTranslations('common');
@@ -169,6 +171,24 @@ export default function OrdersPage() {
     const frame = requestAnimationFrame(() => scrollToColumn(status));
     return () => cancelAnimationFrame(frame);
   }, [tab, scrollToColumn]);
+
+  useEffect(() => {
+    if (!highlightOrderId || !orders?.length || tab !== 'active') return;
+    const target = orders.find((order) => order.id === highlightOrderId);
+    if (!target || target.status === 'cancelled') return;
+    pendingColumn.current = target.status;
+    const frame = requestAnimationFrame(() => {
+      scrollToColumn(target.status);
+      const el = document.getElementById(`order-ticket-${highlightOrderId}`);
+      el?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'center',
+      });
+      el?.classList.add('ring-2', 'ring-amber-400');
+      window.setTimeout(() => el?.classList.remove('ring-2', 'ring-amber-400'), 2500);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [highlightOrderId, orders, prefersReducedMotion, tab, scrollToColumn]);
 
   const handleAcknowledge = useCallback(
     async (id: string) => {

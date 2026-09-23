@@ -282,6 +282,8 @@ export interface Order {
   change_due?: number | null;
   paid_at?: string | null;
   void_reason?: string | null;
+  refunded_at?: string | null;
+  refund_reason?: string | null;
   /** online = customer checkout, cashier = staff register. */
   order_channel?: 'online' | 'cashier' | null;
   locale: string;

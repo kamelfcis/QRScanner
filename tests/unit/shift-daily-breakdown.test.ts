@@ -70,4 +70,27 @@ describe('computeDailyOpsBreakdown', () => {
     expect(breakdown.voidTotal).toBe(100);
     expect(breakdown.netRevenue).toBe(120);
   });
+
+  it('subtracts refunds from net and counts refund metrics', () => {
+    const orders = [
+      order({
+        id: 'paid',
+        total: 200,
+        status: 'cancelled',
+        payment_method: 'card',
+        paid_at: new Date().toISOString(),
+        refunded_at: new Date().toISOString(),
+        refund_reason: 'customer request',
+      }),
+      order({ id: 'open', total: 50, payment_method: 'cash' }),
+    ];
+    const items = new Map<string, OrderItem[]>();
+
+    const breakdown = computeDailyOpsBreakdown(orders, items, 0);
+
+    expect(breakdown.refundTotal).toBe(200);
+    expect(breakdown.refundCount).toBe(1);
+    expect(breakdown.grossRevenue).toBe(250);
+    expect(breakdown.netRevenue).toBe(50);
+  });
 });

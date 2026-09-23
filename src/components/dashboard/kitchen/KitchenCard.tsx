@@ -15,12 +15,20 @@ function isUnacknowledged(order: OrderWithItems): boolean {
   return order.status === 'new' && !order.staff_acknowledged_at;
 }
 
+function urgencyRingClass(createdAt: string): string | null {
+  const ageMinutes = (Date.now() - new Date(createdAt).getTime()) / 60_000;
+  if (ageMinutes >= 25) return 'border-red-500 ring-2 ring-red-500/40';
+  if (ageMinutes >= 15) return 'border-amber-500 ring-2 ring-amber-500/40';
+  return null;
+}
+
 type KitchenCopy = (key: string, values?: Record<string, string | number>) => string;
 
 export function KitchenCard({
   order,
   locale,
   t,
+  tKitchen,
   busy,
   onAcknowledge,
   onStatus,
@@ -28,6 +36,7 @@ export function KitchenCard({
   order: OrderWithItems;
   locale: string;
   t: KitchenCopy;
+  tKitchen: KitchenCopy;
   busy: boolean;
   onAcknowledge: (id: string) => void;
   onStatus: (order: OrderWithItems, status: OrderStatus) => void;
@@ -41,11 +50,17 @@ export function KitchenCard({
     locale: getDateFnsLocale(locale),
   });
 
+  const urgency = urgencyRingClass(order.created_at);
+  const activeItems = order.items.filter((item) => !item.voided_at);
+  const channelLabel =
+    order.order_channel === 'cashier' ? tKitchen('channelCashier') : tKitchen('channelOnline');
+
   return (
     <article
       className={cn(
         'bg-background flex flex-col gap-4 rounded-2xl border p-4 shadow-sm',
-        needsAck && 'border-amber-500 ring-2 ring-amber-500/30'
+        needsAck && 'border-amber-500 ring-2 ring-amber-500/30',
+        !needsAck && urgency
       )}
     >
       <div className="flex items-start justify-between gap-3">
@@ -55,9 +70,14 @@ export function KitchenCard({
           </p>
           <p className="text-muted-foreground mt-1 text-sm">{relativeTime}</p>
         </div>
-        <Badge className={cn('border text-xs', COLUMN_TONE[order.status])}>
-          {t(`status.${order.status}`)}
-        </Badge>
+        <div className="flex shrink-0 flex-col items-end gap-1.5">
+          <Badge className={cn('border text-xs', COLUMN_TONE[order.status])}>
+            {t(`status.${order.status}`)}
+          </Badge>
+          <Badge variant="outline" className="text-xs">
+            {channelLabel}
+          </Badge>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2 text-sm">
@@ -82,7 +102,7 @@ export function KitchenCard({
       </div>
 
       <ul className="space-y-3 text-base sm:text-lg">
-        {order.items.map((item) => {
+        {activeItems.map((item) => {
           const line = formatKitchenItemLine(item, locale, t);
           return (
             <li key={item.id}>

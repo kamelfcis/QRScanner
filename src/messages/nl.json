@@ -783,7 +783,35 @@
       "generic": "Annuleren mislukt",
       "reason_required": "Voer een reden in",
       "shift_closed": "Dienst al afgesloten",
-      "already_voided": "Al geannuleerd"
+      "already_voided": "Al geannuleerd",
+      "already_paid": "Bestelling is betaald — gebruik terugbetaling"
+    },
+    "refundOrder": "Terugbetalen",
+    "refundOrderConfirm": "{number} terugbetalen? Uitgesloten van netto vandaag; betalingsgegevens blijven.",
+    "refundOrderSuccess": "Bestelling terugbetaald",
+    "refundReasonLabel": "Reden terugbetaling",
+    "refundReasonPlaceholder": "Klantverzoek, verkeerde betaling…",
+    "refundedAt": "Terugbetaald op",
+    "refundError": {
+      "generic": "Terugbetaling mislukt",
+      "reason_required": "Voer een reden in",
+      "shift_closed": "Dienst al afgesloten",
+      "already_refunded": "Al terugbetaald",
+      "not_paid": "Bestelling is niet betaald",
+      "already_paid": "Gebruik annuleren voor onbetaalde bestellingen"
+    },
+    "transferTable": "Tafel verplaatsen",
+    "transferTableConfirm": "{number} naar een andere tafel verplaatsen?",
+    "transferTableTarget": "Nieuwe tafel",
+    "transferTablePlaceholder": "Kies een vrije tafel",
+    "transferTableConfirmAction": "Verplaatsen",
+    "transferTableSuccess": "Verplaatst naar tafel {table}",
+    "transferError": {
+      "generic": "Tafel verplaatsen mislukt",
+      "table_occupied": "Tafel is bezet",
+      "shift_closed": "Dienst al afgesloten",
+      "order_closed": "Bestelling gesloten",
+      "already_paid": "Niet mogelijk na betaling"
     },
     "editAddItems": "Items toevoegen",
     "editAddItemsTitle": "Items toevoegen — {number}",
@@ -816,7 +844,13 @@
     "emptyNew": "Geen nieuwe tickets",
     "emptyPreparing": "Niets op de pass",
     "emptyTitle": "De pass is leeg",
-    "emptyDescription": "Nieuwe tickets verschijnen hier zodra gasten bestellen."
+    "emptyDescription": "Nieuwe tickets verschijnen hier zodra gasten bestellen.",
+    "column": {
+      "new": "Nieuw",
+      "preparing": "In bereiding"
+    },
+    "channelCashier": "Kassa",
+    "channelOnline": "Online"
   },
   "soldOut": {
     "title": "Uitverkocht",
@@ -857,7 +891,9 @@
     "instapayTotal": "Instapay",
     "voidsTotal": "Annuleringen",
     "voidsCount": "Geannuleerde regels",
-    "netAfterVoids": "Netto (omzet − uitgaven − annuleringen)"
+    "refundsTotal": "Terugbetalingen",
+    "refundsCount": "Terugbetaalde bestellingen",
+    "netAfterVoids": "Netto (omzet − uitgaven − annuleringen − terugbetalingen)"
   },
   "expenses": {
     "title": "Uitgaven",
@@ -984,7 +1020,8 @@
     "deleteTableAria": "Verwijderen table",
     "free": "Vrij",
     "occupied": "Bezet",
-    "openOrder": "Open bestelling {number}"
+    "openOrder": "Open bestelling {number}",
+    "viewOpenOrder": "Bestelling openen"
   },
   "testimonials": {
     "title": "Getuigenissen",

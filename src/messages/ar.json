@@ -783,7 +783,35 @@
       "generic": "تعذر الإلغاء",
       "reason_required": "أدخل سبباً",
       "shift_closed": "الوردية مغلقة لهذا الطلب",
-      "already_voided": "تم الإلغاء مسبقاً"
+      "already_voided": "تم الإلغاء مسبقاً",
+      "already_paid": "الطلب مدفوع — استخدم الاسترداد"
+    },
+    "refundOrder": "استرداد",
+    "refundOrderConfirm": "استرداد {number}؟ يُستبعد من صافي اليوم مع الإبقاء على سجل الدفع.",
+    "refundOrderSuccess": "تم الاسترداد",
+    "refundReasonLabel": "سبب الاسترداد",
+    "refundReasonPlaceholder": "طلب العميل، خطأ في التحصيل…",
+    "refundedAt": "تاريخ الاسترداد",
+    "refundError": {
+      "generic": "تعذر الاسترداد",
+      "reason_required": "أدخل سبباً",
+      "shift_closed": "الوردية مغلقة لهذا الطلب",
+      "already_refunded": "تم الاسترداد مسبقاً",
+      "not_paid": "الطلب غير مدفوع",
+      "already_paid": "استخدم الإلغاء للطلبات غير المدفوعة"
+    },
+    "transferTable": "نقل طاولة",
+    "transferTableConfirm": "نقل {number} إلى طاولة أخرى؟",
+    "transferTableTarget": "الطاولة الجديدة",
+    "transferTablePlaceholder": "اختر طاولة فارغة",
+    "transferTableConfirmAction": "نقل",
+    "transferTableSuccess": "تم النقل إلى طاولة {table}",
+    "transferError": {
+      "generic": "تعذر نقل الطاولة",
+      "table_occupied": "الطاولة مشغولة",
+      "shift_closed": "الوردية مغلقة لهذا الطلب",
+      "order_closed": "الطلب مغلق",
+      "already_paid": "لا يمكن النقل بعد الدفع"
     },
     "editAddItems": "إضافة أصناف",
     "editAddItemsTitle": "إضافة أصناف — {number}",
@@ -816,7 +844,13 @@
     "emptyNew": "لا توجد تذاكر جديدة",
     "emptyPreparing": "لا شيء على خط التقديم",
     "emptyTitle": "خط المطبخ فارغ",
-    "emptyDescription": "تظهر التذاكر الجديدة هنا فور طلب الزبائن."
+    "emptyDescription": "تظهر التذاكر الجديدة هنا فور طلب الزبائن.",
+    "column": {
+      "new": "جديد",
+      "preparing": "قيد التحضير"
+    },
+    "channelCashier": "كاشير",
+    "channelOnline": "أونلاين"
   },
   "soldOut": {
     "title": "نفد من المخزون",
@@ -857,7 +891,9 @@
     "instapayTotal": "إنستاباي",
     "voidsTotal": "ملغيات",
     "voidsCount": "أسطر ملغاة",
-    "netAfterVoids": "الصافي (مبيعات − مصروفات − ملغيات)"
+    "refundsTotal": "استردادات",
+    "refundsCount": "طلبات مستردة",
+    "netAfterVoids": "الصافي (مبيعات − مصروفات − ملغيات − استردادات)"
   },
   "expenses": {
     "title": "المصروفات",
@@ -985,7 +1021,8 @@
     "deleteTableAria": "حذف الطاولة",
     "free": "فارغة",
     "occupied": "مشغولة",
-    "openOrder": "طلب مفتوح {number}"
+    "openOrder": "طلب مفتوح {number}",
+    "viewOpenOrder": "فتح الطلب"
   },
   "testimonials": {
     "title": "الشهادات",
