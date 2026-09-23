@@ -10,8 +10,8 @@ import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore } from '@/stores/cart-store';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { fadeInUp, scaleIn } from '@/lib/motion';
-import { openWhatsAppUrl } from '@/lib/order/build-order';
+import { fadeInUp, successSpringIn } from '@/lib/motion';
+import { openWhatsAppUrl, WHATSAPP_POPUP_BLOCKED_KEY } from '@/lib/order/build-order';
 import {
   buildOrderStatusPath,
   cartLinesToLastOrderItems,
@@ -19,7 +19,6 @@ import {
   writeLastOrder,
 } from '@/lib/order/last-order';
 import { cn } from '@/lib/utils';
-import { ORDER_SUCCESS_SOUND_KEY, playOrderSuccessSound } from '@/lib/audio/order-success';
 import { hasHettSamakaTier3 } from '@/i18n/config';
 import {
   estimateReadyTime,
@@ -67,17 +66,14 @@ function OrderSuccessContent() {
       return null;
     }
   });
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
+  const [waBlocked] = useState(() => {
+    if (typeof window === 'undefined') return false;
     try {
-      if (sessionStorage.getItem(ORDER_SUCCESS_SOUND_KEY) !== '1') return;
-      sessionStorage.removeItem(ORDER_SUCCESS_SOUND_KEY);
-      playOrderSuccessSound({ prefersReducedMotion });
+      return sessionStorage.getItem(WHATSAPP_POPUP_BLOCKED_KEY) === '1';
     } catch {
-      // private mode / quota
+      return false;
     }
-  }, [prefersReducedMotion]);
+  });
 
   useEffect(() => {
     if (!hasHettSamakaTier3 || cartItems.length === 0) return;
@@ -162,6 +158,7 @@ function OrderSuccessContent() {
     clear();
     try {
       sessionStorage.removeItem('warda-last-wa-url');
+      sessionStorage.removeItem(WHATSAPP_POPUP_BLOCKED_KEY);
     } catch {
       // ignore
     }
@@ -182,7 +179,7 @@ function OrderSuccessContent() {
       >
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)]"
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)] ring-4 ring-[var(--menu-gold-wash)]"
         >
           <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
         </motion.div>
@@ -197,6 +194,11 @@ function OrderSuccessContent() {
           <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
             {description}
           </p>
+          {waBlocked && waUrl ? (
+            <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
+              {t('readyDescription')}
+            </p>
+          ) : null}
           {readyEstimate ? (
             <p
               className="mx-auto max-w-[38ch] rounded-full border border-[var(--menu-line)] bg-[var(--menu-surface)] px-4 py-2 text-sm font-medium text-[var(--menu-wine)]"
@@ -210,6 +212,17 @@ function OrderSuccessContent() {
         </div>
 
         <div className="flex flex-col gap-3">
+          {waUrl && waBlocked ? (
+            <Button
+              size="lg"
+              className="h-12 min-h-11 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+              onClick={() => openWhatsAppUrl(waUrl, { navigateOnBlock: false })}
+              data-testid="reopen-whatsapp"
+            >
+              <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('openWhatsAppNow')}
+            </Button>
+          ) : null}
           {orderNumber ? (
             <Link
               href={buildOrderStatusPath(orderNumber)}
@@ -228,7 +241,7 @@ function OrderSuccessContent() {
               {t('saveLinkHint')}
             </p>
           ) : null}
-          {waUrl && (
+          {waUrl && !waBlocked && (
             <Button
               size="lg"
               variant={orderNumber ? 'outline' : 'default'}
@@ -237,7 +250,7 @@ function OrderSuccessContent() {
                 !orderNumber &&
                   'bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
               )}
-              onClick={() => openWhatsAppUrl(waUrl)}
+              onClick={() => openWhatsAppUrl(waUrl, { navigateOnBlock: false })}
               data-testid="reopen-whatsapp"
             >
               <MessageCircle className="me-2 h-4 w-4" aria-hidden="true" />

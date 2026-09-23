@@ -1,9 +1,12 @@
 'use client';
 
+import { useCallback, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cart-store';
@@ -16,11 +19,15 @@ import {
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getName } from '@/lib/utils';
+import { cn, getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
 import { haptic } from '@/lib/haptics';
+import { playSound } from '@/lib/ux/sound';
+import { triggerHaptic } from '@/lib/ux/haptic';
 import { Image } from '@/components/shared/Image';
 import { RepeatLastOrderButton } from '@/components/menu/RepeatLastOrderButton';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import type { CartItem } from '@/stores/cart-store';
 
 interface CartDrawerProps {
   open: boolean;
@@ -28,7 +35,160 @@ interface CartDrawerProps {
 }
 
 const stepperButton =
-  'flex h-11 w-11 min-h-11 min-w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] touch-manipulation';
+  'flex h-11 w-11 min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 motion-reduce:active:scale-100';
+
+const REMOVE_FADE_MS = 180;
+
+interface CartLineProps {
+  item: CartItem & { unitPrice: number };
+  currency: string;
+  currencyLocale: string;
+  maxNotes: number;
+  onDecrease: () => void;
+  onIncrease: () => void;
+  onRemove: () => void;
+  onNotesChange: (notes: string) => void;
+}
+
+function CartLine({
+  item,
+  currency,
+  currencyLocale,
+  maxNotes,
+  onDecrease,
+  onIncrease,
+  onRemove,
+  onNotesChange,
+}: CartLineProps) {
+  const { locale } = useI18n();
+  const t = useTranslations('cart');
+  const prefersReducedMotion = useReducedMotion();
+  const [fadingOut, setFadingOut] = useState(false);
+
+  const name = getName(locale, item.name_en, item.name_ar, item.name_fr, item.name_nl);
+  const lineTotal = item.unitPrice * item.quantity;
+
+  const fadeThen = useCallback(
+    (action: () => void) => {
+      if (prefersReducedMotion) {
+        action();
+        return;
+      }
+      setFadingOut(true);
+      window.setTimeout(action, REMOVE_FADE_MS);
+    },
+    [prefersReducedMotion]
+  );
+
+  const handleDecrease = () => {
+    if (item.quantity <= 1) {
+      fadeThen(onRemove);
+      return;
+    }
+    onDecrease();
+  };
+
+  return (
+    <motion.div
+      layout={!prefersReducedMotion}
+      animate={{ opacity: fadingOut ? 0 : 1 }}
+      transition={{ duration: prefersReducedMotion ? 0 : REMOVE_FADE_MS / 1000 }}
+      className="flex gap-3 border-b border-[var(--menu-line)] py-3.5 last:border-0"
+      data-testid="cart-line"
+    >
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[var(--menu-paper-deep)]">
+        {item.image_url ? (
+          <Image
+            src={item.image_url}
+            alt={name}
+            fill
+            sizes="64px"
+            className="object-cover"
+            containerClassName="absolute inset-0"
+          />
+        ) : (
+          <div className="font-heading flex h-full items-center justify-center text-lg text-[var(--menu-gold-faint)]">
+            {name.charAt(0)}
+          </div>
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-[var(--menu-ink)]">
+              {name}
+              {item.has_size_options && item.sizeOption ? (
+                <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
+                  {item.sizeOption === 'small' ? t('small') : t('large')}
+                </span>
+              ) : null}
+            </p>
+            <p
+              className="mt-0.5 text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+              dir="ltr"
+            >
+              {formatCurrencyAmount(lineTotal, currency, { locale: currencyLocale })}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-wine)]"
+            onClick={() => fadeThen(onRemove)}
+            aria-label={t('removeItem')}
+          >
+            <Trash2 className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="mt-2 flex items-center gap-2">
+          <div
+            className="inline-flex items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)]"
+            role="group"
+            aria-label={t('quantity')}
+          >
+            <button
+              type="button"
+              className={stepperButton}
+              onClick={handleDecrease}
+              aria-label={t('decreaseQty')}
+            >
+              <Minus className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
+            <span
+              className="flex min-w-7 items-center justify-center text-sm font-medium tabular-nums"
+              aria-live="polite"
+            >
+              {item.quantity}
+            </span>
+            <button
+              type="button"
+              className={stepperButton}
+              onClick={onIncrease}
+              aria-label={t('increaseQty')}
+            >
+              <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-2">
+          <Label htmlFor={`notes-${item.id}`} className="sr-only">
+            {t('editNotes')}
+          </Label>
+          <Input
+            id={`notes-${item.id}`}
+            value={item.notes}
+            maxLength={maxNotes}
+            placeholder={t('itemNotesPlaceholder')}
+            onChange={(e) => onNotesChange(e.target.value)}
+            className="h-9 rounded-lg bg-[var(--menu-paper)] text-xs"
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const router = useRouter();
@@ -79,13 +239,13 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
           type="button"
           onClick={() => onOpenChange(false)}
           aria-label={tCommon('close')}
-          className="absolute end-3 top-3.5 z-10 flex h-9 w-9 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-ink)]"
+          className="absolute end-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-ink)]"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
 
         <div className="flex max-h-[88svh] flex-col overflow-hidden md:h-full md:max-h-none">
-          <div className="border-b border-[var(--menu-line)] pb-3 pe-14 ps-4 pt-4">
+          <div className="border-b border-[var(--menu-line)] pb-3 pe-16 ps-4 pt-4">
             <SheetTitle className="font-heading text-lg font-semibold text-[var(--menu-ink)]">
               {t('title')}
             </SheetTitle>
@@ -103,136 +263,45 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
               <p className="max-w-[32ch] text-sm text-[var(--menu-ink-soft)]">
                 {t('emptyDescription')}
               </p>
-              <Button
-                variant="outline"
-                className="mt-1 h-11 rounded-full px-6"
+              <Link
+                href="/menu"
                 onClick={() => onOpenChange(false)}
+                className={cn(
+                  buttonVariants({ variant: 'outline' }),
+                  'mt-1 h-11 min-h-11 rounded-full px-6'
+                )}
+                data-testid="cart-empty-menu"
               >
                 {t('browseMenu')}
-              </Button>
+              </Link>
             </div>
           ) : (
             <>
               <div className="flex-1 overflow-y-auto px-4 py-3">
-                {pricedItems.map((item) => {
-                  const name = getName(
-                    locale,
-                    item.name_en,
-                    item.name_ar,
-                    item.name_fr,
-                    item.name_nl
-                  );
-                  const lineTotal = item.unitPrice * item.quantity;
-                  return (
-                    <div
-                      key={item.id}
-                      className="flex gap-3 border-b border-[var(--menu-line)] py-3.5 last:border-0"
-                      data-testid="cart-line"
-                    >
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[var(--menu-paper-deep)]">
-                        {item.image_url ? (
-                          <Image
-                            src={item.image_url}
-                            alt={name}
-                            fill
-                            sizes="64px"
-                            className="object-cover"
-                            containerClassName="absolute inset-0"
-                          />
-                        ) : (
-                          <div className="font-heading flex h-full items-center justify-center text-lg text-[var(--menu-gold-faint)]">
-                            {name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-medium text-[var(--menu-ink)]">
-                              {name}
-                              {item.has_size_options && item.sizeOption ? (
-                                <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
-                                  {item.sizeOption === 'small' ? t('small') : t('large')}
-                                </span>
-                              ) : null}
-                            </p>
-                            <p
-                              className="mt-0.5 text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
-                              dir="ltr"
-                            >
-                              {formatCurrencyAmount(lineTotal, currency, {
-                                locale: currencyLocale,
-                              })}
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--menu-ink-soft)] transition-colors hover:bg-[var(--menu-gold-wash)] hover:text-[var(--menu-wine)]"
-                            onClick={() => {
-                              haptic.remove();
-                              removeItem(item.id);
-                            }}
-                            aria-label={t('removeItem')}
-                          >
-                            <Trash2 className="h-4 w-4" aria-hidden="true" />
-                          </button>
-                        </div>
-
-                        <div className="mt-2 flex items-center gap-2">
-                          <div
-                            className="inline-flex items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)]"
-                            role="group"
-                            aria-label={t('quantity')}
-                          >
-                            <button
-                              type="button"
-                              className={stepperButton}
-                              onClick={() => {
-                                haptic.tick();
-                                updateQty(item.id, item.quantity - 1);
-                              }}
-                              aria-label={t('decreaseQty')}
-                            >
-                              <Minus className="h-3.5 w-3.5" aria-hidden="true" />
-                            </button>
-                            <span
-                              className="flex min-w-7 items-center justify-center text-sm font-medium tabular-nums"
-                              aria-live="polite"
-                            >
-                              {item.quantity}
-                            </span>
-                            <button
-                              type="button"
-                              className={stepperButton}
-                              onClick={() => {
-                                haptic.tick();
-                                updateQty(item.id, item.quantity + 1);
-                              }}
-                              aria-label={t('increaseQty')}
-                            >
-                              <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="mt-2">
-                          <Label htmlFor={`notes-${item.id}`} className="sr-only">
-                            {t('editNotes')}
-                          </Label>
-                          <Input
-                            id={`notes-${item.id}`}
-                            value={item.notes}
-                            maxLength={settings?.max_order_notes_length ?? 200}
-                            placeholder={t('itemNotesPlaceholder')}
-                            onChange={(e) => setItemNotes(item.id, e.target.value)}
-                            className="h-9 rounded-lg bg-[var(--menu-paper)] text-xs"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {pricedItems.map((item) => (
+                  <CartLine
+                    key={item.id}
+                    item={item}
+                    currency={currency}
+                    currencyLocale={currencyLocale}
+                    maxNotes={settings?.max_order_notes_length ?? 200}
+                    onDecrease={() => {
+                      triggerHaptic('light');
+                      playSound('add');
+                      updateQty(item.id, item.quantity - 1);
+                    }}
+                    onIncrease={() => {
+                      triggerHaptic('light');
+                      playSound('add');
+                      updateQty(item.id, item.quantity + 1);
+                    }}
+                    onRemove={() => {
+                      haptic.remove();
+                      removeItem(item.id);
+                    }}
+                    onNotesChange={(notes) => setItemNotes(item.id, notes)}
+                  />
+                ))}
               </div>
 
               <div className="border-t border-[var(--menu-line)] bg-[var(--menu-paper)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">

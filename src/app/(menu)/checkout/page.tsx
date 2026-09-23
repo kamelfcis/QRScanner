@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -40,19 +40,19 @@ import {
   toCurrencyLocale,
 } from '@/lib/order/format-currency';
 import { validateOrder } from '@/lib/order/validation';
-import { buildOrderPayload, openWhatsAppUrl } from '@/lib/order/build-order';
+import {
+  buildOrderPayload,
+  openWhatsAppUrl,
+  WHATSAPP_POPUP_BLOCKED_KEY,
+} from '@/lib/order/build-order';
 import {
   trackCheckoutStart,
   trackDiningOrder,
   trackTakeawayOrder,
   trackOrderWhatsApp,
 } from '@/lib/analytics';
-import { haptic } from '@/lib/haptics';
-import {
-  ORDER_SUCCESS_SOUND_KEY,
-  playOrderSuccessSound,
-  resumeOrderSuccessAudio,
-} from '@/lib/audio/order-success';
+import { playSound } from '@/lib/ux/sound';
+import { triggerHaptic } from '@/lib/ux/haptic';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
 import { useDetectedDialCode } from '@/hooks/useDetectedDialCode';
 import { normalizeLocalPhone, formatDisplayPhone } from '@/lib/phone/normalize';
@@ -92,6 +92,8 @@ export default function CheckoutPage() {
   const setMeta = useCartStore((s) => s.setMeta);
 
   const [submitting, setSubmitting] = useState(false);
+  const [canRetry, setCanRetry] = useState(false);
+  const submittingRef = useRef(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
   const [manualCoupon, setManualCoupon] = useState<AppliedCoupon | null>(null);
@@ -211,6 +213,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (!couponsEnabled) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- drop a stale preview when coupons are off
       setAutoDiscount(null);
       return;
     }
@@ -255,25 +258,6 @@ export default function CheckoutPage() {
     }
   }, [trackedStart, items, totals.total]);
 
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-
-    let primed = false;
-    const primeFromGesture = () => {
-      if (primed) return;
-      void resumeOrderSuccessAudio().then((ok) => {
-        if (!ok) return;
-        primed = true;
-        window.removeEventListener('pointerdown', primeFromGesture, true);
-      });
-    };
-
-    window.addEventListener('pointerdown', primeFromGesture, true);
-    return () => {
-      window.removeEventListener('pointerdown', primeFromGesture, true);
-    };
-  }, [prefersReducedMotion]);
-
   const resolveErrors = (codes: ReturnType<typeof validateOrder>['codes']) => {
     return codes.map((code) => {
       switch (code) {
@@ -298,7 +282,18 @@ export default function CheckoutPage() {
     });
   };
 
+  const reportFailure = (messages: string[], retryable: boolean) => {
+    triggerHaptic('error');
+    playSound('error');
+    setCanRetry(retryable);
+    setErrors(messages);
+    setSubmitting(false);
+    submittingRef.current = false;
+  };
+
   const handleConfirm = async () => {
+    if (submittingRef.current) return;
+
     const result = validateOrder({
       customerName,
       orderNotes,
@@ -314,19 +309,24 @@ export default function CheckoutPage() {
     });
 
     if (!result.valid) {
-      setErrors(resolveErrors(result.codes));
+      reportFailure(resolveErrors(result.codes), false);
       return;
     }
 
     if (!settings) return;
 
     if (orderingBlocked) {
-      setErrors([outsideHours && hasHettSamakaTier3 ? tMenu('closedNowTitle') : t('ordersClosed')]);
+      reportFailure(
+        [outsideHours && hasHettSamakaTier3 ? tMenu('closedNowTitle') : t('ordersClosed')],
+        false
+      );
       return;
     }
 
-    void resumeOrderSuccessAudio();
-
+    submittingRef.current = true;
+    triggerHaptic('medium');
+    playSound('checkout');
+    setCanRetry(false);
     setSubmitting(true);
     setErrors([]);
 
@@ -376,27 +376,24 @@ export default function CheckoutPage() {
 
         if (!response.ok || !payload?.order_number) {
           const code = payload?.code;
-          if (code === 'rate_limited') setErrors([t('rateLimited')]);
-          else if (code === 'product_unavailable') setErrors([t('productUnavailable')]);
-          else if (code === 'feature_disabled') setErrors([t('boardUnavailable')]);
-          else if (code === 'orders_closed') setErrors([t('ordersClosed')]);
-          else if (code === 'address_required') setErrors([t('addressRequired')]);
+          let message = t('placeFailed');
+          if (code === 'rate_limited') message = t('rateLimited');
+          else if (code === 'product_unavailable') message = t('productUnavailable');
+          else if (code === 'feature_disabled') message = t('boardUnavailable');
+          else if (code === 'orders_closed') message = t('ordersClosed');
+          else if (code === 'address_required') message = t('addressRequired');
           else if (code === 'min_order') {
-            setErrors(
-              appliedCoupon
-                ? [t('couponMinOrder')]
-                : [
-                    t('minOrder', {
-                      amount: formatCurrencyNumber(effectiveMinimumOrder, currencyLocale),
-                      currency,
-                    }),
-                  ]
-            );
+            message = appliedCoupon
+              ? t('couponMinOrder')
+              : t('minOrder', {
+                  amount: formatCurrencyNumber(effectiveMinimumOrder, currencyLocale),
+                  currency,
+                });
           } else if (isCouponErrorCode(code)) {
-            setErrors([t(couponErrorMessageKey(code))]);
+            message = t(couponErrorMessageKey(code));
             setManualCoupon(null);
-          } else setErrors([t('placeFailed')]);
-          setSubmitting(false);
+          }
+          reportFailure([message], true);
           return;
         }
 
@@ -459,6 +456,7 @@ export default function CheckoutPage() {
                   }
                 : null,
             couponCode: appliedCoupon?.code ?? null,
+            orderNumber,
           })
         : null;
 
@@ -474,11 +472,17 @@ export default function CheckoutPage() {
 
         try {
           sessionStorage.setItem('warda-last-wa-url', built.whatsappUrl);
+          const opened = openWhatsAppUrl(built.whatsappUrl, { navigateOnBlock: false });
+          sessionStorage.setItem(WHATSAPP_POPUP_BLOCKED_KEY, opened ? '0' : '1');
         } catch {
           // ignore
         }
-
-        openWhatsAppUrl(built.whatsappUrl);
+      } else {
+        try {
+          sessionStorage.removeItem(WHATSAPP_POPUP_BLOCKED_KEY);
+        } catch {
+          // ignore
+        }
       }
 
       const params = new URLSearchParams();
@@ -492,17 +496,11 @@ export default function CheckoutPage() {
           isTakeaway ? fulfillmentType : diningMode === 'dining' ? 'dining' : 'pickup'
         );
       }
-      playOrderSuccessSound({ prefersReducedMotion });
-      haptic.success();
-      try {
-        sessionStorage.setItem(ORDER_SUCCESS_SOUND_KEY, '1');
-      } catch {
-        // private mode / quota
-      }
+      playSound('success');
+      triggerHaptic('success');
       router.push(`/order-success${params.size ? `?${params.toString()}` : ''}`);
     } catch {
-      setErrors([dashboardOrders ? t('placeFailed') : t('whatsappMissing')]);
-      setSubmitting(false);
+      reportFailure([t('networkError')], true);
     }
   };
 
@@ -616,10 +614,43 @@ export default function CheckoutPage() {
                   <li key={err}>{err}</li>
                 ))}
               </ul>
+              {canRetry && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-3 h-11 min-h-11"
+                  disabled={submitting}
+                  onClick={() => void handleConfirm()}
+                  data-testid="checkout-retry"
+                >
+                  {t('retry')}
+                </Button>
+              )}
             </div>
           )}
 
-          <section className="space-y-3">
+          {submitting ? (
+            <div
+              className="space-y-3 rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-4"
+              aria-busy="true"
+              aria-live="polite"
+              data-testid="checkout-submitting-skeleton"
+            >
+              <div className="bg-muted h-5 w-32 animate-pulse rounded" />
+              <div className="space-y-2">
+                <div className="bg-muted h-4 w-full animate-pulse rounded" />
+                <div className="bg-muted h-4 w-5/6 animate-pulse rounded" />
+                <div className="bg-muted h-4 w-2/3 animate-pulse rounded" />
+              </div>
+              <div className="border-t border-[var(--menu-line)] pt-3">
+                <div className="bg-muted mb-2 h-4 w-full animate-pulse rounded" />
+                <div className="bg-muted h-6 w-28 animate-pulse rounded" />
+              </div>
+              <div className="bg-muted h-14 w-full animate-pulse rounded-full" />
+            </div>
+          ) : null}
+
+          <section className={cn('space-y-3', submitting && 'pointer-events-none opacity-40')}>
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-heading font-semibold">{t('orderSummary')}</h2>
               <Badge variant="secondary">
@@ -706,37 +737,37 @@ export default function CheckoutPage() {
               </span>
             </div>
             {totals.discount > 0 &&
-              (appliedCoupon?.applications?.length
-                ? appliedCoupon.applications.map((line) => (
-                    <div
-                      key={`${line.code}-${line.discountAmount}`}
-                      className="flex justify-between text-sm text-[var(--menu-wine)]"
-                    >
-                      <span>
-                        {line.requiresCode
-                          ? t('discountWithCode', { code: line.code })
-                          : t('autoDiscount', { code: line.code })}
-                      </span>
-                      <span className="tabular-nums">
-                        −
-                        {formatCurrencyAmount(line.discountAmount, currency, {
-                          locale: currencyLocale,
-                        })}
-                      </span>
-                    </div>
-                  ))
-                : (
-                    <div className="flex justify-between text-sm text-[var(--menu-wine)]">
-                      <span>
-                        {appliedCoupon?.code
-                          ? t('discountWithCode', { code: appliedCoupon.code })
-                          : t('discount')}
-                      </span>
-                      <span className="tabular-nums">
-                        −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
-                      </span>
-                    </div>
-                  ))}
+              (appliedCoupon?.applications?.length ? (
+                appliedCoupon.applications.map((line) => (
+                  <div
+                    key={`${line.code}-${line.discountAmount}`}
+                    className="flex justify-between text-sm text-[var(--menu-wine)]"
+                  >
+                    <span>
+                      {line.requiresCode
+                        ? t('discountWithCode', { code: line.code })
+                        : t('autoDiscount', { code: line.code })}
+                    </span>
+                    <span className="tabular-nums">
+                      −
+                      {formatCurrencyAmount(line.discountAmount, currency, {
+                        locale: currencyLocale,
+                      })}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div className="flex justify-between text-sm text-[var(--menu-wine)]">
+                  <span>
+                    {appliedCoupon?.code
+                      ? t('discountWithCode', { code: appliedCoupon.code })
+                      : t('discount')}
+                  </span>
+                  <span className="tabular-nums">
+                    −{formatCurrencyAmount(totals.discount, currency, { locale: currencyLocale })}
+                  </span>
+                </div>
+              ))}
             {totals.applyTax && totals.tax > 0 && (
               <div className="text-muted-foreground flex justify-between text-sm">
                 <span>{t('tax', { rate: totals.taxRate })}</span>
@@ -775,6 +806,7 @@ export default function CheckoutPage() {
           </section>
 
           <section className="space-y-4">
+            <h2 className="font-heading font-semibold">{t('yourDetails')}</h2>
             {isTakeaway && fulfillmentOptions.length > 1 && (
               <div className="space-y-3">
                 <Label>{t('fulfillmentType')}</Label>

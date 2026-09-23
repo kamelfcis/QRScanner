@@ -161,6 +161,8 @@
     "noProducts": "Geen producten beschikbaar in deze categorie",
     "searchPlaceholder": "Menu doorzoeken…",
     "searchMenu": "Menu doorzoeken",
+    "soundMute": "Geluid dempen",
+    "soundUnmute": "Geluid aanzetten",
     "searchMenuItems": "Menu-items zoeken",
     "closeSearch": "Zoeken sluiten",
     "favorites": "Favorieten",
@@ -560,7 +562,9 @@
     "outcomeSaveOrder": "We slaan je bestelling op voor de winkel.",
     "outcomeThenWhatsApp": "Daarna kun je hem via WhatsApp versturen.",
     "outcomeWhatsAppOnly": "Dit opent WhatsApp om je bestelling te versturen.",
-    "placeFailed": "De bestelling kon niet worden opgeslagen. Probeer opnieuw.",
+    "placeFailed": "Er ging iets mis. Probeer opnieuw.",
+    "networkError": "De verbinding lijkt zwak. Probeer opnieuw.",
+    "retry": "Opnieuw proberen",
     "rateLimited": "Te veel bestellingen. Wacht een paar minuten.",
     "productUnavailable": "Een item is niet meer beschikbaar. Werk uw winkelwagen bij.",
     "boardUnavailable": "Online bestellen is tijdelijk niet beschikbaar.",
@@ -573,7 +577,8 @@
     "notesTooLong": "Notities mogen maximaal {max} tekens bevatten.",
     "backToMenu": "Terug naar menu",
     "backToCart": "Terug naar winkelwagen",
-    "reviewCart": "Winkelwagen bekijken"
+    "reviewCart": "Winkelwagen bekijken",
+    "yourDetails": "Jouw gegevens"
   },
   "orderSuccess": {
     "readyTitle": "Bestelling ready to send",
@@ -583,6 +588,8 @@
     "placedTitle": "Bestelling ontvangen",
     "placedDescription": "De keuken heeft {number}. U kunt verder winkelen of de winkelwagen legen.",
     "openWhatsApp": "Openen WhatsApp again",
+    "openWhatsAppNow": "WhatsApp openen",
+    "whatsappNotOpened": "WhatsApp is niet automatisch geopend. Tik op de knop hieronder.",
     "keepCart": "Keep cart",
     "clearCart": "Clear cart",
     "backToMenu": "Terug naar menu",
