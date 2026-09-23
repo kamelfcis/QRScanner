@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { triggerHaptic } from '@/lib/ux/haptic';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
@@ -32,6 +33,7 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
     prefersReducedMotion || !isDesktop ? ('instant' as const) : ('smooth' as const);
 
   const handleClick = (categoryId: string | null) => {
+    triggerHaptic('light');
     onCategoryChange(categoryId);
     if (categoryId) {
       const section = document.getElementById(`category-${categoryId}`);
