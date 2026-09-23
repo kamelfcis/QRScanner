@@ -1,29 +1,25 @@
 'use client';
 
 import { Suspense, useState, useEffect, useCallback, useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
-import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
-import { MotionSection } from '@/components/shared/motion';
-import { AkletThemeScope } from '@/components/menu/AkletThemeScope';
-import { AkletHero } from '@/components/menu/AkletHero';
+import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { MenuHeader } from '@/components/menu/MenuHeader';
+import { MenuHero } from '@/components/menu/MenuHero';
 import { MenuUtilityBar } from '@/components/menu/MenuUtilityBar';
 import { CategoryNav } from '@/components/menu/CategoryNav';
 import { ProductGrid } from '@/components/menu/ProductGrid';
-import { ProductStrip } from '@/components/menu/ProductStrip';
-import { TrayPromoCard } from '@/components/menu/TrayPromoCard';
 import { OffersSection } from '@/components/menu/OffersSection';
-import { OrderBar } from '@/components/menu/OrderBar';
 import { RecentlyViewed } from '@/components/menu/RecentlyViewed';
 import { RecommendedDishes } from '@/components/menu/RecommendedDishes';
 import { SearchOverlay } from '@/components/menu/SearchOverlay';
 import { ProductSheet } from '@/components/menu/ProductSheet';
-import { MenuSkeleton } from '@/components/menu/MenuSkeleton';
+import { MenuGridSkeleton, MenuSkeleton } from '@/components/menu/MenuSkeleton';
+import { OrderBar } from '@/components/menu/OrderBar';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
@@ -34,56 +30,51 @@ import {
   readStoredDiningMode,
   readStoredTableNumber,
 } from '@/lib/dining-mode';
-import {
-  collectBestsellers,
-  collectShrimpProducts,
-  findPromoTray,
-  getCategoryGroup,
-  type AkletGroupId,
-} from '@/lib/menu/aklet-groups';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import type { Product } from '@/types/database';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
-
-const GROUP_LABEL_KEY: Record<AkletGroupId, string> = {
-  fish: 'groupFish',
-  seafood: 'groupSeafood',
-  plates: 'groupPlates',
-  cooking: 'groupCooking',
-  offers: 'groupOffers',
-};
+import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
+import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
+import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
+import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
 
 export function MenuPageClient() {
   return (
-    <Suspense fallback={<MenuSkeleton />}>
-      <MenuContent />
-    </Suspense>
+    <TopSellingProvider>
+      <Suspense fallback={<MenuSkeleton />}>
+        <MenuContent />
+      </Suspense>
+    </TopSellingProvider>
   );
 }
 
 function MenuContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const modeParam = searchParams.get('mode');
+  const cartParam = searchParams.get('cart');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
-  const { data: settings } = useRestaurantSettings();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [allShuffleSeed, setAllShuffleSeed] = useState(() => Date.now());
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [sheetProduct, setSheetProduct] = useState<Product | null>(null);
+  const [detailProduct, setDetailProduct] = useState<Product | null>(null);
+  const { data: settings } = useRestaurantSettings();
+  const orderModes = useMemo(() => resolveOrderModes(settings), [settings]);
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
 
-  // First paint reads the URL only; the stored preference is applied after
-  // mount so the server and client markup always agree.
-  const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(
-    () => parseDiningModeParam(modeParam) ?? 'dining'
-  );
+  // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
+  const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
+    return parseDiningModeParam(modeParam) ?? 'dining';
+  });
 
-  const { toggleFavorite, isFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
   const { addRecent } = useRecentlyViewed();
 
   useEffect(() => {
@@ -91,11 +82,17 @@ function MenuContent() {
   }, []);
 
   useEffect(() => {
-    const resolved = parseDiningModeParam(modeParam) ?? readStoredDiningMode();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- resolve dining mode once the client can read storage
-    setDiningMode(resolved);
-    persistDiningMode(resolved);
-  }, [modeParam]);
+    const fromUrl = parseDiningModeParam(modeParam);
+    let next = fromUrl ?? readStoredDiningMode();
+    if (!orderModes.dineIn) {
+      next = 'takeaway';
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode after hydration
+    setDiningMode(next);
+    if (fromUrl && orderModes.dineIn) persistDiningMode(fromUrl);
+    if (!orderModes.dineIn) persistDiningMode('takeaway');
+    setMeta({ diningMode: next });
+  }, [modeParam, setMeta, orderModes.dineIn]);
 
   useEffect(() => {
     setMeta({ diningMode });
@@ -117,17 +114,57 @@ function MenuContent() {
     }
   }, [tableParam, setMeta]);
 
-  const handleDiningModeChange = useCallback((mode: 'dining' | 'takeaway') => {
-    setDiningMode(mode);
-    persistDiningMode(mode);
-  }, []);
+  useEffect(() => {
+    if (!settings) return;
+    const options = getFulfillmentOptions(orderModes);
+    if (options.length === 0) return;
+    const current = useCartStore.getState().fulfillmentType;
+    if (options.includes(current)) return;
+    const fallback = options[0];
+    setMeta({
+      fulfillmentType: fallback,
+      ...(fallback === 'pickup' ? { deliveryAddress: '' } : {}),
+    });
+  }, [settings, orderModes, setMeta]);
+
+  useEffect(() => {
+    if (cartParam !== '1') return;
+
+    const openCartFromQuery = () => {
+      const items = useCartStore.getState().items;
+      if (items.length === 0) return;
+      trackCartOpen(items.reduce((n, i) => n + i.quantity, 0));
+      setCartOpen(true);
+    };
+
+    if (useCartStore.persist.hasHydrated()) {
+      openCartFromQuery();
+      router.replace('/menu', { scroll: false });
+      return;
+    }
+
+    const unsub = useCartStore.persist.onFinishHydration(() => {
+      openCartFromQuery();
+      router.replace('/menu', { scroll: false });
+    });
+    return unsub;
+  }, [cartParam, router]);
+
+  const handleDiningModeChange = useCallback(
+    (mode: 'dining' | 'takeaway') => {
+      setDiningMode(mode);
+      persistDiningMode(mode);
+      setMeta({ diningMode: mode });
+    },
+    [setMeta]
+  );
 
   const openCart = useCallback(() => {
     trackCartOpen(useCartStore.getState().items.reduce((n, i) => n + i.quantity, 0));
     setCartOpen(true);
   }, []);
 
-  const openProduct = useCallback(
+  const handleProductClick = useCallback(
     (product: Product) => {
       trackProductView(
         product.id,
@@ -137,7 +174,7 @@ function MenuContent() {
         undefined
       );
       addRecent(product);
-      setSheetProduct(product);
+      setDetailProduct(product);
     },
     [addRecent]
   );
@@ -148,131 +185,146 @@ function MenuContent() {
       for (const cat of categories) {
         const found = cat.products.find((p) => p.id === productId);
         if (found) {
-          openProduct(found);
+          handleProductClick(found);
           break;
         }
       }
     },
-    [categories, openProduct]
+    [categories, handleProductClick]
   );
 
-  const shrimpPicks = useMemo(() => collectShrimpProducts(categories ?? []), [categories]);
-  const bestsellers = useMemo(() => collectBestsellers(categories ?? []), [categories]);
-  const promoTray = useMemo(() => findPromoTray(categories ?? []), [categories]);
+  const handleCategoryChange = useCallback((next: string | null) => {
+    setActiveCategory((prev) => {
+      if (next === null && prev !== null) {
+        setAllShuffleSeed(Date.now());
+      }
+      return next;
+    });
+  }, []);
 
-  if (isLoading) return <MenuSkeleton />;
-  if (error) {
-    return (
-      <div data-aklet-theme className="bg-aklet-paper min-h-screen px-4 py-16">
-        <AkletThemeScope />
-        <ErrorState error={error} retry={refetch} />
-      </div>
-    );
-  }
-  if (!categories?.length) {
-    return (
-      <div data-aklet-theme className="bg-aklet-paper min-h-screen px-4 py-16">
-        <AkletThemeScope />
-        <EmptyState title={t('menuComingSoon')} description={t('menuComingSoonDesc')} />
-      </div>
-    );
-  }
-
-  const showDiscovery = activeCategory === null;
-  const filteredCategories = activeCategory
-    ? categories.filter((c) => c.id === activeCategory)
-    : categories;
+  const filteredCategories = useMemo(() => {
+    const catalog = categories ?? [];
+    if (activeCategory) {
+      return catalog.filter((c) => c.id === activeCategory);
+    }
+    return shuffleCopy(catalog, allShuffleSeed).map((category) => ({
+      ...category,
+      products: shuffleCopy(category.products, allShuffleSeed ^ hashSeed(category.id)),
+    }));
+  }, [activeCategory, categories, allShuffleSeed]);
+  const hasCatalog = Boolean(categories?.length);
 
   return (
     <div
-      data-aklet-theme
-      className="bg-aklet-paper text-aklet-ink min-h-screen pb-24 md:pb-[env(safe-area-inset-bottom)]"
+      data-menu-theme
+      className="min-h-screen touch-pan-y bg-[var(--menu-paper)] pb-24 md:pb-[env(safe-area-inset-bottom)]"
     >
-      <AkletThemeScope />
+      <MenuThemeScope />
       <QrScanTracker />
+      <OrdersPausedBanner />
 
       <MenuHeader
         tableParam={tableParam}
+        diningMode={diningMode}
+        onDiningModeChange={handleDiningModeChange}
         onSearchOpen={() => setSearchOpen(true)}
         onCartOpen={openCart}
+        favoriteCount={favoriteCount}
       />
 
-      <AkletHero />
+      <MenuHero />
 
       <MenuUtilityBar
         tableParam={tableParam}
-        whatsapp={settings?.whatsapp}
         diningMode={diningMode}
         onDiningModeChange={handleDiningModeChange}
+        onSearchOpen={() => setSearchOpen(true)}
       />
 
-      <CategoryNav
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
-
-      {showDiscovery && promoTray ? (
-        <TrayPromoCard product={promoTray} diningMode={diningMode} onSelectProduct={openProduct} />
-      ) : null}
-
-      {showDiscovery && (
-        <>
-          <ProductStrip
-            title={t('shrimpPicks')}
-            note={t('shrimpPicksNote')}
-            products={shrimpPicks}
-            diningMode={diningMode}
-            onSelectProduct={openProduct}
-          />
-          <ProductStrip
-            title={t('bestsellers')}
-            note={t('bestsellersNote')}
-            products={bestsellers}
-            diningMode={diningMode}
-            onSelectProduct={openProduct}
-          />
-          <OffersSection />
-        </>
+      {hasCatalog && (
+        <CategoryNav
+          categories={categories!}
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+        />
       )}
 
-      <div className="mx-auto max-w-6xl px-3 py-4 sm:px-5 sm:py-6">
-        {filteredCategories.map((category) => {
-          const group = getCategoryGroup(category.name_ar, category.name_en);
-          const description = getName(
-            locale,
-            category.description_en || '',
-            category.description_ar || ''
-          );
+      {hasCatalog && <OffersSection compact={activeCategory !== null} />}
 
-          return (
-            <MotionSection key={category.id} className="mb-8 sm:mb-10">
-              <div className="mb-3 sm:mb-4">
-                {group ? <span className="aklet-kicker">{t(GROUP_LABEL_KEY[group])}</span> : null}
-                <h2
-                  id={`category-${category.id}`}
-                  className="font-heading text-aklet-ink mt-1.5 scroll-mt-32 text-xl font-bold leading-tight sm:text-2xl"
-                >
-                  {getName(locale, category.name_en, category.name_ar)}
-                </h2>
-                {description ? (
-                  <p className="text-aklet-ink-soft mt-1 max-w-2xl text-xs leading-relaxed sm:text-sm">
-                    {description}
+      {isLoading && <MenuGridSkeleton />}
+
+      {!isLoading && error && (
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <ErrorState error={error} retry={refetch} />
+        </div>
+      )}
+
+      {!isLoading && !error && !hasCatalog && (
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <EmptyState title={t('menuComingSoon')} description={t('menuComingSoonDesc')} />
+        </div>
+      )}
+
+      {filteredCategories.length > 0 && (
+        <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
+          {filteredCategories.map((category) => {
+            const categoryName = getName(
+              locale,
+              category.name_en,
+              category.name_ar,
+              category.name_fr,
+              category.name_nl
+            );
+            const categoryDescription = category.description_en
+              ? getName(
+                  locale,
+                  category.description_en,
+                  category.description_ar,
+                  category.description_fr,
+                  category.description_nl
+                )
+              : '';
+
+            return (
+              <section
+                key={category.id}
+                className="mb-9 [contain-intrinsic-size:auto_600px] [content-visibility:auto] last:mb-0 sm:mb-12"
+              >
+                <header className="mb-4 sm:mb-5">
+                  <div className="flex items-center gap-3">
+                    <h2
+                      id={`category-${category.id}`}
+                      className="font-heading scroll-mt-[calc(var(--menu-header-h)+3.5rem)] text-[19px] font-semibold leading-tight text-[var(--menu-ink)] sm:text-2xl"
+                    >
+                      {categoryName}
+                    </h2>
+                    <span aria-hidden className="menu-rule h-px flex-1" />
+                  </div>
+                  {categoryDescription && (
+                    <p className="mt-1.5 max-w-[60ch] text-xs leading-relaxed text-[var(--menu-ink-soft)] sm:text-sm">
+                      {categoryDescription}
+                    </p>
+                  )}
+                </header>
+
+                {category.products.length > 0 ? (
+                  <ProductGrid
+                    products={category.products}
+                    diningMode={diningMode}
+                    isFavorite={isFavorite}
+                    onToggleFavorite={toggleFavorite}
+                    onImageClick={handleProductClick}
+                  />
+                ) : (
+                  <p className="rounded-xl border border-dashed border-[var(--menu-line-strong)] px-4 py-8 text-center text-sm text-[var(--menu-ink-soft)]">
+                    {t('emptyCategory')}
                   </p>
-                ) : null}
-              </div>
-
-              <ProductGrid
-                products={category.products}
-                diningMode={diningMode}
-                isFavorite={isFavorite}
-                onToggleFavorite={toggleFavorite}
-                onImageClick={openProduct}
-              />
-            </MotionSection>
-          );
-        })}
-      </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      )}
 
       <RecentlyViewed onSelectProduct={handleRecentlyViewedClick} />
       <RecommendedDishes onSelectProduct={handleRecentlyViewedClick} />
@@ -280,10 +332,14 @@ function MenuContent() {
       <SearchOverlay
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
-        onSelectProduct={openProduct}
+        onSelectProduct={handleProductClick}
       />
 
-      <ProductSheet product={sheetProduct} onClose={() => setSheetProduct(null)} />
+      <ProductSheet
+        product={detailProduct}
+        diningMode={diningMode}
+        onClose={() => setDetailProduct(null)}
+      />
 
       <CartDrawer open={cartOpen} onOpenChange={setCartOpen} />
 
@@ -291,7 +347,7 @@ function MenuContent() {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema(settings, locale)) }}
       />
     </div>
   );

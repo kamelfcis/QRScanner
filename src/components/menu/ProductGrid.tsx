@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { staggerContainer, staggerItem } from '@/lib/motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { ProductCard } from './ProductCard';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/types/database';
@@ -27,20 +27,15 @@ export function ProductGrid({
   className,
 }: ProductGridProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
+  const animateCards = isDesktop && !prefersReducedMotion;
 
   return (
-    <motion.div
-      initial={prefersReducedMotion ? undefined : 'hidden'}
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      variants={prefersReducedMotion ? undefined : staggerContainer}
-      className={cn(
-        'grid grid-cols-2 items-stretch gap-2.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4',
-        className
-      )}
+    <div
+      className={cn('grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4', className)}
     >
-      {products.map((product) => (
-        <motion.div key={product.id} variants={prefersReducedMotion ? undefined : staggerItem}>
+      {products.map((product) => {
+        const card = (
           <ProductCard
             product={product}
             diningMode={diningMode}
@@ -49,8 +44,24 @@ export function ProductGrid({
             onImageClick={onImageClick}
             onAddedToCart={onAddedToCart}
           />
-        </motion.div>
-      ))}
-    </motion.div>
+        );
+
+        if (!animateCards) {
+          return <div key={product.id}>{card}</div>;
+        }
+
+        return (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {card}
+          </motion.div>
+        );
+      })}
+    </div>
   );
 }

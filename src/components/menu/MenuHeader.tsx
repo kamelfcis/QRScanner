@@ -1,107 +1,184 @@
 'use client';
 
-import { Search, ShoppingBag } from 'lucide-react';
+import NextImage from 'next/image';
+import Link from 'next/link';
+import { Heart, Receipt, Search, ShoppingCart } from 'lucide-react';
+import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
-import { Image } from '@/components/shared/Image';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useClientMounted } from '@/hooks/useClientMounted';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useCartStore } from '@/stores/cart-store';
-import { getName } from '@/lib/utils';
+import { useClientMounted } from '@/hooks/useClientMounted';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { resolveOrderModes } from '@/lib/order/order-modes';
+import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
 
 interface MenuHeaderProps {
   tableParam: string | null;
+  diningMode: 'dining' | 'takeaway';
+  onDiningModeChange: (mode: 'dining' | 'takeaway') => void;
   onSearchOpen: () => void;
   onCartOpen: () => void;
+  favoriteCount: number;
 }
 
-/**
- * Compact sticky bar: identity on one side, the two actions guests actually
- * reach for on the other. Everything else lives in the utility row below so
- * the chrome stays 56px tall on a 320px phone.
- */
-export function MenuHeader({ tableParam, onSearchOpen, onCartOpen }: MenuHeaderProps) {
+const iconButton =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
+
+export function MenuHeader({
+  tableParam,
+  diningMode,
+  onDiningModeChange,
+  onSearchOpen,
+  onCartOpen,
+  favoriteCount,
+}: MenuHeaderProps) {
   const { data: settings } = useRestaurantSettings();
+  const orderModes = resolveOrderModes(settings);
+  const showDiningToggle = orderModes.dineIn;
   const prefersReducedMotion = useReducedMotion();
-  const mounted = useClientMounted();
+  const isDesktop = useIsDesktop();
+  const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
-  const tCommon = useTranslations('common');
+  const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const showCartCount = mounted && cartCount > 0;
+  const lastOrder = mounted ? readLastOrder() : null;
 
-  // Cart lives in localStorage — only trust the count after the client mounts.
-  const badgeCount = mounted ? cartCount : 0;
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const headerClassName =
+    'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
 
-  return (
-    <header className="bg-aklet-paper/92 border-aklet-line/70 sticky top-0 z-40 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
-      <div className="mx-auto flex h-[var(--aklet-header-h)] max-w-6xl items-center gap-2 px-3 sm:px-5">
+  const headerInner = (
+    <>
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:h-16 sm:px-5">
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
           {settings?.logo_url ? (
-            <Image
-              src={settings.logo_url}
-              alt=""
-              width={36}
-              height={36}
-              className="h-9 w-9 object-contain"
-              containerClassName="bg-aklet-sand/60 h-9 w-9 shrink-0 rounded-md"
-            />
-          ) : null}
-          <span className="min-w-0">
-            <span className="font-heading text-aklet-ink block truncate text-[15px] font-bold leading-tight sm:text-lg">
-              {name}
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] p-1 sm:h-10 sm:w-10">
+              <NextImage
+                src={settings.logo_url}
+                alt=""
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
+              />
             </span>
-            {tableParam ? (
-              <span className="text-aklet-ink-soft block truncate text-[11px] leading-tight">
-                {t('tableNumber', { number: tableParam })}
-              </span>
-            ) : null}
-          </span>
+          ) : null}
+
+          <div className="min-w-0">
+            <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
+              {name}
+            </h1>
+            <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
+              {t('menuLead')}
+              {tableParam ? ` · ${t('tableNumber', { number: tableParam })}` : ''}
+            </p>
+          </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
+          {showDiningToggle ? (
+            <DiningModeToggle
+              value={diningMode}
+              onChange={onDiningModeChange}
+              className="hidden sm:inline-flex"
+            />
+          ) : null}
+
+          <LanguageSwitcher
+            variant="ghost"
+            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+          />
+
+          <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
+
+          {favoriteCount > 0 && (
+            <span
+              role="status"
+              aria-label={t('favoritesCount', { count: favoriteCount })}
+              className="hidden items-center gap-1.5 rounded-full border border-[var(--menu-line-strong)] px-2.5 py-1 text-xs tabular-nums text-[var(--menu-wine)] sm:inline-flex"
+            >
+              <Heart className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+              {favoriteCount}
+            </span>
+          )}
+
+          {lastOrder ? (
+            <Link
+              href={buildOrderStatusPath(lastOrder.orderNumber)}
+              className={iconButton}
+              aria-label={t('checkOrderStatus')}
+              data-testid="header-order-status"
+            >
+              <Receipt className="h-[18px] w-[18px]" aria-hidden="true" />
+            </Link>
+          ) : null}
+
           <button
             type="button"
+            className={iconButton}
             onClick={onSearchOpen}
             aria-label={t('searchMenu')}
-            className="text-aklet-ink-soft hover:text-aklet-ink hover:bg-aklet-sand/60 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
           >
-            <Search className="h-[18px] w-[18px]" aria-hidden />
+            <Search className="h-[18px] w-[18px]" aria-hidden="true" />
           </button>
 
           <button
             type="button"
+            className={cn(iconButton, 'relative')}
             onClick={onCartOpen}
-            aria-label={tCart('cartCount', { count: badgeCount })}
+            aria-label={tCart('cartCount', { count: showCartCount ? cartCount : 0 })}
             data-testid="cart-button"
-            className="text-aklet-ink hover:bg-aklet-sand/60 relative flex h-10 w-10 items-center justify-center rounded-full transition-colors"
           >
-            <ShoppingBag className="h-[18px] w-[18px]" aria-hidden />
-            <span className="sr-only" aria-live="polite">
-              {tCart('cartCount', { count: badgeCount })}
-            </span>
-            {badgeCount > 0 && (
+            <ShoppingCart className="h-[18px] w-[18px]" aria-hidden="true" />
+            {mounted && (
+              <span className="sr-only" aria-live="polite">
+                {tCart('cartCount', { count: cartCount })}
+              </span>
+            )}
+            {showCartCount && (
               <motion.span
-                key={badgeCount}
-                initial={prefersReducedMotion ? undefined : { scale: 0.5, opacity: 0 }}
+                key={cartCount}
+                initial={prefersReducedMotion ? undefined : { scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-aklet-coral-cta absolute end-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold tabular-nums text-white"
+                className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
                 data-testid="cart-badge"
               >
-                {badgeCount > 99 ? '99+' : badgeCount}
+                {cartCount > 99 ? '99+' : cartCount}
               </motion.span>
             )}
           </button>
         </div>
       </div>
-    </header>
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
+      />
+    </>
+  );
+
+  if (!animateEntrance) {
+    return <header className={headerClassName}>{headerInner}</header>;
+  }
+
+  return (
+    <motion.header
+      initial={{ y: -24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className={headerClassName}
+    >
+      {headerInner}
+    </motion.header>
   );
 }

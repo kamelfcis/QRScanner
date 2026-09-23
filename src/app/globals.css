@@ -13,6 +13,7 @@
   --font-heading: var(--font-heading-family), ui-serif, Georgia, "Times New Roman", serif;
   --font-ar: var(--font-ar-family), ui-sans-serif, sans-serif;
   --font-arabic: var(--font-ar-family), ui-sans-serif, sans-serif;
+  --font-ar-heading: var(--font-ar-heading-family), var(--font-ar-family), ui-sans-serif, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,56 +51,32 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   
-  /* Brand palette — values come from settings.theme via --brand-* on :root */
-  --color-brand-primary: var(--brand-primary);
-  --color-brand-primary-light: var(--brand-primary-light);
-  --color-brand-primary-dark: var(--brand-primary-dark);
-  --color-brand-secondary: var(--brand-secondary);
-  --color-brand-secondary-light: var(--brand-secondary-light);
-  --color-brand-secondary-dark: var(--brand-secondary-dark);
-  --color-brand-accent: var(--brand-accent);
-  --color-brand-background: var(--brand-background);
-
-  /* Aklet menu palette — only resolves inside [data-aklet-theme] */
-  --color-aklet-paper: var(--aklet-paper);
-  --color-aklet-paper-soft: var(--aklet-paper-soft);
-  --color-aklet-sand: var(--aklet-sand);
-  --color-aklet-line: var(--aklet-line);
-  --color-aklet-ink: var(--aklet-ink);
-  --color-aklet-ink-soft: var(--aklet-ink-soft);
-  --color-aklet-grill: var(--aklet-grill);
-  --color-aklet-ocean: var(--aklet-ocean);
-  --color-aklet-ocean-deep: var(--aklet-ocean-deep);
-  --color-aklet-coral: var(--aklet-coral);
-  --color-aklet-coral-cta: var(--aklet-coral-cta);
-  --color-aklet-price: var(--aklet-price);
+  /* Night Levantine street kitchen — charcoal + neon gold */
+  --color-brand-primary: #FFB700;
+  --color-brand-primary-light: #FFC933;
+  --color-brand-primary-dark: #C48A00;
+  --color-brand-secondary: #6B0F1A;
+  --color-brand-secondary-light: #8B1A2B;
+  --color-brand-secondary-dark: #3D0810;
+  --color-brand-accent: #FFB700;
+  --color-brand-background: #0E0E0E;
 }
 
 :root {
-  /* Brand defaults (overridden by BrandThemeStyles + BrandThemeProvider from Supabase) */
-  --brand-primary: #0E7490;
-  --brand-primary-light: #398da4;
-  --brand-primary-dark: #0b5a70;
-  --brand-secondary: #155E75;
-  --brand-secondary-light: #38768a;
-  --brand-secondary-dark: #0e3d4c;
-  --brand-accent: #F97316;
-  --brand-background: #F0FDFA;
-
   /* Warm light — readable contrast for public pages */
-  --background: var(--brand-background);
+  --background: #FAF8F5;
   --foreground: #1A1814;
   --card: #FFFFFF;
   --card-foreground: #1A1814;
   --popover: #FFFFFF;
   --popover-foreground: #1A1814;
-  --primary: #0E7490;
+  --primary: #C48A00;
   --primary-foreground: #FFFFFF;
   --secondary: #6B0F1A;
   --secondary-foreground: #FFFFFF;
   --muted: #F0EBE3;
   --muted-foreground: #6B6560;
-  --accent: #F97316;
+  --accent: #FFB700;
   --accent-foreground: #1A1814;
   --destructive: #DC2626;
   --border: #E5DFD6;
@@ -124,41 +101,40 @@
 }
 
 .dark {
-  /* Night kitchen — ocean charcoal + coral/gold accent (overridden by BrandThemeProvider) */
-  --brand-background: #0A1012;
-  --background: #0A1012;
-  --foreground: #F2F6F8;
-  --card: #121A1E;
-  --card-foreground: #F2F6F8;
-  --popover: #141E23;
-  --popover-foreground: #F2F6F8;
-  --primary: #F97316;
-  --primary-foreground: #0A1012;
-  --secondary: #38768a;
+  /* Explicit dark — same night kitchen */
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --card: #141414;
+  --card-foreground: #FAFAFA;
+  --popover: #141414;
+  --popover-foreground: #FAFAFA;
+  --primary: #FFB700;
+  --primary-foreground: #0A0A0A;
+  --secondary: #8B1A2B;
   --secondary-foreground: #FFFFFF;
-  --muted: #1A2429;
-  --muted-foreground: #8FA3AD;
-  --accent: #F97316;
-  --accent-foreground: #0A1012;
-  --destructive: #EF4444;
-  --border: #2A363D;
-  --input: #2A363D;
-  --ring: #F97316;
-  --chart-1: #F97316;
-  --chart-2: #38768a;
+  --muted: #1A1A1A;
+  --muted-foreground: #A3A3A3;
+  --accent: #FFB700;
+  --accent-foreground: #0A0A0A;
+  --destructive: #DC2626;
+  --border: #2A2A2A;
+  --input: #2A2A2A;
+  --ring: #FFB700;
+  --chart-1: #FFB700;
+  --chart-2: #8B1A2B;
   --chart-3: #E8C547;
   --chart-4: #22C55E;
   --chart-5: #3B82F6;
-
-  /* Sidebar — admin shell in dark */
-  --sidebar: #080C0E;
-  --sidebar-foreground: #F2F6F8;
-  --sidebar-primary: #F97316;
-  --sidebar-primary-foreground: #0A1012;
-  --sidebar-accent: #1A2429;
-  --sidebar-accent-foreground: #F2F6F8;
-  --sidebar-border: #2A363D;
-  --sidebar-ring: #F97316;
+  
+  /* Sidebar Dark */
+  --sidebar: #121212;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #FFB700;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #1F1F1F;
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: #2A2A2A;
+  --sidebar-ring: #FFB700;
 }
 
 @layer base {
@@ -172,6 +148,13 @@
     width: 100%;
     overflow-x: clip;
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Touch + narrow viewports: follow the finger instead of animating scroll */
+  @media (hover: none) and (pointer: coarse), (max-width: 767px) {
+    html {
+      scroll-behavior: auto;
+    }
   }
   body {
     @apply bg-background text-foreground;
@@ -335,154 +318,6 @@ textarea,
   padding-top: env(safe-area-inset-top, 0px);
 }
 
-/* Dark mode — card chrome & section rhythm */
-.dark .card-chrome {
-  border-color: color-mix(in srgb, var(--border) 80%, var(--brand-accent) 20%);
-  background-color: color-mix(in srgb, var(--card) 92%, var(--brand-primary) 8%);
-  box-shadow:
-    0 1px 0 0 color-mix(in srgb, var(--foreground) 6%, transparent),
-    0 8px 24px -12px color-mix(in srgb, var(--brand-accent) 12%, transparent);
-}
-
-.dark .section-stripe {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--muted) 35%, transparent) 0%,
-    transparent 100%
-  );
-}
-
-.dark .glass-surface {
-  border-color: color-mix(in srgb, var(--border) 70%, var(--brand-accent) 30%);
-  background-color: color-mix(in srgb, var(--card) 75%, transparent);
-  backdrop-filter: blur(20px);
-}
-
-/* Accent CTA — readable on coral/gold in both modes */
-.text-on-accent {
-  color: var(--accent-foreground);
-}
-
-/* Hide scrollbars on horizontal chip / strip rails */
-.scrollbar-none {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
-}
-
-/* ==========================================================================
-   Aklet Gambary menu scope — "night grill on the Mediterranean".
-   Sand paper, charcoal ink, spare ocean teal, coral off the grill.
-   Scoped to [data-aklet-theme] so the dashboard keeps the shared shell; the
-   attribute is mirrored onto <body> so portalled sheets/dialogs inherit it.
-   ========================================================================== */
-[data-aklet-theme] {
-  --aklet-paper: #f7f2e7;
-  --aklet-paper-soft: #fffcf6;
-  --aklet-sand: #ebe1ce;
-  --aklet-line: #ded2bb;
-  --aklet-ink: #121a1d;
-  --aklet-ink-soft: #58656a;
-  --aklet-grill: #0b1215;
-
-  /* Brand colours come from live settings.theme via --brand-* on :root */
-  --aklet-ocean: var(--brand-primary, #0e7490);
-  --aklet-ocean-deep: var(--brand-secondary, #155e75);
-  --aklet-coral: var(--brand-accent, #f97316);
-  --aklet-coral-cta: color-mix(in srgb, var(--aklet-coral) 74%, #7b2d12);
-  --aklet-price: color-mix(in srgb, var(--aklet-coral) 62%, #5c1f0b);
-
-  --aklet-header-h: 3.5rem;
-
-  /* Map onto the shared shadcn contract so ui/* primitives follow along */
-  --background: var(--aklet-paper);
-  --foreground: var(--aklet-ink);
-  --card: var(--aklet-paper-soft);
-  --card-foreground: var(--aklet-ink);
-  --popover: var(--aklet-paper-soft);
-  --popover-foreground: var(--aklet-ink);
-  --primary: var(--aklet-coral-cta);
-  --primary-foreground: #ffffff;
-  --secondary: var(--aklet-ink);
-  --secondary-foreground: var(--aklet-paper);
-  --muted: var(--aklet-sand);
-  --muted-foreground: var(--aklet-ink-soft);
-  --accent: color-mix(in srgb, var(--aklet-sand) 68%, var(--aklet-paper));
-  --accent-foreground: var(--aklet-ink);
-  --border: var(--aklet-line);
-  --input: var(--aklet-line);
-  --ring: var(--aklet-ocean);
-  --radius: 0.5rem;
-}
-
-.dark [data-aklet-theme] {
-  --aklet-paper: #0c1417;
-  --aklet-paper-soft: #121d21;
-  --aklet-sand: #1a272c;
-  --aklet-line: #26363c;
-  --aklet-ink: #f2efe6;
-  --aklet-ink-soft: #9baab0;
-  --aklet-coral-cta: color-mix(in srgb, var(--aklet-coral) 88%, #5c1f0b);
-  --aklet-price: color-mix(in srgb, var(--aklet-coral) 84%, #fff3e6);
-  --card: color-mix(in srgb, var(--aklet-paper-soft) 92%, var(--aklet-ocean-deep));
-  --accent: color-mix(in srgb, var(--aklet-sand) 80%, var(--aklet-paper));
-}
-
-/* Arabic headings switch to IBM Plex Sans Arabic inside the menu only */
-[dir='rtl'] [data-aklet-theme] h1,
-[dir='rtl'] [data-aklet-theme] h2,
-[dir='rtl'] [data-aklet-theme] h3,
-[dir='rtl'] [data-aklet-theme] .font-heading {
-  font-family: var(--font-aklet-display-family), var(--font-ar-family), ui-sans-serif, sans-serif;
-  letter-spacing: 0;
-}
-
-/* Editorial section kicker — thin coral rule instead of a loud heading */
-[data-aklet-theme] .aklet-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--aklet-ink-soft);
-}
-[data-aklet-theme] .aklet-kicker::before {
-  content: '';
-  width: 1.25rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--aklet-coral);
-}
-/* Arabic is cursive — tracking pulls the joined glyphs apart */
-[dir='rtl'] [data-aklet-theme] .aklet-kicker {
-  letter-spacing: 0;
-  font-size: 0.75rem;
-}
-
-/* One ken-burns pass on the hero image, then it settles */
-@keyframes aklet-ken-burns {
-  from {
-    transform: scale(1.08);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-[data-aklet-theme] .aklet-ken-burns {
-  animation: aklet-ken-burns 4200ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-aklet-theme] .aklet-ken-burns {
-    animation: none;
-  }
-}
-
 /* ─────────────────────────────────────────────────────────────
    Premium login template — scoped to [data-login-theme].
    Tokens are set inline from resolveLoginBrand; these are fallbacks.
@@ -535,6 +370,18 @@ textarea,
   --login-border: #e4d8c4;
   --login-panel: #5c0d16;
   --login-panel-foreground: #f7f1e6;
+}
+
+[data-login-theme='custom'] {
+  --login-primary: #2563eb;
+  --login-accent: #f59e0b;
+  --login-background: #f8fafc;
+  --login-surface: #ffffff;
+  --login-foreground: #0f172a;
+  --login-muted: #64748b;
+  --login-border: #e2e8f0;
+  --login-panel: #1e293b;
+  --login-panel-foreground: #f8fafc;
 }
 
 .login-shell {
@@ -796,6 +643,14 @@ textarea,
   padding-bottom: max(2rem, env(safe-area-inset-bottom));
 }
 
+.login-brand-logo {
+  display: block;
+  height: 6rem;
+  width: 6rem;
+  margin-bottom: 1.25rem;
+  object-fit: contain;
+}
+
 .login-brand-lockup .login-eyebrow {
   color: color-mix(in srgb, var(--login-panel-foreground) 72%, var(--login-accent));
 }
@@ -965,4 +820,185 @@ textarea,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hide scrollbars on horizontal chip / carousel rows */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ==========================================================================
+   Menu experience — "Damascus salon at dusk"
+
+   Scoped to [data-menu-theme] (set on <body> by MenuThemeScope and on the
+   page root for first paint) so the dashboard keeps its own palette.
+   ========================================================================== */
+
+[data-menu-theme] {
+  /* Signature palette */
+  --menu-paper: #f6f1e8;
+  --menu-paper-deep: #ede4d5;
+  --menu-surface: #fffcf7;
+  --menu-surface-elevated: #ffffff;
+  --menu-ink: #211d18;
+  --menu-ink-soft: #6a6055;
+  --menu-line: #e4dacb;
+  --menu-line-strong: #d3c5ac;
+  --menu-gold: #8c6a2f;
+  --menu-gold-soft: #b8934a;
+  --menu-gold-faint: #c4a877;
+  --menu-gold-wash: rgba(184, 147, 74, 0.12);
+  --menu-gold-line: rgba(184, 147, 74, 0.5);
+  --menu-gold-line-strong: rgba(184, 147, 74, 0.72);
+  --menu-wine: #6b0f1a;
+  --menu-wine-deep: #4f0a12;
+  --menu-wine-wash: rgba(107, 15, 26, 0.08);
+
+  /* Sticky offsets — category nav pins directly under the header */
+  --menu-header-h: calc(3.5rem + env(safe-area-inset-top, 0px));
+  --menu-nav-h: 2.875rem;
+
+  /* Map onto the shared shadcn tokens so every primitive inherits the mood */
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-gold);
+  --primary-foreground: #fffcf7;
+  --secondary: var(--menu-wine);
+  --secondary-foreground: #fdf7f0;
+  --muted: #ece4d6;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-wine);
+  --accent-foreground: #fdf7f0;
+  --destructive: #a3231f;
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-gold);
+  --radius: 0.45rem;
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+}
+
+@media (min-width: 640px) {
+  [data-menu-theme] {
+    --menu-header-h: calc(4rem + env(safe-area-inset-top, 0px));
+  }
+}
+
+/* Arabic headings switch to IBM Plex Sans Arabic; body stays Tajawal */
+[dir="rtl"] [data-menu-theme] h1,
+[dir="rtl"] [data-menu-theme] h2,
+[dir="rtl"] [data-menu-theme] h3,
+[dir="rtl"] [data-menu-theme] h4,
+[dir="rtl"] [data-menu-theme] .font-heading {
+  font-family: var(--font-ar-heading-family), var(--font-ar-family), ui-sans-serif, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+/* Latin headings keep Cormorant, tightened for editorial rhythm */
+[dir="ltr"] [data-menu-theme] .font-heading {
+  letter-spacing: -0.01em;
+}
+
+/* Arabic script must stay joined — tracking utilities break the cursive */
+[dir="rtl"] [data-menu-theme],
+[dir="rtl"] [data-menu-theme] * {
+  letter-spacing: normal;
+}
+
+/* Small caps label above a title; Arabic drops the caps + tracking treatment */
+[data-menu-theme] .menu-eyebrow {
+  font-size: 0.625rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+[dir="rtl"] [data-menu-theme] .menu-eyebrow {
+  font-size: 0.6875rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Editorial section rule: small caps label with a hairline that trails off */
+[data-menu-theme] .menu-rule {
+  background-image: linear-gradient(to right, var(--menu-line-strong), transparent);
+}
+[dir="rtl"] [data-menu-theme] .menu-rule {
+  background-image: linear-gradient(to left, var(--menu-line-strong), transparent);
+}
+
+[data-menu-theme] ::selection {
+  background-color: var(--menu-wine);
+  color: #fdf7f0;
+}
+
+[data-menu-theme] ::-webkit-scrollbar-thumb {
+  background: var(--menu-line-strong);
+}
+
+/* Compact cinematic hero — single ken-burns pass, then rest */
+@keyframes menu-hero-pan {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.menu-hero-image {
+  animation: menu-hero-pan 4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (max-width: 767px) {
+  .menu-hero-image {
+    animation: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-hero-image {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Landing hero — slow looping Ken Burns zoom */
+@keyframes landing-hero-kenburns {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.landing-hero-image {
+  animation: landing-hero-kenburns 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-image {
+    animation: none;
+    transform: none;
+  }
+}
+
+@utility unicode-bidi-plaintext {
+  unicode-bidi: plaintext;
 }

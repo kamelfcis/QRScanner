@@ -1,7 +1,8 @@
 'use client';
 
-import NextImage from 'next/image';
+import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { getName, cn } from '@/lib/utils';
@@ -15,31 +16,65 @@ interface CategoryNavProps {
 
 const chipClassName = (isActive: boolean) =>
   cn(
-    'inline-flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3.5 text-[13px] font-semibold transition-colors',
+    'relative inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-1 pb-2.5 pt-3 text-[13px] transition-colors sm:text-sm',
     isActive
-      ? 'border-aklet-ink bg-aklet-ink text-aklet-paper'
-      : 'border-aklet-line/80 text-aklet-ink-soft hover:border-aklet-ink/40 hover:text-aklet-ink bg-transparent'
+      ? 'font-semibold text-[var(--menu-ink)]'
+      : 'font-normal text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]'
   );
 
 export function CategoryNav({ categories, activeCategory, onCategoryChange }: CategoryNavProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
   const { locale } = useI18n();
   const t = useTranslations('menu');
+
+  const scrollBehavior =
+    prefersReducedMotion || !isDesktop ? ('instant' as const) : ('smooth' as const);
 
   const handleClick = (categoryId: string | null) => {
     onCategoryChange(categoryId);
     if (categoryId) {
-      document.getElementById(`category-${categoryId}`)?.scrollIntoView({
-        behavior: prefersReducedMotion ? 'instant' : 'smooth',
-        block: 'start',
-      });
+      const section = document.getElementById(`category-${categoryId}`);
+      if (section) {
+        section.scrollIntoView({
+          behavior: scrollBehavior,
+          block: 'start',
+        });
+      }
     } else {
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'instant' : 'smooth' });
+      window.scrollTo({
+        top: 0,
+        behavior: scrollBehavior,
+      });
     }
   };
 
+  const renderChip = (id: string | null, label: string) => {
+    const isActive = activeCategory === id;
+    return (
+      <button
+        key={id ?? 'all'}
+        role="tab"
+        aria-selected={isActive}
+        data-category-id={id ?? 'all'}
+        onClick={() => handleClick(id)}
+        className={chipClassName(isActive)}
+      >
+        {label}
+        {isActive && (
+          <motion.span
+            aria-hidden
+            layoutId={prefersReducedMotion ? undefined : 'menu-category-underline'}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-x-0 bottom-1.5 h-[2px] rounded-full bg-[var(--menu-gold)]"
+          />
+        )}
+      </button>
+    );
+  };
+
   return (
-    <nav className="bg-aklet-paper/92 border-aklet-line/70 sticky top-[calc(var(--aklet-header-h)+env(safe-area-inset-top))] z-30 border-b backdrop-blur-md">
+    <nav className="md:bg-background/94 sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] bg-[var(--menu-paper)] md:backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-3 sm:px-5">
         <ScrollableChipRow
           ariaLabel={t('menuCategories')}
@@ -47,47 +82,25 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
           scrollNextLabel={t('scrollCategoriesNext')}
           activeChipId={activeCategory ?? 'all'}
           chipIdAttribute="data-category-id"
-          scrollClassName="py-2.5"
-          fadeFromClassName="from-aklet-paper"
+          scrollClassName="gap-5 sm:gap-7"
+          fadeFromClassName="from-[var(--menu-paper)] md:from-background"
+          arrowClassName="h-9 w-9 border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-ink-soft)] hover:border-[var(--menu-gold-soft)] hover:text-[var(--menu-ink)]"
+          hideArrowsBelowMd
           itemCount={categories.length}
         >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeCategory === null}
-            data-category-id="all"
-            onClick={() => handleClick(null)}
-            className={chipClassName(activeCategory === null)}
-          >
-            {t('allCategories')}
-          </button>
-          {categories.map((category) => {
-            const isActive = activeCategory === category.id;
-            return (
-              <button
-                key={category.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                data-category-id={category.id}
-                onClick={() => handleClick(category.id)}
-                className={chipClassName(isActive)}
-              >
-                {category.image_url && (
-                  <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full">
-                    <NextImage
-                      src={category.image_url}
-                      alt=""
-                      width={20}
-                      height={20}
-                      className="h-5 w-5 object-cover"
-                    />
-                  </span>
-                )}
-                {getName(locale, category.name_en, category.name_ar)}
-              </button>
-            );
-          })}
+          {renderChip(null, t('allCategories'))}
+          {categories.map((category) =>
+            renderChip(
+              category.id,
+              getName(
+                locale,
+                category.name_en,
+                category.name_ar,
+                category.name_fr,
+                category.name_nl
+              )
+            )
+          )}
         </ScrollableChipRow>
       </div>
     </nav>
