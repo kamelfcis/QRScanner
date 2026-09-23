@@ -220,7 +220,7 @@ function MenuContent() {
 
       {filteredCategories.length > 0 && (
         <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
-          {filteredCategories.map((category, categoryIndex) => {
+          {filteredCategories.map((category) => {
             const categoryName = getName(locale, category.name_en, category.name_ar);
             const categoryDescription = category.description_en
               ? getName(locale, category.description_en, category.description_ar)
@@ -253,7 +253,6 @@ function MenuContent() {
                       isFavorite={isFavorite}
                       onToggleFavorite={toggleFavorite}
                       onImageClick={handleProductClick}
-                      prioritizeImages={categoryIndex === 0}
                     />
                   </div>
                 ) : (
