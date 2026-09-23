@@ -26,6 +26,8 @@ export interface WhatsAppMessageInput {
   orderNotes?: string | null;
   prepTimeMinutes?: number | null;
   couponCode?: string | null;
+  deliveryFee?: number | null;
+  orderNumber?: string | null;
 }
 
 const SEP = '────────────────';
@@ -47,11 +49,13 @@ interface MessageLabels {
   discount: (code?: string | null) => string;
   tax: (rate: number) => string;
   service: (rate: number) => string;
+  deliveryFee: string;
   total: string;
   name: string;
   phone: string;
   orderNotes: string;
   prepTime: (minutes: number) => string;
+  orderNumber: string;
 }
 
 const LABELS: Record<MessageLocale, MessageLabels> = {
@@ -68,11 +72,13 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `الخصم (${code})` : 'الخصم'),
     tax: (rate) => `الضريبة (${rate}%)`,
     service: (rate) => `رسوم الخدمة (${rate}%)`,
+    deliveryFee: 'خدمة توصيل',
     total: 'الإجمالي',
     name: 'الاسم',
     phone: 'الهاتف',
     orderNotes: 'ملاحظات الطلب',
     prepTime: (minutes) => `وقت التحضير المتوقع: ~${minutes} دقيقة`,
+    orderNumber: 'رقم الطلب',
   },
   en: {
     headerDining: '*New Order — Dine In*',
@@ -87,11 +93,13 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Discount (${code})` : 'Discount'),
     tax: (rate) => `Tax (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Delivery fee',
     total: 'Total',
     name: 'Name',
     phone: 'Phone',
     orderNotes: 'Order notes',
     prepTime: (minutes) => `Est. prep time: ~${minutes} min`,
+    orderNumber: 'Order #',
   },
   fr: {
     headerDining: '*Nouvelle commande — Sur place*',
@@ -106,11 +114,13 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Réduction (${code})` : 'Réduction'),
     tax: (rate) => `TVA (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Livraison',
     total: 'Total',
     name: 'Nom',
     phone: 'Téléphone',
     orderNotes: 'Notes de commande',
     prepTime: (minutes) => `Temps de préparation estimé : ~${minutes} min`,
+    orderNumber: 'N° commande',
   },
   nl: {
     headerDining: '*Nieuwe bestelling — Ter plaatse*',
@@ -125,11 +135,13 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     discount: (code) => (code ? `Korting (${code})` : 'Korting'),
     tax: (rate) => `BTW (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
+    deliveryFee: 'Bezorgkosten',
     total: 'Totaal',
     name: 'Naam',
     phone: 'Telefoon',
     orderNotes: 'Bestelnotities',
     prepTime: (minutes) => `Geschatte bereidingstijd: ~${minutes} min`,
+    orderNumber: 'Bestelnummer',
   },
 };
 
@@ -157,6 +169,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     orderNotes,
     prepTimeMinutes,
     couponCode,
+    deliveryFee,
+    orderNumber,
   } = input;
 
   const labels = LABELS[locale];
@@ -166,6 +180,11 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   lines.push(mode === 'dining' ? labels.headerDining : labels.headerTakeaway);
   lines.push(SEP);
+
+  if (orderNumber?.trim()) {
+    lines.push(`*${labels.orderNumber}: ${orderNumber.trim()}*`);
+    lines.push(SEP);
+  }
 
   if (showFulfillment) {
     lines.push(`${labels.orderType}: ${fulfillmentLabel(locale, fulfillmentType)}`);
@@ -204,6 +223,9 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       `${labels.service(totals.serviceRate)}: ${formatMoney(totals.service, currency, locale)}`
     );
   }
+  if ((deliveryFee ?? 0) > 0) {
+    lines.push(`${labels.deliveryFee}: ${formatMoney(deliveryFee ?? 0, currency, locale)}`);
+  }
   lines.push(`*${labels.total}: ${formatMoney(totals.total, currency, locale)}*`);
 
   lines.push(SEP);
@@ -214,5 +236,68 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     lines.push(labels.prepTime(prepTimeMinutes));
   }
 
+  return lines.join('\n');
+}
+
+interface OrderReadyLabels {
+  header: string;
+  pickup: string;
+  delivery: string;
+  dineIn: string;
+}
+
+const READY_LABELS: Record<MessageLocale, OrderReadyLabels> = {
+  ar: {
+    header: '*طلبك جاهز*',
+    pickup: 'جاهز للاستلام من المطعم',
+    delivery: 'جاهز للتوصيل',
+    dineIn: 'جاهز — يمكنك استلام الطلب',
+  },
+  en: {
+    header: '*Your order is ready*',
+    pickup: 'Ready for pickup at the restaurant',
+    delivery: 'Ready for delivery',
+    dineIn: 'Ready — you can collect your order',
+  },
+  fr: {
+    header: '*Votre commande est prête*',
+    pickup: 'Prête à être retirée au restaurant',
+    delivery: 'Prête pour la livraison',
+    dineIn: 'Prête — vous pouvez récupérer votre commande',
+  },
+  nl: {
+    header: '*Uw bestelling is klaar*',
+    pickup: 'Klaar om af te halen bij het restaurant',
+    delivery: 'Klaar voor bezorging',
+    dineIn: 'Klaar — u kunt uw bestelling ophalen',
+  },
+};
+
+function readyFulfillmentLabel(
+  locale: MessageLocale,
+  diningMode: MessageDiningMode,
+  fulfillmentType: FulfillmentType | null | undefined
+): string {
+  const labels = READY_LABELS[locale];
+  if (diningMode === 'dining') return labels.dineIn;
+  if (fulfillmentType === 'delivery') return labels.delivery;
+  return labels.pickup;
+}
+
+export function buildOrderReadyMessage(input: {
+  locale: MessageLocale;
+  orderNumber: string;
+  shopName: string;
+  fulfillmentType?: FulfillmentType | null;
+  diningMode: MessageDiningMode;
+}): string {
+  const labels = READY_LABELS[input.locale];
+  const lines = [
+    labels.header,
+    SEP,
+    `${input.shopName}`,
+    `${input.orderNumber}`,
+    readyFulfillmentLabel(input.locale, input.diningMode, input.fulfillmentType),
+  ];
   return lines.join('\n');
 }
