@@ -149,6 +149,13 @@
     overflow-x: clip;
     -webkit-text-size-adjust: 100%;
   }
+
+  /* Touch + narrow viewports: follow the finger instead of animating scroll */
+  @media (hover: none) and (pointer: coarse), (max-width: 767px) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   body {
     @apply bg-background text-foreground;
     margin: 0;
@@ -933,6 +940,13 @@ textarea,
 
 .menu-hero-image {
   animation: menu-hero-pan 4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (max-width: 767px) {
+  .menu-hero-image {
+    animation: none;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
