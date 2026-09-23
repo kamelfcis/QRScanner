@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Image } from '@/components/shared/Image';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
@@ -506,12 +507,28 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div
-        data-menu-theme
-        className="flex min-h-[100svh] items-center justify-center bg-[var(--menu-paper)]"
-      >
+      <div data-menu-theme className="min-h-[100svh] bg-[var(--menu-paper)]">
         <MenuThemeScope />
-        <div className="bg-muted h-8 w-48 animate-pulse rounded" />
+        <div className="mx-auto max-w-lg space-y-6 px-4 py-6" aria-busy="true" aria-live="polite">
+          <Skeleton className="h-8 w-40" />
+          <div className="space-y-3 rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-4">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+          <div className="space-y-3 rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-4">
+            <div className="flex items-center justify-between gap-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            <div className="flex items-center justify-between gap-4 border-t border-[var(--menu-line)] pt-3">
+              <Skeleton className="h-5 w-20" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+          </div>
+          <Skeleton className="h-14 w-full rounded-full" />
+        </div>
       </div>
     );
   }
@@ -1019,9 +1036,7 @@ export default function CheckoutPage() {
               <MessageCircle className="me-2 h-5 w-5" aria-hidden="true" />
             ) : null}
             {submitting
-              ? dashboardOrders
-                ? t('placingOrder')
-                : t('confirming')
+              ? t('placingOrder')
               : whatsappConfigured
                 ? t('confirmWhatsApp')
                 : t('placeOrder')}

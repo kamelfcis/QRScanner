@@ -27,6 +27,7 @@ export interface WhatsAppMessageInput {
   prepTimeMinutes?: number | null;
   couponCode?: string | null;
   deliveryFee?: number | null;
+  orderNumber?: string | null;
 }
 
 const SEP = '────────────────';
@@ -54,6 +55,7 @@ interface MessageLabels {
   phone: string;
   orderNotes: string;
   prepTime: (minutes: number) => string;
+  orderNumber: string;
 }
 
 const LABELS: Record<MessageLocale, MessageLabels> = {
@@ -76,6 +78,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'الهاتف',
     orderNotes: 'ملاحظات الطلب',
     prepTime: (minutes) => `وقت التحضير المتوقع: ~${minutes} دقيقة`,
+    orderNumber: 'رقم الطلب',
   },
   en: {
     headerDining: '*New Order — Dine In*',
@@ -96,6 +99,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Phone',
     orderNotes: 'Order notes',
     prepTime: (minutes) => `Est. prep time: ~${minutes} min`,
+    orderNumber: 'Order #',
   },
   fr: {
     headerDining: '*Nouvelle commande — Sur place*',
@@ -116,6 +120,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Téléphone',
     orderNotes: 'Notes de commande',
     prepTime: (minutes) => `Temps de préparation estimé : ~${minutes} min`,
+    orderNumber: 'N° commande',
   },
   nl: {
     headerDining: '*Nieuwe bestelling — Ter plaatse*',
@@ -136,6 +141,7 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Telefoon',
     orderNotes: 'Bestelnotities',
     prepTime: (minutes) => `Geschatte bereidingstijd: ~${minutes} min`,
+    orderNumber: 'Bestelnummer',
   },
 };
 
@@ -164,6 +170,7 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     prepTimeMinutes,
     couponCode,
     deliveryFee,
+    orderNumber,
   } = input;
 
   const labels = LABELS[locale];
@@ -173,6 +180,11 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   lines.push(mode === 'dining' ? labels.headerDining : labels.headerTakeaway);
   lines.push(SEP);
+
+  if (orderNumber?.trim()) {
+    lines.push(`*${labels.orderNumber}: ${orderNumber.trim()}*`);
+    lines.push(SEP);
+  }
 
   if (showFulfillment) {
     lines.push(`${labels.orderType}: ${fulfillmentLabel(locale, fulfillmentType)}`);

@@ -178,7 +178,7 @@ function OrderSuccessContent() {
         className="w-full max-w-md space-y-6 text-center"
       >
         <motion.div
-          variants={prefersReducedMotion ? undefined : scaleIn}
+          variants={prefersReducedMotion ? undefined : successSpringIn}
           className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)] text-[var(--menu-wine)] ring-4 ring-[var(--menu-gold-wash)]"
         >
           <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
@@ -195,8 +195,11 @@ function OrderSuccessContent() {
             {description}
           </p>
           {waBlocked && waUrl ? (
-            <p className="mx-auto max-w-[38ch] text-sm leading-relaxed text-[var(--menu-ink-soft)]">
-              {t('readyDescription')}
+            <p
+              role="alert"
+              className="mx-auto max-w-[38ch] text-sm font-medium leading-relaxed text-[var(--menu-wine)]"
+            >
+              {t('whatsappNotOpened')}
             </p>
           ) : null}
           {readyEstimate ? (

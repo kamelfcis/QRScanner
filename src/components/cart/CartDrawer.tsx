@@ -91,7 +91,11 @@ function CartLine({
   return (
     <motion.div
       layout={!prefersReducedMotion}
-      animate={{ opacity: fadingOut ? 0 : 1 }}
+      animate={
+        prefersReducedMotion
+          ? { opacity: fadingOut ? 0 : 1 }
+          : { opacity: fadingOut ? 0 : 1, y: fadingOut ? 10 : 0 }
+      }
       transition={{ duration: prefersReducedMotion ? 0 : REMOVE_FADE_MS / 1000 }}
       className="flex gap-3 border-b border-[var(--menu-line)] py-3.5 last:border-0"
       data-testid="cart-line"
