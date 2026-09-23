@@ -784,6 +784,26 @@
       "reason_required": "Saisissez un motif",
       "shift_closed": "Service déjà clôturé",
       "already_voided": "Déjà annulé"
+    },
+    "editAddItems": "Ajouter des articles",
+    "editAddItemsTitle": "Ajouter — {number}",
+    "editAddItemsConfirm": "Ajouter à la commande",
+    "editAddItemsSuccess": "Articles ajoutés",
+    "editPendingLines": "{count, plural, one {1 article} other {# articles}}",
+    "editDecreaseQty": "Diminuer la quantité",
+    "editIncreaseQty": "Augmenter la quantité",
+    "editQtySuccess": "Quantité mise à jour",
+    "paymentRequiredBeforeComplete": "Enregistrez le paiement avant de terminer",
+    "editError": {
+      "generic": "Impossible de modifier",
+      "already_paid": "Commande payée — modification impossible",
+      "order_closed": "Commande clôturée",
+      "shift_closed": "Service déjà clôturé",
+      "invalid_quantity": "Quantité invalide",
+      "already_voided": "Ligne déjà annulée",
+      "product_unavailable": "Produit indisponible",
+      "too_many_items": "Maximum 50 lignes par commande",
+      "empty_cart": "Sélectionnez au moins un article"
     }
   },
   "kitchen": {

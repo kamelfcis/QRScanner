@@ -784,6 +784,26 @@
       "reason_required": "Voer een reden in",
       "shift_closed": "Dienst al afgesloten",
       "already_voided": "Al geannuleerd"
+    },
+    "editAddItems": "Items toevoegen",
+    "editAddItemsTitle": "Items toevoegen — {number}",
+    "editAddItemsConfirm": "Toevoegen aan bestelling",
+    "editAddItemsSuccess": "Items toegevoegd",
+    "editPendingLines": "{count, plural, one {1 item} other {# items}}",
+    "editDecreaseQty": "Aantal verlagen",
+    "editIncreaseQty": "Aantal verhogen",
+    "editQtySuccess": "Aantal bijgewerkt",
+    "paymentRequiredBeforeComplete": "Registreer betaling vóór afronden",
+    "editError": {
+      "generic": "Bestelling bewerken mislukt",
+      "already_paid": "Bestelling is betaald — bewerken niet mogelijk",
+      "order_closed": "Bestelling gesloten",
+      "shift_closed": "Dienst al afgesloten",
+      "invalid_quantity": "Ongeldig aantal",
+      "already_voided": "Regel al geannuleerd",
+      "product_unavailable": "Product niet beschikbaar",
+      "too_many_items": "Maximaal 50 regels per bestelling",
+      "empty_cart": "Selecteer minstens één item"
     }
   },
   "kitchen": {

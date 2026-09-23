@@ -78,7 +78,7 @@ export default function ShiftPage() {
   const { data: monthSales } = useSalesReport('custom', {
     from: monthFrom,
     to: monthTo,
-    enabled: hasHettSamakaTier3,
+    enabled: hasDailyOps,
   });
 
   const currencyLocale = toCurrencyLocale(locale);
@@ -158,19 +158,15 @@ export default function ShiftPage() {
             value: formatCurrencyAmount(todayNet, currency, { locale: currencyLocale }),
             compare: null,
           },
-          ...(hasHettSamakaTier3
-            ? [
-                {
-                  label: t('netMonth'),
-                  value: formatCurrencyAmount(
-                    (monthSales?.kpis.revenue ?? 0) - sumExpenses(monthExpenses),
-                    currency,
-                    { locale: currencyLocale }
-                  ),
-                  compare: null,
-                },
-              ]
-            : []),
+          {
+            label: t('netMonth'),
+            value: formatCurrencyAmount(
+              (monthSales?.kpis.revenue ?? 0) - sumExpenses(monthExpenses),
+              currency,
+              { locale: currencyLocale }
+            ),
+            compare: null,
+          },
         ]
       : []),
   ];

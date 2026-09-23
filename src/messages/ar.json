@@ -784,6 +784,26 @@
       "reason_required": "أدخل سبباً",
       "shift_closed": "الوردية مغلقة لهذا الطلب",
       "already_voided": "تم الإلغاء مسبقاً"
+    },
+    "editAddItems": "إضافة أصناف",
+    "editAddItemsTitle": "إضافة أصناف — {number}",
+    "editAddItemsConfirm": "إضافة للطلب",
+    "editAddItemsSuccess": "تمت إضافة الأصناف",
+    "editPendingLines": "{count, plural, one {صنف واحد} other {# أصناف}}",
+    "editDecreaseQty": "تقليل الكمية",
+    "editIncreaseQty": "زيادة الكمية",
+    "editQtySuccess": "تم تحديث الكمية",
+    "paymentRequiredBeforeComplete": "سجّل الدفع قبل إكمال الطلب",
+    "editError": {
+      "generic": "تعذر تعديل الطلب",
+      "already_paid": "الطلب مدفوع — لا يمكن التعديل",
+      "order_closed": "الطلب مغلق",
+      "shift_closed": "الوردية مغلقة لهذا الطلب",
+      "invalid_quantity": "كمية غير صالحة",
+      "already_voided": "تم إلغاء هذا السطر",
+      "product_unavailable": "الصنف غير متاح",
+      "too_many_items": "الحد الأقصى 50 سطراً",
+      "empty_cart": "اختر صنفاً واحداً على الأقل"
     }
   },
   "kitchen": {

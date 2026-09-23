@@ -1,7 +1,7 @@
 import { openWhatsAppUrl } from './build-order';
 import { buildOrderReadyMessage, type MessageLocale } from './whatsapp-message';
 import { buildWhatsAppUrl, normalizeWhatsAppPhone } from './whatsapp-url';
-import { hasHettSamakaTier1 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 import { getLocalizedText } from '@/lib/utils';
 import type { Order, RestaurantSettings } from '@/types/database';
 
@@ -41,7 +41,7 @@ export function shouldNotifyOrderReady(input: {
   order: Pick<Order, 'customer_phone' | 'ready_whatsapp_sent_at'>;
   settings: Pick<RestaurantSettings, 'whatsapp' | 'whatsapp_on_ready'> | undefined;
 }): boolean {
-  if (!hasHettSamakaTier1) return false;
+  if (!hasDailyOps) return false;
   if (input.settings?.whatsapp_on_ready === false) return false;
   if (!input.order.customer_phone?.trim()) return false;
   if (!isRestaurantWhatsAppConfigured(input.settings)) return false;

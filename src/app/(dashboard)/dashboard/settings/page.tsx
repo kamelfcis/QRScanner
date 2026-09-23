@@ -25,7 +25,7 @@ import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
 import { resolveOrderModes, validateOrderModes } from '@/lib/order/order-modes';
-import { hasDailyOps, hasHettSamakaTier1 } from '@/i18n/config';
+import { hasDailyOps } from '@/i18n/config';
 
 const DAYS = [
   'monday',
@@ -1072,7 +1072,7 @@ export default function SettingsPage() {
                 <CardTitle>{t('acceptingOrders')}</CardTitle>
                 <CardDescription>{t('acceptingOrdersDescription')}</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="space-y-0.5">
                     <Label htmlFor="accepting_orders">{t('acceptingOrdersLabel')}</Label>
@@ -1086,34 +1086,21 @@ export default function SettingsPage() {
                     }
                   />
                 </div>
+                <div className="flex items-center justify-between gap-4 border-t pt-4">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="whatsapp_on_ready">{t('whatsappOnReadyLabel')}</Label>
+                    <p className="text-muted-foreground text-sm">{t('whatsappOnReadyHint')}</p>
+                  </div>
+                  <Switch
+                    id="whatsapp_on_ready"
+                    checked={form.whatsapp_on_ready !== false}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => ({ ...prev, whatsapp_on_ready: checked }))
+                    }
+                  />
+                </div>
               </CardContent>
             </Card>
-          ) : null}
-
-          {hasHettSamakaTier1 ? (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('opsAutomation')}</CardTitle>
-                  <CardDescription>{t('opsAutomationDescription')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="whatsapp_on_ready">{t('whatsappOnReadyLabel')}</Label>
-                      <p className="text-muted-foreground text-sm">{t('whatsappOnReadyHint')}</p>
-                    </div>
-                    <Switch
-                      id="whatsapp_on_ready"
-                      checked={form.whatsapp_on_ready !== false}
-                      onCheckedChange={(checked) =>
-                        setForm((prev) => ({ ...prev, whatsapp_on_ready: checked }))
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </>
           ) : null}
 
           {hasDailyOps ? (

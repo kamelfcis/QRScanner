@@ -6,7 +6,9 @@ import {
   ChevronDown,
   Download,
   MessageCircle,
+  Minus,
   Phone,
+  Plus,
   Printer,
   MapPin,
   UtensilsCrossed,
@@ -28,7 +30,9 @@ import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
 import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePanel';
 import { VoidReasonDialog } from '@/components/dashboard/orders/VoidReasonDialog';
+import { OrderAddItemsDialog } from '@/components/dashboard/orders/OrderAddItemsDialog';
 import { hasDailyOps } from '@/i18n/config';
+import { useUpdateOrderItemQuantity } from '@/hooks/useOrderEdit';
 import { useVoidOrder, useVoidOrderItem } from '@/hooks/useOrderPayment';
 import { COLUMN_TONE, NEXT_STATUS_ACTION_TONE } from '@/components/dashboard/orders/column-tone';
 
@@ -143,11 +147,13 @@ export function OrderTicket({
   const needsAck = isUnacknowledged(order);
   const voidOrder = useVoidOrder();
   const voidOrderItem = useVoidOrderItem();
+  const updateQty = useUpdateOrderItemQuantity();
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
   const [flipped, setFlipped] = useState(false);
   const [receiptBusy, setReceiptBusy] = useState(false);
   const [voidOrderOpen, setVoidOrderOpen] = useState(false);
   const [voidItemId, setVoidItemId] = useState<string | null>(null);
+  const [addItemsOpen, setAddItemsOpen] = useState(false);
   const [receiptScale, setReceiptScale] = useState(1);
   const [receiptWellHeight, setReceiptWellHeight] = useState<number>();
   const flipBackRef = useRef<HTMLButtonElement>(null);
@@ -176,7 +182,34 @@ export function OrderTicket({
   const needsRegisterPayment =
     hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
 
+  const canEditOrder =
+    hasDailyOps && !order.paid_at && order.status !== 'cancelled' && order.status !== 'completed';
+
   const unflip = () => setFlipped(false);
+
+  const handleEditError = (err: unknown) => {
+    const message = err instanceof Error ? err.message : '';
+    const known = [
+      'already_paid',
+      'order_closed',
+      'shift_closed',
+      'invalid_quantity',
+      'already_voided',
+    ] as const;
+    const code = known.find((item) => message.includes(item));
+    toast.error(code ? t(`editError.${code}`) : t('editError.generic'));
+  };
+
+  const handleQtyChange = (itemId: string, nextQty: number) => {
+    if (nextQty < 1 || nextQty > 99) return;
+    updateQty.mutate(
+      { itemId, quantity: nextQty },
+      {
+        onSuccess: () => toast.success(t('editQtySuccess')),
+        onError: handleEditError,
+      }
+    );
+  };
 
   const handleVoidError = (err: unknown) => {
     const message = err instanceof Error ? err.message : '';
@@ -414,9 +447,18 @@ export function OrderTicket({
                     hasDailyOps &&
                       (NEXT_STATUS_ACTION_TONE[nextStatus] ?? 'bg-primary text-primary-foreground')
                   )}
-                  disabled={busy}
+                  disabled={busy || (hasDailyOps && nextStatus === 'completed' && !order.paid_at)}
+                  title={
+                    hasDailyOps && nextStatus === 'completed' && !order.paid_at
+                      ? t('paymentRequiredBeforeComplete')
+                      : undefined
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (hasDailyOps && nextStatus === 'completed' && !order.paid_at) {
+                      toast.error(t('paymentRequiredBeforeComplete'));
+                      return;
+                    }
                     onStatus(order, nextStatus);
                   }}
                 >
@@ -459,20 +501,55 @@ export function OrderTicket({
                           <p className="text-muted-foreground text-xs">{item.notes}</p>
                         ) : null}
                       </div>
-                      {hasDailyOps && !item.voided_at && order.status !== 'cancelled' ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-destructive min-h-9 shrink-0 px-2 text-xs"
-                          disabled={busy || voidOrderItem.isPending}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setVoidItemId(item.id);
-                          }}
-                        >
-                          {t('voidLine')}
-                        </Button>
+                      {canEditOrder && !item.voided_at ? (
+                        <div className="flex shrink-0 flex-col items-end gap-1">
+                          <div className="flex items-center gap-0.5">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              className="h-8 w-8"
+                              disabled={busy || updateQty.isPending || item.quantity <= 1}
+                              aria-label={t('editDecreaseQty')}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleQtyChange(item.id, item.quantity - 1);
+                              }}
+                            >
+                              <Minus className="h-3.5 w-3.5" />
+                            </Button>
+                            <span className="min-w-6 text-center text-xs tabular-nums">
+                              {item.quantity}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              className="h-8 w-8"
+                              disabled={busy || updateQty.isPending || item.quantity >= 99}
+                              aria-label={t('editIncreaseQty')}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleQtyChange(item.id, item.quantity + 1);
+                              }}
+                            >
+                              <Plus className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive min-h-8 px-2 text-xs"
+                            disabled={busy || voidOrderItem.isPending}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setVoidItemId(item.id);
+                            }}
+                          >
+                            {t('voidLine')}
+                          </Button>
+                        </div>
                       ) : null}
                     </li>
                   ))}
@@ -578,6 +655,19 @@ export function OrderTicket({
                 ) : null}
 
                 <div className="grid gap-2">
+                  {canEditOrder ? (
+                    <Button
+                      variant="outline"
+                      className="min-h-11"
+                      disabled={busy}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAddItemsOpen(true);
+                      }}
+                    >
+                      {t('editAddItems')}
+                    </Button>
+                  ) : null}
                   {hasDailyOps && order.status !== 'cancelled' && order.status !== 'completed' ? (
                     <Button
                       variant="outline"
@@ -811,6 +901,13 @@ export function OrderTicket({
             }
           );
         }}
+      />
+      <OrderAddItemsDialog
+        order={order}
+        open={addItemsOpen}
+        onOpenChange={setAddItemsOpen}
+        locale={locale}
+        currencyLocale={currencyLocale}
       />
     </div>
   );

@@ -784,6 +784,26 @@
       "reason_required": "Enter a reason",
       "shift_closed": "Shift already closed for this order",
       "already_voided": "Already voided"
+    },
+    "editAddItems": "Add items",
+    "editAddItemsTitle": "Add items — {number}",
+    "editAddItemsConfirm": "Add to order",
+    "editAddItemsSuccess": "Items added",
+    "editPendingLines": "{count, plural, one {1 item} other {# items}}",
+    "editDecreaseQty": "Decrease quantity",
+    "editIncreaseQty": "Increase quantity",
+    "editQtySuccess": "Quantity updated",
+    "paymentRequiredBeforeComplete": "Record payment before completing the order",
+    "editError": {
+      "generic": "Could not edit order",
+      "already_paid": "Order is paid — cannot edit",
+      "order_closed": "Order is closed",
+      "shift_closed": "Shift already closed for this order",
+      "invalid_quantity": "Invalid quantity",
+      "already_voided": "Line already voided",
+      "product_unavailable": "Product unavailable",
+      "too_many_items": "Maximum 50 lines per order",
+      "empty_cart": "Select at least one item"
     }
   },
   "kitchen": {
