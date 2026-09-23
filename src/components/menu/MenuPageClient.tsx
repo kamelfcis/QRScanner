@@ -39,6 +39,7 @@ import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-mode
 import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
 import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
+import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
 
 export function MenuPageClient() {
   return (
@@ -59,6 +60,7 @@ function MenuContent() {
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [spyCategory, setSpyCategory] = useState<string | null>(null);
   const [allShuffleSeed, setAllShuffleSeed] = useState(() => Date.now());
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -193,14 +195,30 @@ function MenuContent() {
     [categories, handleProductClick]
   );
 
-  const handleCategoryChange = useCallback((next: string | null) => {
-    setActiveCategory((prev) => {
-      if (next === null && prev !== null) {
-        setAllShuffleSeed(Date.now());
-      }
-      return next;
-    });
-  }, []);
+  const categoryIds = useMemo(
+    () => (categories ?? []).map((category) => category.id),
+    [categories]
+  );
+  const { setTapGuard } = useCategoryScrollSpy({
+    categoryIds,
+    enabled: Boolean(categories?.length) && activeCategory === null,
+    onActiveChange: setSpyCategory,
+  });
+
+  const handleCategoryChange = useCallback(
+    (next: string | null) => {
+      setTapGuard(next);
+      setActiveCategory((prev) => {
+        if (next === null && prev !== null) {
+          setAllShuffleSeed(Date.now());
+        }
+        return next;
+      });
+    },
+    [setTapGuard]
+  );
+
+  const navActiveCategory = activeCategory ?? spyCategory;
 
   const filteredCategories = useMemo(() => {
     const catalog = categories ?? [];
@@ -244,7 +262,7 @@ function MenuContent() {
       {hasCatalog && (
         <CategoryNav
           categories={categories!}
-          activeCategory={activeCategory}
+          activeCategory={navActiveCategory}
           onCategoryChange={handleCategoryChange}
         />
       )}
@@ -267,7 +285,7 @@ function MenuContent() {
 
       {filteredCategories.length > 0 && (
         <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
-          {filteredCategories.map((category) => {
+          {filteredCategories.map((category, categoryIndex) => {
             const categoryName = getName(
               locale,
               category.name_en,
@@ -286,10 +304,7 @@ function MenuContent() {
               : '';
 
             return (
-              <section
-                key={category.id}
-                className="mb-9 [contain-intrinsic-size:auto_600px] [content-visibility:auto] last:mb-0 sm:mb-12"
-              >
+              <section key={category.id} className="mb-9 last:mb-0 sm:mb-12">
                 <header className="mb-4 sm:mb-5">
                   <div className="flex items-center gap-3">
                     <h2
@@ -308,13 +323,16 @@ function MenuContent() {
                 </header>
 
                 {category.products.length > 0 ? (
-                  <ProductGrid
-                    products={category.products}
-                    diningMode={diningMode}
-                    isFavorite={isFavorite}
-                    onToggleFavorite={toggleFavorite}
-                    onImageClick={handleProductClick}
-                  />
+                  <div className="[contain-intrinsic-size:auto_600px] [content-visibility:auto]">
+                    <ProductGrid
+                      products={category.products}
+                      diningMode={diningMode}
+                      isFavorite={isFavorite}
+                      onToggleFavorite={toggleFavorite}
+                      onImageClick={handleProductClick}
+                      prioritizeImages={categoryIndex === 0}
+                    />
+                  </div>
                 ) : (
                   <p className="rounded-xl border border-dashed border-[var(--menu-line-strong)] px-4 py-8 text-center text-sm text-[var(--menu-ink-soft)]">
                     {t('emptyCategory')}

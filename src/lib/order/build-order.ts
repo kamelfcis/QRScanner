@@ -154,6 +154,7 @@ export function buildStoredOrderWhatsApp(input: {
     prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
     couponCode: input.order.coupon_code,
     deliveryFee: Number(input.order.delivery_fee ?? 0),
+    orderNumber: input.order.order_number,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);
