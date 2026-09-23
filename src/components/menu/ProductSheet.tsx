@@ -1,59 +1,65 @@
-﻿'use client';
+'use client';
 
-import { useState } from 'react';
-import { Minus, Plus, ShoppingCart } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Minus, Plus, ShoppingCart, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Image } from '@/components/shared/Image';
+import { BadgePill, pickBadges } from '@/components/menu/ProductBadges';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
-import { useMenuSettings } from '@/components/menu/MenuSettingsProvider';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount } from '@/lib/order/format-currency';
-import { getCategoryImageFit, type MarketCategoryKind } from '@/lib/market/catalog';
-import { parseUnitLabel } from '@/lib/market/units';
+import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import type { Product } from '@/types/database';
 
 interface ProductSheetProps {
   product: Product | null;
-  categoryKind: MarketCategoryKind;
   diningMode: 'dining' | 'takeaway';
   onClose: () => void;
+  onAdded?: () => void;
 }
 
-/** Shopping detail view: bottom sheet on phones, centred modal on desktop. */
-export function ProductSheet({ product, categoryKind, diningMode, onClose }: ProductSheetProps) {
+export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductSheetProps) {
   const isDesktop = useIsDesktop();
+  const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
-  const { settings, currency } = useMenuSettings();
+  const { data: settings } = useRestaurantSettings();
   const addItem = useCartStore((s) => s.addItem);
-  const [qty, setQty] = useState(1);
-  const [openedProductId, setOpenedProductId] = useState(product?.id ?? null);
 
-  if ((product?.id ?? null) !== openedProductId) {
-    setOpenedProductId(product?.id ?? null);
-    setQty(1);
-  }
+  const [qty, setQty] = useState(1);
+  const [notes, setNotes] = useState('');
+
+  useEffect(() => {
+    if (product) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset controls per dish
+      setQty(1);
+      setNotes('');
+    }
+  }, [product]);
 
   if (!product) return null;
 
+  const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const maxNotes = settings?.max_order_notes_length ?? 200;
+  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
+  const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
+  const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
   const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
-  const description = getName(
-    locale,
-    product.description_en || '',
-    product.description_ar || ''
-  )?.trim();
-  const unitLabel = parseUnitLabel(product.description_ar, product.description_en, currencyLocale);
-  const imageFit = getCategoryImageFit(categoryKind);
-  const price = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
+  const description = product.description_en
+    ? getName(locale, product.description_en, product.description_ar)
+    : '';
 
   const handleAdd = () => {
     if (!product.is_available) return;
@@ -65,18 +71,18 @@ export function ProductSheet({ product, categoryKind, diningMode, onClose }: Pro
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
       quantity: qty,
-      notes: '',
+      notes,
     });
     trackAddToCart(product.id, qty, diningMode);
+    onAdded?.();
     onClose();
   };
 
-  const media = (
+  const hero = (
     <div
       className={cn(
-        'relative aspect-square w-full shrink-0 overflow-hidden rounded-[var(--hm-radius)]',
-        imageFit === 'contain' ? 'bg-white' : 'bg-[var(--hm-surface-muted)]',
-        'border border-[var(--hm-line)]'
+        'relative w-full overflow-hidden bg-[var(--menu-paper-deep)]',
+        isDesktop ? 'h-full min-h-[320px]' : 'aspect-[4/3]'
       )}
     >
       {product.image_url ? (
@@ -84,106 +90,180 @@ export function ProductSheet({ product, categoryKind, diningMode, onClose }: Pro
           src={product.image_url}
           alt={productName}
           fill
-          sizes="(max-width: 768px) 90vw, 360px"
-          className={imageFit === 'contain' ? 'object-contain p-4' : 'object-cover'}
+          priority
+          sizes="(max-width: 768px) 100vw, 45vw"
+          className="object-cover"
           containerClassName="absolute inset-0 h-full w-full"
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-heading text-4xl text-[var(--hm-ink-faint)]">
+        <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(120%_100%_at_50%_0%,#ece2d2_0%,#ded1ba_100%)]">
+          <span className="font-heading text-6xl text-[var(--menu-gold-faint)]">
             {productName.charAt(0)}
           </span>
+        </div>
+      )}
+      {badges.length > 0 && (
+        <div className="pointer-events-none absolute start-3 top-3 flex flex-wrap gap-1.5">
+          {badges.map((badge) => (
+            <BadgePill key={badge} badge={badge} />
+          ))}
         </div>
       )}
     </div>
   );
 
   const details = (
-    <div className="flex min-w-0 flex-1 flex-col gap-3">
-      <div className="space-y-1">
-        {secondaryName ? (
-          <p className="text-xs text-[var(--hm-ink-faint)]" dir={locale === 'ar' ? 'ltr' : 'rtl'}>
+    <div className="space-y-4">
+      <div>
+        <SheetTitleOrDialogTitle isDesktop={isDesktop}>
+          <span className="font-heading block text-xl font-semibold leading-tight text-[var(--menu-ink)] sm:text-2xl">
+            {productName}
+          </span>
+        </SheetTitleOrDialogTitle>
+        {secondaryName && (
+          <p
+            className="mt-1 text-xs text-[var(--menu-ink-soft)]"
+            dir={locale === 'ar' ? 'ltr' : 'rtl'}
+          >
             {secondaryName}
           </p>
-        ) : null}
-        {unitLabel && (
-          <span
-            className="inline-flex w-fit items-center rounded-full border border-[var(--hm-line)] bg-[var(--hm-surface-muted)] px-2.5 py-1 text-[11px] font-medium text-[var(--hm-ink-soft)]"
-            dir="auto"
-          >
-            {unitLabel}
-          </span>
         )}
       </div>
 
-      {description ? (
-        <p className="text-sm leading-relaxed text-[var(--hm-ink-soft)]">{description}</p>
-      ) : null}
+      <SheetDescriptionOrDialogDescription isDesktop={isDesktop}>
+        {description ? (
+          <span className="block text-sm leading-relaxed text-[var(--menu-ink-soft)]">
+            {description}
+          </span>
+        ) : (
+          <span className="sr-only">{t('dishDetails')}</span>
+        )}
+      </SheetDescriptionOrDialogDescription>
 
-      <p className="text-xl font-bold tabular-nums text-[var(--hm-price)]" dir="ltr">
-        {formatCurrencyAmount(price, currency, { locale: currencyLocale })}
-      </p>
+      <div className="flex items-end gap-3 border-t border-[var(--menu-line)] pt-4">
+        <p
+          className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
+          dir="ltr"
+        >
+          {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+        </p>
+        {otherPrice !== activePrice && (
+          <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
+            {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+            {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+          </p>
+        )}
+      </div>
 
       {product.is_available ? (
-        <div className="mt-auto flex items-stretch gap-2 pt-1">
-          <div
-            className="inline-flex h-12 shrink-0 items-stretch overflow-hidden rounded-[var(--hm-radius)] border border-[var(--hm-line-strong)]"
-            role="group"
-            aria-label={tCart('quantity')}
-          >
-            <button
-              type="button"
-              className="flex w-11 items-center justify-center text-[var(--hm-ink)] transition-colors hover:bg-[var(--hm-surface-muted)] disabled:pointer-events-none disabled:opacity-40"
-              onClick={() => setQty((current) => Math.max(1, current - 1))}
-              aria-label={tCart('decreaseQty')}
-              disabled={qty <= 1}
+        <div className="space-y-3">
+          <div className="space-y-1.5">
+            <Label
+              htmlFor={`sheet-notes-${product.id}`}
+              className="text-xs text-[var(--menu-ink-soft)]"
             >
-              <Minus className="h-4 w-4" aria-hidden="true" />
-            </button>
-            <span
-              className="flex min-w-10 items-center justify-center border-x border-[var(--hm-line-strong)] px-1 text-sm font-semibold tabular-nums"
-              aria-live="polite"
-            >
-              {qty}
-            </span>
-            <button
-              type="button"
-              className="flex w-11 items-center justify-center text-[var(--hm-ink)] transition-colors hover:bg-[var(--hm-surface-muted)]"
-              onClick={() => setQty((current) => current + 1)}
-              aria-label={tCart('increaseQty')}
-            >
-              <Plus className="h-4 w-4" aria-hidden="true" />
-            </button>
+              {tCart('itemNotes')}
+            </Label>
+            <Input
+              id={`sheet-notes-${product.id}`}
+              value={notes}
+              maxLength={maxNotes}
+              placeholder={tCart('itemNotesPlaceholder')}
+              onChange={(e) => setNotes(e.target.value)}
+              autoComplete="off"
+              className="h-11 rounded-lg"
+            />
           </div>
-
-          <Button
-            type="button"
-            onClick={handleAdd}
-            className="h-12 flex-1 rounded-[var(--hm-radius)] bg-[var(--hm-accent)] text-sm font-semibold text-[var(--hm-on-accent)] hover:bg-[var(--hm-accent-strong)]"
-            data-testid="sheet-add-to-cart"
-          >
-            <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />
-            {tCart('addToCart')}
-          </Button>
         </div>
       ) : (
-        <Badge variant="secondary" className="w-fit">
+        <p className="rounded-lg bg-[var(--menu-paper-deep)] px-3 py-2 text-sm text-[var(--menu-ink-soft)]">
           {t('currentlyUnavailable')}
-        </Badge>
+        </p>
       )}
     </div>
+  );
+
+  const cta = product.is_available ? (
+    <div className="flex items-center gap-3">
+      <div
+        className="inline-flex h-12 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
+        role="group"
+        aria-label={tCart('quantity')}
+      >
+        <button
+          type="button"
+          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
+          onClick={() => setQty((q) => Math.max(1, q - 1))}
+          aria-label={tCart('decreaseQty')}
+          disabled={qty <= 1}
+        >
+          <Minus className="h-4 w-4" aria-hidden="true" />
+        </button>
+        <span
+          className="flex min-w-8 items-center justify-center text-base font-medium tabular-nums"
+          aria-live="polite"
+        >
+          {qty}
+        </span>
+        <button
+          type="button"
+          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
+          onClick={() => setQty((q) => q + 1)}
+          aria-label={tCart('increaseQty')}
+        >
+          <Plus className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </div>
+
+      <motion.div
+        className="min-w-0 flex-1"
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
+      >
+        <Button
+          type="button"
+          className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+          onClick={handleAdd}
+          data-testid="sheet-add-to-cart"
+        >
+          <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />
+          {tCart('addToCart')}
+          <span className="ms-2 tabular-nums opacity-80" dir="ltr">
+            {formatCurrencyAmount(activePrice * qty, currency, { locale: currencyLocale })}
+          </span>
+        </Button>
+      </motion.div>
+    </div>
+  ) : (
+    <Button type="button" variant="outline" className="h-12 w-full rounded-full" onClick={onClose}>
+      {tCart('browseMenu')}
+    </Button>
+  );
+
+  const closeButton = (
+    <button
+      type="button"
+      onClick={onClose}
+      aria-label={t('closeDetails')}
+      className="bg-[#FDF7F0]/92 absolute end-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full text-[var(--menu-ink)] shadow-[0_1px_6px_rgba(33,29,24,0.2)] backdrop-blur-[2px] transition-colors hover:bg-[#FDF7F0]"
+    >
+      <X className="h-4 w-4" aria-hidden="true" />
+    </button>
   );
 
   if (isDesktop) {
     return (
       <Dialog open onOpenChange={(open) => !open && onClose()}>
-        <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-start text-lg">{productName}</DialogTitle>
-          </DialogHeader>
-          <div className="flex gap-5">
-            <div className="w-[280px] shrink-0">{media}</div>
-            {details}
+        <DialogContent
+          showCloseButton={false}
+          className="grid max-h-[86svh] w-full max-w-3xl grid-cols-1 gap-0 overflow-hidden rounded-2xl bg-[var(--menu-surface)] p-0 sm:max-w-3xl md:grid-cols-[45%_1fr]"
+        >
+          {closeButton}
+          <div className="relative hidden md:block">{hero}</div>
+          <div className="flex max-h-[86svh] flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto p-6">{details}</div>
+            <div className="border-t border-[var(--menu-line)] bg-[var(--menu-paper)] p-4">
+              {cta}
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -194,16 +274,48 @@ export function ProductSheet({ product, categoryKind, diningMode, onClose }: Pro
     <Sheet open onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="bottom"
-        className="max-h-[90svh] overflow-y-auto rounded-t-2xl bg-[var(--hm-surface)] pb-[max(1rem,env(safe-area-inset-bottom))]"
+        showCloseButton={false}
+        className="max-h-[90svh] gap-0 overflow-hidden rounded-t-2xl bg-[var(--menu-surface)] p-0"
       >
-        <SheetHeader className="pb-0">
-          <SheetTitle className="pe-8 text-start text-base">{productName}</SheetTitle>
-        </SheetHeader>
-        <div className="flex flex-col gap-4 px-4 pb-4">
-          <div className="mx-auto w-full max-w-[260px]">{media}</div>
-          {details}
+        {closeButton}
+        <div className="flex max-h-[90svh] flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
+            {hero}
+            <div className="px-4 pb-4 pt-4">{details}</div>
+          </div>
+          <div className="border-t border-[var(--menu-line)] bg-[var(--menu-paper)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+            {cta}
+          </div>
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function SheetTitleOrDialogTitle({
+  isDesktop,
+  children,
+}: {
+  isDesktop: boolean;
+  children: React.ReactNode;
+}) {
+  return isDesktop ? (
+    <DialogTitle className="text-start">{children}</DialogTitle>
+  ) : (
+    <SheetTitle className="text-start">{children}</SheetTitle>
+  );
+}
+
+function SheetDescriptionOrDialogDescription({
+  isDesktop,
+  children,
+}: {
+  isDesktop: boolean;
+  children: React.ReactNode;
+}) {
+  return isDesktop ? (
+    <DialogDescription className="text-start">{children}</DialogDescription>
+  ) : (
+    <SheetDescription className="text-start">{children}</SheetDescription>
   );
 }

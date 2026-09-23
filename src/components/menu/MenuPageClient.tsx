@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
@@ -32,44 +32,34 @@ import {
 } from '@/lib/dining-mode';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import type { Product } from '@/types/database';
-import { useRestaurantSettings } from '@/hooks/useSettings';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
 import { trackPageView, trackProductView, trackCategoryView, trackCartOpen } from '@/lib/analytics';
-import { getFulfillmentOptions, resolveOrderModes } from '@/lib/order/order-modes';
-import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
-import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
-import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
+import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
 
 export function MenuPageClient() {
   return (
-    <TopSellingProvider>
-      <Suspense fallback={<MenuSkeleton />}>
-        <MenuContent />
-      </Suspense>
-    </TopSellingProvider>
+    <Suspense fallback={<MenuSkeleton />}>
+      <MenuContent />
+    </Suspense>
   );
 }
 
 function MenuContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const modeParam = searchParams.get('mode');
-  const cartParam = searchParams.get('cart');
   const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [allShuffleSeed, setAllShuffleSeed] = useState(() => Date.now());
+  const [spyCategory, setSpyCategory] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
-  const { data: settings } = useRestaurantSettings();
-  const orderModes = useMemo(() => resolveOrderModes(settings), [settings]);
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const setMeta = useCartStore((s) => s.setMeta);
 
-  // URL only on first render — localStorage sync runs in useEffect to avoid hydration #418.
+  // URL only on first render. localStorage sync runs in useEffect to avoid hydration #418.
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
     return parseDiningModeParam(modeParam) ?? 'dining';
   });
@@ -83,16 +73,12 @@ function MenuContent() {
 
   useEffect(() => {
     const fromUrl = parseDiningModeParam(modeParam);
-    let next = fromUrl ?? readStoredDiningMode();
-    if (!orderModes.dineIn) {
-      next = 'takeaway';
-    }
+    const next = fromUrl ?? readStoredDiningMode();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode after hydration
     setDiningMode(next);
-    if (fromUrl && orderModes.dineIn) persistDiningMode(fromUrl);
-    if (!orderModes.dineIn) persistDiningMode('takeaway');
+    if (fromUrl) persistDiningMode(fromUrl);
     setMeta({ diningMode: next });
-  }, [modeParam, setMeta, orderModes.dineIn]);
+  }, [modeParam, setMeta]);
 
   useEffect(() => {
     setMeta({ diningMode });
@@ -113,42 +99,6 @@ function MenuContent() {
       if (saved) setMeta({ tableNumber: saved });
     }
   }, [tableParam, setMeta]);
-
-  useEffect(() => {
-    if (!settings) return;
-    const options = getFulfillmentOptions(orderModes);
-    if (options.length === 0) return;
-    const current = useCartStore.getState().fulfillmentType;
-    if (options.includes(current)) return;
-    const fallback = options[0];
-    setMeta({
-      fulfillmentType: fallback,
-      ...(fallback === 'pickup' ? { deliveryAddress: '' } : {}),
-    });
-  }, [settings, orderModes, setMeta]);
-
-  useEffect(() => {
-    if (cartParam !== '1') return;
-
-    const openCartFromQuery = () => {
-      const items = useCartStore.getState().items;
-      if (items.length === 0) return;
-      trackCartOpen(items.reduce((n, i) => n + i.quantity, 0));
-      setCartOpen(true);
-    };
-
-    if (useCartStore.persist.hasHydrated()) {
-      openCartFromQuery();
-      router.replace('/menu', { scroll: false });
-      return;
-    }
-
-    const unsub = useCartStore.persist.onFinishHydration(() => {
-      openCartFromQuery();
-      router.replace('/menu', { scroll: false });
-    });
-    return unsub;
-  }, [cartParam, router]);
 
   const handleDiningModeChange = useCallback(
     (mode: 'dining' | 'takeaway') => {
@@ -193,25 +143,29 @@ function MenuContent() {
     [categories, handleProductClick]
   );
 
-  const handleCategoryChange = useCallback((next: string | null) => {
-    setActiveCategory((prev) => {
-      if (next === null && prev !== null) {
-        setAllShuffleSeed(Date.now());
-      }
-      return next;
-    });
-  }, []);
+  const categoryIds = useMemo(
+    () => (categories ?? []).map((category) => category.id),
+    [categories]
+  );
+  const { setTapGuard } = useCategoryScrollSpy({
+    categoryIds,
+    enabled: Boolean(categories?.length) && activeCategory === null,
+    onActiveChange: setSpyCategory,
+  });
 
-  const filteredCategories = useMemo(() => {
-    const catalog = categories ?? [];
-    if (activeCategory) {
-      return catalog.filter((c) => c.id === activeCategory);
-    }
-    return shuffleCopy(catalog, allShuffleSeed).map((category) => ({
-      ...category,
-      products: shuffleCopy(category.products, allShuffleSeed ^ hashSeed(category.id)),
-    }));
-  }, [activeCategory, categories, allShuffleSeed]);
+  const handleCategoryChange = useCallback(
+    (next: string | null) => {
+      setTapGuard(next);
+      setActiveCategory(next);
+    },
+    [setTapGuard]
+  );
+
+  const navActiveCategory = activeCategory ?? spyCategory;
+
+  const filteredCategories = activeCategory
+    ? (categories ?? []).filter((c) => c.id === activeCategory)
+    : (categories ?? []);
   const hasCatalog = Boolean(categories?.length);
 
   return (
@@ -221,7 +175,6 @@ function MenuContent() {
     >
       <MenuThemeScope />
       <QrScanTracker />
-      <OrdersPausedBanner />
 
       <MenuHeader
         tableParam={tableParam}
@@ -244,12 +197,12 @@ function MenuContent() {
       {hasCatalog && (
         <CategoryNav
           categories={categories!}
-          activeCategory={activeCategory}
+          activeCategory={navActiveCategory}
           onCategoryChange={handleCategoryChange}
         />
       )}
 
-      {hasCatalog && <OffersSection compact={activeCategory !== null} />}
+      {hasCatalog && activeCategory === null && <OffersSection />}
 
       {isLoading && <MenuGridSkeleton />}
 
@@ -268,21 +221,9 @@ function MenuContent() {
       {filteredCategories.length > 0 && (
         <div className="mx-auto max-w-6xl px-3 py-6 sm:px-5 sm:py-8">
           {filteredCategories.map((category) => {
-            const categoryName = getName(
-              locale,
-              category.name_en,
-              category.name_ar,
-              category.name_fr,
-              category.name_nl
-            );
+            const categoryName = getName(locale, category.name_en, category.name_ar);
             const categoryDescription = category.description_en
-              ? getName(
-                  locale,
-                  category.description_en,
-                  category.description_ar,
-                  category.description_fr,
-                  category.description_nl
-                )
+              ? getName(locale, category.description_en, category.description_ar)
               : '';
 
             return (
@@ -347,7 +288,7 @@ function MenuContent() {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema(settings, locale)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMenuSchema()) }}
       />
     </div>
   );
