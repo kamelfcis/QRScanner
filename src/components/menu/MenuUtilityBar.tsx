@@ -58,13 +58,10 @@ export function MenuUtilityBar({
               <Search className="h-[18px] w-[18px]" aria-hidden="true" />
             </button>
           ) : null}
-          <MenuContactButtons
-            tableParam={tableParam}
-            buttonClassName="text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]"
-          />
+          <MenuContactButtons tableParam={tableParam} />
           <LanguageSwitcher
             variant="ghost"
-            className="size-11 rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]"
+            className="size-11 rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)]"
           />
         </div>
       </div>
