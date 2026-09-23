@@ -20,9 +20,17 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
-import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { haptic } from '@/lib/haptics';
+import { triggerHaptic } from '@/lib/ux/haptic';
+import {
+  formatCurrencyAmount,
+  getRestaurantCurrency,
+  toCurrencyLocale,
+} from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
+import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -32,6 +40,7 @@ interface ProductCardProps {
   onToggleFavorite: (product: Product) => void;
   onImageClick: (product: Product) => void;
   onAddedToCart?: () => void;
+  priority?: boolean;
 }
 
 export function ProductCard({
@@ -41,6 +50,7 @@ export function ProductCard({
   onToggleFavorite,
   onImageClick,
   onAddedToCart,
+  priority = false,
 }: ProductCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
@@ -58,25 +68,49 @@ export function ProductCard({
   const longPressFired = useRef(false);
 
   const currency = getRestaurantCurrency(settings?.currency);
-  const currencyLocale = locale === 'ar' ? 'ar' : 'en';
+  const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
+  const topSellingIds = useTopSellingBadgeIds();
+  // false/null/undefined → quick-add; size or weight options open ProductSheet
+  const hasSizeOptions = product.has_size_options === true;
+  const needsPicker = hasSizeOptions || hasWeightOptions(product);
+  const fromPrice = minWeightPrice(product);
+  const activePrice =
+    fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
-  const badges = pickBadges(product);
-  const productName = getName(locale, product.name_en, product.name_ar);
+  const minPrice = Math.min(product.dining_price, product.takeaway_price);
+  const maxPrice = Math.max(product.dining_price, product.takeaway_price);
+  const badges = pickBadges(product, topSellingIds.includes(product.id));
+  const productName = getName(
+    locale,
+    product.name_en,
+    product.name_ar,
+    product.name_fr,
+    product.name_nl
+  );
   const description = product.description_en
-    ? getName(locale, product.description_en, product.description_ar)
+    ? getName(
+        locale,
+        product.description_en,
+        product.description_ar,
+        product.description_fr,
+        product.description_nl
+      )
     : '';
 
   const handleAdd = (withNotes: string) => {
-    if (!product.is_available) return;
+    if (!product.is_available || needsPicker) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
       name_ar: product.name_ar,
+      name_fr: product.name_fr,
+      name_nl: product.name_nl,
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
+      has_size_options: false,
+      sizeOption: null,
       quantity: qty,
       notes: withNotes,
     });
@@ -97,6 +131,7 @@ export function ProductCard({
   };
 
   const startLongPress = () => {
+    if (needsPicker) return;
     longPressFired.current = false;
     clearLongPress();
     longPressTimer.current = setTimeout(() => {
@@ -106,6 +141,10 @@ export function ProductCard({
   };
 
   const handleMobileAddClick = () => {
+    if (needsPicker) {
+      onImageClick(product);
+      return;
+    }
     if (longPressFired.current) {
       longPressFired.current = false;
       return;
@@ -128,6 +167,7 @@ export function ProductCard({
                 src={product.image_url}
                 alt={productName}
                 fill
+                priority={priority}
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-500 ease-out motion-reduce:transition-none sm:group-hover:scale-[1.04] motion-reduce:sm:group-hover:scale-100"
                 containerClassName="absolute inset-0 h-full w-full"
@@ -161,6 +201,7 @@ export function ProductCard({
             whileTap={prefersReducedMotion ? undefined : { scale: 0.85 }}
             onClick={(e) => {
               e.stopPropagation();
+              haptic.tick();
               onToggleFavorite(product);
             }}
             className={cn(
@@ -205,17 +246,47 @@ export function ProductCard({
 
           <div className="mt-2.5 flex items-end justify-between gap-2 sm:mt-3">
             <div className="min-w-0">
-              <p
-                className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                dir="ltr"
-              >
-                {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-              </p>
-              {otherPrice !== activePrice && (
-                <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
-                  {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-                  {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+              {hasSizeOptions ? (
+                minPrice !== maxPrice ? (
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })} –{' '}
+                    {formatCurrencyAmount(maxPrice, currency, { locale: currencyLocale })}
+                  </p>
+                ) : (
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })}
+                  </p>
+                )
+              ) : fromPrice != null ? (
+                <p
+                  className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                  dir="ltr"
+                >
+                  {t('priceFrom', {
+                    price: formatCurrencyAmount(fromPrice, currency, { locale: currencyLocale }),
+                  })}
                 </p>
+              ) : (
+                <>
+                  <p
+                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+                  </p>
+                  {otherPrice !== activePrice && (
+                    <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
+                      {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+                      {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+                    </p>
+                  )}
+                </>
               )}
             </div>
 
@@ -233,11 +304,21 @@ export function ProductCard({
                   e.stopPropagation();
                   handleMobileAddClick();
                 }}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
-                aria-label={tCart('addToCart')}
-                data-testid="add-to-cart-mobile"
+                className="flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
+                aria-label={
+                  needsPicker
+                    ? hasSizeOptions
+                      ? t('selectSize')
+                      : t('selectWeight')
+                    : tCart('addToCart')
+                }
+                data-testid={needsPicker ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
               >
-                <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+                {needsPicker ? (
+                  <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Plus className="h-5 w-5" aria-hidden="true" strokeWidth={2.5} />
+                )}
               </motion.button>
             )}
           </div>
@@ -245,36 +326,44 @@ export function ProductCard({
           {product.is_available && (
             <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
-                <div
-                  className="inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
-                  role="group"
-                  aria-label={tCart('quantity')}
-                >
-                  <button
-                    type="button"
-                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    aria-label={tCart('decreaseQty')}
-                    disabled={qty <= 1}
-                  >
-                    <Minus className="h-3.5 w-3.5" aria-hidden="true" />
-                  </button>
-                  <span
-                    className="flex min-w-7 items-center justify-center text-center text-sm font-medium tabular-nums"
-                    aria-live="polite"
+                {!needsPicker && (
+                  <div
+                    className="inline-flex min-h-11 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
+                    role="group"
                     aria-label={tCart('quantity')}
                   >
-                    {qty}
-                  </span>
-                  <button
-                    type="button"
-                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-                    onClick={() => setQty((q) => q + 1)}
-                    aria-label={tCart('increaseQty')}
-                  >
-                    <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-                  </button>
-                </div>
+                    <button
+                      type="button"
+                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100"
+                      onClick={() => {
+                        triggerHaptic('light');
+                        setQty((q) => Math.max(1, q - 1));
+                      }}
+                      aria-label={tCart('decreaseQty')}
+                      disabled={qty <= 1}
+                    >
+                      <Minus className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                    <span
+                      className="flex min-w-7 items-center justify-center text-center text-sm font-medium tabular-nums"
+                      aria-live="polite"
+                      aria-label={tCart('quantity')}
+                    >
+                      {qty}
+                    </span>
+                    <button
+                      type="button"
+                      className="flex min-h-11 min-w-11 touch-manipulation items-center justify-center text-[var(--menu-ink)] transition-transform duration-150 hover:bg-[var(--menu-gold-wash)] active:scale-95 motion-reduce:active:scale-100"
+                      onClick={() => {
+                        triggerHaptic('light');
+                        setQty((q) => q + 1);
+                      }}
+                      aria-label={tCart('increaseQty')}
+                    >
+                      <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                  </div>
+                )}
 
                 <motion.div
                   className="min-w-0 flex-1"
@@ -283,21 +372,37 @@ export function ProductCard({
                 >
                   <Button
                     type="button"
-                    className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-                    onClick={() => handleAdd('')}
-                    data-testid="add-to-cart"
-                    aria-label={tCart('addToCart')}
+                    className="min-h-11 w-full touch-manipulation items-center justify-center gap-2 overflow-visible rounded-full bg-[var(--menu-wine)] px-5 py-2 text-[13px] font-medium leading-snug text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+                    onClick={() => (needsPicker ? onImageClick(product) : handleAdd(''))}
+                    data-testid={needsPicker ? 'open-product-sheet' : 'add-to-cart'}
+                    aria-label={
+                      needsPicker
+                        ? hasSizeOptions
+                          ? t('selectSize')
+                          : t('selectWeight')
+                        : tCart('addToCart')
+                    }
                   >
-                    <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
-                    {tCart('addToCart')}
+                    {needsPicker ? (
+                      <ShoppingCart className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    ) : (
+                      <Plus className="h-3.5 w-3.5 shrink-0" aria-hidden="true" strokeWidth={2.5} />
+                    )}
+                    <span className="whitespace-nowrap">
+                      {needsPicker
+                        ? hasSizeOptions
+                          ? t('selectSize')
+                          : t('selectWeight')
+                        : tCart('addToCart')}
+                    </span>
                   </Button>
                 </motion.div>
               </div>
 
               <button
                 type="button"
-                className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
-                onClick={() => setNotesOpen(true)}
+                className="min-h-11 touch-manipulation self-start px-0.5 text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
+                onClick={() => (needsPicker ? onImageClick(product) : setNotesOpen(true))}
               >
                 {tCart('itemNotes')}
               </button>
