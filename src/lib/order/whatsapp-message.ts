@@ -238,3 +238,66 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   return lines.join('\n');
 }
+
+interface OrderReadyLabels {
+  header: string;
+  pickup: string;
+  delivery: string;
+  dineIn: string;
+}
+
+const READY_LABELS: Record<MessageLocale, OrderReadyLabels> = {
+  ar: {
+    header: '*طلبك جاهز*',
+    pickup: 'جاهز للاستلام من المطعم',
+    delivery: 'جاهز للتوصيل',
+    dineIn: 'جاهز — يمكنك استلام الطلب',
+  },
+  en: {
+    header: '*Your order is ready*',
+    pickup: 'Ready for pickup at the restaurant',
+    delivery: 'Ready for delivery',
+    dineIn: 'Ready — you can collect your order',
+  },
+  fr: {
+    header: '*Votre commande est prête*',
+    pickup: 'Prête à être retirée au restaurant',
+    delivery: 'Prête pour la livraison',
+    dineIn: 'Prête — vous pouvez récupérer votre commande',
+  },
+  nl: {
+    header: '*Uw bestelling is klaar*',
+    pickup: 'Klaar om af te halen bij het restaurant',
+    delivery: 'Klaar voor bezorging',
+    dineIn: 'Klaar — u kunt uw bestelling ophalen',
+  },
+};
+
+function readyFulfillmentLabel(
+  locale: MessageLocale,
+  diningMode: MessageDiningMode,
+  fulfillmentType: FulfillmentType | null | undefined
+): string {
+  const labels = READY_LABELS[locale];
+  if (diningMode === 'dining') return labels.dineIn;
+  if (fulfillmentType === 'delivery') return labels.delivery;
+  return labels.pickup;
+}
+
+export function buildOrderReadyMessage(input: {
+  locale: MessageLocale;
+  orderNumber: string;
+  shopName: string;
+  fulfillmentType?: FulfillmentType | null;
+  diningMode: MessageDiningMode;
+}): string {
+  const labels = READY_LABELS[input.locale];
+  const lines = [
+    labels.header,
+    SEP,
+    `${input.shopName}`,
+    `${input.orderNumber}`,
+    readyFulfillmentLabel(input.locale, input.diningMode, input.fulfillmentType),
+  ];
+  return lines.join('\n');
+}
