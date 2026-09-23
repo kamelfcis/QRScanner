@@ -95,7 +95,7 @@ export function MenuHeader({
 
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)] sm:inline-flex sm:h-9 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
           <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />

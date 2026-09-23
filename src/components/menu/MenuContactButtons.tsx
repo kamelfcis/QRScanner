@@ -1,13 +1,14 @@
 'use client';
 
-import { MessageCircle, Phone } from 'lucide-react';
+import { Phone } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { buildCustomerWhatsAppUrl, buildTelUri } from '@/lib/phone/normalize';
 import { cn } from '@/lib/utils';
 
-const iconButton =
-  'inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]';
+const contactButtonBase =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--menu-paper)]';
 
 interface MenuContactButtonsProps {
   tableParam: string | null;
@@ -45,23 +46,31 @@ export function MenuContactButtons({
   const whatsappLabel = tableParam ? t('callWaiter') : t('contactWhatsApp');
 
   return (
-    <div className={cn('flex items-center gap-0.5', className)}>
+    <div className={cn('flex items-center gap-1', className)}>
       {whatsappHref ? (
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(iconButton, buttonClassName)}
+          className={cn(
+            contactButtonBase,
+            'bg-[#25D366] hover:bg-[#1fba59] focus-visible:ring-[#25D366]',
+            buttonClassName
+          )}
           aria-label={whatsappLabel}
         >
-          <MessageCircle className="h-[18px] w-[18px]" aria-hidden="true" />
+          <WhatsAppIcon />
         </a>
       ) : null}
 
       {phoneHref ? (
         <a
           href={phoneHref}
-          className={cn(iconButton, buttonClassName)}
+          className={cn(
+            contactButtonBase,
+            'bg-[#2563EB] hover:bg-[#1d4ed8] focus-visible:ring-[#2563EB]',
+            buttonClassName
+          )}
           aria-label={t('callRestaurant')}
         >
           <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
