@@ -27,6 +27,9 @@ import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/da
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
 import { KitchenPrintButton } from '@/components/dashboard/orders/KitchenPrintButton';
 import { hasHettSamakaTier3 } from '@/i18n/config';
+import { isSyncFailedOrder } from '@/lib/offline/optimistic-orders';
+import { isOfflineTempOrderId } from '@/lib/offline/types';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { COLUMN_TONE, NEXT_STATUS_ACTION_TONE } from '@/components/dashboard/orders/column-tone';
 
 function isUnacknowledged(order: OrderWithItems): boolean {
@@ -137,7 +140,10 @@ export function OrderTicket({
   onWhatsApp: (order: OrderWithItems) => void;
   onDelete?: (order: OrderWithItems) => void;
 }) {
+  const tOffline = useTranslations('offline');
   const needsAck = isUnacknowledged(order);
+  const isTempOrder = isOfflineTempOrderId(order.id);
+  const syncFailed = isSyncFailedOrder(order);
   const [expanded, setExpanded] = useState(needsAck || order.status === 'new');
   const [flipped, setFlipped] = useState(false);
   const [receiptBusy, setReceiptBusy] = useState(false);
@@ -276,14 +282,24 @@ export function OrderTicket({
           >
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p
-                  className={cn(
-                    'font-heading text-lg font-semibold tabular-nums',
-                    hasHettSamakaTier3 && 'text-[#1C1917] dark:text-stone-100'
-                  )}
-                >
-                  {order.order_number}
-                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p
+                    className={cn(
+                      'font-heading text-lg font-semibold tabular-nums',
+                      hasHettSamakaTier3 && 'text-[#1C1917] dark:text-stone-100'
+                    )}
+                  >
+                    {order.order_number}
+                  </p>
+                  {isTempOrder ? (
+                    <Badge
+                      variant={syncFailed ? 'destructive' : 'secondary'}
+                      className="text-[0.65rem]"
+                    >
+                      {syncFailed ? tOffline('syncFailed') : tOffline('tempOrderBadge')}
+                    </Badge>
+                  ) : null}
+                </div>
                 <time dateTime={order.created_at} className="text-muted-foreground block text-xs">
                   <span className="block">
                     {t('orderDate')}: {formatLocaleDate(order.created_at, 'd MMMM yyyy', locale)}

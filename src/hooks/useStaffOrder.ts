@@ -2,6 +2,9 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { enqueueOrRun } from '@/lib/offline/enqueue-or-run';
+import { buildOptimisticStaffOrder, insertTempStaffOrder } from '@/lib/offline/optimistic-orders';
+import { hasOfflinePwa } from '@/i18n/config';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { orderKeys } from './useOrders';
 import type { OrderItem, OrderWithItems } from '@/types/database';
@@ -127,22 +130,52 @@ export function usePlaceStaffOrder() {
 
   return useMutation({
     mutationFn: async (input: StaffPlaceOrderInput) => {
-      const res = await fetch('/api/orders/staff', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input),
-      });
-      const body = (await res.json().catch(() => ({}))) as StaffPlaceOrderResult & {
-        error?: string;
-        code?: string;
+      const onlineFn = async () => {
+        const res = await fetch('/api/orders/staff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(input),
+        });
+        const body = (await res.json().catch(() => ({}))) as StaffPlaceOrderResult & {
+          error?: string;
+          code?: string;
+        };
+        if (!res.ok) {
+          throw new Error(body.code ?? body.error ?? 'place_failed');
+        }
+        return body;
       };
-      if (!res.ok) {
-        throw new Error(body.code ?? body.error ?? 'place_failed');
-      }
-      return body;
+
+      if (!hasOfflinePwa) return onlineFn();
+
+      const tempOrderId = `offline-${crypto.randomUUID()}`;
+      const optimisticOrder = buildOptimisticStaffOrder(queryClient, input, tempOrderId);
+
+      return enqueueOrRun({
+        queryClient,
+        type: 'place_staff_order',
+        payload: { input, tempOrderId },
+        clientMutationId: `staff:${tempOrderId}`,
+        onlineFn,
+        optimistic: () => insertTempStaffOrder(queryClient, optimisticOrder),
+        offlineResult: {
+          id: tempOrderId,
+          order_number: optimisticOrder.order_number,
+          subtotal: optimisticOrder.subtotal,
+          tax: optimisticOrder.tax,
+          service: optimisticOrder.service,
+          discount_amount: optimisticOrder.discount_amount,
+          coupon_code: optimisticOrder.coupon_code,
+          delivery_fee: optimisticOrder.delivery_fee,
+          total: optimisticOrder.total,
+          currency: optimisticOrder.currency,
+        },
+      });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      if (typeof navigator !== 'undefined' && navigator.onLine) {
+        queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      }
     },
   });
 }

@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-query-persist-client';
 import { get, set, del } from 'idb-keyval';
 import { CATALOG_STALE_TIME, categoryKeys } from '@/lib/catalog/keys';
+import { orderKeys } from '@/lib/order/query-keys';
 import { settingsKeys } from '@/hooks/useSettings';
 import { hasOfflinePwa } from '@/i18n/config';
 
@@ -17,6 +18,7 @@ const PERSIST_MAX_AGE = 24 * 60 * 60 * 1000;
 function shouldPersistQuery(queryKey: readonly unknown[]): boolean {
   const catalogKey = categoryKeys.withProducts();
   const settingsKey = settingsKeys.restaurant();
+  const ordersListKey = orderKeys.lists();
 
   const matchesCatalog =
     queryKey.length === catalogKey.length &&
@@ -24,8 +26,11 @@ function shouldPersistQuery(queryKey: readonly unknown[]): boolean {
   const matchesSettings =
     queryKey.length === settingsKey.length &&
     settingsKey.every((part, index) => queryKey[index] === part);
+  const matchesOrders =
+    queryKey.length === ordersListKey.length &&
+    ordersListKey.every((part, index) => queryKey[index] === part);
 
-  return matchesCatalog || matchesSettings;
+  return matchesCatalog || matchesSettings || matchesOrders;
 }
 
 function createQueryClient() {

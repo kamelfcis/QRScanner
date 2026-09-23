@@ -19,8 +19,6 @@ import { openOrderReadyWhatsApp } from '@/lib/order/ready-whatsapp';
 import type { MessageLocale } from '@/lib/order/whatsapp-message';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import type { OrderStatus, OrderWithItems } from '@/types/database';
-import { useDashboardOffline } from '@/components/dashboard/DashboardOfflineGuard';
-
 function isUnacknowledged(order: OrderWithItems): boolean {
   return order.status === 'new' && !order.staff_acknowledged_at;
 }
@@ -37,8 +35,6 @@ export default function KitchenPage() {
   const updateStatus = useUpdateOrderStatus();
   const acknowledgeOrder = useAcknowledgeOrder();
   const markReadyWhatsApp = useMarkOrderReadyWhatsAppSent();
-  const { mutationsBlocked: offlineBlocked } = useDashboardOffline();
-
   useEffect(() => {
     if (featuresLoading) return;
     if (features?.dashboard_orders !== true) {
@@ -89,7 +85,7 @@ export default function KitchenPage() {
   if (isLoading) return <LoadingPage />;
   if (error) return <ErrorState error={error} retry={refetch} />;
 
-  const busy = offlineBlocked || updateStatus.isPending || acknowledgeOrder.isPending;
+  const busy = updateStatus.isPending || acknowledgeOrder.isPending;
 
   if (tickets.length === 0) {
     return (

@@ -12,14 +12,18 @@ const TILE =
 interface CashierActionTilesProps {
   onNewOrder: () => void;
   onOpenSoldOut: () => void;
+  /** @deprecated use soldOutDisabled */
   disabled?: boolean;
+  soldOutDisabled?: boolean;
 }
 
 export function CashierActionTiles({
   onNewOrder,
   onOpenSoldOut,
   disabled = false,
+  soldOutDisabled,
 }: CashierActionTilesProps) {
+  const blockSoldOut = soldOutDisabled ?? disabled;
   const t = useTranslations('orders');
   const { data: catalog } = useStaffOrderCatalog({ includeUnavailable: true });
   const soldOutCount = (catalog ?? [])
@@ -36,7 +40,6 @@ export function CashierActionTiles({
         <button
           type="button"
           onClick={onNewOrder}
-          disabled={disabled}
           className={cn(
             TILE,
             'border-amber-600 bg-[#D97706] text-white hover:bg-amber-600 dark:border-amber-400'
@@ -71,7 +74,7 @@ export function CashierActionTiles({
         <button
           type="button"
           onClick={onOpenSoldOut}
-          disabled={disabled}
+          disabled={blockSoldOut}
           className={cn(
             TILE,
             'border-rose-600 bg-[#E11D48] text-white hover:bg-rose-600 dark:border-rose-400'

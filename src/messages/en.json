@@ -1303,6 +1303,13 @@
     "cachedMenu": "Saved menu — offline",
     "viewMenu": "View menu",
     "dashboardBlocked": "Offline — actions disabled until connection returns",
+    "dashboardWorkingOffline": "Offline — you can keep working; changes will sync when back online",
+    "pendingSync": "Offline — {count} action(s) waiting to sync",
+    "syncing": "Syncing…",
+    "syncNow": "Sync now",
+    "syncFailed": "Sync failed",
+    "tempOrderBadge": "Pending sync",
+    "syncComplete": "Sync complete",
     "staleData": "May not reflect the latest updates",
     "menuOfflineHint": "Offline — your saved menu may still be available"
   },

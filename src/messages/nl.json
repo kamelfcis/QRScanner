@@ -1302,6 +1302,13 @@
     "cachedMenu": "Opgeslagen menu — offline",
     "viewMenu": "Menu bekijken",
     "dashboardBlocked": "Offline — acties uitgeschakeld tot de verbinding terugkeert",
+    "dashboardWorkingOffline": "Offline — u kunt doorgaan; wijzigingen worden gesynchroniseerd zodra u online bent",
+    "pendingSync": "Offline — {count} actie(s) wachten op synchronisatie",
+    "syncing": "Synchroniseren…",
+    "syncNow": "Nu synchroniseren",
+    "syncFailed": "Synchronisatie mislukt",
+    "tempOrderBadge": "Wacht op sync",
+    "syncComplete": "Synchronisatie voltooid",
     "staleData": "Weerspiegelt mogelijk niet de laatste updates",
     "menuOfflineHint": "Offline — uw opgeslagen menu is mogelijk nog beschikbaar"
   },

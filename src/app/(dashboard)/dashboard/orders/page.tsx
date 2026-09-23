@@ -77,7 +77,7 @@ export default function OrdersPage() {
   const deleteOrder = useDeleteOrder();
   const { data: staffRole } = useStaffRole();
   const allowHardDelete = canHardDeleteOrders(staffRole);
-  const { mutationsBlocked: offlineBlocked } = useDashboardOffline();
+  const { mutationsBlocked: destructiveBlocked } = useDashboardOffline();
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);
@@ -255,7 +255,6 @@ export default function OrdersPage() {
   const currency = settings?.currency ?? todayActive[0]?.currency;
   const formattedRevenue = formatCurrencyAmount(todayRevenue, currency, { locale: currencyLocale });
   const busy =
-    offlineBlocked ||
     updateStatus.isPending ||
     markWhatsApp.isPending ||
     acknowledgeOrder.isPending ||
@@ -266,7 +265,7 @@ export default function OrdersPage() {
       {hasHettSamakaTier3 ? (
         <>
           <CashierActionTiles
-            disabled={offlineBlocked}
+            soldOutDisabled={destructiveBlocked}
             onNewOrder={() => setComposerOpen(true)}
             onOpenSoldOut={() => setSoldOutOpen(true)}
           />
@@ -354,7 +353,7 @@ export default function OrdersPage() {
                 onAcknowledge={handleAcknowledge}
                 onStatus={handleStatus}
                 onWhatsApp={handleWhatsApp}
-                onDelete={allowHardDelete ? setDeletingOrder : undefined}
+                onDelete={allowHardDelete && !destructiveBlocked ? setDeletingOrder : undefined}
               />
             ))}
           </div>
@@ -400,7 +399,9 @@ export default function OrdersPage() {
                       onAcknowledge={handleAcknowledge}
                       onStatus={handleStatus}
                       onWhatsApp={handleWhatsApp}
-                      onDelete={allowHardDelete ? setDeletingOrder : undefined}
+                      onDelete={
+                        allowHardDelete && !destructiveBlocked ? setDeletingOrder : undefined
+                      }
                     />
                   ))
                 )}

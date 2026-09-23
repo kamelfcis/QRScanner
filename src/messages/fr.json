@@ -1302,6 +1302,13 @@
     "cachedMenu": "Menu enregistré — hors ligne",
     "viewMenu": "Voir le menu",
     "dashboardBlocked": "Hors ligne — actions désactivées jusqu'au retour du réseau",
+    "dashboardWorkingOffline": "Hors ligne — vous pouvez continuer ; la synchronisation se fera au retour du réseau",
+    "pendingSync": "Hors ligne — {count} action(s) en attente de synchronisation",
+    "syncing": "Synchronisation…",
+    "syncNow": "Synchroniser",
+    "syncFailed": "Échec de la synchronisation",
+    "tempOrderBadge": "En attente",
+    "syncComplete": "Synchronisation terminée",
     "staleData": "Peut ne pas refléter les dernières mises à jour",
     "menuOfflineHint": "Hors ligne — votre menu enregistré peut rester disponible"
   },

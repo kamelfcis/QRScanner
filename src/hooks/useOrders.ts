@@ -4,15 +4,20 @@ import { useCallback, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
+import { enqueueOrRun } from '@/lib/offline/enqueue-or-run';
+import {
+  patchAcknowledgeOrder,
+  patchDeliveryFee,
+  patchOrderStatus,
+} from '@/lib/offline/optimistic-orders';
+import { hasOfflinePwa } from '@/i18n/config';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { salesReportKeys } from './useSalesReport';
 import { rangeUpperExclusive, toRangeBounds } from '@/lib/order/delete-range';
+import { orderKeys } from '@/lib/order/query-keys';
 import type { Order, OrderItem, OrderStatus, OrderWithItems } from '@/types/database';
 
-export const orderKeys = {
-  all: ['orders'] as const,
-  lists: () => [...orderKeys.all, 'list'] as const,
-};
+export { orderKeys };
 
 type RawOrderItem = OrderItem & {
   products?: { image_url: string | null } | null;
@@ -118,18 +123,34 @@ export function useUpdateOrderStatus() {
 
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: OrderStatus }) => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('orders')
-        .update({ status })
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Order;
+      const onlineFn = async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('orders')
+          .update({ status })
+          .eq('id', id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Order;
+      };
+
+      if (!hasOfflinePwa) return onlineFn();
+
+      return enqueueOrRun({
+        queryClient,
+        type: 'update_order_status',
+        payload: { orderId: id, status },
+        clientMutationId: `status:${id}:${status}:${Date.now()}`,
+        onlineFn,
+        optimistic: () => patchOrderStatus(queryClient, id, status),
+        offlineResult: { id, status } as Order,
+      });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      if (typeof navigator !== 'undefined' && navigator.onLine) {
+        queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      }
     },
   });
 }
@@ -139,18 +160,34 @@ export function useAcknowledgeOrder() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('orders')
-        .update({ staff_acknowledged_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Order;
+      const onlineFn = async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('orders')
+          .update({ staff_acknowledged_at: new Date().toISOString() })
+          .eq('id', id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Order;
+      };
+
+      if (!hasOfflinePwa) return onlineFn();
+
+      return enqueueOrRun({
+        queryClient,
+        type: 'acknowledge_order',
+        payload: { orderId: id },
+        clientMutationId: `ack:${id}:${Date.now()}`,
+        onlineFn,
+        optimistic: () => patchAcknowledgeOrder(queryClient, id),
+        offlineResult: { id } as Order,
+      });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      if (typeof navigator !== 'undefined' && navigator.onLine) {
+        queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      }
     },
   });
 }
@@ -160,18 +197,34 @@ export function useSetOrderDeliveryFee() {
 
   return useMutation({
     mutationFn: async ({ id, delivery_fee }: { id: string; delivery_fee: number }) => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('orders')
-        .update({ delivery_fee })
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Order;
+      const onlineFn = async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('orders')
+          .update({ delivery_fee })
+          .eq('id', id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Order;
+      };
+
+      if (!hasOfflinePwa) return onlineFn();
+
+      return enqueueOrRun({
+        queryClient,
+        type: 'set_delivery_fee',
+        payload: { orderId: id, delivery_fee },
+        clientMutationId: `fee:${id}:${delivery_fee}:${Date.now()}`,
+        onlineFn,
+        optimistic: () => patchDeliveryFee(queryClient, id, delivery_fee),
+        offlineResult: { id, delivery_fee } as Order,
+      });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      if (typeof navigator !== 'undefined' && navigator.onLine) {
+        queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      }
     },
   });
 }
