@@ -2,6 +2,8 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { playSound } from '@/lib/ux/sound';
+import { triggerHaptic } from '@/lib/ux/haptic';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
@@ -69,6 +71,8 @@ export const useCartStore = create<CartState>()(
         const qty = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
         const id = makeCartLineId(item.productId, notes);
+        triggerHaptic('light');
+        playSound('add');
         set((state) => {
           const existing = state.items.find((i) => i.id === id);
           if (existing) {
@@ -161,7 +165,7 @@ export const useCartStore = create<CartState>()(
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
     }),
     {
-      name: 'aklet-cart-v1',
+      name: 'harameen-cart-v1',
       partialize: (state) => ({
         items: state.items,
         diningMode: state.diningMode,
