@@ -8,6 +8,7 @@ import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { getName } from '@/lib/utils';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 /**
  * The one signature moment: a compact cinematic band under the header.
@@ -29,10 +30,14 @@ export function MenuHero() {
     'absolute inset-x-0 bottom-0 mx-auto flex max-w-6xl flex-col items-start px-4 pb-4 text-start sm:px-6 sm:pb-6';
   const heroCopy = (
     <>
-      <span className="menu-eyebrow mb-1.5 inline-flex items-center gap-2 text-[#E8D6AE] sm:mb-2">
-        <span aria-hidden className="h-px w-6 bg-[#E8D6AE]/70" />
-        {t('menuLead')}
-      </span>
+      {isAlaKeefakTenant ? (
+        <span className="ember-line mb-2 w-12" aria-hidden />
+      ) : (
+        <span className="menu-eyebrow mb-1.5 inline-flex items-center gap-2 text-[#E8D6AE] sm:mb-2">
+          <span aria-hidden className="h-px w-6 bg-[#E8D6AE]/70" />
+          {t('menuLead')}
+        </span>
+      )}
       <h2 className="font-heading max-w-[22ch] text-xl font-semibold leading-tight text-white drop-shadow-sm sm:text-3xl">
         {headline}
       </h2>
@@ -70,10 +75,14 @@ export function MenuHero() {
           aria-hidden
           className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/10"
         />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line-strong)] to-transparent"
-        />
+        {isAlaKeefakTenant ? (
+          <div aria-hidden className="ember-line absolute inset-x-0 bottom-0" />
+        ) : (
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line-strong)] to-transparent"
+          />
+        )}
 
         {animateEntrance ? (
           <motion.div

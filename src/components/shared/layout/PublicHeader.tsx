@@ -23,6 +23,7 @@ import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 type NavLink = {
   name: string;
@@ -62,7 +63,7 @@ export function PublicHeader() {
 
   const navLinks: NavLink[] = [
     { name: t('home'), href: '/', icon: Home },
-    { name: t('menu'), href: '/welcome', icon: UtensilsCrossed },
+    { name: t('menu'), href: isAlaKeefakTenant ? '/menu' : '/welcome', icon: UtensilsCrossed },
     { name: t('about'), href: '#story', icon: Info },
     { name: t('contact'), href: '#contact', icon: Phone },
   ];
@@ -84,9 +85,13 @@ export function PublicHeader() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 w-full max-w-full pt-[env(safe-area-inset-top,0px)] transition-all duration-300',
-        scrolled
-          ? 'border-border/60 bg-background/90 border-b shadow-sm backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent'
+        isAlaKeefakTenant
+          ? scrolled
+            ? 'border-b border-white/10 bg-[#050505]'
+            : 'border-b border-transparent bg-[#080808]'
+          : scrolled
+            ? 'border-border/60 bg-background/90 border-b shadow-sm backdrop-blur-md'
+            : 'border-b border-transparent bg-transparent'
       )}
     >
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-1.5 px-3 sm:h-16 sm:gap-2 sm:px-4 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4 lg:px-8">
@@ -104,13 +109,16 @@ export function PublicHeader() {
               className="h-6 w-auto shrink-0 object-contain sm:h-8"
             />
           ) : null}
-          <span
-            className={cn(
-              'font-heading min-w-0 truncate whitespace-nowrap text-sm font-bold transition-colors sm:text-base md:text-xl',
-              isOverlay ? 'text-white' : 'text-primary'
-            )}
-          >
-            {name}
+          <span className="flex min-w-0 flex-col">
+            <span
+              className={cn(
+                'font-heading min-w-0 truncate whitespace-nowrap text-sm font-bold transition-colors sm:text-base md:text-xl',
+                isAlaKeefakTenant || isOverlay ? 'text-white' : 'text-primary'
+              )}
+            >
+              {name}
+            </span>
+            {isAlaKeefakTenant ? <span className="ember-line mt-1 w-8" aria-hidden /> : null}
           </span>
         </Link>
 
@@ -124,7 +132,7 @@ export function PublicHeader() {
               href={item.href}
               className={cn(
                 'hover:text-brand-accent text-sm font-medium transition-colors',
-                isOverlay ? overlayMutedText : solidMutedText
+                isAlaKeefakTenant || isOverlay ? overlayMutedText : solidMutedText
               )}
             >
               {item.name}
@@ -139,7 +147,8 @@ export function PublicHeader() {
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             className={cn(
               'size-11 shrink-0 transition-colors md:size-7',
-              isOverlay ? overlayGhost : solidGhost
+              isAlaKeefakTenant && 'hidden md:inline-flex',
+              isAlaKeefakTenant || isOverlay ? overlayGhost : solidGhost
             )}
             aria-label={accessibilityT('toggleTheme')}
           >
@@ -149,14 +158,17 @@ export function PublicHeader() {
           <LanguageSwitcher
             variant="ghost"
             size="sm"
-            className={cn(isOverlay ? overlayGhost : solidGhost)}
+            className={cn(
+              isAlaKeefakTenant && 'hidden md:inline-flex',
+              isAlaKeefakTenant || isOverlay ? overlayGhost : solidGhost
+            )}
           />
 
           <Link
-            href="/welcome"
+            href={isAlaKeefakTenant ? '/menu' : '/welcome'}
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-black md:inline-flex'
+              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-[#080808] md:inline-flex'
             )}
           >
             {t('orderNow')}
@@ -172,13 +184,31 @@ export function PublicHeader() {
               <Menu className="h-5 w-5" />
               <span className="sr-only">{accessibilityT('openMenu')}</span>
             </SheetTrigger>
+            {isAlaKeefakTenant ? (
+              <Link
+                href="/menu?cart=1"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-white md:hidden"
+                aria-label={t('orderNow')}
+              >
+                <ShoppingBag className="h-5 w-5" />
+              </Link>
+            ) : null}
             <SheetContent
               side={dir === 'rtl' ? 'left' : 'right'}
               showCloseButton
-              className="border-border/40 bg-background/90 flex w-[min(320px,88vw)] flex-col gap-0 p-0 shadow-2xl backdrop-blur-2xl sm:max-w-sm"
+              className={cn(
+                'flex w-[min(320px,88vw)] flex-col gap-0 p-0 shadow-2xl sm:max-w-sm',
+                isAlaKeefakTenant
+                  ? 'border-white/10 bg-[#121212]'
+                  : 'border-border/40 bg-background/90 backdrop-blur-2xl'
+              )}
             >
               <div
-                className="from-brand-accent via-brand-accent/90 to-brand-accent/70 h-1 shrink-0 bg-gradient-to-r"
+                className={
+                  isAlaKeefakTenant
+                    ? 'ember-line shrink-0'
+                    : 'from-brand-accent via-brand-accent/90 to-brand-accent/70 h-1 shrink-0 bg-gradient-to-r'
+                }
                 aria-hidden
               />
 
@@ -267,11 +297,11 @@ export function PublicHeader() {
 
               <div className="border-border/50 border-t px-5 py-4 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]">
                 <Link
-                  href="/welcome"
+                  href={isAlaKeefakTenant ? '/menu' : '/welcome'}
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-black'
+                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-[#080808]'
                   )}
                 >
                   <ShoppingBag className="h-5 w-5" aria-hidden />

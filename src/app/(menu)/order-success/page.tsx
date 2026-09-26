@@ -19,7 +19,7 @@ import {
   writeLastOrder,
 } from '@/lib/order/last-order';
 import { cn } from '@/lib/utils';
-import { hasHettSamakaTier3 } from '@/i18n/config';
+import { alaKeefakTenantAttr, hasHettSamakaTier3 } from '@/i18n/config';
 import {
   estimateReadyTime,
   formatReadyTimeRange,
@@ -168,6 +168,7 @@ function OrderSuccessContent() {
   return (
     <div
       data-menu-theme
+      {...alaKeefakTenantAttr}
       className="flex min-h-[100svh] items-center justify-center bg-[var(--menu-paper)] px-4 pb-[env(safe-area-inset-bottom)]"
     >
       <MenuThemeScope />
@@ -218,7 +219,7 @@ function OrderSuccessContent() {
           {waUrl && waBlocked ? (
             <Button
               size="lg"
-              className="h-12 min-h-11 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+              className="h-12 min-h-11 w-full rounded-full bg-[var(--menu-wine)] text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]"
               onClick={() => openWhatsAppUrl(waUrl, { navigateOnBlock: false })}
               data-testid="reopen-whatsapp"
             >
@@ -231,7 +232,7 @@ function OrderSuccessContent() {
               href={buildOrderStatusPath(orderNumber)}
               className={cn(
                 buttonVariants(),
-                'h-12 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+                'h-12 w-full rounded-full bg-[var(--menu-wine)] text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
               )}
               data-testid="check-order-status"
             >
@@ -251,7 +252,7 @@ function OrderSuccessContent() {
               className={cn(
                 'h-12 w-full rounded-full',
                 !orderNumber &&
-                  'bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+                  'bg-[var(--menu-wine)] text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
               )}
               onClick={() => openWhatsAppUrl(waUrl, { navigateOnBlock: false })}
               data-testid="reopen-whatsapp"

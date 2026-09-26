@@ -32,6 +32,7 @@ import {
   getSizeLabel,
 } from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import type { Product } from '@/types/database';
 
 interface ProductSheetProps {
@@ -393,9 +394,10 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         className="min-w-0 flex-1"
         whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
       >
+        {isAlaKeefakTenant ? <span className="ember-line mb-2" aria-hidden /> : null}
         <Button
           type="button"
-          className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+          className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]"
           onClick={handleAdd}
           disabled={!canAdd}
           data-testid="sheet-add-to-cart"
@@ -419,7 +421,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       type="button"
       onClick={onClose}
       aria-label={t('closeDetails')}
-      className="bg-[#FDF7F0]/92 absolute end-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full text-[var(--menu-ink)] shadow-[0_1px_6px_rgba(33,29,24,0.2)] backdrop-blur-[2px] transition-colors hover:bg-[#FDF7F0]"
+      className="absolute end-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--menu-chip)] text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-surface-elevated)]"
     >
       <X className="h-4 w-4" aria-hidden="true" />
     </button>

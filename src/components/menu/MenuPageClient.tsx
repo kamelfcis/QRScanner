@@ -45,6 +45,7 @@ import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
 import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
 import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
+import { alaKeefakTenantAttr } from '@/i18n/config';
 
 export function MenuPageClient() {
   return (
@@ -252,6 +253,7 @@ function MenuContent() {
   return (
     <div
       data-menu-theme
+      {...alaKeefakTenantAttr}
       className="min-h-screen touch-pan-y bg-[var(--menu-paper)] pb-24 md:pb-[env(safe-area-inset-bottom)]"
     >
       <MenuThemeScope />

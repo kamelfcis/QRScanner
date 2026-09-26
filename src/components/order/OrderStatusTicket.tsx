@@ -87,7 +87,7 @@ export function OrderStatusTicket({
                     className={cn(
                       'flex h-8 w-8 items-center justify-center rounded-full border text-[11px] font-semibold',
                       reached
-                        ? 'border-[var(--menu-wine)] bg-[var(--menu-wine)] text-[#FDF7F0]'
+                        ? 'border-[var(--menu-wine)] bg-[var(--menu-wine)] text-[var(--menu-on-wine)]'
                         : 'border-[var(--menu-line-strong)] bg-[var(--menu-paper)] text-[var(--menu-ink-soft)]'
                     )}
                     aria-current={step === status ? 'step' : undefined}

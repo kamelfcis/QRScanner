@@ -64,6 +64,14 @@ export const hasProductSizeOptions = tenant !== 'aklet' && tenant !== 'harameen'
 /** When true, products support 4 independently enabled sizes (migration 041 — ala-keefak only). */
 export const hasExtendedProductSizes = tenant === 'ala-keefak';
 
+/** Dark cinematic storefront. Other tenants keep the cream menu theme. */
+export const isAlaKeefakTenant = tenant === 'ala-keefak';
+
+/** Spread onto shells that already set data-menu-theme. */
+export const alaKeefakTenantAttr = isAlaKeefakTenant
+  ? ({ 'data-tenant': 'ala-keefak' } as const)
+  : {};
+
 /** When true, per-kg products expose gram weight picker (migration 025 — hettsamaka only). */
 export const hasProductWeightOptions = tenant === 'hettsamaka';
 

@@ -10,7 +10,7 @@ import { Image } from '@/components/shared/Image';
 import { usePopularProducts } from '@/hooks/useProducts';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { useFeaturedItemsCopy } from '@/i18n/config';
+import { isAlaKeefakTenant, useFeaturedItemsCopy } from '@/i18n/config';
 import { cn, getName } from '@/lib/utils';
 import {
   formatCurrencyAmount,
@@ -109,7 +109,7 @@ export function FeaturedDishes() {
               return (
                 <MotionCard key={product.id} delay={index * 0.05}>
                   <Link
-                    href="/welcome"
+                    href={isAlaKeefakTenant ? '/menu' : '/welcome'}
                     className="border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors"
                   >
                     <div className="relative aspect-square overflow-hidden">
@@ -166,7 +166,7 @@ export function FeaturedDishes() {
         <MotionSection delay={0.3}>
           <div className="mt-10 text-center">
             <Link
-              href="/welcome"
+              href={isAlaKeefakTenant ? '/menu' : '/welcome'}
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-brand-accent hover:bg-brand-accent/90 rounded-full px-8 text-base font-semibold text-black'

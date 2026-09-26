@@ -21,6 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Image } from '@/components/shared/Image';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
+import { alaKeefakTenantAttr, isAlaKeefakTenant } from '@/i18n/config';
 import { useCartStore, type FulfillmentType } from '@/stores/cart-store';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -508,7 +509,11 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div data-menu-theme className="min-h-[100svh] bg-[var(--menu-paper)]">
+      <div
+        data-menu-theme
+        {...alaKeefakTenantAttr}
+        className="min-h-[100svh] bg-[var(--menu-paper)]"
+      >
         <MenuThemeScope />
         <div className="mx-auto max-w-lg space-y-6 px-4 py-6" aria-busy="true" aria-live="polite">
           <Skeleton className="h-8 w-40" />
@@ -538,6 +543,7 @@ export default function CheckoutPage() {
     return (
       <div
         data-menu-theme
+        {...alaKeefakTenantAttr}
         className="mx-auto flex min-h-[100svh] max-w-lg flex-col items-center justify-center gap-4 bg-[var(--menu-paper)] px-4 text-center"
       >
         <MenuThemeScope />
@@ -546,7 +552,7 @@ export default function CheckoutPage() {
           href="/menu"
           className={cn(
             buttonVariants(),
-            'h-11 rounded-full bg-[var(--menu-wine)] px-6 text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]'
+            'h-11 rounded-full bg-[var(--menu-wine)] px-6 text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
           )}
         >
           {t('backToMenu')}
@@ -566,6 +572,7 @@ export default function CheckoutPage() {
   return (
     <div
       data-menu-theme
+      {...alaKeefakTenantAttr}
       className="min-h-[100svh] bg-[var(--menu-paper)] pb-[env(safe-area-inset-bottom)]"
     >
       <MenuThemeScope />
@@ -1021,9 +1028,10 @@ export default function CheckoutPage() {
             )}
           </p>
 
+          {isAlaKeefakTenant ? <span className="ember-line" aria-hidden /> : null}
           <Button
             size="lg"
-            className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+            className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]"
             disabled={
               submitting ||
               orderingBlocked ||

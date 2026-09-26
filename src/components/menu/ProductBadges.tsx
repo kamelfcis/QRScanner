@@ -48,7 +48,7 @@ export function BadgePill({
       className={cn(
         'inline-flex items-center gap-1 rounded-full px-2 py-[3px] text-[10px] font-medium uppercase tracking-[0.08em]',
         tone === 'onImage'
-          ? 'bg-[#FDF7F0]/94 text-[var(--menu-wine)] shadow-[0_1px_4px_rgba(33,29,24,0.18)] backdrop-blur-[2px]'
+          ? 'bg-[var(--menu-chip)]/94 text-[var(--menu-wine)]'
           : 'border border-[var(--menu-line-strong)] bg-[var(--menu-gold-wash)] text-[var(--menu-wine)]',
         className
       )}

@@ -15,6 +15,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveContactAddress, formatWhatsAppUrl, getMapEmbedUrl } from '@/lib/contact/defaults';
 import { cn } from '@/lib/utils';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 function LtrText({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
@@ -28,15 +29,21 @@ function GlassCard({ children, className }: { children: React.ReactNode; classNa
   return (
     <div
       className={cn(
-        'border-brand-accent/15 bg-card/90 relative overflow-hidden rounded-2xl border p-6 shadow-lg backdrop-blur-xl',
-        'dark:border-white/10 dark:bg-black/40',
+        'relative overflow-hidden rounded-2xl border p-6',
+        isAlaKeefakTenant
+          ? 'border-white/10 bg-[#121212]'
+          : 'border-brand-accent/15 bg-card/90 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/40',
         className
       )}
     >
-      <span
-        className="via-brand-accent/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
-        aria-hidden
-      />
+      {isAlaKeefakTenant ? (
+        <span className="ember-line absolute inset-x-0 top-0" aria-hidden />
+      ) : (
+        <span
+          className="via-brand-accent/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
+          aria-hidden
+        />
+      )}
       {children}
     </div>
   );

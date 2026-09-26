@@ -7,6 +7,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { getRestaurantDisplayName } from '@/lib/appName';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 import { buildCustomerWhatsAppUrl } from '@/lib/phone/normalize';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 export function PublicFooter() {
   const { data: settings } = useRestaurantSettings();
@@ -20,7 +21,11 @@ export function PublicFooter() {
   const tagline = settings?.tagline?.trim() || t('premiumDining');
 
   return (
-    <footer className="bg-muted/50 border-t">
+    <footer
+      className={
+        isAlaKeefakTenant ? 'border-t border-white/10 bg-[#080808]' : 'bg-muted/50 border-t'
+      }
+    >
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-1">
@@ -30,6 +35,7 @@ export function PublicFooter() {
               )}
               <h3 className="text-primary font-heading text-lg font-bold">{name}</h3>
             </div>
+            {isAlaKeefakTenant ? <span className="ember-line mt-3 w-16" aria-hidden /> : null}
             <p className="text-muted-foreground mt-2 text-sm">{tagline}</p>
           </div>
 
@@ -42,7 +48,10 @@ export function PublicFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/welcome" className="text-muted-foreground hover:text-primary text-sm">
+                <Link
+                  href={isAlaKeefakTenant ? '/menu' : '/welcome'}
+                  className="text-muted-foreground hover:text-primary text-sm"
+                >
                   {navT('menu')}
                 </Link>
               </li>

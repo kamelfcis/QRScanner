@@ -882,6 +882,9 @@ textarea,
   --menu-wine: #6b0f1a;
   --menu-wine-deep: #4f0a12;
   --menu-wine-wash: rgba(107, 15, 26, 0.08);
+  --menu-on-wine: #fdf7f0;
+  --menu-chip: #fdf7f0;
+  --menu-on-wine-wash: rgba(253, 247, 240, 0.16);
 
   /* Sticky offsets — category nav pins directly under the header */
   --menu-header-h: calc(3.5rem + env(safe-area-inset-top, 0px));
@@ -969,6 +972,107 @@ textarea,
 
 [data-menu-theme] ::-webkit-scrollbar-thumb {
   background: var(--menu-line-strong);
+}
+
+/* Ala Keefak only — dark cinematic food storefront. Other tenants stay cream. */
+[data-tenant='ala-keefak'][data-menu-theme] {
+  --menu-paper: #080808;
+  --menu-paper-deep: #0d0d0d;
+  --menu-surface: #121212;
+  --menu-surface-elevated: #1d1d1d;
+  --menu-ink: #f5f5f5;
+  --menu-ink-soft: #9a9a9a;
+  --menu-line: rgba(255, 255, 255, 0.08);
+  --menu-line-strong: rgba(255, 255, 255, 0.14);
+  --menu-gold: #f5b942;
+  --menu-gold-soft: #f5b942;
+  --menu-gold-faint: rgba(245, 185, 66, 0.45);
+  --menu-gold-wash: rgba(255, 122, 0, 0.12);
+  --menu-gold-line: rgba(245, 185, 66, 0.55);
+  --menu-gold-line-strong: rgba(255, 122, 0, 0.85);
+  --menu-wine: #ff7a00;
+  --menu-wine-deep: #e06800;
+  --menu-wine-wash: rgba(255, 122, 0, 0.14);
+  --menu-on-wine: #080808;
+  --menu-chip: #1d1d1d;
+  --menu-on-wine-wash: rgba(8, 8, 8, 0.14);
+  --color-brand-accent: #ff7a00;
+  --color-brand-primary: #f5b942;
+
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-ink);
+  --primary-foreground: #080808;
+  --secondary: var(--menu-wine);
+  --secondary-foreground: #080808;
+  --muted: #1d1d1d;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-wine);
+  --accent-foreground: #080808;
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-wine);
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+  color-scheme: dark;
+}
+
+[data-tenant='ala-keefak'][data-menu-theme] ::selection {
+  background-color: #ff7a00;
+  color: #080808;
+}
+
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] h1,
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] h2,
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] h3,
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] h4,
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] .font-heading {
+  font-family: var(--font-cairo-family), var(--font-ar-heading-family), var(--font-ar-family),
+    ui-sans-serif, sans-serif;
+  font-weight: 700;
+}
+
+/* Signature: one 2px ember fire-line. */
+.ember-line {
+  display: block;
+  height: 2px;
+  border: 0;
+  background-color: transparent;
+  background-image: linear-gradient(to right, #ff7a00, #f5b942, transparent);
+}
+
+[dir='rtl'] .ember-line {
+  background-image: linear-gradient(to left, #ff7a00, #f5b942, transparent);
+}
+
+[data-tenant='ala-keefak'][data-menu-theme] .bg-brand-accent.h-1 {
+  height: 2px;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: linear-gradient(to right, #ff7a00, #f5b942, transparent);
+}
+
+[dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] .bg-brand-accent.h-1 {
+  background-image: linear-gradient(to left, #ff7a00, #f5b942, transparent);
+}
+
+[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-xl,
+[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-2xl,
+[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-md,
+[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-sm,
+[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-\[2px\] {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+[data-tenant='ala-keefak'][data-menu-theme] :focus-visible {
+  outline: 2px solid #ff7a00;
+  outline-offset: 2px;
 }
 
 /* Compact cinematic hero — single ken-burns pass, then rest */

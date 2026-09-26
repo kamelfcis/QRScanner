@@ -7,7 +7,8 @@ import { fadeInLeft, fadeInRight } from '@/lib/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
-import { getLocalizedText, getName } from '@/lib/utils';
+import { cn, getLocalizedText, getName } from '@/lib/utils';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 export function StorySection() {
   const { data: settings } = useRestaurantSettings();
@@ -66,7 +67,14 @@ export function StorySection() {
 
           <MotionSection variants={fadeInRight} delay={0.2}>
             <ParallaxSection speed={0.2}>
-              <div className="from-brand-primary/20 to-brand-secondary/20 relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br">
+              <div
+                className={cn(
+                  'relative aspect-[4/3] overflow-hidden rounded-2xl',
+                  isAlaKeefakTenant
+                    ? 'bg-[#121212]'
+                    : 'from-brand-primary/20 to-brand-secondary/20 bg-gradient-to-br'
+                )}
+              >
                 {settings?.story_image_url ? (
                   <NextImage
                     src={settings.story_image_url}

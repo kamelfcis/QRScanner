@@ -13,6 +13,8 @@ import {
   getRestaurantCurrency,
   toCurrencyLocale,
 } from '@/lib/order/format-currency';
+import { isAlaKeefakTenant } from '@/i18n/config';
+import { cn } from '@/lib/utils';
 
 interface OrderBarProps {
   onOpenCart: () => void;
@@ -51,33 +53,46 @@ export function OrderBar({ onOpenCart }: OrderBarProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 48, opacity: 0 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--menu-line)] bg-[var(--menu-surface)] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden"
+          className={cn(
+            'fixed z-40 md:hidden',
+            isAlaKeefakTenant
+              ? 'inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))]'
+              : 'inset-x-0 bottom-0 border-t border-[var(--menu-line)] bg-[var(--menu-surface)] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3'
+          )}
         >
-          <button
-            type="button"
-            onClick={onOpenCart}
-            aria-label={tCart('openCart')}
-            data-testid="cart-fab"
-            className="flex h-14 min-h-11 w-full touch-manipulation items-center justify-between gap-3 rounded-full bg-[var(--menu-wine)] px-4 py-3 text-[#FDF7F0] shadow-[0_6px_20px_-10px_rgba(107,15,26,0.9)] transition-transform duration-150 active:scale-[0.98] motion-reduce:active:scale-100"
+          <div
+            className={cn(
+              isAlaKeefakTenant &&
+                'rounded-2xl border border-[var(--menu-line)] bg-[var(--menu-surface)] p-2'
+            )}
           >
-            <span className="flex items-center gap-2.5">
-              <span className="bg-[#FDF7F0]/16 relative flex h-7 w-7 items-center justify-center rounded-full">
-                <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
+            {isAlaKeefakTenant ? <span className="ember-line mb-2" aria-hidden /> : null}
+            <button
+              type="button"
+              onClick={onOpenCart}
+              aria-label={tCart('openCart')}
+              data-testid="cart-fab"
+              className="flex h-14 min-h-11 w-full touch-manipulation items-center justify-between gap-3 rounded-full bg-[var(--menu-wine)] px-4 py-3 text-[var(--menu-on-wine)] transition-transform duration-150 active:scale-[0.98] motion-reduce:active:scale-100"
+            >
+              <span className="flex items-center gap-2.5">
+                <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-[var(--menu-on-wine-wash)]">
+                  <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+                <span className="text-sm font-semibold" aria-live="polite">
+                  {isAlaKeefakTenant ? tCart('checkout') : tCart('viewOrder')}
+                </span>
+                <span
+                  key={count}
+                  className="cart-badge-pop rounded-full bg-[var(--menu-on-wine-wash)] px-2 py-0.5 text-[11px] font-semibold tabular-nums"
+                >
+                  {count}
+                </span>
               </span>
-              <span className="text-sm font-semibold" aria-live="polite">
-                {tCart('viewOrder')}
+              <span className="text-sm font-semibold tabular-nums" dir="ltr">
+                {formatCurrencyAmount(subtotal, currency, { locale: currencyLocale })}
               </span>
-              <span
-                key={count}
-                className="cart-badge-pop bg-[#FDF7F0]/18 rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums"
-              >
-                {count}
-              </span>
-            </span>
-            <span className="text-sm font-semibold tabular-nums" dir="ltr">
-              {formatCurrencyAmount(subtotal, currency, { locale: currencyLocale })}
-            </span>
-          </button>
+            </button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

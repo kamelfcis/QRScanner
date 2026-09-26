@@ -37,6 +37,7 @@ import {
 } from '@/lib/catalog/product-sizes';
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -95,6 +96,11 @@ export function ProductCard({
   const minPrice = sizeRange?.min ?? Math.min(product.dining_price, product.takeaway_price);
   const maxPrice = sizeRange?.max ?? Math.max(product.dining_price, product.takeaway_price);
   const badges = pickBadges(product, topSellingIds.includes(product.id));
+  const addLabel = isAlaKeefakTenant && locale === 'ar' ? 'أضف للطلب' : tCart('addToCart');
+  const priceClass = cn(
+    'font-heading font-semibold tabular-nums text-[var(--menu-wine)]',
+    isAlaKeefakTenant ? 'text-lg sm:text-xl' : 'text-[15px] sm:text-base'
+  );
   const productName = getName(
     locale,
     product.name_en,
@@ -174,8 +180,20 @@ export function ProductCard({
 
   return (
     <>
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] shadow-[0_1px_2px_rgba(33,29,24,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(33,29,24,0.28)]">
-        <div className="relative aspect-square w-full overflow-hidden bg-[var(--menu-paper-deep)]">
+      <article
+        className={cn(
+          'group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)]',
+          isAlaKeefakTenant
+            ? 'transition-colors duration-200'
+            : 'shadow-[0_1px_2px_rgba(33,29,24,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(33,29,24,0.28)]'
+        )}
+      >
+        <div
+          className={cn(
+            'relative w-full overflow-hidden bg-[var(--menu-paper-deep)]',
+            isAlaKeefakTenant ? 'aspect-[4/5]' : 'aspect-square'
+          )}
+        >
           <button
             type="button"
             className="absolute inset-0 z-0 h-full w-full"
@@ -193,7 +211,7 @@ export function ProductCard({
                 containerClassName="absolute inset-0 h-full w-full"
               />
             ) : (
-              <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[radial-gradient(120%_100%_at_50%_0%,#ece2d2_0%,#ded1ba_100%)]">
+              <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[var(--menu-paper-deep)]">
                 <span className="font-heading text-4xl text-[var(--menu-gold-faint)]">
                   {productName.charAt(0)}
                 </span>
@@ -227,8 +245,8 @@ export function ProductCard({
             className={cn(
               'absolute end-2 top-2 z-[2] flex h-9 w-9 items-center justify-center rounded-full transition-colors',
               isFavorite
-                ? 'bg-[var(--menu-wine)] text-[#FDF7F0]'
-                : 'bg-[#FDF7F0]/90 text-[var(--menu-ink-soft)] backdrop-blur-[2px] hover:text-[var(--menu-wine)]'
+                ? 'bg-[var(--menu-wine)] text-[var(--menu-on-wine)]'
+                : 'bg-[var(--menu-chip)]/90 text-[var(--menu-ink-soft)] hover:text-[var(--menu-wine)]'
             )}
             aria-label={isFavorite ? t('removeFavorite') : t('addFavorite')}
             aria-pressed={isFavorite}
@@ -268,36 +286,24 @@ export function ProductCard({
             <div className="min-w-0">
               {hasSizeOptions ? (
                 minPrice !== maxPrice ? (
-                  <p
-                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                    dir="ltr"
-                  >
+                  <p className={priceClass} dir="ltr">
                     {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })} –{' '}
                     {formatCurrencyAmount(maxPrice, currency, { locale: currencyLocale })}
                   </p>
                 ) : (
-                  <p
-                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                    dir="ltr"
-                  >
+                  <p className={priceClass} dir="ltr">
                     {formatCurrencyAmount(minPrice, currency, { locale: currencyLocale })}
                   </p>
                 )
               ) : fromPrice != null ? (
-                <p
-                  className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                  dir="ltr"
-                >
+                <p className={priceClass} dir="ltr">
                   {t('priceFrom', {
                     price: formatCurrencyAmount(fromPrice, currency, { locale: currencyLocale }),
                   })}
                 </p>
               ) : (
                 <>
-                  <p
-                    className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
-                    dir="ltr"
-                  >
+                  <p className={priceClass} dir="ltr">
                     {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
                   </p>
                   {otherPrice !== activePrice && (
@@ -310,7 +316,7 @@ export function ProductCard({
               )}
             </div>
 
-            {product.is_available && (
+            {product.is_available && !isAlaKeefakTenant && (
               <motion.button
                 type="button"
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
@@ -324,7 +330,7 @@ export function ProductCard({
                   e.stopPropagation();
                   handleMobileAddClick();
                 }}
-                className="flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
+                className="flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-full bg-[var(--menu-wine)] text-[var(--menu-on-wine)] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
                 aria-label={
                   needsPicker
                     ? hasSizeOptions
@@ -344,11 +350,17 @@ export function ProductCard({
           </div>
 
           {product.is_available && (
-            <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
+            <div
+              className={cn('mt-3 flex-col gap-1.5', isAlaKeefakTenant ? 'flex' : 'hidden sm:flex')}
+            >
+              {isAlaKeefakTenant ? <span className="ember-line" aria-hidden /> : null}
               <div className="flex items-stretch gap-2">
                 {!needsPicker && (
                   <div
-                    className="inline-flex min-h-11 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
+                    className={cn(
+                      'min-h-11 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]',
+                      isAlaKeefakTenant ? 'hidden sm:inline-flex' : 'inline-flex'
+                    )}
                     role="group"
                     aria-label={tCart('quantity')}
                   >
@@ -392,7 +404,12 @@ export function ProductCard({
                 >
                   <Button
                     type="button"
-                    className="min-h-11 w-full touch-manipulation items-center justify-center gap-2 overflow-visible rounded-full bg-[var(--menu-wine)] px-5 py-2 text-[13px] font-medium leading-snug text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+                    className={cn(
+                      'min-h-11 w-full touch-manipulation items-center justify-center gap-2 overflow-visible rounded-full px-5 py-2 text-[13px] font-medium leading-snug transition-colors duration-200',
+                      isAlaKeefakTenant
+                        ? 'bg-[var(--menu-surface-elevated)] text-[var(--menu-ink)] hover:bg-[var(--menu-wine)] hover:text-[var(--menu-on-wine)] active:bg-[var(--menu-wine)] active:text-[var(--menu-on-wine)]'
+                        : 'bg-[var(--menu-wine)] text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
+                    )}
                     onClick={() => (needsPicker ? onImageClick(product) : handleAdd(''))}
                     data-testid={needsPicker ? 'open-product-sheet' : 'add-to-cart'}
                     aria-label={
@@ -413,7 +430,9 @@ export function ProductCard({
                         ? hasSizeOptions
                           ? t('selectSize')
                           : t('selectWeight')
-                        : tCart('addToCart')}
+                        : isAlaKeefakTenant
+                          ? `+ ${addLabel}`
+                          : addLabel}
                     </span>
                   </Button>
                 </motion.div>

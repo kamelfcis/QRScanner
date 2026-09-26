@@ -24,6 +24,7 @@ import {
 import { buildOrderStatusPath, readLastOrder } from '@/lib/order/last-order';
 import type { FulfillmentType } from '@/stores/cart-store';
 import { isSoundEnabled, playSound, setSoundEnabled, subscribeSoundEnabled } from '@/lib/ux/sound';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 function soundOnServer() {
   return true;
@@ -68,8 +69,10 @@ export function MenuHeader({
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
-  const headerClassName =
-    'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
+  const headerClassName = cn(
+    'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)]',
+    isAlaKeefakTenant ? '' : 'md:bg-background/92 md:backdrop-blur-md'
+  );
 
   const headerInner = (
     <>
@@ -91,6 +94,7 @@ export function MenuHeader({
             <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
               {name}
             </h1>
+            {isAlaKeefakTenant ? <span className="ember-line mt-1 w-8" aria-hidden /> : null}
             <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
               {t('menuLead')}
               {tableParam ? ` · ${t('tableNumber', { number: tableParam })}` : ''}
@@ -111,7 +115,7 @@ export function MenuHeader({
 
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[var(--menu-wine-wash)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
           <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />
@@ -182,7 +186,7 @@ export function MenuHeader({
             {showCartCount && (
               <span
                 key={cartCount}
-                className="cart-badge-pop absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[#FDF7F0]"
+                className="cart-badge-pop absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--menu-wine)] px-1 text-[10px] font-semibold tabular-nums text-[var(--menu-on-wine)]"
                 data-testid="cart-badge"
               >
                 {cartCount > 99 ? '99+' : cartCount}
@@ -192,10 +196,14 @@ export function MenuHeader({
         </div>
       </div>
 
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
-      />
+      {isAlaKeefakTenant ? (
+        <div aria-hidden className="ember-line absolute inset-x-0 bottom-0" />
+      ) : (
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--menu-gold-line)] to-transparent"
+        />
+      )}
     </>
   );
 

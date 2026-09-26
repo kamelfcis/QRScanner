@@ -30,6 +30,7 @@ import { Image } from '@/components/shared/Image';
 import { RepeatLastOrderButton } from '@/components/menu/RepeatLastOrderButton';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { CartItem } from '@/stores/cart-store';
+import { isAlaKeefakTenant } from '@/i18n/config';
 
 interface CartDrawerProps {
   open: boolean;
@@ -325,8 +326,9 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                     {formatCurrencyAmount(totals.subtotal, currency, { locale: currencyLocale })}
                   </span>
                 </div>
+                {isAlaKeefakTenant ? <span className="ember-line mb-3" aria-hidden /> : null}
                 <Button
-                  className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+                  className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]"
                   onClick={handleCheckout}
                   data-testid="cart-checkout"
                 >

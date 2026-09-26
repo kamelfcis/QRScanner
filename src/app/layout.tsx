@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, DM_Sans, IBM_Plex_Sans_Arabic, Tajawal } from 'next/font/google';
+import {
+  Cairo,
+  Cormorant_Garamond,
+  DM_Sans,
+  IBM_Plex_Sans_Arabic,
+  Tajawal,
+} from 'next/font/google';
 import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
@@ -9,7 +15,7 @@ import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
 import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
-import { defaultLocale, type Locale } from '@/i18n/config';
+import { defaultLocale, isAlaKeefakTenant, type Locale } from '@/i18n/config';
 import './globals.css';
 
 const dmSans = DM_Sans({
@@ -42,6 +48,14 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   weight: ['500', '600', '700'],
   display: 'swap',
   preload: true,
+});
+
+const cairo = Cairo({
+  variable: '--font-cairo-family',
+  subsets: ['arabic', 'latin'],
+  weight: ['700', '800'],
+  display: 'swap',
+  preload: isAlaKeefakTenant,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
@@ -129,7 +143,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
+      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} ${isAlaKeefakTenant ? cairo.variable : ''} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >
       <head>

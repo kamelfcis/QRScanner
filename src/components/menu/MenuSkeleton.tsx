@@ -2,10 +2,11 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
+import { alaKeefakTenantAttr } from '@/i18n/config';
 
 export function MenuSkeleton() {
   return (
-    <div data-menu-theme className="min-h-screen bg-[var(--menu-paper)]">
+    <div data-menu-theme {...alaKeefakTenantAttr} className="min-h-screen bg-[var(--menu-paper)]">
       <MenuThemeScope />
       <div className="bg-background/92 sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-2.5 px-3 sm:h-16 sm:px-5">

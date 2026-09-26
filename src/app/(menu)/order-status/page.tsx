@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
+import { alaKeefakTenantAttr } from '@/i18n/config';
 import { OrderStatusTicket } from '@/components/order/OrderStatusTicket';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -204,6 +205,7 @@ function OrderStatusContent() {
   return (
     <div
       data-menu-theme
+      {...alaKeefakTenantAttr}
       className="min-h-[100svh] bg-[var(--menu-paper)] px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4"
     >
       <MenuThemeScope />
@@ -251,7 +253,7 @@ function OrderStatusContent() {
             <Button
               type="button"
               size="lg"
-              className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
+              className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]"
               onClick={handleCopy}
               data-testid="copy-order-status-link"
             >

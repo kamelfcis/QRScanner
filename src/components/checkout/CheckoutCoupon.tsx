@@ -301,7 +301,7 @@ export function CheckoutCoupon({
             <Button
               type="button"
               className={cn(
-                'min-h-11 min-w-11 touch-manipulation rounded-xl bg-[var(--menu-wine)] px-4 text-[#FDF7F0]',
+                'min-h-11 min-w-11 touch-manipulation rounded-xl bg-[var(--menu-wine)] px-4 text-[var(--menu-on-wine)]',
                 'hover:bg-[var(--menu-wine-deep)]'
               )}
               disabled={busy || code.trim().length < 2}

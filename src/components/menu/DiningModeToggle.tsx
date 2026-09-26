@@ -80,7 +80,7 @@ export function DiningModeToggle({
               'inline-flex items-center justify-center gap-1.5 rounded-full text-xs font-medium transition-colors',
               compact ? 'h-9 min-w-9 px-2.5' : 'h-9 px-3.5',
               isActive
-                ? 'bg-[var(--menu-wine)] text-[#FDF7F0]'
+                ? 'bg-[var(--menu-wine)] text-[var(--menu-on-wine)]'
                 : 'text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]'
             )}
           >

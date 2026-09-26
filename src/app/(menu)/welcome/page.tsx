@@ -28,6 +28,8 @@ import {
 import { resolveLoginBrand } from '@/lib/login/resolve-login-brand';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { getWelcomeCards, resolveOrderModes, type WelcomeCardId } from '@/lib/order/order-modes';
+import { alaKeefakTenantAttr, isAlaKeefakTenant } from '@/i18n/config';
+import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import type { FulfillmentType } from '@/stores/cart-store';
 
 export default function WelcomePage() {
@@ -136,7 +138,15 @@ function WelcomeContent() {
   }
 
   return (
-    <div className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]">
+    <div
+      {...(isAlaKeefakTenant ? { 'data-menu-theme': '' } : {})}
+      {...alaKeefakTenantAttr}
+      className={cn(
+        'relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]',
+        isAlaKeefakTenant && 'bg-[#080808]'
+      )}
+    >
+      {isAlaKeefakTenant ? <MenuThemeScope /> : null}
       <QrScanTracker />
       {/* Hero — dashboard upload or tenant-aware fallback; CSS gradient when unset */}
       <div className="pointer-events-none absolute inset-0">
@@ -172,10 +182,21 @@ function WelcomeContent() {
         )}
 
         {/* Layered overlays for readability + night-kitchen mood */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
-        <div className="via-brand-accent/30 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
+        <div
+          className={cn(
+            'absolute inset-0',
+            isAlaKeefakTenant
+              ? 'bg-gradient-to-t from-[#080808] via-[#080808]/80 to-[#080808]/35'
+              : 'bg-gradient-to-t from-black via-black/75 to-black/35'
+          )}
+        />
+        {isAlaKeefakTenant ? null : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
+            <div className="via-brand-accent/30 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
+          </>
+        )}
       </div>
 
       <div className="absolute end-4 top-[max(1rem,env(safe-area-inset-top))] z-20">
@@ -194,7 +215,12 @@ function WelcomeContent() {
         {/* Logo — gold ring + glass frame */}
         <motion.div
           variants={prefersReducedMotion ? undefined : scaleIn}
-          className="border-brand-accent/35 mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border bg-black/45 p-3 shadow-[0_0_40px_rgba(255,183,0,0.15)] backdrop-blur-xl sm:mb-6 sm:h-32 sm:w-32"
+          className={cn(
+            'mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border p-3 sm:mb-6 sm:h-32 sm:w-32',
+            isAlaKeefakTenant
+              ? 'border-white/10 bg-[#121212]'
+              : 'border-brand-accent/35 bg-black/45 shadow-[0_0_40px_rgba(255,183,0,0.15)] backdrop-blur-xl'
+          )}
         >
           {settings?.logo_url ? (
             <NextImage
@@ -226,6 +252,7 @@ function WelcomeContent() {
           {t('welcomeTo', { name: restaurantName })}
         </motion.h1>
 
+        {isAlaKeefakTenant ? <span className="ember-line mb-4 w-16" aria-hidden /> : null}
         {tagline ? (
           <motion.p
             variants={prefersReducedMotion ? undefined : fadeInUp}
@@ -271,6 +298,7 @@ function WelcomeContent() {
                 onSelect={card.onSelect}
                 prefersReducedMotion={prefersReducedMotion}
                 isRtl={isArabic}
+                cinematic={isAlaKeefakTenant}
               />
             );
           })}
@@ -296,6 +324,7 @@ function ModeCard({
   onSelect,
   prefersReducedMotion,
   isRtl,
+  cinematic = false,
 }: {
   emoji: string;
   labelEn: string;
@@ -305,6 +334,7 @@ function ModeCard({
   onSelect: () => void;
   prefersReducedMotion: boolean;
   isRtl: boolean;
+  cinematic?: boolean;
 }) {
   const ariaLabel = `${labelEn} / ${labelAr}`;
 
@@ -312,30 +342,35 @@ function ModeCard({
     <motion.button
       type="button"
       variants={prefersReducedMotion ? undefined : staggerItem}
-      whileHover={prefersReducedMotion ? undefined : hoverScale}
+      whileHover={prefersReducedMotion || cinematic ? undefined : hoverScale}
       whileTap={prefersReducedMotion ? undefined : tapScale}
       onClick={onSelect}
       data-testid={testId}
       aria-label={ariaLabel}
       className={cn(
-        'group relative flex min-h-[172px] flex-col items-center justify-center overflow-hidden rounded-3xl',
-        'border border-white/15 bg-black/45 p-6 text-center shadow-lg backdrop-blur-xl',
-        'transition-[border-color,box-shadow,background-color] duration-300',
-        'hover:border-brand-accent/50 hover:bg-black/55 hover:shadow-[0_0_32px_rgba(255,183,0,0.18)]',
-        'focus-visible:ring-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black'
+        'group relative flex min-h-[172px] flex-col items-center justify-center overflow-hidden p-6 text-center',
+        'transition-[border-color,background-color] duration-200',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        cinematic
+          ? 'rounded-2xl border border-white/10 bg-[#121212] hover:border-[#FF7A00] focus-visible:ring-[#FF7A00] focus-visible:ring-offset-[#080808]'
+          : 'hover:border-brand-accent/50 focus-visible:ring-brand-accent rounded-3xl border border-white/15 bg-black/45 shadow-lg backdrop-blur-xl hover:bg-black/55 hover:shadow-[0_0_32px_rgba(255,183,0,0.18)] focus-visible:ring-offset-black'
       )}
     >
       {/* Animated gold edge glow */}
       <span
         className={cn(
-          'via-brand-accent/60 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent',
-          !prefersReducedMotion &&
+          'pointer-events-none absolute inset-x-0 top-0',
+          cinematic
+            ? 'ember-line'
+            : 'via-brand-accent/60 h-px bg-gradient-to-r from-transparent to-transparent',
+          !cinematic &&
+            !prefersReducedMotion &&
             'opacity-60 transition-opacity duration-300 group-hover:opacity-100'
         )}
         aria-hidden
       />
 
-      {!prefersReducedMotion && (
+      {!cinematic && !prefersReducedMotion && (
         <motion.span
           className="pointer-events-none absolute -inset-px rounded-3xl opacity-0"
           aria-hidden
@@ -353,14 +388,23 @@ function ModeCard({
       </span>
       <div className={cn('mb-1 flex flex-col gap-0.5', isRtl ? 'items-center' : 'items-center')}>
         <span className="text-lg font-bold leading-tight text-white">{labelEn}</span>
-        <span className="font-arabic text-brand-accent text-base font-semibold">{labelAr}</span>
+        <span
+          className={cn(
+            'font-arabic text-base font-semibold',
+            cinematic ? 'text-[#FF7A00]' : 'text-brand-accent'
+          )}
+        >
+          {labelAr}
+        </span>
       </div>
       <p className="max-w-[200px] text-xs leading-relaxed text-white/60">{subtitle}</p>
 
-      <div
-        className="from-brand-accent/10 pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        aria-hidden
-      />
+      {cinematic ? null : (
+        <div
+          className="from-brand-accent/10 pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          aria-hidden
+        />
+      )}
     </motion.button>
   );
 }

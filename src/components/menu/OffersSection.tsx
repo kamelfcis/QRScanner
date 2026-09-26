@@ -146,7 +146,7 @@ export function OffersSection({ compact = false }: OffersSectionProps) {
                   <Badge
                     className={cn(
                       'absolute start-2 top-2 text-[10px] uppercase tracking-[0.08em]',
-                      'bg-[#FDF7F0]/94 text-[var(--menu-wine)]'
+                      'bg-[var(--menu-chip)]/94 text-[var(--menu-wine)]'
                     )}
                   >
                     {offer.discount_type === 'percentage'

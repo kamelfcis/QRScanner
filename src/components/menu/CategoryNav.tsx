@@ -7,6 +7,7 @@ import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { ScrollableChipRow } from '@/components/shared/ScrollableChipRow';
 import { getName, cn } from '@/lib/utils';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import type { CategoryWithProducts } from '@/types/database';
 
 interface CategoryNavProps {
@@ -19,7 +20,9 @@ const chipClassName = (isActive: boolean) =>
   cn(
     'relative inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-1 pb-2.5 pt-3 text-[13px] transition-colors sm:text-sm',
     isActive
-      ? 'font-semibold text-[var(--menu-ink)]'
+      ? isAlaKeefakTenant
+        ? 'font-semibold text-[var(--menu-wine)]'
+        : 'font-semibold text-[var(--menu-ink)]'
       : 'font-normal text-[var(--menu-ink-soft)] hover:text-[var(--menu-ink)]'
   );
 
@@ -68,7 +71,11 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
             aria-hidden
             layoutId={prefersReducedMotion ? undefined : 'menu-category-underline'}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-x-0 bottom-1.5 h-[2px] rounded-full bg-[var(--menu-gold)]"
+            className={
+              isAlaKeefakTenant
+                ? 'ember-line absolute inset-x-0 bottom-1.5'
+                : 'absolute inset-x-0 bottom-1.5 h-[2px] rounded-full bg-[var(--menu-gold)]'
+            }
           />
         )}
       </button>
@@ -76,7 +83,12 @@ export function CategoryNav({ categories, activeCategory, onCategoryChange }: Ca
   };
 
   return (
-    <nav className="md:bg-background/94 sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] bg-[var(--menu-paper)] md:backdrop-blur-md">
+    <nav
+      className={cn(
+        'sticky top-[var(--menu-header-h)] z-30 border-b border-[var(--menu-line)] bg-[var(--menu-paper)]',
+        isAlaKeefakTenant ? '' : 'md:bg-background/94 md:backdrop-blur-md'
+      )}
+    >
       <div className="mx-auto max-w-6xl px-3 sm:px-5">
         <ScrollableChipRow
           ariaLabel={t('menuCategories')}
