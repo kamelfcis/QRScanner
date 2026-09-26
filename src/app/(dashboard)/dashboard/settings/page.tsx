@@ -24,8 +24,15 @@ import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
-import { resolveOrderModes, validateOrderModes } from '@/lib/order/order-modes';
+import {
+  getWelcomeCards,
+  resolveOrderModes,
+  validateOrderModes,
+  type WelcomeCardId,
+} from '@/lib/order/order-modes';
 import { hasDailyOps } from '@/i18n/config';
+import { toast } from 'sonner';
+import { useI18n } from '@/components/providers/RootI18nProvider';
 
 const DAYS = [
   'monday',
@@ -64,6 +71,8 @@ export default function SettingsPage() {
   const t = useTranslations('settings');
   const tCommon = useTranslations('common');
   const tDays = useTranslations('days');
+  const tWelcome = useTranslations('welcome');
+  const { locale } = useI18n();
 
   const [form, setForm] = useState<Partial<RestaurantSettings>>({});
   const [hoursForm, setHoursForm] = useState<HoursSettings>(DEFAULT_HOURS);
@@ -147,6 +156,26 @@ export default function SettingsPage() {
     return errs;
   };
 
+  const welcomeCardLabel = (cardId: WelcomeCardId): string => {
+    switch (cardId) {
+      case 'dine-in':
+        return tWelcome('dineIn');
+      case 'takeaway':
+        return tWelcome('takeaway');
+      case 'delivery':
+        return locale === 'ar' ? tWelcome('deliveryAr') : tWelcome('deliveryEn');
+    }
+  };
+
+  const welcomePreviewText = (() => {
+    const cards = getWelcomeCards(resolveOrderModes(form));
+    if (cards.length === 0) return t('welcomePreviewEmpty');
+    const separator = locale === 'ar' ? '، ' : ', ';
+    return t('welcomePreview', {
+      cards: cards.map(welcomeCardLabel).join(separator),
+    });
+  })();
+
   const handleSave = async () => {
     const validationErrors = validate();
     setErrors(validationErrors);
@@ -156,6 +185,10 @@ export default function SettingsPage() {
       await updateSettings.mutateAsync(form);
       await updateHours.mutateAsync(hoursForm);
       await updateTheme.mutateAsync(themeForm);
+      await fetch('/api/settings/revalidate', { method: 'POST' });
+      toast.success(t('saveSuccess'));
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : tCommon('error'));
     } finally {
       setSaving(false);
     }
@@ -1171,6 +1204,7 @@ export default function SettingsPage() {
                   }
                 />
               </div>
+              <p className="text-muted-foreground border-t pt-4 text-sm">{welcomePreviewText}</p>
             </CardContent>
           </Card>
         </TabsContent>

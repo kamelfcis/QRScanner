@@ -23,6 +23,8 @@ export const settingsKeys = {
 export function useRestaurantSettings() {
   return useQuery({
     queryKey: settingsKeys.restaurant(),
+    staleTime: 60_000,
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('settings')

@@ -15,6 +15,7 @@ export async function POST() {
   }
 
   revalidateTag('restaurant-settings', 'seconds');
+  revalidateTag('theme-settings', 'seconds');
   revalidatePath('/icon');
   revalidatePath('/apple-icon');
 
