@@ -23,7 +23,7 @@ function GlassCard({ children, className }: { children: React.ReactNode; classNa
       className={cn(
         'relative overflow-hidden rounded-2xl border p-6',
         isAlaKeefakTenant
-          ? 'border-white/10 bg-[#121212]'
+          ? 'border-[var(--menu-line)] bg-[var(--menu-surface)]'
           : 'border-brand-accent/15 bg-card/90 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/40',
         className
       )}

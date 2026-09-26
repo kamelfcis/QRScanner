@@ -71,7 +71,7 @@ export function StorySection() {
                 className={cn(
                   'relative aspect-[4/3] overflow-hidden rounded-2xl',
                   isAlaKeefakTenant
-                    ? 'bg-[#121212]'
+                    ? 'bg-[var(--menu-surface)]'
                     : 'from-brand-primary/20 to-brand-secondary/20 bg-gradient-to-br'
                 )}
               >

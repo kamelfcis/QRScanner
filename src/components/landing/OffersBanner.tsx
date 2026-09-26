@@ -6,6 +6,8 @@ import { Image } from '@/components/shared/Image';
 import { useActiveOffers } from '@/hooks/useOffers';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { isAlaKeefakTenant } from '@/i18n/config';
+import { cn } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 
 export function OffersBanner() {
@@ -17,7 +19,14 @@ export function OffersBanner() {
   if (isLoading || !offers || offers.length === 0) return null;
 
   return (
-    <section className="border-brand-accent/15 relative overflow-hidden border-y bg-black py-16 md:py-20">
+    <section
+      className={cn(
+        'relative overflow-hidden border-y py-16 md:py-20',
+        isAlaKeefakTenant
+          ? 'border-[var(--menu-line)] bg-[var(--menu-paper)]'
+          : 'border-brand-accent/15 bg-black'
+      )}
+    >
       <div className="container mx-auto px-4">
         <MotionSection>
           <div className="mb-10 text-center">

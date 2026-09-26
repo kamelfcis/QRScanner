@@ -150,14 +150,14 @@ export function HeroSection() {
           className={cn(
             'absolute inset-0',
             isAlaKeefakTenant
-              ? 'bg-gradient-to-t from-[#080808] via-[#080808]/55 to-[#080808]/20'
+              ? 'bg-[linear-gradient(to_top,var(--ak-photo-scrim),color-mix(in_srgb,var(--ak-photo-scrim)_55%,transparent),color-mix(in_srgb,var(--ak-photo-scrim)_20%,transparent))]'
               : 'bg-gradient-to-t from-black via-black/60 to-black/45'
           )}
         />
         {isAlaKeefakTenant ? (
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-[#080808]/80 via-[#080808]/35 to-transparent rtl:bg-gradient-to-l"
+            className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--ak-photo-scrim)_80%,transparent),color-mix(in_srgb,var(--ak-photo-scrim)_35%,transparent),transparent)] rtl:bg-[linear-gradient(to_left,color-mix(in_srgb,var(--ak-photo-scrim)_80%,transparent),color-mix(in_srgb,var(--ak-photo-scrim)_35%,transparent),transparent)]"
           />
         ) : null}
       </div>
@@ -226,7 +226,7 @@ export function HeroSection() {
                   href="/menu"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'min-h-12 bg-[#FF7A00] px-6 text-base font-semibold text-[#080808] hover:bg-[#E06800]'
+                    'min-h-12 bg-[var(--menu-wine)] px-6 text-base font-semibold text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
                   )}
                 >
                   {orderLabel}
