@@ -1,16 +1,16 @@
-# Customer Handoff — علي كيفك
+# Customer Handoff — أسطول سي فود
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Arabic name     | علي كيفك                                                     |
-| English name    | Ala Keefak                                                   |
-| Slug            | `ala-keefak`                                                 |
+| Arabic name     | أسطول سي فود                                                 |
+| English name    | Ostol Seafood                                                |
+| Slug            | `ostol-seafood`                                              |
 | Template        | Hetta Samaka (restaurant POS / kitchen / expenses)           |
-| Git branch      | `ala-keefak`                                                 |
-| Production URL  | https://ala-keefak.vercel.app                                |
-| Custom domain   | https://ala-keefak.engazqr.com (pending Hostinger DNS)       |
-| Admin dashboard | https://ala-keefak.vercel.app/login                          |
-| Admin email     | `admin@ala-keefak.engazqr.com`                               |
+| Git branch      | `ostol-seafood`                                              |
+| Production URL  | https://ostol-seafood.vercel.app                             |
+| Custom domain   | https://ostol-seafood.engazqr.com (pending Hostinger DNS)    |
+| Admin dashboard | https://ostol-seafood.vercel.app/login                       |
+| Admin email     | `admin@ostol-seafood.engazqr.com`                            |
 | Admin password  | Set at go-live (change after first login; not stored in git) |
 
 ## Notes
