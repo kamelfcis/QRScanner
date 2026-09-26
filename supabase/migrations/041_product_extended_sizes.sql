@@ -1,4 +1,4 @@
-﻿-- Ala Keefak: extended product sizes (small / medium / large / family)
+-- Ala Keefak: extended product sizes (small / medium / large / family)
 -- Version: 041
 -- Date: 2026-09-26
 -- Apply on Ala Keefak Supabase only (pytmkruoyyhxfktnkpuu)
