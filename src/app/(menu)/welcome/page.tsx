@@ -34,9 +34,16 @@ import type { FulfillmentType } from '@/stores/cart-store';
 
 export default function WelcomePage() {
   return (
-    <Suspense fallback={<WelcomeSkeleton />}>
-      <WelcomeContent />
-    </Suspense>
+    <div
+      {...(isAlaKeefakTenant ? { 'data-menu-theme': '' } : {})}
+      {...alaKeefakTenantAttr}
+      className={isAlaKeefakTenant ? 'min-h-[100svh] bg-[#080808] text-[#F5F5F5]' : undefined}
+    >
+      {isAlaKeefakTenant ? <MenuThemeScope /> : null}
+      <Suspense fallback={<WelcomeSkeleton />}>
+        <WelcomeContent />
+      </Suspense>
+    </div>
   );
 }
 
@@ -411,7 +418,12 @@ function ModeCard({
 
 function WelcomeSkeleton() {
   return (
-    <div className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-black px-4">
+    <div
+      className={cn(
+        'relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-4',
+        isAlaKeefakTenant ? 'bg-[#080808]' : 'bg-black'
+      )}
+    >
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40"
         aria-hidden
