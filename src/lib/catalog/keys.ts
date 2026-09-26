@@ -1,5 +1,6 @@
 import {
   hasExtendedMenuLocales,
+  hasExtendedProductSizes,
   hasProductSizeOptions,
   hasProductWeightOptions,
 } from '@/i18n/config';
@@ -32,9 +33,12 @@ export const subcategoryRelationNameFields = hasExtendedMenuLocales
 export const categoryListFields = `id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, banner_url, sort_order, is_visible`;
 
 const productSizeField = hasProductSizeOptions ? 'has_size_options, ' : '';
+const productExtendedSizeFields = hasExtendedProductSizes
+  ? 'price_medium, price_family, size_small_enabled, size_medium_enabled, size_large_enabled, size_family_enabled, '
+  : '';
 const productWeightFields = hasProductWeightOptions ? 'price_per_kg, weight_options_g, ' : '';
 
-export const popularProductFields = `id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, dining_price, takeaway_price, ${productSizeField}${productWeightFields}is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at`;
+export const popularProductFields = `id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, dining_price, takeaway_price, ${productSizeField}${productExtendedSizeFields}${productWeightFields}is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at`;
 
 /** Dashboard product reads/writes — same tenant-safe columns as popularProductFields. */
 export const productTableFields = popularProductFields;
@@ -62,6 +66,14 @@ export function stripUnsupportedProductWriteFields<T extends object>(input: T): 
   if (!hasProductSizeOptions) {
     delete next.has_size_options;
   }
+  if (!hasExtendedProductSizes) {
+    delete next.price_medium;
+    delete next.price_family;
+    delete next.size_small_enabled;
+    delete next.size_medium_enabled;
+    delete next.size_large_enabled;
+    delete next.size_family_enabled;
+  }
   if (!hasProductWeightOptions) {
     delete next.price_per_kg;
     delete next.weight_options_g;
@@ -82,7 +94,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
   ),
   products:products!category_id(
     id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields},
-    image_url, dining_price, takeaway_price, ${productSizeField}${productWeightFields}is_available, is_popular, is_new, is_bestseller,
+    image_url, dining_price, takeaway_price, ${productSizeField}${productExtendedSizeFields}${productWeightFields}is_available, is_popular, is_new, is_bestseller,
     is_spicy, sort_order, created_at, updated_at,
     gallery:product_gallery(id, product_id, image_url, sort_order, created_at)
   )

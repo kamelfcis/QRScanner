@@ -8,6 +8,7 @@ import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage, type MessageLocale } from './whatsapp-message';
 import { getLocalizedText } from '@/lib/utils';
 import { buildWhatsAppUrl } from './whatsapp-url';
+import { SIZE_LABELS, type ProductSizeId } from '@/lib/catalog/product-sizes';
 import type { CartItem, CartDiningMode, FulfillmentType } from '@/stores/cart-store';
 import type { Order, OrderItem, RestaurantSettings } from '@/types/database';
 
@@ -107,13 +108,6 @@ export function openWhatsAppUrl(url: string, options?: { navigateOnBlock?: boole
   return true;
 }
 
-const SIZE_LABELS: Record<MessageLocale, { small: string; large: string }> = {
-  ar: { small: 'صغير', large: 'كبير' },
-  en: { small: 'Small', large: 'Large' },
-  fr: { small: 'Petit', large: 'Grand' },
-  nl: { small: 'Klein', large: 'Groot' },
-};
-
 export function buildStoredOrderWhatsApp(input: {
   order: Order;
   items: OrderItem[];
@@ -176,7 +170,7 @@ function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
   });
   let name = base;
   if (item.size_option) {
-    name = `${name} (${SIZE_LABELS[locale][item.size_option]})`;
+    name = `${name} (${SIZE_LABELS[locale][item.size_option as ProductSizeId]})`;
   }
   if (item.weight_grams != null) {
     name = `${name} (${formatWeightGrams(locale, item.weight_grams)})`;
@@ -193,7 +187,7 @@ function formatCartItemName(item: CartItem, locale: MessageLocale): string {
   });
   let name = base;
   if (item.has_size_options && item.sizeOption) {
-    name = `${name} (${SIZE_LABELS[locale][item.sizeOption]})`;
+    name = `${name} (${SIZE_LABELS[locale][item.sizeOption as ProductSizeId]})`;
   }
   if (item.weightGrams != null) {
     name = `${name} (${formatWeightGrams(locale, item.weightGrams)})`;

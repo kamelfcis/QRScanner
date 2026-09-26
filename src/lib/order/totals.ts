@@ -94,15 +94,19 @@ export function getUnitPrice(diningPrice: number, takeawayPrice: number, mode: D
   return mode === 'takeaway' ? takeawayPrice : diningPrice;
 }
 
-export interface CartLinePricing {
-  dining_price: number;
-  takeaway_price: number;
-  has_size_options?: boolean;
-  sizeOption?: 'small' | 'large' | null;
+import {
+  getProductSizePrice,
+  type ProductSizeFields,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
+
+export interface CartLinePricing extends ProductSizeFields {
+  sizeOption?: ProductSizeId | null;
 }
 
 export function getCartLineUnitPrice(item: CartLinePricing, diningMode: DiningMode): number {
-  if (item.has_size_options && item.sizeOption === 'small') return item.dining_price;
-  if (item.has_size_options && item.sizeOption === 'large') return item.takeaway_price;
+  if (item.has_size_options && item.sizeOption) {
+    return getProductSizePrice(item, item.sizeOption);
+  }
   return getUnitPrice(item.dining_price, item.takeaway_price, diningMode);
 }

@@ -10,6 +10,7 @@ import { couponErrorMessageKey } from '@/lib/order/coupon-errors';
 import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-currency';
 import { cn } from '@/lib/utils';
 import type { DiningMode } from '@/lib/order/totals';
+import type { OrderSizeOption } from '@/types/database';
 
 export interface DiscountApplicationLine {
   code: string;
@@ -34,7 +35,7 @@ export interface AppliedCoupon {
 interface PreviewCartItem {
   product_id: string;
   quantity: number;
-  size_option?: 'small' | 'large' | null;
+  size_option?: OrderSizeOption | null;
   weight_grams?: number | null;
   notes?: string | null;
 }

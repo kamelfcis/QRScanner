@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import { hasExtendedProductSizes } from '@/i18n/config';
+import {
+  getEnabledProductSizes,
+  getProductSizePrice,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
 
 export const categorySchema = z.object({
   name_ar: z.string().min(1, 'Arabic name is required').max(255),
@@ -50,6 +56,12 @@ export const productSchema = z
     dining_price: z.number().min(0, 'Price must be positive'),
     takeaway_price: z.number().min(0, 'Price must be positive'),
     has_size_options: z.boolean().default(false),
+    price_medium: z.number().min(0).nullable().optional(),
+    price_family: z.number().min(0).nullable().optional(),
+    size_small_enabled: z.boolean().default(true),
+    size_medium_enabled: z.boolean().default(false),
+    size_large_enabled: z.boolean().default(true),
+    size_family_enabled: z.boolean().default(false),
     use_weight_pricing: z.boolean().default(false),
     price_per_kg: z.number().min(0).nullable().optional(),
     /** Comma-separated gram weights in the dashboard form (e.g. "350,400,500"). */
@@ -61,9 +73,39 @@ export const productSchema = z
     is_spicy: z.boolean().default(false),
     sort_order: z.number().int().min(0).default(0),
   })
-  .refine((data) => !data.has_size_options || data.takeaway_price >= data.dining_price, {
-    message: 'Large price must be greater than or equal to small price',
-    path: ['takeaway_price'],
+  .refine(
+    (data) => {
+      if (!data.has_size_options || hasExtendedProductSizes) return true;
+      return data.takeaway_price >= data.dining_price;
+    },
+    {
+      message: 'Large price must be greater than or equal to small price',
+      path: ['takeaway_price'],
+    }
+  )
+  .superRefine((data, ctx) => {
+    if (!hasExtendedProductSizes || !data.has_size_options) return;
+
+    const enabled = getEnabledProductSizes(data);
+    if (enabled.length === 0) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'At least one size must be enabled',
+        path: ['has_size_options'],
+      });
+      return;
+    }
+
+    for (const sizeId of enabled) {
+      const price = getProductSizePrice(data, sizeId);
+      if (!Number.isFinite(price) || price < 0) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Price is required for each enabled size',
+          path: [sizePriceField(sizeId)],
+        });
+      }
+    }
   })
   .refine(
     (data) => !data.use_weight_pricing || (data.price_per_kg != null && data.price_per_kg > 0),
@@ -78,6 +120,19 @@ export const productSchema = z
   });
 
 export type ProductInput = z.infer<typeof productSchema>;
+
+function sizePriceField(sizeId: ProductSizeId): keyof ProductInput {
+  switch (sizeId) {
+    case 'small':
+      return 'dining_price';
+    case 'medium':
+      return 'price_medium';
+    case 'large':
+      return 'takeaway_price';
+    case 'family':
+      return 'price_family';
+  }
+}
 
 export const offerSchema = z
   .object({
@@ -246,7 +301,7 @@ export type SettingsInput = z.infer<typeof settingsSchema>;
 export const orderStatusSchema = z.enum(['new', 'preparing', 'ready', 'completed', 'cancelled']);
 export const orderDiningModeSchema = z.enum(['dining', 'takeaway']);
 export const orderFulfillmentSchema = z.enum(['pickup', 'delivery']);
-export const orderSizeOptionSchema = z.enum(['small', 'large']);
+export const orderSizeOptionSchema = z.enum(['small', 'medium', 'large', 'family']);
 
 export const placeOrderItemSchema = z.object({
   product_id: z.string().uuid(),

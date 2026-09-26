@@ -1,3 +1,9 @@
+import {
+  getProductSizePrice,
+  type ProductSizeFields,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
+
 /** Round EGP-style weight price: price_per_kg × grams ÷ 1000 */
 export function computeWeightPrice(pricePerKg: number, grams: number): number {
   return Math.round((Number(pricePerKg) * Number(grams)) / 1000);
@@ -17,20 +23,20 @@ export function hasWeightOptions(product: WeightPricedProduct): boolean {
 }
 
 export function getStaffLineUnitPrice(
-  product: WeightPricedProduct & {
-    dining_price: number;
-    takeaway_price: number;
-    has_size_options?: boolean;
-  },
+  product: WeightPricedProduct &
+    ProductSizeFields & {
+      has_size_options?: boolean;
+    },
   diningMode: 'dining' | 'takeaway',
-  sizeOption?: 'small' | 'large' | null,
+  sizeOption?: ProductSizeId | null,
   weightGrams?: number | null
 ): number {
   if (weightGrams != null && product.price_per_kg != null) {
     return computeWeightPrice(product.price_per_kg, weightGrams);
   }
-  if (product.has_size_options && sizeOption === 'small') return product.dining_price;
-  if (product.has_size_options && sizeOption === 'large') return product.takeaway_price;
+  if (product.has_size_options && sizeOption) {
+    return getProductSizePrice(product, sizeOption);
+  }
   return diningMode === 'takeaway' ? product.takeaway_price : product.dining_price;
 }
 

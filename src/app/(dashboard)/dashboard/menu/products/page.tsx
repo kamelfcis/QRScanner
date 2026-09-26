@@ -72,9 +72,11 @@ import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 import {
   hasExtendedMenuLocales,
+  hasExtendedProductSizes,
   hasProductSizeOptions,
   hasProductWeightOptions,
 } from '@/i18n/config';
+import type { ProductSizeId } from '@/lib/catalog/product-sizes';
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
@@ -111,6 +113,12 @@ const defaultFormValues: ProductForm = {
   dining_price: 0,
   takeaway_price: 0,
   has_size_options: false,
+  price_medium: null,
+  price_family: null,
+  size_small_enabled: true,
+  size_medium_enabled: false,
+  size_large_enabled: true,
+  size_family_enabled: false,
   use_weight_pricing: false,
   price_per_kg: null,
   weight_options_g: '',
@@ -396,6 +404,44 @@ function getCategoryLabel(
   return getName(locale, category.name_en, category.name_ar, category.name_fr, category.name_nl);
 }
 
+const EXTENDED_SIZE_ROWS: Array<{
+  id: ProductSizeId;
+  enabledField:
+    'size_small_enabled' | 'size_medium_enabled' | 'size_large_enabled' | 'size_family_enabled';
+  priceField: 'dining_price' | 'price_medium' | 'takeaway_price' | 'price_family';
+  labelKey: string;
+  enableKey: string;
+}> = [
+  {
+    id: 'small',
+    enabledField: 'size_small_enabled',
+    priceField: 'dining_price',
+    labelKey: 'smallPrice',
+    enableKey: 'enableSizeSmall',
+  },
+  {
+    id: 'medium',
+    enabledField: 'size_medium_enabled',
+    priceField: 'price_medium',
+    labelKey: 'mediumPrice',
+    enableKey: 'enableSizeMedium',
+  },
+  {
+    id: 'large',
+    enabledField: 'size_large_enabled',
+    priceField: 'takeaway_price',
+    labelKey: 'largePrice',
+    enableKey: 'enableSizeLarge',
+  },
+  {
+    id: 'family',
+    enabledField: 'size_family_enabled',
+    priceField: 'price_family',
+    labelKey: 'familyPrice',
+    enableKey: 'enableSizeFamily',
+  },
+];
+
 function ProductPriceFields({
   form,
   currency,
@@ -506,11 +552,69 @@ function ProductPriceFields({
             }
             id={`${idPrefix}-size-options`}
           />
-          <Label htmlFor={`${idPrefix}-size-options`}>{t('enableSizeOptions')}</Label>
+          <Label htmlFor={`${idPrefix}-size-options`}>
+            {hasExtendedProductSizes ? t('enableExtendedSizeOptions') : t('enableSizeOptions')}
+          </Label>
         </div>
       ) : null}
 
-      {!useWeightPricing && hasSizeOptions ? (
+      {!useWeightPricing && hasSizeOptions && hasExtendedProductSizes ? (
+        <div className="space-y-3">
+          {EXTENDED_SIZE_ROWS.map((row) => {
+            const enabled = form.watch(row.enabledField);
+            return (
+              <div
+                key={row.id}
+                className="grid grid-cols-[auto_1fr] items-start gap-3 rounded-lg border p-3"
+              >
+                <div className="flex items-center gap-2 pt-2">
+                  <Switch
+                    checked={enabled}
+                    onCheckedChange={(checked) =>
+                      form.setValue(row.enabledField, checked, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
+                    id={`${idPrefix}-size-${row.id}`}
+                  />
+                  <Label htmlFor={`${idPrefix}-size-${row.id}`} className="text-sm">
+                    {t(row.enableKey)}
+                  </Label>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`${idPrefix}-price-${row.id}`}>
+                    {t(row.labelKey)} ({currency}){enabled ? ' *' : ''}
+                  </Label>
+                  <Input
+                    id={`${idPrefix}-price-${row.id}`}
+                    type="number"
+                    min={0}
+                    disabled={!enabled}
+                    {...form.register(
+                      row.priceField,
+                      row.priceField === 'price_medium' || row.priceField === 'price_family'
+                        ? {
+                            setValueAs: (value) => {
+                              if (value === '' || value == null) return null;
+                              const next = Number(value);
+                              return Number.isFinite(next) ? next : null;
+                            },
+                          }
+                        : { valueAsNumber: true }
+                    )}
+                  />
+                  {form.formState.errors[row.priceField] && (
+                    <p className="text-destructive text-sm">
+                      {form.formState.errors[row.priceField]?.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : !useWeightPricing && hasSizeOptions ? (
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor={`${idPrefix}-small`}>
@@ -768,6 +872,12 @@ export default function ProductsPage() {
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
       has_size_options: product.has_size_options ?? false,
+      price_medium: product.price_medium ?? null,
+      price_family: product.price_family ?? null,
+      size_small_enabled: product.size_small_enabled ?? true,
+      size_medium_enabled: product.size_medium_enabled ?? false,
+      size_large_enabled: product.size_large_enabled ?? true,
+      size_family_enabled: product.size_family_enabled ?? false,
       use_weight_pricing: Boolean(product.price_per_kg && product.weight_options_g?.length),
       price_per_kg: product.price_per_kg ?? null,
       weight_options_g: formatWeightOptionsG(product.weight_options_g),

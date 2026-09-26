@@ -50,6 +50,12 @@ export interface Product {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_medium?: number | null;
+  price_family?: number | null;
+  size_small_enabled?: boolean;
+  size_medium_enabled?: boolean;
+  size_large_enabled?: boolean;
+  size_family_enabled?: boolean;
   price_per_kg?: number | null;
   weight_options_g?: number[] | null;
   is_available: boolean;
@@ -226,7 +232,7 @@ export interface FeatureSettings {
 export type OrderStatus = 'new' | 'preparing' | 'ready' | 'completed' | 'cancelled';
 export type OrderDiningMode = 'dining' | 'takeaway';
 export type OrderFulfillmentType = 'pickup' | 'delivery';
-export type OrderSizeOption = 'small' | 'large';
+export type OrderSizeOption = 'small' | 'medium' | 'large' | 'family';
 export type OrderPaymentMethod = 'cash' | 'card' | 'instapay';
 
 export interface DeliveryLocation {

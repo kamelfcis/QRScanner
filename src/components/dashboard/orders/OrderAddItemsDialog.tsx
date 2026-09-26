@@ -11,6 +11,13 @@ import { useStaffOrderCatalog, type StaffCatalogProduct } from '@/hooks/useStaff
 import { useAppendOrderItems } from '@/hooks/useOrderEdit';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
+import {
+  getDefaultProductSize,
+  getEnabledProductSizes,
+  getProductSizePrice,
+  getSizeLabel,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
 import { getCartLineUnitPrice } from '@/lib/order/totals';
 import { cn, getLocalizedText } from '@/lib/utils';
 import { hasProductWeightOptions } from '@/i18n/config';
@@ -19,7 +26,7 @@ import type { OrderWithItems } from '@/types/database';
 interface PendingLine {
   product: StaffCatalogProduct;
   quantity: number;
-  sizeOption: 'small' | 'large' | null;
+  sizeOption: ProductSizeId | null;
   weightGrams: number | null;
 }
 
@@ -88,8 +95,26 @@ export function OrderAddItemsDialog({
   };
 
   const addProduct = (product: StaffCatalogProduct) => {
-    if (product.has_size_options) {
+    const enabledSizes = getEnabledProductSizes(product);
+    if (enabledSizes.length > 1) {
       setSizePick(product);
+      return;
+    }
+    if (enabledSizes.length === 1) {
+      const defaultSize = getDefaultProductSize(product);
+      setPending((prev) => {
+        const existing = prev.find(
+          (line) => line.product.id === product.id && line.sizeOption === defaultSize
+        );
+        if (existing) {
+          return prev.map((line) =>
+            line.product.id === product.id && line.sizeOption === defaultSize
+              ? { ...line, quantity: Math.min(99, line.quantity + 1) }
+              : line
+          );
+        }
+        return [...prev, { product, quantity: 1, sizeOption: defaultSize, weightGrams: null }];
+      });
       return;
     }
     setPending((prev) => {
@@ -105,7 +130,7 @@ export function OrderAddItemsDialog({
     });
   };
 
-  const confirmSize = (size: 'small' | 'large') => {
+  const confirmSize = (size: ProductSizeId) => {
     if (!sizePick) return;
     const product = sizePick;
     setSizePick(null);
@@ -161,12 +186,21 @@ export function OrderAddItemsDialog({
               )}
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <Button type="button" className="min-h-11" onClick={() => confirmSize('small')}>
-                {t('small')}
-              </Button>
-              <Button type="button" className="min-h-11" onClick={() => confirmSize('large')}>
-                {t('large')}
-              </Button>
+              {getEnabledProductSizes(sizePick).map((size) => (
+                <Button
+                  key={size}
+                  type="button"
+                  className="min-h-11 flex-col gap-0.5 py-2"
+                  onClick={() => confirmSize(size)}
+                >
+                  <span>{getSizeLabel(locale as 'ar' | 'en' | 'fr' | 'nl', size)}</span>
+                  <span className="text-xs tabular-nums opacity-80" dir="ltr">
+                    {formatCurrencyAmount(getProductSizePrice(sizePick, size), currency, {
+                      locale: currencyLocale,
+                    })}
+                  </span>
+                </Button>
+              ))}
             </div>
             <Button
               type="button"

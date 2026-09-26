@@ -60,13 +60,19 @@ import {
 import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePanel';
 import { printReceiptElement, receiptDomId } from '@/lib/order/print-receipt';
 import { calculateOrderTotals, getCartLineUnitPrice, type DiningMode } from '@/lib/order/totals';
+import {
+  getDefaultProductSize,
+  getEnabledProductSizes,
+  getSizeLabel,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
 import { cn, getName } from '@/lib/utils';
 import type { OrderWithItems } from '@/types/database';
 import type { StaffPlaceOrderInput } from '@/types/schema';
 
 type FulfillmentType = 'pickup' | 'delivery';
-type SizeOption = 'small' | 'large';
+type SizeOption = ProductSizeId;
 type MobilePane = 'catalog' | 'ticket';
 
 interface StaffTicketLine {
@@ -80,6 +86,12 @@ interface StaffTicketLine {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_medium?: number | null;
+  price_family?: number | null;
+  size_small_enabled?: boolean | null;
+  size_medium_enabled?: boolean | null;
+  size_large_enabled?: boolean | null;
+  size_family_enabled?: boolean | null;
   price_per_kg: number | null;
   quantity: number;
   sizeOption: SizeOption | null;
@@ -114,6 +126,12 @@ function getStaffLineUnitPrice(line: StaffTicketLine, diningMode: DiningMode): n
     {
       dining_price: line.dining_price,
       takeaway_price: line.takeaway_price,
+      price_medium: line.price_medium,
+      price_family: line.price_family,
+      size_small_enabled: line.size_small_enabled,
+      size_medium_enabled: line.size_medium_enabled,
+      size_large_enabled: line.size_large_enabled,
+      size_family_enabled: line.size_family_enabled,
       has_size_options: line.has_size_options,
       sizeOption: line.sizeOption,
     },
@@ -140,7 +158,13 @@ function productFromCatalog(
     image_url: product.image_url,
     dining_price: Number(product.dining_price),
     takeaway_price: Number(product.takeaway_price),
-    has_size_options: product.has_size_options,
+    price_medium: product.price_medium != null ? Number(product.price_medium) : null,
+    price_family: product.price_family != null ? Number(product.price_family) : null,
+    size_small_enabled: product.size_small_enabled,
+    size_medium_enabled: product.size_medium_enabled,
+    size_large_enabled: product.size_large_enabled,
+    size_family_enabled: product.size_family_enabled,
+    has_size_options: getEnabledProductSizes(product).length > 0,
     price_per_kg: product.price_per_kg != null ? Number(product.price_per_kg) : null,
     quantity: partial.quantity ?? 1,
     sizeOption: partial.sizeOption ?? null,
@@ -365,12 +389,13 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   );
 
   const handleProductTap = (product: StaffCatalogProduct) => {
-    const needsSize = product.has_size_options;
+    const enabledSizes = getEnabledProductSizes(product);
+    const needsSize = enabledSizes.length > 0;
     const needsWeight = hasWeightOptions(product);
     if (needsSize || needsWeight) {
       setPending({
         product,
-        selectedSize: needsSize ? 'small' : null,
+        selectedSize: needsSize ? getDefaultProductSize(product) : null,
         selectedWeight: needsWeight ? (product.weight_options_g?.[0] ?? null) : null,
       });
       return;
@@ -381,7 +406,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const handleConfirmPending = () => {
     if (!pending) return;
     const { product, selectedSize, selectedWeight } = pending;
-    const needsSize = product.has_size_options;
+    const needsSize = getEnabledProductSizes(product).length > 0;
     const needsWeight = hasWeightOptions(product);
     if (needsSize && !selectedSize) return;
     if (needsWeight && selectedWeight == null) return;
@@ -824,7 +849,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                   line.name_nl
                 );
                 const optionLabel = [
-                  line.sizeOption ? (line.sizeOption === 'small' ? t('small') : t('large')) : null,
+                  line.sizeOption ? getSizeLabel(locale, line.sizeOption) : null,
                   line.weightGrams != null ? tMenu('grams', { grams: line.weightGrams }) : null,
                 ]
                   .filter(Boolean)

@@ -27,6 +27,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp } from '@/lib/motion';
 import { getName, cn } from '@/lib/utils';
+import { getSizeLabel } from '@/lib/catalog/product-sizes';
 import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
 import {
   CheckoutCoupon,
@@ -700,7 +701,7 @@ export default function CheckoutPage() {
                         <span className="tabular-nums">{item.quantity}×</span> {name}
                         {item.has_size_options && item.sizeOption ? (
                           <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
-                            {item.sizeOption === 'small' ? tCart('small') : tCart('large')}
+                            {getSizeLabel(locale, item.sizeOption)}
                           </span>
                         ) : item.weightGrams != null ? (
                           <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">

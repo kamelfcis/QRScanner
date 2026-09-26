@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { hasExtendedProductSizes } from '@/i18n/config';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { orderKeys } from './useOrders';
 import type { OrderItem, OrderWithItems } from '@/types/database';
@@ -28,6 +29,12 @@ export interface StaffCatalogProduct {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_medium?: number | null;
+  price_family?: number | null;
+  size_small_enabled?: boolean | null;
+  size_medium_enabled?: boolean | null;
+  size_large_enabled?: boolean | null;
+  size_family_enabled?: boolean | null;
   price_per_kg: number | null;
   weight_options_g: number[] | null;
   is_available: boolean;
@@ -45,11 +52,15 @@ export interface StaffCatalogCategory {
   products: StaffCatalogProduct[];
 }
 
+const staffExtendedSizeFields = hasExtendedProductSizes
+  ? 'price_medium, price_family, size_small_enabled, size_medium_enabled, size_large_enabled, size_family_enabled, '
+  : '';
+
 const STAFF_CATALOG_SELECT = `
   id, name_ar, name_en, name_fr, name_nl, sort_order, is_visible,
   products:products!category_id(
     id, category_id, name_ar, name_en, name_fr, name_nl, image_url,
-    dining_price, takeaway_price, has_size_options, price_per_kg,
+    dining_price, takeaway_price, has_size_options, ${staffExtendedSizeFields}price_per_kg,
     weight_options_g, is_available, sort_order
   )
 `;
@@ -79,7 +90,8 @@ export function useStaffOrderCatalog(options?: { includeUnavailable?: boolean })
 
       if (error) throw error;
 
-      return (data ?? []).map((row) => ({
+      const rows = (data ?? []) as unknown as StaffCatalogCategory[];
+      return rows.map((row) => ({
         ...row,
         products: (row.products ?? [])
           .filter((p: StaffCatalogProduct) => includeUnavailable || p.is_available)

@@ -29,6 +29,12 @@ import {
 } from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import {
+  getDefaultProductSize,
+  getEnabledProductSizes,
+  getProductSizePrice,
+  getProductSizePriceRange,
+} from '@/lib/catalog/product-sizes';
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
 import type { Product } from '@/types/database';
@@ -72,14 +78,22 @@ export function ProductCard({
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const topSellingIds = useTopSellingBadgeIds();
   // false/null/undefined → quick-add; size or weight options open ProductSheet
-  const hasSizeOptions = product.has_size_options === true;
-  const needsPicker = hasSizeOptions || hasWeightOptions(product);
+  const enabledSizes = getEnabledProductSizes(product);
+  const hasSizeOptions = enabledSizes.length > 0;
+  const needsPicker = enabledSizes.length > 1 || hasWeightOptions(product);
   const fromPrice = minWeightPrice(product);
+  const sizeRange = getProductSizePriceRange(product);
+  const singleSize = enabledSizes.length === 1 ? getDefaultProductSize(product) : null;
   const activePrice =
-    fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
+    fromPrice ??
+    (singleSize
+      ? getProductSizePrice(product, singleSize)
+      : diningMode === 'dining'
+        ? product.dining_price
+        : product.takeaway_price);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
-  const minPrice = Math.min(product.dining_price, product.takeaway_price);
-  const maxPrice = Math.max(product.dining_price, product.takeaway_price);
+  const minPrice = sizeRange?.min ?? Math.min(product.dining_price, product.takeaway_price);
+  const maxPrice = sizeRange?.max ?? Math.max(product.dining_price, product.takeaway_price);
   const badges = pickBadges(product, topSellingIds.includes(product.id));
   const productName = getName(
     locale,
@@ -109,8 +123,14 @@ export function ProductCard({
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
-      has_size_options: false,
-      sizeOption: null,
+      has_size_options: Boolean(singleSize),
+      price_medium: product.price_medium,
+      price_family: product.price_family,
+      size_small_enabled: product.size_small_enabled,
+      size_medium_enabled: product.size_medium_enabled,
+      size_large_enabled: product.size_large_enabled,
+      size_family_enabled: product.size_family_enabled,
+      sizeOption: singleSize,
       quantity: qty,
       notes: withNotes,
     });

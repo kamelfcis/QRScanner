@@ -7,7 +7,7 @@ import { triggerHaptic } from '@/lib/ux/haptic';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
-export type CartSizeOption = 'small' | 'large' | null;
+export type CartSizeOption = 'small' | 'medium' | 'large' | 'family' | null;
 
 export interface CartItem {
   /** Stable line id: productId + optional size/weight + notes key */
@@ -21,6 +21,12 @@ export interface CartItem {
   dining_price: number;
   takeaway_price: number;
   has_size_options: boolean;
+  price_medium?: number | null;
+  price_family?: number | null;
+  size_small_enabled?: boolean | null;
+  size_medium_enabled?: boolean | null;
+  size_large_enabled?: boolean | null;
+  size_family_enabled?: boolean | null;
   price_per_kg?: number | null;
   weight_options_g?: number[] | null;
   sizeOption: CartSizeOption;
@@ -121,6 +127,12 @@ export const useCartStore = create<CartState>()(
                 dining_price: item.dining_price,
                 takeaway_price: item.takeaway_price,
                 has_size_options: item.has_size_options ?? false,
+                price_medium: item.price_medium ?? null,
+                price_family: item.price_family ?? null,
+                size_small_enabled: item.size_small_enabled ?? null,
+                size_medium_enabled: item.size_medium_enabled ?? null,
+                size_large_enabled: item.size_large_enabled ?? null,
+                size_family_enabled: item.size_family_enabled ?? null,
                 price_per_kg: item.price_per_kg ?? null,
                 weight_options_g: item.weight_options_g ?? null,
                 sizeOption,

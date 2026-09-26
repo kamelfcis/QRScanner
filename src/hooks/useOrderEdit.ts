@@ -4,11 +4,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { orderKeys } from '@/hooks/useOrders';
 import { salesReportKeys } from '@/hooks/useSalesReport';
+import type { OrderSizeOption } from '@/types/database';
 
 export interface AppendOrderItemInput {
   product_id: string;
   quantity: number;
-  size_option?: 'small' | 'large' | null;
+  size_option?: OrderSizeOption | null;
   weight_grams?: number | null;
   notes?: string | null;
 }

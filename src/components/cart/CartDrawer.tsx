@@ -10,6 +10,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cart-store';
+import { getSizeLabel } from '@/lib/catalog/product-sizes';
 import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
 import {
   formatCurrencyAmount,
@@ -125,7 +126,7 @@ function CartLine({
               {name}
               {item.has_size_options && item.sizeOption ? (
                 <span className="ms-1.5 inline-flex rounded-full bg-[var(--menu-gold-wash)] px-2 py-0.5 text-[10px] font-medium text-[var(--menu-ink-soft)]">
-                  {item.sizeOption === 'small' ? t('small') : t('large')}
+                  {getSizeLabel(locale, item.sizeOption)}
                 </span>
               ) : null}
             </p>

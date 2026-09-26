@@ -32,6 +32,9 @@ export const hasExtendedMenuLocales =
 const tenant = process.env.NEXT_PUBLIC_TENANT;
 export const hasProductSizeOptions = tenant !== 'aklet' && tenant !== 'harameen';
 
+/** When true, products support 4 independently enabled sizes (migration 041 — ala-keefak only). */
+export const hasExtendedProductSizes = tenant === 'ala-keefak';
+
 /** When true, per-kg products expose gram weight picker (migration 025 — hettsamaka only). */
 export const hasProductWeightOptions = tenant === 'hettsamaka';
 

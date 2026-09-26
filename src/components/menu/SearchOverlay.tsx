@@ -11,6 +11,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
+import { getProductSizePriceRange } from '@/lib/catalog/product-sizes';
 import {
   formatCurrencyAmount,
   getRestaurantCurrency,
@@ -192,31 +193,26 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
                               className="mt-0.5 block text-sm tabular-nums text-[var(--menu-wine)]"
                               dir="ltr"
                             >
-                              {product.has_size_options ? (
-                                product.dining_price !== product.takeaway_price ? (
-                                  <>
-                                    {formatCurrencyAmount(
-                                      Math.min(product.dining_price, product.takeaway_price),
-                                      currency,
-                                      { locale: currencyLocale }
-                                    )}{' '}
-                                    –{' '}
-                                    {formatCurrencyAmount(
-                                      Math.max(product.dining_price, product.takeaway_price),
-                                      currency,
-                                      { locale: currencyLocale }
-                                    )}
-                                  </>
-                                ) : (
-                                  formatCurrencyAmount(product.dining_price, currency, {
-                                    locale: currencyLocale,
-                                  })
-                                )
-                              ) : (
-                                formatCurrencyAmount(product.dining_price, currency, {
+                              {(() => {
+                                const range = getProductSizePriceRange(product);
+                                if (range && range.min !== range.max) {
+                                  return (
+                                    <>
+                                      {formatCurrencyAmount(range.min, currency, {
+                                        locale: currencyLocale,
+                                      })}{' '}
+                                      –{' '}
+                                      {formatCurrencyAmount(range.max, currency, {
+                                        locale: currencyLocale,
+                                      })}
+                                    </>
+                                  );
+                                }
+                                const price = range?.min ?? product.dining_price;
+                                return formatCurrencyAmount(price, currency, {
                                   locale: currencyLocale,
-                                })
-                              )}
+                                });
+                              })()}
                             </span>
                           </span>
                         </button>

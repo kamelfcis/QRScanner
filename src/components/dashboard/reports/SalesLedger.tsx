@@ -302,12 +302,14 @@ function SalesOrderDetail({
         <ul className="space-y-2.5">
           {data.items.map((item) => {
             const name = localizedItemName(locale, item);
-            const size =
-              item.size_option === 'small'
-                ? tOrders('small')
-                : item.size_option === 'large'
-                  ? tOrders('large')
-                  : null;
+            const size = item.size_option
+              ? {
+                  small: tOrders('small'),
+                  medium: tOrders('medium'),
+                  large: tOrders('large'),
+                  family: tOrders('family'),
+                }[item.size_option]
+              : null;
             const lineTotal = Number(item.unit_price) * item.quantity;
             return (
               <li

@@ -25,6 +25,12 @@ import {
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { hasExtendedMenuLocales } from '@/i18n/config';
 import { cn, getName } from '@/lib/utils';
+import {
+  getDefaultProductSize,
+  getEnabledProductSizes,
+  getProductSizePrice,
+  getSizeLabel,
+} from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import type { Product } from '@/types/database';
 
@@ -54,7 +60,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reset controls per dish
       setQty(1);
       setNotes('');
-      setSizeOption('small');
+      setSizeOption(getDefaultProductSize(product));
       const weights = product.weight_options_g;
       setWeightGrams(weights?.length ? weights[0] : null);
     }
@@ -65,17 +71,16 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = toCurrencyLocale(locale);
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  const hasSizeOptions = product.has_size_options;
+  const enabledSizes = getEnabledProductSizes(product);
+  const hasSizeOptions = enabledSizes.length > 0;
   const showWeightPicker = hasWeightOptions(product);
   const weightOptions = product.weight_options_g ?? [];
   const activePrice = showWeightPicker
     ? weightGrams != null && product.price_per_kg != null
       ? computeWeightPrice(product.price_per_kg, weightGrams)
       : (minWeightPrice(product) ?? product.dining_price)
-    : hasSizeOptions
-      ? sizeOption === 'large'
-        ? product.takeaway_price
-        : product.dining_price
+    : hasSizeOptions && sizeOption
+      ? getProductSizePrice(product, sizeOption)
       : diningMode === 'dining'
         ? product.dining_price
         : product.takeaway_price;
@@ -130,6 +135,12 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       dining_price: showWeightPicker ? unitPrice : product.dining_price,
       takeaway_price: showWeightPicker ? unitPrice : product.takeaway_price,
       has_size_options: hasSizeOptions,
+      price_medium: product.price_medium,
+      price_family: product.price_family,
+      size_small_enabled: product.size_small_enabled,
+      size_medium_enabled: product.size_medium_enabled,
+      size_large_enabled: product.size_large_enabled,
+      size_family_enabled: product.size_family_enabled,
       price_per_kg: product.price_per_kg,
       weight_options_g: product.weight_options_g,
       sizeOption: hasSizeOptions ? sizeOption : null,
@@ -207,9 +218,13 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       {hasSizeOptions ? (
         <div className="space-y-2 border-t border-[var(--menu-line)] pt-4">
           <Label className="text-xs text-[var(--menu-ink-soft)]">{t('selectSize')}</Label>
-          <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('selectSize')}>
-            {(['small', 'large'] as const).map((size) => {
-              const price = size === 'small' ? product.dining_price : product.takeaway_price;
+          <div
+            className={cn('grid gap-2', enabledSizes.length > 2 ? 'grid-cols-2' : 'grid-cols-2')}
+            role="group"
+            aria-label={t('selectSize')}
+          >
+            {enabledSizes.map((size) => {
+              const price = getProductSizePrice(product, size);
               const selected = sizeOption === size;
               return (
                 <button
@@ -228,7 +243,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
                   aria-pressed={selected}
                 >
                   <span className="block text-sm font-medium text-[var(--menu-ink)]">
-                    {size === 'small' ? t('small') : t('large')}
+                    {getSizeLabel(locale, size)}
                   </span>
                   <span
                     className="mt-1 block text-sm font-semibold tabular-nums text-[var(--menu-wine)]"

@@ -7,10 +7,16 @@ import { Image } from '@/components/shared/Image';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import type { StaffCatalogProduct } from '@/hooks/useStaffOrder';
 import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-currency';
+import {
+  getEnabledProductSizes,
+  getProductSizePrice,
+  getSizeLabel,
+  type ProductSizeId,
+} from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
 import { cn, getName } from '@/lib/utils';
 
-export type StaffSizeOption = 'small' | 'large';
+export type StaffSizeOption = ProductSizeId;
 
 export interface StaffPendingProduct {
   product: StaffCatalogProduct;
@@ -43,7 +49,8 @@ export function StaffProductPickerPanel({
   const tMenu = useTranslations('menu');
   const { product, selectedSize, selectedWeight } = pending;
 
-  const needsSize = product.has_size_options;
+  const enabledSizes = getEnabledProductSizes(product);
+  const needsSize = enabledSizes.length > 0;
   const needsWeight = hasWeightOptions(product);
   const canConfirm =
     (!needsSize || selectedSize != null) && (!needsWeight || selectedWeight != null);
@@ -83,9 +90,8 @@ export function StaffProductPickerPanel({
           <div className="space-y-2">
             <Label className="text-muted-foreground text-xs">{t('staffSelectSize')}</Label>
             <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('staffSelectSize')}>
-              {(['small', 'large'] as const).map((size) => {
-                const price =
-                  size === 'small' ? Number(product.dining_price) : Number(product.takeaway_price);
+              {enabledSizes.map((size) => {
+                const price = getProductSizePrice(product, size);
                 const selected = selectedSize === size;
                 return (
                   <button
@@ -101,7 +107,7 @@ export function StaffProductPickerPanel({
                     aria-pressed={selected}
                   >
                     <span className="block text-sm font-medium">
-                      {size === 'small' ? t('small') : t('large')}
+                      {getSizeLabel(locale as 'ar' | 'en' | 'fr' | 'nl', size)}
                     </span>
                     <span className="mt-0.5 block text-sm font-semibold tabular-nums" dir="ltr">
                       {formatCurrencyAmount(price, currency, { locale: currencyLocale })}
