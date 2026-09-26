@@ -87,8 +87,8 @@ export function PublicHeader() {
         'fixed inset-x-0 top-0 z-50 w-full max-w-full pt-[env(safe-area-inset-top,0px)] transition-all duration-300',
         isAlaKeefakTenant
           ? scrolled
-            ? 'border-b border-white/10 bg-[#050505]'
-            : 'border-b border-transparent bg-[#080808]'
+            ? 'border-b border-white/10 bg-[#080808]/80 backdrop-blur-md'
+            : 'border-b border-transparent bg-transparent'
           : scrolled
             ? 'border-border/60 bg-background/90 border-b shadow-sm backdrop-blur-md'
             : 'border-b border-transparent bg-transparent'

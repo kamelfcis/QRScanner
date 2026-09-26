@@ -1,15 +1,7 @@
 'use client';
 
-import {
-  Phone,
-  MapPin,
-  MessageCircle,
-  Globe,
-  Camera,
-  Smartphone,
-  Mail,
-  ExternalLink,
-} from 'lucide-react';
+import { Phone, MapPin, MessageCircle, Mail, ExternalLink } from 'lucide-react';
+import { BrandSocialIcon } from '@/components/shared/BrandSocialIcon';
 import { MotionSection } from '@/components/shared/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -238,7 +230,7 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     className="border-border/60 hover:border-brand-accent/40 hover:bg-brand-accent/5 group flex items-center gap-3 rounded-xl border p-4 transition-all"
                   >
-                    <Camera className="text-brand-accent h-5 w-5" />
+                    <BrandSocialIcon brand="instagram" className="h-5 w-5" />
                     <span className="text-foreground group-hover:text-primary text-sm font-medium">
                       {settings.instagram.startsWith('@')
                         ? settings.instagram
@@ -257,7 +249,7 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     className="border-border/60 hover:border-brand-accent/40 hover:bg-brand-accent/5 group flex items-center gap-3 rounded-xl border p-4 transition-all"
                   >
-                    <Globe className="text-brand-accent h-5 w-5" />
+                    <BrandSocialIcon brand="facebook" className="h-5 w-5" />
                     <span className="text-foreground group-hover:text-primary text-sm font-medium">
                       {t('facebook')}
                     </span>
@@ -270,7 +262,7 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     className="border-border/60 hover:border-brand-accent/40 hover:bg-brand-accent/5 group flex items-center gap-3 rounded-xl border p-4 transition-all"
                   >
-                    <Smartphone className="text-brand-accent h-5 w-5" />
+                    <BrandSocialIcon brand="tiktok" className="h-5 w-5" />
                     <span className="text-foreground group-hover:text-primary text-sm font-medium">
                       {t('tiktok')}
                     </span>

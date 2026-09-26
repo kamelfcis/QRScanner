@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle, Mail } from 'lucide-react';
+import { Phone, MapPin, Mail } from 'lucide-react';
+import { BrandSocialIcon } from '@/components/shared/BrandSocialIcon';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getRestaurantDisplayName } from '@/lib/appName';
@@ -115,7 +116,7 @@ export function PublicFooter() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label={t('instagram')}
                 >
-                  <Camera className="h-5 w-5" />
+                  <BrandSocialIcon brand="instagram" />
                 </a>
               )}
               {settings?.facebook && (
@@ -130,7 +131,7 @@ export function PublicFooter() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label={t('facebook')}
                 >
-                  <Globe className="h-5 w-5" />
+                  <BrandSocialIcon brand="facebook" />
                 </a>
               )}
               {settings?.tiktok && (
@@ -141,7 +142,7 @@ export function PublicFooter() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label={t('tiktok')}
                 >
-                  <Smartphone className="h-5 w-5" />
+                  <BrandSocialIcon brand="tiktok" />
                 </a>
               )}
               {whatsappHref && (
@@ -152,7 +153,7 @@ export function PublicFooter() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label={t('whatsapp')}
                 >
-                  <MessageCircle className="h-5 w-5" />
+                  <BrandSocialIcon brand="whatsapp" />
                 </a>
               )}
             </div>
