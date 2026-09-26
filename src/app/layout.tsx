@@ -55,7 +55,7 @@ const cairo = Cairo({
   subsets: ['arabic', 'latin'],
   weight: ['700', '800'],
   display: 'swap',
-  preload: isAlaKeefakTenant,
+  preload: false,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
