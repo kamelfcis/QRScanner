@@ -28,8 +28,37 @@ export const locales = enabledLocales;
 export const hasExtendedMenuLocales =
   enabledLocales.includes('fr') || enabledLocales.includes('nl');
 
+const KNOWN_TENANTS = ['harameen', 'aklet', 'warda', 'custom', 'ala-keefak', 'hettsamaka'] as const;
+
+export type TenantId = (typeof KNOWN_TENANTS)[number];
+
+/** Resolve deployment tenant from explicit env or URL/name hints (build-time). */
+export function resolveTenant(): TenantId | undefined {
+  const override = (process.env.NEXT_PUBLIC_TENANT || '').trim().toLowerCase();
+  if (KNOWN_TENANTS.includes(override as TenantId)) {
+    return override as TenantId;
+  }
+
+  const haystack = [
+    process.env.NEXT_PUBLIC_APP_NAME,
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
+  if (/ala-keefak|ala keefak|keefak|علي كيفك|كيفك/.test(haystack)) return 'ala-keefak';
+  if (/hettsamaka|het\s*samaka|حت\s*سمكة/.test(haystack)) return 'hettsamaka';
+  if (/aklet|أكلة|akla|gambary|gambari/.test(haystack)) return 'aklet';
+  if (/warda|وردة|shamya|شامية/.test(haystack)) return 'warda';
+  if (/harameen|الحرمين/.test(haystack)) return 'harameen';
+
+  return undefined;
+}
+
 /** When false, DB queries must not select has_size_options (tenants without migration 016). */
-const tenant = process.env.NEXT_PUBLIC_TENANT;
+const tenant = resolveTenant();
 export const hasProductSizeOptions = tenant !== 'aklet' && tenant !== 'harameen';
 
 /** When true, products support 4 independently enabled sizes (migration 041 — ala-keefak only). */

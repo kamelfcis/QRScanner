@@ -36,8 +36,11 @@ const projectId = 'prj_SOloJBxw7GL6LvBV613R7LDckOXP';
 const targets = ['production', 'preview', 'development'];
 
 const desired = [
+  { key: 'NEXT_PUBLIC_TENANT', value: 'ala-keefak' },
   { key: 'NEXT_PUBLIC_DEFAULT_LOCALE', value: 'ar' },
   { key: 'NEXT_PUBLIC_ENABLED_LOCALES', value: 'ar,en' },
+  { key: 'NEXT_PUBLIC_APP_URL', value: 'https://ala-keefak.engazqr.com' },
+  { key: 'NEXT_PUBLIC_SITE_URL', value: 'https://ala-keefak.engazqr.com' },
 ];
 
 const listRes = await fetch(`https://api.vercel.com/v9/projects/${projectId}/env`, {
