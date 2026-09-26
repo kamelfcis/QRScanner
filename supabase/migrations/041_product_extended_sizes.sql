@@ -812,6 +812,12 @@ BEGIN
       p.dining_price,
       p.takeaway_price,
       p.has_size_options,
+      p.price_medium,
+      p.price_family,
+      p.size_small_enabled,
+      p.size_medium_enabled,
+      p.size_large_enabled,
+      p.size_family_enabled,
       p.price_per_kg,
       p.is_available
     FROM jsonb_array_elements(payload->'items') WITH ORDINALITY AS e(value, ordinality)
@@ -1050,6 +1056,12 @@ BEGIN
       p.dining_price,
       p.takeaway_price,
       p.has_size_options,
+      p.price_medium,
+      p.price_family,
+      p.size_small_enabled,
+      p.size_medium_enabled,
+      p.size_large_enabled,
+      p.size_family_enabled,
       p.price_per_kg,
       p.is_available
     FROM jsonb_array_elements(p_items) WITH ORDINALITY AS e(value, ordinality)
