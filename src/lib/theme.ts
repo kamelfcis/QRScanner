@@ -221,7 +221,71 @@ export function themeToMenuCssVariables(theme: Partial<ThemeSettings>): Record<s
   };
 }
 
-export function applyMenuBrandTheme(theme: Partial<ThemeSettings>): void {
+/**
+ * Dashboard brand colors. In dark mode these are the only inline overrides;
+ * paper, ink, card, muted, and border stay with the CSS shell.
+ */
+const MENU_BRAND_CSS_KEYS = new Set([
+  '--menu-gold',
+  '--menu-gold-soft',
+  '--menu-gold-faint',
+  '--menu-gold-wash',
+  '--menu-gold-line',
+  '--menu-gold-line-strong',
+  '--menu-wine',
+  '--menu-wine-deep',
+  '--menu-wine-wash',
+  '--ak-ember',
+  '--ak-gold',
+  '--color-brand-primary',
+  '--color-brand-primary-light',
+  '--color-brand-primary-dark',
+  '--color-brand-secondary',
+  '--color-brand-secondary-light',
+  '--color-brand-secondary-dark',
+  '--color-brand-accent',
+]);
+
+/** Surface keys the menu mapper writes. Dark mode clears them so the CSS shell returns. */
+const MENU_SURFACE_CSS_KEYS = [
+  '--menu-paper',
+  '--menu-paper-deep',
+  '--menu-surface',
+  '--menu-surface-elevated',
+  '--menu-ink',
+  '--menu-ink-soft',
+  '--menu-line',
+  '--menu-line-strong',
+  '--menu-on-wine',
+  '--menu-chip',
+  '--menu-on-wine-wash',
+  '--ak-photo-scrim',
+  '--color-brand-background',
+  '--background',
+  '--foreground',
+  '--card',
+  '--card-foreground',
+  '--popover',
+  '--popover-foreground',
+  '--primary',
+  '--primary-foreground',
+  '--secondary',
+  '--secondary-foreground',
+  '--muted',
+  '--muted-foreground',
+  '--accent',
+  '--accent-foreground',
+  '--border',
+  '--input',
+  '--ring',
+] as const;
+
+export type MenuColorMode = 'light' | 'dark';
+
+export function applyMenuBrandTheme(
+  theme: Partial<ThemeSettings>,
+  mode: MenuColorMode
+): void {
   if (typeof document === 'undefined') return;
   const vars = themeToMenuCssVariables(theme);
   const targets: HTMLElement[] = [];
@@ -230,8 +294,19 @@ export function applyMenuBrandTheme(theme: Partial<ThemeSettings>): void {
     if (!targets.includes(node)) targets.push(node);
   });
 
+  const brandOnly = mode === 'dark';
+
   targets.forEach((node) => {
+    if (brandOnly) {
+      for (const key of MENU_SURFACE_CSS_KEYS) {
+        node.style.removeProperty(key);
+      }
+    }
     Object.entries(vars).forEach(([key, value]) => {
+      if (brandOnly && !MENU_BRAND_CSS_KEYS.has(key)) {
+        node.style.removeProperty(key);
+        return;
+      }
       node.style.setProperty(key, value);
     });
   });

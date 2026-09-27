@@ -144,6 +144,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
+      {...(isAlaKeefakTenant ? { 'data-color-mode': 'dark' as const } : {})}
       className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} ${isAlaKeefakTenant ? cairo.variable : ''} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >

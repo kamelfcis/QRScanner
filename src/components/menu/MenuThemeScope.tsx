@@ -20,7 +20,7 @@ export function MenuThemeScope() {
 
   useLayoutEffect(() => {
     if (!isAlaKeefakTenant) return;
-    applyMenuBrandTheme({ ...DEFAULT_THEME, ...theme });
+    applyMenuBrandTheme({ ...DEFAULT_THEME, ...theme }, colorMode);
   }, [theme, colorMode]);
 
   useEffect(() => {
