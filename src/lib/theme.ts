@@ -200,7 +200,6 @@ export function themeToMenuCssVariables(theme: Partial<ThemeSettings>): Record<s
     '--color-brand-background': background,
     '--ak-ember': accent,
     '--ak-gold': primary,
-    '--ak-photo-scrim': lightPaper ? adjustDarkness(background, 70) : background,
     '--background': background,
     '--foreground': ink,
     '--card': surface,
@@ -282,10 +281,7 @@ const MENU_SURFACE_CSS_KEYS = [
 
 export type MenuColorMode = 'light' | 'dark';
 
-export function applyMenuBrandTheme(
-  theme: Partial<ThemeSettings>,
-  mode: MenuColorMode
-): void {
+export function applyMenuBrandTheme(theme: Partial<ThemeSettings>, mode: MenuColorMode): void {
   if (typeof document === 'undefined') return;
   const vars = themeToMenuCssVariables(theme);
   const targets: HTMLElement[] = [];

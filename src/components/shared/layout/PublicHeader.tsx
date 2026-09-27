@@ -188,7 +188,7 @@ export function PublicHeader() {
             href={isAlaKeefakTenant ? '/menu' : '/welcome'}
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-[var(--menu-on-wine)] md:inline-flex'
+              'hidden shrink-0 bg-[var(--menu-wine)] px-4 text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)] md:inline-flex'
             )}
           >
             {t('orderNow')}
@@ -328,7 +328,7 @@ export function PublicHeader() {
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-[var(--menu-on-wine)]'
+                    'flex h-12 w-full items-center justify-center gap-2 bg-[var(--menu-wine)] text-base font-semibold text-[var(--menu-on-wine)] hover:bg-[var(--menu-wine-deep)]'
                   )}
                 >
                   <ShoppingBag className="h-5 w-5" aria-hidden />

@@ -166,7 +166,7 @@ export function HeroSection() {
         className={cn(
           'relative z-10 flex w-full flex-col px-5 sm:px-8',
           isAlaKeefakTenant
-            ? 'max-w-6xl items-start pb-16 pt-28 text-start md:pb-0'
+            ? 'max-w-6xl items-start pb-[max(4rem,env(safe-area-inset-bottom))] pt-28 text-start'
             : 'max-w-3xl items-center px-6 text-center'
         )}
         variants={prefersReducedMotion ? undefined : containerVariants}
