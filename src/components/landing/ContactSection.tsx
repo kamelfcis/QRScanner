@@ -1,11 +1,16 @@
 'use client';
 
-import { Phone, MapPin, MessageCircle, Mail, ExternalLink } from 'lucide-react';
+import { Phone, Mail, ExternalLink } from 'lucide-react';
 import { BrandSocialIcon } from '@/components/shared/BrandSocialIcon';
 import { MotionSection } from '@/components/shared/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { resolveContactAddress, formatWhatsAppUrl, getMapEmbedUrl } from '@/lib/contact/defaults';
+import {
+  resolveContactAddress,
+  resolveContactField,
+  formatWhatsAppUrl,
+  getMapEmbedUrl,
+} from '@/lib/contact/defaults';
 import { cn } from '@/lib/utils';
 import { isAlaKeefakTenant } from '@/i18n/config';
 
@@ -43,12 +48,16 @@ function GlassCard({ children, className }: { children: React.ReactNode; classNa
 
 function ContactRow({
   icon: Icon,
+  iconNode,
+  iconBoxClassName,
   label,
   href,
   external,
   children,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon?: React.ComponentType<{ className?: string }>;
+  iconNode?: React.ReactNode;
+  iconBoxClassName?: string;
   label: string;
   href?: string;
   external?: boolean;
@@ -56,8 +65,13 @@ function ContactRow({
 }) {
   const content = (
     <div className="hover:bg-brand-accent/5 group flex items-center gap-4 rounded-xl p-3 transition-colors">
-      <div className="bg-brand-accent/10 text-brand-accent ring-brand-accent/20 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1">
-        <Icon className="h-5 w-5" />
+      <div
+        className={cn(
+          'bg-brand-accent/10 text-brand-accent ring-brand-accent/20 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1',
+          iconBoxClassName
+        )}
+      >
+        {iconNode ?? (Icon ? <Icon className="h-5 w-5" /> : null)}
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">{label}</p>
@@ -87,19 +101,26 @@ function ContactRow({
   return content;
 }
 
+function GoogleMapsIcon({ className }: { className?: string }) {
+  return <BrandSocialIcon brand="googlemaps" className={className} />;
+}
+
 export function ContactSection() {
   const { data: settings } = useRestaurantSettings();
   const { locale } = useI18n();
   const t = useTranslations('landing');
 
   const address = resolveContactAddress(settings, locale);
-  const mapUrl = settings?.google_maps_url?.trim() || null;
+  const mapUrl = resolveContactField(settings?.google_maps_url);
   const mapEmbedUrl = getMapEmbedUrl(mapUrl);
-  const phone = settings?.phone?.trim();
-  const whatsapp = settings?.whatsapp?.trim();
-  const email = settings?.email?.trim();
+  const phone = resolveContactField(settings?.phone);
+  const whatsapp = resolveContactField(settings?.whatsapp);
+  const email = resolveContactField(settings?.email);
 
-  const hasSocial = settings?.instagram || settings?.facebook || settings?.tiktok;
+  const instagram = resolveContactField(settings?.instagram);
+  const facebook = resolveContactField(settings?.facebook);
+  const tiktok = resolveContactField(settings?.tiktok);
+  const hasSocial = instagram || facebook || tiktok;
 
   return (
     <section id="contact" className="relative overflow-hidden py-20 md:py-28">
@@ -139,7 +160,8 @@ export function ContactSection() {
 
                 {whatsapp ? (
                   <ContactRow
-                    icon={MessageCircle}
+                    iconNode={<BrandSocialIcon brand="whatsapp" />}
+                    iconBoxClassName="bg-[#25D366]/15 ring-[#25D366]/30"
                     label={t('whatsapp')}
                     href={formatWhatsAppUrl(whatsapp)}
                     external
@@ -177,7 +199,7 @@ export function ContactSection() {
                   ) : (
                     <div className="from-brand-primary/10 via-muted/50 to-brand-secondary/10 absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br p-6">
                       <div className="bg-brand-accent/10 ring-brand-accent/25 mb-4 flex h-16 w-16 items-center justify-center rounded-2xl ring-1">
-                        <MapPin className="text-brand-accent h-8 w-8" />
+                        <GoogleMapsIcon className="h-8 w-8" />
                       </div>
                       <p className="font-heading text-foreground text-center text-lg font-semibold">
                         {address}
@@ -193,7 +215,7 @@ export function ContactSection() {
                       {t('ourLocation')}
                     </h3>
                     <div className="flex items-start gap-3">
-                      <MapPin className="text-brand-accent mt-0.5 h-5 w-5 shrink-0" />
+                      <GoogleMapsIcon className="mt-0.5 h-5 w-5 shrink-0" />
                       <p className="text-muted-foreground text-sm leading-relaxed">{address}</p>
                     </div>
                   </div>
@@ -205,7 +227,7 @@ export function ContactSection() {
                       rel="noopener noreferrer"
                       className="border-brand-accent/30 bg-brand-accent/10 text-brand-accent hover:bg-brand-accent/20 mt-6 inline-flex items-center gap-2 self-start rounded-full border px-4 py-2 text-sm font-medium transition-colors"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <GoogleMapsIcon className="h-4 w-4" />
                       {t('viewOnMap')}
                     </a>
                   )}
@@ -223,27 +245,23 @@ export function ContactSection() {
 
             {hasSocial ? (
               <div className="grid gap-3 sm:grid-cols-3">
-                {settings?.instagram && (
+                {instagram && (
                   <a
-                    href={`https://instagram.com/${settings.instagram.replace('@', '')}`}
+                    href={`https://instagram.com/${instagram.replace('@', '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border-border/60 hover:border-brand-accent/40 hover:bg-brand-accent/5 group flex items-center gap-3 rounded-xl border p-4 transition-all"
                   >
                     <BrandSocialIcon brand="instagram" className="h-5 w-5" />
                     <span className="text-foreground group-hover:text-primary text-sm font-medium">
-                      {settings.instagram.startsWith('@')
-                        ? settings.instagram
-                        : `@${settings.instagram.replace('@', '')}`}
+                      {instagram.startsWith('@') ? instagram : `@${instagram.replace('@', '')}`}
                     </span>
                   </a>
                 )}
-                {settings?.facebook && (
+                {facebook && (
                   <a
                     href={
-                      settings.facebook.startsWith('http')
-                        ? settings.facebook
-                        : `https://facebook.com/${settings.facebook}`
+                      facebook.startsWith('http') ? facebook : `https://facebook.com/${facebook}`
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -255,9 +273,9 @@ export function ContactSection() {
                     </span>
                   </a>
                 )}
-                {settings?.tiktok && (
+                {tiktok && (
                   <a
-                    href={`https://tiktok.com/@${settings.tiktok.replace('@', '')}`}
+                    href={`https://tiktok.com/@${tiktok.replace('@', '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border-border/60 hover:border-brand-accent/40 hover:bg-brand-accent/5 group flex items-center gap-3 rounded-xl border p-4 transition-all"

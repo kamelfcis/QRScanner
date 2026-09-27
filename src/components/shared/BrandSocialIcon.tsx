@@ -1,13 +1,23 @@
 import { useId } from 'react';
-import { siFacebook, siInstagram, siTiktok, siWhatsapp } from 'simple-icons';
+import { siFacebook, siGooglemaps, siInstagram, siTiktok, siWhatsapp } from 'simple-icons';
 import { cn } from '@/lib/utils';
 
-export type BrandSocialName = 'instagram' | 'facebook' | 'tiktok' | 'whatsapp';
+export type BrandSocialName = 'instagram' | 'facebook' | 'tiktok' | 'whatsapp' | 'googlemaps';
 
 const SOLID_MARKS = {
   facebook: { path: siFacebook.path, fill: '#1877F2' },
   whatsapp: { path: siWhatsapp.path, fill: '#25D366' },
 } as const;
+
+/** Official Google Maps pin colors (multicolor pin from siGooglemaps path segments). */
+const GOOGLE_MAPS_COLORS = ['#EA4335', '#FBBC04', '#34A853', '#4285F4', '#1A73E8'] as const;
+const GOOGLE_MAPS_SEGMENTS = siGooglemaps.path
+  .split(/(?=M)/)
+  .filter(Boolean)
+  .map((path, index) => ({
+    path,
+    fill: GOOGLE_MAPS_COLORS[index] ?? siGooglemaps.hex,
+  }));
 
 /**
  * Official brand marks. The SVG is decorative; the parent link keeps the accessible name.
@@ -43,6 +53,16 @@ export function BrandSocialIcon({
         <path d={siTiktok.path} fill="#25F4EE" transform="translate(-0.8 0.8)" />
         <path d={siTiktok.path} fill="#FE2C55" transform="translate(0.8 -0.8)" />
         <path d={siTiktok.path} fill="#F7F7F7" />
+      </svg>
+    );
+  }
+
+  if (brand === 'googlemaps') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={size}>
+        {GOOGLE_MAPS_SEGMENTS.map((segment, index) => (
+          <path key={index} d={segment.path} fill={segment.fill} />
+        ))}
       </svg>
     );
   }
