@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { resolveThemeSettings } from '@/lib/theme';
 import type {
   Settings,
   RestaurantSettings,
@@ -227,7 +228,7 @@ export function useUpdateThemeSettings() {
       if (readError) throw new Error('Failed to read current theme settings');
 
       const currentSettings = (existing?.value as unknown as ThemeSettings) || {};
-      const updatedSettings = { ...currentSettings, ...input };
+      const updatedSettings = resolveThemeSettings({ ...currentSettings, ...input });
 
       const { data, error } = await supabase
         .from('settings')
@@ -239,8 +240,13 @@ export function useUpdateThemeSettings() {
       if (error) throw error;
       return data.value as unknown as ThemeSettings;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      try {
+        await fetch('/api/settings/revalidate', { method: 'POST' });
+      } catch {
+        // Non-blocking
+      }
     },
   });
 }

@@ -2,7 +2,9 @@
 
 import { useEffect, useLayoutEffect } from 'react';
 import { isAlaKeefakTenant } from '@/i18n/config';
+import { useThemeSettings } from '@/hooks/useSettings';
 import { applyColorMode } from '@/lib/theme/ak-color-mode';
+import { applyMenuBrandTheme, DEFAULT_THEME } from '@/lib/theme';
 import { useAkColorMode } from '@/components/providers/AkColorModeProvider';
 
 let mounted = 0;
@@ -14,6 +16,12 @@ let mounted = 0;
  */
 export function MenuThemeScope() {
   const { colorMode } = useAkColorMode();
+  const { data: theme } = useThemeSettings();
+
+  useLayoutEffect(() => {
+    if (!isAlaKeefakTenant) return;
+    applyMenuBrandTheme({ ...DEFAULT_THEME, ...theme });
+  }, [theme, colorMode]);
 
   useEffect(() => {
     mounted += 1;

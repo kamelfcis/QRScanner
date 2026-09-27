@@ -20,7 +20,7 @@ import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Save, Upload, X } from 'lucide-react';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
-import { isValidHexColor } from '@/lib/theme';
+import { isValidHexColor, normalizeHexColor, resolveThemeSettings } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
@@ -103,7 +103,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (theme) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate theme from query
-      setThemeForm(theme);
+      setThemeForm(resolveThemeSettings(theme));
     }
   }, [theme]);
 
@@ -135,7 +135,7 @@ export default function SettingsPage() {
     if (!validateOrderModes(resolveOrderModes(form))) errs.push(t('validation.orderModeRequired'));
     (['primary_color', 'secondary_color', 'accent_color', 'background_color'] as const).forEach(
       (key) => {
-        const color = themeForm[key];
+        const color = normalizeHexColor(themeForm[key]) ?? themeForm[key];
         if (color && !isValidHexColor(color)) {
           errs.push(
             t('validation.invalidColor', {
@@ -184,7 +184,9 @@ export default function SettingsPage() {
     try {
       await updateSettings.mutateAsync(form);
       await updateHours.mutateAsync(hoursForm);
-      await updateTheme.mutateAsync(themeForm);
+      const normalizedTheme = resolveThemeSettings(themeForm);
+      setThemeForm(normalizedTheme);
+      await updateTheme.mutateAsync(normalizedTheme);
       await fetch('/api/settings/revalidate', { method: 'POST' });
       toast.success(t('saveSuccess'));
     } catch (err) {

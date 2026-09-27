@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useThemeSettings } from '@/hooks/useSettings';
-import { applyBrandTheme, DEFAULT_THEME } from '@/lib/theme';
+import { applyBrandTheme, DEFAULT_THEME, resolveThemeSettings } from '@/lib/theme';
 import { useTheme } from './ThemeProvider';
 
 export function BrandThemeProvider({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export function BrandThemeProvider({ children }: { children: React.ReactNode }) 
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    const merged = { ...DEFAULT_THEME, ...theme };
+    const merged = resolveThemeSettings({ ...DEFAULT_THEME, ...theme });
     applyBrandTheme(merged, resolvedTheme);
 
     return () => {
