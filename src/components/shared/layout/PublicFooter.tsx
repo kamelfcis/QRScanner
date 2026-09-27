@@ -24,7 +24,9 @@ export function PublicFooter() {
   return (
     <footer
       className={
-        isAlaKeefakTenant ? 'border-t border-white/10 bg-[#080808]' : 'bg-muted/50 border-t'
+        isAlaKeefakTenant
+          ? 'border-t border-[var(--menu-line)] bg-[var(--menu-paper)]'
+          : 'bg-muted/50 border-t'
       }
     >
       <div className="container mx-auto px-4 py-12">

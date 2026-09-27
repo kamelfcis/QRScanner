@@ -37,7 +37,11 @@ export default function WelcomePage() {
     <div
       {...(isAlaKeefakTenant ? { 'data-menu-theme': '' } : {})}
       {...alaKeefakTenantAttr}
-      className={isAlaKeefakTenant ? 'min-h-[100svh] bg-[#080808] text-[#F5F5F5]' : undefined}
+      className={
+        isAlaKeefakTenant
+          ? 'min-h-[100svh] bg-[var(--menu-paper)] text-[var(--menu-ink)]'
+          : undefined
+      }
     >
       {isAlaKeefakTenant ? <MenuThemeScope /> : null}
       <Suspense fallback={<WelcomeSkeleton />}>
@@ -150,7 +154,7 @@ function WelcomeContent() {
       {...alaKeefakTenantAttr}
       className={cn(
         'relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:justify-center sm:pb-[env(safe-area-inset-bottom)]',
-        isAlaKeefakTenant && 'bg-[#080808]'
+        isAlaKeefakTenant && 'bg-[var(--menu-paper)]'
       )}
     >
       {isAlaKeefakTenant ? <MenuThemeScope /> : null}
@@ -193,7 +197,7 @@ function WelcomeContent() {
           className={cn(
             'absolute inset-0',
             isAlaKeefakTenant
-              ? 'bg-gradient-to-t from-[#080808] via-[#080808]/80 to-[#080808]/35'
+              ? 'bg-[linear-gradient(to_top,var(--ak-photo-scrim),color-mix(in_srgb,var(--ak-photo-scrim)_80%,transparent),color-mix(in_srgb,var(--ak-photo-scrim)_35%,transparent))]'
               : 'bg-gradient-to-t from-black via-black/75 to-black/35'
           )}
         />
@@ -225,7 +229,7 @@ function WelcomeContent() {
           className={cn(
             'mb-5 flex h-28 w-28 items-center justify-center rounded-[1.75rem] border p-3 sm:mb-6 sm:h-32 sm:w-32',
             isAlaKeefakTenant
-              ? 'border-white/10 bg-[#121212]'
+              ? 'border-[var(--menu-line)] bg-[var(--menu-surface)]'
               : 'border-brand-accent/35 bg-black/45 shadow-[0_0_40px_rgba(255,183,0,0.15)] backdrop-blur-xl'
           )}
         >
@@ -359,7 +363,7 @@ function ModeCard({
         'transition-[border-color,background-color] duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         cinematic
-          ? 'rounded-2xl border border-white/10 bg-[#121212] hover:border-[#FF7A00] focus-visible:ring-[#FF7A00] focus-visible:ring-offset-[#080808]'
+          ? 'rounded-2xl border border-[var(--menu-line)] bg-[var(--menu-surface)] hover:border-[var(--menu-wine)] focus-visible:ring-[var(--menu-wine)] focus-visible:ring-offset-[var(--menu-paper)]'
           : 'hover:border-brand-accent/50 focus-visible:ring-brand-accent rounded-3xl border border-white/15 bg-black/45 shadow-lg backdrop-blur-xl hover:bg-black/55 hover:shadow-[0_0_32px_rgba(255,183,0,0.18)] focus-visible:ring-offset-black'
       )}
     >
@@ -394,17 +398,31 @@ function ModeCard({
         {emoji}
       </span>
       <div className={cn('mb-1 flex flex-col gap-0.5', isRtl ? 'items-center' : 'items-center')}>
-        <span className="text-lg font-bold leading-tight text-white">{labelEn}</span>
+        <span
+          className={cn(
+            'text-lg font-bold leading-tight',
+            cinematic ? 'text-[var(--menu-ink)]' : 'text-white'
+          )}
+        >
+          {labelEn}
+        </span>
         <span
           className={cn(
             'font-arabic text-base font-semibold',
-            cinematic ? 'text-[#FF7A00]' : 'text-brand-accent'
+            cinematic ? 'text-[var(--menu-wine)]' : 'text-brand-accent'
           )}
         >
           {labelAr}
         </span>
       </div>
-      <p className="max-w-[200px] text-xs leading-relaxed text-white/60">{subtitle}</p>
+      <p
+        className={cn(
+          'max-w-[200px] text-xs leading-relaxed',
+          cinematic ? 'text-[var(--menu-ink-soft)]' : 'text-white/60'
+        )}
+      >
+        {subtitle}
+      </p>
 
       {cinematic ? null : (
         <div
@@ -421,7 +439,7 @@ function WelcomeSkeleton() {
     <div
       className={cn(
         'relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-4',
-        isAlaKeefakTenant ? 'bg-[#080808]' : 'bg-black'
+        isAlaKeefakTenant ? 'bg-[var(--menu-paper)]' : 'bg-black'
       )}
     >
       <div

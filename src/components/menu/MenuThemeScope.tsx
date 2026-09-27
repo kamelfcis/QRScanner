@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { isAlaKeefakTenant } from '@/i18n/config';
+import { applyColorMode } from '@/lib/theme/ak-color-mode';
+import { useAkColorMode } from '@/components/providers/AkColorModeProvider';
 
 let mounted = 0;
 
@@ -11,6 +13,8 @@ let mounted = 0;
  * Ref-counted so swapping skeleton for content never drops the theme.
  */
 export function MenuThemeScope() {
+  const { colorMode } = useAkColorMode();
+
   useEffect(() => {
     mounted += 1;
     document.body.setAttribute('data-menu-theme', '');
@@ -23,9 +27,15 @@ export function MenuThemeScope() {
         mounted = 0;
         document.body.removeAttribute('data-menu-theme');
         document.body.removeAttribute('data-tenant');
+        document.body.removeAttribute('data-color-mode');
       }
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (!isAlaKeefakTenant) return;
+    applyColorMode(colorMode);
+  }, [colorMode]);
 
   return null;
 }

@@ -998,6 +998,9 @@ textarea,
   --menu-on-wine-wash: rgba(8, 8, 8, 0.14);
   --color-brand-accent: #ff7a00;
   --color-brand-primary: #f5b942;
+  --ak-ember: #ff7a00;
+  --ak-gold: #f5b942;
+  --ak-photo-scrim: #080808;
 
   --background: var(--menu-paper);
   --foreground: var(--menu-ink);
@@ -1022,9 +1025,127 @@ textarea,
   color-scheme: dark;
 }
 
+/* Ala Keefak daytime ember — warm paper, deeper accent for legibility */
+html[data-color-mode='light'] [data-tenant='ala-keefak'][data-menu-theme] {
+  --menu-paper: #f6f1ea;
+  --menu-paper-deep: #ebe4d8;
+  --menu-surface: #fffcf8;
+  --menu-surface-elevated: #ffffff;
+  --menu-ink: #1c1712;
+  --menu-ink-soft: #6e655c;
+  --menu-line: rgba(28, 23, 18, 0.1);
+  --menu-line-strong: rgba(28, 23, 18, 0.16);
+  --menu-gold: #c4841d;
+  --menu-gold-soft: #c4841d;
+  --menu-gold-faint: rgba(196, 132, 29, 0.45);
+  --menu-gold-wash: rgba(224, 104, 0, 0.1);
+  --menu-gold-line: rgba(196, 132, 29, 0.55);
+  --menu-gold-line-strong: rgba(224, 104, 0, 0.75);
+  --menu-wine: #e06800;
+  --menu-wine-deep: #c45a00;
+  --menu-wine-wash: rgba(224, 104, 0, 0.12);
+  --menu-on-wine: #1c1712;
+  --menu-chip: #fffcf8;
+  --menu-on-wine-wash: rgba(28, 23, 18, 0.08);
+  --color-brand-accent: #e06800;
+  --color-brand-primary: #c4841d;
+
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-ink);
+  --primary-foreground: #f6f1ea;
+  --secondary: var(--menu-wine);
+  --secondary-foreground: var(--menu-on-wine);
+  --muted: #ebe4d8;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-wine);
+  --accent-foreground: var(--menu-on-wine);
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-wine);
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+  color-scheme: light;
+}
+
+html[data-color-mode='light'] [data-tenant='ala-keefak'][data-menu-theme] ::selection {
+  background-color: #e06800;
+  color: #f6f1ea;
+}
+
+html[data-color-mode='light'] [data-tenant='ala-keefak'][data-menu-theme] :focus-visible {
+  outline: 2px solid #e06800;
+  outline-offset: 2px;
+}
+
+html[data-color-mode='light'] .ember-line {
+  background-image: linear-gradient(to right, #e06800, #c4841d, transparent);
+}
+
+html[data-color-mode='light'][dir='rtl'] .ember-line {
+  background-image: linear-gradient(to left, #e06800, #c4841d, transparent);
+}
+
 [data-tenant='ala-keefak'][data-menu-theme] ::selection {
-  background-color: #ff7a00;
-  color: #080808;
+  background-color: var(--menu-wine);
+  color: var(--menu-on-wine);
+}
+
+/* Daytime ember: warm paper, deeper ember. Not the other tenants' cream-and-wine menu. */
+html[data-color-mode='light'] [data-tenant='ala-keefak'][data-menu-theme],
+[data-tenant='ala-keefak'][data-menu-theme][data-color-mode='light'] {
+  --menu-paper: #f6f1ea;
+  --menu-paper-deep: #ebe4d8;
+  --menu-surface: #fffcf8;
+  --menu-surface-elevated: #ffffff;
+  --menu-ink: #1c1712;
+  --menu-ink-soft: #6e655c;
+  --menu-line: rgba(28, 23, 18, 0.1);
+  --menu-line-strong: rgba(28, 23, 18, 0.16);
+  --menu-gold: #c4841d;
+  --menu-gold-soft: #c4841d;
+  --menu-gold-faint: rgba(196, 132, 29, 0.45);
+  --menu-gold-wash: rgba(224, 104, 0, 0.12);
+  --menu-gold-line: rgba(196, 132, 29, 0.55);
+  --menu-gold-line-strong: rgba(224, 104, 0, 0.85);
+  --menu-wine: #e06800;
+  --menu-wine-deep: #c45c00;
+  --menu-wine-wash: rgba(224, 104, 0, 0.14);
+  --menu-on-wine: #1c1712;
+  --menu-chip: #fffcf8;
+  --menu-on-wine-wash: rgba(28, 23, 18, 0.08);
+  --color-brand-accent: #e06800;
+  --color-brand-primary: #c4841d;
+  --ak-ember: #e06800;
+  --ak-gold: #c4841d;
+  --ak-photo-scrim: #080808;
+
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-ink);
+  --primary-foreground: #fffcf8;
+  --secondary: var(--menu-wine);
+  --secondary-foreground: #1c1712;
+  --muted: #ebe4d8;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-wine);
+  --accent-foreground: #1c1712;
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-wine);
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+  color-scheme: light;
 }
 
 [dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] h1,
@@ -1043,35 +1164,55 @@ textarea,
   height: 2px;
   border: 0;
   background-color: transparent;
-  background-image: linear-gradient(to right, #ff7a00, #f5b942, transparent);
+  background-image: linear-gradient(
+    to right,
+    var(--ak-ember, #ff7a00),
+    var(--ak-gold, #f5b942),
+    transparent
+  );
 }
 
 [dir='rtl'] .ember-line {
-  background-image: linear-gradient(to left, #ff7a00, #f5b942, transparent);
+  background-image: linear-gradient(
+    to left,
+    var(--ak-ember, #ff7a00),
+    var(--ak-gold, #f5b942),
+    transparent
+  );
 }
 
 [data-tenant='ala-keefak'][data-menu-theme] .bg-brand-accent.h-1 {
   height: 2px;
   border-radius: 0;
   background-color: transparent;
-  background-image: linear-gradient(to right, #ff7a00, #f5b942, transparent);
+  background-image: linear-gradient(
+    to right,
+    var(--ak-ember, #ff7a00),
+    var(--ak-gold, #f5b942),
+    transparent
+  );
 }
 
 [dir='rtl'] [data-tenant='ala-keefak'][data-menu-theme] .bg-brand-accent.h-1 {
-  background-image: linear-gradient(to left, #ff7a00, #f5b942, transparent);
+  background-image: linear-gradient(
+    to left,
+    var(--ak-ember, #ff7a00),
+    var(--ak-gold, #f5b942),
+    transparent
+  );
 }
 
-[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-xl,
-[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-2xl,
-[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-md,
-[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-sm,
-[data-tenant='ala-keefak'][data-menu-theme] .backdrop-blur-\[2px\] {
+html:not([data-color-mode='light']) [data-tenant='ala-keefak'][data-menu-theme]:not([data-color-mode='light']) .backdrop-blur-xl,
+html:not([data-color-mode='light']) [data-tenant='ala-keefak'][data-menu-theme]:not([data-color-mode='light']) .backdrop-blur-2xl,
+html:not([data-color-mode='light']) [data-tenant='ala-keefak'][data-menu-theme]:not([data-color-mode='light']) .backdrop-blur-md,
+html:not([data-color-mode='light']) [data-tenant='ala-keefak'][data-menu-theme]:not([data-color-mode='light']) .backdrop-blur-sm,
+html:not([data-color-mode='light']) [data-tenant='ala-keefak'][data-menu-theme]:not([data-color-mode='light']) .backdrop-blur-\[2px\] {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
 [data-tenant='ala-keefak'][data-menu-theme] :focus-visible {
-  outline: 2px solid #ff7a00;
+  outline: 2px solid var(--menu-wine);
   outline-offset: 2px;
 }
 

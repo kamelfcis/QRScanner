@@ -16,6 +16,7 @@ import { QueryProvider } from '@/components/providers/QueryProvider';
 import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { defaultLocale, isAlaKeefakTenant, type Locale } from '@/i18n/config';
+import { AK_COLOR_MODE_BOOT_SCRIPT } from '@/lib/theme/ak-color-mode';
 import './globals.css';
 
 const dmSans = DM_Sans({
@@ -148,6 +149,9 @@ export default async function RootLayout({
     >
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
+        {isAlaKeefakTenant ? (
+          <script dangerouslySetInnerHTML={{ __html: AK_COLOR_MODE_BOOT_SCRIPT }} />
+        ) : null}
       </head>
       <body className="flex min-h-full w-full flex-col overflow-x-clip">
         <a

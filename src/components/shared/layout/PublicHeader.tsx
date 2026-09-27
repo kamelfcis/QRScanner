@@ -15,6 +15,8 @@ import {
   ShoppingBag,
   type LucideIcon,
 } from 'lucide-react';
+import { ColorModeToggle } from '@/components/shared/ColorModeToggle';
+import { useAkColorMode } from '@/components/providers/AkColorModeProvider';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useRestaurantSettings } from '@/hooks/useSettings';
@@ -48,6 +50,7 @@ export function PublicHeader() {
   const pathname = usePathname();
   const { data: settings } = useRestaurantSettings();
   const { resolvedTheme, setTheme } = useTheme();
+  const { colorMode } = useAkColorMode();
   const { dir, locale } = useI18n();
   const t = useTranslations('nav');
   const accessibilityT = useTranslations('accessibility');
@@ -81,13 +84,20 @@ export function PublicHeader() {
     return pathname.startsWith(href);
   };
 
+  const akUseOverlayNav = isAlaKeefakTenant && isOverlay;
+  const akNavText = akUseOverlayNav ? overlayText : solidText;
+  const akNavMuted = akUseOverlayNav ? overlayMutedText : solidMutedText;
+  const akNavGhost = akUseOverlayNav ? overlayGhost : solidGhost;
+
   return (
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 w-full max-w-full pt-[env(safe-area-inset-top,0px)] transition-all duration-300',
         isAlaKeefakTenant
           ? scrolled
-            ? 'border-b border-white/10 bg-[#080808]/80 backdrop-blur-md'
+            ? colorMode === 'light'
+              ? 'border-b border-[var(--menu-line)] bg-[color-mix(in_srgb,var(--menu-paper)_88%,transparent)] backdrop-blur-md'
+              : 'border-b border-white/10 bg-[color-mix(in_srgb,var(--ak-photo-scrim)_80%,transparent)] backdrop-blur-md'
             : 'border-b border-transparent bg-transparent'
           : scrolled
             ? 'border-border/60 bg-background/90 border-b shadow-sm backdrop-blur-md'
@@ -99,7 +109,7 @@ export function PublicHeader() {
           href="/"
           className={cn(
             'flex min-w-0 items-center gap-1.5 sm:gap-2 md:justify-self-start',
-            isOverlay ? overlayText : solidText
+            isAlaKeefakTenant ? akNavText : isOverlay ? overlayText : solidText
           )}
         >
           {settings?.logo_url ? (
@@ -113,7 +123,13 @@ export function PublicHeader() {
             <span
               className={cn(
                 'font-heading min-w-0 truncate whitespace-nowrap text-sm font-bold transition-colors sm:text-base md:text-xl',
-                isAlaKeefakTenant || isOverlay ? 'text-white' : 'text-primary'
+                isAlaKeefakTenant
+                  ? akUseOverlayNav
+                    ? 'text-white'
+                    : 'text-foreground'
+                  : isOverlay
+                    ? 'text-white'
+                    : 'text-primary'
               )}
             >
               {name}
@@ -132,7 +148,7 @@ export function PublicHeader() {
               href={item.href}
               className={cn(
                 'hover:text-brand-accent text-sm font-medium transition-colors',
-                isAlaKeefakTenant || isOverlay ? overlayMutedText : solidMutedText
+                isAlaKeefakTenant ? akNavMuted : isOverlay ? overlayMutedText : solidMutedText
               )}
             >
               {item.name}
@@ -141,34 +157,38 @@ export function PublicHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-0 sm:gap-1.5 md:gap-4 md:justify-self-end">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-            className={cn(
-              'size-11 shrink-0 transition-colors md:size-7',
-              isAlaKeefakTenant && 'hidden md:inline-flex',
-              isAlaKeefakTenant || isOverlay ? overlayGhost : solidGhost
-            )}
-            aria-label={accessibilityT('toggleTheme')}
-          >
-            {resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
+          {isAlaKeefakTenant ? (
+            <ColorModeToggle className={akNavGhost} />
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              className={cn(
+                'size-11 shrink-0 transition-colors md:size-7',
+                isOverlay ? overlayGhost : solidGhost
+              )}
+              aria-label={accessibilityT('toggleTheme')}
+            >
+              {resolvedTheme === 'dark' ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </Button>
+          )}
 
           <LanguageSwitcher
             variant="ghost"
             size="sm"
-            className={cn(
-              isAlaKeefakTenant && 'hidden md:inline-flex',
-              isAlaKeefakTenant || isOverlay ? overlayGhost : solidGhost
-            )}
+            className={cn(isAlaKeefakTenant ? akNavGhost : isOverlay ? overlayGhost : solidGhost)}
           />
 
           <Link
             href={isAlaKeefakTenant ? '/menu' : '/welcome'}
             className={cn(
               buttonVariants({ size: 'sm' }),
-              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-[#080808] md:inline-flex'
+              'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-[var(--menu-on-wine)] md:inline-flex'
             )}
           >
             {t('orderNow')}
@@ -178,7 +198,7 @@ export function PublicHeader() {
             <SheetTrigger
               className={cn(
                 'flex min-h-11 min-w-11 shrink-0 items-center justify-center md:hidden',
-                isOverlay ? overlayText : solidText
+                isAlaKeefakTenant ? akNavText : isOverlay ? overlayText : solidText
               )}
             >
               <Menu className="h-5 w-5" />
@@ -187,7 +207,10 @@ export function PublicHeader() {
             {isAlaKeefakTenant ? (
               <Link
                 href="/menu?cart=1"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center text-white md:hidden"
+                className={cn(
+                  'inline-flex min-h-11 min-w-11 items-center justify-center md:hidden',
+                  akUseOverlayNav ? 'text-white' : 'text-foreground'
+                )}
                 aria-label={t('orderNow')}
               >
                 <ShoppingBag className="h-5 w-5" />
@@ -199,7 +222,7 @@ export function PublicHeader() {
               className={cn(
                 'flex w-[min(320px,88vw)] flex-col gap-0 p-0 shadow-2xl sm:max-w-sm',
                 isAlaKeefakTenant
-                  ? 'border-white/10 bg-[#121212]'
+                  ? 'border-[var(--menu-line)] bg-[var(--menu-surface)]'
                   : 'border-border/40 bg-background/90 backdrop-blur-2xl'
               )}
             >
@@ -278,19 +301,23 @@ export function PublicHeader() {
                   {accessibilityT('toggleTheme')}
                 </span>
                 <div className="flex items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-                    className="size-11"
-                    aria-label={accessibilityT('toggleTheme')}
-                  >
-                    {resolvedTheme === 'dark' ? (
-                      <Sun className="h-4 w-4" />
-                    ) : (
-                      <Moon className="h-4 w-4" />
-                    )}
-                  </Button>
+                  {isAlaKeefakTenant ? (
+                    <ColorModeToggle variant="outline" />
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+                      className="size-11"
+                      aria-label={accessibilityT('toggleTheme')}
+                    >
+                      {resolvedTheme === 'dark' ? (
+                        <Sun className="h-4 w-4" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </Button>
+                  )}
                   <LanguageSwitcher variant="outline" size="sm" />
                 </div>
               </div>
@@ -301,7 +328,7 @@ export function PublicHeader() {
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-[#080808]'
+                    'bg-brand-accent hover:bg-brand-accent/90 flex h-12 w-full items-center justify-center gap-2 text-base font-semibold text-[var(--menu-on-wine)]'
                   )}
                 >
                   <ShoppingBag className="h-5 w-5" aria-hidden />
