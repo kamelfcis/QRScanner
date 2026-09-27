@@ -30,7 +30,7 @@ import {
   validateOrderModes,
   type WelcomeCardId,
 } from '@/lib/order/order-modes';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, hasExtendedMenuLocales } from '@/i18n/config';
 import { toast } from 'sonner';
 import { useI18n } from '@/components/providers/RootI18nProvider';
 
@@ -568,74 +568,86 @@ export default function SettingsPage() {
                   />
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="story_title_fr">{t('storyTitleFr')}</Label>
-                  <Input
-                    id="story_title_fr"
-                    value={form.story_title_fr || ''}
-                    placeholder={t('storyTitleFr')}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, story_title_fr: e.target.value }))
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="story_title_nl">{t('storyTitleNl')}</Label>
-                  <Input
-                    id="story_title_nl"
-                    value={form.story_title_nl || ''}
-                    placeholder={t('storyTitleNl')}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, story_title_nl: e.target.value }))
-                    }
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="story_p1_fr">{t('storyP1Fr')}</Label>
-                  <Textarea
-                    id="story_p1_fr"
-                    value={form.story_p1_fr || ''}
-                    placeholder={t('storyP1Fr')}
-                    rows={4}
-                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_fr: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="story_p1_nl">{t('storyP1Nl')}</Label>
-                  <Textarea
-                    id="story_p1_nl"
-                    value={form.story_p1_nl || ''}
-                    placeholder={t('storyP1Nl')}
-                    rows={4}
-                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_nl: e.target.value }))}
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="story_p2_fr">{t('storyP2Fr')}</Label>
-                  <Textarea
-                    id="story_p2_fr"
-                    value={form.story_p2_fr || ''}
-                    placeholder={t('storyP2Fr')}
-                    rows={4}
-                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_fr: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="story_p2_nl">{t('storyP2Nl')}</Label>
-                  <Textarea
-                    id="story_p2_nl"
-                    value={form.story_p2_nl || ''}
-                    placeholder={t('storyP2Nl')}
-                    rows={4}
-                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_nl: e.target.value }))}
-                  />
-                </div>
-              </div>
+              {hasExtendedMenuLocales ? (
+                <>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="story_title_fr">{t('storyTitleFr')}</Label>
+                      <Input
+                        id="story_title_fr"
+                        value={form.story_title_fr || ''}
+                        placeholder={t('storyTitleFr')}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_title_fr: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="story_title_nl">{t('storyTitleNl')}</Label>
+                      <Input
+                        id="story_title_nl"
+                        value={form.story_title_nl || ''}
+                        placeholder={t('storyTitleNl')}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_title_nl: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="story_p1_fr">{t('storyP1Fr')}</Label>
+                      <Textarea
+                        id="story_p1_fr"
+                        value={form.story_p1_fr || ''}
+                        placeholder={t('storyP1Fr')}
+                        rows={4}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_p1_fr: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="story_p1_nl">{t('storyP1Nl')}</Label>
+                      <Textarea
+                        id="story_p1_nl"
+                        value={form.story_p1_nl || ''}
+                        placeholder={t('storyP1Nl')}
+                        rows={4}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_p1_nl: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="story_p2_fr">{t('storyP2Fr')}</Label>
+                      <Textarea
+                        id="story_p2_fr"
+                        value={form.story_p2_fr || ''}
+                        placeholder={t('storyP2Fr')}
+                        rows={4}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_p2_fr: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="story_p2_nl">{t('storyP2Nl')}</Label>
+                      <Textarea
+                        id="story_p2_nl"
+                        value={form.story_p2_nl || ''}
+                        placeholder={t('storyP2Nl')}
+                        rows={4}
+                        onChange={(e) =>
+                          setForm((prev) => ({ ...prev, story_p2_nl: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : null}
               <div className="space-y-2">
                 <Label>{t('storyImage')}</Label>
                 <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">

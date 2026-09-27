@@ -21,6 +21,7 @@ import { Image } from '@/components/shared/Image';
 import { Pencil, Trash2 } from 'lucide-react';
 import type { Category, CategoryInput } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { hasExtendedMenuLocales } from '@/i18n/config';
 
 interface CategoryCardProps {
   category: Category;
@@ -143,52 +144,56 @@ export function CategoryCard({ category, onDelete, onUpdate }: CategoryCardProps
                       }
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="name_fr">{t('nameFr')}</Label>
-                    <Input
-                      id="name_fr"
-                      value={editForm.name_fr || ''}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({ ...prev, name_fr: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="name_nl">{t('nameNl')}</Label>
-                    <Input
-                      id="name_nl"
-                      value={editForm.name_nl || ''}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({ ...prev, name_nl: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description_fr">{t('descriptionFr')}</Label>
-                    <Textarea
-                      id="description_fr"
-                      value={editForm.description_fr || ''}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          description_fr: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description_nl">{t('descriptionNl')}</Label>
-                    <Textarea
-                      id="description_nl"
-                      value={editForm.description_nl || ''}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          description_nl: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
+                  {hasExtendedMenuLocales ? (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="name_fr">{t('nameFr')}</Label>
+                        <Input
+                          id="name_fr"
+                          value={editForm.name_fr || ''}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({ ...prev, name_fr: e.target.value }))
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="name_nl">{t('nameNl')}</Label>
+                        <Input
+                          id="name_nl"
+                          value={editForm.name_nl || ''}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({ ...prev, name_nl: e.target.value }))
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="description_fr">{t('descriptionFr')}</Label>
+                        <Textarea
+                          id="description_fr"
+                          value={editForm.description_fr || ''}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({
+                              ...prev,
+                              description_fr: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="description_nl">{t('descriptionNl')}</Label>
+                        <Textarea
+                          id="description_nl"
+                          value={editForm.description_nl || ''}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({
+                              ...prev,
+                              description_nl: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </>
+                  ) : null}
                   <div className="flex items-center justify-between">
                     <Label htmlFor="is_visible">{t('visible')}</Label>
                     <Switch

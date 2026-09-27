@@ -35,6 +35,7 @@ import { deliveryLocationSchema, type DeliveryLocationInput } from '@/types/sche
 import type { DeliveryLocation } from '@/types/database';
 import { getName, cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/RootI18nProvider';
+import { hasExtendedMenuLocales } from '@/i18n/config';
 
 const emptyForm = {
   name_ar: '',
@@ -300,24 +301,28 @@ export default function DeliveryLocationsPage() {
                   <p className="text-destructive text-sm">{formErrors.name_en}</p>
                 ) : null}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="name-fr">{t('nameFr')}</Label>
-                <Input
-                  id="name-fr"
-                  value={form.name_fr}
-                  className="h-11 min-h-11"
-                  onChange={(event) => setForm({ ...form, name_fr: event.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="name-nl">{t('nameNl')}</Label>
-                <Input
-                  id="name-nl"
-                  value={form.name_nl}
-                  className="h-11 min-h-11"
-                  onChange={(event) => setForm({ ...form, name_nl: event.target.value })}
-                />
-              </div>
+              {hasExtendedMenuLocales ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="name-fr">{t('nameFr')}</Label>
+                    <Input
+                      id="name-fr"
+                      value={form.name_fr}
+                      className="h-11 min-h-11"
+                      onChange={(event) => setForm({ ...form, name_fr: event.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name-nl">{t('nameNl')}</Label>
+                    <Input
+                      id="name-nl"
+                      value={form.name_nl}
+                      className="h-11 min-h-11"
+                      onChange={(event) => setForm({ ...form, name_nl: event.target.value })}
+                    />
+                  </div>
+                </>
+              ) : null}
               <div className="space-y-2">
                 <Label htmlFor="delivery-fee">{t('deliveryFee')}</Label>
                 <Input
