@@ -70,6 +70,8 @@ export function sanitizeErrorMessage(message: string, apiKey?: string): string {
   out = out.replace(/AQ\.[0-9A-Za-z_-]+/g, '[redacted]');
   out = out.replace(/sk-proj-[0-9A-Za-z_-]+/g, '[redacted]');
   out = out.replace(/sk-[0-9A-Za-z_-]+/g, '[redacted]');
+  out = out.replace(/sk_[0-9A-Za-z]+/g, '[redacted]');
+  out = out.replace(/Bearer\s+\S+/gi, 'Bearer [redacted]');
   return out;
 }
 
@@ -300,9 +302,15 @@ async function generateProductImageCandidate(
   prompt: string,
   sourceImage?: SourceImageBytes
 ): Promise<GeneratedImageBytes> {
-  if (getAiImageProvider() === 'openai') {
+  const provider = getAiImageProvider();
+  if (provider === 'openai') {
     const { generateOpenAiProductImageCandidate } = await import('@/lib/ai/openai-product-image');
     return generateOpenAiProductImageCandidate(prompt, sourceImage);
+  }
+  if (provider === 'pollinations') {
+    const { generatePollinationsProductImageCandidate } =
+      await import('@/lib/ai/pollinations-product-image');
+    return generatePollinationsProductImageCandidate(prompt, sourceImage);
   }
   return generateGeminiProductImageCandidate(prompt, sourceImage);
 }

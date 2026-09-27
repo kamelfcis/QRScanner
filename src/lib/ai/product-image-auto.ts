@@ -249,8 +249,12 @@ export async function pickBestProductImageCandidate(
     return { bestIndex: 0, scores: [10] };
   }
 
-  if (getAiImageProvider() === 'openai') {
+  const provider = getAiImageProvider();
+  if (provider === 'openai') {
     return pickBestWithOpenAiVision(input, candidates);
+  }
+  if (provider === 'pollinations' && !process.env.GEMINI_API_KEY?.trim()) {
+    return { bestIndex: 0, scores: [] };
   }
   return pickBestWithGeminiVision(input, candidates);
 }

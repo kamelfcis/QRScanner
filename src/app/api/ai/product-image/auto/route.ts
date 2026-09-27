@@ -7,7 +7,7 @@ import { categoryRelationNameFields } from '@/lib/catalog/keys';
 import { getName } from '@/lib/utils';
 
 export const runtime = 'nodejs';
-export const maxDuration = 60;
+export const maxDuration = 180;
 
 function asTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
