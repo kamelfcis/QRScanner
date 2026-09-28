@@ -72,8 +72,8 @@ export const alaKeefakTenantAttr = isAlaKeefakTenant
   ? ({ 'data-tenant': 'ala-keefak' } as const)
   : {};
 
-/** When true, per-kg products expose gram weight picker (migration 025 — hettsamaka only). */
-export const hasProductWeightOptions = tenant === 'hettsamaka';
+/** When true, per-kg products expose gram weight picker (migration 036). */
+export const hasProductWeightOptions = tenant === 'hettsamaka' || tenant === 'ala-keefak';
 
 /** Cashier, shift sheet, expenses, pause-orders, kitchen print, sold-out (hettsamaka + ala-keefak). */
 export const hasDailyOps = tenant === 'hettsamaka' || tenant === 'ala-keefak';
