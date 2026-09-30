@@ -16,6 +16,7 @@ import {
   readStoredDiningMode,
   persistTableNumber,
 } from '@/lib/dining-mode';
+import { buildMenuEntryUrl, skipWelcomePage } from '@/lib/store-config';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import {
   fadeInUp,
@@ -47,21 +48,25 @@ function WelcomeContent() {
   const prefersReducedMotion = useReducedMotion();
   const setMeta = useCartStore((s) => s.setMeta);
 
-  const [ready, setReady] = useState(() => !skipParam);
-  const [redirecting] = useState(() => Boolean(skipParam));
+  const shouldRedirect = skipParam || skipWelcomePage;
+  const [ready, setReady] = useState(() => !shouldRedirect);
+  const [redirecting] = useState(() => shouldRedirect);
 
   useEffect(() => {
-    // Testing escape hatch only - QR table scans always show mode picker
-    if (skipParam) {
-      const mode = readStoredDiningMode();
+    if (shouldRedirect) {
       if (tableParam) persistTableNumber(tableParam);
-      router.replace(buildMenuUrl(mode, tableParam));
+      if (skipWelcomePage) {
+        router.replace(buildMenuEntryUrl(tableParam));
+      } else {
+        const mode = readStoredDiningMode();
+        router.replace(buildMenuUrl(mode, tableParam));
+      }
       return;
     }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reveal UI after client hydration
     setReady(true);
-  }, [skipParam, tableParam, router]);
+  }, [shouldRedirect, skipWelcomePage, skipParam, tableParam, router]);
 
   const isArabic = locale === 'ar';
   const restaurantName = getName(

@@ -13,6 +13,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { cn, getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import type { Product } from '@/types/database';
+import { getMenuEntryPath } from '@/lib/store-config';
 
 function preferImageUrl(products: Product[]): Product[] {
   const withImage: Product[] = [];
@@ -95,7 +96,7 @@ export function FeaturedDishes() {
               return (
                 <MotionCard key={product.id} delay={index * 0.05}>
                   <Link
-                    href="/welcome"
+                    href={getMenuEntryPath()}
                     className="border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors"
                   >
                     <div className="relative aspect-square overflow-hidden">
@@ -152,7 +153,7 @@ export function FeaturedDishes() {
         <MotionSection delay={0.3}>
           <div className="mt-10 text-center">
             <Link
-              href="/welcome"
+              href={getMenuEntryPath()}
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-brand-accent hover:bg-brand-accent/90 rounded-full px-8 text-base font-semibold text-black'

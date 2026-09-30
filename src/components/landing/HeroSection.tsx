@@ -11,6 +11,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { getMenuEntryPath } from '@/lib/store-config';
 
 const DEFAULT_HERO = '/hero/warda-storefront.jpg';
 
@@ -176,7 +177,7 @@ export function HeroSection() {
 
         <motion.div variants={prefersReducedMotion ? undefined : itemVariants}>
           <Link
-            href="/welcome"
+            href={getMenuEntryPath()}
             className={cn(
               buttonVariants({ size: 'lg' }),
               'bg-brand-accent hover:bg-brand-accent/90 px-10 text-base font-semibold text-black'
