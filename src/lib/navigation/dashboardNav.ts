@@ -10,6 +10,7 @@ import {
   FileText,
   type LucideIcon,
 } from 'lucide-react';
+import { getDashboardNavItems } from '@/lib/store-config';
 
 export interface DashboardNavItem {
   key: string;
@@ -29,3 +30,8 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'tables', href: '/dashboard/tables', icon: Table },
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];
+
+/** Sidebar + mobile nav items for the active store mode. */
+export function getDashboardNav(): DashboardNavItem[] {
+  return getDashboardNavItems(DASHBOARD_NAV);
+}

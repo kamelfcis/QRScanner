@@ -7,6 +7,7 @@ import { useSiteName } from '@/hooks/useSiteName';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 import { getMenuEntryPath } from '@/lib/store-config';
+import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 export function PublicFooter() {
   const { data: settings } = useRestaurantSettings();
@@ -154,7 +155,10 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            {t('copyright', { year: new Date().getFullYear(), name })}
+            {safeFormatMessage(t, 'copyright', {
+              year: new Date().getFullYear(),
+              name: name || commonT('appName'),
+            })}
           </p>
         </div>
       </div>

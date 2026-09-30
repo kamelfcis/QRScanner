@@ -23,6 +23,9 @@ import { isValidHexColor } from '@/lib/theme';
 import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
+import { useSiteName } from '@/hooks/useSiteName';
+import { isEcommerceStore } from '@/lib/store-config';
+import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 const DAYS = [
   'monday',
@@ -61,6 +64,8 @@ export default function SettingsPage() {
   const t = useTranslations('settings');
   const tCommon = useTranslations('common');
   const tDays = useTranslations('days');
+  const tLanding = useTranslations('landing');
+  const siteName = useSiteName();
 
   const [form, setForm] = useState<Partial<RestaurantSettings>>({});
   const [hoursForm, setHoursForm] = useState<HoursSettings>(DEFAULT_HOURS);
@@ -389,7 +394,9 @@ export default function SettingsPage() {
                     <div className="bg-muted relative h-32 w-full max-w-md overflow-hidden rounded-lg border sm:h-28">
                       <img
                         src={form.hero_image_url}
-                        alt={t('heroImageAlt')}
+                        alt={safeFormatMessage(tLanding, 'heroImageAlt', {
+                          name: siteName || tCommon('appName'),
+                        })}
                         className="h-full w-full object-cover"
                       />
                       <button
@@ -831,22 +838,24 @@ export default function SettingsPage() {
                     }
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="service_charge">{t('serviceCharge')}</Label>
-                  <Input
-                    id="service_charge"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={form.service_charge_rate ?? 10}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        service_charge_rate: parseFloat(e.target.value) || 0,
-                      }))
-                    }
-                  />
-                </div>
+                {!isEcommerceStore && (
+                  <div className="space-y-2">
+                    <Label htmlFor="service_charge">{t('serviceCharge')}</Label>
+                    <Input
+                      id="service_charge"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={form.service_charge_rate ?? 10}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          service_charge_rate: parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
@@ -911,16 +920,18 @@ export default function SettingsPage() {
                   />
                   <Label htmlFor="apply_tax">{t('applyTax')}</Label>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Switch
-                    id="apply_service_charge"
-                    checked={form.apply_service_charge !== false}
-                    onCheckedChange={(checked) =>
-                      setForm((prev) => ({ ...prev, apply_service_charge: checked }))
-                    }
-                  />
-                  <Label htmlFor="apply_service_charge">{t('applyServiceCharge')}</Label>
-                </div>
+                {!isEcommerceStore && (
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      id="apply_service_charge"
+                      checked={form.apply_service_charge !== false}
+                      onCheckedChange={(checked) =>
+                        setForm((prev) => ({ ...prev, apply_service_charge: checked }))
+                      }
+                    />
+                    <Label htmlFor="apply_service_charge">{t('applyServiceCharge')}</Label>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -8,15 +8,64 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { BarChart3, Package, Layers, Search, Monitor } from 'lucide-react';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
+import { isEcommerceStore } from '@/lib/store-config';
 
-const VisitorsChart = dynamic(() => import('@/components/dashboard/analytics/VisitorsChart').then(m => ({ default: m.VisitorsChart })), { ssr: false });
-const QRScansChart = dynamic(() => import('@/components/dashboard/analytics/QRScansChart').then(m => ({ default: m.QRScansChart })), { ssr: false });
-const DiningTakeawayChart = dynamic(() => import('@/components/dashboard/analytics/DiningTakeawayChart').then(m => ({ default: m.DiningTakeawayChart })), { ssr: false });
-const PeakHoursChart = dynamic(() => import('@/components/dashboard/analytics/PeakHoursChart').then(m => ({ default: m.PeakHoursChart })), { ssr: false });
-const TopProductsChart = dynamic(() => import('@/components/dashboard/analytics/TopProductsChart').then(m => ({ default: m.TopProductsChart })), { ssr: false });
-const TopCategoriesChart = dynamic(() => import('@/components/dashboard/analytics/TopCategoriesChart').then(m => ({ default: m.TopCategoriesChart })), { ssr: false });
-const SearchTermsChart = dynamic(() => import('@/components/dashboard/analytics/SearchTermsChart').then(m => ({ default: m.SearchTermsChart })), { ssr: false });
-const DeviceBreakdown = dynamic(() => import('@/components/dashboard/analytics/DeviceBreakdown').then(m => ({ default: m.DeviceBreakdown })), { ssr: false });
+const VisitorsChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/VisitorsChart').then((m) => ({
+      default: m.VisitorsChart,
+    })),
+  { ssr: false }
+);
+const QRScansChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/QRScansChart').then((m) => ({
+      default: m.QRScansChart,
+    })),
+  { ssr: false }
+);
+const DiningTakeawayChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/DiningTakeawayChart').then((m) => ({
+      default: m.DiningTakeawayChart,
+    })),
+  { ssr: false }
+);
+const PeakHoursChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/PeakHoursChart').then((m) => ({
+      default: m.PeakHoursChart,
+    })),
+  { ssr: false }
+);
+const TopProductsChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/TopProductsChart').then((m) => ({
+      default: m.TopProductsChart,
+    })),
+  { ssr: false }
+);
+const TopCategoriesChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/TopCategoriesChart').then((m) => ({
+      default: m.TopCategoriesChart,
+    })),
+  { ssr: false }
+);
+const SearchTermsChart = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/SearchTermsChart').then((m) => ({
+      default: m.SearchTermsChart,
+    })),
+  { ssr: false }
+);
+const DeviceBreakdown = dynamic(
+  () =>
+    import('@/components/dashboard/analytics/DeviceBreakdown').then((m) => ({
+      default: m.DeviceBreakdown,
+    })),
+  { ssr: false }
+);
 
 export default function AnalyticsPage() {
   const [period, setPeriod] = useState<Period>('week');
@@ -51,9 +100,9 @@ export default function AnalyticsPage() {
         <TabsContent value="overview" className="space-y-6">
           <Suspense fallback={<LoadingPage />}>
             <DateRangePicker value={period} onChange={setPeriod} />
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className={isEcommerceStore ? 'grid gap-6' : 'grid gap-6 md:grid-cols-2'}>
               <VisitorsChart period={period} />
-              <DiningTakeawayChart period={period} />
+              {!isEcommerceStore && <DiningTakeawayChart period={period} />}
             </div>
             <PeakHoursChart period={period} />
           </Suspense>

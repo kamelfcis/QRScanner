@@ -10,7 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
+import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
@@ -46,7 +46,7 @@ export function DashboardSidebar() {
 
         <ScrollArea className="flex-1 px-3 py-4">
           <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
-            {DASHBOARD_NAV.map((item) => {
+            {getDashboardNav().map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               const label = tSidebar(item.key);
               return (

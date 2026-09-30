@@ -6,6 +6,7 @@ import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
 import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import { ServerBrandThemeStyles } from '@/components/providers/ServerBrandThemeStyles';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
@@ -145,11 +146,13 @@ export default async function RootLayout({
         </a>
         <ErrorBoundary>
           <RootI18nProvider initialLocale={locale}>
-            <TooltipProvider delay={0}>
-              {children}
-              <InstallPrompt />
-              <OfflineIndicator />
-            </TooltipProvider>
+            <QueryProvider>
+              <TooltipProvider delay={0}>
+                {children}
+                <InstallPrompt />
+                <OfflineIndicator />
+              </TooltipProvider>
+            </QueryProvider>
           </RootI18nProvider>
         </ErrorBoundary>
       </body>

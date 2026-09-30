@@ -30,6 +30,24 @@ describe('store-config', () => {
     expect(config.buildMenuEntryUrl('5')).toBe('/menu?table=5');
   });
 
+  it('ecommerce mode hides restaurant-only dashboard nav and paths', async () => {
+    vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'ecommerce');
+    vi.stubEnv('NEXT_PUBLIC_QR_TARGET_PATH', '');
+    const config = await import('@/lib/store-config');
+    const nav = await import('@/lib/navigation/dashboardNav');
+
+    expect(config.isRestaurantOnlyDashboardPath('/dashboard/tables')).toBe(true);
+    expect(config.isRestaurantOnlyDashboardPath('/dashboard/reports')).toBe(true);
+    expect(config.isRestaurantOnlyDashboardPath('/dashboard/analytics/heatmaps')).toBe(true);
+    expect(config.isRestaurantOnlyDashboardPath('/dashboard/menu')).toBe(false);
+
+    const keys = nav.getDashboardNav().map((item) => item.key);
+    expect(keys).not.toContain('tables');
+    expect(keys).not.toContain('reports');
+    expect(keys).toContain('menu');
+    expect(keys).toContain('settings');
+  });
+
   it('QR target path alone can skip welcome for restaurants', async () => {
     vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'restaurant');
     vi.stubEnv('NEXT_PUBLIC_QR_TARGET_PATH', '/menu');

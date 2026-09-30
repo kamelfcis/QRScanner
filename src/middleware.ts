@@ -1,7 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
-import { getMenuEntryPath, skipWelcomePage } from '@/lib/store-config';
+import {
+  getMenuEntryPath,
+  isRestaurantOnlyDashboardPath,
+  isEcommerceStore,
+  skipWelcomePage,
+} from '@/lib/store-config';
 
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
@@ -27,6 +32,13 @@ export async function middleware(request: NextRequest) {
       loginUrl.pathname = '/login';
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
+    }
+
+    if (isEcommerceStore && isRestaurantOnlyDashboardPath(pathname)) {
+      const dashboardUrl = request.nextUrl.clone();
+      dashboardUrl.pathname = '/dashboard';
+      dashboardUrl.search = '';
+      return NextResponse.redirect(dashboardUrl);
     }
   }
 

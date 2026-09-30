@@ -27,6 +27,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { cn } from '@/lib/utils';
+import { isEcommerceStore } from '@/lib/store-config';
 
 const ActivityFeed = dynamic(
   () => import('@/components/dashboard/ActivityFeed').then((m) => ({ default: m.ActivityFeed })),
@@ -73,18 +74,22 @@ export default function DashboardPage() {
           icon: Activity,
           color: 'bg-purple-500/10 text-purple-500',
         },
-        {
-          title: t('diningPercent'),
-          value: stats.diningPercent + '%',
-          icon: UtensilsCrossed,
-          color: 'bg-brand-primary/10 text-brand-primary',
-        },
-        {
-          title: t('takeawayPercent'),
-          value: stats.takeawayPercent + '%',
-          icon: ShoppingBag,
-          color: 'bg-brand-secondary/10 text-brand-secondary',
-        },
+        ...(isEcommerceStore
+          ? []
+          : [
+              {
+                title: t('diningPercent'),
+                value: stats.diningPercent + '%',
+                icon: UtensilsCrossed,
+                color: 'bg-brand-primary/10 text-brand-primary',
+              },
+              {
+                title: t('takeawayPercent'),
+                value: stats.takeawayPercent + '%',
+                icon: ShoppingBag,
+                color: 'bg-brand-secondary/10 text-brand-secondary',
+              },
+            ]),
       ]
     : [];
 
@@ -217,33 +222,35 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div>
-        <ChartCard title={t('diningVsTakeaway')} description={t('todayOrderBreakdown')}>
-          {statsLoading ? (
-            <Skeleton className="h-[300px] w-full" />
-          ) : (stats?.diningPercent || 0) + (stats?.takeawayPercent || 0) === 0 ? (
-            <p className="text-muted-foreground flex h-[300px] items-center justify-center text-sm">
-              {tAnalytics('noDataYet')}
-            </p>
-          ) : (
-            <PieDonutChart
-              data={[
-                {
-                  name: t('dining'),
-                  value: stats?.diningPercent || 0,
-                  color: isDark ? '#DAA520' : '#B8860B',
-                },
-                {
-                  name: t('takeaway'),
-                  value: stats?.takeawayPercent || 0,
-                  color: isDark ? '#A52A2A' : '#8B0000',
-                },
-              ]}
-              donut
-            />
-          )}
-        </ChartCard>
-      </div>
+      {!isEcommerceStore && (
+        <div>
+          <ChartCard title={t('diningVsTakeaway')} description={t('todayOrderBreakdown')}>
+            {statsLoading ? (
+              <Skeleton className="h-[300px] w-full" />
+            ) : (stats?.diningPercent || 0) + (stats?.takeawayPercent || 0) === 0 ? (
+              <p className="text-muted-foreground flex h-[300px] items-center justify-center text-sm">
+                {tAnalytics('noDataYet')}
+              </p>
+            ) : (
+              <PieDonutChart
+                data={[
+                  {
+                    name: t('dining'),
+                    value: stats?.diningPercent || 0,
+                    color: isDark ? '#DAA520' : '#B8860B',
+                  },
+                  {
+                    name: t('takeaway'),
+                    value: stats?.takeawayPercent || 0,
+                    color: isDark ? '#A52A2A' : '#8B0000',
+                  },
+                ]}
+                donut
+              />
+            )}
+          </ChartCard>
+        </div>
+      )}
     </div>
   );
 }

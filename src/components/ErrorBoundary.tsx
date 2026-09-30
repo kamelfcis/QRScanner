@@ -3,8 +3,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
-
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
@@ -16,20 +14,15 @@ interface ErrorBoundaryProps {
 }
 
 function ErrorFallback({ error, onRetry }: { error: Error | null; onRetry: () => void }) {
-  const t = useTranslations('errors');
   return (
     <div className="flex min-h-[400px] flex-col items-center justify-center p-8 text-center">
       <AlertCircle className="mb-4 h-12 w-12 text-red-500" />
-      <h2 className="mb-2 text-xl font-semibold">{t('somethingWentWrong')}</h2>
-      <p className="mb-4 max-w-md text-muted-foreground">
-        {t('unexpectedErrorDetail')}
+      <h2 className="mb-2 text-xl font-semibold">Something went wrong</h2>
+      <p className="text-muted-foreground mb-4 max-w-md">
+        An unexpected error occurred. Please try again.
       </p>
-      <p className="mb-4 text-xs text-muted-foreground font-mono">
-        {error?.message}
-      </p>
-      <Button onClick={onRetry}>
-        {t('tryAgain')}
-      </Button>
+      <p className="text-muted-foreground mb-4 font-mono text-xs">{error?.message}</p>
+      <Button onClick={onRetry}>Try again</Button>
     </div>
   );
 }
@@ -54,7 +47,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
-      
+
       return (
         <ErrorFallback
           error={this.state.error}

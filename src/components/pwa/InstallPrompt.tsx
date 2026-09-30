@@ -8,6 +8,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getRestaurantDisplayName } from '@/lib/appName';
 import { cn } from '@/lib/utils';
+import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -25,10 +26,7 @@ export function InstallPrompt() {
   const t = useTranslations('pwa');
   const siteName = getRestaurantDisplayName(locale, null);
 
-  const installTitle = (() => {
-    const raw = t('installTitle', { name: siteName });
-    return raw.includes('{name}') ? raw.replace(/\{name\}/g, siteName) : raw;
-  })();
+  const installTitle = safeFormatMessage(t, 'installTitle', { name: siteName });
 
   useEffect(() => {
     const handler = (e: Event) => {

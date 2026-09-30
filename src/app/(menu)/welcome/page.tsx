@@ -17,6 +17,7 @@ import {
   persistTableNumber,
 } from '@/lib/dining-mode';
 import { buildMenuEntryUrl, skipWelcomePage } from '@/lib/store-config';
+import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import {
   fadeInUp,
@@ -110,7 +111,7 @@ function WelcomeContent() {
         >
           <NextImage
             src={WELCOME_HERO}
-            alt={t('heroAlt')}
+            alt={safeFormatMessage(t, 'heroAlt', { name: restaurantName })}
             fill
             priority
             sizes="100vw"
@@ -163,7 +164,7 @@ function WelcomeContent() {
           variants={prefersReducedMotion ? undefined : fadeInUp}
           className="font-heading mb-2 max-w-md text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-lg sm:text-4xl"
         >
-          {t('welcomeTo', { name: restaurantName })}
+          {safeFormatMessage(t, 'welcomeTo', { name: restaurantName })}
         </motion.h1>
 
         <motion.p

@@ -19,7 +19,7 @@ import {
 import { cn, getName } from '@/lib/utils';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { DASHBOARD_NAV } from '@/lib/navigation/dashboardNav';
+import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 
 export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
@@ -71,7 +71,7 @@ export function DashboardHeader() {
               </div>
             </div>
             <nav className="space-y-1" aria-label={tDashboard('adminDashboard')}>
-              {DASHBOARD_NAV.map((item) => {
+              {getDashboardNav().map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
                 const label = tSidebar(item.key);
                 return (

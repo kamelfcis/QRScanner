@@ -7,6 +7,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
+import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 /**
  * The one signature moment: a compact cinematic band under the header.
@@ -57,7 +58,7 @@ export function MenuHero() {
           <div className="menu-hero-image absolute inset-0">
             <NextImage
               src={image}
-              alt={t('heroImageAlt', { name })}
+              alt={safeFormatMessage(t, 'heroImageAlt', { name })}
               fill
               priority
               sizes="100vw"

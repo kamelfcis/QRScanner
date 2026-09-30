@@ -34,6 +34,28 @@ export function getMenuEntryPath(): string {
   return qrTargetPath;
 }
 
+/** Dashboard routes that only apply to restaurant mode (tables, dining reports, etc.). */
+export const RESTAURANT_ONLY_DASHBOARD_PATHS = [
+  '/dashboard/tables',
+  '/dashboard/reports',
+  '/dashboard/analytics/heatmaps',
+] as const;
+
+/** Sidebar keys hidden when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
+export const ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS = new Set(['tables', 'reports']);
+
+export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
+  return RESTAURANT_ONLY_DASHBOARD_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
+  );
+}
+
+/** Filtered dashboard nav for the current store mode. */
+export function getDashboardNavItems<T extends { key: string }>(items: readonly T[]): T[] {
+  if (!isEcommerceStore) return [...items];
+  return items.filter((item) => !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key));
+}
+
 /** Build an in-app menu URL (respects ecommerce vs restaurant defaults). */
 export function buildMenuEntryUrl(table?: string | null, mode?: CartDiningMode): string {
   const params = new URLSearchParams();
