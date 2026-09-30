@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { CustomerSecrets, TemplateType } from '@/lib/engaz/types';
 import { CUSTOMER_MIGRATIONS } from '@/server/provision/migrations-data';
+import { splitSqlStatements } from '@/server/provision/split-sql';
 import {
   buildHoursSettings,
   buildRestaurantSettings,
@@ -34,21 +35,27 @@ export async function validateCustomerSupabase(secrets: CustomerSecrets): Promis
   }
 }
 
-async function runSql(secrets: CustomerSecrets, query: string): Promise<void> {
-  const res = await fetch(
-    `${MANAGEMENT_API}/v1/projects/${secrets.supabaseProjectRef}/database/query`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secrets.supabaseAccessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query }),
-    }
-  );
-  if (!res.ok) {
+async function runSql(secrets: CustomerSecrets, query: string, label = 'query'): Promise<void> {
+  const statements = splitSqlStatements(query);
+  for (let index = 0; index < statements.length; index += 1) {
+    const statement = statements[index]!;
+    const res = await fetch(
+      `${MANAGEMENT_API}/v1/projects/${secrets.supabaseProjectRef}/database/query`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${secrets.supabaseAccessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: statement }),
+      }
+    );
+    if (res.ok) continue;
     const body = await res.text();
-    throw new Error(`SQL failed (${res.status}): ${body.slice(0, 800)}`);
+    if (/already exists/i.test(body)) continue;
+    throw new Error(
+      `SQL failed (${res.status}) in ${label} statement ${index + 1}/${statements.length}: ${body.slice(0, 500)}`
+    );
   }
 }
 
@@ -63,8 +70,8 @@ export async function applyCustomerMigrations(
   const files = listCustomerMigrationFiles();
   const applied: string[] = [];
   for (const file of files) {
+    await runSql(secrets, file.sql, file.name);
     onProgress?.(file.name);
-    await runSql(secrets, file.sql);
     applied.push(file.name);
   }
   return applied;
