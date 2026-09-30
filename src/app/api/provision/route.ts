@@ -1,10 +1,12 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { encryptJson, encryptSecret, generatePassword } from '@/lib/crypto/secrets';
 import { TEMPLATE_CONFIGS } from '@/lib/engaz/types';
 import { requireServerSecrets } from '@/lib/env';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 import { prepareProvisionInput } from '@/server/provision/prepare-input';
 import { startProvisionJob } from '@/server/provision/runner';
+
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   const auth = await requireSuperAdmin();
@@ -197,7 +199,7 @@ export async function POST(request: Request) {
   }
 
   void TEMPLATE_CONFIGS;
-  startProvisionJob(job.id);
+  after(() => startProvisionJob(job.id));
 
   return NextResponse.json({
     customerId: customer.id,

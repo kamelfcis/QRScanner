@@ -146,21 +146,17 @@ export async function runProvisionJob(jobId: string): Promise<void> {
 
     // ---- 2. Migrate ----
     await setJobStatus(jobId, 'migrating');
-    await logEvent(jobId, 'migrating', 'Applying supabase/migrations 001–014…');
-    const applied = await applyCustomerMigrations(secrets, (file) => {
-      void logEvent(jobId, 'migrating', `Applied ${file.split(/[/\\]/).pop()}`);
-    });
+    await logEvent(jobId, 'migrating', 'Applying schema migrations…');
+    const applied = await applyCustomerMigrations(secrets, (message) =>
+      logEvent(jobId, 'migrating', message)
+    );
     await logEvent(jobId, 'migrating', `Migrations complete (${applied.length} files)`, 'success');
 
-    // ---- 3. Seed empty ----
+    // ---- 3. Clear content ----
     await setJobStatus(jobId, 'seeding');
-    await logEvent(jobId, 'seeding', 'Clearing menu and upserting template settings…');
-    await seedEmptyMenu(secrets, {
-      templateType,
-      displayNameAr: customer.display_name_ar,
-      displayNameEn: customer.display_name_en,
-    });
-    await logEvent(jobId, 'seeding', 'Empty menu + settings ready', 'success');
+    await logEvent(jobId, 'seeding', 'Clearing menu content…');
+    await seedEmptyMenu(secrets);
+    await logEvent(jobId, 'seeding', 'Menu content cleared', 'success');
 
     // ---- 4. Customer admin ----
     await setJobStatus(jobId, 'creating_admin');
@@ -385,9 +381,9 @@ export async function runProvisionJob(jobId: string): Promise<void> {
   }
 }
 
-/** Fire-and-forget wrapper for API routes */
-export function startProvisionJob(jobId: string) {
-  void runProvisionJob(jobId).catch((err) => {
+/** Returns the job promise so Next.js after() can keep the function alive. */
+export function startProvisionJob(jobId: string): Promise<void> {
+  return runProvisionJob(jobId).catch((err) => {
     console.error('[provision]', jobId, err);
   });
 }

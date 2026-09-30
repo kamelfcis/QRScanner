@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 import { startProvisionJob } from '@/server/provision/runner';
+
+export const maxDuration = 300;
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -35,6 +37,6 @@ export async function POST(_request: Request, ctx: Ctx) {
     return NextResponse.json({ error: error?.message || 'Failed to create job' }, { status: 500 });
   }
 
-  startProvisionJob(job.id);
+  after(() => startProvisionJob(job.id));
   return NextResponse.json({ jobId: job.id });
 }
