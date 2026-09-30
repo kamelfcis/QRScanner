@@ -1,10 +1,10 @@
 import type { ThemeSettings } from '@/types';
 
 export const DEFAULT_THEME: ThemeSettings = {
-  primary_color: '#FFB700',
-  secondary_color: '#6B0F1A',
-  accent_color: '#FFB700',
-  background_color: '#FAF8F5',
+  primary_color: '#D4AF37',
+  secondary_color: '#1E3A5F',
+  accent_color: '#D4AF37',
+  background_color: '#0A1628',
 };
 
 const HEX_COLOR = /^#[0-9A-Fa-f]{6}$/;
@@ -82,6 +82,7 @@ export function themeToCssVariables(
   if (mode === 'light') {
     return {
       ...brandVars,
+      '--background': background,
       '--primary': primaryDark,
       '--primary-foreground': '#FFFFFF',
       '--secondary': secondary,
@@ -98,6 +99,16 @@ export function themeToCssVariables(
 
   return {
     ...brandVars,
+    '--background': '#0A1628',
+    '--foreground': '#F1F5F9',
+    '--card': '#0F172A',
+    '--card-foreground': '#F1F5F9',
+    '--popover': '#0F172A',
+    '--popover-foreground': '#F1F5F9',
+    '--muted': '#1E293B',
+    '--muted-foreground': '#94A3B8',
+    '--border': '#334155',
+    '--input': '#334155',
     '--primary': accent,
     '--primary-foreground': getContrastForeground(accent),
     '--secondary': secondaryLight,
@@ -106,8 +117,13 @@ export function themeToCssVariables(
     '--accent-foreground': getContrastForeground(accent),
     '--ring': accent,
     '--chart-1': accent,
+    '--sidebar': '#0F172A',
+    '--sidebar-foreground': '#F1F5F9',
     '--sidebar-primary': accent,
     '--sidebar-primary-foreground': getContrastForeground(accent),
+    '--sidebar-accent': '#1E293B',
+    '--sidebar-accent-foreground': '#F1F5F9',
+    '--sidebar-border': '#334155',
     '--sidebar-ring': accent,
   };
 }
@@ -143,6 +159,7 @@ export function clearBrandTheme(): void {
     '--sidebar-primary',
     '--sidebar-primary-foreground',
     '--sidebar-ring',
+    '--background',
   ];
 
   keys.forEach((key) => root.style.removeProperty(key));

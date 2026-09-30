@@ -2,9 +2,19 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { DEFAULT_THEME } from '@/lib/theme';
+import { isSettingsNotFoundError } from '@/lib/settings/settingsHelpers';
 import type { Settings, RestaurantSettings, ThemeSettings, HoursSettings } from '@/types';
 
 const supabase = createClient();
+
+async function revalidateSettingsCache() {
+  try {
+    await fetch('/api/settings/revalidate', { method: 'POST' });
+  } catch {
+    // Best-effort — client query invalidation still applies theme in-session
+  }
+}
 
 export const settingsKeys = {
   all: ['settings'] as const,
@@ -37,10 +47,11 @@ export function useThemeSettings() {
         .from('settings')
         .select('*')
         .eq('key', 'theme')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      return (data as Settings).value as unknown as ThemeSettings;
+      if (!data) return DEFAULT_THEME;
+      return { ...DEFAULT_THEME, ...((data as Settings).value as unknown as ThemeSettings) };
     },
   });
 }
@@ -53,9 +64,10 @@ export function useHoursSettings() {
         .from('settings')
         .select('*')
         .eq('key', 'hours')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) return {} as HoursSettings;
       return (data as Settings).value as unknown as HoursSettings;
     },
   });
@@ -125,10 +137,11 @@ export function useUpdateRestaurantSettings() {
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as RestaurantSettings);
+      return data.value as unknown as RestaurantSettings;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      await revalidateSettingsCache();
     },
   });
 }
@@ -142,25 +155,30 @@ export function useUpdateHoursSettings() {
         .from('settings')
         .select('value')
         .eq('key', 'hours')
-        .single();
+        .maybeSingle();
 
-      if (readError) throw new Error('Failed to read current hours settings');
+      if (readError && !isSettingsNotFoundError(readError)) {
+        throw new Error('Failed to read current hours settings');
+      }
 
-      const currentSettings = (existing?.value as unknown as HoursSettings) || {};
+      const currentSettings = (existing?.value as unknown as HoursSettings | undefined) ?? {};
       const updatedSettings = { ...currentSettings, ...input };
 
       const { data, error } = await supabase
         .from('settings')
-        .update({ value: updatedSettings, updated_at: new Date().toISOString() })
-        .eq('key', 'hours')
+        .upsert(
+          { key: 'hours', value: updatedSettings, updated_at: new Date().toISOString() },
+          { onConflict: 'key' }
+        )
         .select()
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as HoursSettings);
+      return data.value as unknown as HoursSettings;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      await revalidateSettingsCache();
     },
   });
 }
@@ -174,25 +192,31 @@ export function useUpdateThemeSettings() {
         .from('settings')
         .select('value')
         .eq('key', 'theme')
-        .single();
+        .maybeSingle();
 
-      if (readError) throw new Error('Failed to read current theme settings');
+      if (readError && !isSettingsNotFoundError(readError)) {
+        throw new Error('Failed to read current theme settings');
+      }
 
-      const currentSettings = (existing?.value as unknown as ThemeSettings) || {};
+      const currentSettings =
+        (existing?.value as unknown as ThemeSettings | undefined) ?? DEFAULT_THEME;
       const updatedSettings = { ...currentSettings, ...input };
 
       const { data, error } = await supabase
         .from('settings')
-        .update({ value: updatedSettings, updated_at: new Date().toISOString() })
-        .eq('key', 'theme')
+        .upsert(
+          { key: 'theme', value: updatedSettings, updated_at: new Date().toISOString() },
+          { onConflict: 'key' }
+        )
         .select()
         .single();
 
       if (error) throw error;
-      return (data.value as unknown as ThemeSettings);
+      return data.value as unknown as ThemeSettings;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      await revalidateSettingsCache();
     },
   });
 }

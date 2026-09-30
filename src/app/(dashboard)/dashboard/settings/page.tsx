@@ -45,10 +45,10 @@ const DEFAULT_HOURS: HoursSettings = {
 };
 
 const DEFAULT_THEME: ThemeSettings = {
-  primary_color: '#FFB700',
-  secondary_color: '#6B0F1A',
-  accent_color: '#FFB700',
-  background_color: '#FAF8F5',
+  primary_color: '#D4AF37',
+  secondary_color: '#1E3A5F',
+  accent_color: '#D4AF37',
+  background_color: '#0A1628',
 };
 
 export default function SettingsPage() {

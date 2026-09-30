@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   if (localeCookie && locales.includes(localeCookie as Locale)) {
     detected = localeCookie as Locale;
   } else {
-    // First visit: always Arabic; ignore browser Accept-Language until user switches
+    // First visit: use default locale (en for Mazen Store); user can switch via toggle
     detected = defaultLocale;
     response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
   }

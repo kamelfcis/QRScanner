@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
-const SITE_NAME = 'Warda Shamya';
-const SITE_NAME_AR = 'وردة الشامية';
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MAZEN STORE';
+const SITE_NAME_AR = process.env.NEXT_PUBLIC_APP_NAME_AR || SITE_NAME;
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mazen-store-b1eb.vercel.app';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const DESCRIPTIONS = {
-  en: 'Warda Shamya — Premium Lebanese & Syrian restaurant in Riyadh. Explore our authentic menu with traditional dishes crafted with love.',
-  ar: 'وردة الشامية — مطعم لبناني وسوري فاخر في الرياض. استكشف قائمتنا الأصيلة بأطباق تقليدية مُعدّة بحب.',
+  en: `${SITE_NAME} — Premium wallets and accessories. Browse our collection and shop online.`,
+  ar: `${SITE_NAME_AR} — محافظ وإكسسوارات فاخرة. تصفّح مجموعتنا وتسوّق أونلاين.`,
 } as const;
 
 export function generateSiteMetadata(
@@ -25,16 +25,7 @@ export function generateSiteMetadata(
       template: `%s | ${siteName}`,
     },
     description,
-    keywords: [
-      'restaurant',
-      'Lebanese food',
-      'Syrian food',
-      'Riyadh',
-      'Warda Shamya',
-      'وردة الشامية',
-      'Middle Eastern cuisine',
-      'halal restaurant',
-    ],
+    keywords: ['wallets', 'accessories', 'luxury', 'shop', 'e-commerce', SITE_NAME, SITE_NAME_AR],
     authors: [{ name: SITE_NAME }],
     creator: SITE_NAME,
     publisher: SITE_NAME,

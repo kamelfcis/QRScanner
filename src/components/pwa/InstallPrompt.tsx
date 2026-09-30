@@ -25,7 +25,12 @@ export function InstallPrompt() {
   const { locale } = useI18n();
   const { data: settings } = useRestaurantSettings();
   const t = useTranslations('pwa');
-  const siteName = getRestaurantDisplayName(locale, settings);
+  const siteName = getRestaurantDisplayName(locale, settings) || 'MAZEN STORE';
+
+  const installTitle = (() => {
+    const raw = t('installTitle', { name: siteName });
+    return raw.includes('{name}') ? raw.replace(/\{name\}/g, siteName) : raw;
+  })();
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -83,9 +88,7 @@ export function InstallPrompt() {
               <Download className="text-brand-primary h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-foreground font-semibold">
-                {t('installTitle', { name: siteName })}
-              </p>
+              <p className="text-foreground font-semibold">{installTitle}</p>
               <p className="text-muted-foreground mt-1 text-sm">{t('installDescription')}</p>
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={handleInstall}>

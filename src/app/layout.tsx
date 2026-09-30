@@ -7,6 +7,7 @@ import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
+import { ServerBrandThemeStyles } from '@/components/providers/ServerBrandThemeStyles';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import './globals.css';
@@ -50,7 +51,7 @@ function buildRootMetadata(
 ): Metadata {
   const siteNameEn = getSiteNameEn(settings);
   const siteNameAr = getSiteNameForLocale('ar', settings);
-  const title = `${siteNameEn} | Digital Restaurant Menu`;
+  const title = `${siteNameEn} | Premium Wallets & Accessories`;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -58,8 +59,8 @@ function buildRootMetadata(
       default: title,
       template: `%s | ${siteNameEn}`,
     },
-    description: `${siteNameEn} Restaurant - Premium dining experience with digital menu. Scan QR code to view our menu.`,
-    keywords: ['restaurant', 'menu', 'QR code', 'dining', 'food', siteNameEn, siteNameAr],
+    description: `${siteNameEn} — Premium wallets and accessories. Browse our collection and shop online.`,
+    keywords: ['wallets', 'accessories', 'luxury', 'shop', 'e-commerce', siteNameEn, siteNameAr],
     authors: [{ name: siteNameEn }],
     creator: siteNameEn,
     alternates: {
@@ -71,12 +72,12 @@ function buildRootMetadata(
     },
     openGraph: {
       type: 'website',
-      locale: 'ar_SA',
-      alternateLocale: ['en_US'],
+      locale: 'en_US',
+      alternateLocale: ['ar_SA'],
       url: SITE_URL,
       siteName: siteNameEn,
       title,
-      description: 'Premium dining experience with digital menu.',
+      description: 'Premium wallets and accessories — browse and shop online.',
       images: [
         {
           url: '/og-image.png',
@@ -89,7 +90,7 @@ function buildRootMetadata(
     twitter: {
       card: 'summary_large_image',
       title,
-      description: 'Premium dining experience with digital menu.',
+      description: 'Premium wallets and accessories — browse and shop online.',
       images: ['/og-image.png'],
     },
     robots: {
@@ -110,8 +111,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FAF8F5' },
-    { media: '(prefers-color-scheme: dark)', color: '#0A0A0A' },
+    { media: '(prefers-color-scheme: light)', color: '#0A1628' },
+    { media: '(prefers-color-scheme: dark)', color: '#0A1628' },
   ],
 };
 
@@ -128,11 +129,12 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
+      className={`dark ${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
       suppressHydrationWarning
     >
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
+        <ServerBrandThemeStyles />
       </head>
       <body className="flex min-h-full w-full flex-col overflow-x-clip">
         <a

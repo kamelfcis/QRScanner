@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { DEFAULT_THEME } from '@/lib/theme';
 import type { Gallery, Product, RestaurantSettings, Settings, ThemeSettings } from '@/types';
 import { CATALOG_GC_TIME, CATALOG_STALE_TIME } from './keys';
 
@@ -35,9 +36,13 @@ export async function prefetchLandingData(supabase: SupabaseClient, queryClient:
           .from('settings')
           .select('*')
           .eq('key', 'theme')
-          .single();
+          .maybeSingle();
         if (error) throw error;
-        return (data as Settings).value as unknown as ThemeSettings;
+        if (!data) return DEFAULT_THEME;
+        return {
+          ...DEFAULT_THEME,
+          ...((data as Settings).value as unknown as ThemeSettings),
+        };
       },
       staleTime: CATALOG_STALE_TIME,
       gcTime: CATALOG_GC_TIME,

@@ -2,7 +2,7 @@ import type { RestaurantSettings } from '@/types/database';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Restaurant';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Store';
 
 export function generateRestaurantSchema(
   settings?: RestaurantSettings | null,
@@ -12,15 +12,15 @@ export function generateRestaurantSchema(
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'Restaurant',
+    '@type': 'Store',
     name: settings?.name_en || APP_NAME,
     alternateName: settings?.name_ar || APP_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     description:
       locale === 'ar'
-        ? 'مطعم لبناني وسوري فاخر في الرياض، المملكة العربية السعودية.'
-        : 'Premium Lebanese & Syrian restaurant in Riyadh, Saudi Arabia.',
+        ? 'متجر محافظ وإكسسوارات فاخرة — جودة عالية وتصميم أنيق.'
+        : 'Premium wallets and accessories store — luxury quality, timeless design.',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Riyadh',
@@ -46,9 +46,7 @@ export function generateRestaurantSchema(
       },
     ],
     priceRange: '$$',
-    servesCuisine: ['Lebanese', 'Syrian', 'Middle Eastern'],
-    hasMenu: `${SITE_URL}/menu`,
-    acceptsReservations: false,
+    hasOfferCatalog: `${SITE_URL}/welcome`,
     inLanguage: [locale],
     sameAs: [
       settings?.instagram && `https://instagram.com/${settings.instagram}`,
@@ -62,13 +60,13 @@ export function generateRestaurantSchema(
 export function generateMenuSchema(locale: Locale = defaultLocale) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Menu',
-    name: locale === 'ar' ? `قائمة ${APP_NAME}` : `${APP_NAME} Menu`,
+    '@type': 'OfferCatalog',
+    name: locale === 'ar' ? `منتجات ${APP_NAME}` : `${APP_NAME} Products`,
     description:
       locale === 'ar'
-        ? 'قائمة المأكولات اللبنانية والسورية الأصيلة.'
-        : 'Authentic Lebanese and Syrian cuisine menu.',
-    url: `${SITE_URL}/menu`,
+        ? 'مجموعة محافظ وإكسسوارات فاخرة.'
+        : 'Premium wallets and accessories collection.',
+    url: `${SITE_URL}/welcome`,
     inLanguage: ['en', 'ar'],
     hasMenuSection: [],
   };

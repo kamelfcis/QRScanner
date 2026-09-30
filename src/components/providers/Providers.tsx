@@ -6,7 +6,7 @@ import { BrandThemeProvider } from './BrandThemeProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="mazen-store-b1eb-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="mazen-store-b1eb-theme">
       <QueryProvider>
         <BrandThemeProvider>{children}</BrandThemeProvider>
       </QueryProvider>

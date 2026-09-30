@@ -41,7 +41,7 @@ async function fetchThemeSettingsUncached(): Promise<ThemeSettings> {
       .from('settings')
       .select('value')
       .eq('key', 'theme')
-      .single();
+      .maybeSingle();
 
     if (error || !data?.value) return DEFAULT_THEME;
     return { ...DEFAULT_THEME, ...(data.value as ThemeSettings) };

@@ -52,7 +52,7 @@ export function FeaturedDishes() {
     <section className="relative overflow-hidden py-20 md:py-28">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,183,0,0.08),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.04),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(255,183,0,0.1),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.02),transparent_50%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.1),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(30,58,95,0.15),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(15,23,42,0.4),transparent_50%)]"
       />
 
       <div className="container relative mx-auto px-4">
