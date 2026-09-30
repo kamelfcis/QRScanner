@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
+import { getMenuEntryPath, skipWelcomePage } from '@/lib/store-config';
 
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
@@ -27,6 +28,14 @@ export async function middleware(request: NextRequest) {
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
     }
+  }
+
+  // E-commerce / configured QR target: skip welcome mode picker
+  if (skipWelcomePage && pathname === '/welcome') {
+    const menuUrl = request.nextUrl.clone();
+    menuUrl.pathname = getMenuEntryPath();
+    menuUrl.searchParams.delete('skip');
+    return NextResponse.redirect(menuUrl);
   }
 
   // Redirect authenticated users away from login

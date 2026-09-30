@@ -30,6 +30,7 @@ import {
   readStoredDiningMode,
   readStoredTableNumber,
 } from '@/lib/dining-mode';
+import { defaultDiningMode, isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import type { Product } from '@/types/database';
 import { generateMenuSchema } from '@/lib/seo/structuredData';
@@ -61,7 +62,7 @@ function MenuContent() {
 
   // URL only on first render. localStorage sync runs in useEffect to avoid hydration #418.
   const [diningMode, setDiningMode] = useState<'dining' | 'takeaway'>(() => {
-    return parseDiningModeParam(modeParam) ?? 'dining';
+    return parseDiningModeParam(modeParam) ?? defaultDiningMode;
   });
 
   const { toggleFavorite, isFavorite, count: favoriteCount } = useFavorites();
@@ -73,10 +74,10 @@ function MenuContent() {
 
   useEffect(() => {
     const fromUrl = parseDiningModeParam(modeParam);
-    const next = fromUrl ?? readStoredDiningMode();
+    const next = isEcommerceStore ? defaultDiningMode : (fromUrl ?? readStoredDiningMode());
     // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dining mode after hydration
     setDiningMode(next);
-    if (fromUrl) persistDiningMode(fromUrl);
+    if (fromUrl && showDiningModeToggle) persistDiningMode(fromUrl);
     setMeta({ diningMode: next });
   }, [modeParam, setMeta]);
 

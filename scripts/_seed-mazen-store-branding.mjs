@@ -54,7 +54,7 @@ const restaurant = {
   currency: 'EGP',
   tax_rate: 0,
   service_charge_rate: 0,
-  qr_target_path: '/welcome',
+  qr_target_path: '/menu',
 };
 
 const { data, error } = await supabase

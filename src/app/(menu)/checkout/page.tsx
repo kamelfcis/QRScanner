@@ -33,6 +33,7 @@ import {
   trackOrderWhatsApp,
 } from '@/lib/analytics';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
+import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -60,7 +61,7 @@ export default function CheckoutPage() {
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const whatsappConfigured = Boolean(normalizeWhatsAppPhone(settings?.whatsapp || ''));
-  const isTakeaway = diningMode === 'takeaway';
+  const isTakeaway = isEcommerceStore || diningMode === 'takeaway';
   const requiresDeliveryAddress = isTakeaway && fulfillmentType === 'delivery';
 
   const pricedItems = useMemo(
@@ -288,9 +289,11 @@ export default function CheckoutPage() {
           <section className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-heading font-semibold">{t('orderSummary')}</h2>
-              <Badge variant="secondary">
-                {diningMode === 'dining' ? t('dining') : t('takeaway')}
-              </Badge>
+              {showDiningModeToggle && (
+                <Badge variant="secondary">
+                  {diningMode === 'dining' ? t('dining') : t('takeaway')}
+                </Badge>
+              )}
               {tableNumber && (
                 <Badge variant="outline">
                   {t('table')} {tableNumber}

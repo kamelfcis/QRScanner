@@ -12,6 +12,8 @@ const envSchema = z.object({
     .transform((value) =>
       value === 'harameen' || value === 'aklet' || value === 'warda' ? value : undefined
     ),
+  NEXT_PUBLIC_STORE_MODE: z.enum(['restaurant', 'ecommerce']).optional(),
+  NEXT_PUBLIC_QR_TARGET_PATH: z.string().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().optional(),
@@ -38,6 +40,9 @@ function validateEnv() {
         process.env.NEXT_PUBLIC_TENANT === 'warda'
           ? process.env.NEXT_PUBLIC_TENANT
           : undefined,
+      NEXT_PUBLIC_STORE_MODE:
+        process.env.NEXT_PUBLIC_STORE_MODE === 'ecommerce' ? 'ecommerce' : 'restaurant',
+      NEXT_PUBLIC_QR_TARGET_PATH: process.env.NEXT_PUBLIC_QR_TARGET_PATH,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       GEMINI_API_KEY: process.env.GEMINI_API_KEY,
       GEMINI_MODEL: process.env.GEMINI_MODEL,

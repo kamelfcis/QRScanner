@@ -13,6 +13,7 @@ import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { showDiningModeToggle } from '@/lib/store-config';
 
 interface MenuHeaderProps {
   tableParam: string | null;
@@ -83,11 +84,13 @@ export function MenuHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
-          <DiningModeToggle
-            value={diningMode}
-            onChange={onDiningModeChange}
-            className="hidden sm:inline-flex"
-          />
+          {showDiningModeToggle && (
+            <DiningModeToggle
+              value={diningMode}
+              onChange={onDiningModeChange}
+              className="hidden sm:inline-flex"
+            />
+          )}
 
           <LanguageSwitcher
             variant="ghost"

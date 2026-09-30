@@ -5,6 +5,7 @@ import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { DiningModeToggle } from '@/components/menu/DiningModeToggle';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { showDiningModeToggle } from '@/lib/store-config';
 
 interface MenuUtilityBarProps {
   tableParam: string | null;
@@ -24,7 +25,11 @@ export function MenuUtilityBar({
   return (
     <div className="border-b border-[var(--menu-line)] bg-[var(--menu-paper)] sm:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5">
-        <DiningModeToggle value={diningMode} onChange={onDiningModeChange} />
+        {showDiningModeToggle ? (
+          <DiningModeToggle value={diningMode} onChange={onDiningModeChange} />
+        ) : (
+          <span className="text-sm font-medium text-[var(--menu-ink-soft)]">{t('menuLead')}</span>
+        )}
         <div className="flex items-center gap-1">
           <button
             type="button"

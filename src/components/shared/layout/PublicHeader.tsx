@@ -23,6 +23,7 @@ import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getMenuEntryPath } from '@/lib/store-config';
 
 type NavLink = {
   name: string;
@@ -63,7 +64,7 @@ export function PublicHeader() {
 
   const navLinks: NavLink[] = [
     { name: t('home'), href: '/', icon: Home },
-    { name: t('menu'), href: '/welcome', icon: UtensilsCrossed },
+    { name: t('menu'), href: getMenuEntryPath(), icon: UtensilsCrossed },
     { name: t('about'), href: '#story', icon: Info },
     { name: t('contact'), href: '#contact', icon: Phone },
   ];
@@ -154,7 +155,7 @@ export function PublicHeader() {
           />
 
           <Link
-            href="/welcome"
+            href={getMenuEntryPath()}
             className={cn(
               buttonVariants({ size: 'sm' }),
               'bg-brand-accent hover:bg-brand-accent/90 hidden shrink-0 px-4 text-black md:inline-flex'
@@ -268,7 +269,7 @@ export function PublicHeader() {
 
               <div className="border-border/50 border-t px-5 py-4 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]">
                 <Link
-                  href="/welcome"
+                  href={getMenuEntryPath()}
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: 'lg' }),

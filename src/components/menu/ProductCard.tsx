@@ -23,6 +23,7 @@ import { trackAddToCart } from '@/lib/analytics';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -211,7 +212,7 @@ export function ProductCard({
               >
                 {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
               </p>
-              {otherPrice !== activePrice && (
+              {showDiningModeToggle && otherPrice !== activePrice && (
                 <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
                   {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
                   {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
