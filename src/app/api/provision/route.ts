@@ -1,10 +1,10 @@
-import { after, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { encryptJson, encryptSecret, generatePassword } from '@/lib/crypto/secrets';
 import { TEMPLATE_CONFIGS } from '@/lib/engaz/types';
 import { requireServerSecrets } from '@/lib/env';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
 import { prepareProvisionInput } from '@/server/provision/prepare-input';
-import { startProvisionJob } from '@/server/provision/runner';
+import { scheduleProvisionRun } from '@/server/provision/schedule-provision';
 
 export const maxDuration = 300;
 
@@ -199,7 +199,7 @@ export async function POST(request: Request) {
   }
 
   void TEMPLATE_CONFIGS;
-  after(() => startProvisionJob(job.id));
+  scheduleProvisionRun(job.id);
 
   return NextResponse.json({
     customerId: customer.id,

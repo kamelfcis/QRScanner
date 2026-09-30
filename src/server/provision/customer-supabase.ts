@@ -54,9 +54,22 @@ function isTimeoutError(err: unknown): boolean {
   return err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError');
 }
 
-async function runSql(secrets: CustomerSecrets, query: string, label = 'query'): Promise<void> {
+type RunSqlOptions = {
+  onStatement?: (index: number, total: number) => void | Promise<void>;
+  shouldStop?: () => boolean;
+};
+
+async function runSql(
+  secrets: CustomerSecrets,
+  query: string,
+  label = 'query',
+  options: RunSqlOptions = {}
+): Promise<'complete' | 'stopped'> {
   const statements = splitSqlStatements(query);
   for (let index = 0; index < statements.length; index += 1) {
+    if (options.shouldStop?.()) return 'stopped';
+    await options.onStatement?.(index + 1, statements.length);
+
     const statement = statements[index]!;
     let res: Response;
     try {
@@ -82,31 +95,69 @@ async function runSql(secrets: CustomerSecrets, query: string, label = 'query'):
     }
     if (res.ok) continue;
     const body = await res.text();
-    if (/already exists/i.test(body)) continue;
+    if (/already exists|duplicate key|duplicate_object/i.test(body)) continue;
     throw new Error(
       `SQL failed (${res.status}) in ${label} statement ${index + 1}/${statements.length}: ${body.slice(0, 500)}`
     );
   }
+  return 'complete';
 }
 
 export function listCustomerMigrationFiles(): Array<{ name: string; sql: string }> {
   return CUSTOMER_MIGRATIONS.filter((file) => !SKIPPED_CONTENT_MIGRATIONS.has(file.name));
 }
 
+export type ApplyMigrationsOptions = {
+  skipFiles?: Set<string>;
+  shouldStop?: () => boolean;
+  onProgress?: (message: string) => void | Promise<void>;
+};
+
+export type ApplyMigrationsResult = {
+  applied: string[];
+  skipped: string[];
+  stoppedEarly: boolean;
+};
+
 export async function applyCustomerMigrations(
   secrets: CustomerSecrets,
-  onProgress?: (message: string) => void | Promise<void>
-): Promise<string[]> {
+  options: ApplyMigrationsOptions = {}
+): Promise<ApplyMigrationsResult> {
+  const { skipFiles = new Set(), shouldStop, onProgress } = options;
   const files = listCustomerMigrationFiles();
   const applied: string[] = [];
+  const skipped: string[] = [];
+
   for (const file of files) {
+    if (shouldStop?.()) {
+      return { applied, skipped, stoppedEarly: true };
+    }
+
     const name = file.name.split(/[/\\]/).pop() ?? file.name;
+
+    if (skipFiles.has(file.name)) {
+      await onProgress?.(`Skipping ${name} (already applied)`);
+      skipped.push(file.name);
+      continue;
+    }
+
     await onProgress?.(`Applying ${name}…`);
-    await runSql(secrets, file.sql, file.name);
+    const result = await runSql(secrets, file.sql, file.name, {
+      shouldStop,
+      onStatement: async (index, total) => {
+        if (total > 1) {
+          await onProgress?.(`Applying ${name} (${index}/${total})…`);
+        }
+      },
+    });
+    if (result === 'stopped') {
+      return { applied, skipped, stoppedEarly: true };
+    }
     await onProgress?.(`Applied ${name}`);
     applied.push(file.name);
   }
-  return applied;
+
+  return { applied, skipped, stoppedEarly: false };
 }
 
 export async function seedEmptyMenu(secrets: CustomerSecrets): Promise<void> {

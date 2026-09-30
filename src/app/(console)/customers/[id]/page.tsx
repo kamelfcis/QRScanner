@@ -38,7 +38,13 @@ type Detail = {
     onboarding_notes: string | null;
     created_at: string;
   };
-  latestJob: { id: string; status: string; error_message: string | null } | null;
+  latestJob: {
+    id: string;
+    status: string;
+    error_message: string | null;
+    created_at: string;
+    updated_at: string;
+  } | null;
   events: Array<{
     id: string;
     step: string;
@@ -77,6 +83,7 @@ export default function CustomerDetailPage() {
   const [loading, setLoading] = useState(true);
   const [statusLoading, setStatusLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [clock, setClock] = useState(0);
 
   const load = useCallback(async () => {
     try {
@@ -114,6 +121,7 @@ export default function CustomerDetailPage() {
           return;
         }
         loaded = true;
+        setClock(Date.now());
         setData(json);
         setLoading(false);
       } catch {
@@ -127,6 +135,7 @@ export default function CustomerDetailPage() {
       void run();
     }, 0);
     const interval = setInterval(() => {
+      setClock(Date.now());
       void run();
     }, 4000);
 
@@ -243,6 +252,15 @@ export default function CustomerDetailPage() {
   }
 
   const c = data.customer;
+  const jobStaleMs =
+    data.latestJob && clock > 0 ? clock - new Date(data.latestJob.updated_at).getTime() : 0;
+  const stuckProvisioning =
+    c.status === 'provisioning' &&
+    data.latestJob &&
+    !['done', 'failed'].includes(data.latestJob.status) &&
+    jobStaleMs > 8 * 60 * 1000;
+  const canRetry =
+    c.status === 'failed' || data.latestJob?.status === 'failed' || stuckProvisioning;
   const canToggleStatus =
     isToggleableCustomerStatus(c.status) || (c.status === 'failed' && Boolean(c.production_url));
 
@@ -309,8 +327,10 @@ export default function CustomerDetailPage() {
               Open production
             </a>
           )}
-          {(c.status === 'failed' || data.latestJob?.status === 'failed') && (
-            <Button onClick={retry}>Retry provision</Button>
+          {canRetry && (
+            <Button onClick={retry}>
+              {stuckProvisioning ? 'Retry stuck provision' : 'Retry provision'}
+            </Button>
           )}
           <DeleteCustomerButton
             displayName={c.display_name_en}
@@ -437,9 +457,21 @@ export default function CustomerDetailPage() {
             <CardTitle className="text-base">Job timeline</CardTitle>
           </CardHeader>
           <CardContent>
+            {data.latestJob && (
+              <div className="text-muted-foreground mb-3 font-mono text-xs">
+                Job {data.latestJob.id.slice(0, 8)} · {data.latestJob.status}
+                {stuckProvisioning ? ' · no updates for 8+ min' : ''}
+              </div>
+            )}
             {data.latestJob?.error_message && (
               <div className="mb-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
                 {data.latestJob.error_message}
+              </div>
+            )}
+            {stuckProvisioning && (
+              <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                This job looks stuck. Hard-refresh the page, then click Retry to start a new job
+                (001–009 will be skipped automatically).
               </div>
             )}
             <JobTimeline events={data.events} />
