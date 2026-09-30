@@ -6,8 +6,7 @@ import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { useRestaurantSettings } from '@/hooks/useSettings';
-import { getRestaurantDisplayName } from '@/lib/appName';
+import { useSiteName } from '@/hooks/useSiteName';
 import { cn } from '@/lib/utils';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -22,10 +21,8 @@ export function InstallPrompt() {
     () => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
   );
   const prefersReducedMotion = useReducedMotion();
-  const { locale } = useI18n();
-  const { data: settings } = useRestaurantSettings();
   const t = useTranslations('pwa');
-  const siteName = getRestaurantDisplayName(locale, settings) || 'MAZEN STORE';
+  const siteName = useSiteName();
 
   const installTitle = (() => {
     const raw = t('installTitle', { name: siteName });
