@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { resolveCountryCode } from '@/lib/phone/country-dial';
 import { normalizeLocalPhone } from '@/lib/phone/normalize';
 import { sendNewOrderPushes } from '@/lib/push/send-new-order-pushes';
+import { getCustomerIdFromCookie } from '@/lib/customer/session';
 import { placeOrderSchema } from '@/types/schema';
 
 export const runtime = 'nodejs';
@@ -90,10 +91,14 @@ export async function POST(request: Request) {
       ? normalizeLocalPhone(parsed.data.customer_phone, phoneCountry)
       : null;
 
+    const cookieCustomerId = await getCustomerIdFromCookie();
+    const customerId = parsed.data.customer_id ?? cookieCustomerId ?? null;
+
     const { data, error } = await supabase.rpc('place_customer_order', {
       payload: {
         ...parsed.data,
         customer_phone: customerPhone,
+        customer_id: customerId,
         client_ip: getClientIp(request),
       },
     });

@@ -32,7 +32,7 @@ import { PaymentClosePanel } from '@/components/dashboard/orders/PaymentClosePan
 import { VoidReasonDialog } from '@/components/dashboard/orders/VoidReasonDialog';
 import { TableTransferDialog } from '@/components/dashboard/orders/TableTransferDialog';
 import { OrderAddItemsDialog } from '@/components/dashboard/orders/OrderAddItemsDialog';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
 import { useUpdateOrderItemQuantity } from '@/hooks/useOrderEdit';
 import { useVoidOrder, useVoidOrderItem } from '@/hooks/useOrderPayment';
 import { useOrderRefund } from '@/hooks/useOrderRefund';
@@ -542,6 +542,14 @@ export function OrderTicket({
                         ) : null}
                         {item.notes ? (
                           <p className="text-muted-foreground text-xs">{item.notes}</p>
+                        ) : null}
+                        {isAlaKeefakTenant && item.unit_cost != null ? (
+                          <p className="text-muted-foreground text-xs tabular-nums">
+                            {t('unitCost')}:{' '}
+                            {formatCurrencyAmount(Number(item.unit_cost), order.currency, {
+                              locale: currencyLocale,
+                            })}
+                          </p>
                         ) : null}
                       </div>
                       {canEditOrder && !item.voided_at ? (

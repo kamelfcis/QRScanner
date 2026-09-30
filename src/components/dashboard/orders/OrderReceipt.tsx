@@ -6,6 +6,7 @@ import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-cu
 import { receiptDomId, RECEIPT_SLIP_CSS } from '@/lib/order/print-receipt';
 import { formatDisplayPhone } from '@/lib/phone/normalize';
 import { getLocalizedText } from '@/lib/utils';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import type { OrderWithItems, RestaurantSettings } from '@/types/database';
 
 type ReceiptCopy = (key: string, values?: Record<string, string | number>) => string;
@@ -109,6 +110,9 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
             <div className="receipt-row">
               <span className="receipt-note receipt-num">
                 {money(Number(item.unit_price), order.currency, currencyLocale)}
+                {isAlaKeefakTenant && item.unit_cost != null
+                  ? ` · ${t('unitCost')} ${money(Number(item.unit_cost), order.currency, currencyLocale)}`
+                  : ''}
               </span>
               <span />
             </div>

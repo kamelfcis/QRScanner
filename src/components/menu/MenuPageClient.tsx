@@ -44,6 +44,7 @@ import {
 import { hashSeed, shuffleCopy } from '@/lib/menu/shuffle-catalog';
 import { TopSellingProvider } from '@/components/menu/TopSellingProvider';
 import { OrdersPausedBanner } from '@/components/menu/OrdersPausedBanner';
+import { CustomerAccountBanner } from '@/components/menu/CustomerAccountBanner';
 import { useCategoryScrollSpy } from '@/hooks/useCategoryScrollSpy';
 import { alaKeefakTenantAttr } from '@/i18n/config';
 
@@ -271,6 +272,10 @@ function MenuContent() {
       />
 
       <MenuHero />
+
+      <div className="mx-auto max-w-6xl px-3 pt-3 sm:px-5">
+        <CustomerAccountBanner />
+      </div>
 
       <MenuUtilityBar
         tableParam={tableParam}

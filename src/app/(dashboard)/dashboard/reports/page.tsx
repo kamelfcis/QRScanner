@@ -26,6 +26,8 @@ import type { ExportData } from '@/types/database';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
+import { isAlaKeefakTenant } from '@/i18n/config';
+import { usePosSalesReport } from '@/hooks/usePosSalesReport';
 
 const todayStamp = () => dateOnlyFromDate(new Date());
 
@@ -73,6 +75,22 @@ export default function ReportsPage() {
   const priorKpis = priorData?.kpis;
   const orders = data?.orders ?? [];
   const currency = settings?.currency ?? orders[0]?.currency ?? 'EGP';
+
+  const reportRange = useMemo(() => {
+    if (period === 'custom' && bounds.ok) {
+      const start = new Date(`${from}T00:00:00`);
+      const end = new Date(`${to}T23:59:59.999`);
+      return { fromIso: start.toISOString(), toIso: end.toISOString() };
+    }
+    const range = getDateRange(period === 'custom' ? 'today' : period);
+    return { fromIso: range.start.toISOString(), toIso: range.end.toISOString() };
+  }, [period, from, to, bounds.ok]);
+
+  const { data: posReport } = usePosSalesReport(
+    reportRange.fromIso,
+    reportRange.toIso,
+    isAlaKeefakTenant && bounds.ok
+  );
 
   const compare = useMemo(() => {
     if (!comparable) return null;
@@ -249,6 +267,95 @@ export default function ReportsPage() {
                   noCompareLabel={t('noCompare')}
                 />
               </section>
+
+              {isAlaKeefakTenant && posReport ? (
+                <section className="space-y-4">
+                  <div className="bg-[var(--ak-gold-wash,#faf8f5)]/40 rounded-xl border border-[var(--ak-gold-line,#e8dfd0)] px-4 py-4">
+                    <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                      {t('posProfit')}
+                    </p>
+                    <p className="font-heading mt-1 text-3xl font-semibold tabular-nums text-[var(--ak-ember,#d97706)]">
+                      {formatCurrencyAmount(posReport.profit ?? 0, currency, {
+                        locale: currencyLocale,
+                      })}
+                    </p>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border">
+                    <table className="w-full min-w-[720px] text-sm">
+                      <thead>
+                        <tr className="bg-[var(--ak-gold-wash,#faf8f5)]/60 border-b text-start">
+                          <th className="px-3 py-2 font-medium">{t('colOrderNumber')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posSell')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posCost')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posMargin')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(posReport.orders ?? []).map((row) => (
+                          <tr key={row.id} className="border-b last:border-0">
+                            <td className="px-3 py-2">{row.order_number}</td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.sell_total), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.cost_total), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.margin), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border">
+                    <table className="w-full min-w-[720px] text-sm">
+                      <thead>
+                        <tr className="bg-[var(--ak-gold-wash,#faf8f5)]/60 border-b text-start">
+                          <th className="px-3 py-2 font-medium">{t('colProduct')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posQty')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posSell')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posCost')}</th>
+                          <th className="px-3 py-2 font-medium">{t('posMargin')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(posReport.products ?? []).map((row) => (
+                          <tr key={row.product_id} className="border-b last:border-0">
+                            <td className="px-3 py-2">
+                              {locale === 'ar' ? row.name_ar : row.name_en}
+                            </td>
+                            <td className="px-3 py-2 tabular-nums">{row.qty_sold}</td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.sell_total), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.cost_total), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                            <td className="px-3 py-2 tabular-nums">
+                              {formatCurrencyAmount(Number(row.margin), currency, {
+                                locale: currencyLocale,
+                              })}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              ) : null}
 
               <SalesLedger
                 orders={orders}

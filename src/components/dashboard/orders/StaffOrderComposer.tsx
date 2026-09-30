@@ -67,6 +67,8 @@ import {
   type ProductSizeId,
 } from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
+import { useProductOfferPrices } from '@/hooks/useProductOfferPrices';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import { cn, getName } from '@/lib/utils';
 import type { OrderWithItems } from '@/types/database';
 import type { StaffPlaceOrderInput } from '@/types/schema';
@@ -118,7 +120,13 @@ function makeStaffLineId(
   return parts.join('::');
 }
 
-function getStaffLineUnitPrice(line: StaffTicketLine, diningMode: DiningMode): number {
+function getStaffLineUnitPrice(
+  line: StaffTicketLine,
+  diningMode: DiningMode,
+  offerPrices?: Map<string, number> | null
+): number {
+  const offer = offerPrices?.get(line.productId);
+  if (offer != null) return offer;
   if (line.weightGrams != null && line.price_per_kg != null) {
     return computeWeightPrice(line.price_per_kg, line.weightGrams);
   }
@@ -290,13 +298,15 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
   const deliveryFee =
     requiresDelivery && selectedLocation ? Number(selectedLocation.delivery_fee) : 0;
 
+  const { data: offerPrices } = useProductOfferPrices(isAlaKeefakTenant && open);
+
   const pricedLines = useMemo(
     () =>
       lines.map((line) => ({
         ...line,
-        unitPrice: getStaffLineUnitPrice(line, diningMode),
+        unitPrice: getStaffLineUnitPrice(line, diningMode, offerPrices),
       })),
-    [lines, diningMode]
+    [lines, diningMode, offerPrices]
   );
 
   const previewItems = useMemo(
@@ -478,6 +488,7 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         'product_unavailable',
         'address_required',
         'name_required',
+        'shift_not_open',
       ];
       toast.error(known.includes(code) ? tCheckout(code) : tCheckout('placeFailed'));
     }

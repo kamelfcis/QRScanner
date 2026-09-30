@@ -12,6 +12,12 @@ import { ConfirmDialog } from '@/components/shared/feedback/ConfirmDialog';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { useSalesReport } from '@/hooks/useSalesReport';
 import { useCloseShift, useRecentShiftCloses } from '@/hooks/useShiftClose';
+import {
+  useClosePosShift,
+  useOpenPosShift,
+  useOpenShift,
+  useShiftHistory,
+} from '@/hooks/useShifts';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useExport } from '@/hooks/useExport';
 import { useOrders } from '@/hooks/useOrders';
@@ -22,7 +28,7 @@ import { formatLocaleDate } from '@/lib/dateLocale';
 import { pctChange } from '@/lib/analytics/compare-period';
 import { CompareBadge } from '@/components/dashboard/reports/CompareBadge';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
 import { useExpensesForMonth, useExpensesForRange, sumExpenses } from '@/hooks/useExpenses';
 import {
   buildOrderItemsMap,
@@ -48,6 +54,10 @@ export default function ShiftPage() {
   const { data: settings } = useRestaurantSettings();
   const { printPage } = useExport();
   const closeShift = useCloseShift();
+  const openPosShift = useOpenPosShift();
+  const closePosShift = useClosePosShift();
+  const { data: openShift } = useOpenShift(isAlaKeefakTenant);
+  const { data: shiftHistory } = useShiftHistory(10, isAlaKeefakTenant);
   const { data: recentCloses } = useRecentShiftCloses();
   const { data: allOrders } = useOrders();
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -227,6 +237,16 @@ export default function ShiftPage() {
       ]
     : [];
 
+  const handleOpenShift = async () => {
+    try {
+      await openPosShift.mutateAsync(notes.trim() || null);
+      toast.success(t('openSuccess'));
+      setNotes('');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : tCommon('error'));
+    }
+  };
+
   const handleCloseShift = async () => {
     if (!kpis) return;
     if (todayAlreadyClosed) {
@@ -234,8 +254,14 @@ export default function ShiftPage() {
       return;
     }
     try {
+      if (isAlaKeefakTenant && openShift?.id) {
+        await closePosShift.mutateAsync({
+          shiftId: openShift.id,
+          notes: notes.trim() || null,
+        });
+      }
       await closeShift.mutateAsync({
-        period_start: todayBounds.start.toISOString(),
+        period_start: openShift?.opened_at ?? todayBounds.start.toISOString(),
         period_end: todayBounds.end.toISOString(),
         snapshot: {
           kpis,
@@ -276,10 +302,27 @@ export default function ShiftPage() {
               <Printer className="me-2 h-4 w-4" aria-hidden="true" />
               {t('printSummary')}
             </Button>
+            {isAlaKeefakTenant && !openShift ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11"
+                disabled={openPosShift.isPending}
+                onClick={() => void handleOpenShift()}
+              >
+                {t('openShift')}
+              </Button>
+            ) : null}
             <Button
               type="button"
               className="min-h-11"
-              disabled={!kpis || closeShift.isPending || todayAlreadyClosed}
+              disabled={
+                !kpis ||
+                closeShift.isPending ||
+                closePosShift.isPending ||
+                todayAlreadyClosed ||
+                (isAlaKeefakTenant && !openShift)
+              }
               title={todayAlreadyClosed ? t('closeAlreadyToday') : undefined}
               onClick={() => {
                 if (todayAlreadyClosed) {
@@ -296,6 +339,23 @@ export default function ShiftPage() {
         </div>
       </div>
 
+      {isAlaKeefakTenant && !openShift ? (
+        <div
+          className="border-[var(--ak-ember,#d97706)]/30 rounded-xl border bg-[var(--ak-gold-wash,#faf8f5)] px-4 py-3 text-sm"
+          role="alert"
+        >
+          {t('shiftNotOpen')}
+        </div>
+      ) : null}
+
+      {isAlaKeefakTenant && openShift ? (
+        <div className="rounded-xl border px-4 py-3 text-sm" role="status">
+          {t('shiftOpenSince', {
+            time: formatLocaleDate(openShift.opened_at, 'd MMM HH:mm', locale),
+          })}
+        </div>
+      ) : null}
+
       {todayAlreadyClosed ? (
         <div
           className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"
@@ -303,6 +363,38 @@ export default function ShiftPage() {
         >
           {t('closeAlreadyToday')}
         </div>
+      ) : null}
+
+      {isAlaKeefakTenant && shiftHistory && shiftHistory.length > 0 ? (
+        <section className="space-y-3">
+          <h2 className="font-heading text-lg font-semibold">{t('shiftHistory')}</h2>
+          <div className="overflow-x-auto rounded-xl border">
+            <table className="w-full min-w-[480px] text-sm">
+              <thead>
+                <tr className="bg-[var(--ak-gold-wash,#faf8f5)]/60 border-b text-start">
+                  <th className="px-4 py-3 font-medium">{t('colOpened')}</th>
+                  <th className="px-4 py-3 font-medium">{t('colClosed')}</th>
+                  <th className="px-4 py-3 font-medium">{t('colStatus')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {shiftHistory.map((row) => (
+                  <tr key={row.id} className="border-b last:border-0">
+                    <td className="px-4 py-3 tabular-nums">
+                      {formatLocaleDate(row.opened_at, 'd MMM HH:mm', locale)}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums">
+                      {row.closed_at ? formatLocaleDate(row.closed_at, 'd MMM HH:mm', locale) : '—'}
+                    </td>
+                    <td className="px-4 py-3">
+                      {row.status === 'open' ? t('statusOpen') : t('statusClosed')}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
       ) : null}
 
       <div className="bg-card rounded-xl border p-4 shadow-sm">

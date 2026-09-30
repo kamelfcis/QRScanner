@@ -38,6 +38,8 @@ import {
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
 import { isAlaKeefakTenant } from '@/i18n/config';
+import { useProductOfferPrices } from '@/hooks/useProductOfferPrices';
+import { applyOfferPrice } from '@/lib/customer/product-offer-price';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -85,13 +87,15 @@ export function ProductCard({
   const fromPrice = minWeightPrice(product);
   const sizeRange = getProductSizePriceRange(product);
   const singleSize = enabledSizes.length === 1 ? getDefaultProductSize(product) : null;
-  const activePrice =
+  const { data: offerPrices } = useProductOfferPrices(isAlaKeefakTenant);
+  const basePrice =
     fromPrice ??
     (singleSize
       ? getProductSizePrice(product, singleSize)
       : diningMode === 'dining'
         ? product.dining_price
         : product.takeaway_price);
+  const activePrice = applyOfferPrice(basePrice, offerPrices?.get(product.id));
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const minPrice = sizeRange?.min ?? Math.min(product.dining_price, product.takeaway_price);
   const maxPrice = sizeRange?.max ?? Math.max(product.dining_price, product.takeaway_price);

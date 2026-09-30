@@ -268,6 +268,7 @@ export interface Order {
   table_number: string | null;
   customer_name: string;
   customer_phone: string | null;
+  customer_id?: string | null;
   delivery_address: string | null;
   delivery_location_id: string | null;
   notes: string | null;
@@ -312,6 +313,9 @@ export interface OrderItem {
   notes: string | null;
   voided_at?: string | null;
   void_reason?: string | null;
+  unit_cost?: number | null;
+  product_offer_id?: string | null;
+  stock_short?: boolean;
   created_at: string;
   /** Joined from products at fetch time; not stored on order_items */
   image_url?: string | null;

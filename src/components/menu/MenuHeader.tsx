@@ -1,9 +1,9 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore, useState } from 'react';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import { Heart, Receipt, Search, ShoppingCart, Volume2, VolumeX } from 'lucide-react';
+import { Heart, Receipt, Search, ShoppingCart, User, Volume2, VolumeX } from 'lucide-react';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -60,12 +60,24 @@ export function MenuHeader({
   const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
+  const tAccount = useTranslations('account');
   const tCart = useTranslations('cart');
+  const [points, setPoints] = useState<number | null>(null);
   const mounted = useClientMounted();
   const soundOn = useSyncExternalStore(subscribeSoundEnabled, isSoundEnabled, soundOnServer);
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
   const lastOrder = mounted ? readLastOrder() : null;
+
+  useEffect(() => {
+    if (!isAlaKeefakTenant || !mounted) return;
+    void fetch('/api/customer/account')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { points_balance?: number } | null) => {
+        if (data?.points_balance != null) setPoints(data.points_balance);
+      })
+      .catch(() => undefined);
+  }, [mounted]);
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
@@ -130,6 +142,18 @@ export function MenuHeader({
               {favoriteCount}
             </span>
           )}
+
+          {isAlaKeefakTenant ? (
+            <Link
+              href="/account"
+              className={cn(iconButton, 'hidden gap-1 px-2.5 sm:inline-flex sm:w-auto sm:min-w-11')}
+              aria-label={tAccount('accountChip')}
+              data-testid="header-account"
+            >
+              <User className="h-[18px] w-[18px]" aria-hidden="true" />
+              {points != null ? <span className="text-xs tabular-nums">{points}</span> : null}
+            </Link>
+          ) : null}
 
           {lastOrder ? (
             <Link

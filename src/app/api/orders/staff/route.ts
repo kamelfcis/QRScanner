@@ -22,6 +22,7 @@ const ERROR_STATUS: Record<string, number> = {
   inactive: 400,
   usage_exhausted: 400,
   phone_limit: 400,
+  shift_not_open: 409,
 };
 
 function jsonError(error: string, status: number, code?: string) {

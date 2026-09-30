@@ -33,6 +33,8 @@ import {
 } from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { isAlaKeefakTenant } from '@/i18n/config';
+import { useProductOfferPrices } from '@/hooks/useProductOfferPrices';
+import { applyOfferPrice } from '@/lib/customer/product-offer-price';
 import type { Product } from '@/types/database';
 
 interface ProductSheetProps {
@@ -55,6 +57,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const [notes, setNotes] = useState('');
   const [sizeOption, setSizeOption] = useState<CartSizeOption>('small');
   const [weightGrams, setWeightGrams] = useState<number | null>(null);
+  const { data: offerPrices } = useProductOfferPrices(isAlaKeefakTenant);
 
   useEffect(() => {
     if (product) {
@@ -76,7 +79,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const hasSizeOptions = enabledSizes.length > 0;
   const showWeightPicker = hasWeightOptions(product);
   const weightOptions = product.weight_options_g ?? [];
-  const activePrice = showWeightPicker
+  const basePrice = showWeightPicker
     ? weightGrams != null && product.price_per_kg != null
       ? computeWeightPrice(product.price_per_kg, weightGrams)
       : (minWeightPrice(product) ?? product.dining_price)
@@ -85,6 +88,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       : diningMode === 'dining'
         ? product.dining_price
         : product.takeaway_price;
+  const activePrice = applyOfferPrice(basePrice, offerPrices?.get(product.id));
   const otherPrice =
     hasSizeOptions || showWeightPicker
       ? null

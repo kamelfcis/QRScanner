@@ -30,6 +30,9 @@ import { fadeInUp } from '@/lib/motion';
 import { getName, cn } from '@/lib/utils';
 import { getSizeLabel } from '@/lib/catalog/product-sizes';
 import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
+import { computeWeightPrice } from '@/lib/order/weight-price';
+import { useProductOfferPrices } from '@/hooks/useProductOfferPrices';
+import { applyOfferPrice } from '@/lib/customer/product-offer-price';
 import {
   CheckoutCoupon,
   previewCheckoutDiscounts,
@@ -69,14 +72,15 @@ import {
 } from '@/lib/order/delivery-location';
 import { resolveEffectiveMinimumOrder } from '@/lib/order/delivery-min-order';
 import { hasHettSamakaTier3 } from '@/i18n/config';
+import { QuickRegisterCard } from '@/components/checkout/QuickRegisterCard';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { locale } = useI18n();
   const t = useTranslations('checkout');
-  const tCart = useTranslations('cart');
   const tMenu = useTranslations('menu');
   const tCommon = useTranslations('common');
+  const tAccount = useTranslations('account');
   const prefersReducedMotion = useReducedMotion();
   const { data: settings, isLoading } = useRestaurantSettings();
   const { data: features } = useFeatureSettings();
@@ -96,7 +100,18 @@ export default function CheckoutPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [canRetry, setCanRetry] = useState(false);
+  const [customerOfferId, setCustomerOfferId] = useState<string | null>(null);
+  const [customerOffers, setCustomerOffers] = useState<
+    Array<{
+      id: string;
+      title_en: string;
+      title_ar: string;
+      discount_type: string;
+      discount_value: number;
+    }>
+  >([]);
   const submittingRef = useRef(false);
+  const { data: offerPrices } = useProductOfferPrices(isAlaKeefakTenant);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
   const [manualCoupon, setManualCoupon] = useState<AppliedCoupon | null>(null);
@@ -136,11 +151,15 @@ export default function CheckoutPage() {
 
   const pricedItems = useMemo(
     () =>
-      items.map((item) => ({
-        ...item,
-        unitPrice: getCartLineUnitPrice(item, diningMode),
-      })),
-    [items, diningMode]
+      items.map((item) => {
+        let unitPrice =
+          item.weightGrams != null && item.price_per_kg != null
+            ? computeWeightPrice(item.price_per_kg, item.weightGrams)
+            : getCartLineUnitPrice(item, diningMode);
+        unitPrice = applyOfferPrice(unitPrice, offerPrices?.get(item.productId));
+        return { ...item, unitPrice };
+      }),
+    [items, diningMode, offerPrices]
   );
 
   const selectedLocation = useMemo(
@@ -198,6 +217,17 @@ export default function CheckoutPage() {
       })),
     [items]
   );
+
+  useEffect(() => {
+    if (!isAlaKeefakTenant) return;
+    void fetch('/api/customer/offers')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((offers: typeof customerOffers) => {
+        setCustomerOffers(offers);
+        if (offers.length === 1) setCustomerOfferId(offers[0].id);
+      })
+      .catch(() => undefined);
+  }, []);
 
   const handleCouponApplied = useCallback((coupon: AppliedCoupon) => {
     setManualCoupon(coupon);
@@ -365,6 +395,7 @@ export default function CheckoutPage() {
             locale: toCurrencyLocale(locale),
             whatsapp_sent: sendWhatsApp,
             coupon_code: manualCoupon?.code ?? null,
+            customer_offer_id: customerOfferId,
           }),
         });
 
@@ -1014,6 +1045,32 @@ export default function CheckoutPage() {
               </p>
             </div>
           </section>
+
+          {isAlaKeefakTenant ? (
+            <QuickRegisterCard phone={customerPhone} firstName={customerName} />
+          ) : null}
+
+          {isAlaKeefakTenant && customerOffers.length > 0 ? (
+            <section className="space-y-2">
+              <Label htmlFor="customer-offer">{tAccount('yourOffers')}</Label>
+              <Select
+                value={customerOfferId ?? 'none'}
+                onValueChange={(value) => setCustomerOfferId(value === 'none' ? null : value)}
+              >
+                <SelectTrigger id="customer-offer" className="min-h-11">
+                  <SelectValue placeholder={tAccount('yourOffers')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">{tCommon('none')}</SelectItem>
+                  {customerOffers.map((offer) => (
+                    <SelectItem key={offer.id} value={offer.id}>
+                      {getName(locale, offer.title_en, offer.title_ar)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </section>
+          ) : null}
 
           <p className="text-muted-foreground text-center text-sm leading-relaxed" role="status">
             {dashboardOrders ? (

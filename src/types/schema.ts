@@ -337,6 +337,8 @@ export const placeOrderSchema = z.object({
   locale: z.enum(['en', 'ar', 'fr', 'nl']).default('en'),
   whatsapp_sent: z.boolean().optional(),
   coupon_code: couponCodeValue,
+  customer_id: z.string().uuid().nullable().optional(),
+  customer_offer_id: z.string().uuid().nullable().optional(),
 });
 
 export const couponPreviewSchema = z.object({

@@ -14,10 +14,22 @@ import {
   ChefHat,
   Scale,
   Wallet,
+  Package,
+  BookOpen,
+  Building2,
+  ShoppingCart,
+  Gift,
+  Tag,
   type LucideIcon,
 } from 'lucide-react';
-import { hasDailyOps } from '@/i18n/config';
-import { canAccessExpenses, canManageCoupons, type StaffRole } from '@/lib/staff/roles';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
+import {
+  canAccessExpenses,
+  canAccessInventory,
+  canAccessOstolAdmin,
+  canManageCoupons,
+  type StaffRole,
+} from '@/lib/staff/roles';
 import type { FeatureSettings, RestaurantSettings } from '@/types/database';
 
 export interface DashboardNavItem {
@@ -29,6 +41,8 @@ export interface DashboardNavItem {
   /** When set, only these roles see the item (daily ops tenants). */
   roles?: StaffRole[];
   dailyOpsOnly?: boolean;
+  /** Ala Keefak / Ostol POS only (isAlaKeefakTenant). */
+  alaKeefakOnly?: boolean;
 }
 
 /** Single source of truth for sidebar + mobile sheet nav */
@@ -69,6 +83,53 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { key: 'reports', href: '/dashboard/reports', icon: FileText },
   { key: 'shift', href: '/dashboard/shift', icon: Scale },
+  {
+    key: 'inventory',
+    href: '/dashboard/inventory',
+    icon: Package,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+  },
+  {
+    key: 'recipes',
+    href: '/dashboard/recipes',
+    icon: BookOpen,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+    roles: ['admin'],
+  },
+  {
+    key: 'suppliers',
+    href: '/dashboard/suppliers',
+    icon: Building2,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+    roles: ['admin'],
+  },
+  {
+    key: 'purchases',
+    href: '/dashboard/purchases',
+    icon: ShoppingCart,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+    roles: ['admin'],
+  },
+  {
+    key: 'loyalty',
+    href: '/dashboard/loyalty',
+    icon: Gift,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+    roles: ['admin'],
+  },
+  {
+    key: 'productOffers',
+    href: '/dashboard/product-offers',
+    icon: Tag,
+    alaKeefakOnly: true,
+    dailyOpsOnly: true,
+    roles: ['admin'],
+  },
   { key: 'menu', href: '/dashboard/menu', icon: Menu },
   { key: 'import', href: '/dashboard/import', icon: FileUp },
   { key: 'testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
@@ -77,7 +138,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];
 
-export const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shift']);
+export const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shift', 'inventory']);
 
 export function getDashboardNav(
   features?: FeatureSettings | null,
@@ -86,6 +147,7 @@ export function getDashboardNav(
 ): DashboardNavItem[] {
   return DASHBOARD_NAV.filter((item) => {
     if (item.dailyOpsOnly && !hasDailyOps) return false;
+    if (item.alaKeefakOnly && !isAlaKeefakTenant) return false;
     if (item.featureFlag && features?.[item.featureFlag] !== true) return false;
     if (item.restaurantFlag && restaurant?.[item.restaurantFlag] !== true) return false;
     if (hasDailyOps && role === 'cashier') {
@@ -94,6 +156,13 @@ export function getDashboardNav(
     if (item.roles && !item.roles.includes(role)) return false;
     if (item.key === 'coupons' && !canManageCoupons(role)) return false;
     if (item.key === 'expenses' && !canAccessExpenses(role)) return false;
+    if (item.key === 'inventory' && !canAccessInventory(role)) return false;
+    if (
+      ['recipes', 'suppliers', 'purchases', 'loyalty', 'productOffers'].includes(item.key) &&
+      !canAccessOstolAdmin(role)
+    ) {
+      return false;
+    }
     return true;
   });
 }
