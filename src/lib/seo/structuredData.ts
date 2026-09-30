@@ -2,19 +2,19 @@ import type { RestaurantSettings } from '@/types/database';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Restaurant';
 
 export function generateRestaurantSchema(
   settings?: RestaurantSettings | null,
   locale: Locale = defaultLocale
 ) {
-  const name =
-    locale === 'ar' ? settings?.name_ar || 'وردة الشامية' : settings?.name_en || 'Warda Shamya';
+  const name = locale === 'ar' ? settings?.name_ar || APP_NAME : settings?.name_en || APP_NAME;
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    name: settings?.name_en || 'Warda Shamya',
-    alternateName: settings?.name_ar || 'وردة الشامية',
+    name: settings?.name_en || APP_NAME,
+    alternateName: settings?.name_ar || APP_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     description:
@@ -63,7 +63,7 @@ export function generateMenuSchema(locale: Locale = defaultLocale) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Menu',
-    name: locale === 'ar' ? 'قائمة وردة الشامية' : 'Warda Shamya Menu',
+    name: locale === 'ar' ? `قائمة ${APP_NAME}` : `${APP_NAME} Menu`,
     description:
       locale === 'ar'
         ? 'قائمة المأكولات اللبنانية والسورية الأصيلة.'
