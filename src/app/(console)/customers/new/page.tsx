@@ -17,6 +17,23 @@ function asTemplateType(value: string | null): TemplateType {
   return 'warda';
 }
 
+function readProvisionError(data: { error?: unknown }): string {
+  const error = data.error;
+  if (typeof error === 'string' && error.trim()) return error;
+  if (error && typeof error === 'object') {
+    const flat = error as {
+      formErrors?: string[];
+      fieldErrors?: Record<string, string[] | undefined>;
+    };
+    const fields = Object.entries(flat.fieldErrors ?? {}).flatMap(([key, messages]) =>
+      (messages ?? []).map((message) => `${key}: ${message}`)
+    );
+    const parts = [...(flat.formErrors ?? []), ...fields].filter(Boolean);
+    if (parts.length) return parts.join('; ');
+  }
+  return 'Provision failed';
+}
+
 export default function NewCustomerPage() {
   const router = useRouter();
   const search = useSearchParams();
@@ -73,12 +90,13 @@ export default function NewCustomerPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          customerId: search.get('from') || undefined,
           templateType: form.templateType,
           slug: form.slug.trim().toLowerCase(),
           displayNameAr: form.displayNameAr.trim(),
           displayNameEn: form.displayNameEn.trim(),
           adminEmail: form.adminEmail.trim() || undefined,
-          adminPassword: form.adminPassword || undefined,
+          adminPassword: form.adminPassword.trim() || undefined,
           secrets: {
             supabaseUrl: form.supabaseUrl.trim(),
             supabaseAnonKey: form.supabaseAnonKey.trim(),
@@ -91,7 +109,7 @@ export default function NewCustomerPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error?.formErrors?.join?.(', ') || data.error || 'Provision failed');
+        throw new Error(readProvisionError(data));
       }
       toast.success('Provisioning started');
       if (data.adminPassword) {

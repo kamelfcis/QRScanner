@@ -24,8 +24,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Health never depends on Supabase session refresh
-  if (pathname === '/api/health') {
+  // API routes authenticate themselves. Skipping the session refresh here
+  // keeps POST bodies intact; rewriting the request in middleware can drop them.
+  if (pathname === '/api/health' || pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
 

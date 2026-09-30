@@ -79,15 +79,20 @@ export default function CustomerDetailPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/customers/${params.id}`);
-    const json = await res.json();
-    if (!res.ok) {
-      toast.error(json.error || 'Failed to load');
+    try {
+      const res = await fetch(new URL(`/api/customers/${params.id}`, window.location.origin));
+      const json = await res.json();
+      if (!res.ok) {
+        toast.error(json.error || 'Failed to load');
+        setLoading(false);
+        return;
+      }
+      setData(json);
       setLoading(false);
-      return;
+    } catch {
+      toast.error('Could not reach the admin API. Refresh and try again.');
+      setLoading(false);
     }
-    setData(json);
-    setLoading(false);
   }, [params.id]);
 
   useEffect(() => {
@@ -97,17 +102,25 @@ export default function CustomerDetailPage() {
     }
 
     let cancelled = false;
+    let loaded = false;
     const run = async () => {
-      const res = await fetch(`/api/customers/${params.id}`);
-      const json = await res.json();
-      if (cancelled) return;
-      if (!res.ok) {
-        toast.error(json.error || 'Failed to load');
+      try {
+        const res = await fetch(new URL(`/api/customers/${params.id}`, window.location.origin));
+        const json = await res.json();
+        if (cancelled) return;
+        if (!res.ok) {
+          if (!loaded) toast.error(json.error || 'Failed to load');
+          setLoading(false);
+          return;
+        }
+        loaded = true;
+        setData(json);
         setLoading(false);
-        return;
+      } catch {
+        if (cancelled || loaded) return;
+        toast.error('Could not reach the admin API. Refresh and try again.');
+        setLoading(false);
       }
-      setData(json);
-      setLoading(false);
     };
 
     const boot = setTimeout(() => {

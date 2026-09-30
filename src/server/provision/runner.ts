@@ -1,4 +1,10 @@
-import { decryptJson, encryptJson, encryptSecret, generatePassword } from '@/lib/crypto/secrets';
+import {
+  decryptJson,
+  decryptSecret,
+  encryptJson,
+  encryptSecret,
+  generatePassword,
+} from '@/lib/crypto/secrets';
 import type { CustomerSecrets, ProvisionJobStatus, TemplateType } from '@/lib/engaz/types';
 import { TEMPLATE_CONFIGS } from '@/lib/engaz/types';
 import { env } from '@/lib/env';
@@ -111,7 +117,7 @@ export async function runProvisionJob(jobId: string): Promise<void> {
   const gitBranch = slug;
   let productionUrl = customerProductionUrl(slug);
   let adminEmail = `admin@${slug}.local`;
-  const adminPassword = generatePassword(18);
+  let adminPassword = generatePassword(18);
   let vercelProjectId: string | undefined;
 
   try {
@@ -166,7 +172,16 @@ export async function runProvisionJob(jobId: string): Promise<void> {
 
     if (existingAdmin) {
       adminEmail = existingAdmin.email;
-      // Prefer newly generated password on retry and overwrite
+      try {
+        const stored = decryptSecret({
+          ciphertext: existingAdmin.password_ciphertext,
+          iv: existingAdmin.password_iv,
+          authTag: existingAdmin.password_auth_tag,
+        });
+        if (stored.length >= 8) adminPassword = stored;
+      } catch {
+        // Keep the generated password and overwrite the stored row below.
+      }
     } else {
       adminEmail = `admin@${slug}.com`;
     }

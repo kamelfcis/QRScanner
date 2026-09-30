@@ -1,31 +1,10 @@
-﻿import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { NextResponse } from 'next/server';
 import { encryptJson, encryptSecret, generatePassword } from '@/lib/crypto/secrets';
 import { TEMPLATE_CONFIGS } from '@/lib/engaz/types';
 import { requireServerSecrets } from '@/lib/env';
 import { createServiceRoleClient, requireSuperAdmin } from '@/lib/supabase/server';
+import { prepareProvisionInput } from '@/server/provision/prepare-input';
 import { startProvisionJob } from '@/server/provision/runner';
-
-const bodySchema = z.object({
-  templateType: z.enum(['warda', 'aklet', 'harameen']),
-  slug: z
-    .string()
-    .min(2)
-    .max(63)
-    .regex(/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/),
-  displayNameAr: z.string().min(1),
-  displayNameEn: z.string().min(1),
-  adminEmail: z.string().email().optional(),
-  adminPassword: z.string().min(8).optional(),
-  secrets: z.object({
-    supabaseUrl: z.string().url(),
-    supabaseAnonKey: z.string().min(20),
-    supabaseServiceRoleKey: z.string().min(20),
-    supabaseDbPassword: z.string().min(1),
-    supabaseAccessToken: z.string().min(10),
-    supabaseProjectRef: z.string().min(5),
-  }),
-});
 
 export async function POST(request: Request) {
   const auth = await requireSuperAdmin();
@@ -48,35 +27,63 @@ export async function POST(request: Request) {
   try {
     json = await request.json();
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    console.error('[provision] rejected request: body was not valid JSON');
+    return NextResponse.json(
+      { error: 'Provision request body was not valid JSON' },
+      { status: 400 }
+    );
   }
 
-  const parsed = bodySchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+  const prepared = prepareProvisionInput(json);
+  if (!prepared.ok) {
+    console.error('[provision] rejected request:', prepared.error);
+    return NextResponse.json({ error: prepared.error }, { status: 400 });
   }
 
-  const input = parsed.data;
+  const input = prepared.data;
   const db = createServiceRoleClient();
 
-  const { data: existing } = await db
-    .from('customers')
-    .select('*')
-    .eq('slug', input.slug)
-    .maybeSingle();
+  let existing: Record<string, unknown> | null = null;
+  if (input.customerId) {
+    const { data } = await db
+      .from('customers')
+      .select('*')
+      .eq('id', input.customerId)
+      .maybeSingle();
+    existing = data;
+  }
+  if (!existing) {
+    const { data } = await db.from('customers').select('*').eq('slug', input.slug).maybeSingle();
+    existing = data;
+  }
 
   let customer = existing;
   if (existing) {
+    const status = String(existing.status ?? '');
+    const source = String(existing.registration_source ?? '');
     const canReuseDraft =
-      existing.status === 'draft' &&
-      (existing.registration_source === 'self_service' || existing.registration_source === 'admin');
+      (status === 'draft' || status === 'failed') &&
+      (source === 'self_service' || source === 'admin');
     if (!canReuseDraft) {
       return NextResponse.json({ error: 'Slug already exists' }, { status: 409 });
+    }
+
+    if (String(existing.slug) !== input.slug) {
+      const { data: slugOwner } = await db
+        .from('customers')
+        .select('id')
+        .eq('slug', input.slug)
+        .neq('id', String(existing.id))
+        .maybeSingle();
+      if (slugOwner) {
+        return NextResponse.json({ error: 'Slug already exists' }, { status: 409 });
+      }
     }
 
     const { data: updated, error: updErr } = await db
       .from('customers')
       .update({
+        slug: input.slug,
         display_name_ar: input.displayNameAr,
         display_name_en: input.displayNameEn,
         template_type: input.templateType,
