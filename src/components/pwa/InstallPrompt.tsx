@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { useSiteName } from '@/hooks/useSiteName';
+import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getRestaurantDisplayName } from '@/lib/appName';
 import { cn } from '@/lib/utils';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -21,8 +21,9 @@ export function InstallPrompt() {
     () => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
   );
   const prefersReducedMotion = useReducedMotion();
+  const { locale } = useI18n();
   const t = useTranslations('pwa');
-  const siteName = useSiteName();
+  const siteName = getRestaurantDisplayName(locale, null);
 
   const installTitle = (() => {
     const raw = t('installTitle', { name: siteName });
