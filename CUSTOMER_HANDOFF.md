@@ -7,8 +7,8 @@
 | Slug | `mazen-store-b1eb` |
 | Template | Warda (restaurant) |
 | Git branch | `mazen-store-b1eb` |
-| Production URL | (pending deploy) |
-| Admin dashboard | (pending deploy)/login |
+| Production URL | https://mazen-store-b1eb.vercel.app |
+| Admin dashboard | https://mazen-store-b1eb.vercel.app/login |
 | Admin email | `mazenstore25@gmail.com` |
 | Admin password | `mazenstore25` |
 
