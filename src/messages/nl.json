@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Warda Shamya",
+    "appName": "MAZEN STORE",
     "loading": "Laden…",
     "saving": "Opslaan…",
     "save": "Opslaan",
@@ -90,13 +90,13 @@
     "coupons": "Coupons"
   },
   "landing": {
-    "heroTitle": "Warda Shamya",
+    "heroTitle": "MAZEN STORE",
     "heroWelcome": "Welkom bij",
     "heroSubtitle": "Een culinaire reis door Libanese en Syrische tradities",
     "viewMenu": "Menu bekijken",
     "ourStory": "Ons verhaal",
     "storyTitle": "Ons verhaal",
-    "storyP1": "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.",
+    "storyP1": "MAZEN STORE is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.",
     "storyP2": "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home.",
     "signatureDishes": "Signatuurgerechten",
     "signatureDishesSubtitle": "Een proeverij van onze geliefde Levantijnse klassiekers — scan, blader en bestel.",
@@ -406,7 +406,7 @@
     "removeStoryImage": "Verwijderen story image",
     "storyUploadFailed": "Failed to upload story image",
     "headline": "Headline",
-    "headlinePlaceholder": "e.g. Welkom to Warda Shamya",
+    "headlinePlaceholder": "e.g. Welkom to MAZEN STORE",
     "subtitle": "Subtitle",
     "subtitlePlaceholder": "e.g. A culinary journey...",
     "contactInfo": "Contact Information",
@@ -1260,7 +1260,7 @@
     "loginTitle": "Log in op het beheerdersdashboard",
     "email": "E-mail",
     "password": "Wachtwoord",
-    "emailPlaceholder": "admin@wardashamya.com",
+    "emailPlaceholder": "admin@mazenstore.com",
     "passwordPlaceholder": "Enter your password",
     "signIn": "Sign in",
     "signingIn": "Inloggen...",
@@ -1335,7 +1335,7 @@
   "welcome": {
     "welcomeTo": "Welkom bij {name}",
     "chooseOrderType": "Kies uw besteltype",
-    "title": "Welkom bij Warda Shamya",
+    "title": "Welkom bij MAZEN STORE",
     "subtitle": "Kies uw besteltype",
     "dineIn": "Ter plaatse",
     "dineInEn": "Ter plaatse",
