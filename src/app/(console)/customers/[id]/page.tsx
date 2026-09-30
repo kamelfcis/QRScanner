@@ -260,7 +260,7 @@ export default function CustomerDetailPage() {
     !['done', 'failed'].includes(data.latestJob.status) &&
     jobStaleMs > 8 * 60 * 1000;
   const canRetry =
-    c.status === 'failed' || data.latestJob?.status === 'failed' || stuckProvisioning;
+    c.status === 'failed' || data.latestJob?.status === 'failed' || c.status === 'provisioning';
   const canToggleStatus =
     isToggleableCustomerStatus(c.status) || (c.status === 'failed' && Boolean(c.production_url));
 
