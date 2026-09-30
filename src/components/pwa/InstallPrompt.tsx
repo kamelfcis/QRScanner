@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useSiteName } from '@/hooks/useSiteName';
 import { cn } from '@/lib/utils';
 

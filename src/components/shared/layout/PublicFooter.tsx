@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle, Mail } from 'lucide-react';
 import { useRestaurantSettings } from '@/hooks/useSettings';
+import { useSiteName } from '@/hooks/useSiteName';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getSiteNameEn } from '@/lib/appName';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 
 export function PublicFooter() {
@@ -14,7 +14,7 @@ export function PublicFooter() {
   const navT = useTranslations('nav');
   const commonT = useTranslations('common');
 
-  const name = getSiteNameEn(settings);
+  const name = useSiteName();
   const address = resolveContactAddress(settings, locale);
 
   return (
@@ -150,7 +150,7 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            {t('copyright', { year: new Date().getFullYear() })}
+            {t('copyright', { year: new Date().getFullYear(), name })}
           </p>
         </div>
       </div>
