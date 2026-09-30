@@ -10,6 +10,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 
 const DEFAULT_HERO = '/hero/warda-storefront.jpg';
@@ -43,11 +44,7 @@ export function HeroSection() {
   const hasCarousel = featuredImages.length > 0;
   const heroImage = settings?.hero_image_url || DEFAULT_HERO;
 
-  const name = getName(
-    locale,
-    settings?.name_en || t('heroTitle'),
-    settings?.name_ar || t('heroTitle')
-  );
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const heroAriaLabel = `${t('heroWelcome')} ${name}`;
 
   const goToSlide = useCallback(

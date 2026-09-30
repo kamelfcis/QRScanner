@@ -20,6 +20,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 
@@ -57,11 +58,7 @@ export function PublicHeader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const name = getName(
-    locale,
-    settings?.name_en || commonT('appName'),
-    settings?.name_ar || commonT('appName')
-  );
+  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const isOverlay = !scrolled;
 
   const navLinks: NavLink[] = [

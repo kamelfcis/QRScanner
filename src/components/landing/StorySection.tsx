@@ -6,6 +6,7 @@ import { ParallaxSection } from '@/components/shared/motion';
 import { fadeInLeft, fadeInRight } from '@/lib/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { getName } from '@/lib/utils';
 
 export function StorySection() {
@@ -14,12 +15,8 @@ export function StorySection() {
   const t = useTranslations('landing');
   const tSettings = useTranslations('settings');
 
-  const restaurantName = getName(
-    locale,
-    settings?.name_en || t('heroTitle'),
-    settings?.name_ar || t('heroTitle')
-  );
-  const logoInitial = (settings?.name_en || settings?.name_ar || 'W').charAt(0).toUpperCase();
+  const restaurantName = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
+  const logoInitial = restaurantName.charAt(0).toUpperCase();
 
   return (
     <section id="story" className="relative py-20 md:py-28">

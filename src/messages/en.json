@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Warda Shamya",
+    "appName": "MAZEN STORE",
     "loading": "Loading...",
     "saving": "Saving...",
     "save": "Save",
@@ -90,14 +90,14 @@
     "coupons": "Coupons"
   },
   "landing": {
-    "heroTitle": "Warda Shamya",
+    "heroTitle": "MAZEN STORE",
     "heroWelcome": "Welcome to",
     "heroSubtitle": "A culinary journey through Lebanese & Syrian traditions",
     "viewMenu": "View Menu",
     "ourStory": "Our Story",
     "storyTitle": "Our Story",
-    "storyP1": "Warda Shamya is a celebration of authentic Lebanese and Syrian cuisine, rooted in generations of culinary tradition. Every dish we serve tells a story of heritage, passion, and the finest ingredients sourced from the heart of the Levant.",
-    "storyP2": "From our warm hospitality to our carefully crafted recipes, we invite you to experience the true flavors of the Middle East in an atmosphere that feels like home.",
+    "storyP1": "MAZEN STORE welcomes you to browse our menu and place your order with ease.",
+    "storyP2": "Discover our products and enjoy a smooth ordering experience from start to finish.",
     "signatureDishes": "Signature Dishes",
     "signatureDishesSubtitle": "A taste of our most loved Levantine classics — scan, browse, and order.",
     "noFeaturedDishes": "No featured dishes available yet.",
@@ -406,7 +406,7 @@
     "removeStoryImage": "Remove story image",
     "storyUploadFailed": "Failed to upload story image",
     "headline": "Headline",
-    "headlinePlaceholder": "e.g. Welcome to Warda Shamya",
+    "headlinePlaceholder": "e.g. Welcome to MAZEN STORE",
     "subtitle": "Subtitle",
     "subtitlePlaceholder": "e.g. A culinary journey...",
     "contactInfo": "Contact Information",
@@ -1247,7 +1247,7 @@
     "loginTitle": "Sign in to the admin dashboard",
     "email": "Email",
     "password": "Password",
-    "emailPlaceholder": "admin@wardashamya.com",
+    "emailPlaceholder": "admin@mazenstore.com",
     "passwordPlaceholder": "Enter your password",
     "signIn": "Sign in",
     "signingIn": "Signing in...",
@@ -1330,7 +1330,7 @@
   "welcome": {
     "welcomeTo": "Welcome to {name}",
     "chooseOrderType": "Please choose your order type",
-    "title": "Welcome to Warda Shamya",
+    "title": "Welcome to MAZEN STORE",
     "subtitle": "Please choose your order type",
     "dineIn": "Dine In",
     "dineInEn": "Dine In",
@@ -1348,6 +1348,6 @@
     "deliveryAr": "توصيل",
     "deliveryDesc": "We bring your favorites straight to your door",
     "tagline": "A culinary journey through Lebanese & Syrian traditions",
-    "heroAlt": "Warda Shamya restaurant storefront at night with golden neon signage"
+    "heroAlt": "MAZEN STORE storefront"
   }
 }

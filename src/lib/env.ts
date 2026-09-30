@@ -4,7 +4,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_URL is required'),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required'),
   NEXT_PUBLIC_APP_URL: z.string().default('http://localhost:3000'),
-  NEXT_PUBLIC_APP_NAME: z.string().default('Warda Shamya'),
+  NEXT_PUBLIC_APP_NAME: z.string().default('MAZEN STORE'),
   NEXT_PUBLIC_SITE_URL: z.string().optional(),
   NEXT_PUBLIC_TENANT: z
     .string()
@@ -30,7 +30,7 @@ function validateEnv() {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
       NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-      NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'Warda Shamya',
+      NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'MAZEN STORE',
       NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
       NEXT_PUBLIC_TENANT:
         process.env.NEXT_PUBLIC_TENANT === 'harameen' ||

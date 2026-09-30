@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "وردة شامية",
+    "appName": "MAZEN STORE",
     "loading": "جاري التحميل...",
     "saving": "جاري الحفظ...",
     "save": "حفظ",
@@ -90,14 +90,14 @@
     "coupons": "الكوبونات"
   },
   "landing": {
-    "heroTitle": "وردة شامية",
+    "heroTitle": "MAZEN STORE",
     "heroWelcome": "مرحبا بكم في",
     "heroSubtitle": "رحلة طعام عبر التقاليد اللبنانية والسورية",
     "viewMenu": "عرض القائمة",
     "ourStory": "قصتنا",
     "storyTitle": "قصتنا",
-    "storyP1": "وردة شامية هي احتفال بالمأكولات اللبنانية والسورية الأصيلة، متجذرة في تقاليد طبخ توارثتها الأجيال. كل طبق نقدمه يروي قصة من التراث والشغف وأجود المكونات من قلب المشرق العربي.",
-    "storyP2": "من ضيافتنا الدافئة إلى وصفاتنا المُحكمة الصنع، ندعوكم لتجربة النكهات الحقيقية للشرق الأوسط في جو يشعركم بالبيت.",
+    "storyP1": "MAZEN STORE يرحب بكم لتصفح قائمتنا وطلب منتجاتكم بسهولة.",
+    "storyP2": "اكتشفوا منتجاتنا واستمتعوا بتجربة طلب سلسة من البداية إلى النهاية.",
     "signatureDishes": "أطباق مميزة",
     "signatureDishesSubtitle": "لمحة من أشهر أطباقنا الشامية — تصفّح القائمة واطلب بسهولة.",
     "noFeaturedDishes": "لا توجد أطباق مميزة متاحة بعد.",
@@ -406,7 +406,7 @@
     "removeStoryImage": "إزالة صورة القصة",
     "storyUploadFailed": "فشل رفع صورة القصة",
     "headline": "العنوان الرئيسي",
-    "headlinePlaceholder": "مثال: مرحباً بكم في وردة شامية",
+    "headlinePlaceholder": "مثال: مرحباً بكم في MAZEN STORE",
     "subtitle": "العنوان الفرعي",
     "subtitlePlaceholder": "مثال: رحلة طعام عبر...",
     "contactInfo": "معلومات الاتصال",
@@ -1261,7 +1261,7 @@
     "loginTitle": "تسجيل الدخول إلى لوحة التحكم",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
-    "emailPlaceholder": "admin@wardashamya.com",
+    "emailPlaceholder": "admin@mazenstore.com",
     "passwordPlaceholder": "أدخل كلمة المرور",
     "signIn": "تسجيل الدخول",
     "signingIn": "جاري تسجيل الدخول...",

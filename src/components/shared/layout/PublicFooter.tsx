@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle, Mail } from 'lucide-react';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSiteNameEn } from '@/lib/appName';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 
 export function PublicFooter() {
@@ -13,7 +14,7 @@ export function PublicFooter() {
   const navT = useTranslations('nav');
   const commonT = useTranslations('common');
 
-  const name = settings?.name_en || commonT('appName');
+  const name = getSiteNameEn(settings);
   const address = resolveContactAddress(settings, locale);
 
   return (
