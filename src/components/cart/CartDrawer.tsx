@@ -14,6 +14,7 @@ import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
+import { isEcommerceStore } from '@/lib/store-config';
 import { Image } from '@/components/shared/Image';
 
 interface CartDrawerProps {
@@ -190,19 +191,21 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                           </div>
                         </div>
 
-                        <div className="mt-2">
-                          <Label htmlFor={`notes-${item.id}`} className="sr-only">
-                            {t('editNotes')}
-                          </Label>
-                          <Input
-                            id={`notes-${item.id}`}
-                            value={item.notes}
-                            maxLength={settings?.max_order_notes_length ?? 200}
-                            placeholder={t('itemNotesPlaceholder')}
-                            onChange={(e) => setItemNotes(item.id, e.target.value)}
-                            className="h-9 rounded-lg bg-[var(--menu-paper)] text-xs"
-                          />
-                        </div>
+                        {!isEcommerceStore && (
+                          <div className="mt-2">
+                            <Label htmlFor={`notes-${item.id}`} className="sr-only">
+                              {t('editNotes')}
+                            </Label>
+                            <Input
+                              id={`notes-${item.id}`}
+                              value={item.notes}
+                              maxLength={settings?.max_order_notes_length ?? 200}
+                              placeholder={t('itemNotesPlaceholder')}
+                              onChange={(e) => setItemNotes(item.id, e.target.value)}
+                              className="h-9 rounded-lg bg-[var(--menu-paper)] text-xs"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
