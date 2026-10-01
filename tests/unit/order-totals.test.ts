@@ -101,6 +101,45 @@ describe('validateOrder delivery location', () => {
   });
 });
 
+describe('validateOrder customer phone', () => {
+  it('requires phone when flagged', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      customerPhone: '',
+      requiresCustomerPhone: true,
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+    });
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('phone_required');
+  });
+
+  it('passes when phone is provided and required', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      customerPhone: '01012345678',
+      requiresCustomerPhone: true,
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+    });
+    expect(result.valid).toBe(true);
+  });
+
+  it('allows empty phone when not required', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      customerPhone: '',
+      requiresCustomerPhone: false,
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+    });
+    expect(result.valid).toBe(true);
+  });
+});
+
 describe('validateOrder min order', () => {
   it('fails when subtotal is below minimum', () => {
     const result = validateOrder({

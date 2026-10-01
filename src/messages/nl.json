@@ -527,6 +527,8 @@
     "customerName": "Uw naam",
     "customerNamePlaceholder": "Volledige naam",
     "customerPhone": "Telefoon (optioneel)",
+    "customerPhoneRequired": "Telefoon",
+    "phoneRequired": "Telefoonnummer is verplicht",
     "customerPhonePlaceholder": "Mobiel nummer zonder landcode",
     "detectedCountry": "Gedetecteerd: {country} ({prefix})",
     "orderNotes": "Bestelnotities",

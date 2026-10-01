@@ -1,5 +1,7 @@
 export interface OrderValidationInput {
   customerName: string;
+  customerPhone?: string | null;
+  requiresCustomerPhone?: boolean;
   orderNotes?: string | null;
   itemNotes?: Array<string | null | undefined>;
   subtotal: number;
@@ -24,6 +26,7 @@ export type OrderValidationErrorCode =
   | 'empty_cart'
   | 'whatsapp_missing'
   | 'name_required'
+  | 'phone_required'
   | 'address_required'
   | 'min_order'
   | 'notes_too_long';
@@ -43,6 +46,9 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   if (!input.hasItems) codes.push('empty_cart');
   if (!input.whatsappConfigured) codes.push('whatsapp_missing');
   if (!input.customerName?.trim()) codes.push('name_required');
+  if (input.requiresCustomerPhone && !input.customerPhone?.trim()) {
+    codes.push('phone_required');
+  }
   if (input.requiresDeliveryLocation && !input.deliveryLocationId?.trim()) {
     codes.push('address_required');
   } else if (input.requiresDeliveryAddress && !input.deliveryAddress?.trim()) {

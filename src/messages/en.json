@@ -529,6 +529,8 @@
     "customerName": "Your name",
     "customerNamePlaceholder": "Full name",
     "customerPhone": "Phone (optional)",
+    "customerPhoneRequired": "Phone",
+    "phoneRequired": "Phone number is required",
     "customerPhonePlaceholder": "Mobile number without country code",
     "detectedCountry": "Detected: {country} ({prefix})",
     "orderNotes": "Order notes",

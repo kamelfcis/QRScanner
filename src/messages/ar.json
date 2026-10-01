@@ -529,6 +529,8 @@
     "customerName": "اسمك",
     "customerNamePlaceholder": "الاسم الكامل",
     "customerPhone": "الهاتف (اختياري)",
+    "customerPhoneRequired": "الهاتف",
+    "phoneRequired": "رقم الهاتف مطلوب",
     "customerPhonePlaceholder": "رقم الجوال بدون رمز الدولة",
     "detectedCountry": "تم التعرف: {country} ({prefix})",
     "orderNotes": "ملاحظات الطلب",

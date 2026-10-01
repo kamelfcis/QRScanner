@@ -1,16 +1,16 @@
 # Customer Handoff — MAZEN STORE
 
-| Field | Value |
-|-------|-------|
-| Arabic name | MAZEN STORE |
-| English name | MAZEN STORE |
-| Slug | `mazen-store-b1eb` |
-| Template | Warda (restaurant) |
-| Git branch | `mazen-store-b1eb` |
-| Production URL | https://mazen-store-b1eb.vercel.app |
-| Admin dashboard | https://mazen-store-b1eb.vercel.app/login |
-| Admin email | `mazenstore25@gmail.com` |
-| Admin password | `mazenstore25` |
+| Field           | Value                                 |
+| --------------- | ------------------------------------- |
+| Arabic name     | MAZEN STORE                           |
+| English name    | MAZEN STORE                           |
+| Slug            | `mazen-store-b1eb`                    |
+| Template        | Warda (restaurant)                    |
+| Git branch      | `mazen-store-b1eb`                    |
+| Production URL  | https://mazen-store.engazqr.com       |
+| Admin dashboard | https://mazen-store.engazqr.com/login |
+| Admin email     | `mazenstore25@gmail.com`              |
+| Admin password  | `mazenstore25`                        |
 
 ## Notes
 

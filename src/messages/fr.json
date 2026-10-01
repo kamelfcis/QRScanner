@@ -527,6 +527,8 @@
     "customerName": "Votre nom",
     "customerNamePlaceholder": "Nom complet",
     "customerPhone": "Téléphone (facultatif)",
+    "customerPhoneRequired": "Téléphone",
+    "phoneRequired": "Le numéro de téléphone est requis",
     "customerPhonePlaceholder": "Numéro mobile sans indicatif pays",
     "detectedCountry": "Détecté : {country} ({prefix})",
     "orderNotes": "Notes de commande",

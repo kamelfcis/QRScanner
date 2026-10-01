@@ -81,6 +81,7 @@ export default function CheckoutPage() {
   const requiresDelivery = isEcommerceStore || (isTakeaway && fulfillmentType === 'delivery');
   const requiresDeliveryAddress = !isEcommerceStore && requiresDelivery;
   const requiresDeliveryLocation = isEcommerceStore;
+  const requiresCustomerPhone = isEcommerceStore;
   const { data: deliveryLocations, isLoading: locationsLoading } = useDeliveryLocations();
 
   const selectedLocation = useMemo(
@@ -140,6 +141,8 @@ export default function CheckoutPage() {
           return t('whatsappMissing');
         case 'name_required':
           return t('nameRequired');
+        case 'phone_required':
+          return t('phoneRequired');
         case 'address_required':
           return t('addressRequired');
         case 'min_order':
@@ -158,6 +161,8 @@ export default function CheckoutPage() {
   const handleConfirm = async () => {
     const result = validateOrder({
       customerName,
+      customerPhone,
+      requiresCustomerPhone,
       orderNotes,
       itemNotes: items.map((i) => i.notes),
       subtotal: totals.subtotal,
@@ -563,15 +568,20 @@ export default function CheckoutPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="customer-phone">{t('customerPhone')}</Label>
+              <Label htmlFor="customer-phone">
+                {isEcommerceStore ? t('customerPhoneRequired') : t('customerPhone')}
+                {isEcommerceStore && <span className="text-destructive"> *</span>}
+              </Label>
               <Input
                 id="customer-phone"
                 name="tel"
                 type="tel"
                 autoComplete="tel"
+                required={isEcommerceStore}
                 value={customerPhone}
                 placeholder={t('customerPhonePlaceholder')}
                 onChange={(e) => setMeta({ customerPhone: e.target.value })}
+                data-testid="checkout-phone"
               />
             </div>
             <div className="space-y-2">

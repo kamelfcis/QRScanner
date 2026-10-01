@@ -74,11 +74,13 @@ describe('useCartStore', () => {
     useCartStore.getState().setMeta({
       fulfillmentType: 'delivery',
       deliveryAddress: '123 Main St',
+      customerPhone: '01012345678',
     });
-    const raw = localStorage.getItem('aklet-cart-v1');
+    const raw = localStorage.getItem('warda-cart-v1');
     const parsed = JSON.parse(raw!);
     expect(parsed.state.fulfillmentType).toBe('delivery');
     expect(parsed.state.deliveryAddress).toBe('123 Main St');
+    expect(parsed.state.customerPhone).toBe('01012345678');
   });
 
   it('persists to localStorage under warda-cart-v1', () => {
