@@ -9,16 +9,18 @@ export function ThemeProvider({
   children,
   defaultTheme = 'light',
   storageKey = 'warda-shamya-theme',
+  enableSystem = false,
 }: {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
+  enableSystem?: boolean;
 }) {
   return (
     <NextThemesProvider
       attribute="class"
       defaultTheme={defaultTheme}
-      enableSystem
+      enableSystem={enableSystem}
       disableTransitionOnChange
       storageKey={storageKey}
     >

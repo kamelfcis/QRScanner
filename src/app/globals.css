@@ -837,14 +837,65 @@ textarea,
 }
 
 /* ==========================================================================
-   Menu experience — "Damascus salon at dusk"
+   Menu experience — Mazen Store premium navy (default dark)
 
    Scoped to [data-menu-theme] (set on <body> by MenuThemeScope and on the
    page root for first paint) so the dashboard keeps its own palette.
+   Light cream palette applies when the user toggles to light mode.
    ========================================================================== */
 
 [data-menu-theme] {
-  /* Signature palette */
+  /* Premium navy dark — matches site .dark tokens */
+  --menu-paper: #0A1628;
+  --menu-paper-deep: #070E1A;
+  --menu-surface: #0F172A;
+  --menu-surface-elevated: #1E293B;
+  --menu-ink: #F1F5F9;
+  --menu-ink-soft: #94A3B8;
+  --menu-line: #334155;
+  --menu-line-strong: #475569;
+  --menu-gold: #D4AF37;
+  --menu-gold-soft: #E8C547;
+  --menu-gold-faint: #B8941F;
+  --menu-gold-wash: rgba(212, 175, 55, 0.12);
+  --menu-gold-line: rgba(212, 175, 55, 0.45);
+  --menu-gold-line-strong: rgba(212, 175, 55, 0.65);
+  --menu-wine: #D4AF37;
+  --menu-wine-deep: #B8941F;
+  --menu-wine-wash: rgba(212, 175, 55, 0.12);
+  --menu-on-accent: #0A1628;
+
+  /* Sticky offsets — category nav pins directly under the header */
+  --menu-header-h: calc(3.5rem + env(safe-area-inset-top, 0px));
+  --menu-nav-h: 2.875rem;
+
+  /* Map onto the shared shadcn tokens so every primitive inherits the mood */
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-gold);
+  --primary-foreground: var(--menu-on-accent);
+  --secondary: #1E3A5F;
+  --secondary-foreground: var(--menu-ink);
+  --muted: #1E293B;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-gold);
+  --accent-foreground: var(--menu-on-accent);
+  --destructive: #DC2626;
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-gold);
+  --radius: 0.45rem;
+
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+}
+
+/* Light mode — user toggled via theme switcher */
+html:not(.dark) [data-menu-theme] {
   --menu-paper: #f6f1e8;
   --menu-paper-deep: #ede4d5;
   --menu-surface: #fffcf7;
@@ -862,12 +913,8 @@ textarea,
   --menu-wine: #6b0f1a;
   --menu-wine-deep: #4f0a12;
   --menu-wine-wash: rgba(107, 15, 26, 0.08);
+  --menu-on-accent: #fdf7f0;
 
-  /* Sticky offsets — category nav pins directly under the header */
-  --menu-header-h: calc(3.5rem + env(safe-area-inset-top, 0px));
-  --menu-nav-h: 2.875rem;
-
-  /* Map onto the shared shadcn tokens so every primitive inherits the mood */
   --background: var(--menu-paper);
   --foreground: var(--menu-ink);
   --card: var(--menu-surface);
@@ -882,14 +929,9 @@ textarea,
   --muted-foreground: var(--menu-ink-soft);
   --accent: var(--menu-wine);
   --accent-foreground: #fdf7f0;
-  --destructive: #a3231f;
   --border: var(--menu-line);
   --input: var(--menu-line-strong);
   --ring: var(--menu-gold);
-  --radius: 0.45rem;
-
-  color: var(--menu-ink);
-  background-color: var(--menu-paper);
 }
 
 @media (min-width: 640px) {

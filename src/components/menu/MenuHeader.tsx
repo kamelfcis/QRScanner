@@ -1,7 +1,7 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Heart, Search, ShoppingCart } from 'lucide-react';
+import { Heart, Moon, Search, ShoppingCart, Sun } from 'lucide-react';
 import { MenuContactButtons } from '@/components/menu/MenuContactButtons';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
@@ -13,6 +13,7 @@ import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { showDiningModeToggle } from '@/lib/store-config';
 
 interface MenuHeaderProps {
@@ -43,6 +44,8 @@ export function MenuHeader({
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
+  const tA11y = useTranslations('accessibility');
+  const { resolvedTheme, setTheme } = useTheme();
   const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
@@ -92,9 +95,22 @@ export function MenuHeader({
             />
           )}
 
+          <button
+            type="button"
+            className={cn(iconButton, 'hidden sm:inline-flex')}
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+            aria-label={tA11y('toggleTheme')}
+          >
+            {resolvedTheme === 'dark' ? (
+              <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
+            ) : (
+              <Moon className="h-[18px] w-[18px]" aria-hidden="true" />
+            )}
+          </button>
+
           <LanguageSwitcher
             variant="ghost"
-            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(184,147,74,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
+            className="hidden rounded-full bg-[var(--menu-gold-wash)] text-[var(--menu-gold)] hover:bg-[rgba(212,175,55,0.2)] hover:text-[var(--menu-gold-soft)] sm:inline-flex sm:h-11 sm:min-w-11 sm:px-3"
           />
 
           <MenuContactButtons tableParam={tableParam} className="hidden sm:flex" />

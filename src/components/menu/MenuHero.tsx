@@ -68,7 +68,7 @@ export function MenuHero() {
         ) : (
           <div
             aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_0%,#3a2a1c_0%,#241a12_55%,#160f0a_100%)]"
+            className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_0%,#1E3A5F_0%,#0F172A_55%,#0A1628_100%)]"
           />
         )}
 
