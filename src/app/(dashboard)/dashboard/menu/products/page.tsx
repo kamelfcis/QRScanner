@@ -1,12 +1,19 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useForm, type UseFormReturn } from 'react-hook-form';
+import { useForm, type FieldErrors, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { productSchema } from '@/types/schema';
-import type { ProductInput } from '@/types/schema';
-import type { z } from 'zod';
+import {
+  getDefaultProductFormValues,
+  getEcommerceDisplayPrice,
+  getProductFormSchema,
+  productFormToInput,
+  productToFormValues,
+  type ProductFormInput,
+  type RestaurantProductFormInput,
+} from '@/lib/catalog/product-form';
+import { isEcommerceStore } from '@/lib/store-config';
 import {
   useAllProducts,
   useCreateProduct,
@@ -54,24 +61,16 @@ import { StorageImagePickerDialog } from '@/components/dashboard/products/Storag
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 
-type ProductForm = z.input<typeof productSchema>;
+type ProductForm = ProductFormInput;
 
-const defaultFormValues: ProductForm = {
-  name_en: '',
-  name_ar: '',
-  description_en: '',
-  description_ar: '',
-  category_id: '',
-  image_url: null,
-  dining_price: 0,
-  takeaway_price: 0,
-  is_available: true,
-  is_popular: false,
-  is_new: false,
-  is_bestseller: false,
-  is_spicy: false,
-  sort_order: 0,
-};
+const productFormSchema = getProductFormSchema(isEcommerceStore);
+const defaultFormValues = getDefaultProductFormValues(isEcommerceStore);
+
+function restaurantFormErrors(
+  errors: FieldErrors<ProductFormInput>
+): FieldErrors<RestaurantProductFormInput> {
+  return errors as FieldErrors<RestaurantProductFormInput>;
+}
 
 function ProductImageField({
   form,
@@ -199,12 +198,12 @@ export default function ProductsPage() {
   const toggleAvailability = useToggleProductAvailability();
 
   const createForm = useForm<ProductForm>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productFormSchema),
     defaultValues: defaultFormValues,
   });
 
   const editForm = useForm<ProductForm>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productFormSchema),
     defaultValues: defaultFormValues,
   });
 
@@ -264,22 +263,7 @@ export default function ProductsPage() {
 
   const openEditDialog = (product: Product) => {
     setEditProduct(product);
-    editForm.reset({
-      name_en: product.name_en,
-      name_ar: product.name_ar,
-      description_en: product.description_en ?? '',
-      description_ar: product.description_ar ?? '',
-      category_id: product.category_id,
-      image_url: product.image_url,
-      dining_price: product.dining_price,
-      takeaway_price: product.takeaway_price,
-      is_available: product.is_available,
-      is_popular: product.is_popular,
-      is_new: product.is_new,
-      is_bestseller: product.is_bestseller,
-      is_spicy: product.is_spicy,
-      sort_order: product.sort_order,
-    });
+    editForm.reset(productToFormValues(product, isEcommerceStore));
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -351,7 +335,7 @@ export default function ProductsPage() {
   };
 
   const handleCreate = async (data: ProductForm) => {
-    createProduct.mutate(data as ProductInput, {
+    createProduct.mutate(productFormToInput(data, isEcommerceStore), {
       onSuccess: () => {
         setShowCreateDialog(false);
         createForm.reset(defaultFormValues);
@@ -366,7 +350,7 @@ export default function ProductsPage() {
   const handleEditSave = async (data: ProductForm) => {
     if (!editProduct) return;
     updateProduct.mutate(
-      { id: editProduct.id, input: data as Partial<ProductInput> },
+      { id: editProduct.id, input: productFormToInput(data, isEcommerceStore) },
       {
         onSuccess: () => {
           setEditProduct(null);
@@ -517,7 +501,7 @@ export default function ProductsPage() {
                     {t('category')}
                   </th>
                   <th className="text-muted-foreground p-3 text-start font-medium">
-                    {t('pricesColumn')}
+                    {isEcommerceStore ? t('price') : t('pricesColumn')}
                   </th>
                   <th className="text-muted-foreground hidden p-3 text-start font-medium md:table-cell">
                     {t('statusColumn')}
@@ -588,7 +572,7 @@ export default function ProductsPage() {
                                 {tMenu('bestseller')}
                               </Badge>
                             )}
-                            {product.is_spicy && (
+                            {!isEcommerceStore && product.is_spicy && (
                               <Badge variant="outline" className="text-[10px]">
                                 {t('spicy')}
                               </Badge>
@@ -602,18 +586,28 @@ export default function ProductsPage() {
                         </span>
                       </td>
                       <td className="p-3">
-                        <div className="space-y-0.5 tabular-nums">
-                          <p className="text-muted-foreground text-xs">{tMenu('dining')}</p>
-                          <p className="font-semibold">
-                            {formatCurrencyAmount(product.dining_price, currency, { plain: true })}
-                          </p>
-                          <p className="text-muted-foreground text-xs">{tMenu('takeaway')}</p>
-                          <p className="text-muted-foreground font-medium">
-                            {formatCurrencyAmount(product.takeaway_price, currency, {
+                        {isEcommerceStore ? (
+                          <p className="font-semibold tabular-nums">
+                            {formatCurrencyAmount(getEcommerceDisplayPrice(product), currency, {
                               plain: true,
                             })}
                           </p>
-                        </div>
+                        ) : (
+                          <div className="space-y-0.5 tabular-nums">
+                            <p className="text-muted-foreground text-xs">{tMenu('dining')}</p>
+                            <p className="font-semibold">
+                              {formatCurrencyAmount(product.dining_price, currency, {
+                                plain: true,
+                              })}
+                            </p>
+                            <p className="text-muted-foreground text-xs">{tMenu('takeaway')}</p>
+                            <p className="text-muted-foreground font-medium">
+                              {formatCurrencyAmount(product.takeaway_price, currency, {
+                                plain: true,
+                              })}
+                            </p>
+                          </div>
+                        )}
                       </td>
                       <td className="hidden p-3 md:table-cell">
                         <Badge variant={product.is_available ? 'default' : 'secondary'}>
@@ -743,40 +737,64 @@ export default function ProductsPage() {
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {isEcommerceStore ? (
               <div className="space-y-2">
-                <Label htmlFor="create-dining">
-                  {t('diningPrice')} ({currency}) *
+                <Label htmlFor="create-price">
+                  {t('price')} ({currency}) *
                 </Label>
                 <Input
-                  id="create-dining"
+                  id="create-price"
                   type="number"
                   min={0}
-                  {...createForm.register('dining_price', { valueAsNumber: true })}
+                  {...createForm.register('price', { valueAsNumber: true })}
                 />
-                {createForm.formState.errors.dining_price && (
+                {'price' in createForm.formState.errors && createForm.formState.errors.price && (
                   <p className="text-destructive text-sm">
-                    {createForm.formState.errors.dining_price.message}
+                    {createForm.formState.errors.price.message}
                   </p>
                 )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="create-takeaway">
-                  {t('takeawayPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="create-takeaway"
-                  type="number"
-                  min={0}
-                  {...createForm.register('takeaway_price', { valueAsNumber: true })}
-                />
-                {createForm.formState.errors.takeaway_price && (
-                  <p className="text-destructive text-sm">
-                    {createForm.formState.errors.takeaway_price.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            ) : (
+              (() => {
+                const createRestaurantErrors = restaurantFormErrors(createForm.formState.errors);
+                return (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="create-dining">
+                        {t('diningPrice')} ({currency}) *
+                      </Label>
+                      <Input
+                        id="create-dining"
+                        type="number"
+                        min={0}
+                        {...createForm.register('dining_price', { valueAsNumber: true })}
+                      />
+                      {createRestaurantErrors.dining_price && (
+                        <p className="text-destructive text-sm">
+                          {createRestaurantErrors.dining_price.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="create-takeaway">
+                        {t('takeawayPrice')} ({currency}) *
+                      </Label>
+                      <Input
+                        id="create-takeaway"
+                        type="number"
+                        min={0}
+                        {...createForm.register('takeaway_price', { valueAsNumber: true })}
+                      />
+                      {createRestaurantErrors.takeaway_price && (
+                        <p className="text-destructive text-sm">
+                          {createRestaurantErrors.takeaway_price.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch
@@ -810,14 +828,16 @@ export default function ProductsPage() {
                 />
                 <Label htmlFor="create-bestseller">{tMenu('bestseller')}</Label>
               </div>
-              <div className="flex items-center gap-2">
-                <Switch
-                  checked={createForm.watch('is_spicy')}
-                  onCheckedChange={(checked) => createForm.setValue('is_spicy', checked)}
-                  id="create-spicy"
-                />
-                <Label htmlFor="create-spicy">{t('spicy')}</Label>
-              </div>
+              {!isEcommerceStore && (
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={createForm.watch('is_spicy')}
+                    onCheckedChange={(checked) => createForm.setValue('is_spicy', checked)}
+                    id="create-spicy"
+                  />
+                  <Label htmlFor="create-spicy">{t('spicy')}</Label>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="create-sort">{t('sortOrder')}</Label>
                 <Input
@@ -924,40 +944,64 @@ export default function ProductsPage() {
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {isEcommerceStore ? (
               <div className="space-y-2">
-                <Label htmlFor="edit-dining">
-                  {t('diningPrice')} ({currency}) *
+                <Label htmlFor="edit-price">
+                  {t('price')} ({currency}) *
                 </Label>
                 <Input
-                  id="edit-dining"
+                  id="edit-price"
                   type="number"
                   min={0}
-                  {...editForm.register('dining_price', { valueAsNumber: true })}
+                  {...editForm.register('price', { valueAsNumber: true })}
                 />
-                {editForm.formState.errors.dining_price && (
+                {'price' in editForm.formState.errors && editForm.formState.errors.price && (
                   <p className="text-destructive text-sm">
-                    {editForm.formState.errors.dining_price.message}
+                    {editForm.formState.errors.price.message}
                   </p>
                 )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-takeaway">
-                  {t('takeawayPrice')} ({currency}) *
-                </Label>
-                <Input
-                  id="edit-takeaway"
-                  type="number"
-                  min={0}
-                  {...editForm.register('takeaway_price', { valueAsNumber: true })}
-                />
-                {editForm.formState.errors.takeaway_price && (
-                  <p className="text-destructive text-sm">
-                    {editForm.formState.errors.takeaway_price.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            ) : (
+              (() => {
+                const editRestaurantErrors = restaurantFormErrors(editForm.formState.errors);
+                return (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-dining">
+                        {t('diningPrice')} ({currency}) *
+                      </Label>
+                      <Input
+                        id="edit-dining"
+                        type="number"
+                        min={0}
+                        {...editForm.register('dining_price', { valueAsNumber: true })}
+                      />
+                      {editRestaurantErrors.dining_price && (
+                        <p className="text-destructive text-sm">
+                          {editRestaurantErrors.dining_price.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-takeaway">
+                        {t('takeawayPrice')} ({currency}) *
+                      </Label>
+                      <Input
+                        id="edit-takeaway"
+                        type="number"
+                        min={0}
+                        {...editForm.register('takeaway_price', { valueAsNumber: true })}
+                      />
+                      {editRestaurantErrors.takeaway_price && (
+                        <p className="text-destructive text-sm">
+                          {editRestaurantErrors.takeaway_price.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch
@@ -991,14 +1035,16 @@ export default function ProductsPage() {
                 />
                 <Label htmlFor="edit-bestseller">{tMenu('bestseller')}</Label>
               </div>
-              <div className="flex items-center gap-2">
-                <Switch
-                  checked={editForm.watch('is_spicy')}
-                  onCheckedChange={(checked) => editForm.setValue('is_spicy', checked)}
-                  id="edit-spicy"
-                />
-                <Label htmlFor="edit-spicy">{t('spicy')}</Label>
-              </div>
+              {!isEcommerceStore && (
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={editForm.watch('is_spicy')}
+                    onCheckedChange={(checked) => editForm.setValue('is_spicy', checked)}
+                    id="edit-spicy"
+                  />
+                  <Label htmlFor="edit-spicy">{t('spicy')}</Label>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="edit-sort">{t('sortOrder')}</Label>
                 <Input
