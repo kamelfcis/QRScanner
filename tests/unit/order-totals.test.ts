@@ -52,7 +52,18 @@ describe('calculateOrderTotals', () => {
     });
     expect(totals.applyTax).toBe(true);
     expect(totals.applyService).toBe(true);
+    expect(totals.deliveryFee).toBe(0);
     expect(totals.total).toBe(75);
+  });
+
+  it('includes delivery fee in total', () => {
+    const totals = calculateOrderTotals(
+      [{ quantity: 1, unitPrice: 100 }],
+      { apply_tax: false, apply_service_charge: false },
+      30
+    );
+    expect(totals.deliveryFee).toBe(30);
+    expect(totals.total).toBe(130);
   });
 });
 
@@ -60,6 +71,33 @@ describe('getUnitPrice', () => {
   it('returns dining or takeaway price by mode', () => {
     expect(getUnitPrice(30, 25, 'dining')).toBe(30);
     expect(getUnitPrice(30, 25, 'takeaway')).toBe(25);
+  });
+});
+
+describe('validateOrder delivery location', () => {
+  it('requires delivery location when flagged', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresDeliveryLocation: true,
+      deliveryLocationId: null,
+    });
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('address_required');
+  });
+
+  it('passes when delivery location is selected', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresDeliveryLocation: true,
+      deliveryLocationId: '550e8400-e29b-41d4-a716-446655440000',
+    });
+    expect(result.valid).toBe(true);
   });
 });
 

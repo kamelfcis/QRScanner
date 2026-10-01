@@ -151,6 +151,8 @@ export interface RestaurantSettings {
   tax_rate: number;
   service_charge_rate: number;
   prep_time_minutes: number;
+  /** Ecommerce stores: estimated preparation in days (checkout + WhatsApp). */
+  prep_time_days?: number | null;
   minimum_order: number;
   max_order_notes_length: number;
   apply_tax: boolean;
@@ -360,4 +362,17 @@ export interface ExportData {
 
 export interface MenuData {
   categories: CategoryWithProducts[];
+}
+
+export interface DeliveryLocation {
+  id: string;
+  name_ar: string;
+  name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
+  delivery_fee: number;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
 }

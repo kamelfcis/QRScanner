@@ -44,6 +44,9 @@ export const RESTAURANT_ONLY_DASHBOARD_PATHS = [
 /** Sidebar keys hidden when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
 export const ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS = new Set(['tables', 'reports']);
 
+/** Sidebar keys shown only when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
+export const ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS = new Set(['deliveryLocations']);
+
 export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
   return RESTAURANT_ONLY_DASHBOARD_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
@@ -52,7 +55,13 @@ export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
 
 /** Filtered dashboard nav for the current store mode. */
 export function getDashboardNavItems<T extends { key: string }>(items: readonly T[]): T[] {
-  if (!isEcommerceStore) return [...items];
+  if (!isEcommerceStore) {
+    return items.filter(
+      (item) =>
+        !ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS.has(item.key) &&
+        !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key)
+    );
+  }
   return items.filter((item) => !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key));
 }
 

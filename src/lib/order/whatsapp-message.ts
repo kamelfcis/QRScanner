@@ -25,8 +25,11 @@ export interface WhatsAppMessageInput {
   customerPhone?: string | null;
   orderNotes?: string | null;
   prepTimeMinutes?: number | null;
+  prepTimeDays?: number | null;
   couponCode?: string | null;
   deliveryFee?: number | null;
+  /** Ecommerce delivery-only orders use a simplified header. */
+  ecommerceDelivery?: boolean;
   orderNumber?: string | null;
 }
 
@@ -56,6 +59,8 @@ interface MessageLabels {
   phone: string;
   orderNotes: string;
   prepTime: (minutes: number) => string;
+  prepTimeDays: (days: number) => string;
+  headerDelivery: string;
   orderNumber: string;
 }
 
@@ -79,6 +84,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'الهاتف',
     orderNotes: 'ملاحظات الطلب',
     prepTime: (minutes) => `وقت التحضير المتوقع: ~${minutes} دقيقة`,
+    prepTimeDays: (days) => `وقت التحضير المتوقع: ~${days} ${days === 1 ? 'يوم' : 'أيام'}`,
+    headerDelivery: '*طلب جديد — توصيل*',
     orderNumber: 'رقم الطلب',
   },
   en: {
@@ -100,6 +107,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Phone',
     orderNotes: 'Order notes',
     prepTime: (minutes) => `Est. prep time: ~${minutes} min`,
+    prepTimeDays: (days) => `Est. preparation: ~${days} ${days === 1 ? 'day' : 'days'}`,
+    headerDelivery: '*New Order — Delivery*',
     orderNumber: 'Order #',
   },
   fr: {
@@ -121,6 +130,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Téléphone',
     orderNotes: 'Notes de commande',
     prepTime: (minutes) => `Temps de préparation estimé : ~${minutes} min`,
+    prepTimeDays: (days) => `Préparation estimée : ~${days} j`,
+    headerDelivery: '*Nouvelle commande — Livraison*',
     orderNumber: 'N° commande',
   },
   nl: {
@@ -142,6 +153,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     phone: 'Telefoon',
     orderNotes: 'Bestelnotities',
     prepTime: (minutes) => `Geschatte bereidingstijd: ~${minutes} min`,
+    prepTimeDays: (days) => `Geschatte bereiding: ~${days} dagen`,
+    headerDelivery: '*Nieuwe bestelling — Bezorging*',
     orderNumber: 'Bestelnummer',
   },
 };
@@ -169,17 +182,23 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     customerPhone,
     orderNotes,
     prepTimeMinutes,
+    prepTimeDays,
     couponCode,
     deliveryFee,
     orderNumber,
+    ecommerceDelivery,
   } = input;
 
   const labels = LABELS[locale];
   const lines: string[] = [];
-  const showFulfillment = mode === 'takeaway' && fulfillmentType;
+  const showFulfillment = mode === 'takeaway' && fulfillmentType && !ecommerceDelivery;
   const multiplier = itemMultiplier(locale);
 
-  lines.push(mode === 'dining' ? labels.headerDining : labels.headerTakeaway);
+  if (ecommerceDelivery) {
+    lines.push(labels.headerDelivery);
+  } else {
+    lines.push(mode === 'dining' ? labels.headerDining : labels.headerTakeaway);
+  }
   lines.push(SEP);
 
   if (orderNumber?.trim()) {
@@ -187,7 +206,10 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     lines.push(SEP);
   }
 
-  if (showFulfillment) {
+  if (ecommerceDelivery && deliveryAddress?.trim()) {
+    lines.push(`${labels.address}: ${deliveryAddress.trim()}`);
+    lines.push(SEP);
+  } else if (showFulfillment) {
     lines.push(`${labels.orderType}: ${fulfillmentLabel(locale, fulfillmentType)}`);
     if (fulfillmentType === 'delivery' && deliveryAddress?.trim()) {
       lines.push(`${labels.address}: ${deliveryAddress.trim()}`);
@@ -228,7 +250,9 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
   lines.push(`${labels.name}: ${customerName}`);
   if (customerPhone?.trim()) lines.push(`${labels.phone}: ${customerPhone.trim()}`);
   if (orderNotes?.trim()) lines.push(`${labels.orderNotes}: ${orderNotes.trim()}`);
-  if (prepTimeMinutes != null && prepTimeMinutes > 0) {
+  if (prepTimeDays != null && prepTimeDays > 0) {
+    lines.push(labels.prepTimeDays(prepTimeDays));
+  } else if (prepTimeMinutes != null && prepTimeMinutes > 0) {
     lines.push(labels.prepTime(prepTimeMinutes));
   }
 

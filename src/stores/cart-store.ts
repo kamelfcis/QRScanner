@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { playSound } from '@/lib/ux/sound';
 import { triggerHaptic } from '@/lib/ux/haptic';
+import { defaultDiningMode, isEcommerceStore } from '@/lib/store-config';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
@@ -26,6 +27,8 @@ export interface CartMeta {
   tableNumber: string | null;
   fulfillmentType: FulfillmentType;
   deliveryAddress: string;
+  deliveryLocationId: string | null;
+  deliveryAddressDetails: string;
   customerName: string;
   customerPhone: string;
   orderNotes: string;
@@ -52,10 +55,12 @@ export function makeCartLineId(productId: string, notes: string): string {
 }
 
 const initialMeta: CartMeta = {
-  diningMode: 'dining',
+  diningMode: defaultDiningMode,
   tableNumber: null,
-  fulfillmentType: 'pickup',
+  fulfillmentType: isEcommerceStore ? 'delivery' : 'pickup',
   deliveryAddress: '',
+  deliveryLocationId: null,
+  deliveryAddressDetails: '',
   customerName: '',
   customerPhone: '',
   orderNotes: '',
@@ -150,8 +155,10 @@ export const useCartStore = create<CartState>()(
       clear: () => {
         set({
           items: [],
-          fulfillmentType: 'pickup',
+          fulfillmentType: isEcommerceStore ? 'delivery' : 'pickup',
           deliveryAddress: '',
+          deliveryLocationId: null,
+          deliveryAddressDetails: '',
           customerName: '',
           customerPhone: '',
           orderNotes: '',
@@ -172,6 +179,8 @@ export const useCartStore = create<CartState>()(
         tableNumber: state.tableNumber,
         fulfillmentType: state.fulfillmentType,
         deliveryAddress: state.deliveryAddress,
+        deliveryLocationId: state.deliveryLocationId,
+        deliveryAddressDetails: state.deliveryAddressDetails,
         customerName: state.customerName,
         customerPhone: state.customerPhone,
         orderNotes: state.orderNotes,

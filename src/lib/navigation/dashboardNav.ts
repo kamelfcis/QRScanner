@@ -8,6 +8,7 @@ import {
   MessageSquareQuote,
   BarChart3,
   FileText,
+  Truck,
   type LucideIcon,
 } from 'lucide-react';
 import { getDashboardNavItems } from '@/lib/store-config';
@@ -27,6 +28,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'import', href: '/dashboard/import', icon: FileUp },
   { key: 'testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
   { key: 'qrCodes', href: '/dashboard/qr', icon: QrCode },
+  { key: 'deliveryLocations', href: '/dashboard/delivery-locations', icon: Truck },
   { key: 'tables', href: '/dashboard/tables', icon: Table },
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];

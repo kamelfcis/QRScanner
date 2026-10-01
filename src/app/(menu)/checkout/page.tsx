@@ -9,7 +9,15 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Image } from '@/components/shared/Image';
 import { MenuThemeScope } from '@/components/menu/MenuThemeScope';
 import { useCartStore, type FulfillmentType } from '@/stores/cart-store';
@@ -33,6 +41,12 @@ import {
   trackOrderWhatsApp,
 } from '@/lib/analytics';
 import { normalizeWhatsAppPhone } from '@/lib/order/whatsapp-url';
+import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
+import {
+  buildDeliveryAddressSnapshot,
+  formatDeliveryLocationOption,
+} from '@/lib/order/delivery-location';
+import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 
 export default function CheckoutPage() {
@@ -48,6 +62,8 @@ export default function CheckoutPage() {
   const tableNumber = useCartStore((s) => s.tableNumber);
   const fulfillmentType = useCartStore((s) => s.fulfillmentType);
   const deliveryAddress = useCartStore((s) => s.deliveryAddress);
+  const deliveryLocationId = useCartStore((s) => s.deliveryLocationId);
+  const deliveryAddressDetails = useCartStore((s) => s.deliveryAddressDetails);
   const customerName = useCartStore((s) => s.customerName);
   const customerPhone = useCartStore((s) => s.customerPhone);
   const orderNotes = useCartStore((s) => s.orderNotes);
@@ -62,7 +78,26 @@ export default function CheckoutPage() {
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const whatsappConfigured = Boolean(normalizeWhatsAppPhone(settings?.whatsapp || ''));
   const isTakeaway = isEcommerceStore || diningMode === 'takeaway';
-  const requiresDeliveryAddress = isTakeaway && fulfillmentType === 'delivery';
+  const requiresDelivery = isEcommerceStore || (isTakeaway && fulfillmentType === 'delivery');
+  const requiresDeliveryAddress = !isEcommerceStore && requiresDelivery;
+  const requiresDeliveryLocation = isEcommerceStore;
+  const { data: deliveryLocations, isLoading: locationsLoading } = useDeliveryLocations();
+
+  const selectedLocation = useMemo(
+    () => deliveryLocations?.find((loc) => loc.id === deliveryLocationId) ?? null,
+    [deliveryLocations, deliveryLocationId]
+  );
+
+  const deliveryFee =
+    requiresDelivery && selectedLocation ? Number(selectedLocation.delivery_fee) : 0;
+
+  const composedDeliveryAddress = useMemo(() => {
+    if (!requiresDelivery || !selectedLocation) return null;
+    return buildDeliveryAddressSnapshot(locale, selectedLocation, deliveryAddressDetails);
+  }, [requiresDelivery, selectedLocation, deliveryAddressDetails, locale]);
+
+  const noActiveLocations =
+    requiresDeliveryLocation && !locationsLoading && (deliveryLocations?.length ?? 0) === 0;
 
   const pricedItems = useMemo(
     () =>
@@ -77,10 +112,13 @@ export default function CheckoutPage() {
     () =>
       calculateOrderTotals(
         pricedItems.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
-        settings
+        settings,
+        deliveryFee
       ),
-    [pricedItems, settings]
+    [pricedItems, settings, deliveryFee]
   );
+
+  const prepTime = useMemo(() => resolvePrepTimeDisplay(settings), [settings]);
 
   useEffect(() => {
     if (!trackedStart && items.length > 0) {
@@ -129,6 +167,8 @@ export default function CheckoutPage() {
       hasItems: items.length > 0,
       requiresDeliveryAddress,
       deliveryAddress,
+      requiresDeliveryLocation,
+      deliveryLocationId,
     });
 
     if (!result.valid) {
@@ -146,8 +186,12 @@ export default function CheckoutPage() {
         items,
         diningMode,
         tableNumber,
-        fulfillmentType: isTakeaway ? fulfillmentType : null,
-        deliveryAddress: requiresDeliveryAddress ? deliveryAddress : null,
+        fulfillmentType: isEcommerceStore ? 'delivery' : isTakeaway ? fulfillmentType : null,
+        deliveryAddress:
+          requiresDeliveryLocation || requiresDeliveryAddress
+            ? (composedDeliveryAddress ?? (requiresDeliveryAddress ? deliveryAddress : null))
+            : null,
+        deliveryFee,
         customerName,
         customerPhone,
         orderNotes,
@@ -160,6 +204,7 @@ export default function CheckoutPage() {
           apply_tax: settings.apply_tax,
           apply_service_charge: settings.apply_service_charge,
           prep_time_minutes: settings.prep_time_minutes ?? 25,
+          prep_time_days: settings.prep_time_days,
         },
       });
 
@@ -219,7 +264,6 @@ export default function CheckoutPage() {
     );
   }
 
-  const prepMinutes = settings?.prep_time_minutes ?? 25;
   const logo = settings?.logo_url;
   const restaurantName = getName(
     locale,
@@ -350,21 +394,99 @@ export default function CheckoutPage() {
                 </span>
               </div>
             )}
+            {totals.deliveryFee > 0 && (
+              <div className="text-muted-foreground flex justify-between text-sm">
+                <span>{t('deliveryFee')}</span>
+                <span className="tabular-nums">
+                  {formatCurrencyAmount(totals.deliveryFee, currency, { locale: currencyLocale })}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between border-t border-[var(--menu-line)] pt-3 text-base font-bold">
               <span>{t('total')}</span>
               <span className="font-heading text-lg font-semibold tabular-nums text-[var(--menu-wine)]">
                 {formatCurrencyAmount(totals.total, currency, { locale: currencyLocale })}
               </span>
             </div>
-            {prepMinutes > 0 && (
+            {prepTime && (
               <p className="text-muted-foreground text-xs">
-                {t('prepEta', { minutes: prepMinutes })}
+                {formatPrepTimeEta(prepTime, {
+                  days: (count) => t('prepEtaDays', { days: count }),
+                  minutes: (count) => t('prepEta', { minutes: count }),
+                })}
               </p>
             )}
           </section>
 
           <section className="space-y-4">
-            {isTakeaway && (
+            {requiresDeliveryLocation && (
+              <>
+                {locationsLoading ? (
+                  <Skeleton className="h-11 w-full rounded-md" />
+                ) : noActiveLocations ? (
+                  <div
+                    role="alert"
+                    className="bg-destructive/10 text-destructive rounded-md p-3 text-sm"
+                  >
+                    {t('noDeliveryLocations')}
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="delivery-location">
+                        {t('deliveryLocation')} <span className="text-destructive">*</span>
+                      </Label>
+                      <Select
+                        value={deliveryLocationId ?? ''}
+                        onValueChange={(value) => setMeta({ deliveryLocationId: value || null })}
+                      >
+                        <SelectTrigger
+                          id="delivery-location"
+                          className="h-11 min-h-11 w-full"
+                          data-testid="checkout-location"
+                        >
+                          <SelectValue placeholder={t('deliveryLocationPlaceholder')}>
+                            {selectedLocation
+                              ? formatDeliveryLocationOption(
+                                  locale,
+                                  selectedLocation,
+                                  currency,
+                                  currencyLocale
+                                )
+                              : ''}
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {(deliveryLocations ?? []).map((location) => (
+                            <SelectItem key={location.id} value={location.id}>
+                              {formatDeliveryLocationOption(
+                                locale,
+                                location,
+                                currency,
+                                currencyLocale
+                              )}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="delivery-details">{t('deliveryDetails')}</Label>
+                      <Textarea
+                        id="delivery-details"
+                        value={deliveryAddressDetails}
+                        placeholder={t('deliveryDetailsPlaceholder')}
+                        onChange={(e) => setMeta({ deliveryAddressDetails: e.target.value })}
+                        rows={2}
+                        data-testid="checkout-address-details"
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {isTakeaway && !isEcommerceStore && (
               <div className="space-y-3">
                 <Label>{t('fulfillmentType')}</Label>
                 <div
@@ -471,7 +593,7 @@ export default function CheckoutPage() {
           <Button
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-            disabled={submitting || !whatsappConfigured}
+            disabled={submitting || !whatsappConfigured || noActiveLocations}
             onClick={handleConfirm}
             data-testid="checkout-confirm"
           >

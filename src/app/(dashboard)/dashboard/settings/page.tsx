@@ -112,10 +112,18 @@ export default function SettingsPage() {
     )
       errs.push(t('validation.serviceChargeRange'));
     if (
+      !isEcommerceStore &&
       form.prep_time_minutes !== undefined &&
       (form.prep_time_minutes < 0 || form.prep_time_minutes > 240)
     )
       errs.push(t('validation.prepTimeRange'));
+    if (
+      isEcommerceStore &&
+      form.prep_time_days !== undefined &&
+      form.prep_time_days != null &&
+      (form.prep_time_days < 0 || form.prep_time_days > 90)
+    )
+      errs.push(t('validation.prepTimeDaysRange'));
     if (form.minimum_order !== undefined && form.minimum_order < 0)
       errs.push(t('validation.minimumOrderRange'));
     if (
@@ -859,22 +867,41 @@ export default function SettingsPage() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
-                <div className="space-y-2">
-                  <Label htmlFor="prep_time_minutes">{t('prepTime')}</Label>
-                  <Input
-                    id="prep_time_minutes"
-                    type="number"
-                    min="0"
-                    max="240"
-                    value={form.prep_time_minutes ?? 25}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        prep_time_minutes: parseInt(e.target.value, 10) || 0,
-                      }))
-                    }
-                  />
-                </div>
+                {isEcommerceStore ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="prep_time_days">{t('prepTimeDays')}</Label>
+                    <Input
+                      id="prep_time_days"
+                      type="number"
+                      min="0"
+                      max="90"
+                      value={form.prep_time_days ?? 3}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          prep_time_days: parseInt(e.target.value, 10) || 0,
+                        }))
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor="prep_time_minutes">{t('prepTime')}</Label>
+                    <Input
+                      id="prep_time_minutes"
+                      type="number"
+                      min="0"
+                      max="240"
+                      value={form.prep_time_minutes ?? 25}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          prep_time_minutes: parseInt(e.target.value, 10) || 0,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="minimum_order">{t('minimumOrder')}</Label>
                   <Input

@@ -44,8 +44,17 @@ describe('store-config', () => {
     const keys = nav.getDashboardNav().map((item) => item.key);
     expect(keys).not.toContain('tables');
     expect(keys).not.toContain('reports');
+    expect(keys).toContain('deliveryLocations');
     expect(keys).toContain('menu');
     expect(keys).toContain('settings');
+  });
+
+  it('restaurant mode hides ecommerce-only dashboard nav', async () => {
+    vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'restaurant');
+    vi.stubEnv('NEXT_PUBLIC_QR_TARGET_PATH', '');
+    const nav = await import('@/lib/navigation/dashboardNav');
+    const keys = nav.getDashboardNav().map((item) => item.key);
+    expect(keys).not.toContain('deliveryLocations');
   });
 
   it('QR target path alone can skip welcome for restaurants', async () => {

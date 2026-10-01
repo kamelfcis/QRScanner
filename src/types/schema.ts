@@ -178,6 +178,7 @@ export const settingsSchema = z.object({
     tax_rate: z.number().min(0).max(100).default(15),
     service_charge_rate: z.number().min(0).max(100).default(10),
     prep_time_minutes: z.number().int().min(0).max(240).default(25),
+    prep_time_days: z.number().int().min(0).max(90).optional().nullable(),
     minimum_order: z.number().min(0).default(0),
     max_order_notes_length: z.number().int().min(0).max(1000).default(200),
     apply_tax: z.boolean().default(true),
@@ -194,3 +195,15 @@ export const settingsSchema = z.object({
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
+
+export const deliveryLocationSchema = z.object({
+  name_ar: z.string().min(1, 'Arabic name is required').max(255),
+  name_en: z.string().min(1, 'English name is required').max(255),
+  name_fr: z.string().max(255).optional().nullable(),
+  name_nl: z.string().max(255).optional().nullable(),
+  delivery_fee: z.number().min(0, 'Fee must be zero or positive'),
+  is_active: z.boolean().default(true),
+  sort_order: z.number().int().min(0).default(0),
+});
+
+export type DeliveryLocationInput = z.infer<typeof deliveryLocationSchema>;

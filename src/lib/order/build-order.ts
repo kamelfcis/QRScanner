@@ -2,6 +2,8 @@ import { calculateOrderTotals, getUnitPrice, type OrderTotals } from './totals';
 import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage } from './whatsapp-message';
 import { buildWhatsAppUrl } from './whatsapp-url';
+import { resolvePrepTimeDisplay } from './prep-time';
+import { isEcommerceStore } from '@/lib/store-config';
 import type { CartItem, CartDiningMode, FulfillmentType } from '@/stores/cart-store';
 import type { RestaurantSettings } from '@/types/database';
 
@@ -11,6 +13,7 @@ export interface BuildOrderInput {
   tableNumber?: string | null;
   fulfillmentType?: FulfillmentType | null;
   deliveryAddress?: string | null;
+  deliveryFee?: number | null;
   customerName: string;
   customerPhone?: string | null;
   orderNotes?: string | null;
@@ -24,6 +27,7 @@ export interface BuildOrderInput {
     | 'apply_tax'
     | 'apply_service_charge'
     | 'prep_time_minutes'
+    | 'prep_time_days'
   >;
 }
 
@@ -44,8 +48,11 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
 
   const totals = calculateOrderTotals(
     priced.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
-    input.settings
+    input.settings,
+    input.deliveryFee ?? 0
   );
+
+  const prepTime = resolvePrepTimeDisplay(input.settings);
 
   const message = buildWhatsAppMessage({
     locale: input.locale,
@@ -64,7 +71,10 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     customerName: input.customerName,
     customerPhone: input.customerPhone,
     orderNotes: input.orderNotes,
-    prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
+    prepTimeMinutes: prepTime?.unit === 'minutes' ? prepTime.value : null,
+    prepTimeDays: prepTime?.unit === 'days' ? prepTime.value : null,
+    deliveryFee: totals.deliveryFee,
+    ecommerceDelivery: isEcommerceStore,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);
