@@ -31,6 +31,8 @@ export interface WhatsAppMessageInput {
   /** Ecommerce delivery-only orders use a simplified header. */
   ecommerceDelivery?: boolean;
   orderNumber?: string | null;
+  instapayAcknowledged?: boolean;
+  instapayHandle?: string | null;
 }
 
 const SEP = '────────────────';
@@ -54,6 +56,7 @@ interface MessageLabels {
   tax: (rate: number) => string;
   service: (rate: number) => string;
   deliveryFee: string;
+  deliveryFeePaidInstapay: (amount: string, handle: string) => string;
   total: string;
   name: string;
   phone: string;
@@ -79,6 +82,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `الضريبة (${rate}%)`,
     service: (rate) => `رسوم الخدمة (${rate}%)`,
     deliveryFee: 'خدمة توصيل',
+    deliveryFeePaidInstapay: (amount, handle) =>
+      `خدمة توصيل (${amount}): مدفوعة عبر InstaPay (${handle})`,
     total: 'الإجمالي',
     name: 'الاسم',
     phone: 'الهاتف',
@@ -102,6 +107,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `Tax (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Delivery fee',
+    deliveryFeePaidInstapay: (amount, handle) =>
+      `Delivery fee (${amount}): PAID via InstaPay (${handle})`,
     total: 'Total',
     name: 'Name',
     phone: 'Phone',
@@ -125,6 +132,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `TVA (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Livraison',
+    deliveryFeePaidInstapay: (amount, handle) =>
+      `Frais de livraison (${amount}) : PAYÉ via InstaPay (${handle})`,
     total: 'Total',
     name: 'Nom',
     phone: 'Téléphone',
@@ -148,6 +157,8 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `BTW (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Bezorgkosten',
+    deliveryFeePaidInstapay: (amount, handle) =>
+      `Bezorgkosten (${amount}): BETAALD via InstaPay (${handle})`,
     total: 'Totaal',
     name: 'Naam',
     phone: 'Telefoon',
@@ -187,6 +198,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     deliveryFee,
     orderNumber,
     ecommerceDelivery,
+    instapayAcknowledged,
+    instapayHandle,
   } = input;
 
   const labels = LABELS[locale];
@@ -242,7 +255,12 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     );
   }
   if ((deliveryFee ?? 0) > 0) {
-    lines.push(`${labels.deliveryFee}: ${formatMoney(deliveryFee ?? 0, currency, locale)}`);
+    const feeAmount = formatMoney(deliveryFee ?? 0, currency, locale);
+    if (instapayAcknowledged && instapayHandle?.trim()) {
+      lines.push(labels.deliveryFeePaidInstapay(feeAmount, instapayHandle.trim()));
+    } else {
+      lines.push(`${labels.deliveryFee}: ${feeAmount}`);
+    }
   }
   lines.push(`*${labels.total}: ${formatMoney(totals.total, currency, locale)}*`);
 

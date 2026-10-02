@@ -583,7 +583,14 @@
     "backToMenu": "العودة للقائمة",
     "backToCart": "العودة للسلة",
     "reviewCart": "مراجعة العربة",
-    "yourDetails": "بياناتك"
+    "yourDetails": "بياناتك",
+    "instapayTitle": "ادفع رسوم التوصيل أولاً",
+    "instapayDescription": "ادفع رسوم التوصيل {amount} عبر InstaPay قبل التأكيد",
+    "instapayPayButton": "الدفع عبر InstaPay",
+    "instapayHandleLabel": "معرّف InstaPay",
+    "instapayAcknowledge": "لقد دفعت رسوم التوصيل عبر InstaPay",
+    "instapayNotAcknowledged": "يرجى دفع رسوم التوصيل عبر InstaPay ثم التأكيد أدناه.",
+    "instapayConfirmHint": "بعد دفع التوصيل عبر InstaPay، أكّد طلبك على واتساب."
   },
   "orderSuccess": {
     "readyTitle": "الطلب جاهز للإرسال",

@@ -17,6 +17,8 @@ export interface BuildOrderInput {
   customerName: string;
   customerPhone?: string | null;
   orderNotes?: string | null;
+  instapayAcknowledged?: boolean;
+  instapayHandle?: string | null;
   locale: 'en' | 'ar';
   settings: Pick<
     RestaurantSettings,
@@ -75,6 +77,8 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     prepTimeDays: prepTime?.unit === 'days' ? prepTime.value : null,
     deliveryFee: totals.deliveryFee,
     ecommerceDelivery: isEcommerceStore,
+    instapayAcknowledged: input.instapayAcknowledged,
+    instapayHandle: input.instapayHandle,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);

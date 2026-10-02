@@ -48,6 +48,8 @@ import {
 } from '@/lib/order/delivery-location';
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
+import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
+import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliverySection';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -72,6 +74,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
+  const [instapayAcknowledged, setInstapayAcknowledged] = useState(false);
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
@@ -121,6 +124,13 @@ export default function CheckoutPage() {
 
   const prepTime = useMemo(() => resolvePrepTimeDisplay(settings), [settings]);
 
+  const requiresInstapayAcknowledgment = showInstapayDeliveryPrepay && totals.deliveryFee > 0;
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when delivery zone/fee changes
+    setInstapayAcknowledged(false);
+  }, [deliveryLocationId, totals.deliveryFee]);
+
   useEffect(() => {
     if (!trackedStart && items.length > 0) {
       trackCheckoutStart(
@@ -152,6 +162,8 @@ export default function CheckoutPage() {
           });
         case 'notes_too_long':
           return t('notesTooLong', { max: maxNotes });
+        case 'instapay_not_acknowledged':
+          return t('instapayNotAcknowledged');
         default:
           return tCommon('error');
       }
@@ -174,6 +186,8 @@ export default function CheckoutPage() {
       deliveryAddress,
       requiresDeliveryLocation,
       deliveryLocationId,
+      requiresInstapayAcknowledgment,
+      instapayAcknowledged,
     });
 
     if (!result.valid) {
@@ -200,6 +214,8 @@ export default function CheckoutPage() {
         customerName,
         customerPhone,
         orderNotes,
+        instapayAcknowledged: requiresInstapayAcknowledgment ? instapayAcknowledged : false,
+        instapayHandle: requiresInstapayAcknowledgment ? instapayHandle : null,
         locale: locale === 'ar' ? 'ar' : 'en',
         settings: {
           whatsapp: settings.whatsapp,
@@ -423,6 +439,16 @@ export default function CheckoutPage() {
             )}
           </section>
 
+          {requiresInstapayAcknowledgment && (
+            <InstapayDeliverySection
+              deliveryFee={totals.deliveryFee}
+              currency={currency}
+              currencyLocale={currencyLocale}
+              acknowledged={instapayAcknowledged}
+              onAcknowledgedChange={setInstapayAcknowledged}
+            />
+          )}
+
           <section className="space-y-4">
             {requiresDeliveryLocation && (
               <>
@@ -600,10 +626,19 @@ export default function CheckoutPage() {
             </div>
           </section>
 
+          {requiresInstapayAcknowledgment && !instapayAcknowledged && (
+            <p className="text-muted-foreground text-center text-xs">{t('instapayConfirmHint')}</p>
+          )}
+
           <Button
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-            disabled={submitting || !whatsappConfigured || noActiveLocations}
+            disabled={
+              submitting ||
+              !whatsappConfigured ||
+              noActiveLocations ||
+              (requiresInstapayAcknowledgment && !instapayAcknowledged)
+            }
             onClick={handleConfirm}
             data-testid="checkout-confirm"
           >

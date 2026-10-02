@@ -140,6 +140,45 @@ describe('validateOrder customer phone', () => {
   });
 });
 
+describe('validateOrder instapay', () => {
+  it('requires instapay acknowledgment when flagged and unchecked', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresInstapayAcknowledgment: true,
+      instapayAcknowledged: false,
+    });
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('instapay_not_acknowledged');
+  });
+
+  it('passes when instapay is acknowledged', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresInstapayAcknowledgment: true,
+      instapayAcknowledged: true,
+    });
+    expect(result.valid).toBe(true);
+  });
+
+  it('ignores instapay when not required', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresInstapayAcknowledgment: false,
+      instapayAcknowledged: false,
+    });
+    expect(result.valid).toBe(true);
+  });
+});
+
 describe('validateOrder min order', () => {
   it('fails when subtotal is below minimum', () => {
     const result = validateOrder({

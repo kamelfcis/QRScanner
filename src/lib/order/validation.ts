@@ -15,6 +15,9 @@ export interface OrderValidationInput {
   /** When true, delivery location is required (ecommerce / zone delivery). */
   requiresDeliveryLocation?: boolean;
   deliveryLocationId?: string | null;
+  /** When true, customer must acknowledge InstaPay delivery fee prepayment. */
+  requiresInstapayAcknowledgment?: boolean;
+  instapayAcknowledged?: boolean;
 }
 
 export interface OrderValidationResult {
@@ -29,7 +32,8 @@ export type OrderValidationErrorCode =
   | 'phone_required'
   | 'address_required'
   | 'min_order'
-  | 'notes_too_long';
+  | 'notes_too_long'
+  | 'instapay_not_acknowledged';
 
 export interface OrderValidationCodedResult {
   valid: boolean;
@@ -48,6 +52,9 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   if (!input.customerName?.trim()) codes.push('name_required');
   if (input.requiresCustomerPhone && !input.customerPhone?.trim()) {
     codes.push('phone_required');
+  }
+  if (input.requiresInstapayAcknowledgment && !input.instapayAcknowledged) {
+    codes.push('instapay_not_acknowledged');
   }
   if (input.requiresDeliveryLocation && !input.deliveryLocationId?.trim()) {
     codes.push('address_required');

@@ -583,7 +583,14 @@
     "backToMenu": "Back to menu",
     "backToCart": "Back to cart",
     "reviewCart": "Review cart",
-    "yourDetails": "Your details"
+    "yourDetails": "Your details",
+    "instapayTitle": "Pay delivery fee first",
+    "instapayDescription": "Pay {amount} delivery fee on InstaPay before confirming",
+    "instapayPayButton": "Pay on InstaPay",
+    "instapayHandleLabel": "InstaPay ID",
+    "instapayAcknowledge": "I have paid the delivery fee on InstaPay",
+    "instapayNotAcknowledged": "Please pay the delivery fee on InstaPay and confirm below.",
+    "instapayConfirmHint": "After paying delivery on InstaPay, confirm your order on WhatsApp."
   },
   "orderSuccess": {
     "readyTitle": "Order ready to send",
