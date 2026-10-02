@@ -166,7 +166,7 @@ export default function CheckoutPage() {
         case 'empty_cart':
           return t('emptyCart');
         case 'whatsapp_missing':
-          return t('whatsappMissing');
+          return isEcommerceStore ? t('whatsappMissingStore') : t('whatsappMissing');
         case 'name_required':
           return t('nameRequired');
         case 'phone_required':
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
       openWhatsAppUrl(built.whatsappUrl);
       router.push('/order-success?sent=1');
     } catch {
-      setErrors([t('whatsappMissing')]);
+      setErrors([isEcommerceStore ? t('whatsappMissingStore') : t('whatsappMissing')]);
       setSubmitting(false);
     }
   };
@@ -384,7 +384,7 @@ export default function CheckoutPage() {
 
           {!whatsappConfigured && (
             <div role="alert" className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
-              {t('whatsappMissing')}
+              {isEcommerceStore ? t('whatsappMissingStore') : t('whatsappMissing')}
             </div>
           )}
 
@@ -677,12 +677,16 @@ export default function CheckoutPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="order-notes">{t('orderNotes')}</Label>
+              <Label htmlFor="order-notes">
+                {isEcommerceStore ? t('orderNotesStore') : t('orderNotes')}
+              </Label>
               <Textarea
                 id="order-notes"
                 value={orderNotes}
                 maxLength={maxNotes}
-                placeholder={t('orderNotesPlaceholder')}
+                placeholder={
+                  isEcommerceStore ? t('orderNotesPlaceholderStore') : t('orderNotesPlaceholder')
+                }
                 onChange={(e) => setMeta({ orderNotes: e.target.value })}
                 rows={3}
               />
