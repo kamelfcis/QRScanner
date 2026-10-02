@@ -376,3 +376,21 @@ export interface DeliveryLocation {
   created_at: string;
   updated_at: string;
 }
+
+export type InstapayProofStatus = 'pending' | 'confirmed' | 'rejected';
+
+export interface InstapayDeliveryProof {
+  id: string;
+  order_ref: string;
+  customer_name: string;
+  customer_phone: string | null;
+  delivery_location_id: string | null;
+  delivery_fee: number;
+  proof_reference: string | null;
+  screenshot_url: string | null;
+  amount_note: string | null;
+  status: InstapayProofStatus;
+  whatsapp_sent_at: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+}

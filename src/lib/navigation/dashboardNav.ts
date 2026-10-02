@@ -9,6 +9,7 @@ import {
   BarChart3,
   FileText,
   Truck,
+  Wallet,
   type LucideIcon,
 } from 'lucide-react';
 import { getDashboardNavItems } from '@/lib/store-config';
@@ -29,6 +30,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
   { key: 'qrCodes', href: '/dashboard/qr', icon: QrCode },
   { key: 'deliveryLocations', href: '/dashboard/delivery-locations', icon: Truck },
+  { key: 'instapayProofs', href: '/dashboard/instapay-proofs', icon: Wallet },
   { key: 'tables', href: '/dashboard/tables', icon: Table },
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
 ];

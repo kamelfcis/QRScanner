@@ -1,3 +1,5 @@
+import { hasInstapayProof } from '@/lib/payment/instapay-proof';
+
 export interface OrderValidationInput {
   customerName: string;
   customerPhone?: string | null;
@@ -15,9 +17,10 @@ export interface OrderValidationInput {
   /** When true, delivery location is required (ecommerce / zone delivery). */
   requiresDeliveryLocation?: boolean;
   deliveryLocationId?: string | null;
-  /** When true, customer must acknowledge InstaPay delivery fee prepayment. */
-  requiresInstapayAcknowledgment?: boolean;
-  instapayAcknowledged?: boolean;
+  /** When true, customer must submit InstaPay proof (reference or screenshot). */
+  requiresInstapayProof?: boolean;
+  instapayProofReference?: string | null;
+  instapayScreenshotUrl?: string | null;
 }
 
 export interface OrderValidationResult {
@@ -33,7 +36,7 @@ export type OrderValidationErrorCode =
   | 'address_required'
   | 'min_order'
   | 'notes_too_long'
-  | 'instapay_not_acknowledged';
+  | 'instapay_proof_required';
 
 export interface OrderValidationCodedResult {
   valid: boolean;
@@ -53,8 +56,11 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   if (input.requiresCustomerPhone && !input.customerPhone?.trim()) {
     codes.push('phone_required');
   }
-  if (input.requiresInstapayAcknowledgment && !input.instapayAcknowledged) {
-    codes.push('instapay_not_acknowledged');
+  if (
+    input.requiresInstapayProof &&
+    !hasInstapayProof(input.instapayProofReference, input.instapayScreenshotUrl)
+  ) {
+    codes.push('instapay_proof_required');
   }
   if (input.requiresDeliveryLocation && !input.deliveryLocationId?.trim()) {
     codes.push('address_required');

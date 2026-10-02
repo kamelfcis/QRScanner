@@ -45,7 +45,7 @@ export const RESTAURANT_ONLY_DASHBOARD_PATHS = [
 export const ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS = new Set(['tables', 'reports']);
 
 /** Sidebar keys shown only when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
-export const ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS = new Set(['deliveryLocations']);
+export const ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS = new Set(['deliveryLocations', 'instapayProofs']);
 
 export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
   return RESTAURANT_ONLY_DASHBOARD_PATHS.some(

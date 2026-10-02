@@ -45,6 +45,7 @@ describe('store-config', () => {
     expect(keys).not.toContain('tables');
     expect(keys).not.toContain('reports');
     expect(keys).toContain('deliveryLocations');
+    expect(keys).toContain('instapayProofs');
     expect(keys).toContain('menu');
     expect(keys).toContain('settings');
   });
@@ -55,6 +56,7 @@ describe('store-config', () => {
     const nav = await import('@/lib/navigation/dashboardNav');
     const keys = nav.getDashboardNav().map((item) => item.key);
     expect(keys).not.toContain('deliveryLocations');
+    expect(keys).not.toContain('instapayProofs');
   });
 
   it('QR target path alone can skip welcome for restaurants', async () => {

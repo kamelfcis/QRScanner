@@ -140,40 +140,56 @@ describe('validateOrder customer phone', () => {
   });
 });
 
-describe('validateOrder instapay', () => {
-  it('requires instapay acknowledgment when flagged and unchecked', () => {
+describe('validateOrder instapay proof', () => {
+  it('requires proof when flagged and none provided', () => {
     const result = validateOrder({
       customerName: 'Ali',
       subtotal: 100,
       whatsappConfigured: true,
       hasItems: true,
-      requiresInstapayAcknowledgment: true,
-      instapayAcknowledged: false,
+      requiresInstapayProof: true,
+      instapayProofReference: '',
+      instapayScreenshotUrl: null,
     });
     expect(result.valid).toBe(false);
-    expect(result.codes).toContain('instapay_not_acknowledged');
+    expect(result.codes).toContain('instapay_proof_required');
   });
 
-  it('passes when instapay is acknowledged', () => {
+  it('passes with reference only', () => {
     const result = validateOrder({
       customerName: 'Ali',
       subtotal: 100,
       whatsappConfigured: true,
       hasItems: true,
-      requiresInstapayAcknowledgment: true,
-      instapayAcknowledged: true,
+      requiresInstapayProof: true,
+      instapayProofReference: 'REF123',
+      instapayScreenshotUrl: null,
     });
     expect(result.valid).toBe(true);
   });
 
-  it('ignores instapay when not required', () => {
+  it('passes with screenshot URL only', () => {
     const result = validateOrder({
       customerName: 'Ali',
       subtotal: 100,
       whatsappConfigured: true,
       hasItems: true,
-      requiresInstapayAcknowledgment: false,
-      instapayAcknowledged: false,
+      requiresInstapayProof: true,
+      instapayProofReference: '',
+      instapayScreenshotUrl: 'https://example.com/proof.png',
+    });
+    expect(result.valid).toBe(true);
+  });
+
+  it('ignores instapay proof when not required', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresInstapayProof: false,
+      instapayProofReference: '',
+      instapayScreenshotUrl: null,
     });
     expect(result.valid).toBe(true);
   });

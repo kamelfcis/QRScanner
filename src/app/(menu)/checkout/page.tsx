@@ -49,6 +49,7 @@ import {
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
+import { generateOrderPaymentRef, hasInstapayProof } from '@/lib/payment/instapay-proof';
 import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliverySection';
 
 export default function CheckoutPage() {
@@ -74,7 +75,10 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
-  const [instapayAcknowledged, setInstapayAcknowledged] = useState(false);
+  const [instapayProofReference, setInstapayProofReference] = useState('');
+  const [instapayScreenshotUrl, setInstapayScreenshotUrl] = useState<string | null>(null);
+  const [instapayAmountNote, setInstapayAmountNote] = useState('');
+  const [orderPaymentRef, setOrderPaymentRef] = useState<string | null>(null);
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
@@ -124,11 +128,25 @@ export default function CheckoutPage() {
 
   const prepTime = useMemo(() => resolvePrepTimeDisplay(settings), [settings]);
 
-  const requiresInstapayAcknowledgment = showInstapayDeliveryPrepay && totals.deliveryFee > 0;
+  const requiresInstapayProof =
+    showInstapayDeliveryPrepay && totals.deliveryFee > 0 && Boolean(deliveryLocationId);
+
+  const proofValid = hasInstapayProof(instapayProofReference, instapayScreenshotUrl);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when delivery zone/fee changes
-    setInstapayAcknowledged(false);
+    if (!deliveryLocationId || totals.deliveryFee <= 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when zone cleared
+      setOrderPaymentRef(null);
+      setInstapayProofReference('');
+      setInstapayScreenshotUrl(null);
+      setInstapayAmountNote('');
+      return;
+    }
+
+    setOrderPaymentRef(generateOrderPaymentRef());
+    setInstapayProofReference('');
+    setInstapayScreenshotUrl(null);
+    setInstapayAmountNote('');
   }, [deliveryLocationId, totals.deliveryFee]);
 
   useEffect(() => {
@@ -162,8 +180,8 @@ export default function CheckoutPage() {
           });
         case 'notes_too_long':
           return t('notesTooLong', { max: maxNotes });
-        case 'instapay_not_acknowledged':
-          return t('instapayNotAcknowledged');
+        case 'instapay_proof_required':
+          return t('instapayProofRequired');
         default:
           return tCommon('error');
       }
@@ -186,8 +204,9 @@ export default function CheckoutPage() {
       deliveryAddress,
       requiresDeliveryLocation,
       deliveryLocationId,
-      requiresInstapayAcknowledgment,
-      instapayAcknowledged,
+      requiresInstapayProof,
+      instapayProofReference,
+      instapayScreenshotUrl,
     });
 
     if (!result.valid) {
@@ -201,6 +220,31 @@ export default function CheckoutPage() {
     setErrors([]);
 
     try {
+      if (requiresInstapayProof && orderPaymentRef) {
+        const proofForm = new FormData();
+        proofForm.append('orderRef', orderPaymentRef);
+        proofForm.append('customerName', customerName.trim());
+        proofForm.append('customerPhone', customerPhone.trim());
+        proofForm.append('deliveryFee', String(deliveryFee));
+        if (deliveryLocationId) proofForm.append('deliveryLocationId', deliveryLocationId);
+        if (instapayProofReference.trim()) {
+          proofForm.append('proofReference', instapayProofReference.trim());
+        }
+        if (instapayScreenshotUrl) proofForm.append('screenshotUrl', instapayScreenshotUrl);
+        if (instapayAmountNote.trim()) proofForm.append('amountNote', instapayAmountNote.trim());
+        proofForm.append('markWhatsAppSent', 'true');
+
+        const proofResponse = await fetch('/api/instapay-proofs', {
+          method: 'POST',
+          body: proofForm,
+        });
+        if (!proofResponse.ok) {
+          setErrors([t('instapayProofSaveFailed')]);
+          setSubmitting(false);
+          return;
+        }
+      }
+
       const built = buildOrderPayload({
         items,
         diningMode,
@@ -214,8 +258,11 @@ export default function CheckoutPage() {
         customerName,
         customerPhone,
         orderNotes,
-        instapayAcknowledged: requiresInstapayAcknowledgment ? instapayAcknowledged : false,
-        instapayHandle: requiresInstapayAcknowledgment ? instapayHandle : null,
+        orderPaymentRef: requiresInstapayProof ? orderPaymentRef : null,
+        instapayProofReference: requiresInstapayProof ? instapayProofReference : null,
+        instapayScreenshotUrl: requiresInstapayProof ? instapayScreenshotUrl : null,
+        instapayHandle: requiresInstapayProof ? instapayHandle : null,
+        requiresInstapayProof,
         locale: locale === 'ar' ? 'ar' : 'en',
         settings: {
           whatsapp: settings.whatsapp,
@@ -439,82 +486,101 @@ export default function CheckoutPage() {
             )}
           </section>
 
-          {requiresInstapayAcknowledgment && (
-            <InstapayDeliverySection
-              deliveryFee={totals.deliveryFee}
-              currency={currency}
-              currencyLocale={currencyLocale}
-              acknowledged={instapayAcknowledged}
-              onAcknowledgedChange={setInstapayAcknowledged}
-            />
+          {requiresDeliveryLocation && (
+            <section className="space-y-4">
+              <h2 className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+                {t('checkoutStepDelivery')}
+              </h2>
+              {locationsLoading ? (
+                <Skeleton className="h-11 w-full rounded-md" />
+              ) : noActiveLocations ? (
+                <div
+                  role="alert"
+                  className="bg-destructive/10 text-destructive rounded-md p-3 text-sm"
+                >
+                  {t('noDeliveryLocations')}
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="delivery-location">
+                      {t('deliveryLocation')} <span className="text-destructive">*</span>
+                    </Label>
+                    <Select
+                      value={deliveryLocationId ?? ''}
+                      onValueChange={(value) => setMeta({ deliveryLocationId: value || null })}
+                    >
+                      <SelectTrigger
+                        id="delivery-location"
+                        className="h-11 min-h-11 w-full"
+                        data-testid="checkout-location"
+                      >
+                        <SelectValue placeholder={t('deliveryLocationPlaceholder')}>
+                          {selectedLocation
+                            ? formatDeliveryLocationOption(
+                                locale,
+                                selectedLocation,
+                                currency,
+                                currencyLocale
+                              )
+                            : ''}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {(deliveryLocations ?? []).map((location) => (
+                          <SelectItem key={location.id} value={location.id}>
+                            {formatDeliveryLocationOption(
+                              locale,
+                              location,
+                              currency,
+                              currencyLocale
+                            )}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="delivery-details">{t('deliveryDetails')}</Label>
+                    <Textarea
+                      id="delivery-details"
+                      value={deliveryAddressDetails}
+                      placeholder={t('deliveryDetailsPlaceholder')}
+                      onChange={(e) => setMeta({ deliveryAddressDetails: e.target.value })}
+                      rows={2}
+                      data-testid="checkout-address-details"
+                    />
+                  </div>
+                </>
+              )}
+            </section>
+          )}
+
+          {requiresInstapayProof && orderPaymentRef && (
+            <section className="space-y-3">
+              <h2 className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+                {t('checkoutStepInstapay')}
+              </h2>
+              <InstapayDeliverySection
+                deliveryFee={totals.deliveryFee}
+                currency={currency}
+                currencyLocale={currencyLocale}
+                orderPaymentRef={orderPaymentRef}
+                proofReference={instapayProofReference}
+                screenshotUrl={instapayScreenshotUrl}
+                amountNote={instapayAmountNote}
+                onProofReferenceChange={setInstapayProofReference}
+                onScreenshotUrlChange={setInstapayScreenshotUrl}
+                onAmountNoteChange={setInstapayAmountNote}
+              />
+            </section>
           )}
 
           <section className="space-y-4">
-            {requiresDeliveryLocation && (
-              <>
-                {locationsLoading ? (
-                  <Skeleton className="h-11 w-full rounded-md" />
-                ) : noActiveLocations ? (
-                  <div
-                    role="alert"
-                    className="bg-destructive/10 text-destructive rounded-md p-3 text-sm"
-                  >
-                    {t('noDeliveryLocations')}
-                  </div>
-                ) : (
-                  <>
-                    <div className="space-y-2">
-                      <Label htmlFor="delivery-location">
-                        {t('deliveryLocation')} <span className="text-destructive">*</span>
-                      </Label>
-                      <Select
-                        value={deliveryLocationId ?? ''}
-                        onValueChange={(value) => setMeta({ deliveryLocationId: value || null })}
-                      >
-                        <SelectTrigger
-                          id="delivery-location"
-                          className="h-11 min-h-11 w-full"
-                          data-testid="checkout-location"
-                        >
-                          <SelectValue placeholder={t('deliveryLocationPlaceholder')}>
-                            {selectedLocation
-                              ? formatDeliveryLocationOption(
-                                  locale,
-                                  selectedLocation,
-                                  currency,
-                                  currencyLocale
-                                )
-                              : ''}
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {(deliveryLocations ?? []).map((location) => (
-                            <SelectItem key={location.id} value={location.id}>
-                              {formatDeliveryLocationOption(
-                                locale,
-                                location,
-                                currency,
-                                currencyLocale
-                              )}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="delivery-details">{t('deliveryDetails')}</Label>
-                      <Textarea
-                        id="delivery-details"
-                        value={deliveryAddressDetails}
-                        placeholder={t('deliveryDetailsPlaceholder')}
-                        onChange={(e) => setMeta({ deliveryAddressDetails: e.target.value })}
-                        rows={2}
-                        data-testid="checkout-address-details"
-                      />
-                    </div>
-                  </>
-                )}
-              </>
+            {(requiresDeliveryLocation || isTakeaway || requiresDeliveryAddress) && (
+              <h2 className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+                {t('checkoutStepDetails')}
+              </h2>
             )}
 
             {isTakeaway && !isEcommerceStore && (
@@ -626,7 +692,7 @@ export default function CheckoutPage() {
             </div>
           </section>
 
-          {requiresInstapayAcknowledgment && !instapayAcknowledged && (
+          {requiresInstapayProof && !proofValid && (
             <p className="text-muted-foreground text-center text-xs">{t('instapayConfirmHint')}</p>
           )}
 
@@ -637,7 +703,7 @@ export default function CheckoutPage() {
               submitting ||
               !whatsappConfigured ||
               noActiveLocations ||
-              (requiresInstapayAcknowledgment && !instapayAcknowledged)
+              (requiresInstapayProof && !proofValid)
             }
             onClick={handleConfirm}
             data-testid="checkout-confirm"

@@ -31,8 +31,11 @@ export interface WhatsAppMessageInput {
   /** Ecommerce delivery-only orders use a simplified header. */
   ecommerceDelivery?: boolean;
   orderNumber?: string | null;
-  instapayAcknowledged?: boolean;
+  orderPaymentRef?: string | null;
+  instapayProofReference?: string | null;
+  instapayScreenshotUrl?: string | null;
   instapayHandle?: string | null;
+  requiresInstapayProof?: boolean;
 }
 
 const SEP = '────────────────';
@@ -56,7 +59,10 @@ interface MessageLabels {
   tax: (rate: number) => string;
   service: (rate: number) => string;
   deliveryFee: string;
-  deliveryFeePaidInstapay: (amount: string, handle: string) => string;
+  expectedDeliveryFee: (amount: string) => string;
+  paymentRef: string;
+  customerProof: string;
+  instapayStatusPending: string;
   total: string;
   name: string;
   phone: string;
@@ -82,8 +88,10 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `الضريبة (${rate}%)`,
     service: (rate) => `رسوم الخدمة (${rate}%)`,
     deliveryFee: 'خدمة توصيل',
-    deliveryFeePaidInstapay: (amount, handle) =>
-      `خدمة توصيل (${amount}): مدفوعة عبر InstaPay (${handle})`,
+    expectedDeliveryFee: (amount) => `رسوم التوصيل المتوقعة: ${amount}`,
+    paymentRef: 'مرجع الدفع',
+    customerProof: 'إثبات العميل',
+    instapayStatusPending: 'الحالة: بانتظار التحقق من InstaPay',
     total: 'الإجمالي',
     name: 'الاسم',
     phone: 'الهاتف',
@@ -107,8 +115,10 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `Tax (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Delivery fee',
-    deliveryFeePaidInstapay: (amount, handle) =>
-      `Delivery fee (${amount}): PAID via InstaPay (${handle})`,
+    expectedDeliveryFee: (amount) => `Expected delivery fee: ${amount}`,
+    paymentRef: 'Payment ref',
+    customerProof: 'Customer proof',
+    instapayStatusPending: 'Status: PENDING InstaPay verification',
     total: 'Total',
     name: 'Name',
     phone: 'Phone',
@@ -132,8 +142,10 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `TVA (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Livraison',
-    deliveryFeePaidInstapay: (amount, handle) =>
-      `Frais de livraison (${amount}) : PAYÉ via InstaPay (${handle})`,
+    expectedDeliveryFee: (amount) => `Frais de livraison attendus : ${amount}`,
+    paymentRef: 'Réf. paiement',
+    customerProof: 'Preuve client',
+    instapayStatusPending: 'Statut : vérification InstaPay EN ATTENTE',
     total: 'Total',
     name: 'Nom',
     phone: 'Téléphone',
@@ -157,8 +169,10 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     tax: (rate) => `BTW (${rate}%)`,
     service: (rate) => `Service (${rate}%)`,
     deliveryFee: 'Bezorgkosten',
-    deliveryFeePaidInstapay: (amount, handle) =>
-      `Bezorgkosten (${amount}): BETAALD via InstaPay (${handle})`,
+    expectedDeliveryFee: (amount) => `Verwachte bezorgkosten: ${amount}`,
+    paymentRef: 'Betalingsref.',
+    customerProof: 'Klantbewijs',
+    instapayStatusPending: 'Status: InstaPay-verificatie IN BEHANDELING',
     total: 'Totaal',
     name: 'Naam',
     phone: 'Telefoon',
@@ -198,8 +212,11 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     deliveryFee,
     orderNumber,
     ecommerceDelivery,
-    instapayAcknowledged,
+    orderPaymentRef,
+    instapayProofReference,
+    instapayScreenshotUrl,
     instapayHandle,
+    requiresInstapayProof,
   } = input;
 
   const labels = LABELS[locale];
@@ -256,8 +273,21 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
   }
   if ((deliveryFee ?? 0) > 0) {
     const feeAmount = formatMoney(deliveryFee ?? 0, currency, locale);
-    if (instapayAcknowledged && instapayHandle?.trim()) {
-      lines.push(labels.deliveryFeePaidInstapay(feeAmount, instapayHandle.trim()));
+    if (requiresInstapayProof) {
+      lines.push(labels.expectedDeliveryFee(feeAmount));
+      if (orderPaymentRef?.trim()) {
+        lines.push(`${labels.paymentRef}: ${orderPaymentRef.trim()}`);
+      }
+      const proofParts: string[] = [];
+      if (instapayProofReference?.trim()) proofParts.push(instapayProofReference.trim());
+      if (instapayScreenshotUrl?.trim()) proofParts.push(instapayScreenshotUrl.trim());
+      if (proofParts.length > 0) {
+        lines.push(`${labels.customerProof}: ${proofParts.join(' / ')}`);
+      }
+      if (instapayHandle?.trim()) {
+        lines.push(`InstaPay: ${instapayHandle.trim()}`);
+      }
+      lines.push(labels.instapayStatusPending);
     } else {
       lines.push(`${labels.deliveryFee}: ${feeAmount}`);
     }

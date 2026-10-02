@@ -3,7 +3,15 @@
 import { createClient } from '@/lib/supabase/client';
 
 export type StorageBucket =
-  'logos' | 'covers' | 'categories' | 'products' | 'gallery' | 'qr' | 'pdfs' | 'assets';
+  | 'logos'
+  | 'covers'
+  | 'categories'
+  | 'products'
+  | 'gallery'
+  | 'qr'
+  | 'pdfs'
+  | 'assets'
+  | 'instapay-proofs';
 
 interface UploadOptions {
   bucket: StorageBucket;
