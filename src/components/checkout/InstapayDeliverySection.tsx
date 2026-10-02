@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { buttonVariants } from '@/components/ui/button';
@@ -25,7 +24,6 @@ export function InstapayDeliverySection({
   onAcknowledgedChange,
 }: InstapayDeliverySectionProps) {
   const t = useTranslations('checkout');
-  const [logoError, setLogoError] = useState(false);
 
   const formattedFee = formatCurrencyAmount(deliveryFee, currency, { locale: currencyLocale });
 
@@ -36,26 +34,14 @@ export function InstapayDeliverySection({
     >
       <CardHeader className="pb-2">
         <div className="flex items-center gap-3">
-          {!logoError ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/instapay-logo.png"
-              alt="InstaPay"
-              width={120}
-              height={32}
-              className="h-8 w-auto object-contain"
-              onError={() => setLogoError(true)}
-            />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/instapay-logo.svg"
-              alt="InstaPay"
-              width={120}
-              height={32}
-              className="h-8 w-auto object-contain"
-            />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/instapay-logo.png"
+            alt="InstaPay official logo"
+            width={140}
+            height={36}
+            className="h-9 w-auto shrink-0 rounded-md object-contain"
+          />
           <CardTitle className="font-heading text-[var(--menu-wine)]">
             {t('instapayTitle')}
           </CardTitle>
