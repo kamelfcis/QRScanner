@@ -10,7 +10,9 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((value) =>
-      value === 'harameen' || value === 'aklet' || value === 'warda' ? value : undefined
+      value === 'harameen' || value === 'aklet' || value === 'warda' || value === 'ostol'
+        ? value
+        : undefined
     ),
   NEXT_PUBLIC_STORE_MODE: z.enum(['restaurant', 'ecommerce']).optional(),
   NEXT_PUBLIC_QR_TARGET_PATH: z.string().optional(),
@@ -37,7 +39,8 @@ function validateEnv() {
       NEXT_PUBLIC_TENANT:
         process.env.NEXT_PUBLIC_TENANT === 'harameen' ||
         process.env.NEXT_PUBLIC_TENANT === 'aklet' ||
-        process.env.NEXT_PUBLIC_TENANT === 'warda'
+        process.env.NEXT_PUBLIC_TENANT === 'warda' ||
+        process.env.NEXT_PUBLIC_TENANT === 'ostol'
           ? process.env.NEXT_PUBLIC_TENANT
           : undefined,
       NEXT_PUBLIC_STORE_MODE:

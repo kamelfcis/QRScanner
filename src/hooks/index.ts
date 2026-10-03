@@ -44,9 +44,11 @@ export {
   useRestaurantSettings,
   useThemeSettings,
   useHoursSettings,
+  useLinkPageSettings,
   useAllSettings,
   useUpdateSettings,
   useUpdateRestaurantSettings,
+  useUpdateLinkPageSettings,
   useUpdateThemeSettings,
 } from './useSettings';
 export {

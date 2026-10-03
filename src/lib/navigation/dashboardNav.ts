@@ -10,6 +10,7 @@ import {
   FileText,
   Truck,
   Wallet,
+  Link2,
   type LucideIcon,
 } from 'lucide-react';
 import { getDashboardNavItems } from '@/lib/store-config';
@@ -29,6 +30,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'import', href: '/dashboard/import', icon: FileUp },
   { key: 'testimonials', href: '/dashboard/testimonials', icon: MessageSquareQuote },
   { key: 'qrCodes', href: '/dashboard/qr', icon: QrCode },
+  { key: 'linkPage', href: '/dashboard/link-page', icon: Link2 },
   { key: 'deliveryLocations', href: '/dashboard/delivery-locations', icon: Truck },
   { key: 'instapayProofs', href: '/dashboard/instapay-proofs', icon: Wallet },
   { key: 'tables', href: '/dashboard/tables', icon: Table },

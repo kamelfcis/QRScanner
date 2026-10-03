@@ -182,6 +182,34 @@ export interface HoursSettings {
   };
 }
 
+export type LinkPageButtonRadius = 'pill' | 'rounded';
+
+export interface LinkPageLinkItem {
+  enabled: boolean;
+  url?: string;
+  value?: string;
+}
+
+export interface LinkPageSettings {
+  enabled: boolean;
+  title_ar: string;
+  title_en: string;
+  subtitle_ar: string;
+  subtitle_en: string;
+  background: string;
+  button_color: string;
+  button_radius: LinkPageButtonRadius;
+  logo_url?: string | null;
+  links: {
+    facebook: LinkPageLinkItem;
+    instagram: LinkPageLinkItem;
+    tiktok: LinkPageLinkItem;
+    phone: LinkPageLinkItem;
+    whatsapp: LinkPageLinkItem;
+    menu: LinkPageLinkItem;
+  };
+}
+
 export interface CategoryWithProducts extends Category {
   products: Product[];
   subcategories?: Subcategory[];

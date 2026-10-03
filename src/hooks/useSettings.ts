@@ -4,7 +4,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { DEFAULT_THEME } from '@/lib/theme';
 import { isSettingsNotFoundError } from '@/lib/settings/settingsHelpers';
-import type { Settings, RestaurantSettings, ThemeSettings, HoursSettings } from '@/types';
+import { mergeLinkPageSettings } from '@/lib/link-page/defaults';
+import type {
+  Settings,
+  RestaurantSettings,
+  ThemeSettings,
+  HoursSettings,
+  LinkPageSettings,
+} from '@/types';
 
 const supabase = createClient();
 
@@ -21,6 +28,7 @@ export const settingsKeys = {
   restaurant: () => [...settingsKeys.all, 'restaurant'] as const,
   theme: () => [...settingsKeys.all, 'theme'] as const,
   hours: () => [...settingsKeys.all, 'hours'] as const,
+  linkPage: () => [...settingsKeys.all, 'link_page'] as const,
 };
 
 export function useRestaurantSettings() {
@@ -175,6 +183,62 @@ export function useUpdateHoursSettings() {
 
       if (error) throw error;
       return data.value as unknown as HoursSettings;
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: settingsKeys.all });
+      await revalidateSettingsCache();
+    },
+  });
+}
+
+export function useLinkPageSettings() {
+  return useQuery({
+    queryKey: settingsKeys.linkPage(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .eq('key', 'link_page')
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) return mergeLinkPageSettings();
+      return mergeLinkPageSettings((data as Settings).value as unknown as LinkPageSettings);
+    },
+  });
+}
+
+export function useUpdateLinkPageSettings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: Partial<LinkPageSettings>) => {
+      const { data: existing, error: readError } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'link_page')
+        .maybeSingle();
+
+      if (readError && !isSettingsNotFoundError(readError)) {
+        throw new Error('Failed to read current link page settings');
+      }
+
+      const currentSettings = mergeLinkPageSettings(
+        (existing?.value as unknown as LinkPageSettings | undefined) ?? undefined
+      );
+      const updatedSettings = mergeLinkPageSettings({ ...currentSettings, ...input });
+
+      const { data, error } = await supabase
+        .from('settings')
+        .upsert(
+          { key: 'link_page', value: updatedSettings, updated_at: new Date().toISOString() },
+          { onConflict: 'key' }
+        )
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data.value as unknown as LinkPageSettings;
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: settingsKeys.all });

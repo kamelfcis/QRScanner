@@ -1,4 +1,5 @@
 import type { CartDiningMode } from '@/stores/cart-store';
+import { OSTOL_ONLY_DASHBOARD_NAV_KEYS, showLinkPage } from '@/lib/tenant-config';
 
 export type StoreMode = 'restaurant' | 'ecommerce';
 
@@ -55,14 +56,20 @@ export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
 
 /** Filtered dashboard nav for the current store mode. */
 export function getDashboardNavItems<T extends { key: string }>(items: readonly T[]): T[] {
+  let filtered: T[];
   if (!isEcommerceStore) {
-    return items.filter(
+    filtered = items.filter(
       (item) =>
         !ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS.has(item.key) &&
         !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key)
     );
+  } else {
+    filtered = items.filter((item) => !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key));
   }
-  return items.filter((item) => !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key));
+  if (!showLinkPage) {
+    filtered = filtered.filter((item) => !OSTOL_ONLY_DASHBOARD_NAV_KEYS.has(item.key));
+  }
+  return filtered;
 }
 
 /** Build an in-app menu URL (respects ecommerce vs restaurant defaults). */

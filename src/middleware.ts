@@ -7,6 +7,7 @@ import {
   isEcommerceStore,
   skipWelcomePage,
 } from '@/lib/store-config';
+import { LINK_PAGE_DASHBOARD_PATH, showLinkPage } from '@/lib/tenant-config';
 
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
@@ -35,6 +36,16 @@ export async function middleware(request: NextRequest) {
     }
 
     if (isEcommerceStore && isRestaurantOnlyDashboardPath(pathname)) {
+      const dashboardUrl = request.nextUrl.clone();
+      dashboardUrl.pathname = '/dashboard';
+      dashboardUrl.search = '';
+      return NextResponse.redirect(dashboardUrl);
+    }
+
+    if (
+      !showLinkPage &&
+      (pathname === LINK_PAGE_DASHBOARD_PATH || pathname.startsWith(`${LINK_PAGE_DASHBOARD_PATH}/`))
+    ) {
       const dashboardUrl = request.nextUrl.clone();
       dashboardUrl.pathname = '/dashboard';
       dashboardUrl.search = '';
