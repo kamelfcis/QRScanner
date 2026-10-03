@@ -58,11 +58,7 @@ export function isRestaurantOnlyDashboardPath(pathname: string): boolean {
 export function getDashboardNavItems<T extends { key: string }>(items: readonly T[]): T[] {
   let filtered: T[];
   if (!isEcommerceStore) {
-    filtered = items.filter(
-      (item) =>
-        !ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS.has(item.key) &&
-        !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key)
-    );
+    filtered = items.filter((item) => !ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS.has(item.key));
   } else {
     filtered = items.filter((item) => !ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS.has(item.key));
   }

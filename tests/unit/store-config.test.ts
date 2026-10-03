@@ -55,6 +55,8 @@ describe('store-config', () => {
     vi.stubEnv('NEXT_PUBLIC_QR_TARGET_PATH', '');
     const nav = await import('@/lib/navigation/dashboardNav');
     const keys = nav.getDashboardNav().map((item) => item.key);
+    expect(keys).toContain('tables');
+    expect(keys).toContain('reports');
     expect(keys).not.toContain('deliveryLocations');
     expect(keys).not.toContain('instapayProofs');
   });
