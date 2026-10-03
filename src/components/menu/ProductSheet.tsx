@@ -16,6 +16,8 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
+import { haptic } from '@/lib/haptics';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import { showDiningModeToggle } from '@/lib/store-config';
@@ -39,12 +41,15 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
 
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState('');
+  const [weightGrams, setWeightGrams] = useState<number | null>(null);
 
   useEffect(() => {
     if (product) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reset controls per dish
       setQty(1);
       setNotes('');
+      const weights = product.weight_options_g;
+      setWeightGrams(weights?.length ? weights[0] : null);
     }
   }, [product]);
 
@@ -53,8 +58,21 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
-  const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
+  const showWeightPicker = hasWeightOptions(product);
+  const weightOptions = product.weight_options_g ?? [];
+  const activePrice = showWeightPicker
+    ? weightGrams != null && product.price_per_kg != null
+      ? computeWeightPrice(product.price_per_kg, weightGrams)
+      : (minWeightPrice(product) ?? product.dining_price)
+    : diningMode === 'dining'
+      ? product.dining_price
+      : product.takeaway_price;
+  const otherPrice = showWeightPicker
+    ? null
+    : diningMode === 'dining'
+      ? product.takeaway_price
+      : product.dining_price;
+  const canAdd = product.is_available && (!showWeightPicker || weightGrams != null);
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
   const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
@@ -63,14 +81,17 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
     : '';
 
   const handleAdd = () => {
-    if (!product.is_available) return;
+    if (!canAdd) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
       name_ar: product.name_ar,
       image_url: product.image_url,
-      dining_price: product.dining_price,
-      takeaway_price: product.takeaway_price,
+      dining_price: showWeightPicker ? activePrice : product.dining_price,
+      takeaway_price: showWeightPicker ? activePrice : product.takeaway_price,
+      price_per_kg: product.price_per_kg,
+      weight_options_g: product.weight_options_g,
+      weightGrams: showWeightPicker ? weightGrams : null,
       quantity: qty,
       notes,
     });
@@ -141,20 +162,72 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         )}
       </SheetDescriptionOrDialogDescription>
 
-      <div className="flex items-end gap-3 border-t border-[var(--menu-line)] pt-4">
-        <p
-          className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
-          dir="ltr"
-        >
-          {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
-        </p>
-        {showDiningModeToggle && otherPrice !== activePrice && (
-          <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
-            {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
-            {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+      {showWeightPicker ? (
+        <div className="space-y-2 border-t border-[var(--menu-line)] pt-4">
+          <Label className="text-xs text-[var(--menu-ink-soft)]">{t('selectWeight')}</Label>
+          <div
+            className="grid grid-cols-3 gap-2 sm:grid-cols-4"
+            role="group"
+            aria-label={t('selectWeight')}
+          >
+            {weightOptions.map((grams) => {
+              const price =
+                product.price_per_kg != null
+                  ? computeWeightPrice(product.price_per_kg, grams)
+                  : product.dining_price;
+              const selected = weightGrams === grams;
+              return (
+                <button
+                  key={grams}
+                  type="button"
+                  onClick={() => {
+                    haptic.tick();
+                    setWeightGrams(grams);
+                  }}
+                  className={cn(
+                    'rounded-xl border px-2 py-3 text-center transition-colors',
+                    selected
+                      ? 'border-[var(--menu-wine)] bg-[var(--menu-gold-wash)]'
+                      : 'border-[var(--menu-line-strong)] bg-[var(--menu-surface)] hover:bg-[var(--menu-paper)]'
+                  )}
+                  aria-pressed={selected}
+                >
+                  <span className="block text-sm font-medium text-[var(--menu-ink)]">
+                    {t('grams', { grams })}
+                  </span>
+                  <span
+                    className="mt-1 block text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(price, currency, { locale: currencyLocale })}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {product.price_per_kg != null ? (
+            <p className="text-xs text-[var(--menu-ink-soft)]" dir="ltr">
+              {formatCurrencyAmount(product.price_per_kg, currency, { locale: currencyLocale })}
+              /kg
+            </p>
+          ) : null}
+        </div>
+      ) : (
+        <div className="flex items-end gap-3 border-t border-[var(--menu-line)] pt-4">
+          <p
+            className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
+            dir="ltr"
+          >
+            {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
           </p>
-        )}
-      </div>
+          {showDiningModeToggle && otherPrice != null && otherPrice !== activePrice && (
+            <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
+              {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
+              {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
+            </p>
+          )}
+        </div>
+      )}
 
       {product.is_available ? (
         <div className="space-y-3">
@@ -224,6 +297,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
           type="button"
           className="h-12 w-full rounded-full bg-[var(--menu-wine)] text-sm font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
           onClick={handleAdd}
+          disabled={!canAdd}
           data-testid="sheet-add-to-cart"
         >
           <ShoppingCart className="me-2 h-4 w-4" aria-hidden="true" />

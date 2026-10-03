@@ -1,13 +1,14 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useForm, type FieldErrors, type UseFormReturn } from 'react-hook-form';
+import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import {
   getDefaultProductFormValues,
   getEcommerceDisplayPrice,
   getProductFormSchema,
+  parseWeightOptionsG,
   productFormToInput,
   productToFormValues,
   type ProductFormInput,
@@ -56,6 +57,8 @@ import { Switch } from '@/components/ui/switch';
 import type { Product } from '@/types';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { computeWeightPrice } from '@/lib/order/weight-price';
+import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
 import { cn, getName } from '@/lib/utils';
 import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
 import { Pagination } from '@/components/shared/Pagination';
@@ -66,10 +69,124 @@ type ProductForm = ProductFormInput;
 const productFormSchema = getProductFormSchema(isEcommerceStore);
 const defaultFormValues = getDefaultProductFormValues(isEcommerceStore);
 
-function restaurantFormErrors(
-  errors: FieldErrors<ProductFormInput>
-): FieldErrors<RestaurantProductFormInput> {
-  return errors as FieldErrors<RestaurantProductFormInput>;
+function RestaurantPriceSection({
+  form,
+  currency,
+  idPrefix,
+  t,
+}: {
+  form: UseFormReturn<RestaurantProductFormInput>;
+  currency: string;
+  idPrefix: 'create' | 'edit';
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const useWeightPricing = Boolean(form.watch('use_weight_pricing'));
+  const pricePerKg = form.watch('price_per_kg');
+  const weightOptionsRaw = form.watch('weight_options_g') ?? '';
+  const weights = parseWeightOptionsG(weightOptionsRaw);
+  const fromPrice =
+    useWeightPricing && pricePerKg != null && weights.length > 0
+      ? Math.min(...weights.map((grams) => computeWeightPrice(Number(pricePerKg), grams)))
+      : null;
+  const errors = form.formState.errors;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Switch
+          checked={useWeightPricing}
+          onCheckedChange={(checked) => {
+            form.setValue('use_weight_pricing', checked, { shouldDirty: true });
+            if (!checked) {
+              form.setValue('price_per_kg', null, { shouldDirty: true });
+              form.setValue('weight_options_g', '', { shouldDirty: true });
+            }
+          }}
+          id={`${idPrefix}-weight-pricing`}
+        />
+        <Label htmlFor={`${idPrefix}-weight-pricing`}>{t('enableWeightPricing')}</Label>
+      </div>
+
+      {useWeightPricing ? (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-price-per-kg`}>
+              {t('pricePerKg')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-price-per-kg`}
+              type="number"
+              min={0}
+              step={1}
+              {...form.register('price_per_kg', {
+                setValueAs: (value) => {
+                  if (value === '' || value == null) return null;
+                  const next = Number(value);
+                  return Number.isFinite(next) ? next : null;
+                },
+              })}
+            />
+            {errors.price_per_kg && (
+              <p className="text-destructive text-sm">{errors.price_per_kg.message}</p>
+            )}
+          </div>
+          <input type="hidden" {...form.register('weight_options_g')} />
+          <WeightOptionsEditor
+            value={weights}
+            onChange={(next) =>
+              form.setValue('weight_options_g', next.length ? next.join(', ') : '', {
+                shouldDirty: true,
+                shouldValidate: true,
+              })
+            }
+            pricePerKg={pricePerKg ?? null}
+            currency={currency}
+            idPrefix={idPrefix}
+            error={errors.weight_options_g?.message}
+            t={t}
+          />
+          {fromPrice != null ? (
+            <p className="text-muted-foreground text-xs">
+              {t('weightPricingListHint', {
+                price: formatCurrencyAmount(fromPrice, currency, { plain: true }),
+              })}
+            </p>
+          ) : null}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-dining`}>
+              {t('diningPrice')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-dining`}
+              type="number"
+              min={0}
+              {...form.register('dining_price', { valueAsNumber: true })}
+            />
+            {errors.dining_price && (
+              <p className="text-destructive text-sm">{errors.dining_price.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`${idPrefix}-takeaway`}>
+              {t('takeawayPrice')} ({currency}) *
+            </Label>
+            <Input
+              id={`${idPrefix}-takeaway`}
+              type="number"
+              min={0}
+              {...form.register('takeaway_price', { valueAsNumber: true })}
+            />
+            {errors.takeaway_price && (
+              <p className="text-destructive text-sm">{errors.takeaway_price.message}</p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ProductImageField({
@@ -592,6 +709,15 @@ export default function ProductsPage() {
                               plain: true,
                             })}
                           </p>
+                        ) : product.price_per_kg != null && product.weight_options_g?.length ? (
+                          <div className="space-y-0.5 tabular-nums">
+                            <p className="text-muted-foreground text-xs">{t('pricePerKg')}</p>
+                            <p className="font-semibold">
+                              {formatCurrencyAmount(product.price_per_kg, currency, {
+                                plain: true,
+                              })}
+                            </p>
+                          </div>
                         ) : (
                           <div className="space-y-0.5 tabular-nums">
                             <p className="text-muted-foreground text-xs">{tMenu('dining')}</p>
@@ -755,45 +881,12 @@ export default function ProductsPage() {
                 )}
               </div>
             ) : (
-              (() => {
-                const createRestaurantErrors = restaurantFormErrors(createForm.formState.errors);
-                return (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="create-dining">
-                        {t('diningPrice')} ({currency}) *
-                      </Label>
-                      <Input
-                        id="create-dining"
-                        type="number"
-                        min={0}
-                        {...createForm.register('dining_price', { valueAsNumber: true })}
-                      />
-                      {createRestaurantErrors.dining_price && (
-                        <p className="text-destructive text-sm">
-                          {createRestaurantErrors.dining_price.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="create-takeaway">
-                        {t('takeawayPrice')} ({currency}) *
-                      </Label>
-                      <Input
-                        id="create-takeaway"
-                        type="number"
-                        min={0}
-                        {...createForm.register('takeaway_price', { valueAsNumber: true })}
-                      />
-                      {createRestaurantErrors.takeaway_price && (
-                        <p className="text-destructive text-sm">
-                          {createRestaurantErrors.takeaway_price.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })()
+              <RestaurantPriceSection
+                form={createForm as UseFormReturn<RestaurantProductFormInput>}
+                currency={currency}
+                idPrefix="create"
+                t={t}
+              />
             )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
@@ -962,45 +1055,12 @@ export default function ProductsPage() {
                 )}
               </div>
             ) : (
-              (() => {
-                const editRestaurantErrors = restaurantFormErrors(editForm.formState.errors);
-                return (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-dining">
-                        {t('diningPrice')} ({currency}) *
-                      </Label>
-                      <Input
-                        id="edit-dining"
-                        type="number"
-                        min={0}
-                        {...editForm.register('dining_price', { valueAsNumber: true })}
-                      />
-                      {editRestaurantErrors.dining_price && (
-                        <p className="text-destructive text-sm">
-                          {editRestaurantErrors.dining_price.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-takeaway">
-                        {t('takeawayPrice')} ({currency}) *
-                      </Label>
-                      <Input
-                        id="edit-takeaway"
-                        type="number"
-                        min={0}
-                        {...editForm.register('takeaway_price', { valueAsNumber: true })}
-                      />
-                      {editRestaurantErrors.takeaway_price && (
-                        <p className="text-destructive text-sm">
-                          {editRestaurantErrors.takeaway_price.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })()
+              <RestaurantPriceSection
+                form={editForm as UseFormReturn<RestaurantProductFormInput>}
+                currency={currency}
+                idPrefix="edit"
+                t={t}
+              />
             )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">

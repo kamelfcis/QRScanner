@@ -3,6 +3,7 @@ import {
   type ProductSizeFields,
   type ProductSizeId,
 } from '@/lib/catalog/product-sizes';
+import { computeWeightPrice } from '@/lib/order/weight-price';
 
 export type DiningMode = 'dining' | 'takeaway';
 
@@ -109,9 +110,14 @@ export function getUnitPrice(diningPrice: number, takeawayPrice: number, mode: D
 
 export interface CartLinePricing extends ProductSizeFields {
   sizeOption?: ProductSizeId | null;
+  price_per_kg?: number | null;
+  weightGrams?: number | null;
 }
 
 export function getCartLineUnitPrice(item: CartLinePricing, diningMode: DiningMode): number {
+  if (item.weightGrams != null && item.price_per_kg != null) {
+    return computeWeightPrice(item.price_per_kg, item.weightGrams);
+  }
   if (item.has_size_options && item.sizeOption) {
     return getProductSizePrice(item, item.sizeOption);
   }

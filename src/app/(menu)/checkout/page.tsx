@@ -26,7 +26,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeInUp } from '@/lib/motion';
 import { getName, cn } from '@/lib/utils';
-import { calculateOrderTotals, getUnitPrice } from '@/lib/order/totals';
+import { calculateOrderTotals, getCartLineUnitPrice } from '@/lib/order/totals';
 import {
   formatCurrencyAmount,
   formatCurrencyNumber,
@@ -56,6 +56,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { locale } = useI18n();
   const t = useTranslations('checkout');
+  const tMenu = useTranslations('menu');
   const tCommon = useTranslations('common');
   const prefersReducedMotion = useReducedMotion();
   const { data: settings, isLoading } = useRestaurantSettings();
@@ -111,7 +112,17 @@ export default function CheckoutPage() {
     () =>
       items.map((item) => ({
         ...item,
-        unitPrice: getUnitPrice(item.dining_price, item.takeaway_price, diningMode),
+        unitPrice: getCartLineUnitPrice(
+          {
+            dining_price: item.dining_price,
+            takeaway_price: item.takeaway_price,
+            has_size_options: item.has_size_options ?? false,
+            sizeOption: item.sizeOption ?? null,
+            price_per_kg: item.price_per_kg,
+            weightGrams: item.weightGrams,
+          },
+          diningMode
+        ),
       })),
     [items, diningMode]
   );
@@ -220,6 +231,60 @@ export default function CheckoutPage() {
     setErrors([]);
 
     try {
+      if (!isEcommerceStore) {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map((item) => ({
+              product_id: item.productId,
+              quantity: item.quantity,
+              size_option: item.has_size_options ? (item.sizeOption ?? null) : null,
+              weight_grams: item.weightGrams ?? null,
+              notes: item.notes || null,
+            })),
+            dining_mode: diningMode,
+            fulfillment_type: isTakeaway ? fulfillmentType : null,
+            table_number: tableNumber,
+            customer_name: customerName.trim(),
+            customer_phone: customerPhone.trim() || null,
+            delivery_address: requiresDeliveryAddress ? deliveryAddress || null : null,
+            delivery_location_id: requiresDeliveryLocation ? deliveryLocationId : null,
+            delivery_address_details: requiresDeliveryLocation
+              ? deliveryAddressDetails || null
+              : null,
+            notes: orderNotes || null,
+            locale: locale === 'ar' ? 'ar' : 'en',
+            whatsapp_sent: true,
+          }),
+        });
+
+        const payload = (await response.json().catch(() => null)) as {
+          order_number?: string;
+          code?: string;
+        } | null;
+
+        if (!response.ok && payload?.code !== 'feature_disabled') {
+          const code = payload?.code;
+          const message =
+            code === 'product_unavailable'
+              ? t('productUnavailable')
+              : code === 'orders_closed'
+                ? t('ordersClosed')
+                : code === 'min_order'
+                  ? t('minOrder', {
+                      amount: formatCurrencyNumber(settings.minimum_order ?? 0, currencyLocale),
+                      currency,
+                    })
+                  : code === 'address_required'
+                    ? t('addressRequired')
+                    : t('placeFailed');
+          setErrors([message]);
+          setSubmitting(false);
+          return;
+        }
+      }
+
       if (requiresInstapayProof && orderPaymentRef) {
         const proofForm = new FormData();
         proofForm.append('orderRef', orderPaymentRef);
@@ -426,6 +491,11 @@ export default function CheckoutPage() {
                       <p className="font-medium">
                         <span className="tabular-nums">{item.quantity}×</span> {name}
                       </p>
+                      {item.weightGrams != null ? (
+                        <p className="text-muted-foreground">
+                          {tMenu('grams', { grams: item.weightGrams })}
+                        </p>
+                      ) : null}
                       {item.notes ? <p className="text-muted-foreground">{item.notes}</p> : null}
                     </div>
                     <p className="shrink-0 font-medium tabular-nums">

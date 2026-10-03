@@ -1,4 +1,4 @@
-import { calculateOrderTotals, getUnitPrice, type OrderTotals } from './totals';
+import { calculateOrderTotals, getCartLineUnitPrice, type OrderTotals } from './totals';
 import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage, type MessageLocale } from './whatsapp-message';
 import { getLocalizedText } from '@/lib/utils';
@@ -50,8 +50,18 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
   const currency = getRestaurantCurrency(input.settings.currency);
   const priced = input.items.map((item) => ({
     ...item,
-    unitPrice: getUnitPrice(item.dining_price, item.takeaway_price, input.diningMode),
-    name: input.locale === 'ar' ? item.name_ar || item.name_en : item.name_en,
+    unitPrice: getCartLineUnitPrice(
+      {
+        dining_price: item.dining_price,
+        takeaway_price: item.takeaway_price,
+        has_size_options: item.has_size_options ?? false,
+        sizeOption: item.sizeOption ?? null,
+        price_per_kg: item.price_per_kg,
+        weightGrams: item.weightGrams,
+      },
+      input.diningMode
+    ),
+    name: formatCartItemName(item, input.locale),
   }));
 
   const totals = calculateOrderTotals(
@@ -158,6 +168,20 @@ export function buildStoredOrderWhatsApp(input: {
   return { totals, message, whatsappUrl, currency };
 }
 
+function formatWeightLabel(locale: MessageLocale, grams: number): string {
+  if (locale === 'ar') return `${grams} جم`;
+  if (locale === 'en') return `${grams}g`;
+  return `${grams} g`;
+}
+
+function formatCartItemName(item: CartItem, locale: 'en' | 'ar'): string {
+  const base = locale === 'ar' ? item.name_ar || item.name_en : item.name_en;
+  if (item.weightGrams != null) {
+    return `${base} (${formatWeightLabel(locale, item.weightGrams)})`;
+  }
+  return base;
+}
+
 function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
   const base = getLocalizedText(locale, {
     en: item.name_en,
@@ -170,9 +194,7 @@ function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
     name = `${name} (${getSizeLabel(locale, item.size_option as ProductSizeId)})`;
   }
   if (item.weight_grams != null) {
-    const grams = item.weight_grams;
-    const weight = locale === 'ar' ? `${grams} جم` : locale === 'en' ? `${grams}g` : `${grams} g`;
-    name = `${name} (${weight})`;
+    name = `${name} (${formatWeightLabel(locale, item.weight_grams)})`;
   }
   return name;
 }

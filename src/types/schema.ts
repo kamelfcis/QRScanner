@@ -44,7 +44,10 @@ export const productSchema = z.object({
   sort_order: z.number().int().min(0).default(0),
 });
 
-export type ProductInput = z.infer<typeof productSchema>;
+export type ProductInput = z.infer<typeof productSchema> & {
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
+};
 
 export const offerSchema = z
   .object({

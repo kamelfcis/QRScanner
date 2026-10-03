@@ -1,3 +1,5 @@
+import { isEcommerceStore } from '@/lib/store-config';
+
 export const locales = ['en', 'ar'] as const;
 export type Locale = (typeof locales)[number];
 
@@ -42,8 +44,8 @@ export const hasHettSamakaTier3 = tenantId === 'hettsamaka';
 /** Four independently enabled sizes (ala-keefak only). */
 export const hasExtendedProductSizes = tenantId === 'ala-keefak';
 
-/** Per-kg gram picker (hettsamaka only). */
-export const hasProductWeightOptions = tenantId === 'hettsamaka';
+/** Per-kg gram picker on restaurant menus. Ecommerce keeps a single price. */
+export const hasProductWeightOptions = !isEcommerceStore;
 
 export const isAlaKeefakTenant = tenantId === 'ala-keefak';
 

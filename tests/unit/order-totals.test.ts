@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateOrderTotals, getUnitPrice } from '@/lib/order/totals';
+import { calculateOrderTotals, getCartLineUnitPrice, getUnitPrice } from '@/lib/order/totals';
 import { validateOrder } from '@/lib/order/validation';
 
 describe('calculateOrderTotals', () => {
@@ -71,6 +71,29 @@ describe('getUnitPrice', () => {
   it('returns dining or takeaway price by mode', () => {
     expect(getUnitPrice(30, 25, 'dining')).toBe(30);
     expect(getUnitPrice(30, 25, 'takeaway')).toBe(25);
+  });
+});
+
+describe('kilogram line total', () => {
+  it('prices a restaurant kg option as rounded price-per-kg times grams, then quantity', () => {
+    const unitPrice = getCartLineUnitPrice(
+      {
+        dining_price: 0,
+        takeaway_price: 0,
+        has_size_options: false,
+        price_per_kg: 333,
+        weightGrams: 250,
+      },
+      'dining'
+    );
+    expect(unitPrice).toBe(83);
+
+    const totals = calculateOrderTotals([{ quantity: 2, unitPrice }], {
+      apply_tax: false,
+      apply_service_charge: false,
+    });
+    expect(totals.subtotal).toBe(166);
+    expect(totals.total).toBe(166);
   });
 });
 

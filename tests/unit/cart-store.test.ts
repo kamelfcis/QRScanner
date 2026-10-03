@@ -20,6 +20,12 @@ describe('makeCartLineId', () => {
     expect(makeCartLineId('p1', 'Extra garlic')).toBe('p1::extra garlic');
     expect(makeCartLineId('p1', 'Extra garlic')).not.toBe(makeCartLineId('p1', ''));
   });
+
+  it('keeps different kilogram options on separate lines', () => {
+    expect(makeCartLineId('p1', '', 250)).toBe('p1::250g');
+    expect(makeCartLineId('p1', '', 500)).toBe('p1::500g');
+    expect(makeCartLineId('p1', '', 250)).not.toBe(makeCartLineId('p1', '', 500));
+  });
 });
 
 describe('useCartStore', () => {
@@ -42,6 +48,29 @@ describe('useCartStore', () => {
     useCartStore.getState().addItem({ ...sample, quantity: 2 });
     expect(useCartStore.getState().items).toHaveLength(1);
     expect(useCartStore.getState().items[0].quantity).toBe(3);
+  });
+
+  it('stores the selected kilogram and keeps each weight on its own line', () => {
+    useCartStore.getState().addItem({
+      ...sample,
+      dining_price: 100,
+      takeaway_price: 100,
+      price_per_kg: 400,
+      weight_options_g: [250, 500],
+      weightGrams: 250,
+      quantity: 2,
+    });
+    useCartStore.getState().addItem({
+      ...sample,
+      dining_price: 200,
+      takeaway_price: 200,
+      price_per_kg: 400,
+      weightGrams: 500,
+    });
+    const items = useCartStore.getState().items;
+    expect(items).toHaveLength(2);
+    expect(items[0]).toMatchObject({ weightGrams: 250, quantity: 2, dining_price: 100 });
+    expect(items[1]).toMatchObject({ weightGrams: 500, dining_price: 200 });
   });
 
   it('keeps separate lines for different notes', () => {

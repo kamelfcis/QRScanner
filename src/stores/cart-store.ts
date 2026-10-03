@@ -57,9 +57,17 @@ function notesKey(notes: string): string {
   return notes.trim().toLowerCase();
 }
 
-export function makeCartLineId(productId: string, notes: string): string {
+export function makeCartLineId(
+  productId: string,
+  notes: string,
+  weightGrams: number | null = null
+): string {
   const key = notesKey(notes);
-  return key ? `${productId}::${key}` : productId;
+  const weightKey = weightGrams != null ? `${weightGrams}g` : '';
+  if (weightKey && key) return `${productId}::${weightKey}::${key}`;
+  if (weightKey) return `${productId}::${weightKey}`;
+  if (key) return `${productId}::${key}`;
+  return productId;
 }
 
 const initialMeta: CartMeta = {
@@ -83,7 +91,8 @@ export const useCartStore = create<CartState>()(
       addItem: (item) => {
         const qty = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
-        const id = makeCartLineId(item.productId, notes);
+        const weightGrams = item.weightGrams ?? null;
+        const id = makeCartLineId(item.productId, notes, weightGrams);
         triggerHaptic('light');
         playSound('add');
         set((state) => {
@@ -103,9 +112,16 @@ export const useCartStore = create<CartState>()(
                 productId: item.productId,
                 name_en: item.name_en,
                 name_ar: item.name_ar,
+                name_fr: item.name_fr,
+                name_nl: item.name_nl,
                 image_url: item.image_url,
                 dining_price: item.dining_price,
                 takeaway_price: item.takeaway_price,
+                has_size_options: item.has_size_options,
+                price_per_kg: item.price_per_kg ?? null,
+                weight_options_g: item.weight_options_g ?? null,
+                sizeOption: item.sizeOption ?? null,
+                weightGrams,
                 quantity: qty,
                 notes,
               },
@@ -136,7 +152,7 @@ export const useCartStore = create<CartState>()(
           const current = state.items.find((i) => i.id === id);
           if (!current) return state;
 
-          const newId = makeCartLineId(current.productId, trimmed);
+          const newId = makeCartLineId(current.productId, trimmed, current.weightGrams ?? null);
           if (newId === id) {
             return {
               items: state.items.map((i) => (i.id === id ? { ...i, notes: trimmed } : i)),

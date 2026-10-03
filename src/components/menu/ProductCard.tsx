@@ -21,6 +21,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useCartStore } from '@/stores/cart-store';
 import { trackAddToCart } from '@/lib/analytics';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
+import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import { showDiningModeToggle } from '@/lib/store-config';
@@ -61,7 +62,10 @@ export function ProductCard({
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
-  const activePrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
+  const weighted = hasWeightOptions(product);
+  const fromPrice = minWeightPrice(product);
+  const activePrice =
+    fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
@@ -109,6 +113,10 @@ export function ProductCard({
   const handleMobileAddClick = () => {
     if (longPressFired.current) {
       longPressFired.current = false;
+      return;
+    }
+    if (weighted) {
+      onImageClick(product);
       return;
     }
     handleAdd('');
@@ -210,9 +218,13 @@ export function ProductCard({
                 className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
                 dir="ltr"
               >
-                {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+                {fromPrice != null
+                  ? t('priceFrom', {
+                      price: formatCurrencyAmount(fromPrice, currency, { locale: currencyLocale }),
+                    })
+                  : formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
               </p>
-              {showDiningModeToggle && otherPrice !== activePrice && (
+              {showDiningModeToggle && !weighted && otherPrice !== activePrice && (
                 <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
                   {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
                   {formatCurrencyAmount(otherPrice, currency, { locale: currencyLocale })}
@@ -226,17 +238,17 @@ export function ProductCard({
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                 animate={pulse && !prefersReducedMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                onPointerDown={startLongPress}
-                onPointerUp={clearLongPress}
-                onPointerLeave={clearLongPress}
-                onPointerCancel={clearLongPress}
+                onPointerDown={weighted ? undefined : startLongPress}
+                onPointerUp={weighted ? undefined : clearLongPress}
+                onPointerLeave={weighted ? undefined : clearLongPress}
+                onPointerCancel={weighted ? undefined : clearLongPress}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleMobileAddClick();
                 }}
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
-                aria-label={tCart('addToCart')}
-                data-testid="add-to-cart-mobile"
+                aria-label={weighted ? t('selectWeight') : tCart('addToCart')}
+                data-testid={weighted ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
               >
                 <ShoppingCart className="h-4 w-4" aria-hidden="true" />
               </motion.button>
@@ -246,36 +258,38 @@ export function ProductCard({
           {product.is_available && (
             <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
-                <div
-                  className="inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
-                  role="group"
-                  aria-label={tCart('quantity')}
-                >
-                  <button
-                    type="button"
-                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    aria-label={tCart('decreaseQty')}
-                    disabled={qty <= 1}
-                  >
-                    <Minus className="h-3.5 w-3.5" aria-hidden="true" />
-                  </button>
-                  <span
-                    className="flex min-w-7 items-center justify-center text-center text-sm font-medium tabular-nums"
-                    aria-live="polite"
+                {!weighted && (
+                  <div
+                    className="inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
+                    role="group"
                     aria-label={tCart('quantity')}
                   >
-                    {qty}
-                  </span>
-                  <button
-                    type="button"
-                    className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-                    onClick={() => setQty((q) => q + 1)}
-                    aria-label={tCart('increaseQty')}
-                  >
-                    <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-                  </button>
-                </div>
+                    <button
+                      type="button"
+                      className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
+                      onClick={() => setQty((q) => Math.max(1, q - 1))}
+                      aria-label={tCart('decreaseQty')}
+                      disabled={qty <= 1}
+                    >
+                      <Minus className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                    <span
+                      className="flex min-w-7 items-center justify-center text-center text-sm font-medium tabular-nums"
+                      aria-live="polite"
+                      aria-label={tCart('quantity')}
+                    >
+                      {qty}
+                    </span>
+                    <button
+                      type="button"
+                      className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
+                      onClick={() => setQty((q) => q + 1)}
+                      aria-label={tCart('increaseQty')}
+                    >
+                      <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                  </div>
+                )}
 
                 <motion.div
                   className="min-w-0 flex-1"
@@ -285,23 +299,25 @@ export function ProductCard({
                   <Button
                     type="button"
                     className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-                    onClick={() => handleAdd('')}
-                    data-testid="add-to-cart"
-                    aria-label={tCart('addToCart')}
+                    onClick={() => (weighted ? onImageClick(product) : handleAdd(''))}
+                    data-testid={weighted ? 'open-product-sheet' : 'add-to-cart'}
+                    aria-label={weighted ? t('selectWeight') : tCart('addToCart')}
                   >
                     <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
-                    {tCart('addToCart')}
+                    {weighted ? t('selectWeight') : tCart('addToCart')}
                   </Button>
                 </motion.div>
               </div>
 
-              <button
-                type="button"
-                className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
-                onClick={() => setNotesOpen(true)}
-              >
-                {tCart('itemNotes')}
-              </button>
+              {!weighted && (
+                <button
+                  type="button"
+                  className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"
+                  onClick={() => setNotesOpen(true)}
+                >
+                  {tCart('itemNotes')}
+                </button>
+              )}
             </div>
           )}
         </div>
