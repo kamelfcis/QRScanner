@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useCallback, useState, useEffect, useMemo } from 'react';
+import { useRef, useCallback, useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
-import { getTemplate, type QRTemplate } from '@/lib/qr/templates';
+import { getTemplate } from '@/lib/qr/templates';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
 import {
@@ -17,6 +17,7 @@ import {
   getLogoImageSettings,
   getLogoPixelSize,
 } from '@/lib/qr/logo-overlay';
+import { decorateQrFinderEyes } from '@/lib/qr/finder-style';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 
 interface QRPreviewProps {
@@ -59,6 +60,7 @@ export function QRPreview({
   className = '',
 }: QRPreviewProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const downloadSvgRef = useRef<SVGSVGElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const downloadCanvasRef = useRef<HTMLCanvasElement>(null);
   const [showCanvas, setShowCanvas] = useState(false);
@@ -69,8 +71,27 @@ export function QRPreview({
 
   const resolvedFgColor = fgColor || tmpl.fgColor;
   const resolvedBgColor = bgColor || tmpl.bgColor;
+  const resolvedRounded = roundedStyle ?? tmpl.roundedStyle;
+  const resolvedEye = eyeStyle ?? tmpl.eyeStyle;
+  const resolvedEyeColor = primaryColor || tmpl.primaryColor;
+  const resolvedPupilColor = secondaryColor || tmpl.secondaryColor;
+  const isStyled = resolvedRounded !== 'square' || resolvedEye !== 'square';
 
-  const effectiveLevel = logoUrl ? 'H' : errorCorrection;
+  const effectiveLevel = logoUrl || isStyled ? 'H' : errorCorrection;
+
+  const applyFinderStyle = useCallback(
+    (svg: SVGSVGElement | null) => {
+      if (!svg) return;
+      decorateQrFinderEyes(svg, {
+        margin,
+        bgColor: resolvedBgColor,
+        eyeColor: resolvedEyeColor,
+        pupilColor: resolvedPupilColor,
+        eyeStyle: resolvedEye,
+      });
+    },
+    [margin, resolvedBgColor, resolvedEye, resolvedEyeColor, resolvedPupilColor]
+  );
 
   useEffect(() => {
     if (!logoUrl) {
@@ -133,6 +154,20 @@ export function QRPreview({
     [downloadLogoOverlaySrc, downloadSize]
   );
 
+  useLayoutEffect(() => {
+    applyFinderStyle(svgRef.current);
+    applyFinderStyle(downloadSvgRef.current);
+  }, [
+    applyFinderStyle,
+    url,
+    logoOverlaySrc,
+    downloadLogoOverlaySrc,
+    size,
+    downloadSize,
+    resolvedFgColor,
+    resolvedBgColor,
+  ]);
+
   const previewQrProps = {
     value: url,
     size,
@@ -168,24 +203,49 @@ export function QRPreview({
     throw new Error('No QR element found');
   }, [showCanvas, showDownload, logoUrl]);
 
+  const styledSvg = useCallback(() => {
+    applyFinderStyle(downloadSvgRef.current);
+    applyFinderStyle(svgRef.current);
+    return downloadSvgRef.current || svgRef.current;
+  }, [applyFinderStyle]);
+
   const handleDownloadPNG = useCallback(async () => {
+    if (isStyled) {
+      await downloadQRAsPNG(styledSvg(), null, filename, size, downloadSize);
+      return;
+    }
     const canvas = await ensureDownloadCanvas();
     await downloadQRAsPNG(null, canvas, filename, size, downloadSize);
-  }, [ensureDownloadCanvas, filename, size, downloadSize]);
+  }, [ensureDownloadCanvas, filename, size, downloadSize, isStyled, styledSvg]);
 
   const handleDownloadSVG = useCallback(() => {
-    downloadQRAsSVG(svgRef.current, filename);
-  }, [filename]);
+    downloadQRAsSVG(isStyled ? styledSvg() : svgRef.current, filename);
+  }, [filename, isStyled, styledSvg]);
 
   const handleDownloadPDF = useCallback(async () => {
+    if (isStyled) {
+      await downloadQRAsPDF(styledSvg(), null, filename, size, downloadSize);
+      return;
+    }
     const canvas = await ensureDownloadCanvas();
     await downloadQRAsPDF(null, canvas, filename, size, downloadSize);
-  }, [ensureDownloadCanvas, filename, size, downloadSize]);
+  }, [ensureDownloadCanvas, filename, size, downloadSize, isStyled, styledSvg]);
 
   const handlePrint = useCallback(async () => {
+    if (isStyled) {
+      await downloadQRPrint(styledSvg(), null, filename, size, downloadSize);
+      return;
+    }
     const canvas = await ensureDownloadCanvas();
     await downloadQRPrint(null, canvas, filename, size, downloadSize);
-  }, [ensureDownloadCanvas, filename, size, downloadSize]);
+  }, [ensureDownloadCanvas, filename, size, downloadSize, isStyled, styledSvg]);
+
+  const frameRadius =
+    resolvedRounded === 'circle'
+      ? 'rounded-3xl'
+      : resolvedRounded === 'rounded'
+        ? 'rounded-2xl'
+        : 'rounded-lg';
 
   return (
     <div className={`relative flex flex-col items-center gap-4 ${className}`}>
@@ -193,10 +253,14 @@ export function QRPreview({
         <span className="text-muted-foreground text-sm font-medium">{tmpl.label}</span>
       )}
 
-      <div className="relative rounded-lg border bg-white p-4 shadow-sm">
+      <div
+        className={`relative overflow-hidden border p-4 shadow-sm ${frameRadius}`}
+        style={{ backgroundColor: resolvedBgColor, borderColor: resolvedEyeColor }}
+      >
         <QRCodeSVG
           ref={svgRef}
           {...previewQrProps}
+          className={resolvedRounded === 'rounded' ? 'qr-modules-rounded' : undefined}
           style={{ display: showCanvas ? 'none' : 'block' }}
         />
         {showCanvas && <QRCodeCanvas ref={canvasRef} {...previewQrProps} />}
@@ -209,6 +273,7 @@ export function QRPreview({
             className="pointer-events-none absolute left-[-9999px] top-0 overflow-hidden opacity-0"
           >
             <QRCodeCanvas ref={downloadCanvasRef} {...downloadQrProps} />
+            {isStyled ? <QRCodeSVG ref={downloadSvgRef} {...downloadQrProps} /> : null}
           </div>
 
           <div className="flex flex-wrap justify-center gap-2">

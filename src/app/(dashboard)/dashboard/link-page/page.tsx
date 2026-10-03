@@ -21,7 +21,10 @@ import {
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import { mergeLinkPageSettings } from '@/lib/link-page/defaults';
-import type { LinkPageSettings } from '@/types';
+import { OSTOL_LINKS_QR_TEMPLATE } from '@/lib/qr/templates';
+import type { LinkPageOverlayStrength, LinkPageSettings } from '@/types';
+
+const OVERLAY_PRESETS: LinkPageOverlayStrength[] = ['soft', 'medium', 'strong'];
 
 type LinkKey = keyof LinkPageSettings['links'];
 
@@ -211,6 +214,44 @@ export default function LinkPageEditorPage() {
                   </div>
                 </div>
               </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="use_hero_background">{t('useHeroBackground')}</Label>
+                <Switch
+                  id="use_hero_background"
+                  checked={form.use_hero_background !== false}
+                  onCheckedChange={(checked) =>
+                    setForm((prev) => ({ ...prev, use_hero_background: checked }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t('overlayStrength')}</Label>
+                <div className="flex gap-2">
+                  {OVERLAY_PRESETS.map((strength) => (
+                    <Button
+                      key={strength}
+                      type="button"
+                      variant={
+                        (form.overlay_strength ?? 'medium') === strength ? 'default' : 'outline'
+                      }
+                      size="sm"
+                      onClick={() => setForm((prev) => ({ ...prev, overlay_strength: strength }))}
+                    >
+                      {t(`overlay_${strength}`)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="motion_enabled">{t('motionEnabled')}</Label>
+                <Switch
+                  id="motion_enabled"
+                  checked={form.motion_enabled !== false}
+                  onCheckedChange={(checked) =>
+                    setForm((prev) => ({ ...prev, motion_enabled: checked }))
+                  }
+                />
+              </div>
               <div className="space-y-2">
                 <Label>{t('buttonRadius')}</Label>
                 <div className="flex gap-2">
@@ -326,7 +367,12 @@ export default function LinkPageEditorPage() {
             </CardHeader>
             <CardContent className="overflow-hidden rounded-lg border p-0">
               <div className="max-h-[520px] overflow-y-auto">
-                <LinkPageView settings={form} restaurant={restaurant} className="min-h-[480px]" />
+                <LinkPageView
+                  settings={form}
+                  restaurant={restaurant}
+                  preview
+                  className="min-h-[480px]"
+                />
               </div>
             </CardContent>
           </Card>
@@ -346,11 +392,13 @@ export default function LinkPageEditorPage() {
               </div>
               <QRPreview
                 url={linksUrl}
+                template={OSTOL_LINKS_QR_TEMPLATE}
                 logoUrl={logoUrl}
                 showDownload
                 filename="ostol-links-qr"
                 size={220}
                 downloadSize={1024}
+                errorCorrection="H"
               />
             </CardContent>
           </Card>

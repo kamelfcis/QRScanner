@@ -9,6 +9,7 @@ export interface QRTemplate {
   eyeStyle: 'square' | 'rounded' | 'circle';
 }
 
+/** Shared dashboard templates. Mazen defaults stay classic; this list is unchanged. */
 export const QR_TEMPLATES: Record<string, QRTemplate> = {
   classic: {
     name: 'classic',
@@ -62,8 +63,24 @@ export const QR_TEMPLATES: Record<string, QRTemplate> = {
   },
 };
 
+export const OSTOL_LINKS_QR_TEMPLATE = 'ostolSeafood';
+
+/** Ostol /links QR only — not a Mazen default and not listed in TemplateSwitcher. */
+export const OSTOL_QR_TEMPLATES: Record<string, QRTemplate> = {
+  [OSTOL_LINKS_QR_TEMPLATE]: {
+    name: OSTOL_LINKS_QR_TEMPLATE,
+    label: 'Ostol Seafood',
+    primaryColor: '#2DD4BF',
+    secondaryColor: '#0B3A42',
+    bgColor: '#07141F',
+    fgColor: '#5EEAD4',
+    roundedStyle: 'rounded',
+    eyeStyle: 'circle',
+  },
+};
+
 export function getTemplate(name: string): QRTemplate {
-  return QR_TEMPLATES[name] || QR_TEMPLATES.classic;
+  return QR_TEMPLATES[name] || OSTOL_QR_TEMPLATES[name] || QR_TEMPLATES.classic;
 }
 
 export function getTemplateNames(): string[] {

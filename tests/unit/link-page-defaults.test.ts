@@ -8,6 +8,9 @@ describe('link-page defaults', () => {
     expect(defaults.links.instagram.url).toBe('https://www.instagram.com/as.seafood/');
     expect(defaults.links.tiktok.url).toBe('https://www.tiktok.com/@as.seafood');
     expect(defaults.links.phone.value).toBe('01127244074');
+    expect(defaults.use_hero_background).toBe(true);
+    expect(defaults.overlay_strength).toBe('medium');
+    expect(defaults.motion_enabled).toBe(true);
   });
 
   it('merges defaults when link_page row is missing', () => {

@@ -1192,3 +1192,73 @@ html[data-site="ostol"] [data-menu-theme] ::selection {
     transform: none;
   }
 }
+
+@keyframes link-page-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.link-page-enter {
+  animation: link-page-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.link-page-enter-0 { animation-delay: 0ms; }
+.link-page-enter-1 { animation-delay: 160ms; }
+.link-page-enter-2 { animation-delay: 320ms; }
+.link-page-enter-3 { animation-delay: 480ms; }
+.link-page-enter-4 { animation-delay: 640ms; }
+.link-page-enter-5 { animation-delay: 800ms; }
+.link-page-enter-6 { animation-delay: 960ms; }
+.link-page-enter-7 { animation-delay: 1120ms; }
+
+@keyframes link-scan-pulse {
+  0% {
+    transform: translateX(-130%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(230%);
+    opacity: 0;
+  }
+}
+
+.link-scan-pulse {
+  pointer-events: none;
+  position: absolute;
+  inset-block: 8%;
+  inset-inline-start: 0;
+  width: 28%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.08),
+    rgb(165 243 252 / 0.55),
+    rgb(255 255 255 / 0.08),
+    transparent
+  );
+  animation: link-scan-pulse 1.35s ease-in-out 0.7s 1 both;
+}
+
+.qr-modules-rounded {
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-page-enter,
+  .link-scan-pulse {
+    animation: none !important;
+  }
+}

@@ -32,6 +32,14 @@ describe('QR Templates', () => {
     expect(QR_TEMPLATES.dark.label).toBe('Dark');
   });
 
+  it('resolves the Ostol seafood template without listing it for Mazen', () => {
+    expect(getTemplateNames()).not.toContain('ostolSeafood');
+    const tmpl = getTemplate('ostolSeafood');
+    expect(tmpl.name).toBe('ostolSeafood');
+    expect(tmpl.bgColor).toBe('#07141F');
+    expect(tmpl.eyeStyle).toBe('circle');
+  });
+
   it('getTemplate returns classic for unknown name', () => {
     const tmpl = getTemplate('nonexistent');
     expect(tmpl.name).toBe('classic');

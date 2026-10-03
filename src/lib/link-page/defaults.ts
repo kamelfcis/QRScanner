@@ -20,6 +20,9 @@ export function getDefaultLinkPageSettings(): LinkPageSettings {
     button_color: '#1E3A5F',
     button_radius: 'pill',
     logo_url: null,
+    use_hero_background: true,
+    overlay_strength: 'medium',
+    motion_enabled: true,
     links: {
       facebook: linkItem({ enabled: true, url: OSTOL_FACEBOOK }),
       instagram: linkItem({ enabled: true, url: OSTOL_INSTAGRAM }),

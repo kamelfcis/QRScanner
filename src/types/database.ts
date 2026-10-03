@@ -214,6 +214,7 @@ export interface HoursSettings {
 }
 
 export type LinkPageButtonRadius = 'pill' | 'rounded';
+export type LinkPageOverlayStrength = 'soft' | 'medium' | 'strong';
 
 export interface LinkPageLinkItem {
   enabled: boolean;
@@ -231,6 +232,10 @@ export interface LinkPageSettings {
   button_color: string;
   button_radius: LinkPageButtonRadius;
   logo_url?: string | null;
+  /** Use restaurant.hero_image_url as the full-bleed /links backdrop. */
+  use_hero_background?: boolean;
+  overlay_strength?: LinkPageOverlayStrength;
+  motion_enabled?: boolean;
   links: {
     facebook: LinkPageLinkItem;
     instagram: LinkPageLinkItem;
