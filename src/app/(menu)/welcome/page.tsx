@@ -17,6 +17,7 @@ import {
   persistTableNumber,
 } from '@/lib/dining-mode';
 import { buildMenuEntryUrl, skipWelcomePage } from '@/lib/store-config';
+import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import {
@@ -72,8 +73,8 @@ function WelcomeContent() {
   const isArabic = locale === 'ar';
   const restaurantName = getName(
     locale,
-    settings?.name_en || 'Warda Shamya',
-    settings?.name_ar || 'وردة الشامية'
+    settings?.name_en || getSiteNameEn(settings),
+    settings?.name_ar || getSiteNameAr(settings)
   );
 
   const goToMenu = (mode: CartDiningMode) => {

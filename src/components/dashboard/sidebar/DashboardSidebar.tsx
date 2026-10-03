@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
+import { sidebarItemLabel } from '@/lib/i18n/menu-label';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
@@ -48,7 +49,7 @@ export function DashboardSidebar() {
           <nav className="space-y-1" aria-label={tSidebar('dashboard')}>
             {getDashboardNav().map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-              const label = tSidebar(item.key);
+              const label = sidebarItemLabel(tSidebar, item.key);
               return (
                 <Link
                   key={item.href}

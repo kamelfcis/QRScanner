@@ -24,6 +24,7 @@ import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getMenuEntryPath } from '@/lib/store-config';
+import { publicMenuLabel } from '@/lib/i18n/menu-label';
 
 type NavLink = {
   name: string;
@@ -64,7 +65,7 @@ export function PublicHeader() {
 
   const navLinks: NavLink[] = [
     { name: t('home'), href: '/', icon: Home },
-    { name: t('menu'), href: getMenuEntryPath(), icon: UtensilsCrossed },
+    { name: publicMenuLabel(t), href: getMenuEntryPath(), icon: UtensilsCrossed },
     { name: t('about'), href: '#story', icon: Info },
     { name: t('contact'), href: '#contact', icon: Phone },
   ];
@@ -198,7 +199,7 @@ export function PublicHeader() {
                 )}
                 <div className="min-w-0">
                   <p className="font-heading text-foreground truncate text-lg font-bold">{name}</p>
-                  <p className="text-muted-foreground text-xs">{t('menu')}</p>
+                  <p className="text-muted-foreground text-xs">{publicMenuLabel(t)}</p>
                 </div>
               </div>
 

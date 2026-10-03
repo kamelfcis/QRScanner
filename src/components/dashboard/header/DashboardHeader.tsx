@@ -20,6 +20,7 @@ import { cn, getName } from '@/lib/utils';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
+import { publicMenuLabel, sidebarItemLabel } from '@/lib/i18n/menu-label';
 
 export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
@@ -49,7 +50,12 @@ export function DashboardHeader() {
         <Sheet>
           <SheetTrigger
             render={
-              <Button variant="ghost" size="icon" aria-label={tNav('menu')} className="h-11 w-11" />
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={publicMenuLabel(tNav)}
+                className="h-11 w-11"
+              />
             }
           >
             <Menu className="h-5 w-5" />
@@ -73,7 +79,7 @@ export function DashboardHeader() {
             <nav className="space-y-1" aria-label={tDashboard('adminDashboard')}>
               {getDashboardNav().map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-                const label = tSidebar(item.key);
+                const label = sidebarItemLabel(tSidebar, item.key);
                 return (
                   <Link
                     key={item.href}

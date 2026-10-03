@@ -63,6 +63,7 @@
   "nav": {
     "home": "Home",
     "menu": "Shop",
+    "menuRestaurant": "Menu",
     "about": "About",
     "contact": "Contact",
     "dashboard": "Dashboard",
@@ -285,6 +286,7 @@
     "analytics": "Analytics",
     "reports": "Reports",
     "menu": "Shop",
+    "menuRestaurant": "Menu",
     "import": "Import",
     "testimonials": "Testimonials",
     "qrCodes": "QR Codes",
@@ -1410,7 +1412,7 @@
     "deliveryAr": "توصيل",
     "deliveryDesc": "We bring your favorites straight to your door",
     "tagline": "A culinary journey through Lebanese & Syrian traditions",
-    "heroAlt": "MAZEN STORE storefront"
+    "heroAlt": "{name} storefront"
   },
   "linkPage": {
     "title": "Links",

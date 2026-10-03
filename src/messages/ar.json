@@ -63,6 +63,7 @@
   "nav": {
     "home": "الرئيسية",
     "menu": "المتجر",
+    "menuRestaurant": "القائمة",
     "about": "من نحن",
     "contact": "اتصل بنا",
     "dashboard": "لوحة التحكم",
@@ -285,6 +286,7 @@
     "analytics": "التحليلات",
     "reports": "التقارير",
     "menu": "المتجر",
+    "menuRestaurant": "القائمة",
     "import": "الاستيراد",
     "testimonials": "الشهادات",
     "qrCodes": "رموز QR",

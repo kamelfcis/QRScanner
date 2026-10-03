@@ -7,6 +7,7 @@ import { useSiteName } from '@/hooks/useSiteName';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 import { getMenuEntryPath } from '@/lib/store-config';
+import { publicMenuLabel } from '@/lib/i18n/menu-label';
 import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 export function PublicFooter() {
@@ -46,7 +47,7 @@ export function PublicFooter() {
                   href={getMenuEntryPath()}
                   className="text-muted-foreground hover:text-primary text-sm"
                 >
-                  {navT('menu')}
+                  {publicMenuLabel(navT)}
                 </Link>
               </li>
               <li>
