@@ -263,6 +263,11 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
 
   lines.push(SEP);
   lines.push(`${labels.subtotal}: ${formatMoney(totals.subtotal, currency, locale)}`);
+  if (totals.discount > 0) {
+    lines.push(
+      `${labels.discount(couponCode)}: −${formatMoney(totals.discount, currency, locale)}`
+    );
+  }
   if (totals.applyTax && totals.tax > 0) {
     lines.push(`${labels.tax(totals.taxRate)}: ${formatMoney(totals.tax, currency, locale)}`);
   }

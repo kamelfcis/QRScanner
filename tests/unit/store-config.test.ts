@@ -42,23 +42,58 @@ describe('store-config', () => {
     expect(config.isRestaurantOnlyDashboardPath('/dashboard/menu')).toBe(false);
 
     const keys = nav.getDashboardNav().map((item) => item.key);
+    expect(keys).toEqual([
+      'dashboard',
+      'analytics',
+      'menu',
+      'import',
+      'testimonials',
+      'qrCodes',
+      'deliveryLocations',
+      'instapayProofs',
+      'settings',
+    ]);
     expect(keys).not.toContain('tables');
     expect(keys).not.toContain('reports');
-    expect(keys).toContain('deliveryLocations');
-    expect(keys).toContain('instapayProofs');
-    expect(keys).toContain('menu');
-    expect(keys).toContain('settings');
+    expect(keys).not.toContain('orders');
+    expect(keys).not.toContain('kitchen');
+    expect(keys).not.toContain('coupons');
+    expect(keys).not.toContain('shift');
+    expect(keys).not.toContain('linkPage');
   });
 
-  it('restaurant mode hides ecommerce-only dashboard nav', async () => {
+  it('restaurant mode shows the Ala Keefak sidebar and hides ecommerce nav', async () => {
     vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'restaurant');
     vi.stubEnv('NEXT_PUBLIC_QR_TARGET_PATH', '');
+    vi.stubEnv('NEXT_PUBLIC_TENANT', '');
+    vi.stubEnv('NEXT_PUBLIC_ENABLE_LINK_PAGE', '');
     const nav = await import('@/lib/navigation/dashboardNav');
-    const keys = nav.getDashboardNav().map((item) => item.key);
-    expect(keys).toContain('tables');
-    expect(keys).toContain('reports');
+    const keys = nav
+      .getDashboardNav(
+        { ai_product_images: true, dashboard_orders: true, coupons: true },
+        { enable_delivery: true },
+        'admin'
+      )
+      .map((item) => item.key);
+    expect(keys).toEqual([
+      'dashboard',
+      'orders',
+      'kitchen',
+      'coupons',
+      'analytics',
+      'reports',
+      'shift',
+      'menu',
+      'import',
+      'testimonials',
+      'qrCodes',
+      'tables',
+      'settings',
+    ]);
     expect(keys).not.toContain('deliveryLocations');
     expect(keys).not.toContain('instapayProofs');
+    expect(keys).not.toContain('linkPage');
+    expect(keys).not.toContain('expenses');
   });
 
   it('QR target path alone can skip welcome for restaurants', async () => {

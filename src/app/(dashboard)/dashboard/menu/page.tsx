@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { MenuCommandHeader } from '@/components/dashboard/menu/MenuCommandHeader';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { isEcommerceStore } from '@/lib/store-config';
 
-export default function MenuPage() {
+function EcommerceMenuPage() {
   const t = useTranslations('dashboard');
 
   const menuSections = [
@@ -41,4 +43,9 @@ export default function MenuPage() {
       </div>
     </div>
   );
+}
+
+export default function MenuPage() {
+  if (!isEcommerceStore) return <MenuCommandHeader />;
+  return <EcommerceMenuPage />;
 }

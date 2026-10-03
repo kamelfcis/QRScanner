@@ -1,7 +1,16 @@
 /** Default currency when restaurant settings omit currency (matches schema default). */
 export const DEFAULT_CURRENCY = 'SAR';
 
-export type CurrencyLocale = 'en' | 'ar';
+export type CurrencyLocale = 'en' | 'ar' | 'fr' | 'nl';
+
+const CURRENCY_LOCALES: readonly CurrencyLocale[] = ['en', 'ar', 'fr', 'nl'];
+
+export function toCurrencyLocale(locale: string | undefined): CurrencyLocale {
+  if (locale && (CURRENCY_LOCALES as readonly string[]).includes(locale)) {
+    return locale as CurrencyLocale;
+  }
+  return 'en';
+}
 
 export interface FormatCurrencyOptions {
   locale?: CurrencyLocale;
@@ -14,8 +23,21 @@ export function getRestaurantCurrency(currency?: string | null): string {
   return trimmed || DEFAULT_CURRENCY;
 }
 
+function intlLocaleForCurrency(locale: CurrencyLocale): string {
+  switch (locale) {
+    case 'ar':
+      return 'ar';
+    case 'fr':
+      return 'fr';
+    case 'nl':
+      return 'nl';
+    default:
+      return 'en';
+  }
+}
+
 function formatNumberAmount(amount: number, locale: CurrencyLocale = 'en'): string {
-  return new Intl.NumberFormat(locale === 'ar' ? 'ar' : 'en', {
+  return new Intl.NumberFormat(intlLocaleForCurrency(locale), {
     minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(amount);
@@ -41,8 +63,7 @@ export function formatCurrencyAmount(
 
   if (!options?.plain && canFormatAsCurrency(code)) {
     try {
-      const intlLocale = locale === 'ar' ? 'ar' : 'en';
-      return new Intl.NumberFormat(intlLocale, {
+      return new Intl.NumberFormat(intlLocaleForCurrency(locale), {
         style: 'currency',
         currency: code,
         minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,

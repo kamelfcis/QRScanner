@@ -11,6 +11,7 @@ import type {
   ThemeSettings,
   HoursSettings,
   LinkPageSettings,
+  FeatureSettings,
 } from '@/types';
 
 const supabase = createClient();
@@ -28,6 +29,7 @@ export const settingsKeys = {
   restaurant: () => [...settingsKeys.all, 'restaurant'] as const,
   theme: () => [...settingsKeys.all, 'theme'] as const,
   hours: () => [...settingsKeys.all, 'hours'] as const,
+  features: () => [...settingsKeys.all, 'features'] as const,
   linkPage: () => [...settingsKeys.all, 'link_page'] as const,
 };
 
@@ -77,6 +79,36 @@ export function useHoursSettings() {
       if (error) throw error;
       if (!data) return {} as HoursSettings;
       return (data as Settings).value as unknown as HoursSettings;
+    },
+  });
+}
+
+export function useFeatureSettings() {
+  return useQuery({
+    queryKey: settingsKeys.features(),
+    queryFn: async (): Promise<FeatureSettings> => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .eq('key', 'features')
+        .maybeSingle();
+
+      if (error) throw error;
+      const value =
+        (data?.value as
+          | {
+              ai_product_images?: unknown;
+              dashboard_orders?: unknown;
+              coupons?: unknown;
+              order_prefix?: unknown;
+            }
+          | undefined) ?? {};
+      return {
+        ai_product_images: value.ai_product_images === true,
+        dashboard_orders: value.dashboard_orders === true,
+        coupons: value.coupons === true,
+        order_prefix: typeof value.order_prefix === 'string' ? value.order_prefix : undefined,
+      };
     },
   });
 }

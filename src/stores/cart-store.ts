@@ -8,6 +8,7 @@ import { defaultDiningMode, isEcommerceStore } from '@/lib/store-config';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
+export type CartSizeOption = 'small' | 'medium' | 'large' | 'family' | null;
 
 export interface CartItem {
   /** Stable line id: productId + notes key */
@@ -15,9 +16,16 @@ export interface CartItem {
   productId: string;
   name_en: string;
   name_ar: string;
+  name_fr?: string | null;
+  name_nl?: string | null;
   image_url: string | null;
   dining_price: number;
   takeaway_price: number;
+  has_size_options?: boolean;
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
+  sizeOption?: CartSizeOption;
+  weightGrams?: number | null;
   quantity: number;
   notes: string;
 }

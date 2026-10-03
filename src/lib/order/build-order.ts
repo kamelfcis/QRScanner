@@ -1,6 +1,9 @@
 import { calculateOrderTotals, getUnitPrice, type OrderTotals } from './totals';
 import { getRestaurantCurrency } from './format-currency';
-import { buildWhatsAppMessage } from './whatsapp-message';
+import { buildWhatsAppMessage, type MessageLocale } from './whatsapp-message';
+import { getLocalizedText } from '@/lib/utils';
+import { getSizeLabel, type ProductSizeId } from '@/lib/catalog/product-sizes';
+import type { Order, OrderItem } from '@/types/database';
 import { buildWhatsAppUrl } from './whatsapp-url';
 import { resolvePrepTimeDisplay } from './prep-time';
 import { isEcommerceStore } from '@/lib/store-config';
@@ -106,4 +109,70 @@ export function openWhatsAppUrl(url: string): boolean {
     // ignore
   }
   return true;
+}
+
+export function buildStoredOrderWhatsApp(input: {
+  order: Order;
+  items: OrderItem[];
+  locale: MessageLocale;
+  settings: Pick<RestaurantSettings, 'whatsapp' | 'prep_time_minutes'>;
+}): BuiltOrder {
+  const currency = getRestaurantCurrency(input.order.currency);
+  const totals: OrderTotals = {
+    subtotal: Number(input.order.subtotal),
+    discount: Number(input.order.discount_amount ?? 0),
+    tax: Number(input.order.tax),
+    service: Number(input.order.service),
+    deliveryFee: Number(input.order.delivery_fee ?? 0),
+    total: Number(input.order.total),
+    taxRate: 0,
+    serviceRate: 0,
+    applyTax: Number(input.order.tax) > 0,
+    applyService: Number(input.order.service) > 0,
+  };
+
+  const message = buildWhatsAppMessage({
+    locale: input.locale,
+    mode: input.order.dining_mode,
+    tableNumber: input.order.table_number,
+    fulfillmentType: input.order.fulfillment_type,
+    deliveryAddress: input.order.delivery_address,
+    items: input.items.map((item) => ({
+      name: formatStoredItemName(item, input.locale),
+      quantity: item.quantity,
+      unitPrice: Number(item.unit_price),
+      notes: item.notes,
+    })),
+    totals,
+    currency,
+    customerName: input.order.customer_name,
+    customerPhone: input.order.customer_phone,
+    orderNotes: input.order.notes,
+    prepTimeMinutes: input.settings.prep_time_minutes ?? 25,
+    couponCode: input.order.coupon_code,
+    deliveryFee: Number(input.order.delivery_fee ?? 0),
+    orderNumber: input.order.order_number,
+  });
+
+  const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);
+  return { totals, message, whatsappUrl, currency };
+}
+
+function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
+  const base = getLocalizedText(locale, {
+    en: item.name_en,
+    ar: item.name_ar,
+    fr: item.name_fr,
+    nl: item.name_nl,
+  });
+  let name = base;
+  if (item.size_option) {
+    name = `${name} (${getSizeLabel(locale, item.size_option as ProductSizeId)})`;
+  }
+  if (item.weight_grams != null) {
+    const grams = item.weight_grams;
+    const weight = locale === 'ar' ? `${grams} جم` : locale === 'en' ? `${grams}g` : `${grams} g`;
+    name = `${name} (${weight})`;
+  }
+  return name;
 }

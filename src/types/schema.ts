@@ -207,3 +207,149 @@ export const deliveryLocationSchema = z.object({
 });
 
 export type DeliveryLocationInput = z.infer<typeof deliveryLocationSchema>;
+
+export const orderStatusSchema = z.enum(['new', 'preparing', 'ready', 'completed', 'cancelled']);
+export const orderDiningModeSchema = z.enum(['dining', 'takeaway']);
+export const orderFulfillmentSchema = z.enum(['pickup', 'delivery']);
+export const orderSizeOptionSchema = z.enum(['small', 'medium', 'large', 'family']);
+
+export const placeOrderItemSchema = z.object({
+  product_id: z.string().uuid(),
+  quantity: z.number().int().min(1).max(99),
+  size_option: orderSizeOptionSchema.nullable().optional(),
+  weight_grams: z.number().int().min(1).max(10000).nullable().optional(),
+  notes: z.string().max(200).nullable().optional(),
+});
+
+const couponCodeValue = z
+  .string()
+  .trim()
+  .max(32)
+  .transform((value) => {
+    const next = value.toUpperCase();
+    return next === '' ? null : next;
+  })
+  .nullable()
+  .optional();
+
+export const placeOrderSchema = z.object({
+  items: z.array(placeOrderItemSchema).min(1).max(50),
+  dining_mode: orderDiningModeSchema,
+  fulfillment_type: orderFulfillmentSchema.nullable().optional(),
+  table_number: z.string().max(50).nullable().optional(),
+  customer_name: z.string().trim().min(1).max(200),
+  customer_phone: z.string().max(40).nullable().optional(),
+  phone_country: z.string().length(2).optional(),
+  delivery_address: z.string().max(500).nullable().optional(),
+  delivery_location_id: z.string().uuid().nullable().optional(),
+  delivery_address_details: z.string().max(400).nullable().optional(),
+  notes: z.string().max(200).nullable().optional(),
+  locale: z.enum(['en', 'ar', 'fr', 'nl']).default('en'),
+  whatsapp_sent: z.boolean().optional(),
+  coupon_code: couponCodeValue,
+});
+
+export const couponPreviewSchema = z.object({
+  items: z.array(placeOrderItemSchema).min(1).max(50),
+  dining_mode: orderDiningModeSchema,
+  coupon_code: couponCodeValue,
+  customer_phone: z.string().max(40).nullable().optional(),
+  phone_country: z.string().length(2).optional(),
+});
+
+export type CouponPreviewInput = z.infer<typeof couponPreviewSchema>;
+
+export const couponSchema = z
+  .object({
+    code: z
+      .string()
+      .trim()
+      .min(2, 'Code is required')
+      .max(32)
+      .regex(/^[A-Za-z0-9][A-Za-z0-9_-]{1,31}$/, 'Use letters, numbers, hyphen, or underscore')
+      .transform((value) => value.toUpperCase()),
+    discount_type: z.enum(['percentage', 'fixed', 'bogo']),
+    discount_value: z.number().positive('Discount must be greater than 0'),
+    min_subtotal: z.number().min(0).default(0),
+    max_discount: z.number().min(0).nullable().optional(),
+    starts_at: z.string().nullable().optional(),
+    ends_at: z.string().nullable().optional(),
+    max_redemptions: z.number().int().min(1).nullable().optional(),
+    per_phone_limit: z.number().int().min(1).default(1),
+    is_active: z.boolean().default(true),
+    requires_code: z.boolean().default(true),
+    is_stackable: z.boolean().default(false),
+    bogo_buy: z.number().int().min(1).nullable().optional(),
+    bogo_get: z.number().int().min(1).nullable().optional(),
+    product_ids: z.array(z.string().uuid()).nullable().optional(),
+    min_quantity: z.number().int().min(0).default(0),
+  })
+  .refine((data) => data.discount_type !== 'percentage' || data.discount_value <= 100, {
+    message: 'Percentage discount cannot exceed 100%',
+    path: ['discount_value'],
+  })
+  .refine(
+    (data) =>
+      data.discount_type !== 'bogo' ||
+      (data.bogo_buy != null && data.bogo_buy >= 1 && data.bogo_get != null && data.bogo_get >= 1),
+    {
+      message: 'BOGO requires buy and get quantities',
+      path: ['bogo_buy'],
+    }
+  )
+  .refine((data) => !data.starts_at || !data.ends_at || data.ends_at >= data.starts_at, {
+    message: 'End date must be after start date',
+    path: ['ends_at'],
+  });
+
+export type CouponInput = z.infer<typeof couponSchema>;
+
+export type PlaceOrderInput = z.infer<typeof placeOrderSchema>;
+
+export const staffPlaceOrderSchema = placeOrderSchema
+  .omit({ whatsapp_sent: true })
+  .superRefine((data, ctx) => {
+    if (
+      data.dining_mode === 'takeaway' &&
+      data.fulfillment_type === 'delivery' &&
+      !data.delivery_location_id
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'address_required',
+        path: ['delivery_location_id'],
+      });
+    }
+  });
+
+export type StaffPlaceOrderInput = z.infer<typeof staffPlaceOrderSchema>;
+
+export const customerOrderStatusSchema = z.object({
+  order_number: z.string().trim().min(1).max(32),
+  customer_phone: z.string().trim().min(4).max(40),
+  phone_country: z.string().length(2).optional(),
+});
+
+export type CustomerOrderStatusInput = z.infer<typeof customerOrderStatusSchema>;
+
+const dateOnlySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+export const deleteOrdersInRangeSchema = z
+  .object({
+    from: dateOnlySchema,
+    to: dateOnlySchema,
+    statuses: z.array(orderStatusSchema).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.from > data.to) {
+      ctx.addIssue({ code: 'custom', message: 'invalid_range', path: ['to'] });
+    }
+    const start = new Date(`${data.from}T00:00:00.000Z`);
+    const end = new Date(`${data.to}T00:00:00.000Z`);
+    const days = Math.floor((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+    if (days > 365) {
+      ctx.addIssue({ code: 'custom', message: 'range_too_wide', path: ['to'] });
+    }
+  });
+
+export type DeleteOrdersInRangeInput = z.infer<typeof deleteOrdersInRangeSchema>;

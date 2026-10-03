@@ -20,5 +20,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
   )
 `;
 
+export const categoryRelationNameFields = 'id, name_ar, name_en';
+
 export const CATALOG_STALE_TIME = 5 * 60 * 1000; // 5 minutes for public catalog
 export const CATALOG_GC_TIME = 30 * 60 * 1000;

@@ -37,13 +37,27 @@ export function getMenuEntryPath(): string {
 
 /** Dashboard routes that only apply to restaurant mode (tables, dining reports, etc.). */
 export const RESTAURANT_ONLY_DASHBOARD_PATHS = [
+  '/dashboard/orders',
+  '/dashboard/coupons',
+  '/dashboard/shift',
+  '/dashboard/expenses',
   '/dashboard/tables',
   '/dashboard/reports',
   '/dashboard/analytics/heatmaps',
+  '/kitchen',
 ] as const;
 
 /** Sidebar keys hidden when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
-export const ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS = new Set(['tables', 'reports']);
+export const ECOMMERCE_HIDDEN_DASHBOARD_NAV_KEYS = new Set([
+  'orders',
+  'kitchen',
+  'coupons',
+  'expenses',
+  'shift',
+  'tables',
+  'reports',
+  'linkPage',
+]);
 
 /** Sidebar keys shown only when `NEXT_PUBLIC_STORE_MODE=ecommerce`. */
 export const ECOMMERCE_ONLY_DASHBOARD_NAV_KEYS = new Set(['deliveryLocations', 'instapayProofs']);

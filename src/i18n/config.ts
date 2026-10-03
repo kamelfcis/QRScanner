@@ -27,3 +27,26 @@ export const localeFlags: Record<Locale, string> = {
 export function isValidLocale(locale: string): locale is Locale {
   return locales.includes(locale as Locale);
 }
+
+const tenantId = process.env.NEXT_PUBLIC_TENANT?.trim().toLowerCase();
+
+/** Cashier, shift sheet, expenses, kitchen print (hettsamaka + ala-keefak). */
+export const hasDailyOps = tenantId === 'hettsamaka' || tenantId === 'ala-keefak';
+
+/** Tier 1+2 ops features (hettsamaka only). */
+export const hasHettSamakaTier1 = tenantId === 'hettsamaka';
+
+/** Tier 3 ops (hettsamaka only). */
+export const hasHettSamakaTier3 = tenantId === 'hettsamaka';
+
+/** Four independently enabled sizes (ala-keefak only). */
+export const hasExtendedProductSizes = tenantId === 'ala-keefak';
+
+/** Per-kg gram picker (hettsamaka only). */
+export const hasProductWeightOptions = tenantId === 'hettsamaka';
+
+export const isAlaKeefakTenant = tenantId === 'ala-keefak';
+
+export const alaKeefakTenantAttr = isAlaKeefakTenant
+  ? ({ 'data-tenant': 'ala-keefak' } as const)
+  : {};

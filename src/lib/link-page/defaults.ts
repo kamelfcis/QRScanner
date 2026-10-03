@@ -31,9 +31,13 @@ export function getDefaultLinkPageSettings(): LinkPageSettings {
   };
 }
 
-export function mergeLinkPageSettings(
-  partial?: Partial<LinkPageSettings> | null
-): LinkPageSettings {
+type LinkPageOverrides = Partial<Omit<LinkPageSettings, 'links'>> & {
+  links?: Partial<{
+    [K in keyof LinkPageSettings['links']]: Partial<LinkPageLinkItem>;
+  }>;
+};
+
+export function mergeLinkPageSettings(partial?: LinkPageOverrides | null): LinkPageSettings {
   const defaults = getDefaultLinkPageSettings();
   if (!partial) return defaults;
 

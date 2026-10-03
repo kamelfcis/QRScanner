@@ -44,16 +44,32 @@ describe('tenant-config', () => {
     vi.stubEnv('NEXT_PUBLIC_ENABLE_LINK_PAGE', 'true');
     vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'restaurant');
     const nav = await import('@/lib/navigation/dashboardNav');
-    const keys = nav.getDashboardNav().map((item) => item.key);
+    const keys = nav
+      .getDashboardNav(
+        { ai_product_images: true, dashboard_orders: true, coupons: true },
+        { enable_delivery: false },
+        'admin'
+      )
+      .map((item) => item.key);
     expect(keys).toContain('linkPage');
+    expect(keys).toContain('orders');
+    expect(keys).toContain('kitchen');
+    expect(keys).toContain('coupons');
+    expect(keys).toContain('shift');
+    expect(keys).toContain('expenses');
+    expect(keys).not.toContain('deliveryLocations');
+    expect(keys).not.toContain('instapayProofs');
   });
 
   it('hides linkPage nav in ecommerce mode', async () => {
     vi.stubEnv('NEXT_PUBLIC_TENANT', '');
-    vi.stubEnv('NEXT_PUBLIC_ENABLE_LINK_PAGE', '');
+    vi.stubEnv('NEXT_PUBLIC_ENABLE_LINK_PAGE', 'true');
     vi.stubEnv('NEXT_PUBLIC_STORE_MODE', 'ecommerce');
     const nav = await import('@/lib/navigation/dashboardNav');
     const keys = nav.getDashboardNav().map((item) => item.key);
     expect(keys).not.toContain('linkPage');
+    expect(keys).not.toContain('orders');
+    expect(keys).toContain('deliveryLocations');
+    expect(keys).toContain('instapayProofs');
   });
 });

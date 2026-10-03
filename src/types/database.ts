@@ -37,6 +37,17 @@ export interface Product {
   image_url: string | null;
   dining_price: number;
   takeaway_price: number;
+  has_size_options?: boolean;
+  price_medium?: number | null;
+  price_family?: number | null;
+  size_small_enabled?: boolean;
+  size_medium_enabled?: boolean;
+  size_large_enabled?: boolean;
+  size_family_enabled?: boolean;
+  price_per_kg?: number | null;
+  weight_options_g?: number[] | null;
+  name_fr?: string | null;
+  name_nl?: string | null;
   is_available: boolean;
   is_popular: boolean;
   is_new: boolean;
@@ -165,7 +176,27 @@ export interface RestaurantSettings {
   tagline: string | null;
   email: string | null;
   google_maps_url: string | null;
+  /** When false, customer checkout is paused; staff POS still accepts orders. */
+  accepting_orders?: boolean;
+  auto_print_kitchen_ticket?: boolean;
+  whatsapp_on_ready?: boolean;
+  enable_dine_in?: boolean;
+  enable_takeaway?: boolean;
+  enable_delivery?: boolean;
 }
+
+export interface FeatureSettings {
+  ai_product_images: boolean;
+  dashboard_orders: boolean;
+  coupons: boolean;
+  order_prefix?: string;
+}
+
+export type OrderStatus = 'new' | 'preparing' | 'ready' | 'completed' | 'cancelled';
+export type OrderDiningMode = 'dining' | 'takeaway';
+export type OrderFulfillmentType = 'pickup' | 'delivery';
+export type OrderSizeOption = 'small' | 'medium' | 'large' | 'family';
+export type OrderPaymentMethod = 'cash' | 'card' | 'instapay';
 
 export interface ThemeSettings {
   primary_color: string;
@@ -399,10 +430,116 @@ export interface DeliveryLocation {
   name_fr: string | null;
   name_nl: string | null;
   delivery_fee: number;
+  minimum_order?: number;
   is_active: boolean;
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface Order {
+  id: string;
+  order_number: string;
+  status: OrderStatus;
+  dining_mode: OrderDiningMode;
+  fulfillment_type: OrderFulfillmentType | null;
+  table_number: string | null;
+  customer_name: string;
+  customer_phone: string | null;
+  delivery_address: string | null;
+  delivery_location_id: string | null;
+  notes: string | null;
+  subtotal: number;
+  tax: number;
+  service: number;
+  discount_amount: number;
+  coupon_id: string | null;
+  coupon_code: string | null;
+  delivery_fee: number;
+  total: number;
+  currency: string;
+  whatsapp_sent: boolean;
+  ready_whatsapp_sent_at?: string | null;
+  staff_acknowledged_at: string | null;
+  payment_method?: OrderPaymentMethod | null;
+  amount_received?: number | null;
+  change_due?: number | null;
+  paid_at?: string | null;
+  void_reason?: string | null;
+  refunded_at?: string | null;
+  refund_reason?: string | null;
+  order_channel?: 'online' | 'cashier' | null;
+  locale: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id: string | null;
+  name_ar: string;
+  name_en: string;
+  name_fr: string | null;
+  name_nl: string | null;
+  quantity: number;
+  unit_price: number;
+  size_option: OrderSizeOption | null;
+  weight_grams?: number | null;
+  notes: string | null;
+  voided_at?: string | null;
+  void_reason?: string | null;
+  created_at: string;
+  image_url?: string | null;
+}
+
+export type CouponDiscountType = 'percentage' | 'fixed' | 'bogo';
+
+export interface Coupon {
+  id: string;
+  code: string;
+  discount_type: CouponDiscountType;
+  discount_value: number;
+  min_subtotal: number;
+  max_discount: number | null;
+  starts_at: string | null;
+  ends_at: string | null;
+  max_redemptions: number | null;
+  per_phone_limit: number;
+  is_active: boolean;
+  redeemed_count: number;
+  requires_code: boolean;
+  is_stackable: boolean;
+  bogo_buy: number | null;
+  bogo_get: number | null;
+  product_ids: string[] | null;
+  min_quantity: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CouponRedemption {
+  id: string;
+  coupon_id: string;
+  order_id: string;
+  code_snapshot: string;
+  discount_amount: number;
+  phone_key: string | null;
+  created_at: string;
+}
+
+export interface OrderWithItems extends Order {
+  items: OrderItem[];
+}
+
+export interface PushSubscription {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string | null;
+  created_at: string;
 }
 
 export type InstapayProofStatus = 'pending' | 'confirmed' | 'rejected';

@@ -70,7 +70,7 @@ function formatActivityTitle(eventType: string, eventData: Record<string, unknow
   }
 }
 
-function getDateRange(period: string) {
+export function getDateRange(period: string) {
   const now = new Date();
   switch (period) {
     case 'today':
