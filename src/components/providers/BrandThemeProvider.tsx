@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useThemeSettings } from '@/hooks/useSettings';
+import { isOstolSite } from '@/lib/tenant-config';
 import { applyBrandTheme, DEFAULT_THEME } from '@/lib/theme';
 import { useTheme } from './ThemeProvider';
 
@@ -10,6 +11,7 @@ export function BrandThemeProvider({ children }: { children: React.ReactNode }) 
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
+    if (isOstolSite) return;
     const merged = { ...DEFAULT_THEME, ...theme };
     applyBrandTheme(merged, resolvedTheme);
 

@@ -11,7 +11,10 @@ import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import { ServerBrandThemeStyles } from '@/components/providers/ServerBrandThemeStyles';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { defaultLocale, type Locale } from '@/i18n/config';
+import { isOstolSite, THEME_STORAGE_KEY } from '@/lib/tenant-config';
 import './globals.css';
+
+const THEME_BOOT_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});var r=document.documentElement;if(t==='light')r.classList.remove('dark');else r.classList.add('dark');}catch(e){}})();`;
 
 const dmSans = DM_Sans({
   variable: '--font-body-family',
@@ -131,9 +134,11 @@ export default async function RootLayout({
       lang={locale}
       dir={dir}
       className={`dark ${dmSans.variable} ${cormorant.variable} ${tajawal.variable} ${plexArabic.variable} h-full w-full overflow-x-clip antialiased`}
+      data-site={isOstolSite ? 'ostol' : undefined}
       suppressHydrationWarning
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <meta name="mobile-web-app-capable" content="yes" />
         <ServerBrandThemeStyles />
       </head>

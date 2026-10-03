@@ -97,7 +97,7 @@ export function MenuHeader({
 
           <button
             type="button"
-            className={cn(iconButton, 'hidden sm:inline-flex')}
+            className={iconButton}
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label={tA11y('toggleTheme')}
           >

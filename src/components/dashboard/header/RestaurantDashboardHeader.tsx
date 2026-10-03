@@ -26,7 +26,7 @@ import { useStaffRole } from '@/hooks/useStaffRole';
 import { SidebarCollapseToggle } from '@/components/dashboard/sidebar/SidebarCollapseToggle';
 
 export function DashboardHeader() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { signOut } = useAuth();
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -38,6 +38,7 @@ export function DashboardHeader() {
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');
   const tDashboard = useTranslations('dashboard');
+  const tA11y = useTranslations('accessibility');
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
 
@@ -191,10 +192,10 @@ export function DashboardHeader() {
           variant="ghost"
           size="icon"
           className="h-11 w-11"
-          aria-label={theme === 'dark' ? tDashboard('switchToLight') : tDashboard('switchToDark')}
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          aria-label={tA11y('toggleTheme')}
+          onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
         >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {resolvedTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
       </div>
     </header>

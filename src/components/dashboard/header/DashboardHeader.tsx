@@ -23,7 +23,7 @@ import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 import { publicMenuLabel, sidebarItemLabel } from '@/lib/i18n/menu-label';
 
 export function DashboardHeader() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { signOut } = useAuth();
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -33,6 +33,7 @@ export function DashboardHeader() {
   const tSidebar = useTranslations('sidebar');
   const tCommon = useTranslations('common');
   const tDashboard = useTranslations('dashboard');
+  const tA11y = useTranslations('accessibility');
 
   const name = getName(
     locale,
@@ -195,10 +196,10 @@ export function DashboardHeader() {
           variant="ghost"
           size="icon"
           className="h-11 w-11"
-          aria-label={theme === 'dark' ? tDashboard('switchToLight') : tDashboard('switchToDark')}
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          aria-label={tA11y('toggleTheme')}
+          onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
         >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {resolvedTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
       </div>
     </header>

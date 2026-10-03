@@ -95,8 +95,10 @@ export function LinkPageView({ settings, restaurant, className }: LinkPageViewPr
   return (
     <div
       dir={dir}
-      className={cn('flex min-h-screen flex-col items-center px-4 py-10', className)}
-      style={{ backgroundColor: settings.background }}
+      className={cn(
+        'bg-background text-foreground flex min-h-screen flex-col items-center px-4 py-10',
+        className
+      )}
     >
       <div className="flex w-full max-w-md flex-col items-center gap-6">
         {logoUrl ? (
@@ -111,8 +113,8 @@ export function LinkPageView({ settings, restaurant, className }: LinkPageViewPr
         ) : null}
 
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold text-white">{title}</h1>
-          {subtitle ? <p className="text-sm text-white/75">{subtitle}</p> : null}
+          <h1 className="text-foreground text-2xl font-bold">{title}</h1>
+          {subtitle ? <p className="text-muted-foreground text-sm">{subtitle}</p> : null}
         </div>
 
         <nav aria-label={t('followUs')} className="flex w-full flex-col gap-3">
@@ -152,7 +154,7 @@ export function LinkPageView({ settings, restaurant, className }: LinkPageViewPr
         </nav>
 
         {SOCIAL_KEYS.some((key) => settings.links[key].enabled) ? (
-          <p className="text-xs text-white/50">{t('followUs')}</p>
+          <p className="text-muted-foreground text-xs">{t('followUs')}</p>
         ) : null}
       </div>
     </div>

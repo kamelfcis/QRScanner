@@ -894,8 +894,8 @@ textarea,
   background-color: var(--menu-paper);
 }
 
-/* Light mode — user toggled via theme switcher */
-html:not(.dark) [data-menu-theme] {
+/* Light mode — Mazen ecommerce cream/gold (not Ostol) */
+html:not(.dark):not([data-site="ostol"]) [data-menu-theme] {
   --menu-paper: #f6f1e8;
   --menu-paper-deep: #ede4d5;
   --menu-surface: #fffcf7;
@@ -991,6 +991,178 @@ html:not(.dark) [data-menu-theme] {
 
 [data-menu-theme] ::-webkit-scrollbar-thumb {
   background: var(--menu-line-strong);
+}
+
+/* ==========================================================================
+   Ostol Seafood — light paper + deep-sea dark (class-based .dark)
+   Gate: html[data-site="ostol"] so Mazen ecommerce tokens stay unchanged.
+   ========================================================================== */
+
+html[data-site="ostol"] {
+  --background: #f4f7f8;
+  --foreground: #0e2433;
+  --card: #ffffff;
+  --card-foreground: #0e2433;
+  --popover: #ffffff;
+  --popover-foreground: #0e2433;
+  --primary: #1f6f7a;
+  --primary-foreground: #f7fbfc;
+  --secondary: #0e2433;
+  --secondary-foreground: #f4f7f8;
+  --muted: #e8eef1;
+  --muted-foreground: #5b6e78;
+  --accent: #1f6f7a;
+  --accent-foreground: #f7fbfc;
+  --destructive: #c23b3b;
+  --border: #d5dee3;
+  --input: #d5dee3;
+  --ring: #1f6f7a;
+  --chart-1: #1f6f7a;
+  --chart-2: #0e2433;
+  --chart-3: #5b6e78;
+  --chart-4: #2f8f6b;
+  --chart-5: #3b82f6;
+  --sidebar: #eef3f5;
+  --sidebar-foreground: #0e2433;
+  --sidebar-primary: #1f6f7a;
+  --sidebar-primary-foreground: #f7fbfc;
+  --sidebar-accent: #e1e9ed;
+  --sidebar-accent-foreground: #0e2433;
+  --sidebar-border: #d5dee3;
+  --sidebar-ring: #1f6f7a;
+  --color-brand-primary: #1f6f7a;
+  --color-brand-primary-light: #2e8a96;
+  --color-brand-primary-dark: #16545c;
+  --color-brand-secondary: #0e2433;
+  --color-brand-secondary-light: #1a3a4d;
+  --color-brand-secondary-dark: #081820;
+  --color-brand-accent: #1f6f7a;
+  --color-brand-background: #f4f7f8;
+}
+
+html[data-site="ostol"].dark {
+  --background: #07141c;
+  --foreground: #e8f0f3;
+  --card: #0c1c26;
+  --card-foreground: #e8f0f3;
+  --popover: #0c1c26;
+  --popover-foreground: #e8f0f3;
+  --primary: #3d9ba6;
+  --primary-foreground: #07141c;
+  --secondary: #14303b;
+  --secondary-foreground: #e8f0f3;
+  --muted: #122833;
+  --muted-foreground: #8aa0aa;
+  --accent: #3d9ba6;
+  --accent-foreground: #07141c;
+  --destructive: #dc2626;
+  --border: #1e3a46;
+  --input: #1e3a46;
+  --ring: #3d9ba6;
+  --chart-1: #3d9ba6;
+  --chart-2: #14303b;
+  --chart-3: #8aa0aa;
+  --chart-4: #2f8f6b;
+  --chart-5: #3b82f6;
+  --sidebar: #0c1c26;
+  --sidebar-foreground: #e8f0f3;
+  --sidebar-primary: #3d9ba6;
+  --sidebar-primary-foreground: #07141c;
+  --sidebar-accent: #122833;
+  --sidebar-accent-foreground: #e8f0f3;
+  --sidebar-border: #1e3a46;
+  --sidebar-ring: #3d9ba6;
+  --color-brand-primary: #3d9ba6;
+  --color-brand-primary-light: #5ab3bc;
+  --color-brand-primary-dark: #2a7a84;
+  --color-brand-secondary: #14303b;
+  --color-brand-secondary-light: #1d4452;
+  --color-brand-secondary-dark: #0a1c24;
+  --color-brand-accent: #3d9ba6;
+  --color-brand-background: #07141c;
+}
+
+html[data-site="ostol"] [data-menu-theme] {
+  --menu-paper: #07141c;
+  --menu-paper-deep: #050f15;
+  --menu-surface: #0c1c26;
+  --menu-surface-elevated: #14303b;
+  --menu-ink: #e8f0f3;
+  --menu-ink-soft: #8aa0aa;
+  --menu-line: #1e3a46;
+  --menu-line-strong: #2a5160;
+  --menu-gold: #3d9ba6;
+  --menu-gold-soft: #5ab3bc;
+  --menu-gold-faint: #2a7a84;
+  --menu-gold-wash: rgba(61, 155, 166, 0.14);
+  --menu-gold-line: rgba(61, 155, 166, 0.45);
+  --menu-gold-line-strong: rgba(61, 155, 166, 0.7);
+  --menu-wine: #3d9ba6;
+  --menu-wine-deep: #2a7a84;
+  --menu-wine-wash: rgba(61, 155, 166, 0.12);
+  --menu-on-accent: #07141c;
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-gold);
+  --primary-foreground: var(--menu-on-accent);
+  --secondary: #14303b;
+  --secondary-foreground: var(--menu-ink);
+  --muted: #122833;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-gold);
+  --accent-foreground: var(--menu-on-accent);
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-gold);
+  color: var(--menu-ink);
+  background-color: var(--menu-paper);
+}
+
+html[data-site="ostol"]:not(.dark) [data-menu-theme] {
+  --menu-paper: #f4f7f8;
+  --menu-paper-deep: #e8eef1;
+  --menu-surface: #ffffff;
+  --menu-surface-elevated: #ffffff;
+  --menu-ink: #0e2433;
+  --menu-ink-soft: #5b6e78;
+  --menu-line: #d5dee3;
+  --menu-line-strong: #c2ced5;
+  --menu-gold: #1f6f7a;
+  --menu-gold-soft: #2e8a96;
+  --menu-gold-faint: #7aa8ae;
+  --menu-gold-wash: rgba(31, 111, 122, 0.1);
+  --menu-gold-line: rgba(31, 111, 122, 0.4);
+  --menu-gold-line-strong: rgba(31, 111, 122, 0.62);
+  --menu-wine: #1f6f7a;
+  --menu-wine-deep: #16545c;
+  --menu-wine-wash: rgba(31, 111, 122, 0.08);
+  --menu-on-accent: #f7fbfc;
+  --background: var(--menu-paper);
+  --foreground: var(--menu-ink);
+  --card: var(--menu-surface);
+  --card-foreground: var(--menu-ink);
+  --popover: var(--menu-surface-elevated);
+  --popover-foreground: var(--menu-ink);
+  --primary: var(--menu-gold);
+  --primary-foreground: var(--menu-on-accent);
+  --secondary: #0e2433;
+  --secondary-foreground: #f4f7f8;
+  --muted: #e8eef1;
+  --muted-foreground: var(--menu-ink-soft);
+  --accent: var(--menu-gold);
+  --accent-foreground: var(--menu-on-accent);
+  --border: var(--menu-line);
+  --input: var(--menu-line-strong);
+  --ring: var(--menu-gold);
+}
+
+html[data-site="ostol"] [data-menu-theme] ::selection {
+  background-color: var(--menu-wine);
+  color: var(--menu-on-accent);
 }
 
 /* Compact cinematic hero — single ken-burns pass, then rest */
