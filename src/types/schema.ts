@@ -188,6 +188,12 @@ export const settingsSchema = z.object({
     apply_service_charge: z.boolean().default(true),
     hero_image_url: z.string().url().optional().nullable(),
     story_image_url: z.string().url().optional().nullable(),
+    story_title_ar: z.string().optional().nullable(),
+    story_title_en: z.string().optional().nullable(),
+    story_p1_ar: z.string().optional().nullable(),
+    story_p1_en: z.string().optional().nullable(),
+    story_p2_ar: z.string().optional().nullable(),
+    story_p2_en: z.string().optional().nullable(),
   }),
   theme: z.object({
     primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/),

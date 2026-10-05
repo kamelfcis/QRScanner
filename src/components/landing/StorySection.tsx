@@ -7,6 +7,7 @@ import { fadeInLeft, fadeInRight } from '@/lib/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { pickStoryText } from '@/lib/landing/story-text';
 import { getName } from '@/lib/utils';
 
 export function StorySection() {
@@ -17,6 +18,21 @@ export function StorySection() {
 
   const restaurantName = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const logoInitial = restaurantName.charAt(0).toUpperCase();
+  const storyTitle = pickStoryText(
+    { ar: settings?.story_title_ar, en: settings?.story_title_en },
+    locale,
+    t('storyTitle')
+  );
+  const storyP1 = pickStoryText(
+    { ar: settings?.story_p1_ar, en: settings?.story_p1_en },
+    locale,
+    t('storyP1')
+  );
+  const storyP2 = pickStoryText(
+    { ar: settings?.story_p2_ar, en: settings?.story_p2_en },
+    locale,
+    t('storyP2')
+  );
 
   return (
     <section id="story" className="relative py-20 md:py-28">
@@ -24,12 +40,18 @@ export function StorySection() {
         <div className="grid items-center gap-12 md:grid-cols-2">
           <MotionSection variants={fadeInLeft}>
             <div className="space-y-6">
-              <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
-                {t('storyTitle')}
-              </h2>
+              {storyTitle ? (
+                <h2 className="font-heading text-primary text-4xl font-bold md:text-5xl">
+                  {storyTitle}
+                </h2>
+              ) : null}
               <div className="bg-brand-accent h-1 w-20 rounded" />
-              <p className="text-muted-foreground text-lg leading-relaxed">{t('storyP1')}</p>
-              <p className="text-muted-foreground text-lg leading-relaxed">{t('storyP2')}</p>
+              {storyP1 ? (
+                <p className="text-muted-foreground text-lg leading-relaxed">{storyP1}</p>
+              ) : null}
+              {storyP2 ? (
+                <p className="text-muted-foreground text-lg leading-relaxed">{storyP2}</p>
+              ) : null}
             </div>
           </MotionSection>
 

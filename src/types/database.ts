@@ -171,6 +171,12 @@ export interface RestaurantSettings {
   logo_url: string | null;
   hero_image_url: string | null;
   story_image_url: string | null;
+  story_title_ar?: string | null;
+  story_title_en?: string | null;
+  story_p1_ar?: string | null;
+  story_p1_en?: string | null;
+  story_p2_ar?: string | null;
+  story_p2_en?: string | null;
   hero_headline: string | null;
   hero_subtitle: string | null;
   tagline: string | null;

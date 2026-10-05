@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
@@ -473,9 +474,74 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>{t('storySection')}</CardTitle>
-              <CardDescription>{t('storyImageDescription')}</CardDescription>
+              <CardDescription>{t('storyTextDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_ar">{t('storyTitleAr')}</Label>
+                  <Input
+                    id="story_title_ar"
+                    dir="rtl"
+                    value={form.story_title_ar || ''}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_ar: e.target.value }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_title_en">{t('storyTitleEn')}</Label>
+                  <Input
+                    id="story_title_en"
+                    value={form.story_title_en || ''}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, story_title_en: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_ar">{t('storyP1Ar')}</Label>
+                  <Textarea
+                    id="story_p1_ar"
+                    dir="rtl"
+                    rows={4}
+                    value={form.story_p1_ar || ''}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_ar: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p1_en">{t('storyP1En')}</Label>
+                  <Textarea
+                    id="story_p1_en"
+                    rows={4}
+                    value={form.story_p1_en || ''}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p1_en: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_ar">{t('storyP2Ar')}</Label>
+                  <Textarea
+                    id="story_p2_ar"
+                    dir="rtl"
+                    rows={4}
+                    value={form.story_p2_ar || ''}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_ar: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story_p2_en">{t('storyP2En')}</Label>
+                  <Textarea
+                    id="story_p2_en"
+                    rows={4}
+                    value={form.story_p2_en || ''}
+                    onChange={(e) => setForm((prev) => ({ ...prev, story_p2_en: e.target.value }))}
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label>{t('storyImage')}</Label>
                 <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
