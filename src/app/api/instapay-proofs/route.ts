@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
-import { validateImageFile } from '@/lib/upload';
+import { ImageValidationError, validateImageFile } from '@/lib/upload-validation';
 
 const BUCKET = 'instapay-proofs';
 
@@ -79,29 +79,45 @@ export async function POST(request: Request) {
     const markWhatsAppSent = formData.get('markWhatsAppSent') === 'true';
 
     let screenshotUrl = existingScreenshotUrl;
+    let storedPath: string | null = null;
 
     if (file instanceof File && file.size > 0) {
-      validateImageFile(file);
+      try {
+        validateImageFile(file);
+      } catch (err) {
+        if (err instanceof ImageValidationError) {
+          return NextResponse.json({ error: err.message, code: err.code }, { status: 400 });
+        }
+        throw err;
+      }
       const admin = createAdminClient();
       const path = `${orderRef}/${Date.now()}-${sanitizeFilename(file.name)}`;
       const buffer = Buffer.from(await file.arrayBuffer());
       const { error: uploadError } = await admin.storage.from(BUCKET).upload(path, buffer, {
-        contentType: file.type,
+        contentType: file.type || 'image/jpeg',
         cacheControl: '31536000',
         upsert: false,
       });
       if (uploadError) {
-        return NextResponse.json({ error: uploadError.message }, { status: 500 });
+        console.error('instapay_upload_failed', uploadError.message);
+        return NextResponse.json(
+          { error: uploadError.message, code: 'instapay_upload_failed' },
+          { status: 500 }
+        );
       }
       const { data: urlData } = admin.storage.from(BUCKET).getPublicUrl(path);
       screenshotUrl = urlData.publicUrl;
+      storedPath = path;
     }
 
     if (uploadOnly) {
       if (!screenshotUrl) {
-        return NextResponse.json({ error: 'Screenshot upload failed' }, { status: 400 });
+        return NextResponse.json(
+          { error: 'Screenshot upload failed', code: 'instapay_upload_failed' },
+          { status: 400 }
+        );
       }
-      return NextResponse.json({ screenshotUrl });
+      return NextResponse.json({ screenshotUrl, path: storedPath });
     }
 
     if (!customerName) {
@@ -166,7 +182,11 @@ export async function POST(request: Request) {
       screenshotUrl: data.screenshot_url,
     });
   } catch (err) {
+    if (err instanceof ImageValidationError) {
+      return NextResponse.json({ error: err.message, code: err.code }, { status: 400 });
+    }
     const message = err instanceof Error ? err.message : 'Unexpected error';
+    console.error('instapay_proofs_post_failed', message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -1,6 +1,14 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
+import { validateImageFile } from '@/lib/upload-validation';
+
+export {
+  validateImageFile,
+  ImageValidationError,
+  ALLOWED_IMAGE_TYPES,
+  MAX_IMAGE_SIZE_MB,
+} from '@/lib/upload-validation';
 
 export type StorageBucket =
   | 'logos'
@@ -22,20 +30,6 @@ interface UploadOptions {
 interface UploadResult {
   url: string;
   path: string;
-}
-
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
-const MAX_SIZE_MB = 5;
-
-export function validateImageFile(file: File, maxSizeMB: number = MAX_SIZE_MB): void {
-  if (!ALLOWED_TYPES.includes(file.type as (typeof ALLOWED_TYPES)[number])) {
-    throw new Error(`Invalid file type "${file.type}". Allowed: JPEG, PNG, WebP.`);
-  }
-  if (file.size > maxSizeMB * 1024 * 1024) {
-    throw new Error(
-      `File size ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds limit of ${maxSizeMB}MB.`
-    );
-  }
 }
 
 export async function uploadImage({ bucket, path, file }: UploadOptions): Promise<UploadResult> {

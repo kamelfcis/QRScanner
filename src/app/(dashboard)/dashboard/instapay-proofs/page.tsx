@@ -30,6 +30,85 @@ type StatusFilter = InstapayProofStatus | 'all';
 
 const STATUS_OPTIONS: StatusFilter[] = ['pending', 'confirmed', 'rejected', 'all'];
 
+function ProofScreenshot({
+  url,
+  labels,
+}: {
+  url: string | null;
+  labels: {
+    title: string;
+    view: string;
+    openTab: string;
+    empty: string;
+    unavailable: string;
+  };
+}) {
+  const [broken, setBroken] = useState(false);
+  const hasUrl = Boolean(url);
+  const showImage = hasUrl && !broken;
+
+  return (
+    <div className="space-y-2">
+      <p className="text-muted-foreground text-sm">{labels.title}</p>
+      {showImage && url ? (
+        <div className="flex flex-wrap items-start gap-3">
+          <Dialog>
+            <DialogTrigger
+              render={
+                <Button
+                  variant="outline"
+                  className="h-auto overflow-hidden border-[var(--menu-line)] p-0"
+                />
+              }
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={url}
+                alt=""
+                className="h-32 w-32 rounded-md object-cover"
+                onError={() => setBroken(true)}
+              />
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>{labels.view}</DialogTitle>
+              </DialogHeader>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt="" className="max-h-[70vh] w-full rounded-md object-contain" />
+            </DialogContent>
+          </Dialog>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-sm text-[var(--menu-wine)] underline"
+          >
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            {labels.openTab}
+          </a>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-dashed border-[var(--menu-line)] bg-[var(--menu-wine-wash)] px-3 py-4">
+          <p className="text-muted-foreground text-sm">
+            {hasUrl ? labels.unavailable : labels.empty}
+          </p>
+          {hasUrl && url ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-1 text-sm text-[var(--menu-wine)] underline"
+            >
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              {labels.openTab}
+            </a>
+          ) : null}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function InstapayProofsPage() {
   const router = useRouter();
   const { locale } = useI18n();
@@ -170,40 +249,16 @@ export default function InstapayProofsPage() {
                     ) : null}
                   </div>
 
-                  {proof.screenshot_url ? (
-                    <Dialog>
-                      <DialogTrigger
-                        render={
-                          <button
-                            type="button"
-                            className="inline-flex items-center gap-2 text-start text-sm text-[var(--primary)] underline"
-                          />
-                        }
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={proof.screenshot_url}
-                          alt=""
-                          className="h-32 w-32 rounded-md border object-cover"
-                        />
-                        <span className="inline-flex items-center gap-1">
-                          <ExternalLink className="h-4 w-4" />
-                          {t('viewScreenshot')}
-                        </span>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-2xl">
-                        <DialogHeader>
-                          <DialogTitle>{t('viewScreenshot')}</DialogTitle>
-                        </DialogHeader>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={proof.screenshot_url}
-                          alt=""
-                          className="max-h-[70vh] w-full rounded-md object-contain"
-                        />
-                      </DialogContent>
-                    </Dialog>
-                  ) : null}
+                  <ProofScreenshot
+                    url={proof.screenshot_url}
+                    labels={{
+                      title: t('paymentScreenshot'),
+                      view: t('viewScreenshot'),
+                      openTab: t('openScreenshotTab'),
+                      empty: t('noScreenshot'),
+                      unavailable: t('screenshotUnavailable'),
+                    }}
+                  />
 
                   {proof.status === 'pending' ? (
                     <div className="flex flex-wrap gap-2 pt-1">

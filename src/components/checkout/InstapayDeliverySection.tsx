@@ -10,7 +10,9 @@ import { Label } from '@/components/ui/label';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { instapayHandle, instapayPaymentUrl } from '@/lib/payment/instapay';
+import { prepareInstapayUploadFile } from '@/lib/payment/instapay-image';
 import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
+import { MAX_IMAGE_SIZE_MB, validateImageFile } from '@/lib/upload-validation';
 import { cn } from '@/lib/utils';
 
 interface InstapayDeliverySectionProps {
@@ -52,6 +54,7 @@ export function InstapayDeliverySection({
   const [checkingReference, setCheckingReference] = useState(false);
   const [referenceDuplicate, setReferenceDuplicate] = useState(false);
   const [referenceTouched, setReferenceTouched] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const formattedFee = formatCurrencyAmount(deliveryFee, currency, { locale: currencyLocale });
   const formatValid = isValidInstapayReference(proofReference);
@@ -133,10 +136,38 @@ export function InstapayDeliverySection({
     const file = event.target.files?.[0];
     if (!file) return;
 
+    if (!orderPaymentRef) {
+      const message = t('instapayUploadNeedRef');
+      setUploadError(message);
+      toast.error(message);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+      const message = t('instapayUploadSize');
+      setUploadError(message);
+      toast.error(message);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     setUploading(true);
+    setUploadError(null);
     try {
+      let uploadFile: File;
+      try {
+        uploadFile = await prepareInstapayUploadFile(file);
+        validateImageFile(uploadFile);
+      } catch {
+        const message = t('instapayUploadType');
+        setUploadError(message);
+        toast.error(message);
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', uploadFile);
       formData.append('orderRef', orderPaymentRef);
       formData.append('uploadOnly', 'true');
 
@@ -145,16 +176,31 @@ export function InstapayDeliverySection({
         body: formData,
       });
 
-      if (!response.ok) {
-        const body = (await response.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(body?.error ?? 'Upload failed');
+      const body = (await response.json().catch(() => null)) as {
+        screenshotUrl?: string;
+        path?: string | null;
+        error?: string;
+        code?: string;
+      } | null;
+
+      if (!response.ok || !body?.screenshotUrl) {
+        const message =
+          body?.code === 'invalid_image_type'
+            ? t('instapayUploadType')
+            : body?.code === 'image_too_large'
+              ? t('instapayUploadSize')
+              : t('instapayUploadServer');
+        setUploadError(message);
+        toast.error(message);
+        return;
       }
 
-      const { screenshotUrl: url } = (await response.json()) as { screenshotUrl: string };
-      onScreenshotUrlChange(url);
+      onScreenshotUrlChange(body.screenshotUrl);
       toast.success(t('instapayUploadSuccess'));
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : t('instapayUploadFailed'));
+    } catch {
+      const message = t('instapayUploadFailed');
+      setUploadError(message);
+      toast.error(message);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -270,14 +316,14 @@ export function InstapayDeliverySection({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
             className="hidden"
             onChange={handleFileSelect}
             data-testid="instapay-screenshot-input"
           />
           <button
             type="button"
-            disabled={uploading}
+            disabled={uploading || !orderPaymentRef}
             onClick={() => fileInputRef.current?.click()}
             className={cn(
               buttonVariants({ variant: 'outline' }),
@@ -296,6 +342,11 @@ export function InstapayDeliverySection({
                 ? t('instapayChangeScreenshot')
                 : t('instapayProofScreenshot')}
           </button>
+          {uploadError ? (
+            <p className="text-destructive text-xs" data-testid="instapay-upload-error">
+              {uploadError}
+            </p>
+          ) : null}
           {screenshotUrl ? (
             <div className="flex items-center gap-3 rounded-lg border border-emerald-500/50 p-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
