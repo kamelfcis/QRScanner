@@ -1,4 +1,4 @@
-import { hasInstapayProof } from '@/lib/payment/instapay-proof';
+import { isValidInstapayReference } from '@/lib/payment/instapay-proof';
 
 export interface OrderValidationInput {
   customerName: string;
@@ -36,7 +36,8 @@ export type OrderValidationErrorCode =
   | 'address_required'
   | 'min_order'
   | 'notes_too_long'
-  | 'instapay_proof_required';
+  | 'instapay_proof_required'
+  | 'instapay_reference_invalid';
 
 export interface OrderValidationCodedResult {
   valid: boolean;
@@ -56,11 +57,13 @@ export function validateOrder(input: OrderValidationInput): OrderValidationCoded
   if (input.requiresCustomerPhone && !input.customerPhone?.trim()) {
     codes.push('phone_required');
   }
-  if (
-    input.requiresInstapayProof &&
-    !hasInstapayProof(input.instapayProofReference, input.instapayScreenshotUrl)
-  ) {
-    codes.push('instapay_proof_required');
+  if (input.requiresInstapayProof) {
+    const ref = input.instapayProofReference?.trim();
+    if (!ref) {
+      codes.push('instapay_proof_required');
+    } else if (!isValidInstapayReference(ref)) {
+      codes.push('instapay_reference_invalid');
+    }
   }
   if (input.requiresDeliveryLocation && !input.deliveryLocationId?.trim()) {
     codes.push('address_required');

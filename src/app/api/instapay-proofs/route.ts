@@ -1,11 +1,60 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
 import { validateImageFile } from '@/lib/upload';
 
 const BUCKET = 'instapay-proofs';
 
 function sanitizeFilename(name: string): string {
   return name.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 80);
+}
+
+async function isReferenceTaken(
+  admin: ReturnType<typeof createAdminClient>,
+  normalizedRef: string,
+  excludeOrderRef?: string | null
+): Promise<boolean> {
+  let query = admin
+    .from('instapay_delivery_proofs')
+    .select('id')
+    .ilike('proof_reference', normalizedRef)
+    .in('status', ['pending', 'confirmed'])
+    .limit(1);
+
+  if (excludeOrderRef) {
+    query = query.neq('order_ref', excludeOrderRef);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data?.length ?? 0) > 0;
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const rawRef = searchParams.get('reference');
+    if (!rawRef?.trim()) {
+      return NextResponse.json({ error: 'Reference is required' }, { status: 400 });
+    }
+
+    const normalized = normalizeInstapayReference(rawRef);
+    if (!isValidInstapayReference(normalized)) {
+      return NextResponse.json(
+        { error: 'Invalid reference format', code: 'instapay_reference_invalid' },
+        { status: 400 }
+      );
+    }
+
+    const excludeOrderRef = searchParams.get('excludeOrderRef')?.trim() || null;
+    const admin = createAdminClient();
+    const taken = await isReferenceTaken(admin, normalized, excludeOrderRef);
+
+    return NextResponse.json({ available: !taken });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unexpected error';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -19,7 +68,7 @@ export async function POST(request: Request) {
     const uploadOnly = formData.get('uploadOnly') === 'true';
     const file = formData.get('file');
     const existingScreenshotUrl = String(formData.get('screenshotUrl') ?? '').trim() || null;
-    const proofReference = String(formData.get('proofReference') ?? '').trim() || null;
+    const rawProofReference = String(formData.get('proofReference') ?? '').trim() || null;
     const amountNote = String(formData.get('amountNote') ?? '').trim() || null;
     const customerName = String(formData.get('customerName') ?? '').trim();
     const customerPhone = String(formData.get('customerPhone') ?? '').trim() || null;
@@ -61,14 +110,24 @@ export async function POST(request: Request) {
     if (deliveryFee == null || Number.isNaN(deliveryFee) || deliveryFee < 0) {
       return NextResponse.json({ error: 'Invalid delivery fee' }, { status: 400 });
     }
-    if (!proofReference && !screenshotUrl) {
+
+    const proofReference = rawProofReference ? normalizeInstapayReference(rawProofReference) : null;
+    if (!proofReference || !isValidInstapayReference(proofReference)) {
       return NextResponse.json(
-        { error: 'Proof reference or screenshot required' },
+        { error: 'Valid proof reference is required', code: 'instapay_reference_invalid' },
         { status: 400 }
       );
     }
 
     const admin = createAdminClient();
+    const duplicate = await isReferenceTaken(admin, proofReference, orderRef);
+    if (duplicate) {
+      return NextResponse.json(
+        { error: 'This transfer reference was already used', code: 'instapay_reference_duplicate' },
+        { status: 409 }
+      );
+    }
+
     const row = {
       order_ref: orderRef,
       customer_name: customerName,
@@ -89,6 +148,15 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
+      if (error.code === '23505') {
+        return NextResponse.json(
+          {
+            error: 'This transfer reference was already used',
+            code: 'instapay_reference_duplicate',
+          },
+          { status: 409 }
+        );
+      }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 

@@ -49,7 +49,11 @@ import {
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
-import { generateOrderPaymentRef, hasInstapayProof } from '@/lib/payment/instapay-proof';
+import {
+  generateOrderPaymentRef,
+  isValidInstapayReference,
+  normalizeInstapayReference,
+} from '@/lib/payment/instapay-proof';
 import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliverySection';
 
 export default function CheckoutPage() {
@@ -79,6 +83,9 @@ export default function CheckoutPage() {
   const [instapayProofReference, setInstapayProofReference] = useState('');
   const [instapayScreenshotUrl, setInstapayScreenshotUrl] = useState<string | null>(null);
   const [instapayAmountNote, setInstapayAmountNote] = useState('');
+  const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
+  const [referenceDuplicate, setReferenceDuplicate] = useState(false);
+  const [checkingReference, setCheckingReference] = useState(false);
   const [orderPaymentRef, setOrderPaymentRef] = useState<string | null>(null);
 
   const currency = getRestaurantCurrency(settings?.currency);
@@ -142,7 +149,9 @@ export default function CheckoutPage() {
   const requiresInstapayProof =
     showInstapayDeliveryPrepay && totals.deliveryFee > 0 && Boolean(deliveryLocationId);
 
-  const proofValid = hasInstapayProof(instapayProofReference, instapayScreenshotUrl);
+  const referenceFormatValid = isValidInstapayReference(instapayProofReference);
+  const proofValid =
+    referenceFormatValid && !referenceDuplicate && !checkingReference && !uploadingScreenshot;
 
   useEffect(() => {
     if (!deliveryLocationId || totals.deliveryFee <= 0) {
@@ -192,7 +201,9 @@ export default function CheckoutPage() {
         case 'notes_too_long':
           return t('notesTooLong', { max: maxNotes });
         case 'instapay_proof_required':
-          return t('instapayProofRequired');
+          return t('instapayReferenceRequired');
+        case 'instapay_reference_invalid':
+          return t('instapayReferenceInvalid');
         default:
           return tCommon('error');
       }
@@ -292,9 +303,7 @@ export default function CheckoutPage() {
         proofForm.append('customerPhone', customerPhone.trim());
         proofForm.append('deliveryFee', String(deliveryFee));
         if (deliveryLocationId) proofForm.append('deliveryLocationId', deliveryLocationId);
-        if (instapayProofReference.trim()) {
-          proofForm.append('proofReference', instapayProofReference.trim());
-        }
+        proofForm.append('proofReference', normalizeInstapayReference(instapayProofReference));
         if (instapayScreenshotUrl) proofForm.append('screenshotUrl', instapayScreenshotUrl);
         if (instapayAmountNote.trim()) proofForm.append('amountNote', instapayAmountNote.trim());
         proofForm.append('markWhatsAppSent', 'true');
@@ -304,7 +313,16 @@ export default function CheckoutPage() {
           body: proofForm,
         });
         if (!proofResponse.ok) {
-          setErrors([t('instapayProofSaveFailed')]);
+          const proofPayload = (await proofResponse.json().catch(() => null)) as {
+            code?: string;
+          } | null;
+          const message =
+            proofPayload?.code === 'instapay_reference_duplicate'
+              ? t('instapayReferenceDuplicate')
+              : proofPayload?.code === 'instapay_reference_invalid'
+                ? t('instapayReferenceInvalid')
+                : t('instapayProofSaveFailed');
+          setErrors([message]);
           setSubmitting(false);
           return;
         }
@@ -324,7 +342,9 @@ export default function CheckoutPage() {
         customerPhone,
         orderNotes,
         orderPaymentRef: requiresInstapayProof ? orderPaymentRef : null,
-        instapayProofReference: requiresInstapayProof ? instapayProofReference : null,
+        instapayProofReference: requiresInstapayProof
+          ? normalizeInstapayReference(instapayProofReference)
+          : null,
         instapayScreenshotUrl: requiresInstapayProof ? instapayScreenshotUrl : null,
         instapayHandle: requiresInstapayProof ? instapayHandle : null,
         requiresInstapayProof,
@@ -642,6 +662,11 @@ export default function CheckoutPage() {
                 onProofReferenceChange={setInstapayProofReference}
                 onScreenshotUrlChange={setInstapayScreenshotUrl}
                 onAmountNoteChange={setInstapayAmountNote}
+                onUploadingChange={setUploadingScreenshot}
+                onReferenceStatusChange={({ duplicate, checking }) => {
+                  setReferenceDuplicate(duplicate);
+                  setCheckingReference(checking);
+                }}
               />
             </section>
           )}

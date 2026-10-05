@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
+import { isValidInstapayReference } from '@/lib/payment/instapay-proof';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import type { InstapayDeliveryProof, InstapayProofStatus } from '@/types';
 
@@ -43,10 +44,16 @@ export function useReviewInstapayProof() {
     mutationFn: async ({
       id,
       status,
+      proofReference,
     }: {
       id: string;
       status: Exclude<InstapayProofStatus, 'pending'>;
+      proofReference?: string | null;
     }) => {
+      if (status === 'confirmed' && !isValidInstapayReference(proofReference)) {
+        throw new Error('Invalid or missing InstaPay transfer reference');
+      }
+
       const { data, error } = await supabase
         .from('instapay_delivery_proofs')
         .update({

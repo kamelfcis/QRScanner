@@ -178,7 +178,7 @@ describe('validateOrder instapay proof', () => {
     expect(result.codes).toContain('instapay_proof_required');
   });
 
-  it('passes with reference only', () => {
+  it('passes with valid reference only', () => {
     const result = validateOrder({
       customerName: 'Ali',
       subtotal: 100,
@@ -191,7 +191,7 @@ describe('validateOrder instapay proof', () => {
     expect(result.valid).toBe(true);
   });
 
-  it('passes with screenshot URL only', () => {
+  it('rejects screenshot URL only without reference', () => {
     const result = validateOrder({
       customerName: 'Ali',
       subtotal: 100,
@@ -201,7 +201,22 @@ describe('validateOrder instapay proof', () => {
       instapayProofReference: '',
       instapayScreenshotUrl: 'https://example.com/proof.png',
     });
-    expect(result.valid).toBe(true);
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('instapay_proof_required');
+  });
+
+  it('rejects invalid reference format', () => {
+    const result = validateOrder({
+      customerName: 'Ali',
+      subtotal: 100,
+      whatsappConfigured: true,
+      hasItems: true,
+      requiresInstapayProof: true,
+      instapayProofReference: '.',
+      instapayScreenshotUrl: null,
+    });
+    expect(result.valid).toBe(false);
+    expect(result.codes).toContain('instapay_reference_invalid');
   });
 
   it('ignores instapay proof when not required', () => {
