@@ -1424,7 +1424,9 @@
     "instagram": "Instagram",
     "tiktok": "TikTok",
     "downloadQR": "Download QR",
-    "copyLink": "Copy link"
+    "copyLink": "Copy link",
+    "disabledTitle": "This page is not available",
+    "disabledMessage": "The link page is temporarily disabled. Please check back later or contact the restaurant."
   },
   "linkPageAdmin": {
     "title": "Link Page",
@@ -1465,6 +1467,7 @@
     "preview": "Live preview",
     "qrSection": "QR code",
     "qrDesc": "Download a QR code that opens your public link page.",
+    "qrEncodesUrl": "QR encodes this URL",
     "copyLink": "Copy link",
     "linkCopied": "Link copied to clipboard",
     "uploadFailed": "Logo upload failed"

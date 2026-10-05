@@ -21,7 +21,7 @@ import {
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import { mergeLinkPageSettings } from '@/lib/link-page/defaults';
-import { OSTOL_LINKS_QR_TEMPLATE } from '@/lib/qr/templates';
+import { buildLinksPageUrl } from '@/lib/site-url';
 import type { LinkPageOverlayStrength, LinkPageSettings } from '@/types';
 
 const OVERLAY_PRESETS: LinkPageOverlayStrength[] = ['soft', 'medium', 'strong'];
@@ -29,14 +29,6 @@ const OVERLAY_PRESETS: LinkPageOverlayStrength[] = ['soft', 'medium', 'strong'];
 type LinkKey = keyof LinkPageSettings['links'];
 
 const LINK_KEYS: LinkKey[] = ['facebook', 'instagram', 'tiktok', 'phone', 'whatsapp', 'menu'];
-
-function getLinksPageUrl(): string {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    (typeof window !== 'undefined' ? window.location.origin : '');
-  return `${base.replace(/\/+$/, '')}/links`;
-}
 
 export default function LinkPageEditorPage() {
   const { data: saved, isLoading, error, refetch } = useLinkPageSettings();
@@ -57,7 +49,7 @@ export default function LinkPageEditorPage() {
     }
   }, [saved]);
 
-  const linksUrl = useMemo(() => getLinksPageUrl(), []);
+  const linksUrl = useMemo(() => buildLinksPageUrl(), []);
   const logoUrl = form.logo_url || restaurant?.logo_url || undefined;
 
   const handleSave = async () => {
@@ -383,16 +375,19 @@ export default function LinkPageEditorPage() {
               <CardDescription>{t('qrDesc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <Input readOnly value={linksUrl} className="font-mono text-xs" />
-                <Button type="button" variant="outline" size="sm" onClick={handleCopyLink}>
-                  <Copy className="mr-1 h-4 w-4" />
-                  {t('copyLink')}
-                </Button>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-xs">{t('qrEncodesUrl')}</Label>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Input readOnly value={linksUrl} className="font-mono text-xs" />
+                  <Button type="button" variant="outline" size="sm" onClick={handleCopyLink}>
+                    <Copy className="mr-1 h-4 w-4" />
+                    {t('copyLink')}
+                  </Button>
+                </div>
               </div>
               <QRPreview
                 url={linksUrl}
-                template={OSTOL_LINKS_QR_TEMPLATE}
+                template="classic"
                 logoUrl={logoUrl}
                 showDownload
                 filename="ostol-links-qr"

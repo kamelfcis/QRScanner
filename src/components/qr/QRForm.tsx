@@ -21,26 +21,14 @@ import { TemplateSwitcher } from './TemplateSwitcher';
 import { QRPreview } from './QRPreview';
 import { getTemplate } from '@/lib/qr/templates';
 import { buildWelcomeUrl } from '@/lib/qr/welcome-url';
+import { getPublicSiteUrl } from '@/lib/site-url';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { buildQRFilename } from '@/lib/qr/logo-overlay';
 
-function getSiteUrl(): string {
-  if (typeof window !== 'undefined') {
-    return (
-      process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || window.location.origin
-    );
-  }
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    'https://engzqrmenu.vercel.app'
-  );
-}
-
 function generateMenuUrl(tableNumber?: number | null): string {
-  return buildWelcomeUrl(getSiteUrl(), tableNumber);
+  return buildWelcomeUrl(getPublicSiteUrl(), tableNumber);
 }
 
 function getTableNumberByValue(tables: RestaurantTable[], value: string): number | null {

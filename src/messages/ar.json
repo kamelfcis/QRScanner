@@ -1430,7 +1430,9 @@
     "instagram": "إنستغرام",
     "tiktok": "تيك توك",
     "downloadQR": "تحميل QR",
-    "copyLink": "نسخ الرابط"
+    "copyLink": "نسخ الرابط",
+    "disabledTitle": "هذه الصفحة غير متاحة",
+    "disabledMessage": "صفحة الروابط معطّلة مؤقتًا. يُرجى المحاولة لاحقًا أو التواصل مع المطعم."
   },
   "linkPageAdmin": {
     "title": "صفحة الروابط",
@@ -1471,6 +1473,7 @@
     "preview": "معاينة مباشرة",
     "qrSection": "رمز QR",
     "qrDesc": "حمّل رمز QR يفتح صفحة الروابط العامة.",
+    "qrEncodesUrl": "رمز QR يشير إلى هذا الرابط",
     "copyLink": "نسخ الرابط",
     "linkCopied": "تم نسخ الرابط",
     "uploadFailed": "فشل رفع الشعار"
