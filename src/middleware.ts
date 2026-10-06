@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
       .select('user_id, role, full_name, permissions, is_active')
       .eq('user_id', user.id)
       .maybeSingle();
-    const data =
+    const raw =
       first.data ??
       (first.error
         ? (
@@ -44,13 +44,20 @@ export async function middleware(request: NextRequest) {
               .maybeSingle()
           ).data
         : null);
-    if (data && isStaffRole(data.role) && !('is_active' in data && data.is_active === false)) {
+    const data = raw as {
+      user_id: string;
+      role: string;
+      full_name?: string | null;
+      permissions?: unknown;
+      is_active?: boolean | null;
+    } | null;
+    if (data && isStaffRole(data.role) && data.is_active !== false) {
       profile = {
         user_id: data.user_id,
         role: data.role,
-        full_name: 'full_name' in data ? (data.full_name ?? '') : '',
-        permissions: parsePermissionMap('permissions' in data ? data.permissions : {}),
-        is_active: !('is_active' in data) || data.is_active !== false,
+        full_name: data.full_name ?? '',
+        permissions: parsePermissionMap(data.permissions),
+        is_active: true,
       };
     }
   }
