@@ -57,6 +57,10 @@ export const DASHBOARD_NAV_TONES: Record<string, NavTone> = {
     well: 'bg-zinc-600 dark:bg-zinc-500',
     label: 'text-zinc-700 dark:text-zinc-300',
   },
+  users: {
+    well: 'bg-fuchsia-700 dark:bg-fuchsia-600',
+    label: 'text-fuchsia-900 dark:text-fuchsia-300',
+  },
   menuCategories: {
     well: 'bg-teal-600 dark:bg-teal-500',
     label: 'text-teal-800 dark:text-teal-300',

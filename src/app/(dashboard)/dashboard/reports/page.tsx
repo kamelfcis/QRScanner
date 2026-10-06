@@ -24,7 +24,7 @@ import { formatCurrencyAmount, toCurrencyLocale } from '@/lib/order/format-curre
 import { cn } from '@/lib/utils';
 import type { ExportData } from '@/types/database';
 import { AccountantMonthExport } from '@/components/dashboard/AccountantMonthExport';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
 
 const todayStamp = () => dateOnlyFromDate(new Date());
@@ -39,7 +39,7 @@ export default function ReportsPage() {
   const tMenu = useTranslations('menu');
   const tCommon = useTranslations('common');
   const { data: settings } = useRestaurantSettings();
-  const { data: staffRole } = useStaffRole();
+  const { data: staffProfile } = useStaffProfile();
   const { exportCSV, exportExcel, printPage } = useExport();
   const currencyLocale = toCurrencyLocale(locale);
 
@@ -255,7 +255,7 @@ export default function ReportsPage() {
                 locale={locale}
                 currencyLocale={currencyLocale}
                 settings={settings}
-                allowDelete={canHardDeleteOrders(staffRole)}
+                allowDelete={canHardDeleteOrders(staffProfile)}
                 t={t}
                 tOrders={tOrders}
                 tMenu={tMenu}

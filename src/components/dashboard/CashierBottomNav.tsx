@@ -2,19 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CASHIER_NAV_KEYS, getDashboardNav } from '@/lib/navigation/dashboardNav';
+import { getDashboardNav } from '@/lib/navigation/dashboardNav';
 import { hasDailyOps } from '@/i18n/config';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 
 export function useShowCashierBottomNav(): boolean {
   const pathname = usePathname();
-  const { data: role } = useStaffRole();
+  const { data: profile } = useStaffProfile();
   if (!hasDailyOps) return false;
   const onOrders = pathname === '/dashboard/orders' || pathname.startsWith('/dashboard/orders/');
-  return role === 'cashier' || onOrders;
+  const onKitchen = pathname === '/kitchen' || pathname.startsWith('/kitchen/');
+  const role = profile?.role;
+  return role === 'cashier' || role === 'kitchen' || onOrders || onKitchen;
 }
 
 export function CashierBottomNav() {
@@ -22,13 +24,12 @@ export function CashierBottomNav() {
   const show = useShowCashierBottomNav();
   const { data: features } = useFeatureSettings();
   const { data: settings } = useRestaurantSettings();
+  const { data: profile } = useStaffProfile();
   const tSidebar = useTranslations('sidebar');
 
   if (!show) return null;
 
-  const items = getDashboardNav(features, settings, 'cashier').filter((item) =>
-    CASHIER_NAV_KEYS.has(item.key)
-  );
+  const items = getDashboardNav(features, settings, profile ?? null).slice(0, 4);
 
   if (items.length === 0) return null;
 

@@ -14,10 +14,16 @@ import {
   ChefHat,
   Scale,
   Wallet,
+  Users,
   type LucideIcon,
 } from 'lucide-react';
 import { hasDailyOps } from '@/i18n/config';
-import { canAccessExpenses, canManageCoupons, type StaffRole } from '@/lib/staff/roles';
+import {
+  can,
+  type StaffProfile,
+  type StaffResource,
+  type StaffRole,
+} from '@/lib/staff/permissions';
 import type { FeatureSettings, RestaurantSettings } from '@/types/database';
 
 export interface DashboardNavItem {
@@ -75,6 +81,7 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'qrCodes', href: '/dashboard/qr', icon: QrCode },
   { key: 'tables', href: '/dashboard/tables', icon: Table },
   { key: 'settings', href: '/dashboard/settings', icon: Settings },
+  { key: 'users', href: '/dashboard/users', icon: Users, roles: ['admin'] },
 ];
 
 export const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shift']);
@@ -82,18 +89,20 @@ export const CASHIER_NAV_KEYS = new Set(['dashboard', 'orders', 'kitchen', 'shif
 export function getDashboardNav(
   features?: FeatureSettings | null,
   restaurant?: Pick<RestaurantSettings, 'enable_delivery'> | null,
-  role: StaffRole = 'admin'
+  role: StaffRole | StaffProfile | null = 'admin'
 ): DashboardNavItem[] {
   return DASHBOARD_NAV.filter((item) => {
     if (item.dailyOpsOnly && !hasDailyOps) return false;
     if (item.featureFlag && features?.[item.featureFlag] !== true) return false;
     if (item.restaurantFlag && restaurant?.[item.restaurantFlag] !== true) return false;
-    if (hasDailyOps && role === 'cashier') {
-      if (!CASHIER_NAV_KEYS.has(item.key)) return false;
+    if (hasDailyOps) {
+      if (!can(role, item.key as StaffResource, 'view')) return false;
     }
-    if (item.roles && !item.roles.includes(role)) return false;
-    if (item.key === 'coupons' && !canManageCoupons(role)) return false;
-    if (item.key === 'expenses' && !canAccessExpenses(role)) return false;
+    if (item.roles) {
+      const resolvedRole = typeof role === 'string' ? role : role?.role;
+      const effective = resolvedRole ?? (hasDailyOps ? null : 'admin');
+      if (!effective || !item.roles.includes(effective)) return false;
+    }
     return true;
   });
 }

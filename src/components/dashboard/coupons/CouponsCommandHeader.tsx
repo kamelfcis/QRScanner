@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 interface CouponsCommandHeaderProps {
   totalCount: number;
   activeCount: number;
-  onAddCoupon: () => void;
+  onAddCoupon?: () => void;
 }
 
 export function CouponsCommandHeader({
@@ -51,10 +51,12 @@ export function CouponsCommandHeader({
             <p className="text-muted-foreground mt-1 max-w-prose text-sm">{t('description')}</p>
           </div>
 
-          <Button className="min-h-11 shrink-0 self-start" onClick={onAddCoupon}>
-            <Plus className="me-2 h-4 w-4" aria-hidden="true" />
-            {t('addCoupon')}
-          </Button>
+          {onAddCoupon ? (
+            <Button className="min-h-11 shrink-0 self-start" onClick={onAddCoupon}>
+              <Plus className="me-2 h-4 w-4" aria-hidden="true" />
+              {t('addCoupon')}
+            </Button>
+          ) : null}
         </div>
 
         <div className="border-primary/25 border-t pt-4">

@@ -2,23 +2,23 @@
 
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
 import { hasDailyOps } from '@/i18n/config';
-import { isAdminOnlyDashboardPath } from '@/lib/staff/roles';
+import { defaultStaffHome, isStaffPathAllowed } from '@/lib/staff/permissions';
 
 export function StaffRoleGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: role, isLoading } = useStaffRole();
+  const { data: profile, isLoading } = useStaffProfile();
 
   useEffect(() => {
     if (!hasDailyOps || isLoading) return;
-    if (role === 'cashier' && isAdminOnlyDashboardPath(pathname)) {
-      router.replace('/dashboard/orders');
+    if (!isStaffPathAllowed(profile, pathname)) {
+      router.replace(defaultStaffHome(profile));
     }
-  }, [pathname, role, isLoading, router]);
+  }, [pathname, profile, isLoading, router]);
 
-  if (hasDailyOps && isLoading && isAdminOnlyDashboardPath(pathname)) {
+  if (hasDailyOps && isLoading && !isStaffPathAllowed(profile, pathname)) {
     return null;
   }
 

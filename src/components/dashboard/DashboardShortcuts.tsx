@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { hasDailyOps } from '@/i18n/config';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn } from '@/lib/utils';
 import { DASHBOARD_NAV_TONES, FALLBACK_NAV_TONE } from '@/lib/navigation/dashboardNavTones';
@@ -13,10 +14,12 @@ export function DashboardShortcuts() {
   const { data: settings } = useRestaurantSettings();
   const t = useTranslations('dashboard');
   const tSidebar = useTranslations('sidebar');
-  const { data: staffRole } = useStaffRole();
-  const items = getDashboardNav(features, settings, staffRole ?? 'admin').filter(
-    (item) => item.href !== '/dashboard'
-  );
+  const { data: staffProfile } = useStaffProfile();
+  const items = getDashboardNav(
+    features,
+    settings,
+    hasDailyOps ? (staffProfile ?? null) : 'admin'
+  ).filter((item) => item.href !== '/dashboard');
 
   if (items.length === 0) return null;
 

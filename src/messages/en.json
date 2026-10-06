@@ -296,6 +296,7 @@
     "coupons": "Coupons",
     "expenses": "Expenses",
     "deliveryLocations": "Delivery areas",
+    "users": "Users",
     "logout": "Logout",
     "collapse": "Collapse sidebar",
     "expand": "Expand sidebar",
@@ -1454,6 +1455,41 @@
     "maxLength": "Must be at most {max} characters",
     "mustBeNumber": "Must be a number",
     "mustBePositive": "Must be a positive number"
+  },
+  "staffUsers": {
+    "eyebrow": "Access",
+    "title": "Staff users",
+    "description": "Invite team members and set per-page privileges.",
+    "invite": "Invite user",
+    "editUser": "Edit user",
+    "email": "Email",
+    "fullName": "Full name",
+    "password": "Password",
+    "resetPassword": "New password (optional)",
+    "role": "Role",
+    "active": "Active",
+    "disabled": "Disabled",
+    "permissions": "Page privileges",
+    "page": "Page",
+    "empty": "No staff users yet",
+    "created": "User created",
+    "updated": "User updated",
+    "deleted": "User deleted",
+    "validation": "Enter a valid email and a password of at least 8 characters.",
+    "deleteTitle": "Delete staff user?",
+    "deleteDescription": "This removes their login. The last admin cannot be deleted.",
+    "roles": {
+      "admin": "Admin",
+      "cashier": "Cashier",
+      "kitchen": "Kitchen",
+      "custom": "Custom"
+    },
+    "actions": {
+      "view": "View",
+      "create": "Create",
+      "update": "Edit",
+      "delete": "Delete"
+    }
   },
   "push": {
     "promptTitle": "Get order alerts on this device",

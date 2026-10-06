@@ -296,6 +296,7 @@
     "coupons": "Coupons",
     "expenses": "Dépenses",
     "deliveryLocations": "Zones de livraison",
+    "users": "Utilisateurs",
     "logout": "Déconnexion",
     "collapse": "Réduire le menu latéral",
     "expand": "Développer le menu latéral",
@@ -1453,6 +1454,41 @@
     "maxLength": "Doit contenir au maximum {max} caractères",
     "mustBeNumber": "Doit être un nombre",
     "mustBePositive": "Doit être un nombre positif"
+  },
+  "staffUsers": {
+    "eyebrow": "Accès",
+    "title": "Utilisateurs",
+    "description": "Invitez l’équipe et définissez les droits par page.",
+    "invite": "Inviter un utilisateur",
+    "editUser": "Modifier l’utilisateur",
+    "email": "E-mail",
+    "fullName": "Nom complet",
+    "password": "Mot de passe",
+    "resetPassword": "Nouveau mot de passe (optionnel)",
+    "role": "Rôle",
+    "active": "Actif",
+    "disabled": "Désactivé",
+    "permissions": "Droits par page",
+    "page": "Page",
+    "empty": "Aucun utilisateur pour le moment",
+    "created": "Utilisateur créé",
+    "updated": "Utilisateur mis à jour",
+    "deleted": "Utilisateur supprimé",
+    "validation": "Saisissez un e-mail valide et un mot de passe d’au moins 8 caractères.",
+    "deleteTitle": "Supprimer l’utilisateur ?",
+    "deleteDescription": "Cela supprime sa connexion. Le dernier admin ne peut pas être supprimé.",
+    "roles": {
+      "admin": "Admin",
+      "cashier": "Caisse",
+      "kitchen": "Cuisine",
+      "custom": "Personnalisé"
+    },
+    "actions": {
+      "view": "Voir",
+      "create": "Créer",
+      "update": "Modifier",
+      "delete": "Supprimer"
+    }
   },
   "welcome": {
     "welcomeTo": "Bienvenue chez {name}",

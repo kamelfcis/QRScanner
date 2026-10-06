@@ -296,6 +296,7 @@
     "coupons": "Coupons",
     "expenses": "Uitgaven",
     "deliveryLocations": "Bezorgzones",
+    "users": "Gebruikers",
     "logout": "Uitloggen",
     "collapse": "Zijbalk inklappen",
     "expand": "Zijbalk uitklappen",
@@ -1453,6 +1454,41 @@
     "maxLength": "Mag maximaal {max} tekens bevatten",
     "mustBeNumber": "Moet een getal zijn",
     "mustBePositive": "Moet een positief getal zijn"
+  },
+  "staffUsers": {
+    "eyebrow": "Toegang",
+    "title": "Medewerkers",
+    "description": "Nodig teamleden uit en stel rechten per pagina in.",
+    "invite": "Gebruiker uitnodigen",
+    "editUser": "Gebruiker bewerken",
+    "email": "E-mail",
+    "fullName": "Volledige naam",
+    "password": "Wachtwoord",
+    "resetPassword": "Nieuw wachtwoord (optioneel)",
+    "role": "Rol",
+    "active": "Actief",
+    "disabled": "Uitgeschakeld",
+    "permissions": "Paginarechten",
+    "page": "Pagina",
+    "empty": "Nog geen medewerkers",
+    "created": "Gebruiker aangemaakt",
+    "updated": "Gebruiker bijgewerkt",
+    "deleted": "Gebruiker verwijderd",
+    "validation": "Voer een geldig e-mailadres en een wachtwoord van minstens 8 tekens in.",
+    "deleteTitle": "Medewerker verwijderen?",
+    "deleteDescription": "Dit verwijdert de login. De laatste admin kan niet worden verwijderd.",
+    "roles": {
+      "admin": "Admin",
+      "cashier": "Kassa",
+      "kitchen": "Keuken",
+      "custom": "Aangepast"
+    },
+    "actions": {
+      "view": "Bekijken",
+      "create": "Aanmaken",
+      "update": "Bewerken",
+      "delete": "Verwijderen"
+    }
   },
   "welcome": {
     "welcomeTo": "Welkom bij {name}",

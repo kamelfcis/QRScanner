@@ -15,7 +15,8 @@ import { useFeatureSettings, useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav, type DashboardNavItem } from '@/lib/navigation/dashboardNav';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { hasDailyOps } from '@/i18n/config';
 import { getNavTone } from '@/lib/navigation/dashboardNavTones';
 import { useSidebarCollapse } from '@/components/dashboard/sidebar/SidebarCollapseContext';
 
@@ -202,8 +203,12 @@ export function DashboardSidebar() {
   const { signOut } = useAuth();
   const { data: settings } = useRestaurantSettings();
   const { data: features } = useFeatureSettings();
-  const { data: staffRole } = useStaffRole();
-  const navItems = getDashboardNav(features, settings, staffRole ?? 'admin');
+  const { data: staffProfile } = useStaffProfile();
+  const navItems = getDashboardNav(
+    features,
+    settings,
+    hasDailyOps ? (staffProfile ?? null) : 'admin'
+  );
   const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
   const { collapsed, setHoverExpanded, isPeekOpen, isFullyOpen } = useSidebarCollapse();

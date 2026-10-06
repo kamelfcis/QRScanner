@@ -1,6 +1,20 @@
 import { hasDailyOps } from '@/i18n/config';
+import {
+  can,
+  type StaffAction,
+  type StaffProfile,
+  type StaffResource,
+  type StaffRole,
+} from '@/lib/staff/permissions';
 
-export type StaffRole = 'admin' | 'cashier';
+export type { StaffAction, StaffProfile, StaffResource, StaffRole };
+export {
+  can,
+  defaultStaffHome,
+  isStaffPathAllowed,
+  STAFF_RESOURCES,
+  ALL_ACTIONS,
+} from '@/lib/staff/permissions';
 
 const CASHIER_PREFIXES = ['/dashboard/orders', '/dashboard/shift', '/kitchen'] as const;
 
@@ -18,17 +32,17 @@ export function isAdminOnlyDashboardPath(pathname: string): boolean {
   return !isCashierPathAllowed(pathname);
 }
 
-export function canHardDeleteOrders(role: StaffRole | null | undefined): boolean {
+export function canHardDeleteOrders(role: StaffRole | StaffProfile | null | undefined): boolean {
   if (!hasDailyOps) return true;
-  return role !== 'cashier';
+  return can(role, 'orders', 'delete');
 }
 
-export function canManageCoupons(role: StaffRole | null | undefined): boolean {
+export function canManageCoupons(role: StaffRole | StaffProfile | null | undefined): boolean {
   if (!hasDailyOps) return true;
-  return role !== 'cashier';
+  return can(role, 'coupons', 'view');
 }
 
-export function canAccessExpenses(role: StaffRole | null | undefined): boolean {
+export function canAccessExpenses(role: StaffRole | StaffProfile | null | undefined): boolean {
   if (!hasDailyOps) return true;
-  return role !== 'cashier';
+  return can(role, 'expenses', 'view');
 }

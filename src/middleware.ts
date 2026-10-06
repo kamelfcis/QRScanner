@@ -1,19 +1,24 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
-import { defaultLocale, enabledLocales, isEnabledLocale, type Locale } from '@/i18n/config';
+import { defaultLocale, hasDailyOps, isEnabledLocale, type Locale } from '@/i18n/config';
+import {
+  defaultStaffHome,
+  isStaffPathAllowed,
+  isStaffRole,
+  parsePermissionMap,
+  type StaffProfile,
+} from '@/lib/staff/permissions';
 
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, user } = await updateSession(request);
+  const { supabaseResponse, user, supabase } = await updateSession(request);
   const response = supabaseResponse;
   const { pathname } = request.nextUrl;
 
-  // Locale detection / persistence
   const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
   let detected: Locale = defaultLocale;
   if (localeCookie && isEnabledLocale(localeCookie)) {
     detected = localeCookie;
   } else {
-    // First visit: use deployment default (NEXT_PUBLIC_DEFAULT_LOCALE); ignore Accept-Language
     detected = defaultLocale;
     response.cookies.set('NEXT_LOCALE', detected, { path: '/', maxAge: 365 * 24 * 60 * 60 });
   }
@@ -21,7 +26,35 @@ export async function middleware(request: NextRequest) {
 
   const isStaffRoute = pathname.startsWith('/dashboard') || pathname.startsWith('/kitchen');
 
-  // Protect staff routes — require authenticated session
+  let profile: StaffProfile | null = null;
+  if (hasDailyOps && user) {
+    const first = await supabase
+      .from('staff_profiles')
+      .select('user_id, role, full_name, permissions, is_active')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const data =
+      first.data ??
+      (first.error
+        ? (
+            await supabase
+              .from('staff_profiles')
+              .select('user_id, role')
+              .eq('user_id', user.id)
+              .maybeSingle()
+          ).data
+        : null);
+    if (data && isStaffRole(data.role) && data.is_active !== false) {
+      profile = {
+        user_id: data.user_id,
+        role: data.role,
+        full_name: data.full_name ?? '',
+        permissions: parsePermissionMap(data.permissions),
+        is_active: data.is_active !== false,
+      };
+    }
+  }
+
   if (isStaffRoute) {
     if (!user) {
       const loginUrl = request.nextUrl.clone();
@@ -29,17 +62,30 @@ export async function middleware(request: NextRequest) {
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
     }
+    if (hasDailyOps && !isStaffPathAllowed(profile, pathname)) {
+      const home = defaultStaffHome(profile);
+      if (pathname !== home) {
+        const dest = request.nextUrl.clone();
+        dest.pathname = home;
+        dest.search = '';
+        return NextResponse.redirect(dest);
+      }
+    }
   }
 
-  // Redirect authenticated users away from login
   if (pathname === '/login' && user) {
-    const redirectTo = request.nextUrl.searchParams.get('redirect') || '/dashboard';
+    if (hasDailyOps && !profile) {
+      return response;
+    }
+    const redirectTo = request.nextUrl.searchParams.get('redirect') || defaultStaffHome(profile);
     const dashboardUrl = request.nextUrl.clone();
     const safeRedirect =
       redirectTo.startsWith('/dashboard') || redirectTo.startsWith('/kitchen')
         ? redirectTo
-        : '/dashboard';
-    dashboardUrl.pathname = safeRedirect;
+        : defaultStaffHome(profile);
+    dashboardUrl.pathname = isStaffPathAllowed(profile, safeRedirect)
+      ? safeRedirect
+      : defaultStaffHome(profile);
     dashboardUrl.search = '';
     return NextResponse.redirect(dashboardUrl);
   }

@@ -10,7 +10,7 @@ const TILE =
   'focus-visible:ring-ring flex min-h-20 min-w-12 w-full touch-manipulation flex-col items-center justify-center gap-1 rounded-xl border-2 px-1.5 py-2 font-heading text-[0.7rem] font-semibold leading-tight shadow-sm focus-visible:outline-none focus-visible:ring-2';
 
 interface CashierActionTilesProps {
-  onNewOrder: () => void;
+  onNewOrder?: () => void;
   onOpenSoldOut: () => void;
 }
 
@@ -28,17 +28,19 @@ export function CashierActionTiles({ onNewOrder, onOpenSoldOut }: CashierActionT
         role="toolbar"
         aria-label={t('cashierTilePad')}
       >
-        <button
-          type="button"
-          onClick={onNewOrder}
-          className={cn(
-            TILE,
-            'border-amber-600 bg-[#D97706] text-white hover:bg-amber-600 dark:border-amber-400'
-          )}
-        >
-          <Plus className="h-5 w-5 shrink-0" aria-hidden="true" />
-          {t('cashierTileNewOrder')}
-        </button>
+        {onNewOrder ? (
+          <button
+            type="button"
+            onClick={onNewOrder}
+            className={cn(
+              TILE,
+              'border-amber-600 bg-[#D97706] text-white hover:bg-amber-600 dark:border-amber-400'
+            )}
+          >
+            <Plus className="h-5 w-5 shrink-0" aria-hidden="true" />
+            {t('cashierTileNewOrder')}
+          </button>
+        ) : null}
 
         <Link
           href="/kitchen"

@@ -4,6 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { isStaffAppPath } from '@/lib/auth/staff-path';
+import { hasDailyOps } from '@/i18n/config';
+import {
+  defaultStaffHome,
+  isStaffPathAllowed,
+  isStaffRole,
+  parsePermissionMap,
+} from '@/lib/staff/permissions';
 import type { User, AuthError } from '@supabase/supabase-js';
 
 const supabase = createClient();
@@ -77,7 +84,28 @@ export function useAuth() {
       setState({ user: data.user, loading: false, error: null });
       const params = new URLSearchParams(window.location.search);
       const redirect = params.get('redirect');
-      router.push(redirect && isStaffAppPath(redirect) ? redirect : '/dashboard');
+      let dest = redirect && isStaffAppPath(redirect) ? redirect : '/dashboard';
+      if (hasDailyOps && data.user) {
+        const { data: row } = await supabase
+          .from('staff_profiles')
+          .select('role, permissions, is_active')
+          .eq('user_id', data.user.id)
+          .maybeSingle();
+        const profile =
+          row && isStaffRole(row.role) && row.is_active !== false
+            ? {
+                user_id: data.user.id,
+                role: row.role,
+                full_name: '',
+                permissions: parsePermissionMap(row.permissions),
+                is_active: row.is_active !== false,
+              }
+            : null;
+        if (!profile || !isStaffPathAllowed(profile, dest)) {
+          dest = defaultStaffHome(profile);
+        }
+      }
+      router.push(dest);
       return data;
     },
     [router]

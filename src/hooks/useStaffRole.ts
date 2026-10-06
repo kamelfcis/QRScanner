@@ -1,49 +1,21 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@/lib/supabase/client';
-import { useAdminQueryEnabled } from './useAdminQueryEnabled';
 import { hasDailyOps } from '@/i18n/config';
 import type { StaffRole } from '@/lib/staff/roles';
+import { staffRoleKeys, useStaffProfile } from './useStaffProfile';
 
 export type { StaffRole };
-
-export const staffRoleKeys = {
-  all: ['staff-role'] as const,
-  me: () => [...staffRoleKeys.all, 'me'] as const,
-};
-
-async function fetchMyStaffRole(): Promise<StaffRole> {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return 'admin';
-
-  const { data, error } = await supabase
-    .from('staff_profiles')
-    .select('role')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (error) {
-    console.warn('[useStaffRole] staff_profiles query failed, defaulting to admin:', error.message);
-    return 'admin';
-  }
-  const role = data?.role;
-  if (role === 'cashier' || role === 'admin') return role;
-  return 'admin';
-}
+export { staffRoleKeys };
 
 export function useStaffRole() {
-  const enabled = useAdminQueryEnabled() && hasDailyOps;
+  const query = useStaffProfile();
 
-  return useQuery<StaffRole>({
-    queryKey: staffRoleKeys.me(),
-    queryFn: fetchMyStaffRole,
-    enabled,
-    staleTime: 5 * 60_000,
-    retry: false,
-    ...(hasDailyOps ? {} : { initialData: 'admin' as const }),
-  });
+  if (!hasDailyOps) {
+    return { ...query, data: 'admin' as StaffRole, isLoading: false };
+  }
+
+  return {
+    ...query,
+    data: query.data?.role ?? null,
+  };
 }

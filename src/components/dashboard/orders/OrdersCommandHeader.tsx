@@ -28,7 +28,7 @@ interface OrdersCommandHeaderProps {
   formattedRevenue: string;
   prefersReducedMotion: boolean;
   onStatusFocus: (status: OrderStatus) => void;
-  onNewStaffOrder: () => void;
+  onNewStaffOrder?: () => void;
   onCleanup?: () => void;
   compact?: boolean;
 }
@@ -121,7 +121,7 @@ export function OrdersCommandHeader({
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5 self-start">
-            {!compact ? (
+            {!compact && onNewStaffOrder ? (
               <Button type="button" className="min-h-11 gap-2" onClick={onNewStaffOrder}>
                 <Plus className="h-4 w-4" aria-hidden="true" />
                 {t('newStaffOrder')}

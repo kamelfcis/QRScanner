@@ -35,6 +35,8 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { couponSchema, type CouponInput } from '@/types/schema';
 import type { Coupon } from '@/types/database';
 import { cn } from '@/lib/utils';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { can } from '@/lib/staff/permissions';
 
 type CouponStatus = 'active' | 'scheduled' | 'expired' | 'exhausted' | 'inactive';
 
@@ -100,6 +102,10 @@ export default function CouponsPage() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<Coupon | null>(null);
 
+  const { data: staffProfile } = useStaffProfile();
+  const canCreateCoupon = can(staffProfile, 'coupons', 'create');
+  const canUpdateCoupon = can(staffProfile, 'coupons', 'update');
+  const canDeleteCoupon = can(staffProfile, 'coupons', 'delete');
   const couponsEnabled = features?.coupons === true;
 
   useEffect(() => {
@@ -259,14 +265,16 @@ export default function CouponsPage() {
       <CouponsCommandHeader
         totalCount={totalCount}
         activeCount={activeCount}
-        onAddCoupon={openCreate}
+        onAddCoupon={canCreateCoupon ? openCreate : undefined}
       />
 
       {!coupons?.length ? (
         <EmptyState
           title={t('empty')}
           description={t('emptyDescription')}
-          action={{ label: t('createFirstCode'), onClick: openCreate }}
+          action={
+            canCreateCoupon ? { label: t('createFirstCode'), onClick: openCreate } : undefined
+          }
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -291,7 +299,10 @@ export default function CouponsPage() {
                                 get: coupon.bogo_get ?? 0,
                               })
                             : t('amountOff', {
-                                amount: formatCurrencyAmount(Number(coupon.discount_value), currency),
+                                amount: formatCurrencyAmount(
+                                  Number(coupon.discount_value),
+                                  currency
+                                ),
                               })}
                       </p>
                       <CardTitle className="font-heading truncate tracking-[0.14em]">
@@ -312,7 +323,10 @@ export default function CouponsPage() {
                       </Badge>
                     ) : null}
                     {coupon.is_stackable ? (
-                      <Badge variant="outline" className="border-0 bg-violet-500/10 text-violet-800">
+                      <Badge
+                        variant="outline"
+                        className="border-0 bg-violet-500/10 text-violet-800"
+                      >
                         {t('stackable')}
                       </Badge>
                     ) : null}
@@ -330,24 +344,28 @@ export default function CouponsPage() {
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="min-h-11 min-w-11"
-                      onClick={() => openEdit(coupon)}
-                      aria-label={t('editCoupon')}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-destructive min-h-11 min-w-11"
-                      onClick={() => setDeleteTarget(coupon)}
-                      aria-label={t('deleteCoupon')}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    {canUpdateCoupon ? (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="min-h-11 min-w-11"
+                        onClick={() => openEdit(coupon)}
+                        aria-label={t('editCoupon')}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    ) : null}
+                    {canDeleteCoupon ? (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive min-h-11 min-w-11"
+                        onClick={() => setDeleteTarget(coupon)}
+                        aria-label={t('deleteCoupon')}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>

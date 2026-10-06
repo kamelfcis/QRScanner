@@ -21,7 +21,8 @@ import { cn, getName } from '@/lib/utils';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
-import { useStaffRole } from '@/hooks/useStaffRole';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { hasDailyOps } from '@/i18n/config';
 import { SidebarCollapseToggle } from '@/components/dashboard/sidebar/SidebarCollapseToggle';
 
 export function DashboardHeader() {
@@ -31,8 +32,12 @@ export function DashboardHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: settings } = useRestaurantSettings();
   const { data: features } = useFeatureSettings();
-  const { data: staffRole } = useStaffRole();
-  const navItems = getDashboardNav(features, settings, staffRole ?? 'admin');
+  const { data: staffProfile } = useStaffProfile();
+  const navItems = getDashboardNav(
+    features,
+    settings,
+    hasDailyOps ? (staffProfile ?? null) : 'admin'
+  );
   const { locale } = useI18n();
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');

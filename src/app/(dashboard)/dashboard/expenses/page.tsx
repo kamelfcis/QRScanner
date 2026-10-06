@@ -22,8 +22,8 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { hasDailyOps } from '@/i18n/config';
-import { useStaffRole } from '@/hooks/useStaffRole';
-import { canAccessExpenses } from '@/lib/staff/roles';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { can, canAccessExpenses } from '@/lib/staff/roles';
 import {
   useCreateExpense,
   useDeleteExpense,
@@ -48,7 +48,10 @@ export default function ExpensesPage() {
   const t = useTranslations('expenses');
   const tCommon = useTranslations('common');
   const { data: settings } = useRestaurantSettings();
-  const { data: role, isLoading: roleLoading } = useStaffRole();
+  const { data: profile, isLoading: roleLoading } = useStaffProfile();
+  const canCreateExpense = can(profile, 'expenses', 'create');
+  const canUpdateExpense = can(profile, 'expenses', 'update');
+  const canDeleteExpense = can(profile, 'expenses', 'delete');
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
@@ -73,10 +76,10 @@ export default function ExpensesPage() {
       router.replace('/dashboard');
       return;
     }
-    if (!roleLoading && !canAccessExpenses(role)) {
+    if (!roleLoading && !canAccessExpenses(profile)) {
       router.replace('/dashboard/orders');
     }
-  }, [role, roleLoading, router]);
+  }, [profile, roleLoading, router]);
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -154,10 +157,12 @@ export default function ExpensesPage() {
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">{t('description')}</p>
         </div>
-        <Button className="min-h-11" onClick={openCreate}>
-          <Plus className="me-2 h-4 w-4" aria-hidden="true" />
-          {t('addExpense')}
-        </Button>
+        {canCreateExpense ? (
+          <Button className="min-h-11" onClick={openCreate}>
+            <Plus className="me-2 h-4 w-4" aria-hidden="true" />
+            {t('addExpense')}
+          </Button>
+        ) : null}
       </div>
 
       <div className="bg-card rounded-xl border p-4 shadow-sm">
@@ -189,24 +194,28 @@ export default function ExpensesPage() {
                 <span className="font-heading text-lg font-semibold tabular-nums">
                   {formatCurrencyAmount(row.amount, currency, { locale: currencyLocale })}
                 </span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="min-h-11 min-w-11"
-                  onClick={() => openEdit(row)}
-                >
-                  <Pencil className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">{tCommon('edit')}</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive min-h-11 min-w-11"
-                  onClick={() => setDeleteTarget(row)}
-                >
-                  <Trash2 className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">{tCommon('delete')}</span>
-                </Button>
+                {canUpdateExpense ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="min-h-11 min-w-11"
+                    onClick={() => openEdit(row)}
+                  >
+                    <Pencil className="h-4 w-4" aria-hidden="true" />
+                    <span className="sr-only">{tCommon('edit')}</span>
+                  </Button>
+                ) : null}
+                {canDeleteExpense ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive min-h-11 min-w-11"
+                    onClick={() => setDeleteTarget(row)}
+                  >
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
+                    <span className="sr-only">{tCommon('delete')}</span>
+                  </Button>
+                ) : null}
               </div>
             </li>
           ))}

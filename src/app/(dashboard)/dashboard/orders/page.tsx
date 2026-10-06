@@ -43,8 +43,8 @@ import {
   COLUMN_TONE_POS,
 } from '@/components/dashboard/orders/column-tone';
 import { hasDailyOps } from '@/i18n/config';
-import { useStaffRole } from '@/hooks/useStaffRole';
-import { canHardDeleteOrders } from '@/lib/staff/roles';
+import { useStaffProfile } from '@/hooks/useStaffProfile';
+import { can, canHardDeleteOrders } from '@/lib/staff/roles';
 
 function isSameLocalDay(iso: string): boolean {
   const date = new Date(iso);
@@ -76,8 +76,9 @@ export default function OrdersPage() {
   const markWhatsApp = useMarkOrderWhatsAppSent();
   const markReadyWhatsApp = useMarkOrderReadyWhatsAppSent();
   const deleteOrder = useDeleteOrder();
-  const { data: staffRole } = useStaffRole();
-  const allowHardDelete = canHardDeleteOrders(staffRole);
+  const { data: staffProfile } = useStaffProfile();
+  const allowHardDelete = canHardDeleteOrders(staffProfile);
+  const allowCreateOrder = can(staffProfile, 'orders', 'create');
 
   const [tab, setTab] = useState<'active' | 'cancelled'>('active');
   const [cleanupOpen, setCleanupOpen] = useState(false);
@@ -283,7 +284,7 @@ export default function OrdersPage() {
       {hasDailyOps ? (
         <>
           <CashierActionTiles
-            onNewOrder={() => setComposerOpen(true)}
+            onNewOrder={allowCreateOrder ? () => setComposerOpen(true) : undefined}
             onOpenSoldOut={() => setSoldOutOpen(true)}
           />
           <SoldOutPanel open={soldOutOpen} onOpenChange={setSoldOutOpen} hideTrigger />
@@ -348,7 +349,7 @@ export default function OrdersPage() {
         prefersReducedMotion={prefersReducedMotion}
         onStatusFocus={handleStatusFocus}
         onCleanup={allowHardDelete ? () => setCleanupOpen(true) : undefined}
-        onNewStaffOrder={() => setComposerOpen(true)}
+        onNewStaffOrder={allowCreateOrder ? () => setComposerOpen(true) : undefined}
         compact={hasDailyOps}
       />
 
