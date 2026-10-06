@@ -32,7 +32,7 @@ function asStaffProfile(
     role: row.role,
     full_name: row.full_name ?? '',
     permissions: parsePermissionMap(row.permissions),
-    is_active: row.is_active !== false,
+    is_active: true,
   };
 }
 
