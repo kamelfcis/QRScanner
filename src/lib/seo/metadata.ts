@@ -16,7 +16,8 @@ export function generateSiteMetadata(
   locale: Locale = defaultLocale
 ): Metadata {
   const siteName = locale === 'ar' ? SITE_NAME_AR : SITE_NAME;
-  const description = DESCRIPTIONS[locale];
+  const description =
+    locale in DESCRIPTIONS ? DESCRIPTIONS[locale as keyof typeof DESCRIPTIONS] : DESCRIPTIONS.en;
 
   return {
     metadataBase: new URL(SITE_URL),

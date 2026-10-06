@@ -5,10 +5,14 @@ import { NextIntlClientProvider, useTranslations as useNextTranslations } from '
 import { type Locale, defaultLocale, isRtl } from '@/i18n/config';
 import enMessages from '@/messages/en.json';
 import arMessages from '@/messages/ar.json';
+import frMessages from '@/messages/fr.json';
+import nlMessages from '@/messages/nl.json';
 
 const messages: Record<Locale, typeof enMessages> = {
-  en: enMessages,
   ar: arMessages,
+  en: enMessages,
+  fr: frMessages,
+  nl: nlMessages,
 };
 
 interface I18nContextValue {

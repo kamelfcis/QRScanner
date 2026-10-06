@@ -6,6 +6,7 @@ import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import './globals.css';
 
@@ -135,7 +136,9 @@ export default async function RootLayout({
           <RootI18nProvider initialLocale={locale}>
             <TooltipProvider delay={0}>
               {children}
-              <InstallPrompt />
+              <QueryProvider>
+                <InstallPrompt />
+              </QueryProvider>
               <OfflineIndicator />
             </TooltipProvider>
           </RootI18nProvider>

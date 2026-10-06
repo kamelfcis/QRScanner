@@ -1,3 +1,4 @@
+import type { Locale } from '@/i18n/config';
 import type { RestaurantSettings } from '@/types';
 
 export const DEFAULT_CONTACT = {
@@ -7,7 +8,7 @@ export const DEFAULT_CONTACT = {
 
 export function resolveContactAddress(
   settings: Partial<RestaurantSettings> | null | undefined,
-  locale: 'ar' | 'en'
+  locale: Locale
 ): string {
   const ar = settings?.address_ar?.trim();
   const en = settings?.address_en?.trim();
