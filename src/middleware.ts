@@ -44,13 +44,13 @@ export async function middleware(request: NextRequest) {
               .maybeSingle()
           ).data
         : null);
-    if (data && isStaffRole(data.role) && data.is_active !== false) {
+    if (data && isStaffRole(data.role) && !('is_active' in data && data.is_active === false)) {
       profile = {
         user_id: data.user_id,
         role: data.role,
-        full_name: data.full_name ?? '',
-        permissions: parsePermissionMap(data.permissions),
-        is_active: data.is_active !== false,
+        full_name: 'full_name' in data ? (data.full_name ?? '') : '',
+        permissions: parsePermissionMap('permissions' in data ? data.permissions : {}),
+        is_active: !('is_active' in data) || data.is_active !== false,
       };
     }
   }

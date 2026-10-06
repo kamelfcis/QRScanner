@@ -17,6 +17,25 @@ export const staffRoleKeys = {
   me: () => [...staffRoleKeys.all, 'me'] as const,
 };
 
+function asStaffProfile(
+  row: {
+    user_id: string;
+    role: string;
+    full_name?: string | null;
+    permissions?: unknown;
+    is_active?: boolean | null;
+  } | null
+): StaffProfile | null {
+  if (!row || !isStaffRole(row.role) || row.is_active === false) return null;
+  return {
+    user_id: row.user_id,
+    role: row.role,
+    full_name: row.full_name ?? '',
+    permissions: parsePermissionMap(row.permissions),
+    is_active: row.is_active !== false,
+  };
+}
+
 async function fetchMyStaffProfile(): Promise<StaffProfile | null> {
   const supabase = createClient();
   const {
@@ -46,15 +65,7 @@ async function fetchMyStaffProfile(): Promise<StaffProfile | null> {
     console.warn('[useStaffProfile] staff_profiles query failed, denying access:', error.message);
     return null;
   }
-  if (!row || !isStaffRole(row.role) || row.is_active === false) return null;
-
-  return {
-    user_id: row.user_id,
-    role: row.role,
-    full_name: row.full_name ?? '',
-    permissions: parsePermissionMap(row.permissions),
-    is_active: row.is_active !== false,
-  };
+  return asStaffProfile(row);
 }
 
 export function useStaffProfile() {
