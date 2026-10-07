@@ -2,8 +2,10 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { selectedOptionsKey } from '@/lib/catalog/product-choices';
 import { playSound } from '@/lib/ux/sound';
 import { triggerHaptic } from '@/lib/ux/haptic';
+import type { SelectedOption } from '@/types/database';
 
 export type CartDiningMode = 'dining' | 'takeaway';
 export type FulfillmentType = 'delivery' | 'pickup';
@@ -31,6 +33,7 @@ export interface CartItem {
   weight_options_g?: number[] | null;
   sizeOption: CartSizeOption;
   weightGrams?: number | null;
+  selectedOptions?: SelectedOption[];
   quantity: number;
   notes: string;
 }
@@ -66,18 +69,21 @@ export function makeCartLineId(
   productId: string,
   notes: string,
   sizeOption: CartSizeOption = null,
-  weightGrams: number | null = null
+  weightGrams: number | null = null,
+  selectedOptions: SelectedOption[] = []
 ): string {
   const key = notesKey(notes);
   const weightKey = weightGrams != null ? `${weightGrams}g` : '';
-  if (weightKey && sizeOption && key) return `${productId}::${weightKey}::${sizeOption}::${key}`;
-  if (weightKey && sizeOption) return `${productId}::${weightKey}::${sizeOption}`;
-  if (weightKey && key) return `${productId}::${weightKey}::${key}`;
-  if (weightKey) return `${productId}::${weightKey}`;
-  if (sizeOption && key) return `${productId}::${sizeOption}::${key}`;
-  if (sizeOption) return `${productId}::${sizeOption}`;
-  if (key) return `${productId}::${key}`;
-  return productId;
+  const optionsKey = selectedOptionsKey(selectedOptions);
+  const optionsPart = optionsKey ? `opts:${optionsKey}` : '';
+
+  const parts = [productId];
+  if (weightKey) parts.push(weightKey);
+  if (sizeOption) parts.push(sizeOption);
+  if (optionsPart) parts.push(optionsPart);
+  if (key) parts.push(key);
+  if (parts.length === 1) return productId;
+  return parts.join('::');
 }
 
 const initialMeta: CartMeta = {
@@ -103,7 +109,8 @@ export const useCartStore = create<CartState>()(
         const notes = item.notes?.trim() ?? '';
         const sizeOption = item.sizeOption ?? null;
         const weightGrams = item.weightGrams ?? null;
-        const id = makeCartLineId(item.productId, notes, sizeOption, weightGrams);
+        const selectedOptions = item.selectedOptions ?? [];
+        const id = makeCartLineId(item.productId, notes, sizeOption, weightGrams, selectedOptions);
         triggerHaptic('light');
         playSound('add');
         set((state) => {
@@ -137,6 +144,7 @@ export const useCartStore = create<CartState>()(
                 weight_options_g: item.weight_options_g ?? null,
                 sizeOption,
                 weightGrams,
+                selectedOptions,
                 quantity: qty,
                 notes,
               },
@@ -171,7 +179,8 @@ export const useCartStore = create<CartState>()(
             current.productId,
             trimmed,
             current.sizeOption,
-            current.weightGrams ?? null
+            current.weightGrams ?? null,
+            current.selectedOptions ?? []
           );
           if (newId === id) {
             return {

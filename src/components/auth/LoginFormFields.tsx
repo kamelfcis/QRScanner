@@ -8,9 +8,9 @@ import { Label } from '@/components/ui/label';
 import type { LoginInput } from '@/types/schema';
 
 interface LoginFormCopy {
-  email: string;
+  identifier: string;
   password: string;
-  emailPlaceholder: string;
+  identifierPlaceholder: string;
   passwordPlaceholder: string;
   signIn: string;
   signingIn: string;
@@ -38,7 +38,7 @@ export function LoginFormFields({
   onTogglePassword,
   copy,
 }: LoginFormFieldsProps) {
-  const emailInvalid = Boolean(errors.email);
+  const identifierInvalid = Boolean(errors.identifier);
   const passwordInvalid = Boolean(errors.password);
 
   return (
@@ -50,29 +50,29 @@ export function LoginFormFields({
       ) : null}
 
       <div className="login-field">
-        <Label htmlFor="email" className="login-label">
-          {copy.email}
+        <Label htmlFor="identifier" className="login-label">
+          {copy.identifier}
         </Label>
         <Input
-          id="email"
-          type="email"
-          inputMode="email"
+          id="identifier"
+          type="text"
+          inputMode="text"
           autoComplete="username"
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
-          placeholder={copy.emailPlaceholder}
+          placeholder={copy.identifierPlaceholder}
           aria-required="true"
-          aria-invalid={emailInvalid}
-          aria-describedby={emailInvalid ? 'login-email-error' : undefined}
+          aria-invalid={identifierInvalid}
+          aria-describedby={identifierInvalid ? 'login-identifier-error' : undefined}
           disabled={submitting}
           className="login-input h-12"
-          {...register('email')}
-          name="email"
+          {...register('identifier')}
+          name="identifier"
         />
-        {errors.email ? (
-          <p id="login-email-error" className="login-field-error">
-            {errors.email.message}
+        {errors.identifier ? (
+          <p id="login-identifier-error" className="login-field-error">
+            {errors.identifier.message}
           </p>
         ) : null}
       </div>

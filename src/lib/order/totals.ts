@@ -99,14 +99,18 @@ import {
   type ProductSizeFields,
   type ProductSizeId,
 } from '@/lib/catalog/product-sizes';
+import { sumSelectedOptionsDelta } from '@/lib/catalog/product-choices';
+import type { SelectedOption } from '@/types/database';
 
 export interface CartLinePricing extends ProductSizeFields {
   sizeOption?: ProductSizeId | null;
+  selectedOptions?: SelectedOption[];
 }
 
 export function getCartLineUnitPrice(item: CartLinePricing, diningMode: DiningMode): number {
-  if (item.has_size_options && item.sizeOption) {
-    return getProductSizePrice(item, item.sizeOption);
-  }
-  return getUnitPrice(item.dining_price, item.takeaway_price, diningMode);
+  const base =
+    item.has_size_options && item.sizeOption
+      ? getProductSizePrice(item, item.sizeOption)
+      : getUnitPrice(item.dining_price, item.takeaway_price, diningMode);
+  return base + sumSelectedOptionsDelta(item.selectedOptions);
 }

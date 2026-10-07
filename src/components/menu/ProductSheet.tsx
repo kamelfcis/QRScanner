@@ -33,7 +33,18 @@ import {
 } from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { isAlaKeefakTenant } from '@/i18n/config';
-import type { Product } from '@/types/database';
+import {
+  formatOptionPriceDelta,
+  getAvailableOptionGroups,
+  getDefaultSelectedOptions,
+  isOptionSelected,
+  productHasChoiceGroups,
+  setSingleOption,
+  sumSelectedOptionsDelta,
+  toggleMultiOption,
+  validateSelectedOptions,
+} from '@/lib/catalog/product-choices';
+import type { Product, SelectedOption } from '@/types/database';
 
 interface ProductSheetProps {
   product: Product | null;
@@ -55,6 +66,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const [notes, setNotes] = useState('');
   const [sizeOption, setSizeOption] = useState<CartSizeOption>('small');
   const [weightGrams, setWeightGrams] = useState<number | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
 
   useEffect(() => {
     if (product) {
@@ -64,6 +76,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       setSizeOption(getDefaultProductSize(product));
       const weights = product.weight_options_g;
       setWeightGrams(weights?.length ? weights[0] : null);
+      setSelectedOptions(getDefaultSelectedOptions(product));
     }
   }, [product]);
 
@@ -75,8 +88,11 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const enabledSizes = getEnabledProductSizes(product);
   const hasSizeOptions = enabledSizes.length > 0;
   const showWeightPicker = hasWeightOptions(product);
+  const optionGroups = getAvailableOptionGroups(product);
+  const hasChoiceGroups = productHasChoiceGroups(product);
   const weightOptions = product.weight_options_g ?? [];
-  const activePrice = showWeightPicker
+  const optionsDelta = sumSelectedOptionsDelta(selectedOptions);
+  const basePrice = showWeightPicker
     ? weightGrams != null && product.price_per_kg != null
       ? computeWeightPrice(product.price_per_kg, weightGrams)
       : (minWeightPrice(product) ?? product.dining_price)
@@ -85,6 +101,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       : diningMode === 'dining'
         ? product.dining_price
         : product.takeaway_price;
+  const activePrice = basePrice + optionsDelta;
   const otherPrice =
     hasSizeOptions || showWeightPicker
       ? null
@@ -121,7 +138,8 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const canAdd =
     product.is_available &&
     (!hasSizeOptions || sizeOption !== null) &&
-    (!showWeightPicker || weightGrams != null);
+    (!showWeightPicker || weightGrams != null) &&
+    (!hasChoiceGroups || validateSelectedOptions(product, selectedOptions));
 
   const handleAdd = () => {
     if (!canAdd) return;
@@ -146,6 +164,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       weight_options_g: product.weight_options_g,
       sizeOption: hasSizeOptions ? sizeOption : null,
       weightGrams: showWeightPicker ? weightGrams : null,
+      selectedOptions: hasChoiceGroups ? selectedOptions : undefined,
       quantity: qty,
       notes,
     });
@@ -323,6 +342,78 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
           )}
         </div>
       )}
+
+      {hasChoiceGroups ? (
+        <div className="space-y-4 border-t border-[var(--menu-line)] pt-4">
+          {optionGroups.map((group) => {
+            const groupName = getName(locale, group.name_en, group.name_ar);
+            const groupSelected = selectedOptions.filter((option) => option.group_id === group.id);
+            return (
+              <div key={group.id} className="space-y-2">
+                <Label className="text-xs text-[var(--menu-ink-soft)]">
+                  {groupName}
+                  {group.is_required ? ` *` : ''}
+                </Label>
+                <div
+                  className={cn(
+                    'grid gap-2',
+                    (group.items ?? []).length > 2 ? 'grid-cols-2' : 'grid-cols-1'
+                  )}
+                  role="group"
+                  aria-label={groupName}
+                >
+                  {(group.items ?? []).map((item) => {
+                    const selected = isOptionSelected(groupSelected, item.id);
+                    const itemName = getName(locale, item.name_en, item.name_ar);
+                    const deltaLabel = formatOptionPriceDelta(
+                      Number(item.price_delta) || 0,
+                      (value) => formatCurrencyAmount(value, currency, { locale: currencyLocale })
+                    );
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                          haptic.tick();
+                          setSelectedOptions((current) =>
+                            group.selection_type === 'single'
+                              ? setSingleOption(group, item, current)
+                              : toggleMultiOption(group, item, current)
+                          );
+                        }}
+                        className={cn(
+                          'rounded-xl border px-3 py-3 text-start transition-colors',
+                          selected
+                            ? 'border-[var(--menu-wine)] bg-[var(--menu-gold-wash)]'
+                            : 'border-[var(--menu-line-strong)] bg-[var(--menu-surface)] hover:bg-[var(--menu-paper)]'
+                        )}
+                        aria-pressed={selected}
+                      >
+                        <span className="block text-sm font-medium text-[var(--menu-ink)]">
+                          {itemName}
+                        </span>
+                        {deltaLabel ? (
+                          <span
+                            className="mt-1 block text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                            dir="ltr"
+                          >
+                            {deltaLabel}
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+                {group.selection_type === 'multi' && group.max_select > 1 ? (
+                  <p className="text-xs text-[var(--menu-ink-soft)]">
+                    {t('choiceSelectUpTo', { count: group.max_select })}
+                  </p>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
       {product.is_available ? (
         <div className="space-y-3">

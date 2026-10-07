@@ -3,6 +3,7 @@ import {
   hasExtendedProductSizes,
   hasProductSizeOptions,
   hasProductWeightOptions,
+  isAlaKeefakTenant,
 } from '@/i18n/config';
 
 export const categoryKeys = {
@@ -38,10 +39,23 @@ const productExtendedSizeFields = hasExtendedProductSizes
   : '';
 const productWeightFields = hasProductWeightOptions ? 'price_per_kg, weight_options_g, ' : '';
 
+export const productOptionGroupsEmbed = isAlaKeefakTenant
+  ? `option_groups:product_option_groups(
+      id, product_id, name_ar, name_en, selection_type, min_select, max_select, is_required, sort_order,
+      items:product_option_items(
+        id, group_id, name_ar, name_en, price_delta, is_default, is_available, sort_order
+      )
+    )`
+  : '';
+
 export const popularProductFields = `id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields}, image_url, dining_price, takeaway_price, ${productSizeField}${productExtendedSizeFields}${productWeightFields}is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at`;
 
 /** Dashboard product reads/writes — same tenant-safe columns as popularProductFields. */
 export const productTableFields = popularProductFields;
+
+export const productWithOptionsSelect = isAlaKeefakTenant
+  ? `${productTableFields}, ${productOptionGroupsEmbed}`
+  : productTableFields;
 
 const EXTENDED_LOCALE_WRITE_KEYS = [
   'name_fr',
@@ -96,7 +110,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
     id, category_id, subcategory_id, ${catalogNameFields}, ${catalogDescriptionFields},
     image_url, dining_price, takeaway_price, ${productSizeField}${productExtendedSizeFields}${productWeightFields}is_available, is_popular, is_new, is_bestseller,
     is_spicy, sort_order, created_at, updated_at,
-    gallery:product_gallery(id, product_id, image_url, sort_order, created_at)
+    gallery:product_gallery(id, product_id, image_url, sort_order, created_at)${productOptionGroupsEmbed ? `,\n    ${productOptionGroupsEmbed}` : ''}
   )
 `;
 

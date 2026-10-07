@@ -9,6 +9,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { loginSchema, type LoginInput } from '@/types/schema';
 import type { LoginBrandConfig } from '@/lib/login/types';
+import { isAlaKeefakTenant } from '@/i18n/config';
 import { getLocalizedText } from '@/lib/utils';
 import { LoginBrandPanel } from './LoginBrandPanel';
 import { LoginFormFields } from './LoginFormFields';
@@ -43,7 +44,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { identifier: '', password: '' },
   });
 
   const onSubmit = async (values: LoginInput) => {
@@ -51,7 +52,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
     setAuthError('');
     setSubmitting(true);
     try {
-      await signIn(values.email, values.password);
+      await signIn(values.identifier, values.password);
     } catch {
       setAuthError(t('invalidCredentials'));
       setSubmitting(false);
@@ -110,9 +111,11 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
               showPassword={showPassword}
               onTogglePassword={() => setShowPassword((open) => !open)}
               copy={{
-                email: t('email'),
+                identifier: isAlaKeefakTenant ? t('identifierOrEmail') : t('email'),
                 password: t('password'),
-                emailPlaceholder: brand.emailPlaceholder,
+                identifierPlaceholder: isAlaKeefakTenant
+                  ? t('identifierPlaceholder')
+                  : brand.emailPlaceholder,
                 passwordPlaceholder: t('passwordPlaceholder'),
                 signIn: t('signIn'),
                 signingIn: t('signingIn'),

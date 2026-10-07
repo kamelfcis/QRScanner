@@ -38,6 +38,7 @@ import {
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useTopSellingBadgeIds } from '@/components/menu/TopSellingProvider';
 import { isAlaKeefakTenant } from '@/i18n/config';
+import { productHasChoiceGroups } from '@/lib/catalog/product-choices';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -81,7 +82,8 @@ export function ProductCard({
   // false/null/undefined → quick-add; size or weight options open ProductSheet
   const enabledSizes = getEnabledProductSizes(product);
   const hasSizeOptions = enabledSizes.length > 0;
-  const needsPicker = enabledSizes.length > 1 || hasWeightOptions(product);
+  const hasChoiceGroups = isAlaKeefakTenant && productHasChoiceGroups(product);
+  const needsPicker = enabledSizes.length > 1 || hasWeightOptions(product) || hasChoiceGroups;
   const fromPrice = minWeightPrice(product);
   const sizeRange = getProductSizePriceRange(product);
   const singleSize = enabledSizes.length === 1 ? getDefaultProductSize(product) : null;
@@ -333,9 +335,11 @@ export function ProductCard({
                 className="flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-full bg-[var(--menu-wine)] text-[var(--menu-on-wine)] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
                 aria-label={
                   needsPicker
-                    ? hasSizeOptions
-                      ? t('selectSize')
-                      : t('selectWeight')
+                    ? hasChoiceGroups
+                      ? t('customizeItem')
+                      : hasSizeOptions
+                        ? t('selectSize')
+                        : t('selectWeight')
                     : tCart('addToCart')
                 }
                 data-testid={needsPicker ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
@@ -414,9 +418,11 @@ export function ProductCard({
                     data-testid={needsPicker ? 'open-product-sheet' : 'add-to-cart'}
                     aria-label={
                       needsPicker
-                        ? hasSizeOptions
-                          ? t('selectSize')
-                          : t('selectWeight')
+                        ? hasChoiceGroups
+                          ? t('customizeItem')
+                          : hasSizeOptions
+                            ? t('selectSize')
+                            : t('selectWeight')
                         : tCart('addToCart')
                     }
                   >
@@ -427,9 +433,11 @@ export function ProductCard({
                     )}
                     <span className="whitespace-nowrap">
                       {needsPicker
-                        ? hasSizeOptions
-                          ? t('selectSize')
-                          : t('selectWeight')
+                        ? hasChoiceGroups
+                          ? t('customizeItem')
+                          : hasSizeOptions
+                            ? t('selectSize')
+                            : t('selectWeight')
                         : isAlaKeefakTenant
                           ? `+ ${addLabel}`
                           : addLabel}

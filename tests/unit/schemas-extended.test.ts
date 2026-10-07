@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { categorySchema, productSchema, offerSchema, gallerySchema, loginSchema, settingsSchema, qrCodeSchema, restaurantTableSchema } from '@/types/schema';
+import {
+  categorySchema,
+  productSchema,
+  offerSchema,
+  gallerySchema,
+  loginSchema,
+  settingsSchema,
+  qrCodeSchema,
+  restaurantTableSchema,
+} from '@/types/schema';
 
 describe('categorySchema edge cases', () => {
   it('rejects very long names', () => {
@@ -13,7 +22,12 @@ describe('categorySchema edge cases', () => {
   });
 
   it('accepts empty description', () => {
-    const result = categorySchema.safeParse({ name_en: 'Test', name_ar: 'اختبار', description_en: '', description_ar: '' });
+    const result = categorySchema.safeParse({
+      name_en: 'Test',
+      name_ar: 'اختبار',
+      description_en: '',
+      description_ar: '',
+    });
     expect(result.success).toBe(true);
   });
 
@@ -164,7 +178,7 @@ describe('gallerySchema edge cases', () => {
 describe('loginSchema edge cases', () => {
   it('accepts valid login', () => {
     const result = loginSchema.safeParse({
-      email: 'admin@example.com',
+      identifier: 'admin@example.com',
       password: 'password123',
     });
     expect(result.success).toBe(true);
@@ -172,7 +186,7 @@ describe('loginSchema edge cases', () => {
 
   it('rejects invalid email', () => {
     const result = loginSchema.safeParse({
-      email: 'not-an-email',
+      identifier: 'bad id',
       password: 'password123',
     });
     expect(result.success).toBe(false);
@@ -180,7 +194,7 @@ describe('loginSchema edge cases', () => {
 
   it('rejects short password', () => {
     const result = loginSchema.safeParse({
-      email: 'admin@example.com',
+      identifier: 'admin@example.com',
       password: '123',
     });
     expect(result.success).toBe(false);

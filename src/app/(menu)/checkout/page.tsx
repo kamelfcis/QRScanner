@@ -351,6 +351,9 @@ export default function CheckoutPage() {
               quantity: item.quantity,
               size_option: item.has_size_options ? item.sizeOption : null,
               weight_grams: item.weightGrams ?? null,
+              selected_options: item.selectedOptions?.length
+                ? item.selectedOptions.map((option) => ({ item_id: option.item_id }))
+                : undefined,
               notes: item.notes || null,
             })),
             dining_mode: diningMode,

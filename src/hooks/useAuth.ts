@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { isStaffAppPath } from '@/lib/auth/staff-path';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
 import {
   defaultStaffHome,
   isStaffPathAllowed,
@@ -69,8 +69,29 @@ export function useAuth() {
   }, []);
 
   const signIn = useCallback(
-    async (email: string, password: string) => {
+    async (identifier: string, password: string) => {
       setState((prev) => ({ ...prev, loading: true, error: null }));
+
+      let email = identifier.trim();
+      if (isAlaKeefakTenant) {
+        const { data: resolved, error: rpcError } = await supabase.rpc(
+          'resolve_staff_login_email',
+          {
+            p_identifier: identifier.trim(),
+          }
+        );
+        if (rpcError || !resolved) {
+          const authError = (rpcError ?? {
+            message: 'Invalid login credentials',
+            name: 'AuthApiError',
+            status: 400,
+          }) as AuthError;
+          setState((prev) => ({ ...prev, loading: false, error: authError }));
+          throw authError;
+        }
+        email = resolved;
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,

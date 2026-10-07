@@ -34,6 +34,47 @@ export interface Subcategory {
   updated_at: string;
 }
 
+export type ProductOptionSelectionType = 'single' | 'multi';
+
+export interface ProductOptionItem {
+  id: string;
+  group_id: string;
+  name_ar: string;
+  name_en: string;
+  price_delta: number;
+  is_default: boolean;
+  is_available: boolean;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProductOptionGroup {
+  id: string;
+  product_id: string;
+  name_ar: string;
+  name_en: string;
+  selection_type: ProductOptionSelectionType;
+  min_select: number;
+  max_select: number;
+  is_required: boolean;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+  items?: ProductOptionItem[];
+}
+
+/** Snapshot stored on order_items.selected_options at checkout time. */
+export interface SelectedOption {
+  group_id: string;
+  group_name_ar: string;
+  group_name_en: string;
+  item_id: string;
+  name_ar: string;
+  name_en: string;
+  price_delta: number;
+}
+
 export interface Product {
   id: string;
   category_id: string;
@@ -66,6 +107,7 @@ export interface Product {
   sort_order: number;
   created_at: string;
   updated_at: string;
+  option_groups?: ProductOptionGroup[];
 }
 
 export interface ProductGallery {
@@ -309,6 +351,7 @@ export interface OrderItem {
   unit_price: number;
   size_option: OrderSizeOption | null;
   weight_grams?: number | null;
+  selected_options?: SelectedOption[];
   notes: string | null;
   voided_at?: string | null;
   void_reason?: string | null;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { hasExtendedProductSizes } from '@/i18n/config';
+import { hasExtendedProductSizes, isAlaKeefakTenant } from '@/i18n/config';
+import { isLoginIdentifier } from '@/lib/staff/username';
 import {
   getEnabledProductSizes,
   getProductSizePrice,
@@ -244,8 +245,16 @@ export const restaurantTableSchema = z.object({
 
 export type RestaurantTableInput = z.infer<typeof restaurantTableSchema>;
 
+const loginIdentifierSchema = isAlaKeefakTenant
+  ? z
+      .string()
+      .trim()
+      .min(3, 'Enter your email or username')
+      .refine(isLoginIdentifier, { message: 'Invalid email or username' })
+  : z.string().trim().email('Invalid email address');
+
 export const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  identifier: loginIdentifierSchema,
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
@@ -303,11 +312,16 @@ export const orderDiningModeSchema = z.enum(['dining', 'takeaway']);
 export const orderFulfillmentSchema = z.enum(['pickup', 'delivery']);
 export const orderSizeOptionSchema = z.enum(['small', 'medium', 'large', 'family']);
 
+export const selectedOptionPayloadSchema = z.object({
+  item_id: z.string().uuid(),
+});
+
 export const placeOrderItemSchema = z.object({
   product_id: z.string().uuid(),
   quantity: z.number().int().min(1).max(99),
   size_option: orderSizeOptionSchema.nullable().optional(),
   weight_grams: z.number().int().min(1).max(10000).nullable().optional(),
+  selected_options: z.array(selectedOptionPayloadSchema).max(32).optional(),
   notes: z.string().max(200).nullable().optional(),
 });
 

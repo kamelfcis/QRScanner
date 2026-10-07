@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
+import { isValidStaffUsername, normalizeStaffUsername } from '@/lib/staff/username';
 import {
   isStaffRole,
   parsePermissionMap,
@@ -17,7 +18,30 @@ type StaffRow = {
   full_name: string;
   permissions: PermissionMap;
   is_active: boolean;
+  username?: string | null;
 };
+
+type ProfileListRow = {
+  user_id: string;
+  role: string;
+  full_name: string;
+  permissions: unknown;
+  is_active: boolean;
+  created_at: string;
+  username?: string | null;
+};
+
+async function findUsernameConflict(
+  admin: NonNullable<ReturnType<typeof createAdminClient>>,
+  username: string,
+  exceptUserId?: string
+) {
+  let query = admin.from('staff_profiles').select('user_id').eq('username', username).limit(1);
+  if (exceptUserId) query = query.neq('user_id', exceptUserId);
+  const { data, error } = await query.maybeSingle();
+  if (error) throw error;
+  return data;
+}
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -84,12 +108,21 @@ export async function GET() {
   const gate = await requireAdmin();
   if (gate.error) return gate.error;
 
-  const { data: profiles, error } = await gate.admin
+  const profileQuery = gate.admin
     .from('staff_profiles')
     .select('user_id, role, full_name, permissions, is_active, created_at')
     .order('created_at', { ascending: true });
 
+  const { data: profilesRaw, error } = isAlaKeefakTenant
+    ? await gate.admin
+        .from('staff_profiles')
+        .select('user_id, role, full_name, permissions, is_active, created_at, username')
+        .order('created_at', { ascending: true })
+    : await profileQuery;
+
   if (error) return jsonError(error.message, 500);
+
+  const profiles = (profilesRaw ?? []) as ProfileListRow[];
 
   const { data: usersData, error: usersError } = await gate.admin.auth.admin.listUsers({
     perPage: 1000,
@@ -97,13 +130,14 @@ export async function GET() {
   if (usersError) return jsonError(usersError.message, 500);
 
   const emailById = new Map((usersData.users ?? []).map((u) => [u.id, u.email ?? '']));
-  const rows = (profiles ?? []).map((row) => ({
+  const rows = profiles.map((row) => ({
     user_id: row.user_id,
     email: emailById.get(row.user_id) ?? '',
     role: isStaffRole(row.role) ? row.role : 'cashier',
     full_name: row.full_name ?? '',
     permissions: parsePermissionMap(row.permissions),
     is_active: row.is_active !== false,
+    ...(isAlaKeefakTenant ? { username: row.username ?? null } : {}),
   }));
 
   return NextResponse.json({ users: rows });
@@ -125,6 +159,22 @@ export async function POST(request: Request) {
   if (!email || !email.includes('@')) return jsonError('Invalid email', 400);
   if (password.length < 8) return jsonError('Password must be at least 8 characters', 400);
 
+  let username: string | null = null;
+  if (isAlaKeefakTenant && body?.username != null) {
+    username = normalizeStaffUsername(String(body.username));
+    if (username && !isValidStaffUsername(username)) {
+      return jsonError('Invalid username format', 400);
+    }
+    if (username) {
+      try {
+        const conflict = await findUsernameConflict(gate.admin, username);
+        if (conflict) return jsonError('Username is already in use', 400);
+      } catch (err) {
+        return jsonError(err instanceof Error ? err.message : 'Could not validate username', 500);
+      }
+    }
+  }
+
   const { data: created, error: createError } = await gate.admin.auth.admin.createUser({
     email,
     password,
@@ -134,16 +184,18 @@ export async function POST(request: Request) {
     return jsonError(createError?.message ?? 'Could not create user', 400);
   }
 
-  const { error: upsertError } = await gate.admin.from('staff_profiles').upsert(
-    {
-      user_id: created.user.id,
-      role,
-      full_name: fullName,
-      permissions,
-      is_active: true,
-    },
-    { onConflict: 'user_id' }
-  );
+  const profilePayload: Record<string, unknown> = {
+    user_id: created.user.id,
+    role,
+    full_name: fullName,
+    permissions,
+    is_active: true,
+  };
+  if (isAlaKeefakTenant) profilePayload.username = username;
+
+  const { error: upsertError } = await gate.admin.from('staff_profiles').upsert(profilePayload, {
+    onConflict: 'user_id',
+  });
 
   if (upsertError) {
     await gate.admin.auth.admin.deleteUser(created.user.id);
@@ -158,6 +210,7 @@ export async function POST(request: Request) {
       full_name: fullName,
       permissions,
       is_active: true,
+      ...(isAlaKeefakTenant ? { username } : {}),
     } satisfies StaffRow & { email: string },
   });
 }
@@ -200,6 +253,22 @@ export async function PATCH(request: Request) {
   if (typeof body?.full_name === 'string') patch.full_name = body.full_name.trim();
   if (nextRole === 'custom') patch.permissions = parsePermissionMap(body?.permissions);
   if (nextRole !== 'custom') patch.permissions = {};
+
+  if (isAlaKeefakTenant && body?.username !== undefined) {
+    const username = normalizeStaffUsername(String(body.username ?? ''));
+    if (username && !isValidStaffUsername(username)) {
+      return jsonError('Invalid username format', 400);
+    }
+    if (username) {
+      try {
+        const conflict = await findUsernameConflict(gate.admin, username, userId);
+        if (conflict) return jsonError('Username is already in use', 400);
+      } catch (err) {
+        return jsonError(err instanceof Error ? err.message : 'Could not validate username', 500);
+      }
+    }
+    patch.username = username;
+  }
 
   const { error: updateError } = await gate.admin
     .from('staff_profiles')

@@ -175,6 +175,12 @@ function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
   if (item.weight_grams != null) {
     name = `${name} (${formatWeightGrams(locale, item.weight_grams)})`;
   }
+  if (item.selected_options?.length) {
+    const optionNames = item.selected_options
+      .map((option) => getLocalizedText(locale, { en: option.name_en, ar: option.name_ar }))
+      .join(', ');
+    name = `${name} (${optionNames})`;
+  }
   return name;
 }
 
@@ -191,6 +197,12 @@ function formatCartItemName(item: CartItem, locale: MessageLocale): string {
   }
   if (item.weightGrams != null) {
     name = `${name} (${formatWeightGrams(locale, item.weightGrams)})`;
+  }
+  if (item.selectedOptions?.length) {
+    const optionNames = item.selectedOptions
+      .map((option) => getLocalizedText(locale, { en: option.name_en, ar: option.name_ar }))
+      .join(', ');
+    name = `${name} (${optionNames})`;
   }
   return name;
 }

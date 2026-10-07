@@ -75,11 +75,18 @@ import {
   hasExtendedProductSizes,
   hasProductSizeOptions,
   hasProductWeightOptions,
+  isAlaKeefakTenant,
 } from '@/i18n/config';
 import type { ProductSizeId } from '@/lib/catalog/product-sizes';
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
+import {
+  ProductOptionGroupsEditor,
+  groupsFromApi,
+  groupsToSavePayload,
+  type ProductOptionGroupDraft,
+} from '@/components/dashboard/products/ProductOptionGroupsEditor';
 import {
   ProductAdminCard,
   ProductPriceSummary,
@@ -680,6 +687,10 @@ export default function ProductsPage() {
   const [quickFilter, setQuickFilter] = useState<'all' | 'unavailable' | 'no_image'>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const [createOptionGroups, setCreateOptionGroups] = useState<ProductOptionGroupDraft[]>([]);
+  const [editOptionGroups, setEditOptionGroups] = useState<ProductOptionGroupDraft[]>([]);
+  const [initialEditOptionGroupIds, setInitialEditOptionGroupIds] = useState<string[]>([]);
+  const [initialEditOptionItemIds, setInitialEditOptionItemIds] = useState<string[]>([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [storagePickerOpen, setStoragePickerOpen] = useState(false);
@@ -851,12 +862,66 @@ export default function ProductsPage() {
     }
   };
 
+  const collectOptionIds = (groups: ProductOptionGroupDraft[]) => {
+    const groupIds = groups.map((group) => group.id).filter(Boolean) as string[];
+    const itemIds = groups.flatMap((group) =>
+      group.items.map((item) => item.id).filter(Boolean)
+    ) as string[];
+    return { groupIds, itemIds };
+  };
+
+  const loadProductOptions = async (productId: string) => {
+    const response = await fetch(`/api/products/${productId}/options`);
+    if (!response.ok) {
+      throw new Error('Failed to load product choices');
+    }
+    const payload = (await response.json()) as { groups?: Product['option_groups'] };
+    return groupsFromApi(payload.groups);
+  };
+
+  const saveProductOptions = async (
+    productId: string,
+    groups: ProductOptionGroupDraft[],
+    initialGroupIds: string[] = [],
+    initialItemIds: string[] = []
+  ) => {
+    if (!isAlaKeefakTenant) return;
+    const normalizedGroups = groups
+      .map((group) => ({
+        ...group,
+        name_ar: group.name_ar.trim(),
+        name_en: group.name_en.trim(),
+        items: group.items.filter((item) => item.name_ar.trim() && item.name_en.trim()),
+      }))
+      .filter((group) => group.name_ar && group.name_en && group.items.length > 0);
+
+    const currentIds = collectOptionIds(normalizedGroups);
+    const delete_group_ids = initialGroupIds.filter((id) => !currentIds.groupIds.includes(id));
+    const delete_item_ids = initialItemIds.filter((id) => !currentIds.itemIds.includes(id));
+
+    const response = await fetch(`/api/products/${productId}/options`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        groups: groupsToSavePayload(normalizedGroups),
+        delete_group_ids,
+        delete_item_ids,
+      }),
+    });
+
+    if (!response.ok) {
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(payload?.error ?? 'Failed to save product choices');
+    }
+  };
+
   const openCreateDialog = () => {
     createForm.reset(defaultFormValues);
+    setCreateOptionGroups([]);
     setShowCreateDialog(true);
   };
 
-  const openEditDialog = (product: Product) => {
+  const openEditDialog = async (product: Product) => {
     setEditProduct(product);
     editForm.reset({
       name_en: product.name_en,
@@ -888,6 +953,21 @@ export default function ProductsPage() {
       is_spicy: product.is_spicy,
       sort_order: product.sort_order,
     });
+
+    if (isAlaKeefakTenant) {
+      try {
+        const groups = await loadProductOptions(product.id);
+        setEditOptionGroups(groups);
+        const ids = collectOptionIds(groups);
+        setInitialEditOptionGroupIds(ids.groupIds);
+        setInitialEditOptionItemIds(ids.itemIds);
+      } catch (err) {
+        setEditOptionGroups([]);
+        setInitialEditOptionGroupIds([]);
+        setInitialEditOptionItemIds([]);
+        toast.error(err instanceof Error ? err.message : t('choicesSaveFailed'));
+      }
+    }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -997,10 +1077,19 @@ export default function ProductsPage() {
 
   const handleCreate = async (data: ProductForm) => {
     createProduct.mutate(prepareProductPayload(data), {
-      onSuccess: () => {
-        setShowCreateDialog(false);
-        createForm.reset(defaultFormValues);
-        toast.success('Product created successfully');
+      onSuccess: async (created) => {
+        try {
+          if (isAlaKeefakTenant && createOptionGroups.length > 0) {
+            await saveProductOptions(created.id, createOptionGroups);
+          }
+          await refetch();
+          setShowCreateDialog(false);
+          createForm.reset(defaultFormValues);
+          setCreateOptionGroups([]);
+          toast.success('Product created successfully');
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : t('choicesSaveFailed'));
+        }
       },
       onError: (error) => {
         toast.error(error.message || 'Failed to create product');
@@ -1013,10 +1102,26 @@ export default function ProductsPage() {
     updateProduct.mutate(
       { id: editProduct.id, input: prepareProductPayload(data) },
       {
-        onSuccess: () => {
-          setEditProduct(null);
-          editForm.reset(defaultFormValues);
-          toast.success('Product updated successfully');
+        onSuccess: async () => {
+          try {
+            if (isAlaKeefakTenant) {
+              await saveProductOptions(
+                editProduct.id,
+                editOptionGroups,
+                initialEditOptionGroupIds,
+                initialEditOptionItemIds
+              );
+            }
+            await refetch();
+            setEditProduct(null);
+            editForm.reset(defaultFormValues);
+            setEditOptionGroups([]);
+            setInitialEditOptionGroupIds([]);
+            setInitialEditOptionItemIds([]);
+            toast.success('Product updated successfully');
+          } catch (err) {
+            toast.error(err instanceof Error ? err.message : t('choicesSaveFailed'));
+          }
         },
         onError: (error) => {
           toast.error(error.message || 'Failed to update product');
@@ -1592,6 +1697,14 @@ export default function ProductsPage() {
               )}
             </div>
             <ProductPriceFields form={createForm} currency={currency} idPrefix="create" t={t} />
+            {isAlaKeefakTenant ? (
+              <ProductOptionGroupsEditor
+                groups={createOptionGroups}
+                onChange={setCreateOptionGroups}
+                currency={currency}
+                t={t}
+              />
+            ) : null}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch
@@ -1666,7 +1779,12 @@ export default function ProductsPage() {
       <Dialog
         open={!!editProduct}
         onOpenChange={(open) => {
-          if (!open) setEditProduct(null);
+          if (!open) {
+            setEditProduct(null);
+            setEditOptionGroups([]);
+            setInitialEditOptionGroupIds([]);
+            setInitialEditOptionItemIds([]);
+          }
         }}
       >
         <DialogContent className="max-h-[90vh] max-w-full overflow-y-auto sm:max-w-lg">
@@ -1767,6 +1885,14 @@ export default function ProductsPage() {
               )}
             </div>
             <ProductPriceFields form={editForm} currency={currency} idPrefix="edit" t={t} />
+            {isAlaKeefakTenant ? (
+              <ProductOptionGroupsEditor
+                groups={editOptionGroups}
+                onChange={setEditOptionGroups}
+                currency={currency}
+                t={t}
+              />
+            ) : null}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Switch

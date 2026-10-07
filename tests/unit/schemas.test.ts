@@ -235,7 +235,7 @@ describe('qrCodeSchema', () => {
 describe('loginSchema', () => {
   it('accepts valid login', () => {
     const result = loginSchema.safeParse({
-      email: 'admin@wardashamya.com',
+      identifier: 'admin@wardashamya.com',
       password: 'password123',
     });
     expect(result.success).toBe(true);
@@ -243,7 +243,7 @@ describe('loginSchema', () => {
 
   it('rejects invalid email', () => {
     const result = loginSchema.safeParse({
-      email: 'not-an-email',
+      identifier: 'bad id',
       password: 'password123',
     });
     expect(result.success).toBe(false);
@@ -251,7 +251,7 @@ describe('loginSchema', () => {
 
   it('rejects short password', () => {
     const result = loginSchema.safeParse({
-      email: 'admin@wardashamya.com',
+      identifier: 'admin@wardashamya.com',
       password: '12345',
     });
     expect(result.success).toBe(false);

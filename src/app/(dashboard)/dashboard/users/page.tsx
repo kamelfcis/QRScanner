@@ -20,7 +20,8 @@ import { EmptyState } from '@/components/shared/feedback/EmptyState';
 import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { LoadingPage } from '@/components/shared/feedback/LoadingSpinner';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
-import { hasDailyOps } from '@/i18n/config';
+import { hasDailyOps, isAlaKeefakTenant } from '@/i18n/config';
+import { isValidStaffUsername, normalizeStaffUsername } from '@/lib/staff/username';
 import { useStaffProfile } from '@/hooks/useStaffProfile';
 import {
   ALL_ACTIONS,
@@ -35,6 +36,7 @@ import {
 type StaffUserRow = {
   user_id: string;
   email: string;
+  username?: string | null;
   role: StaffRole;
   full_name: string;
   permissions: PermissionMap;
@@ -43,6 +45,7 @@ type StaffUserRow = {
 
 const emptyForm = {
   email: '',
+  username: '',
   password: '',
   full_name: '',
   role: 'cashier' as StaffRole,
@@ -112,6 +115,7 @@ export default function StaffUsersPage() {
     setEditing(row);
     setForm({
       email: row.email,
+      username: row.username ?? '',
       password: '',
       full_name: row.full_name,
       role: row.role,
@@ -130,9 +134,18 @@ export default function StaffUsersPage() {
       toast.error(t('validation'));
       return;
     }
+    if (isAlaKeefakTenant && form.username.trim()) {
+      const normalized = normalizeStaffUsername(form.username);
+      if (!normalized || !isValidStaffUsername(normalized)) {
+        toast.error(t('usernameInvalid'));
+        return;
+      }
+    }
 
     setSaving(true);
     try {
+      const usernamePayload = isAlaKeefakTenant ? { username: form.username.trim() } : {};
+
       const payload = editing
         ? {
             user_id: editing.user_id,
@@ -141,6 +154,7 @@ export default function StaffUsersPage() {
             is_active: form.is_active,
             permissions: form.permissions,
             password: form.password || undefined,
+            ...usernamePayload,
           }
         : {
             email: form.email.trim(),
@@ -148,6 +162,7 @@ export default function StaffUsersPage() {
             full_name: form.full_name,
             role: form.role === 'admin' ? 'admin' : form.role,
             permissions: form.permissions,
+            ...usernamePayload,
           };
 
       const res = await fetch('/api/staff', {
@@ -222,6 +237,9 @@ export default function StaffUsersPage() {
                 <div>
                   <CardTitle className="text-base">{row.full_name || row.email}</CardTitle>
                   <p className="text-muted-foreground text-sm">{row.email}</p>
+                  {isAlaKeefakTenant && row.username ? (
+                    <p className="text-muted-foreground text-sm">@{row.username}</p>
+                  ) : null}
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -281,6 +299,22 @@ export default function StaffUsersPage() {
                 onChange={(e) => setForm((prev) => ({ ...prev, full_name: e.target.value }))}
               />
             </div>
+            {isAlaKeefakTenant ? (
+              <div className="space-y-2">
+                <Label htmlFor="staff-username">{t('username')}</Label>
+                <Input
+                  id="staff-username"
+                  className="min-h-11"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  placeholder={t('usernamePlaceholder')}
+                  value={form.username}
+                  onChange={(e) => setForm((prev) => ({ ...prev, username: e.target.value }))}
+                />
+                <p className="text-muted-foreground text-xs">{t('usernameHint')}</p>
+              </div>
+            ) : null}
             <div className="space-y-2">
               <Label htmlFor="staff-password">{editing ? t('resetPassword') : t('password')}</Label>
               <Input
