@@ -12,6 +12,7 @@ import {
 } from '@/lib/catalog/keys';
 import { categoryKeys } from './useCategories';
 import { menuKeys } from './useMenuStats';
+import { revalidateMenuCache } from '@/lib/revalidate/menu';
 
 const supabase = createClient();
 
@@ -164,10 +165,11 @@ export function useCreateProduct() {
       if (error) throw error;
       return data as unknown as Product;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
+      await revalidateMenuCache();
     },
   });
 }
@@ -188,10 +190,11 @@ export function useUpdateProduct() {
       if (error) throw error;
       return data as unknown as Product;
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
+      await revalidateMenuCache();
     },
   });
 }
@@ -204,10 +207,11 @@ export function useDeleteProduct() {
       const { error } = await supabase.from('products').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
+      await revalidateMenuCache();
     },
   });
 }
@@ -228,9 +232,10 @@ export function useReorderProducts() {
         throw new Error(`Failed to reorder ${failures.length} products`);
       }
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
+      await revalidateMenuCache();
     },
   });
 }
@@ -250,11 +255,12 @@ export function useToggleProductAvailability() {
       if (error) throw error;
       return data as unknown as Product;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       queryClient.invalidateQueries({ queryKey: menuKeys.all });
       queryClient.invalidateQueries({ queryKey: ['staff-order-catalog'] as const });
+      await revalidateMenuCache();
     },
   });
 }

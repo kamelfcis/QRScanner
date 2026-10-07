@@ -10,6 +10,8 @@ import { headers } from 'next/headers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
+import { ServiceWorkerUpdatePrompt } from '@/components/shared/ServiceWorkerUpdatePrompt';
+import { Toaster } from 'sonner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
@@ -167,6 +169,12 @@ export default async function RootLayout({
               <QueryProvider>
                 <InstallPrompt />
               </QueryProvider>
+              {isAlaKeefakTenant ? (
+                <>
+                  <ServiceWorkerUpdatePrompt />
+                  <Toaster position="top-center" richColors closeButton />
+                </>
+              ) : null}
               <OfflineIndicator />
             </TooltipProvider>
           </RootI18nProvider>

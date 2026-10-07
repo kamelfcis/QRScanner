@@ -1,14 +1,12 @@
-const CACHE_NAME = 'doctorburger-v1';
-const STATIC_ASSETS = [
-  '/',
-  '/menu',
-  '/offline',
-  '/icons/icon.svg',
-];
+const CACHE_NAME = 'doctorburger-v2';
+const OFFLINE_URL = '/offline';
+const STATIC_ICON = '/icons/icon.svg';
+
+const PRECACHE_ASSETS = [OFFLINE_URL, STATIC_ICON];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_ASSETS)).catch(() => undefined)
   );
   self.skipWaiting();
 });
@@ -17,42 +15,92 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
       Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
+        cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
       )
     )
   );
   self.clients.claim();
 });
 
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+function shouldBypassCache(url) {
+  const { pathname } = url;
+
+  if (pathname.startsWith('/dashboard')) return true;
+  if (pathname.startsWith('/_next')) return true;
+  if (pathname.startsWith('/api')) return true;
+
+  return false;
+}
+
+function isStaticIconRequest(url) {
+  return url.pathname === STATIC_ICON || url.pathname.endsWith('/icon.svg');
+}
+
+async function networkFirstNavigation(request) {
+  try {
+    const response = await fetch(request);
+    return response;
+  } catch {
+    const offline = await caches.match(OFFLINE_URL);
+    if (offline) return offline;
+    return Response.error();
+  }
+}
+
+async function cacheFirstStaticIcon(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  try {
+    const response = await fetch(request);
+    if (response && response.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const fallback = await caches.match(STATIC_ICON);
+    if (fallback) return fallback;
+    return Response.error();
+  }
+}
+
+async function networkOnly(request) {
+  try {
+    return await fetch(request);
+  } catch {
+    return Response.error();
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
 
-      return fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
+  if (shouldBypassCache(url)) {
+    event.respondWith(networkOnly(event.request));
+    return;
+  }
 
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+  if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+    event.respondWith(networkFirstNavigation(event.request));
+    return;
+  }
 
-          return response;
-        })
-        .catch(() => {
-          if (event.request.destination === 'document') {
-            return caches.match('/offline');
-          }
-        });
-    })
-  );
+  if (isStaticIconRequest(url)) {
+    event.respondWith(cacheFirstStaticIcon(event.request));
+    return;
+  }
+
+  event.respondWith(networkOnly(event.request));
 });
 
 self.addEventListener('push', (event) => {
@@ -86,8 +134,8 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(title, {
       body,
       tag: typeof payload.tag === 'string' && payload.tag ? payload.tag : 'new-order',
-      icon: '/icons/icon.svg',
-      badge: '/icons/icon.svg',
+      icon: STATIC_ICON,
+      badge: STATIC_ICON,
       data: { url },
     })
   );

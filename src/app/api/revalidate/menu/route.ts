@@ -6,6 +6,10 @@ import { isAlaKeefakTenant } from '@/i18n/config';
 export const runtime = 'nodejs';
 
 export async function POST() {
+  if (!isAlaKeefakTenant) {
+    return NextResponse.json({ error: 'Not available for this tenant' }, { status: 404 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -16,14 +20,8 @@ export async function POST() {
   }
 
   revalidateTag('restaurant-settings', 'seconds');
-  revalidateTag('theme-settings', 'seconds');
-  revalidatePath('/icon');
-  revalidatePath('/apple-icon');
-
-  if (isAlaKeefakTenant) {
-    revalidatePath('/');
-    revalidatePath('/menu');
-  }
+  revalidatePath('/');
+  revalidatePath('/menu');
 
   return NextResponse.json({ revalidated: true });
 }

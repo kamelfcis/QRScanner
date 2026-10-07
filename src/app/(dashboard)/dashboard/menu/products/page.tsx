@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -14,7 +15,7 @@ import {
   useDeleteProduct,
   useToggleProductAvailability,
 } from '@/hooks/useProducts';
-import { useAllCategories } from '@/hooks/useCategories';
+import { categoryKeys, useAllCategories } from '@/hooks/useCategories';
 import { useRestaurantSettings, useFeatureSettings } from '@/hooks/useSettings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,6 +80,7 @@ import {
 } from '@/i18n/config';
 import type { ProductSizeId } from '@/lib/catalog/product-sizes';
 import { stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
+import { revalidateMenuCache } from '@/lib/revalidate/menu';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
 import {
@@ -711,6 +713,7 @@ export default function ProductsPage() {
   const tMenu = useTranslations('menu');
   const { locale } = useI18n();
 
+  const queryClient = useQueryClient();
   const { data: products, isLoading, error, refetch } = useAllProducts();
   const { data: categories } = useAllCategories();
   const { data: settings } = useRestaurantSettings();
@@ -913,6 +916,10 @@ export default function ProductsPage() {
       const payload = (await response.json().catch(() => null)) as { error?: string } | null;
       throw new Error(payload?.error ?? 'Failed to save product choices');
     }
+
+    queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    await revalidateMenuCache();
   };
 
   const openCreateDialog = () => {
