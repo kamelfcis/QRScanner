@@ -15,10 +15,16 @@ function getVapidConfig() {
   return { publicKey, privateKey, subject };
 }
 
+/** Same server instance must not push the same order twice (double after()). */
+const sentOrderIds = new Set<string>();
+
 /**
  * OS notifications for a newly placed order. Never throws — must not fail placement.
  */
 export async function sendNewOrderPushes(input: SendNewOrderPushesInput): Promise<void> {
+  if (sentOrderIds.has(input.orderId)) return;
+  sentOrderIds.add(input.orderId);
+
   try {
     if (!hasDailyOps) return;
 
@@ -36,7 +42,7 @@ export async function sendNewOrderPushes(input: SendNewOrderPushesInput): Promis
     const payload = JSON.stringify({
       title: 'طلب جديد / New order',
       body: input.orderNumber,
-      tag: 'new-order',
+      tag: `order-${input.orderId}`,
       url: '/dashboard/orders',
       orderId: input.orderId,
       orderNumber: input.orderNumber,

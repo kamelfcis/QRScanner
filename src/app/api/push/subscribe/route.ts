@@ -44,8 +44,8 @@ export async function POST(request: Request) {
 
     const userAgent = request.headers.get('user-agent')?.slice(0, 512) ?? null;
 
-    // INSERT-only RLS (no UPDATE): replace any existing row for this endpoint.
-    await supabase.from('push_subscriptions').delete().eq('endpoint', parsed.data.endpoint);
+    // INSERT-only RLS (no UPDATE): one active endpoint per user.
+    await supabase.from('push_subscriptions').delete().eq('user_id', user.id);
 
     const { error } = await supabase.from('push_subscriptions').insert({
       user_id: user.id,
