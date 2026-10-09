@@ -24,6 +24,7 @@ import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { buildCustomerWhatsAppUrl, formatDisplayPhone } from '@/lib/phone/normalize';
 import { downloadReceiptPdf, printReceiptElement, receiptDomId } from '@/lib/order/print-receipt';
+import { formatSelectedOptionLines } from '@/lib/order/selected-option-lines';
 import { cn, getLocalizedText } from '@/lib/utils';
 import type { OrderStatus, OrderWithItems, RestaurantSettings } from '@/types/database';
 import { OrderReceipt } from '@/components/dashboard/orders/OrderReceipt';
@@ -540,6 +541,16 @@ export function OrderTicket({
                         {item.void_reason ? (
                           <p className="text-destructive text-xs">{item.void_reason}</p>
                         ) : null}
+                        {formatSelectedOptionLines(item.selected_options, locale).map(
+                          (line, index) => (
+                            <p
+                              key={`${item.id}-option-${index}`}
+                              className="text-muted-foreground text-xs"
+                            >
+                              {line}
+                            </p>
+                          )
+                        )}
                         {item.notes ? (
                           <p className="text-muted-foreground text-xs">{item.notes}</p>
                         ) : null}

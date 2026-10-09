@@ -1,3 +1,4 @@
+import { formatSelectedOptionLines } from '@/lib/order/selected-option-lines';
 import { getLocalizedText } from '@/lib/utils';
 import type { OrderWithItems } from '@/types/database';
 
@@ -6,6 +7,7 @@ export interface KitchenItemLine {
   name: string;
   sizeLabel: string | null;
   weightGrams: number | null;
+  optionLines: string[];
   notes: string | null;
 }
 
@@ -31,6 +33,7 @@ export function formatKitchenItemLine(
     name,
     sizeLabel,
     weightGrams: item.weight_grams ?? null,
+    optionLines: formatSelectedOptionLines(item.selected_options, locale),
     notes: item.notes ?? null,
   };
 }

@@ -41,6 +41,7 @@ describe('kitchen ticket formatters', () => {
       name: 'Grilled chicken',
       sizeLabel: 'Large',
       weightGrams: 500,
+      optionLines: [],
       notes: 'Extra lemon',
     });
   });
@@ -69,6 +70,42 @@ describe('kitchen ticket formatters', () => {
 
     expect(line).not.toHaveProperty('unit_price');
     expect(JSON.stringify(line)).not.toContain('250');
+  });
+
+  it('includes stored choice lines and omits them when none were picked', () => {
+    const withChoices = formatKitchenItemLine(
+      {
+        id: '1',
+        order_id: 'o1',
+        product_id: null,
+        name_en: 'Sandwich',
+        name_ar: 'ساندويتش',
+        name_fr: null,
+        name_nl: null,
+        quantity: 1,
+        unit_price: 25,
+        size_option: null,
+        notes: null,
+        image_url: null,
+        created_at: '2026-09-17T10:00:00.000Z',
+        selected_options: [
+          {
+            group_id: 'bread',
+            group_name_ar: 'نوع العيش',
+            group_name_en: 'Bread',
+            item_id: 'white',
+            name_ar: 'عيش أبيض',
+            name_en: 'White bread',
+            price_delta: 0,
+          },
+        ],
+      },
+      'ar',
+      t
+    );
+
+    expect(withChoices.optionLines).toEqual(['نوع العيش: عيش أبيض']);
+    expect(JSON.stringify(withChoices)).not.toContain('25');
   });
 
   it('maps fulfillment and dining mode labels', () => {

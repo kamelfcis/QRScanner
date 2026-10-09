@@ -4,6 +4,7 @@ import { getRestaurantDisplayName } from '@/lib/appName';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-currency';
 import { receiptDomId, RECEIPT_SLIP_CSS } from '@/lib/order/print-receipt';
+import { formatSelectedOptionLines } from '@/lib/order/selected-option-lines';
 import { formatDisplayPhone } from '@/lib/phone/normalize';
 import { getLocalizedText } from '@/lib/utils';
 import type { OrderWithItems, RestaurantSettings } from '@/types/database';
@@ -112,6 +113,11 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
               </span>
               <span />
             </div>
+            {formatSelectedOptionLines(item.selected_options, locale).map((line, index) => (
+              <span key={`${item.id}-option-${index}`} className="receipt-note">
+                {line}
+              </span>
+            ))}
             {item.notes ? <span className="receipt-note">{item.notes}</span> : null}
           </div>
         );

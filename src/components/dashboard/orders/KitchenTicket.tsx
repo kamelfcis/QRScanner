@@ -42,6 +42,11 @@ export function KitchenTicket({ order, locale, t }: KitchenTicketProps) {
               <span className="receipt-num">{line.quantity}×</span> {line.name}
               {option ? ` (${option})` : ''}
             </p>
+            {line.optionLines.map((text, index) => (
+              <span key={`${item.id}-option-${index}`} className="receipt-note">
+                {text}
+              </span>
+            ))}
             {line.notes ? <span className="receipt-note">{line.notes}</span> : null}
           </div>
         );
