@@ -7,6 +7,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMenuStats, type MenuStats } from '@/hooks/useMenuStats';
 import { DASHBOARD_NAV_TONES } from '@/lib/navigation/dashboardNavTones';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { cn } from '@/lib/utils';
 
 const MENU_HUB_SECTIONS = [
@@ -63,7 +64,9 @@ function MenuStatsSkeleton() {
 }
 
 export function MenuCommandHeader() {
-  const t = useTranslations('dashboard');
+  const tRaw = useTranslations('dashboard');
+  const pt = (key: string) => productTerm(tRaw, key);
+  const t = tRaw;
   const { data: stats, isLoading, error, refetch } = useMenuStats();
 
   return (
@@ -94,7 +97,7 @@ export function MenuCommandHeader() {
             {t('menuManagement')}
           </h1>
           <p className="text-muted-foreground mt-1 max-w-prose text-sm">
-            {t('menuManagementDescription')}
+            {pt('menuManagementDescription')}
           </p>
         </div>
 
@@ -141,10 +144,12 @@ export function MenuCommandHeader() {
                     <span
                       className={cn('font-heading text-sm font-semibold leading-tight', tone.label)}
                     >
-                      {t(section.titleKey)}
+                      {section.key === 'menuProducts' ? pt(section.titleKey) : t(section.titleKey)}
                     </span>
                     <span className="text-muted-foreground text-xs leading-snug">
-                      {t(section.descriptionKey)}
+                      {section.key === 'menuProducts'
+                        ? pt(section.descriptionKey)
+                        : t(section.descriptionKey)}
                     </span>
                   </Link>
                 );

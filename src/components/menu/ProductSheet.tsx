@@ -19,6 +19,7 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { haptic } from '@/lib/haptics';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { cn, getName } from '@/lib/utils';
 import {
   getDefaultPurchasableSize,
@@ -43,7 +44,9 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const isDesktop = useIsDesktop();
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
-  const t = useTranslations('menu');
+  const tRaw = useTranslations('menu');
+  const t = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tRaw, key, values);
   const tCart = useTranslations('cart');
   const { data: settings } = useRestaurantSettings();
   const addItem = useCartStore((s) => s.addItem);

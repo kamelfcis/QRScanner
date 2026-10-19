@@ -29,6 +29,7 @@ import {
   isProductEffectivelySoldOut,
   requiresSizeSelection,
 } from '@/lib/catalog/ecommerce-sizes';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
 
@@ -51,7 +52,9 @@ export function ProductCard({
 }: ProductCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
-  const t = useTranslations('menu');
+  const tRaw = useTranslations('menu');
+  const t = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tRaw, key, values);
   const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
   const { data: settings } = useRestaurantSettings();
@@ -137,7 +140,12 @@ export function ProductCard({
 
   return (
     <>
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] shadow-[0_1px_2px_rgba(0,0,0,0.18)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(0,0,0,0.45)]">
+      <article
+        className={cn(
+          'group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--menu-line)] bg-[var(--menu-surface)] shadow-[0_1px_2px_rgba(0,0,0,0.18)] transition-shadow duration-300 hover:shadow-[0_8px_28px_-14px_rgba(0,0,0,0.45)]',
+          soldOut && 'saturate-75 opacity-60'
+        )}
+      >
         <div className="relative aspect-square w-full overflow-hidden bg-[var(--menu-paper-deep)]">
           <button
             type="button"

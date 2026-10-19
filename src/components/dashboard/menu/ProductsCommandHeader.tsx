@@ -5,6 +5,7 @@ import { CheckCircle2, Package, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { DASHBOARD_NAV_TONES } from '@/lib/navigation/dashboardNavTones';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { cn } from '@/lib/utils';
 
 interface ProductsCommandHeaderProps {
@@ -22,7 +23,9 @@ export function ProductsCommandHeader({
   addDisabled = false,
   secondaryActions,
 }: ProductsCommandHeaderProps) {
-  const t = useTranslations('products');
+  const tRaw = useTranslations('products');
+  const t = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tRaw, key, values);
   const tone = DASHBOARD_NAV_TONES.menuProducts;
 
   return (

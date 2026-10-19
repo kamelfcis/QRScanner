@@ -10,6 +10,7 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { trackSearch } from '@/lib/analytics';
@@ -31,7 +32,9 @@ export function SearchOverlay({ isOpen, onClose, onSelectProduct }: SearchOverla
   const { data: results } = useSearchProducts(query);
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
-  const t = useTranslations('menu');
+  const tRaw = useTranslations('menu');
+  const t = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tRaw, key, values);
   const tCommon = useTranslations('accessibility');
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);

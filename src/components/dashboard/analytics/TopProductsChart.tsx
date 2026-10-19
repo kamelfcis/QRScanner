@@ -6,6 +6,7 @@ import { ChartCard } from '@/components/dashboard/charts/ChartCard';
 import { DataTable } from '@/components/dashboard/DataTable';
 import type { Period } from '@/components/dashboard/DateRangePicker';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { productTerm } from '@/lib/i18n/product-terminology';
 
 interface TopProductsChartProps {
   period: Period;
@@ -13,20 +14,17 @@ interface TopProductsChartProps {
 
 export function TopProductsChart({ period }: TopProductsChartProps) {
   const { data, isLoading } = useTopProducts(period);
-  const t = useTranslations('analytics');
+  const tRaw = useTranslations('analytics');
+  const t = (key: string) => productTerm(tRaw, key);
 
-  if (isLoading) return <div className="h-[400px] bg-muted animate-pulse rounded-lg" />;
+  if (isLoading) return <div className="bg-muted h-[400px] animate-pulse rounded-lg" />;
 
   const chartData = (data || []).map((prod) => ({
     name: prod.name || prod.id,
     views: prod.views,
   }));
 
-  const tableRows = (data || []).map((prod, i) => [
-    i + 1,
-    prod.name || prod.id,
-    prod.views,
-  ]);
+  const tableRows = (data || []).map((prod, i) => [i + 1, prod.name || prod.id, prod.views]);
 
   return (
     <div className="space-y-4">

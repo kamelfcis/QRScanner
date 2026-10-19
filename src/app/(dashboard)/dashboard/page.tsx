@@ -27,6 +27,7 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { cn } from '@/lib/utils';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { isEcommerceStore } from '@/lib/store-config';
 
 const ActivityFeed = dynamic(
@@ -96,7 +97,7 @@ export default function DashboardPage() {
   const secondaryKpis = stats
     ? [
         {
-          title: t('totalProducts'),
+          title: productTerm(t, 'totalProducts'),
           value: stats.totalProducts,
           icon: Menu,
           color: 'bg-orange-500/10 text-orange-500',

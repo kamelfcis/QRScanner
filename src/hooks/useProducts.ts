@@ -3,7 +3,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Product, ProductInput, ProductWithGallery } from '@/types';
+import { isEcommerceStore } from '@/lib/store-config';
 import { categoryKeys } from './useCategories';
+import { staffOrderCatalogKeys } from './useStaffOrder';
 
 const supabase = createClient();
 
@@ -109,15 +111,18 @@ export function usePopularProducts() {
   return useQuery({
     queryKey: productKeys.popular(),
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('products')
         .select(
           'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at'
         )
-        .eq('is_popular', true)
-        .eq('is_available', true)
-        .order('sort_order', { ascending: true })
-        .limit(12);
+        .eq('is_popular', true);
+
+      if (!isEcommerceStore) {
+        query = query.eq('is_available', true);
+      }
+
+      const { data, error } = await query.order('sort_order', { ascending: true }).limit(12);
 
       if (error) throw error;
       return data as Product[];
@@ -131,14 +136,18 @@ export function useSearchProducts(query: string) {
   return useQuery({
     queryKey: productKeys.search(query),
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('products')
         .select('*, category:categories(id, name_en, name_ar)')
         .or(
           `name_en.ilike.%${sanitized}%,name_ar.ilike.%${sanitized}%,description_en.ilike.%${sanitized}%`
-        )
-        .eq('is_available', true)
-        .order('sort_order', { ascending: true });
+        );
+
+      if (!isEcommerceStore) {
+        query = query.eq('is_available', true);
+      }
+
+      const { data, error } = await query.order('sort_order', { ascending: true });
 
       if (error) throw error;
       return data as ProductWithGallery[];
@@ -238,9 +247,10 @@ export function useToggleProductAvailability() {
       if (error) throw error;
       return data as Product;
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
+      queryClient.invalidateQueries({ queryKey: staffOrderCatalogKeys.all });
     },
   });
 }

@@ -13,7 +13,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { cn, getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import type { Product } from '@/types/database';
-import { getMenuEntryPath } from '@/lib/store-config';
+import { getMenuEntryPath, isEcommerceStore } from '@/lib/store-config';
 
 function preferImageUrl(products: Product[]): Product[] {
   const withImage: Product[] = [];
@@ -92,12 +92,16 @@ export function FeaturedDishes() {
               const name = getName(locale, product.name_en, product.name_ar);
               const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
               const badge = pickBadge(product);
+              const soldOut = isEcommerceStore && !product.is_available;
 
               return (
                 <MotionCard key={product.id} delay={index * 0.05}>
                   <Link
                     href={getMenuEntryPath()}
-                    className="border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors"
+                    className={cn(
+                      'border-border/50 bg-card/80 hover:border-brand-accent/40 group block h-full overflow-hidden rounded-2xl border shadow-sm transition-colors',
+                      soldOut && 'saturate-75 opacity-60'
+                    )}
                   >
                     <div className="relative aspect-square overflow-hidden">
                       {product.image_url ? (
@@ -120,6 +124,13 @@ export function FeaturedDishes() {
                         <div className="absolute start-2 top-2 z-[1]">
                           <Badge className="bg-brand-accent/90 px-1.5 py-0.5 text-[10px] text-black sm:text-xs">
                             {badgeLabel(badge)}
+                          </Badge>
+                        </div>
+                      )}
+                      {soldOut && (
+                        <div className="bg-background/75 absolute inset-0 z-[2] flex items-center justify-center">
+                          <Badge variant="secondary" className="text-[10px] sm:text-xs">
+                            {menuT('currentlyUnavailable')}
                           </Badge>
                         </div>
                       )}

@@ -64,6 +64,7 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { cn, getName } from '@/lib/utils';
 import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
 import { Pagination } from '@/components/shared/Pagination';
@@ -315,7 +316,9 @@ export default function ProductsPage() {
   const [storagePickerSession, setStoragePickerSession] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeFormRef = useRef<'create' | 'edit'>('create');
-  const t = useTranslations('products');
+  const tRaw = useTranslations('products');
+  const t = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tRaw, key, values);
   const tCommon = useTranslations('common');
   const tMenu = useTranslations('menu');
   const { locale } = useI18n();
