@@ -49,11 +49,7 @@ import {
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
-import {
-  generateOrderPaymentRef,
-  isValidInstapayReference,
-  normalizeInstapayReference,
-} from '@/lib/payment/instapay-proof';
+import { generateOrderPaymentRef, hasInstapayProof } from '@/lib/payment/instapay-proof';
 import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliverySection';
 
 export default function CheckoutPage() {
@@ -80,12 +76,9 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [trackedStart, setTrackedStart] = useState(false);
-  const [instapayProofReference, setInstapayProofReference] = useState('');
   const [instapayScreenshotUrl, setInstapayScreenshotUrl] = useState<string | null>(null);
   const [instapayAmountNote, setInstapayAmountNote] = useState('');
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
-  const [referenceDuplicate, setReferenceDuplicate] = useState(false);
-  const [checkingReference, setCheckingReference] = useState(false);
   const [orderPaymentRef, setOrderPaymentRef] = useState<string | null>(null);
 
   const currency = getRestaurantCurrency(settings?.currency);
@@ -119,17 +112,19 @@ export default function CheckoutPage() {
     () =>
       items.map((item) => ({
         ...item,
-        unitPrice: getCartLineUnitPrice(
-          {
-            dining_price: item.dining_price,
-            takeaway_price: item.takeaway_price,
-            has_size_options: item.has_size_options ?? false,
-            sizeOption: item.sizeOption ?? null,
-            price_per_kg: item.price_per_kg,
-            weightGrams: item.weightGrams,
-          },
-          diningMode
-        ),
+        unitPrice:
+          item.selectedSize?.price ??
+          getCartLineUnitPrice(
+            {
+              dining_price: item.dining_price,
+              takeaway_price: item.takeaway_price,
+              has_size_options: item.has_size_options ?? false,
+              sizeOption: item.sizeOption ?? null,
+              price_per_kg: item.price_per_kg,
+              weightGrams: item.weightGrams,
+            },
+            diningMode
+          ),
       })),
     [items, diningMode]
   );
@@ -149,22 +144,18 @@ export default function CheckoutPage() {
   const requiresInstapayProof =
     showInstapayDeliveryPrepay && totals.deliveryFee > 0 && Boolean(deliveryLocationId);
 
-  const referenceFormatValid = isValidInstapayReference(instapayProofReference);
-  const proofValid =
-    referenceFormatValid && !referenceDuplicate && !checkingReference && !uploadingScreenshot;
+  const proofValid = hasInstapayProof(null, instapayScreenshotUrl) && !uploadingScreenshot;
 
   useEffect(() => {
     if (!deliveryLocationId || totals.deliveryFee <= 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when zone cleared
       setOrderPaymentRef(null);
-      setInstapayProofReference('');
       setInstapayScreenshotUrl(null);
       setInstapayAmountNote('');
       return;
     }
 
     setOrderPaymentRef(generateOrderPaymentRef());
-    setInstapayProofReference('');
     setInstapayScreenshotUrl(null);
     setInstapayAmountNote('');
   }, [deliveryLocationId, totals.deliveryFee]);
@@ -201,9 +192,9 @@ export default function CheckoutPage() {
         case 'notes_too_long':
           return t('notesTooLong', { max: maxNotes });
         case 'instapay_proof_required':
-          return t('instapayReferenceRequired');
+          return t('instapayScreenshotRequired');
         case 'instapay_reference_invalid':
-          return t('instapayReferenceInvalid');
+          return t('instapayScreenshotRequired');
         default:
           return tCommon('error');
       }
@@ -227,7 +218,6 @@ export default function CheckoutPage() {
       requiresDeliveryLocation,
       deliveryLocationId,
       requiresInstapayProof,
-      instapayProofReference,
       instapayScreenshotUrl,
     });
 
@@ -242,6 +232,39 @@ export default function CheckoutPage() {
     setErrors([]);
 
     try {
+      if (isEcommerceStore) {
+        const validationResponse = await fetch('/api/ecommerce/validate-cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              sizeCode: item.sizeCode ?? null,
+              notes: item.notes || null,
+            })),
+          }),
+        });
+
+        const validationPayload = (await validationResponse.json().catch(() => null)) as {
+          valid?: boolean;
+          codes?: string[];
+        } | null;
+
+        if (!validationResponse.ok || !validationPayload?.valid) {
+          const code = validationPayload?.codes?.[0];
+          const message =
+            code === 'product_unavailable'
+              ? t('productUnavailable')
+              : code === 'size_required' || code === 'size_invalid' || code === 'size_sold_out'
+                ? t('sizeSelectionInvalid')
+                : t('placeFailed');
+          setErrors([message]);
+          setSubmitting(false);
+          return;
+        }
+      }
+
       if (!isEcommerceStore) {
         const response = await fetch('/api/orders', {
           method: 'POST',
@@ -303,7 +326,6 @@ export default function CheckoutPage() {
         proofForm.append('customerPhone', customerPhone.trim());
         proofForm.append('deliveryFee', String(deliveryFee));
         if (deliveryLocationId) proofForm.append('deliveryLocationId', deliveryLocationId);
-        proofForm.append('proofReference', normalizeInstapayReference(instapayProofReference));
         if (instapayScreenshotUrl) proofForm.append('screenshotUrl', instapayScreenshotUrl);
         if (instapayAmountNote.trim()) proofForm.append('amountNote', instapayAmountNote.trim());
         proofForm.append('markWhatsAppSent', 'true');
@@ -317,11 +339,9 @@ export default function CheckoutPage() {
             code?: string;
           } | null;
           const message =
-            proofPayload?.code === 'instapay_reference_duplicate'
-              ? t('instapayReferenceDuplicate')
-              : proofPayload?.code === 'instapay_reference_invalid'
-                ? t('instapayReferenceInvalid')
-                : t('instapayProofSaveFailed');
+            proofPayload?.code === 'instapay_proof_required'
+              ? t('instapayScreenshotRequired')
+              : t('instapayProofSaveFailed');
           setErrors([message]);
           setSubmitting(false);
           return;
@@ -342,9 +362,6 @@ export default function CheckoutPage() {
         customerPhone,
         orderNotes,
         orderPaymentRef: requiresInstapayProof ? orderPaymentRef : null,
-        instapayProofReference: requiresInstapayProof
-          ? normalizeInstapayReference(instapayProofReference)
-          : null,
         instapayScreenshotUrl: requiresInstapayProof ? instapayScreenshotUrl : null,
         instapayHandle: requiresInstapayProof ? instapayHandle : null,
         requiresInstapayProof,
@@ -656,17 +673,14 @@ export default function CheckoutPage() {
                 currency={currency}
                 currencyLocale={currencyLocale}
                 orderPaymentRef={orderPaymentRef}
-                proofReference={instapayProofReference}
                 screenshotUrl={instapayScreenshotUrl}
                 amountNote={instapayAmountNote}
-                onProofReferenceChange={setInstapayProofReference}
+                customerName={customerName}
+                customerPhone={customerPhone}
+                deliveryLocationId={deliveryLocationId}
                 onScreenshotUrlChange={setInstapayScreenshotUrl}
                 onAmountNoteChange={setInstapayAmountNote}
                 onUploadingChange={setUploadingScreenshot}
-                onReferenceStatusChange={({ duplicate, checking }) => {
-                  setReferenceDuplicate(duplicate);
-                  setCheckingReference(checking);
-                }}
               />
             </section>
           )}

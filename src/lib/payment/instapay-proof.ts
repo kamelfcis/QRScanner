@@ -14,10 +14,10 @@ export function isValidInstapayReference(raw?: string | null): boolean {
   return INSTAPAY_REF_PATTERN.test(normalized);
 }
 
-/** Returns true when a valid InstaPay transfer reference is provided. */
+/** Returns true when a payment screenshot URL has been uploaded. */
 export function hasInstapayProof(ref?: string | null, screenshotUrl?: string | null): boolean {
-  void screenshotUrl;
-  return isValidInstapayReference(ref);
+  void ref;
+  return Boolean(screenshotUrl?.trim());
 }
 
 /** Unique checkout payment reference: MS-{timestamp}-{4chars} */

@@ -11,7 +11,6 @@ import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount } from '@/lib/order/format-currency';
 import { instapayHandle, instapayPaymentUrl } from '@/lib/payment/instapay';
 import { prepareInstapayUploadFile } from '@/lib/payment/instapay-image';
-import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
 import { MAX_IMAGE_SIZE_MB, validateImageFile } from '@/lib/upload-validation';
 import { cn } from '@/lib/utils';
 
@@ -20,18 +19,14 @@ interface InstapayDeliverySectionProps {
   currency: string;
   currencyLocale: 'en' | 'ar';
   orderPaymentRef: string;
-  proofReference: string;
   screenshotUrl: string | null;
   amountNote?: string;
-  onProofReferenceChange: (value: string) => void;
+  customerName?: string;
+  customerPhone?: string;
+  deliveryLocationId?: string | null;
   onScreenshotUrlChange: (value: string | null) => void;
   onAmountNoteChange?: (value: string) => void;
   onUploadingChange?: (uploading: boolean) => void;
-  onReferenceStatusChange?: (status: {
-    formatValid: boolean;
-    duplicate: boolean;
-    checking: boolean;
-  }) => void;
 }
 
 export function InstapayDeliverySection({
@@ -39,81 +34,26 @@ export function InstapayDeliverySection({
   currency,
   currencyLocale,
   orderPaymentRef,
-  proofReference,
   screenshotUrl,
   amountNote = '',
-  onProofReferenceChange,
+  customerName = '',
+  customerPhone = '',
+  deliveryLocationId = null,
   onScreenshotUrlChange,
   onAmountNoteChange,
   onUploadingChange,
-  onReferenceStatusChange,
 }: InstapayDeliverySectionProps) {
   const t = useTranslations('checkout');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-  const [checkingReference, setCheckingReference] = useState(false);
-  const [referenceDuplicate, setReferenceDuplicate] = useState(false);
-  const [referenceTouched, setReferenceTouched] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const proofSaved = Boolean(screenshotUrl);
 
   const formattedFee = formatCurrencyAmount(deliveryFee, currency, { locale: currencyLocale });
-  const formatValid = isValidInstapayReference(proofReference);
-  const duplicate = formatValid && referenceDuplicate;
-  const checking = formatValid && checkingReference;
-  const showFormatError = referenceTouched && proofReference.trim() !== '' && !formatValid;
-  const showDuplicateError = referenceTouched && duplicate && !checking;
 
   useEffect(() => {
     onUploadingChange?.(uploading);
   }, [uploading, onUploadingChange]);
-
-  useEffect(() => {
-    onReferenceStatusChange?.({
-      formatValid,
-      duplicate,
-      checking,
-    });
-  }, [formatValid, duplicate, checking, onReferenceStatusChange]);
-
-  useEffect(() => {
-    if (!formatValid) {
-      return;
-    }
-
-    const normalized = normalizeInstapayReference(proofReference);
-    const controller = new AbortController();
-    const timer = setTimeout(async () => {
-      setCheckingReference(true);
-      try {
-        const params = new URLSearchParams({
-          reference: normalized,
-          excludeOrderRef: orderPaymentRef,
-        });
-        const response = await fetch(`/api/instapay-proofs?${params}`, {
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          setReferenceDuplicate(false);
-          return;
-        }
-        const body = (await response.json()) as { available?: boolean };
-        setReferenceDuplicate(body.available === false);
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          setReferenceDuplicate(false);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setCheckingReference(false);
-        }
-      }
-    }, 400);
-
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-  }, [proofReference, formatValid, orderPaymentRef]);
 
   const copyRef = async () => {
     try {
@@ -121,14 +61,6 @@ export function InstapayDeliverySection({
       toast.success(t('instapayRefCopied'));
     } catch {
       toast.error(t('instapayRefCopyFailed'));
-    }
-  };
-
-  const handleReferenceBlur = () => {
-    setReferenceTouched(true);
-    const normalized = normalizeInstapayReference(proofReference);
-    if (normalized !== proofReference) {
-      onProofReferenceChange(normalized);
     }
   };
 
@@ -170,6 +102,11 @@ export function InstapayDeliverySection({
       formData.append('file', uploadFile);
       formData.append('orderRef', orderPaymentRef);
       formData.append('uploadOnly', 'true');
+      formData.append('deliveryFee', String(deliveryFee));
+      if (deliveryLocationId) formData.append('deliveryLocationId', deliveryLocationId);
+      if (customerName.trim()) formData.append('customerName', customerName.trim());
+      if (customerPhone.trim()) formData.append('customerPhone', customerPhone.trim());
+      if (amountNote.trim()) formData.append('amountNote', amountNote.trim());
 
       const response = await fetch('/api/instapay-proofs', {
         method: 'POST',
@@ -275,41 +212,9 @@ export function InstapayDeliverySection({
           </div>
         </div>
 
-        <p className="text-sm text-[var(--menu-ink-soft)]">{t('instapayProofLabel')}</p>
-
-        <div className="space-y-2">
-          <Label htmlFor="instapay-proof-ref">{t('instapayProofReference')}</Label>
-          <Input
-            id="instapay-proof-ref"
-            value={proofReference}
-            onChange={(event) => onProofReferenceChange(event.target.value)}
-            onBlur={handleReferenceBlur}
-            placeholder={t('instapayProofReferencePlaceholder')}
-            dir="ltr"
-            className={cn(
-              'h-11 min-h-11 font-mono uppercase',
-              (showFormatError || showDuplicateError) && 'border-destructive'
-            )}
-            data-testid="instapay-proof-reference"
-            aria-invalid={showFormatError || showDuplicateError}
-          />
-          {checking ? (
-            <p className="text-muted-foreground text-xs">{t('instapayReferenceChecking')}</p>
-          ) : null}
-          {showFormatError ? (
-            <p className="text-destructive text-xs" data-testid="instapay-reference-format-error">
-              {t('instapayReferenceInvalid')}
-            </p>
-          ) : null}
-          {showDuplicateError ? (
-            <p
-              className="text-destructive text-xs"
-              data-testid="instapay-reference-duplicate-error"
-            >
-              {t('instapayReferenceDuplicate')}
-            </p>
-          ) : null}
-        </div>
+        <p className="text-sm text-[var(--menu-ink-soft)]">
+          {t('instapayProofScreenshotRequired')}
+        </p>
 
         <div className="space-y-2">
           <Label>{t('instapayProofScreenshot')}</Label>
@@ -358,7 +263,7 @@ export function InstapayDeliverySection({
               <div className="flex flex-col gap-1">
                 <span className="inline-flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-300">
                   <Check className="h-4 w-4" aria-hidden="true" />
-                  {t('instapayUploaded')}
+                  {proofSaved ? t('instapayUploaded') : t('instapayUploading')}
                 </span>
                 <button
                   type="button"

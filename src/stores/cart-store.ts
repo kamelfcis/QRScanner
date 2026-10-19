@@ -4,6 +4,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { playSound } from '@/lib/ux/sound';
 import { triggerHaptic } from '@/lib/ux/haptic';
+import { sizeCartKey } from '@/lib/catalog/ecommerce-sizes';
+import type { SelectedSizeSnapshot } from '@/types/database';
 import { defaultDiningMode, isEcommerceStore } from '@/lib/store-config';
 
 export type CartDiningMode = 'dining' | 'takeaway';
@@ -25,6 +27,8 @@ export interface CartItem {
   price_per_kg?: number | null;
   weight_options_g?: number[] | null;
   sizeOption?: CartSizeOption;
+  sizeCode?: string | null;
+  selectedSize?: SelectedSizeSnapshot | null;
   weightGrams?: number | null;
   quantity: number;
   notes: string;
@@ -60,14 +64,14 @@ function notesKey(notes: string): string {
 export function makeCartLineId(
   productId: string,
   notes: string,
-  weightGrams: number | null = null
+  weightGrams: number | null = null,
+  sizeCode: string | null = null
 ): string {
   const key = notesKey(notes);
+  const sizeKey = sizeCartKey(sizeCode);
   const weightKey = weightGrams != null ? `${weightGrams}g` : '';
-  if (weightKey && key) return `${productId}::${weightKey}::${key}`;
-  if (weightKey) return `${productId}::${weightKey}`;
-  if (key) return `${productId}::${key}`;
-  return productId;
+  const parts = [productId, sizeKey, weightKey, key].filter(Boolean);
+  return parts.join('::');
 }
 
 const initialMeta: CartMeta = {
@@ -92,7 +96,8 @@ export const useCartStore = create<CartState>()(
         const qty = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
         const weightGrams = item.weightGrams ?? null;
-        const id = makeCartLineId(item.productId, notes, weightGrams);
+        const sizeCode = item.sizeCode ?? null;
+        const id = makeCartLineId(item.productId, notes, weightGrams, sizeCode);
         triggerHaptic('light');
         playSound('add');
         set((state) => {
@@ -121,6 +126,8 @@ export const useCartStore = create<CartState>()(
                 price_per_kg: item.price_per_kg ?? null,
                 weight_options_g: item.weight_options_g ?? null,
                 sizeOption: item.sizeOption ?? null,
+                sizeCode,
+                selectedSize: item.selectedSize ?? null,
                 weightGrams,
                 quantity: qty,
                 notes,
@@ -152,7 +159,12 @@ export const useCartStore = create<CartState>()(
           const current = state.items.find((i) => i.id === id);
           if (!current) return state;
 
-          const newId = makeCartLineId(current.productId, trimmed, current.weightGrams ?? null);
+          const newId = makeCartLineId(
+            current.productId,
+            trimmed,
+            current.weightGrams ?? null,
+            current.sizeCode ?? null
+          );
           if (newId === id) {
             return {
               items: state.items.map((i) => (i.id === id ? { ...i, notes: trimmed } : i)),

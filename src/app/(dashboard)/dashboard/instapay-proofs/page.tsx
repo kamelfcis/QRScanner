@@ -21,7 +21,6 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useInstapayProofs, useReviewInstapayProof } from '@/hooks/useInstapayProofs';
 import { useTranslations, useI18n } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
-import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
 import { isEcommerceStore } from '@/lib/store-config';
 import type { InstapayProofStatus } from '@/types';
 import { cn } from '@/lib/utils';
@@ -128,7 +127,7 @@ export default function InstapayProofsPage() {
 
   const handleReview = (id: string, status: Exclude<InstapayProofStatus, 'pending'>) => {
     reviewProof.mutate(
-      { id, status, proofReference: proofs?.find((p) => p.id === id)?.proof_reference },
+      { id, status },
       {
         onSuccess: () => toast.success(status === 'confirmed' ? t('confirmed') : t('rejected')),
         onError: () => toast.error(t('reviewFailed')),
@@ -169,10 +168,7 @@ export default function InstapayProofsPage() {
       ) : (
         <div className="grid gap-4">
           {proofs.map((proof) => {
-            const transferRef = proof.proof_reference
-              ? normalizeInstapayReference(proof.proof_reference)
-              : null;
-            const refValid = isValidInstapayReference(transferRef);
+            const hasScreenshot = Boolean(proof.screenshot_url);
 
             return (
               <Card key={proof.id}>
@@ -218,29 +214,6 @@ export default function InstapayProofsPage() {
                         locale === 'ar' ? 'ar-EG' : 'en-GB'
                       )}
                     </p>
-                    <div className="sm:col-span-2">
-                      <span className="text-muted-foreground">{t('transferReference')}:</span>{' '}
-                      {transferRef ? (
-                        <span dir="ltr" className="font-mono uppercase">
-                          {transferRef}
-                        </span>
-                      ) : (
-                        <Badge
-                          variant="outline"
-                          className="ms-1 border-amber-500/50 text-amber-800"
-                        >
-                          {t('missingReference')}
-                        </Badge>
-                      )}
-                      {transferRef && !refValid ? (
-                        <Badge
-                          variant="outline"
-                          className="border-destructive/50 text-destructive ms-2"
-                        >
-                          {t('invalidReference')}
-                        </Badge>
-                      ) : null}
-                    </div>
                     {proof.amount_note ? (
                       <p className="sm:col-span-2">
                         <span className="text-muted-foreground">{t('amountNote')}:</span>{' '}
@@ -265,7 +238,7 @@ export default function InstapayProofsPage() {
                       <Button
                         size="sm"
                         className="min-h-9"
-                        disabled={reviewProof.isPending || !refValid}
+                        disabled={reviewProof.isPending || !hasScreenshot}
                         onClick={() => handleReview(proof.id, 'confirmed')}
                       >
                         <Check className="me-1.5 h-4 w-4" />

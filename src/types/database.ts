@@ -26,6 +26,27 @@ export interface Subcategory {
   updated_at: string;
 }
 
+export interface ProductSize {
+  id: string;
+  product_id: string;
+  sort_order: number;
+  code: string;
+  label_ar: string;
+  label_en: string;
+  price: number;
+  is_enabled: boolean;
+  is_sold_out: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SelectedSizeSnapshot {
+  code: string;
+  label_ar: string;
+  label_en: string;
+  price: number;
+}
+
 export interface Product {
   id: string;
   category_id: string;
@@ -37,6 +58,7 @@ export interface Product {
   image_url: string | null;
   dining_price: number;
   takeaway_price: number;
+  product_sizes?: ProductSize[] | null;
   has_size_options?: boolean;
   price_medium?: number | null;
   price_family?: number | null;
@@ -496,6 +518,7 @@ export interface OrderItem {
   quantity: number;
   unit_price: number;
   size_option: OrderSizeOption | null;
+  selected_size?: SelectedSizeSnapshot | null;
   weight_grams?: number | null;
   notes: string | null;
   voided_at?: string | null;

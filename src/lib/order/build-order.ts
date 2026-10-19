@@ -2,6 +2,7 @@ import { calculateOrderTotals, getCartLineUnitPrice, type OrderTotals } from './
 import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage, type MessageLocale } from './whatsapp-message';
 import { getLocalizedText } from '@/lib/utils';
+import { getSizeLabel as getEcommerceSizeLabel } from '@/lib/catalog/ecommerce-sizes';
 import { getSizeLabel, type ProductSizeId } from '@/lib/catalog/product-sizes';
 import type { Order, OrderItem } from '@/types/database';
 import { buildWhatsAppUrl } from './whatsapp-url';
@@ -176,6 +177,10 @@ function formatWeightLabel(locale: MessageLocale, grams: number): string {
 
 function formatCartItemName(item: CartItem, locale: 'en' | 'ar'): string {
   const base = locale === 'ar' ? item.name_ar || item.name_en : item.name_en;
+  if (item.selectedSize) {
+    const sizeLabel = getEcommerceSizeLabel(item.selectedSize, locale);
+    return `${base} (${sizeLabel})`;
+  }
   if (item.weightGrams != null) {
     return `${base} (${formatWeightLabel(locale, item.weightGrams)})`;
   }
@@ -190,7 +195,9 @@ function formatStoredItemName(item: OrderItem, locale: MessageLocale): string {
     nl: item.name_nl,
   });
   let name = base;
-  if (item.size_option) {
+  if (item.selected_size) {
+    name = `${name} (${getEcommerceSizeLabel(item.selected_size, locale)})`;
+  } else if (item.size_option) {
     name = `${name} (${getSizeLabel(locale, item.size_option as ProductSizeId)})`;
   }
   if (item.weight_grams != null) {

@@ -24,7 +24,12 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
-import { showDiningModeToggle } from '@/lib/store-config';
+import {
+  getSizePriceRange,
+  isProductEffectivelySoldOut,
+  requiresSizeSelection,
+} from '@/lib/catalog/ecommerce-sizes';
+import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
 
 interface ProductCardProps {
@@ -63,9 +68,13 @@ export function ProductCard({
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const weighted = hasWeightOptions(product);
-  const fromPrice = minWeightPrice(product);
+  const productSizes = product.product_sizes ?? null;
+  const hasSizes = isEcommerceStore && requiresSizeSelection(productSizes);
+  const sizeRange = getSizePriceRange(productSizes);
+  const fromPrice = minWeightPrice(product) ?? sizeRange?.min ?? null;
   const activePrice =
     fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
+  const soldOut = isProductEffectivelySoldOut(product.is_available, productSizes);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
@@ -74,7 +83,11 @@ export function ProductCard({
     : '';
 
   const handleAdd = (withNotes: string) => {
-    if (!product.is_available) return;
+    if (soldOut) return;
+    if (hasSizes || weighted) {
+      onImageClick(product);
+      return;
+    }
     addItem({
       productId: product.id,
       name_en: product.name_en,
@@ -184,7 +197,7 @@ export function ProductCard({
             <Heart className={cn('h-4 w-4', isFavorite && 'fill-current')} aria-hidden="true" />
           </motion.button>
 
-          {!product.is_available && (
+          {soldOut && (
             <div className="bg-background/75 absolute inset-0 z-[1] flex items-center justify-center">
               <Badge
                 variant="secondary"
@@ -218,7 +231,7 @@ export function ProductCard({
                 className="font-heading text-[15px] font-semibold tabular-nums text-[var(--menu-wine)] sm:text-base"
                 dir="ltr"
               >
-                {fromPrice != null
+                {fromPrice != null && (weighted || (sizeRange && sizeRange.min !== sizeRange.max))
                   ? t('priceFrom', {
                       price: formatCurrencyAmount(fromPrice, currency, { locale: currencyLocale }),
                     })
@@ -232,30 +245,32 @@ export function ProductCard({
               )}
             </div>
 
-            {product.is_available && (
+            {!soldOut && (
               <motion.button
                 type="button"
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                 animate={pulse && !prefersReducedMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                onPointerDown={weighted ? undefined : startLongPress}
-                onPointerUp={weighted ? undefined : clearLongPress}
-                onPointerLeave={weighted ? undefined : clearLongPress}
-                onPointerCancel={weighted ? undefined : clearLongPress}
+                onPointerDown={weighted || hasSizes ? undefined : startLongPress}
+                onPointerUp={weighted || hasSizes ? undefined : clearLongPress}
+                onPointerLeave={weighted || hasSizes ? undefined : clearLongPress}
+                onPointerCancel={weighted || hasSizes ? undefined : clearLongPress}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleMobileAddClick();
                 }}
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
-                aria-label={weighted ? t('selectWeight') : tCart('addToCart')}
-                data-testid={weighted ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'}
+                aria-label={weighted || hasSizes ? t('selectSize') : tCart('addToCart')}
+                data-testid={
+                  weighted || hasSizes ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'
+                }
               >
                 <ShoppingCart className="h-4 w-4" aria-hidden="true" />
               </motion.button>
             )}
           </div>
 
-          {product.is_available && (
+          {!soldOut && (
             <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
                 {!weighted && (

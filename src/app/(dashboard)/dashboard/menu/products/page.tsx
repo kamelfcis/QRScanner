@@ -1,12 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import {
   getDefaultProductFormValues,
   getEcommerceDisplayPrice,
+  getEcommerceDisplayPriceLabel,
   getProductFormSchema,
   parseWeightOptionsG,
   productFormToInput,
@@ -14,7 +15,11 @@ import {
   type ProductFormInput,
   type RestaurantProductFormInput,
 } from '@/lib/catalog/product-form';
+import { createDefaultSizeRows, type EcommerceProductSize } from '@/lib/catalog/ecommerce-sizes';
 import { isEcommerceStore } from '@/lib/store-config';
+import { ProductSizesEditor } from '@/components/dashboard/products/ProductSizesEditor';
+import { SoldOutPanel } from '@/components/dashboard/sold-out/SoldOutPanel';
+import { useProductSizes, useSaveProductSizes } from '@/hooks/useProductSizes';
 import {
   useAllProducts,
   useCreateProduct,
@@ -313,6 +318,10 @@ export default function ProductsPage() {
   const updateProduct = useUpdateProduct();
   const createProduct = useCreateProduct();
   const toggleAvailability = useToggleProductAvailability();
+  const saveProductSizes = useSaveProductSizes();
+  const [createSizeRows, setCreateSizeRows] =
+    useState<EcommerceProductSize[]>(createDefaultSizeRows());
+  const [editSizeRows, setEditSizeRows] = useState<EcommerceProductSize[]>(createDefaultSizeRows());
 
   const createForm = useForm<ProductForm>({
     resolver: zodResolver(productFormSchema),
@@ -323,6 +332,15 @@ export default function ProductsPage() {
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultFormValues,
   });
+
+  const editBasePrice = editProduct ? getEcommerceDisplayPrice(editProduct) : 0;
+  const { data: loadedEditSizes } = useProductSizes(editProduct?.id ?? null, editBasePrice);
+
+  useEffect(() => {
+    if (loadedEditSizes) {
+      setEditSizeRows(loadedEditSizes);
+    }
+  }, [loadedEditSizes]);
 
   const filteredProducts = products?.filter((product) => {
     const matchesSearch =
@@ -375,12 +393,14 @@ export default function ProductsPage() {
 
   const openCreateDialog = () => {
     createForm.reset(defaultFormValues);
+    setCreateSizeRows(createDefaultSizeRows());
     setShowCreateDialog(true);
   };
 
   const openEditDialog = (product: Product) => {
     setEditProduct(product);
     editForm.reset(productToFormValues(product, isEcommerceStore));
+    setEditSizeRows(createDefaultSizeRows(getEcommerceDisplayPrice(product)));
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -453,9 +473,20 @@ export default function ProductsPage() {
 
   const handleCreate = async (data: ProductForm) => {
     createProduct.mutate(productFormToInput(data, isEcommerceStore), {
-      onSuccess: () => {
+      onSuccess: async (created) => {
+        if (isEcommerceStore) {
+          try {
+            await saveProductSizes.mutateAsync({
+              productId: created.id,
+              sizes: createSizeRows,
+            });
+          } catch (err) {
+            toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+          }
+        }
         setShowCreateDialog(false);
         createForm.reset(defaultFormValues);
+        setCreateSizeRows(createDefaultSizeRows());
         toast.success('Product created successfully');
       },
       onError: (error) => {
@@ -469,7 +500,17 @@ export default function ProductsPage() {
     updateProduct.mutate(
       { id: editProduct.id, input: productFormToInput(data, isEcommerceStore) },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          if (isEcommerceStore) {
+            try {
+              await saveProductSizes.mutateAsync({
+                productId: editProduct.id,
+                sizes: editSizeRows,
+              });
+            } catch (err) {
+              toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+            }
+          }
           setEditProduct(null);
           editForm.reset(defaultFormValues);
           toast.success('Product updated successfully');
@@ -502,10 +543,13 @@ export default function ProductsPage() {
           <h1 className="text-2xl font-bold md:text-3xl">{t('title')}</h1>
           <p className="text-muted-foreground">{t('searchProducts')}</p>
         </div>
-        <Button onClick={openCreateDialog}>
-          <Plus className="me-2 h-4 w-4" />
-          {t('addProduct')}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          {isEcommerceStore ? <SoldOutPanel triggerClassName="sm:w-auto" /> : null}
+          <Button onClick={openCreateDialog}>
+            <Plus className="me-2 h-4 w-4" />
+            {t('addProduct')}
+          </Button>
+        </div>
       </div>
 
       <div className="bg-background/95 border-border/60 sticky top-16 z-20 -mx-4 space-y-3 border-b px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
@@ -705,9 +749,9 @@ export default function ProductsPage() {
                       <td className="p-3">
                         {isEcommerceStore ? (
                           <p className="font-semibold tabular-nums">
-                            {formatCurrencyAmount(getEcommerceDisplayPrice(product), currency, {
-                              plain: true,
-                            })}
+                            {getEcommerceDisplayPriceLabel(product, (value) =>
+                              formatCurrencyAmount(value, currency, { plain: true })
+                            )}
                           </p>
                         ) : product.price_per_kg != null && product.weight_options_g?.length ? (
                           <div className="space-y-0.5 tabular-nums">
@@ -864,22 +908,31 @@ export default function ProductsPage() {
               )}
             </div>
             {isEcommerceStore ? (
-              <div className="space-y-2">
-                <Label htmlFor="create-price">
-                  {t('price')} ({currency}) *
-                </Label>
-                <Input
-                  id="create-price"
-                  type="number"
-                  min={0}
-                  {...createForm.register('price', { valueAsNumber: true })}
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="create-price">
+                    {t('price')} ({currency}) *
+                  </Label>
+                  <Input
+                    id="create-price"
+                    type="number"
+                    min={0}
+                    {...createForm.register('price', { valueAsNumber: true })}
+                  />
+                  {'price' in createForm.formState.errors && createForm.formState.errors.price && (
+                    <p className="text-destructive text-sm">
+                      {createForm.formState.errors.price.message}
+                    </p>
+                  )}
+                </div>
+                <ProductSizesEditor
+                  rows={createSizeRows}
+                  onChange={setCreateSizeRows}
+                  currency={currency}
+                  t={t}
+                  idPrefix="create"
                 />
-                {'price' in createForm.formState.errors && createForm.formState.errors.price && (
-                  <p className="text-destructive text-sm">
-                    {createForm.formState.errors.price.message}
-                  </p>
-                )}
-              </div>
+              </>
             ) : (
               <RestaurantPriceSection
                 form={createForm as UseFormReturn<RestaurantProductFormInput>}
@@ -1038,22 +1091,31 @@ export default function ProductsPage() {
               )}
             </div>
             {isEcommerceStore ? (
-              <div className="space-y-2">
-                <Label htmlFor="edit-price">
-                  {t('price')} ({currency}) *
-                </Label>
-                <Input
-                  id="edit-price"
-                  type="number"
-                  min={0}
-                  {...editForm.register('price', { valueAsNumber: true })}
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-price">
+                    {t('price')} ({currency}) *
+                  </Label>
+                  <Input
+                    id="edit-price"
+                    type="number"
+                    min={0}
+                    {...editForm.register('price', { valueAsNumber: true })}
+                  />
+                  {'price' in editForm.formState.errors && editForm.formState.errors.price && (
+                    <p className="text-destructive text-sm">
+                      {editForm.formState.errors.price.message}
+                    </p>
+                  )}
+                </div>
+                <ProductSizesEditor
+                  rows={editSizeRows}
+                  onChange={setEditSizeRows}
+                  currency={currency}
+                  t={t}
+                  idPrefix="edit"
                 />
-                {'price' in editForm.formState.errors && editForm.formState.errors.price && (
-                  <p className="text-destructive text-sm">
-                    {editForm.formState.errors.price.message}
-                  </p>
-                )}
-              </div>
+              </>
             ) : (
               <RestaurantPriceSection
                 form={editForm as UseFormReturn<RestaurantProductFormInput>}

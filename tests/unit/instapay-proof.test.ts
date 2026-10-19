@@ -47,14 +47,14 @@ describe('hasInstapayProof', () => {
     expect(hasInstapayProof('abc', null)).toBe(false);
   });
 
-  it('returns true with valid reference only', () => {
-    expect(hasInstapayProof('REF123', null)).toBe(true);
-    expect(hasInstapayProof('A1B2C3D4', null)).toBe(true);
+  it('returns true with screenshot URL only', () => {
+    expect(hasInstapayProof('', 'https://example.com/proof.png')).toBe(true);
+    expect(hasInstapayProof(null, 'https://example.com/proof.png')).toBe(true);
   });
 
-  it('returns false with screenshot URL only', () => {
-    expect(hasInstapayProof('', 'https://example.com/proof.png')).toBe(false);
-    expect(hasInstapayProof(null, 'https://example.com/proof.png')).toBe(false);
+  it('returns false with valid reference only', () => {
+    expect(hasInstapayProof('REF123', null)).toBe(false);
+    expect(hasInstapayProof('A1B2C3D4', null)).toBe(false);
   });
 });
 

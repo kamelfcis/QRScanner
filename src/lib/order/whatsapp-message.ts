@@ -213,7 +213,6 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     orderNumber,
     ecommerceDelivery,
     orderPaymentRef,
-    instapayProofReference,
     instapayScreenshotUrl,
     instapayHandle,
     requiresInstapayProof,
@@ -283,11 +282,8 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
       if (orderPaymentRef?.trim()) {
         lines.push(`${labels.paymentRef}: ${orderPaymentRef.trim()}`);
       }
-      const proofParts: string[] = [];
-      if (instapayProofReference?.trim()) proofParts.push(instapayProofReference.trim());
-      if (instapayScreenshotUrl?.trim()) proofParts.push(instapayScreenshotUrl.trim());
-      if (proofParts.length > 0) {
-        lines.push(`${labels.customerProof}: ${proofParts.join(' / ')}`);
+      if (instapayScreenshotUrl?.trim()) {
+        lines.push(`${labels.customerProof}: ${instapayScreenshotUrl.trim()}`);
       }
       if (instapayHandle?.trim()) {
         lines.push(`InstaPay: ${instapayHandle.trim()}`);

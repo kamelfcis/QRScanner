@@ -1,3 +1,4 @@
+import { getSizePriceRange } from '@/lib/catalog/ecommerce-sizes';
 import { productSchema, type ProductInput } from '@/types/schema';
 import type { Product } from '@/types';
 import { computeWeightPrice } from '@/lib/order/weight-price';
@@ -176,7 +177,22 @@ export function productToFormValues(product: Product, isEcommerce: boolean): Pro
 
 /** Single display price for ecommerce product lists (prefers dining_price). */
 export function getEcommerceDisplayPrice(
-  product: Pick<Product, 'dining_price' | 'takeaway_price'>
+  product: Pick<Product, 'dining_price' | 'takeaway_price' | 'product_sizes'>
 ) {
+  const range = getSizePriceRange(product.product_sizes ?? null);
+  if (range) {
+    return range.min === range.max ? range.min : range.min;
+  }
   return product.dining_price ?? product.takeaway_price ?? 0;
+}
+
+export function getEcommerceDisplayPriceLabel(
+  product: Pick<Product, 'dining_price' | 'takeaway_price' | 'product_sizes'>,
+  format: (value: number) => string
+): string {
+  const range = getSizePriceRange(product.product_sizes ?? null);
+  if (range && range.min !== range.max) {
+    return `${format(range.min)} – ${format(range.max)}`;
+  }
+  return format(getEcommerceDisplayPrice(product));
 }

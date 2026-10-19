@@ -20,7 +20,16 @@ import { computeWeightPrice, hasWeightOptions, minWeightPrice } from '@/lib/orde
 import { haptic } from '@/lib/haptics';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
-import { showDiningModeToggle } from '@/lib/store-config';
+import {
+  getDefaultPurchasableSize,
+  getEnabledSizes,
+  getSizeLabel,
+  getSizePriceRange,
+  isProductEffectivelySoldOut,
+  requiresSizeSelection,
+  toSelectedSizeSnapshot,
+} from '@/lib/catalog/ecommerce-sizes';
+import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
 
 interface ProductSheetProps {
@@ -42,6 +51,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState('');
   const [weightGrams, setWeightGrams] = useState<number | null>(null);
+  const [selectedSizeCode, setSelectedSizeCode] = useState<string | null>(null);
 
   useEffect(() => {
     if (product) {
@@ -50,6 +60,8 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       setNotes('');
       const weights = product.weight_options_g;
       setWeightGrams(weights?.length ? weights[0] : null);
+      const defaultSize = getDefaultPurchasableSize(product.product_sizes ?? null);
+      setSelectedSizeCode(defaultSize?.code ?? null);
     }
   }, [product]);
 
@@ -60,19 +72,31 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const showWeightPicker = hasWeightOptions(product);
   const weightOptions = product.weight_options_g ?? [];
+  const productSizes = product.product_sizes ?? null;
+  const showSizePicker = isEcommerceStore && requiresSizeSelection(productSizes);
+  const enabledSizes = getEnabledSizes(productSizes);
+  const selectedSize =
+    enabledSizes.find((size) => size.code === selectedSizeCode) ??
+    getDefaultPurchasableSize(productSizes);
+  const sizeRange = getSizePriceRange(productSizes);
+  const fallbackPrice = diningMode === 'dining' ? product.dining_price : product.takeaway_price;
   const activePrice = showWeightPicker
     ? weightGrams != null && product.price_per_kg != null
       ? computeWeightPrice(product.price_per_kg, weightGrams)
       : (minWeightPrice(product) ?? product.dining_price)
-    : diningMode === 'dining'
-      ? product.dining_price
-      : product.takeaway_price;
+    : showSizePicker && selectedSize
+      ? selectedSize.price
+      : fallbackPrice;
   const otherPrice = showWeightPicker
     ? null
     : diningMode === 'dining'
       ? product.takeaway_price
       : product.dining_price;
-  const canAdd = product.is_available && (!showWeightPicker || weightGrams != null);
+  const soldOut = isProductEffectivelySoldOut(product.is_available, productSizes);
+  const canAdd =
+    !soldOut &&
+    (!showWeightPicker || weightGrams != null) &&
+    (!showSizePicker || (selectedSize != null && !selectedSize.is_sold_out));
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
   const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
@@ -87,11 +111,13 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       name_en: product.name_en,
       name_ar: product.name_ar,
       image_url: product.image_url,
-      dining_price: showWeightPicker ? activePrice : product.dining_price,
-      takeaway_price: showWeightPicker ? activePrice : product.takeaway_price,
+      dining_price: showWeightPicker || showSizePicker ? activePrice : product.dining_price,
+      takeaway_price: showWeightPicker || showSizePicker ? activePrice : product.takeaway_price,
       price_per_kg: product.price_per_kg,
       weight_options_g: product.weight_options_g,
       weightGrams: showWeightPicker ? weightGrams : null,
+      sizeCode: showSizePicker && selectedSize ? selectedSize.code : null,
+      selectedSize: showSizePicker && selectedSize ? toSelectedSizeSnapshot(selectedSize) : null,
       quantity: qty,
       notes,
     });
@@ -162,6 +188,55 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         )}
       </SheetDescriptionOrDialogDescription>
 
+      {showSizePicker ? (
+        <div className="space-y-2 border-t border-[var(--menu-line)] pt-4">
+          <Label className="text-xs text-[var(--menu-ink-soft)]">{t('selectSize')}</Label>
+          <div
+            className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+            role="group"
+            aria-label={t('selectSize')}
+          >
+            {enabledSizes.map((size) => {
+              const selected = selectedSizeCode === size.code;
+              const disabled = size.is_sold_out;
+              return (
+                <button
+                  key={size.code}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => {
+                    haptic.tick();
+                    setSelectedSizeCode(size.code);
+                  }}
+                  className={cn(
+                    'rounded-xl border px-2 py-3 text-center transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+                    selected
+                      ? 'border-[var(--menu-wine)] bg-[var(--menu-gold-wash)]'
+                      : 'border-[var(--menu-line-strong)] bg-[var(--menu-surface)] hover:bg-[var(--menu-paper)]'
+                  )}
+                  aria-pressed={selected}
+                >
+                  <span className="block text-sm font-medium text-[var(--menu-ink)]">
+                    {getSizeLabel(size, locale)}
+                  </span>
+                  <span
+                    className="mt-1 block text-sm font-semibold tabular-nums text-[var(--menu-wine)]"
+                    dir="ltr"
+                  >
+                    {formatCurrencyAmount(size.price, currency, { locale: currencyLocale })}
+                  </span>
+                  {disabled ? (
+                    <span className="mt-1 block text-[10px] text-[var(--menu-ink-soft)]">
+                      {t('currentlyUnavailable')}
+                    </span>
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+
       {showWeightPicker ? (
         <div className="space-y-2 border-t border-[var(--menu-line)] pt-4">
           <Label className="text-xs text-[var(--menu-ink-soft)]">{t('selectWeight')}</Label>
@@ -218,7 +293,13 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
             className="font-heading text-2xl font-semibold tabular-nums text-[var(--menu-wine)]"
             dir="ltr"
           >
-            {formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
+            {showSizePicker && sizeRange && sizeRange.min !== sizeRange.max && !selectedSize
+              ? t('priceFrom', {
+                  price: formatCurrencyAmount(sizeRange.min, currency, {
+                    locale: currencyLocale,
+                  }),
+                })
+              : formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
           </p>
           {showDiningModeToggle && otherPrice != null && otherPrice !== activePrice && (
             <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
@@ -229,7 +310,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         </div>
       )}
 
-      {product.is_available ? (
+      {!soldOut ? (
         <div className="space-y-3">
           <div className="space-y-1.5">
             <Label
@@ -257,7 +338,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
     </div>
   );
 
-  const cta = product.is_available ? (
+  const cta = !soldOut ? (
     <div className="flex items-center gap-3">
       <div
         className="inline-flex h-12 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"

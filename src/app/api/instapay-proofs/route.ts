@@ -68,7 +68,6 @@ export async function POST(request: Request) {
     const uploadOnly = formData.get('uploadOnly') === 'true';
     const file = formData.get('file');
     const existingScreenshotUrl = String(formData.get('screenshotUrl') ?? '').trim() || null;
-    const rawProofReference = String(formData.get('proofReference') ?? '').trim() || null;
     const amountNote = String(formData.get('amountNote') ?? '').trim() || null;
     const customerName = String(formData.get('customerName') ?? '').trim();
     const customerPhone = String(formData.get('customerPhone') ?? '').trim() || null;
@@ -117,6 +116,31 @@ export async function POST(request: Request) {
           { status: 400 }
         );
       }
+      if (deliveryFee == null || Number.isNaN(deliveryFee) || deliveryFee < 0) {
+        return NextResponse.json({ error: 'Invalid delivery fee' }, { status: 400 });
+      }
+
+      const admin = createAdminClient();
+      const uploadRow = {
+        order_ref: orderRef,
+        customer_name: customerName || 'Pending',
+        customer_phone: customerPhone,
+        delivery_location_id: deliveryLocationId,
+        delivery_fee: deliveryFee,
+        proof_reference: null,
+        screenshot_url: screenshotUrl,
+        amount_note: amountNote,
+        status: 'pending' as const,
+      };
+
+      const { error: uploadUpsertError } = await admin
+        .from('instapay_delivery_proofs')
+        .upsert(uploadRow, { onConflict: 'order_ref' });
+
+      if (uploadUpsertError) {
+        return NextResponse.json({ error: uploadUpsertError.message }, { status: 500 });
+      }
+
       return NextResponse.json({ screenshotUrl, path: storedPath });
     }
 
@@ -126,23 +150,14 @@ export async function POST(request: Request) {
     if (deliveryFee == null || Number.isNaN(deliveryFee) || deliveryFee < 0) {
       return NextResponse.json({ error: 'Invalid delivery fee' }, { status: 400 });
     }
-
-    const proofReference = rawProofReference ? normalizeInstapayReference(rawProofReference) : null;
-    if (!proofReference || !isValidInstapayReference(proofReference)) {
+    if (!screenshotUrl) {
       return NextResponse.json(
-        { error: 'Valid proof reference is required', code: 'instapay_reference_invalid' },
+        { error: 'Payment screenshot is required', code: 'instapay_proof_required' },
         { status: 400 }
       );
     }
 
     const admin = createAdminClient();
-    const duplicate = await isReferenceTaken(admin, proofReference, orderRef);
-    if (duplicate) {
-      return NextResponse.json(
-        { error: 'This transfer reference was already used', code: 'instapay_reference_duplicate' },
-        { status: 409 }
-      );
-    }
 
     const row = {
       order_ref: orderRef,
@@ -150,7 +165,7 @@ export async function POST(request: Request) {
       customer_phone: customerPhone,
       delivery_location_id: deliveryLocationId,
       delivery_fee: deliveryFee,
-      proof_reference: proofReference,
+      proof_reference: null,
       screenshot_url: screenshotUrl,
       amount_note: amountNote,
       status: 'pending' as const,
@@ -164,15 +179,6 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
-      if (error.code === '23505') {
-        return NextResponse.json(
-          {
-            error: 'This transfer reference was already used',
-            code: 'instapay_reference_duplicate',
-          },
-          { status: 409 }
-        );
-      }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 

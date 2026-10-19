@@ -30,7 +30,9 @@ export function useProducts(categoryId?: string) {
     queryFn: async () => {
       let query = supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(
+          '*, category:categories(id, name_en, name_ar), product_sizes:product_sizes(id, product_id, sort_order, code, label_ar, label_en, price, is_enabled, is_sold_out)'
+        )
         .order('sort_order', { ascending: true });
 
       if (categoryId) {
@@ -50,7 +52,9 @@ export function useAllProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(
+          '*, category:categories(id, name_en, name_ar), product_sizes:product_sizes(id, product_id, sort_order, code, label_ar, label_en, price, is_enabled, is_sold_out)'
+        )
         .order('sort_order', { ascending: true });
 
       if (error) throw error;

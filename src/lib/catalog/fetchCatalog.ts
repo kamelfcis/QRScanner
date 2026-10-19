@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { CategoryWithProducts } from '@/types';
+import { isEcommerceStore } from '@/lib/store-config';
 import { CATALOG_WITH_PRODUCTS_SELECT } from './keys';
 
 export async function fetchCategoriesWithProducts(
@@ -16,7 +17,7 @@ export async function fetchCategoriesWithProducts(
   return (data || []).map((category) => ({
     ...category,
     products: ((category.products || []) as CategoryWithProducts['products'])
-      .filter((p) => p.is_available)
+      .filter((p) => isEcommerceStore || p.is_available)
       .sort((a, b) => a.sort_order - b.sort_order),
     subcategories: (
       (category.subcategories || []) as NonNullable<CategoryWithProducts['subcategories']>
