@@ -611,7 +611,7 @@
     "instapayRefCopyFailed": "تعذّر نسخ المرجع",
     "instapayUploading": "جاري الرفع...",
     "instapayUploadFailed": "فشل رفع لقطة الشاشة",
-    "instapayUploadNeedRef": "اختر منطقة التوصيل أولاً حتى يتوفر مرجع الدفع",
+    "instapayUploadNeedRef": "اختر منطقة التوصيل أولاً",
     "instapayUploadType": "استخدم لقطة JPEG أو PNG. صور HEIC يجب أن تُحوَّل في المتصفح، أو احفظها كـ JPEG/PNG.",
     "instapayUploadSize": "يجب ألا يتجاوز حجم لقطة الشاشة 5 ميغابايت",
     "instapayUploadServer": "تعذّر رفع لقطة الشاشة. أعد المحاولة كـ JPEG أو PNG.",

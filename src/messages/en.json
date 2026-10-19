@@ -611,7 +611,7 @@
     "instapayRefCopyFailed": "Could not copy reference",
     "instapayUploading": "Uploading...",
     "instapayUploadFailed": "Screenshot upload failed",
-    "instapayUploadNeedRef": "Select a delivery area first so a payment reference is ready",
+    "instapayUploadNeedRef": "Select a delivery area first",
     "instapayUploadType": "Use a JPEG or PNG screenshot. HEIC photos must convert in the browser, or save as JPEG/PNG.",
     "instapayUploadSize": "Screenshot must be 5MB or smaller",
     "instapayUploadServer": "Could not upload the screenshot. Try again as JPEG or PNG.",

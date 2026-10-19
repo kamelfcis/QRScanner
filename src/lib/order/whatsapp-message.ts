@@ -212,7 +212,6 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     deliveryFee,
     orderNumber,
     ecommerceDelivery,
-    orderPaymentRef,
     instapayScreenshotUrl,
     instapayHandle,
     requiresInstapayProof,
@@ -279,9 +278,6 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     const feeAmount = formatMoney(deliveryFee ?? 0, currency, locale);
     if (requiresInstapayProof) {
       lines.push(labels.expectedDeliveryFee(feeAmount));
-      if (orderPaymentRef?.trim()) {
-        lines.push(`${labels.paymentRef}: ${orderPaymentRef.trim()}`);
-      }
       if (instapayScreenshotUrl?.trim()) {
         lines.push(`${labels.customerProof}: ${instapayScreenshotUrl.trim()}`);
       }

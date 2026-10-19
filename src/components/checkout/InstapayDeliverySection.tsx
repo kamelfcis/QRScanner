@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Check, Copy, ExternalLink, ImagePlus, Loader2 } from 'lucide-react';
+import { Check, ExternalLink, ImagePlus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { buttonVariants } from '@/components/ui/button';
@@ -54,15 +54,6 @@ export function InstapayDeliverySection({
   useEffect(() => {
     onUploadingChange?.(uploading);
   }, [uploading, onUploadingChange]);
-
-  const copyRef = async () => {
-    try {
-      await navigator.clipboard.writeText(orderPaymentRef);
-      toast.success(t('instapayRefCopied'));
-    } catch {
-      toast.error(t('instapayRefCopyFailed'));
-    }
-  };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -187,30 +178,6 @@ export function InstapayDeliverySection({
           <ExternalLink className="me-2 h-4 w-4" aria-hidden="true" />
           {t('instapayPayButton')}
         </a>
-
-        <div className="space-y-2">
-          <Label>{t('instapayOrderRef')}</Label>
-          <div className="flex gap-2">
-            <Input
-              readOnly
-              value={orderPaymentRef}
-              dir="ltr"
-              className="h-11 min-h-11 font-mono tabular-nums"
-              data-testid="instapay-order-ref"
-            />
-            <button
-              type="button"
-              onClick={copyRef}
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'icon' }),
-                'h-11 w-11 shrink-0 border-[var(--menu-line-strong)]'
-              )}
-              aria-label={t('instapayCopyRef')}
-            >
-              <Copy className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
 
         <p className="text-sm text-[var(--menu-ink-soft)]">
           {t('instapayProofScreenshotRequired')}
