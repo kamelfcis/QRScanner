@@ -59,7 +59,7 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import type { Product } from '@/types';
+import type { Category, Product } from '@/types';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import { computeWeightPrice } from '@/lib/order/weight-price';
@@ -251,6 +251,16 @@ function ProductImageField({
   );
 }
 
+function getCategoryLabel(
+  categoryId: string | undefined,
+  categories: Category[] | undefined,
+  locale: string
+): string {
+  if (!categoryId || !categories?.length) return '';
+  const category = categories.find((item) => item.id === categoryId);
+  return category ? getName(locale, category.name_en, category.name_ar) : '';
+}
+
 const categoryChipClassName = (isActive: boolean) =>
   cn(
     'inline-flex min-h-[36px] shrink-0 items-center whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors',
@@ -333,6 +343,8 @@ export default function ProductsPage() {
     defaultValues: defaultFormValues,
   });
 
+  const createCategoryId = createForm.watch('category_id');
+  const editCategoryId = editForm.watch('category_id');
   const editBasePrice = editProduct ? getEcommerceDisplayPrice(editProduct) : 0;
   const { data: loadedEditSizes } = useProductSizes(editProduct?.id ?? null, editBasePrice);
 
@@ -891,7 +903,9 @@ export default function ProductsPage() {
                 }
               >
                 <SelectTrigger id="create-category">
-                  <SelectValue placeholder={t('selectCategory')} />
+                  <SelectValue placeholder={t('selectCategory')}>
+                    {getCategoryLabel(createCategoryId, categories, locale)}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
@@ -1074,7 +1088,9 @@ export default function ProductsPage() {
                 }
               >
                 <SelectTrigger id="edit-category">
-                  <SelectValue />
+                  <SelectValue placeholder={t('selectCategory')}>
+                    {getCategoryLabel(editCategoryId, categories, locale)}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (

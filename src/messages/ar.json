@@ -1055,10 +1055,13 @@
     "enableSizeOptions": "تفعيل أحجام (صغير / كبير)",
     "sizeOptionsTitle": "خيارات المقاس",
     "sizeOptionsHint": "فعّل S/M/L/XL وحدّد سعراً لكل مقاس. يجب على العميل اختيار مقاس عند تفعيل أي منها.",
-    "sizePreset.s": "صغير",
-    "sizePreset.m": "وسط",
-    "sizePreset.l": "كبير",
-    "sizePreset.xl": "إكس لارج",
+    "sizePreset": {
+      "s": "صغير",
+      "m": "وسط",
+      "l": "كبير",
+      "xl": "إكس لارج",
+      "custom": "مخصص"
+    },
     "sizeCustom": "مقاس مخصص",
     "sizeEnabled": "مفعّل",
     "sizeSoldOut": "نفد",

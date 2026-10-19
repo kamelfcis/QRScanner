@@ -1055,10 +1055,13 @@
     "enableSizeOptions": "Enable size options (Small / Large)",
     "sizeOptionsTitle": "Size options",
     "sizeOptionsHint": "Enable S/M/L/XL and set a price for each. Customers must pick a size when any are enabled.",
-    "sizePreset.s": "Small",
-    "sizePreset.m": "Medium",
-    "sizePreset.l": "Large",
-    "sizePreset.xl": "Extra Large",
+    "sizePreset": {
+      "s": "Small",
+      "m": "Medium",
+      "l": "Large",
+      "xl": "Extra Large",
+      "custom": "Custom"
+    },
     "sizeCustom": "Custom size",
     "sizeEnabled": "Enabled",
     "sizeSoldOut": "Sold out",
