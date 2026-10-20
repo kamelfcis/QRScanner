@@ -815,6 +815,9 @@
       "shift_closed": "الوردية مغلقة",
       "invalid_quantity": "كمية غير صالحة",
       "already_voided": "هذا الصنف ملغى",
+      "product_unavailable": "أحد الأصناف لم يعد متاحاً",
+      "too_many_items": "عدد الأصناف أكبر من المسموح",
+      "empty_cart": "لا توجد أصناف للإضافة",
       "generic": "تعذر تعديل الطلب"
     },
     "voidLine": "إلغاء الصنف",

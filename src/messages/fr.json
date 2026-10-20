@@ -782,6 +782,9 @@
       "shift_closed": "Le service est fermé",
       "invalid_quantity": "Quantité invalide",
       "already_voided": "Cet article est annulé",
+      "product_unavailable": "Un article n'est plus disponible",
+      "too_many_items": "Trop d'articles",
+      "empty_cart": "Aucun article à ajouter",
       "generic": "Impossible de modifier la commande"
     },
     "voidLine": "Annuler l'article",

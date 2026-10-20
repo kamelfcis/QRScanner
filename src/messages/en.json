@@ -815,6 +815,9 @@
       "shift_closed": "Shift is closed",
       "invalid_quantity": "Invalid quantity",
       "already_voided": "This item is voided",
+      "product_unavailable": "An item is no longer available",
+      "too_many_items": "Too many items",
+      "empty_cart": "There are no items to add",
       "generic": "Could not edit the order"
     },
     "voidLine": "Void item",
