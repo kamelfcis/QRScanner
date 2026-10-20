@@ -3,7 +3,7 @@
 import { getRestaurantDisplayName } from '@/lib/appName';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { formatCurrencyAmount, type CurrencyLocale } from '@/lib/order/format-currency';
-import { receiptDomId, RECEIPT_SLIP_CSS } from '@/lib/order/print-receipt';
+import { isOstolThermalReceipt, receiptDomId, RECEIPT_SLIP_CSS } from '@/lib/order/print-receipt';
 import { formatDisplayPhone } from '@/lib/phone/normalize';
 import { getLocalizedText } from '@/lib/utils';
 import type { OrderWithItems, RestaurantSettings } from '@/types/database';
@@ -20,6 +20,40 @@ interface OrderReceiptProps {
 
 function money(amount: number, currency: string, locale: CurrencyLocale): string {
   return formatCurrencyAmount(amount, currency, { locale, plain: true });
+}
+
+function ReceiptPair({
+  start,
+  end,
+  startClassName,
+  endClassName,
+  style,
+}: {
+  start: React.ReactNode;
+  end: React.ReactNode;
+  startClassName?: string;
+  endClassName?: string;
+  style?: React.CSSProperties;
+}) {
+  if (isOstolThermalReceipt) {
+    return (
+      <table className="receipt-line" width="100%" style={style}>
+        <tbody>
+          <tr>
+            <td className={startClassName}>{start}</td>
+            <td className={endClassName}>{end}</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  return (
+    <div className="receipt-row" style={style}>
+      <span className={startClassName}>{start}</span>
+      <span className={endClassName}>{end}</span>
+    </div>
+  );
 }
 
 export function OrderReceipt({ order, settings, locale, currencyLocale, t }: OrderReceiptProps) {
@@ -54,8 +88,7 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
           className="receipt-logo"
           src={settings.logo_url}
           alt=""
-          width={64}
-          height={64}
+          {...(isOstolThermalReceipt ? {} : { width: 64, height: 64 })}
           crossOrigin="anonymous"
         />
       ) : null}
@@ -97,21 +130,29 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
         const lineTotal = Number(item.unit_price) * item.quantity;
         return (
           <div key={item.id} style={{ marginBottom: 6 }}>
-            <div className="receipt-row">
-              <span className="receipt-item-name">
-                <span className="receipt-num">{item.quantity}×</span> {name}
-                {size ? ` (${size})` : ''}
-              </span>
-              <span className="receipt-num">
-                {money(lineTotal, order.currency, currencyLocale)}
-              </span>
-            </div>
-            <div className="receipt-row">
-              <span className="receipt-note receipt-num">
+            <ReceiptPair
+              startClassName="receipt-item-name"
+              endClassName="receipt-num"
+              start={
+                <>
+                  <span className="receipt-num">{item.quantity}×</span> {name}
+                  {size ? ` (${size})` : ''}
+                </>
+              }
+              end={money(lineTotal, order.currency, currencyLocale)}
+            />
+            {isOstolThermalReceipt ? (
+              <p className="receipt-unit receipt-num">
                 {money(Number(item.unit_price), order.currency, currencyLocale)}
-              </span>
-              <span />
-            </div>
+              </p>
+            ) : (
+              <div className="receipt-row">
+                <span className="receipt-note receipt-num">
+                  {money(Number(item.unit_price), order.currency, currencyLocale)}
+                </span>
+                <span />
+              </div>
+            )}
             {item.notes ? <span className="receipt-note">{item.notes}</span> : null}
           </div>
         );
@@ -121,83 +162,80 @@ export function OrderReceipt({ order, settings, locale, currencyLocale, t }: Ord
 
       <hr className="receipt-rule" />
 
-      <div className="receipt-row">
-        <span>{t('receiptSubtotal')}</span>
-        <span className="receipt-num">
-          {money(Number(order.subtotal), order.currency, currencyLocale)}
-        </span>
-      </div>
+      <ReceiptPair
+        endClassName="receipt-num"
+        start={t('receiptSubtotal')}
+        end={money(Number(order.subtotal), order.currency, currencyLocale)}
+      />
       {Number(order.discount_amount) > 0 ? (
-        <div className="receipt-row">
-          <span>
-            {order.coupon_code
+        <ReceiptPair
+          endClassName="receipt-num"
+          start={
+            order.coupon_code
               ? t('receiptDiscountCode', { code: order.coupon_code })
-              : t('receiptDiscount')}
-          </span>
-          <span className="receipt-num">
-            −{money(Number(order.discount_amount), order.currency, currencyLocale)}
-          </span>
-        </div>
+              : t('receiptDiscount')
+          }
+          end={`−${money(Number(order.discount_amount), order.currency, currencyLocale)}`}
+        />
       ) : null}
       {Number(order.tax) > 0 ? (
-        <div className="receipt-row">
-          <span>{t('receiptTax')}</span>
-          <span className="receipt-num">
-            {money(Number(order.tax), order.currency, currencyLocale)}
-          </span>
-        </div>
+        <ReceiptPair
+          endClassName="receipt-num"
+          start={t('receiptTax')}
+          end={money(Number(order.tax), order.currency, currencyLocale)}
+        />
       ) : null}
       {Number(order.service) > 0 ? (
-        <div className="receipt-row">
-          <span>{t('receiptService')}</span>
-          <span className="receipt-num">
-            {money(Number(order.service), order.currency, currencyLocale)}
-          </span>
-        </div>
+        <ReceiptPair
+          endClassName="receipt-num"
+          start={t('receiptService')}
+          end={money(Number(order.service), order.currency, currencyLocale)}
+        />
       ) : null}
       {Number(order.delivery_fee) > 0 ? (
-        <div className="receipt-row">
-          <span>{t('receiptDelivery')}</span>
-          <span className="receipt-num">
-            {money(Number(order.delivery_fee), order.currency, currencyLocale)}
-          </span>
-        </div>
+        <ReceiptPair
+          endClassName="receipt-num"
+          start={t('receiptDelivery')}
+          end={money(Number(order.delivery_fee), order.currency, currencyLocale)}
+        />
       ) : null}
 
       <hr className="receipt-rule-double" />
-      <div className="receipt-row">
-        <span className="receipt-total-label">{t('receiptTotal')}</span>
-        <span className="receipt-total-value receipt-num">
-          {money(Number(order.total), order.currency, currencyLocale)}
-        </span>
-      </div>
+      <ReceiptPair
+        startClassName="receipt-total-label"
+        endClassName="receipt-total-value receipt-num"
+        start={t('receiptTotal')}
+        end={money(Number(order.total), order.currency, currencyLocale)}
+      />
       {order.payment_method ? (
         <>
-          <div className="receipt-row" style={{ marginTop: 6 }}>
-            <span>{t('paymentMethodLabel')}</span>
-            <span>{t(`paymentMethod.${order.payment_method}`)}</span>
-          </div>
+          <ReceiptPair
+            style={{ marginTop: 6 }}
+            start={t('paymentMethodLabel')}
+            end={t(`paymentMethod.${order.payment_method}`)}
+          />
           {order.payment_method === 'cash' ? (
             <>
-              <div className="receipt-row">
-                <span>{t('paymentAmountReceived')}</span>
-                <span className="receipt-num">
-                  {money(Number(order.amount_received ?? 0), order.currency, currencyLocale)}
-                </span>
-              </div>
-              <div className="receipt-row">
-                <span>{t('paymentChangeDue')}</span>
-                <span className="receipt-num">
-                  {money(Number(order.change_due ?? 0), order.currency, currencyLocale)}
-                </span>
-              </div>
+              <ReceiptPair
+                endClassName="receipt-num"
+                start={t('paymentAmountReceived')}
+                end={money(Number(order.amount_received ?? 0), order.currency, currencyLocale)}
+              />
+              <ReceiptPair
+                endClassName="receipt-num"
+                start={t('paymentChangeDue')}
+                end={money(Number(order.change_due ?? 0), order.currency, currencyLocale)}
+              />
             </>
           ) : null}
         </>
       ) : null}
       <hr className="receipt-rule-double" />
 
-      <p className="receipt-meta" style={{ textAlign: 'start', marginTop: 8 }}>
+      <p
+        className="receipt-meta"
+        style={{ textAlign: isOstolThermalReceipt ? 'center' : 'start', marginTop: 8 }}
+      >
         {order.customer_name}
       </p>
       {customerPhone ? (
