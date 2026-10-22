@@ -45,11 +45,20 @@ import { useDeliveryLocations } from '@/hooks/useDeliveryLocations';
 import {
   buildDeliveryAddressSnapshot,
   formatDeliveryLocationOption,
+  getDeliveryLocationLabel,
 } from '@/lib/order/delivery-location';
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
-import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
-import { generateOrderPaymentRef, hasInstapayProof } from '@/lib/payment/instapay-proof';
+import { instapayPaymentUrl } from '@/lib/payment/instapay';
+import { generateOrderPaymentRef } from '@/lib/payment/instapay-proof';
+import {
+  canSubmitPaymentProof,
+  computePrepaidAmounts,
+  defaultPaymentMethod,
+  resolveConfiguredPaymentMethods,
+  type PaymentMethod,
+  type PrepaidScope,
+} from '@/lib/payment/prepaid';
 import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliverySection';
 
 export default function CheckoutPage() {
@@ -80,6 +89,8 @@ export default function CheckoutPage() {
   const [instapayAmountNote, setInstapayAmountNote] = useState('');
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
   const [orderPaymentRef, setOrderPaymentRef] = useState<string | null>(null);
+  const [prepaidScope, setPrepaidScope] = useState<PrepaidScope>('shipping_only');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('vodafone_cash');
 
   const currency = getRestaurantCurrency(settings?.currency);
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
@@ -141,24 +152,50 @@ export default function CheckoutPage() {
 
   const prepTime = useMemo(() => resolvePrepTimeDisplay(settings), [settings]);
 
-  const requiresInstapayProof =
-    showInstapayDeliveryPrepay && totals.deliveryFee > 0 && Boolean(deliveryLocationId);
+  const paymentConfig = useMemo(
+    () =>
+      resolveConfiguredPaymentMethods({
+        instapayPaymentUrl: settings?.instapay_payment_url,
+        vodafoneCashNumber: settings?.vodafone_cash_number,
+        envInstapayUrl: instapayPaymentUrl,
+      }),
+    [settings?.instapay_payment_url, settings?.vodafone_cash_number]
+  );
 
-  const proofValid = hasInstapayProof(null, instapayScreenshotUrl) && !uploadingScreenshot;
+  const requiresInstapayProof =
+    paymentConfig.methods.length > 0 && totals.deliveryFee > 0 && Boolean(deliveryLocationId);
+
+  const proofReady = canSubmitPaymentProof({
+    proofRequired: requiresInstapayProof,
+    screenshotUrl: instapayScreenshotUrl,
+    uploading: uploadingScreenshot,
+  });
 
   useEffect(() => {
-    if (!deliveryLocationId || totals.deliveryFee <= 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when zone cleared
+    const nextMethod =
+      defaultPaymentMethod(paymentConfig.methods, paymentConfig.vodafoneNumber) ?? 'instapay';
+    if (!deliveryLocationId || totals.deliveryFee <= 0 || paymentConfig.methods.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when zone or payment config clears
       setOrderPaymentRef(null);
       setInstapayScreenshotUrl(null);
       setInstapayAmountNote('');
+      setPrepaidScope('shipping_only');
+      setPaymentMethod(nextMethod);
       return;
     }
 
     setOrderPaymentRef(generateOrderPaymentRef());
     setInstapayScreenshotUrl(null);
     setInstapayAmountNote('');
-  }, [deliveryLocationId, totals.deliveryFee]);
+    setPrepaidScope('shipping_only');
+    setPaymentMethod(nextMethod);
+  }, [
+    deliveryLocationId,
+    totals.deliveryFee,
+    paymentConfig.instapayValue,
+    paymentConfig.vodafoneNumber,
+    paymentConfig.methods,
+  ]);
 
   useEffect(() => {
     if (!trackedStart && items.length > 0) {
@@ -319,12 +356,32 @@ export default function CheckoutPage() {
         }
       }
 
+      let paidNow = computePrepaidAmounts(totals.subtotal, deliveryFee, prepaidScope).amountDue;
+      let remainingCash = computePrepaidAmounts(
+        totals.subtotal,
+        deliveryFee,
+        prepaidScope
+      ).remainingOnDelivery;
+      let messageMethod = paymentMethod;
+      let messageFee = deliveryFee;
+
       if (requiresInstapayProof && orderPaymentRef) {
         const proofForm = new FormData();
         proofForm.append('orderRef', orderPaymentRef);
         proofForm.append('customerName', customerName.trim());
         proofForm.append('customerPhone', customerPhone.trim());
-        proofForm.append('deliveryFee', String(deliveryFee));
+        proofForm.append('paymentMethod', paymentMethod);
+        proofForm.append('prepaidScope', prepaidScope);
+        proofForm.append(
+          'items',
+          JSON.stringify(
+            items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              sizeCode: item.sizeCode ?? null,
+            }))
+          )
+        );
         if (deliveryLocationId) proofForm.append('deliveryLocationId', deliveryLocationId);
         if (instapayScreenshotUrl) proofForm.append('screenshotUrl', instapayScreenshotUrl);
         if (instapayAmountNote.trim()) proofForm.append('amountNote', instapayAmountNote.trim());
@@ -334,17 +391,34 @@ export default function CheckoutPage() {
           method: 'POST',
           body: proofForm,
         });
-        if (!proofResponse.ok) {
-          const proofPayload = (await proofResponse.json().catch(() => null)) as {
-            code?: string;
-          } | null;
+        const proofPayload = (await proofResponse.json().catch(() => null)) as {
+          code?: string;
+          amountDue?: number;
+          remainingOnDelivery?: number;
+          deliveryFee?: number;
+          paymentMethod?: PaymentMethod;
+        } | null;
+        if (!proofResponse.ok || proofPayload?.code === 'instapay_proof_required') {
           const message =
             proofPayload?.code === 'instapay_proof_required'
               ? t('instapayScreenshotRequired')
-              : t('instapayProofSaveFailed');
+              : proofPayload?.code === 'product_unavailable'
+                ? t('productUnavailable')
+                : t('instapayProofSaveFailed');
           setErrors([message]);
           setSubmitting(false);
           return;
+        }
+        if (typeof proofPayload?.amountDue === 'number') paidNow = proofPayload.amountDue;
+        if (typeof proofPayload?.remainingOnDelivery === 'number') {
+          remainingCash = proofPayload.remainingOnDelivery;
+        }
+        if (typeof proofPayload?.deliveryFee === 'number') messageFee = proofPayload.deliveryFee;
+        if (
+          proofPayload?.paymentMethod === 'instapay' ||
+          proofPayload?.paymentMethod === 'vodafone_cash'
+        ) {
+          messageMethod = proofPayload.paymentMethod;
         }
       }
 
@@ -357,14 +431,17 @@ export default function CheckoutPage() {
           requiresDeliveryLocation || requiresDeliveryAddress
             ? (composedDeliveryAddress ?? (requiresDeliveryAddress ? deliveryAddress : null))
             : null,
-        deliveryFee,
+        deliveryFee: messageFee,
         customerName,
         customerPhone,
         orderNotes,
         orderPaymentRef: requiresInstapayProof ? orderPaymentRef : null,
         instapayScreenshotUrl: requiresInstapayProof ? instapayScreenshotUrl : null,
-        instapayHandle: requiresInstapayProof ? instapayHandle : null,
         requiresInstapayProof,
+        paymentMethod: requiresInstapayProof ? messageMethod : null,
+        prepaidScope: requiresInstapayProof ? prepaidScope : null,
+        amountDue: requiresInstapayProof ? paidNow : null,
+        remainingOnDelivery: requiresInstapayProof ? remainingCash : null,
         locale: locale === 'ar' ? 'ar' : 'en',
         settings: {
           whatsapp: settings.whatsapp,
@@ -669,7 +746,11 @@ export default function CheckoutPage() {
                 {t('checkoutStepInstapay')}
               </h2>
               <InstapayDeliverySection
+                productsTotal={totals.subtotal}
                 deliveryFee={totals.deliveryFee}
+                zoneName={
+                  selectedLocation ? getDeliveryLocationLabel(locale, selectedLocation) : ''
+                }
                 currency={currency}
                 currencyLocale={currencyLocale}
                 orderPaymentRef={orderPaymentRef}
@@ -678,6 +759,18 @@ export default function CheckoutPage() {
                 customerName={customerName}
                 customerPhone={customerPhone}
                 deliveryLocationId={deliveryLocationId}
+                instapayValue={paymentConfig.instapayValue}
+                vodafoneNumber={paymentConfig.vodafoneNumber}
+                availableMethods={paymentConfig.methods}
+                paymentMethod={paymentMethod}
+                prepaidScope={prepaidScope}
+                cartItems={items.map((item) => ({
+                  productId: item.productId,
+                  quantity: item.quantity,
+                  sizeCode: item.sizeCode ?? null,
+                }))}
+                onPaymentMethodChange={setPaymentMethod}
+                onPrepaidScopeChange={setPrepaidScope}
                 onScreenshotUrlChange={setInstapayScreenshotUrl}
                 onAmountNoteChange={setInstapayAmountNote}
                 onUploadingChange={setUploadingScreenshot}
@@ -805,24 +898,23 @@ export default function CheckoutPage() {
             </div>
           </section>
 
-          {requiresInstapayProof && !proofValid && (
-            <p className="text-muted-foreground text-center text-xs">{t('instapayConfirmHint')}</p>
+          {requiresInstapayProof && !proofReady && (
+            <p className="text-muted-foreground text-center text-xs">{t('paymentConfirmHint')}</p>
           )}
 
           <Button
             size="lg"
             className="h-14 w-full rounded-full bg-[var(--menu-wine)] text-base font-semibold text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-            disabled={
-              submitting ||
-              !whatsappConfigured ||
-              noActiveLocations ||
-              (requiresInstapayProof && !proofValid)
-            }
+            disabled={submitting || !whatsappConfigured || noActiveLocations || !proofReady}
             onClick={handleConfirm}
             data-testid="checkout-confirm"
           >
             <MessageCircle className="me-2 h-5 w-5" aria-hidden="true" />
-            {submitting ? t('confirming') : t('confirmWhatsApp')}
+            {submitting
+              ? t('confirming')
+              : requiresInstapayProof
+                ? t('confirmPaymentProof')
+                : t('confirmWhatsApp')}
           </Button>
         </motion.div>
       </div>

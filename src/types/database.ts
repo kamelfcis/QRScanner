@@ -211,7 +211,14 @@ export interface RestaurantSettings {
   enable_dine_in?: boolean;
   enable_takeaway?: boolean;
   enable_delivery?: boolean;
+  /** InstaPay payment link or handle. Empty hides InstaPay at checkout. */
+  instapay_payment_url?: string | null;
+  /** Egyptian Vodafone Cash wallet, stored as typed. Empty hides Vodafone Cash. */
+  vodafone_cash_number?: string | null;
 }
+
+/** Dashboard restaurant settings form. Payment fields live on the ecommerce screen. */
+export type RestaurantSettingsForm = RestaurantSettings;
 
 export interface FeatureSettings {
   ai_product_images: boolean;
@@ -577,6 +584,8 @@ export interface PushSubscription {
 }
 
 export type InstapayProofStatus = 'pending' | 'confirmed' | 'rejected';
+export type InstapayPaymentMethod = 'instapay' | 'vodafone_cash';
+export type InstapayPrepaidScope = 'shipping_only' | 'full';
 
 export interface InstapayDeliveryProof {
   id: string;
@@ -585,6 +594,11 @@ export interface InstapayDeliveryProof {
   customer_phone: string | null;
   delivery_location_id: string | null;
   delivery_fee: number;
+  products_total: number;
+  amount_due: number;
+  remaining_on_delivery: number;
+  payment_method: InstapayPaymentMethod;
+  prepaid_scope: InstapayPrepaidScope;
   proof_reference: string | null;
   screenshot_url: string | null;
   amount_note: string | null;

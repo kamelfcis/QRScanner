@@ -49,7 +49,8 @@ type ProductRow = {
 
 export async function validateEcommerceCartItems(
   supabase: SupabaseClient,
-  items: EcommerceCartValidationItem[]
+  items: EcommerceCartValidationItem[],
+  options?: { priceBasis?: 'dining' | 'takeaway' }
 ): Promise<EcommerceCartValidationResult> {
   const codes = new Set<EcommerceCartValidationCode>();
   const validated: ValidatedEcommerceCartLine[] = [];
@@ -101,7 +102,10 @@ export async function validateEcommerceCartItems(
       continue;
     }
 
-    const fallback = product.dining_price ?? product.takeaway_price ?? 0;
+    const fallback =
+      options?.priceBasis === 'takeaway'
+        ? (product.takeaway_price ?? product.dining_price ?? 0)
+        : (product.dining_price ?? product.takeaway_price ?? 0);
     const unitPrice = getEcommerceUnitPrice(sizes, sizeCode, fallback);
     const selectedSize = sizeCode ? toSelectedSizeSnapshot(getSizeByCode(sizes, sizeCode)!) : null;
 

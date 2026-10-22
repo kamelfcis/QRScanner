@@ -1,5 +1,6 @@
 import type { OrderTotals } from './totals';
 import { formatCurrencyAmount } from './format-currency';
+import type { PaymentMethod } from '@/lib/payment/prepaid';
 import type { FulfillmentType } from '@/stores/cart-store';
 
 export type MessageLocale = 'en' | 'ar' | 'fr' | 'nl';
@@ -34,8 +35,10 @@ export interface WhatsAppMessageInput {
   orderPaymentRef?: string | null;
   instapayProofReference?: string | null;
   instapayScreenshotUrl?: string | null;
-  instapayHandle?: string | null;
   requiresInstapayProof?: boolean;
+  paymentMethod?: PaymentMethod | null;
+  amountDue?: number | null;
+  remainingOnDelivery?: number | null;
 }
 
 const SEP = '────────────────';
@@ -63,6 +66,11 @@ interface MessageLabels {
   paymentRef: string;
   customerProof: string;
   instapayStatusPending: string;
+  paymentMethod: string;
+  amountTransferredNow: string;
+  remainingOnDelivery: string;
+  methodInstapay: string;
+  methodVodafoneCash: string;
   total: string;
   name: string;
   phone: string;
@@ -92,6 +100,11 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     paymentRef: 'مرجع الدفع',
     customerProof: 'إثبات العميل',
     instapayStatusPending: 'الحالة: بانتظار التحقق من InstaPay',
+    paymentMethod: 'طريقة التحويل',
+    amountTransferredNow: 'المبلغ المحوّل الآن',
+    remainingOnDelivery: 'الباقي عند الاستلام',
+    methodInstapay: 'إنستاباي',
+    methodVodafoneCash: 'فودافون كاش',
     total: 'الإجمالي',
     name: 'الاسم',
     phone: 'الهاتف',
@@ -119,6 +132,11 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     paymentRef: 'Payment ref',
     customerProof: 'Customer proof',
     instapayStatusPending: 'Status: PENDING InstaPay verification',
+    paymentMethod: 'Transfer method',
+    amountTransferredNow: 'Amount transferred now',
+    remainingOnDelivery: 'Cash on delivery remaining',
+    methodInstapay: 'InstaPay',
+    methodVodafoneCash: 'Vodafone Cash',
     total: 'Total',
     name: 'Name',
     phone: 'Phone',
@@ -146,6 +164,11 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     paymentRef: 'Réf. paiement',
     customerProof: 'Preuve client',
     instapayStatusPending: 'Statut : vérification InstaPay EN ATTENTE',
+    paymentMethod: 'Mode de transfert',
+    amountTransferredNow: 'Montant transféré maintenant',
+    remainingOnDelivery: 'Reste à payer à la livraison',
+    methodInstapay: 'InstaPay',
+    methodVodafoneCash: 'Vodafone Cash',
     total: 'Total',
     name: 'Nom',
     phone: 'Téléphone',
@@ -173,6 +196,11 @@ const LABELS: Record<MessageLocale, MessageLabels> = {
     paymentRef: 'Betalingsref.',
     customerProof: 'Klantbewijs',
     instapayStatusPending: 'Status: InstaPay-verificatie IN BEHANDELING',
+    paymentMethod: 'Overboekingsmethode',
+    amountTransferredNow: 'Nu overgemaakt bedrag',
+    remainingOnDelivery: 'Restant bij aflevering',
+    methodInstapay: 'InstaPay',
+    methodVodafoneCash: 'Vodafone Cash',
     total: 'Totaal',
     name: 'Naam',
     phone: 'Telefoon',
@@ -191,6 +219,14 @@ function fulfillmentLabel(locale: MessageLocale, fulfillmentType: FulfillmentTyp
 
 function itemMultiplier(locale: MessageLocale): string {
   return locale === 'ar' ? '×' : 'x';
+}
+
+function paymentMethodName(
+  locale: MessageLocale,
+  method: PaymentMethod | null | undefined
+): string {
+  const labels = LABELS[locale];
+  return method === 'vodafone_cash' ? labels.methodVodafoneCash : labels.methodInstapay;
 }
 
 export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
@@ -213,8 +249,10 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     orderNumber,
     ecommerceDelivery,
     instapayScreenshotUrl,
-    instapayHandle,
     requiresInstapayProof,
+    paymentMethod,
+    amountDue,
+    remainingOnDelivery,
   } = input;
 
   const labels = LABELS[locale];
@@ -275,18 +313,16 @@ export function buildWhatsAppMessage(input: WhatsAppMessageInput): string {
     );
   }
   if ((deliveryFee ?? 0) > 0) {
-    const feeAmount = formatMoney(deliveryFee ?? 0, currency, locale);
-    if (requiresInstapayProof) {
-      lines.push(labels.expectedDeliveryFee(feeAmount));
-      if (instapayScreenshotUrl?.trim()) {
-        lines.push(`${labels.customerProof}: ${instapayScreenshotUrl.trim()}`);
-      }
-      if (instapayHandle?.trim()) {
-        lines.push(`InstaPay: ${instapayHandle.trim()}`);
-      }
-      lines.push(labels.instapayStatusPending);
-    } else {
-      lines.push(`${labels.deliveryFee}: ${feeAmount}`);
+    lines.push(`${labels.deliveryFee}: ${formatMoney(deliveryFee ?? 0, currency, locale)}`);
+  }
+  if (requiresInstapayProof) {
+    const due = amountDue ?? deliveryFee ?? 0;
+    const remaining = remainingOnDelivery ?? 0;
+    lines.push(`${labels.paymentMethod}: ${paymentMethodName(locale, paymentMethod)}`);
+    lines.push(`${labels.amountTransferredNow}: ${formatMoney(due, currency, locale)}`);
+    lines.push(`${labels.remainingOnDelivery}: ${formatMoney(remaining, currency, locale)}`);
+    if (instapayScreenshotUrl?.trim()) {
+      lines.push(`${labels.customerProof}: ${instapayScreenshotUrl.trim()}`);
     }
   }
   lines.push(`*${labels.total}: ${formatMoney(totals.total, currency, locale)}*`);

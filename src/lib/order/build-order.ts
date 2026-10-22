@@ -8,6 +8,7 @@ import type { Order, OrderItem } from '@/types/database';
 import { buildWhatsAppUrl } from './whatsapp-url';
 import { resolvePrepTimeDisplay } from './prep-time';
 import { isEcommerceStore } from '@/lib/store-config';
+import type { PaymentMethod, PrepaidScope } from '@/lib/payment/prepaid';
 import type { CartItem, CartDiningMode, FulfillmentType } from '@/stores/cart-store';
 import type { RestaurantSettings } from '@/types/database';
 
@@ -24,8 +25,11 @@ export interface BuildOrderInput {
   orderPaymentRef?: string | null;
   instapayProofReference?: string | null;
   instapayScreenshotUrl?: string | null;
-  instapayHandle?: string | null;
   requiresInstapayProof?: boolean;
+  paymentMethod?: PaymentMethod | null;
+  prepaidScope?: PrepaidScope | null;
+  amountDue?: number | null;
+  remainingOnDelivery?: number | null;
   locale: 'en' | 'ar';
   settings: Pick<
     RestaurantSettings,
@@ -97,8 +101,10 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
     orderPaymentRef: input.orderPaymentRef,
     instapayProofReference: input.instapayProofReference,
     instapayScreenshotUrl: input.instapayScreenshotUrl,
-    instapayHandle: input.instapayHandle,
     requiresInstapayProof: input.requiresInstapayProof,
+    paymentMethod: input.paymentMethod,
+    amountDue: input.amountDue,
+    remainingOnDelivery: input.remainingOnDelivery,
   });
 
   const whatsappUrl = buildWhatsAppUrl(input.settings.whatsapp || '', message);

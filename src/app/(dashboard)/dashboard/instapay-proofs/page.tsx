@@ -203,6 +203,32 @@ export default function InstapayProofsPage() {
                 <CardContent className="space-y-3">
                   <div className="grid gap-2 text-sm sm:grid-cols-2">
                     <p>
+                      <span className="text-muted-foreground">{t('paymentMethod')}:</span>{' '}
+                      {proof.payment_method === 'vodafone_cash'
+                        ? t('method.vodafone_cash')
+                        : t('method.instapay')}
+                    </p>
+                    <p>
+                      <span className="text-muted-foreground">{t('prepaidScope')}:</span>{' '}
+                      {proof.prepaid_scope === 'full' ? t('scope.full') : t('scope.shipping_only')}
+                    </p>
+                    <p>
+                      <span className="text-muted-foreground">{t('amountDue')}:</span>{' '}
+                      {formatCurrencyAmount(
+                        Number(proof.amount_due ?? 0) > 0 || Number(proof.products_total ?? 0) > 0
+                          ? Number(proof.amount_due ?? 0)
+                          : Number(proof.delivery_fee),
+                        currency,
+                        { locale: currencyLocale }
+                      )}
+                    </p>
+                    <p>
+                      <span className="text-muted-foreground">{t('remainingOnDelivery')}:</span>{' '}
+                      {formatCurrencyAmount(Number(proof.remaining_on_delivery ?? 0), currency, {
+                        locale: currencyLocale,
+                      })}
+                    </p>
+                    <p>
                       <span className="text-muted-foreground">{t('deliveryFee')}:</span>{' '}
                       {formatCurrencyAmount(Number(proof.delivery_fee), currency, {
                         locale: currencyLocale,

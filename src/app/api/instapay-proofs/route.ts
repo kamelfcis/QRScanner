@@ -1,12 +1,40 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import type { EcommerceCartValidationItem } from '@/lib/catalog/validate-ecommerce-cart';
 import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
+import { instapayPaymentUrl } from '@/lib/payment/instapay';
+import { buildDeliveryProofRecord, paymentProofBlockReason } from '@/lib/payment/prepaid';
+import { resolvePrepaidProof } from '@/lib/payment/resolve-prepaid-proof';
 import { ImageValidationError, validateImageFile } from '@/lib/upload-validation';
 
 const BUCKET = 'instapay-proofs';
 
 function sanitizeFilename(name: string): string {
   return name.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 80);
+}
+
+function parseProofItems(raw: FormDataEntryValue | null): EcommerceCartValidationItem[] | null {
+  if (typeof raw !== 'string' || !raw.trim()) return null;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(parsed)) return null;
+
+  const items: EcommerceCartValidationItem[] = [];
+  for (const entry of parsed) {
+    if (!entry || typeof entry !== 'object') return null;
+    const record = entry as Record<string, unknown>;
+    const productId = typeof record.productId === 'string' ? record.productId.trim() : '';
+    const quantity = Number(record.quantity);
+    if (!productId || !Number.isInteger(quantity) || quantity < 1 || quantity > 999) return null;
+    const sizeCode =
+      typeof record.sizeCode === 'string' && record.sizeCode.trim() ? record.sizeCode.trim() : null;
+    items.push({ productId, quantity, sizeCode, notes: null });
+  }
+  return items;
 }
 
 async function isReferenceTaken(
@@ -72,10 +100,16 @@ export async function POST(request: Request) {
     const customerName = String(formData.get('customerName') ?? '').trim();
     const customerPhone = String(formData.get('customerPhone') ?? '').trim() || null;
     const deliveryLocationId = String(formData.get('deliveryLocationId') ?? '').trim() || null;
-    const deliveryFeeRaw = formData.get('deliveryFee');
-    const deliveryFee =
-      deliveryFeeRaw != null && deliveryFeeRaw !== '' ? Number(deliveryFeeRaw) : null;
+    const paymentMethod = String(formData.get('paymentMethod') ?? '').trim() || null;
+    const prepaidScope = String(formData.get('prepaidScope') ?? '').trim() || null;
     const markWhatsAppSent = formData.get('markWhatsAppSent') === 'true';
+    const items = parseProofItems(formData.get('items'));
+    if (formData.get('items') && !items) {
+      return NextResponse.json(
+        { error: 'Invalid cart items', code: 'invalid_items' },
+        { status: 400 }
+      );
+    }
 
     let screenshotUrl = existingScreenshotUrl;
     let storedPath: string | null = null;
@@ -109,6 +143,25 @@ export async function POST(request: Request) {
       storedPath = path;
     }
 
+    const admin = createAdminClient();
+    const resolved = await resolvePrepaidProof(admin, {
+      deliveryLocationId,
+      paymentMethod,
+      prepaidScope,
+      items,
+      envInstapayUrl: instapayPaymentUrl,
+    });
+    if (!resolved.ok) {
+      if (uploadOnly && screenshotUrl) {
+        return NextResponse.json({ screenshotUrl, path: storedPath });
+      }
+      return NextResponse.json(
+        { error: resolved.error, code: resolved.code },
+        { status: resolved.status }
+      );
+    }
+
+    const proof = resolved.value;
     if (uploadOnly) {
       if (!screenshotUrl) {
         return NextResponse.json(
@@ -116,76 +169,65 @@ export async function POST(request: Request) {
           { status: 400 }
         );
       }
-      if (deliveryFee == null || Number.isNaN(deliveryFee) || deliveryFee < 0) {
-        return NextResponse.json({ error: 'Invalid delivery fee' }, { status: 400 });
-      }
-
-      const admin = createAdminClient();
-      const uploadRow = {
-        order_ref: orderRef,
-        customer_name: customerName || 'Pending',
-        customer_phone: customerPhone,
-        delivery_location_id: deliveryLocationId,
-        delivery_fee: deliveryFee,
-        proof_reference: null,
-        screenshot_url: screenshotUrl,
-        amount_note: amountNote,
-        status: 'pending' as const,
-      };
-
-      const { error: uploadUpsertError } = await admin
-        .from('instapay_delivery_proofs')
-        .upsert(uploadRow, { onConflict: 'order_ref' });
-
-      if (uploadUpsertError) {
-        return NextResponse.json({ error: uploadUpsertError.message }, { status: 500 });
-      }
-
-      return NextResponse.json({ screenshotUrl, path: storedPath });
-    }
-
-    if (!customerName) {
+    } else if (!customerName) {
       return NextResponse.json({ error: 'Customer name is required' }, { status: 400 });
-    }
-    if (deliveryFee == null || Number.isNaN(deliveryFee) || deliveryFee < 0) {
-      return NextResponse.json({ error: 'Invalid delivery fee' }, { status: 400 });
-    }
-    if (!screenshotUrl) {
-      return NextResponse.json(
-        { error: 'Payment screenshot is required', code: 'instapay_proof_required' },
-        { status: 400 }
-      );
+    } else {
+      const blocked = paymentProofBlockReason(proof.proofRequired, screenshotUrl);
+      if (blocked) {
+        return NextResponse.json(
+          { error: 'Payment screenshot is required', code: blocked },
+          { status: 400 }
+        );
+      }
+      if (!proof.proofRequired) {
+        return NextResponse.json({ proofRequired: false });
+      }
     }
 
-    const admin = createAdminClient();
-
-    const row = {
-      order_ref: orderRef,
-      customer_name: customerName,
-      customer_phone: customerPhone,
-      delivery_location_id: deliveryLocationId,
-      delivery_fee: deliveryFee,
-      proof_reference: null,
-      screenshot_url: screenshotUrl,
-      amount_note: amountNote,
-      status: 'pending' as const,
-      ...(markWhatsAppSent ? { whatsapp_sent_at: new Date().toISOString() } : {}),
-    };
+    const row = buildDeliveryProofRecord({
+      orderRef,
+      customerName: customerName || 'Pending',
+      customerPhone,
+      deliveryLocationId: proof.deliveryLocationId,
+      screenshotUrl,
+      amountNote,
+      paymentMethod: proof.paymentMethod,
+      prepaidScope: proof.prepaidScope,
+      productsTotal: proof.productsTotal,
+      deliveryFee: proof.deliveryFee,
+      amountDue: proof.amountDue,
+      remainingOnDelivery: proof.remainingOnDelivery,
+      markWhatsAppSent: !uploadOnly && markWhatsAppSent,
+    });
 
     const { data, error } = await admin
       .from('instapay_delivery_proofs')
       .upsert(row, { onConflict: 'order_ref' })
-      .select('id, order_ref, screenshot_url')
+      .select(
+        'id, order_ref, screenshot_url, payment_method, prepaid_scope, products_total, delivery_fee, amount_due, remaining_on_delivery'
+      )
       .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    const grandTotal =
+      Math.round((Number(data.products_total) + Number(data.delivery_fee)) * 100) / 100;
+
     return NextResponse.json({
       id: data.id,
       orderRef: data.order_ref,
       screenshotUrl: data.screenshot_url,
+      path: storedPath,
+      proofRequired: proof.proofRequired,
+      paymentMethod: data.payment_method,
+      prepaidScope: data.prepaid_scope,
+      productsTotal: Number(data.products_total),
+      deliveryFee: Number(data.delivery_fee),
+      grandTotal,
+      amountDue: Number(data.amount_due),
+      remainingOnDelivery: Number(data.remaining_on_delivery),
     });
   } catch (err) {
     if (err instanceof ImageValidationError) {

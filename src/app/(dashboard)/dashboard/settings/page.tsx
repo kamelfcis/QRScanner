@@ -21,7 +21,8 @@ import { ErrorState } from '@/components/shared/feedback/ErrorState';
 import { Save, Upload, X } from 'lucide-react';
 import { uploadImage, deleteImage, generateStoragePath } from '@/lib/upload';
 import { isValidHexColor } from '@/lib/theme';
-import type { RestaurantSettings, HoursSettings, ThemeSettings } from '@/types';
+import type { RestaurantSettingsForm, HoursSettings, ThemeSettings } from '@/types';
+import { isEgyptMobileNumber } from '@/lib/payment/prepaid';
 import { useTranslations } from '@/components/providers/RootI18nProvider';
 import { ChangePasswordForm } from '@/components/dashboard/settings/ChangePasswordForm';
 import { useSiteName } from '@/hooks/useSiteName';
@@ -68,7 +69,7 @@ export default function SettingsPage() {
   const tLanding = useTranslations('landing');
   const siteName = useSiteName();
 
-  const [form, setForm] = useState<Partial<RestaurantSettings>>({});
+  const [form, setForm] = useState<Partial<RestaurantSettingsForm>>({});
   const [hoursForm, setHoursForm] = useState<HoursSettings>(DEFAULT_HOURS);
   const [themeForm, setThemeForm] = useState<ThemeSettings>(DEFAULT_THEME);
   const [saving, setSaving] = useState(false);
@@ -134,6 +135,12 @@ export default function SettingsPage() {
       errs.push(t('validation.maxNotesRange'));
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.push(t('validation.invalidEmail'));
+    if (
+      isEcommerceStore &&
+      form.vodafone_cash_number?.trim() &&
+      !isEgyptMobileNumber(form.vodafone_cash_number)
+    )
+      errs.push(t('validation.vodafoneCashInvalid'));
     (['primary_color', 'secondary_color', 'accent_color', 'background_color'] as const).forEach(
       (key) => {
         const color = themeForm[key];
@@ -1028,6 +1035,49 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {isEcommerceStore && (
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('paymentMethods')}</CardTitle>
+                <CardDescription>{t('paymentMethodsDescription')}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="instapay_payment_url">{t('instapayPaymentUrl')}</Label>
+                  <Input
+                    id="instapay_payment_url"
+                    dir="ltr"
+                    className="unicode-bidi-plaintext"
+                    value={form.instapay_payment_url ?? ''}
+                    placeholder="https://ipn.eg/..."
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, instapay_payment_url: e.target.value }))
+                    }
+                    data-testid="settings-instapay-url"
+                  />
+                  <p className="text-muted-foreground text-xs">{t('instapayPaymentUrlHint')}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="vodafone_cash_number">{t('vodafoneCashNumber')}</Label>
+                  <Input
+                    id="vodafone_cash_number"
+                    dir="ltr"
+                    inputMode="tel"
+                    autoComplete="off"
+                    className="unicode-bidi-plaintext"
+                    value={form.vodafone_cash_number ?? ''}
+                    placeholder="010xxxxxxxx"
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, vodafone_cash_number: e.target.value }))
+                    }
+                    data-testid="settings-vodafone-number"
+                  />
+                  <p className="text-muted-foreground text-xs">{t('vodafoneCashNumberHint')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="account" className="space-y-4">
