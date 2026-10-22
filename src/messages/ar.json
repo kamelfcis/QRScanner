@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "MAZEN STORE",
+    "appName": "التونسي ستور",
     "loading": "جاري التحميل...",
     "saving": "جاري الحفظ...",
     "save": "حفظ",
@@ -91,13 +91,13 @@
     "coupons": "الكوبونات"
   },
   "landing": {
-    "heroTitle": "MAZEN STORE",
+    "heroTitle": "التونسي ستور",
     "heroWelcome": "مرحبا بكم في",
     "heroSubtitle": "محافظ وإكسسوارات فاخرة — جودة يومية بلمسة راقية",
     "viewMenu": "تصفح المتجر",
     "ourStory": "قصتنا",
     "storyTitle": "قصتنا",
-    "storyP1": "MAZEN STORE يقدّم محافظ وإكسسوارات فاخرة لمن يقدّر الحرفية الراقية والتصميم الخالد.",
+    "storyP1": "التونسي ستور يقدّم محافظ وإكسسوارات فاخرة لمن يقدّر الحرفية الراقية والتصميم الخالد.",
     "storyP2": "كل قطعة في مجموعتنا مختارة بعناية لجودة المواد وأناقة التفاصيل والعملية اليومية.",
     "signatureDishes": "محافظ مميزة",
     "signatureDishesSubtitle": "اكتشف أشهر محافظنا وإكسسواراتنا — تصفّح المجموعة واطلب بسهولة.",
@@ -419,7 +419,7 @@
     "removeStoryImage": "إزالة صورة القصة",
     "storyUploadFailed": "فشل رفع صورة القصة",
     "headline": "العنوان الرئيسي",
-    "headlinePlaceholder": "مثال: مرحباً بكم في MAZEN STORE",
+    "headlinePlaceholder": "مثال: مرحباً بكم في التونسي ستور",
     "subtitle": "العنوان الفرعي",
     "subtitlePlaceholder": "مثال: رحلة طعام عبر...",
     "contactInfo": "معلومات الاتصال",
@@ -1406,7 +1406,7 @@
     "loginTitle": "تسجيل الدخول إلى لوحة التحكم",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
-    "emailPlaceholder": "admin@mazenstore.com",
+    "emailPlaceholder": "admin@altounsi-store.engazqr.com",
     "passwordPlaceholder": "أدخل كلمة المرور",
     "signIn": "تسجيل الدخول",
     "signingIn": "جاري تسجيل الدخول...",
@@ -1481,7 +1481,7 @@
   "welcome": {
     "welcomeTo": "مرحباً بكم في {name}",
     "chooseOrderType": "يرجى اختيار نوع طلبك",
-    "title": "مرحباً بكم في MAZEN STORE",
+    "title": "مرحباً بكم في التونسي ستور",
     "subtitle": "يرجى اختيار نوع طلبك",
     "dineIn": "صالة",
     "dineInEn": "Dine In",

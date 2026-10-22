@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "MAZEN STORE",
+    "appName": "AlTounsi Store",
     "loading": "Chargement…",
     "saving": "Enregistrement…",
     "save": "Enregistrer",
@@ -90,13 +90,13 @@
     "coupons": "Coupons"
   },
   "landing": {
-    "heroTitle": "MAZEN STORE",
+    "heroTitle": "AlTounsi Store",
     "heroWelcome": "Bienvenue chez",
     "heroSubtitle": "Portefeuilles et accessoires premium — luxe au quotidien",
     "viewMenu": "Parcourir la boutique",
     "ourStory": "Notre histoire",
     "storyTitle": "Notre histoire",
-    "storyP1": "MAZEN STORE propose des portefeuilles et accessoires premium pour ceux qui apprécient l'artisanat raffiné.",
+    "storyP1": "AlTounsi Store propose des portefeuilles et accessoires premium pour ceux qui apprécient l'artisanat raffiné.",
     "storyP2": "Chaque pièce de notre collection est sélectionnée pour la qualité des matériaux et l'élégance du design.",
     "signatureDishes": "Portefeuilles vedettes",
     "signatureDishesSubtitle": "Découvrez nos portefeuilles et accessoires les plus populaires.",
@@ -406,7 +406,7 @@
     "removeStoryImage": "Retirer story image",
     "storyUploadFailed": "Failed to upload story image",
     "headline": "Headline",
-    "headlinePlaceholder": "e.g. Bienvenue to MAZEN STORE",
+    "headlinePlaceholder": "e.g. Bienvenue to AlTounsi Store",
     "subtitle": "Subtitle",
     "subtitlePlaceholder": "e.g. A culinary journey...",
     "contactInfo": "Contact Information",
@@ -1262,7 +1262,7 @@
     "loginTitle": "Connectez-vous au tableau de bord admin",
     "email": "E-mail",
     "password": "Mot de passe",
-    "emailPlaceholder": "admin@mazenstore.com",
+    "emailPlaceholder": "admin@altounsi-store.engazqr.com",
     "passwordPlaceholder": "Enter your password",
     "signIn": "Sign in",
     "signingIn": "Connexion...",
@@ -1337,7 +1337,7 @@
   "welcome": {
     "welcomeTo": "Bienvenue chez {name}",
     "chooseOrderType": "Veuillez choisir votre type de commande",
-    "title": "Bienvenue chez MAZEN STORE",
+    "title": "Bienvenue chez AlTounsi Store",
     "subtitle": "Veuillez choisir votre type de commande",
     "dineIn": "Sur place",
     "dineInEn": "Sur place",

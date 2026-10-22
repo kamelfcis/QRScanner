@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "MAZEN STORE",
+    "appName": "AlTounsi Store",
     "loading": "Loading...",
     "saving": "Saving...",
     "save": "Save",
@@ -91,13 +91,13 @@
     "coupons": "Coupons"
   },
   "landing": {
-    "heroTitle": "MAZEN STORE",
+    "heroTitle": "AlTounsi Store",
     "heroWelcome": "Welcome to",
     "heroSubtitle": "Premium wallets & accessories — crafted for everyday luxury",
     "viewMenu": "Browse Shop",
     "ourStory": "Our Story",
     "storyTitle": "Our Story",
-    "storyP1": "MAZEN STORE curates premium wallets and accessories for those who appreciate refined craftsmanship and timeless design.",
+    "storyP1": "AlTounsi Store curates premium wallets and accessories for those who appreciate refined craftsmanship and timeless design.",
     "storyP2": "Every piece in our collection is selected for quality materials, elegant details, and everyday practicality.",
     "signatureDishes": "Featured Wallets",
     "signatureDishesSubtitle": "Discover our most popular wallets and accessories — browse the collection and order with ease.",
@@ -419,7 +419,7 @@
     "removeStoryImage": "Remove story image",
     "storyUploadFailed": "Failed to upload story image",
     "headline": "Headline",
-    "headlinePlaceholder": "e.g. Welcome to MAZEN STORE",
+    "headlinePlaceholder": "e.g. Welcome to AlTounsi Store",
     "subtitle": "Subtitle",
     "subtitlePlaceholder": "e.g. A culinary journey...",
     "contactInfo": "Contact Information",
@@ -1392,7 +1392,7 @@
     "loginTitle": "Sign in to the admin dashboard",
     "email": "Email",
     "password": "Password",
-    "emailPlaceholder": "admin@mazenstore.com",
+    "emailPlaceholder": "admin@altounsi-store.engazqr.com",
     "passwordPlaceholder": "Enter your password",
     "signIn": "Sign in",
     "signingIn": "Signing in...",
@@ -1475,7 +1475,7 @@
   "welcome": {
     "welcomeTo": "Welcome to {name}",
     "chooseOrderType": "Please choose your order type",
-    "title": "Welcome to MAZEN STORE",
+    "title": "Welcome to AlTounsi Store",
     "subtitle": "Please choose your order type",
     "dineIn": "Dine In",
     "dineInEn": "Dine In",

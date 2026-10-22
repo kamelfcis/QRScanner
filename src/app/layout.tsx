@@ -48,7 +48,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://altounsi-store.engazqr.com';
 
 function buildRootMetadata(
   settings: Awaited<ReturnType<typeof fetchRestaurantSettings>>

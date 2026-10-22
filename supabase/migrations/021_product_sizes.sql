@@ -50,6 +50,10 @@ BEGIN
   ) THEN
     ALTER TABLE public.order_items
       ADD COLUMN IF NOT EXISTS selected_size jsonb;
+    EXECUTE $comment$
+      COMMENT ON COLUMN public.order_items.selected_size IS
+        'Snapshot { code, label_ar, label_en, price } at order time; do not join product_sizes for old orders.'
+    $comment$;
   END IF;
 END $$;
 
@@ -60,5 +64,3 @@ CREATE TRIGGER update_product_sizes_updated_at
 
 COMMENT ON TABLE public.product_sizes IS
   'Ecommerce size variants per product (S/M/L/XL or one custom code). Public reads enabled rows only.';
-COMMENT ON COLUMN public.order_items.selected_size IS
-  'Snapshot { code, label_ar, label_en, price } at order time; do not join product_sizes for old orders.';

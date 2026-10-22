@@ -25,7 +25,7 @@ export function MenuHero() {
   const name = getName(
     locale,
     settings?.name_en || tCommon('appName'),
-    settings?.name_ar || 'وردة الشامية'
+    settings?.name_ar || tCommon('appName')
   );
 
   const headline = settings?.hero_headline?.trim() || name;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mazen-store-b1eb-v1';
+const CACHE_NAME = 'altounsi-store-v1';
 const STATIC_ASSETS = [
   '/',
   '/menu',

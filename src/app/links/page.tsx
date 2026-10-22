@@ -4,7 +4,7 @@ import { showLinkPage } from '@/lib/tenant-config';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
 import { LinksPageClient } from './LinksPageClient';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://altounsi-store.engazqr.com';
 
 export async function generateMetadata(): Promise<Metadata> {
   const restaurant = await fetchRestaurantSettings();

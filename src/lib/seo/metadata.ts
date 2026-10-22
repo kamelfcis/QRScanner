@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
-const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MAZEN STORE';
-const SITE_NAME_AR = process.env.NEXT_PUBLIC_APP_NAME_AR || SITE_NAME;
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mazen-store-b1eb.vercel.app';
+const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'AlTounsi Store';
+const SITE_NAME_AR = process.env.NEXT_PUBLIC_APP_NAME_AR || 'التونسي ستور';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://altounsi-store.engazqr.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const DESCRIPTIONS = {
@@ -56,7 +56,7 @@ export function generateSiteMetadata(
       title: siteName,
       description,
       images: [DEFAULT_OG_IMAGE],
-      creator: '@wardashamya',
+      creator: '@altounsistore',
     },
     robots: {
       index: true,
@@ -86,16 +86,12 @@ export function generateMenuMetadata(locale: Locale = defaultLocale): Metadata {
     {
       title: locale === 'ar' ? 'القائمة' : 'Menu',
       description:
-        locale === 'ar'
-          ? 'استكشف نكهات وردة الشامية الأصيلة. تصفح قائمتنا الكاملة.'
-          : 'Explore the authentic flavors of Warda Shamya. Browse our complete menu featuring traditional Lebanese and Syrian dishes.',
+        locale === 'ar' ? `تصفح منتجات ${SITE_NAME_AR}.` : `Browse the ${SITE_NAME} catalog.`,
       openGraph: {
         title: locale === 'ar' ? `القائمة | ${SITE_NAME_AR}` : `Menu | ${SITE_NAME}`,
         description:
-          locale === 'ar'
-            ? 'استكشف نكهات وردة الشامية الأصيلة.'
-            : 'Explore the authentic flavors of Warda Shamya.',
-        images: [{ url: '/og-menu.png', width: 1200, height: 630, alt: 'Warda Shamya Menu' }],
+          locale === 'ar' ? `تصفح منتجات ${SITE_NAME_AR}.` : `Browse the ${SITE_NAME} catalog.`,
+        images: [{ url: '/og-menu.png', width: 1200, height: 630, alt: `${SITE_NAME} menu` }],
       },
     },
     locale

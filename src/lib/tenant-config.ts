@@ -14,7 +14,7 @@ export const showLinkPage =
 /** Restaurant / link-page Ostol — not Mazen ecommerce. */
 export const isOstolSite = process.env.NEXT_PUBLIC_STORE_MODE !== 'ecommerce' && showLinkPage;
 
-export const THEME_STORAGE_KEY = isOstolSite ? 'ostol-seafood-theme' : 'mazen-store-b1eb-theme';
+export const THEME_STORAGE_KEY = isOstolSite ? 'ostol-seafood-theme' : 'altounsi-store-theme';
 
 export const OSTOL_ONLY_DASHBOARD_NAV_KEYS = new Set(['linkPage']);
 

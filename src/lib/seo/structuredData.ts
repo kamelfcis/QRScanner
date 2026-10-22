@@ -1,8 +1,8 @@
 import type { RestaurantSettings } from '@/types/database';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Store';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://altounsi-store.engazqr.com';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'AlTounsi Store';
 
 export function generateRestaurantSchema(
   settings?: RestaurantSettings | null,
@@ -36,7 +36,7 @@ export function generateRestaurantSchema(
       longitude: 46.6753,
     },
     telephone: settings?.phone || '',
-    email: settings?.email || 'info@wardashamya.com',
+    email: settings?.email || '',
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
