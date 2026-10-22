@@ -3,6 +3,9 @@
 import { Suspense, useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCategoriesWithProducts } from '@/hooks/useCategories';
+import { useRestaurantSettings } from '@/hooks/useSettings';
+import { isUnavailableReadError } from '@/lib/supabase/isUnavailableReadError';
+import { ServerDownScreen, useShowServerDown } from '@/components/shared/feedback/ServerDownScreen';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { EmptyState } from '@/components/shared/feedback/EmptyState';
@@ -49,7 +52,12 @@ function MenuContent() {
   const searchParams = useSearchParams();
   const tableParam = searchParams.get('table');
   const modeParam = searchParams.get('mode');
-  const { data: categories, isLoading, error, refetch } = useCategoriesWithProducts();
+  const categoriesQuery = useCategoriesWithProducts();
+  const { data: categories, isLoading, error, refetch } = categoriesQuery;
+  const settingsQuery = useRestaurantSettings();
+  const catalogUnavailable =
+    isUnavailableReadError(categoriesQuery.error) || isUnavailableReadError(settingsQuery.error);
+  const showServerDown = useShowServerDown(catalogUnavailable);
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [spyCategory, setSpyCategory] = useState<string | null>(null);
@@ -163,6 +171,12 @@ function MenuContent() {
   );
 
   const navActiveCategory = activeCategory ?? spyCategory;
+
+  if (showServerDown) return <ServerDownScreen />;
+
+  if (categoriesQuery.isPending || settingsQuery.isPending || catalogUnavailable) {
+    return <MenuSkeleton />;
+  }
 
   const filteredCategories = activeCategory
     ? (categories ?? []).filter((c) => c.id === activeCategory)

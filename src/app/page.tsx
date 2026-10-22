@@ -14,6 +14,7 @@ import { FloatingWhatsApp } from '@/components/landing/FloatingWhatsApp';
 import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
 import { QrScanTracker } from '@/components/analytics/QrScanTracker';
 import { createClient } from '@/lib/supabase/server';
+import { LandingStoreGate } from '@/components/landing/LandingStoreGate';
 import { prefetchLandingData } from '@/lib/catalog/prefetchLanding';
 import { CATALOG_GC_TIME, CATALOG_STALE_TIME } from '@/lib/catalog/keys';
 
@@ -39,21 +40,23 @@ export default async function HomePage() {
       <QrScanTracker />
       <Providers>
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <div className="flex min-h-screen w-full flex-col overflow-x-clip">
-            <PublicHeader />
-            <main className="flex-1" id="main-content">
-              <HeroSection />
-              <StorySection />
-              <FeaturedDishes />
-              <GalleryPreview />
-              <OffersBanner />
-              <TestimonialsSection />
-              <OpeningHours />
-              <ContactSection />
-              <FloatingWhatsApp />
-            </main>
-            <PublicFooter />
-          </div>
+          <LandingStoreGate>
+            <div className="flex min-h-screen w-full flex-col overflow-x-clip">
+              <PublicHeader />
+              <main className="flex-1" id="main-content">
+                <HeroSection />
+                <StorySection />
+                <FeaturedDishes />
+                <GalleryPreview />
+                <OffersBanner />
+                <TestimonialsSection />
+                <OpeningHours />
+                <ContactSection />
+                <FloatingWhatsApp />
+              </main>
+              <PublicFooter />
+            </div>
+          </LandingStoreGate>
         </HydrationBoundary>
       </Providers>
       <StructuredDataScript />
