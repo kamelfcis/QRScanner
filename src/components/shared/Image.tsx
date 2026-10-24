@@ -16,6 +16,8 @@ interface ImageProps {
   className?: string;
   containerClassName?: string;
   showFallback?: boolean;
+  onLoad?: () => void;
+  onError?: () => void;
 }
 
 export function Image({
@@ -29,6 +31,8 @@ export function Image({
   className,
   containerClassName,
   showFallback = true,
+  onLoad,
+  onError,
 }: ImageProps) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -65,10 +69,14 @@ export function Image({
           loading ? 'opacity-0' : 'opacity-100',
           className
         )}
-        onLoad={() => setLoading(false)}
+        onLoad={() => {
+          setLoading(false);
+          onLoad?.();
+        }}
         onError={() => {
           setError(true);
           setLoading(false);
+          onError?.();
         }}
       />
     </div>

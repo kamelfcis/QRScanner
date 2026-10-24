@@ -6,21 +6,26 @@ import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MotionSection, MotionCard } from '@/components/shared/motion';
-import { Image } from '@/components/shared/Image';
+import {
+  LANDING_CARD_IMAGE_SIZES,
+  ProductImageCarousel,
+} from '@/components/menu/ProductImageCarousel';
 import { usePopularProducts } from '@/hooks/useProducts';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import type { Product } from '@/types/database';
+import { buildProductSlides, readProductGallery } from '@/lib/catalog/product-slides';
 import { getMenuEntryPath, isEcommerceStore } from '@/lib/store-config';
 
 function preferImageUrl(products: Product[]): Product[] {
   const withImage: Product[] = [];
   const withoutImage: Product[] = [];
   for (const product of products) {
-    if (product.image_url) withImage.push(product);
-    else withoutImage.push(product);
+    if (buildProductSlides(product.image_url, readProductGallery(product)).length > 0) {
+      withImage.push(product);
+    } else withoutImage.push(product);
   }
   return [...withImage, ...withoutImage];
 }
@@ -94,6 +99,8 @@ export function FeaturedDishes() {
               const badge = pickBadge(product);
               const soldOut = isEcommerceStore && !product.is_available;
 
+              const slides = buildProductSlides(product.image_url, readProductGallery(product));
+
               return (
                 <MotionCard key={product.id} delay={index * 0.05}>
                   <Link
@@ -104,14 +111,15 @@ export function FeaturedDishes() {
                     )}
                   >
                     <div className="relative aspect-square overflow-hidden">
-                      {product.image_url ? (
-                        <Image
-                          src={product.image_url}
+                      {slides.length > 0 ? (
+                        <ProductImageCarousel
+                          key={product.id}
+                          slides={slides}
                           alt={name}
-                          fill
-                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                          containerClassName="absolute inset-0 h-full w-full"
+                          priority={index < 2}
+                          sizes={LANDING_CARD_IMAGE_SIZES}
+                          className="absolute inset-0"
+                          imageClassName="transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                         />
                       ) : (
                         <div className="bg-muted flex h-full items-center justify-center">
@@ -121,14 +129,14 @@ export function FeaturedDishes() {
                         </div>
                       )}
                       {badge && (
-                        <div className="absolute start-2 top-2 z-[1]">
+                        <div className="pointer-events-none absolute start-2 top-2 z-[1]">
                           <Badge className="bg-brand-accent/90 px-1.5 py-0.5 text-[10px] text-black sm:text-xs">
                             {badgeLabel(badge)}
                           </Badge>
                         </div>
                       )}
                       {soldOut && (
-                        <div className="bg-background/75 absolute inset-0 z-[2] flex items-center justify-center">
+                        <div className="bg-background/75 pointer-events-none absolute inset-0 z-[2] flex items-center justify-center">
                           <Badge variant="secondary" className="text-[10px] sm:text-xs">
                             {menuT('currentlyUnavailable')}
                           </Badge>

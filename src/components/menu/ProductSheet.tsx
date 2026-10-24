@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/compone
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Image } from '@/components/shared/Image';
+import { ProductImageCarousel } from '@/components/menu/ProductImageCarousel';
 import { BadgePill, pickBadges } from '@/components/menu/ProductBadges';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -31,6 +31,7 @@ import {
   toSelectedSizeSnapshot,
 } from '@/lib/catalog/ecommerce-sizes';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
+import { buildProductSlides, readProductGallery } from '@/lib/catalog/product-slides';
 import type { Product } from '@/types/database';
 
 interface ProductSheetProps {
@@ -106,6 +107,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const description = product.description_en
     ? getName(locale, product.description_en, product.description_ar)
     : '';
+  const slides = buildProductSlides(product.image_url, readProductGallery(product));
 
   const handleAdd = () => {
     if (!canAdd) return;
@@ -136,15 +138,13 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         isDesktop ? 'h-full min-h-[320px]' : 'aspect-[4/3]'
       )}
     >
-      {product.image_url ? (
-        <Image
-          src={product.image_url}
+      {slides.length > 0 ? (
+        <ProductImageCarousel
+          key={product.id}
+          slides={slides}
           alt={productName}
-          fill
-          priority
           sizes="(max-width: 768px) 100vw, 45vw"
-          className="object-cover"
-          containerClassName="absolute inset-0 h-full w-full"
+          className="absolute inset-0"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(120%_100%_at_50%_0%,#ece2d2_0%,#ded1ba_100%)]">

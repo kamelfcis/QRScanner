@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { DEFAULT_THEME } from '@/lib/theme';
-import { isEcommerceStore } from '@/lib/store-config';
-import type { Gallery, Product, RestaurantSettings, Settings, ThemeSettings } from '@/types';
+import type { Gallery, RestaurantSettings, Settings, ThemeSettings } from '@/types';
+import { fetchPopularProducts } from './popular-products';
 import { CATALOG_GC_TIME, CATALOG_STALE_TIME } from './keys';
 
 /** Must match hooks/useSettings settingsKeys.restaurant() */
@@ -64,22 +64,7 @@ export async function prefetchLandingData(supabase: SupabaseClient, queryClient:
     }),
     queryClient.prefetchQuery({
       queryKey: popularProductsKey,
-      queryFn: async () => {
-        let query = supabase
-          .from('products')
-          .select(
-            'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at'
-          )
-          .eq('is_popular', true);
-
-        if (!isEcommerceStore) {
-          query = query.eq('is_available', true);
-        }
-
-        const { data, error } = await query.order('sort_order', { ascending: true }).limit(12);
-        if (error) throw error;
-        return data as Product[];
-      },
+      queryFn: () => fetchPopularProducts(supabase),
       staleTime: CATALOG_STALE_TIME,
       gcTime: CATALOG_GC_TIME,
     }),

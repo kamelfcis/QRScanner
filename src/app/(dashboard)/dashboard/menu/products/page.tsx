@@ -66,6 +66,10 @@ import { computeWeightPrice } from '@/lib/order/weight-price';
 import { WeightOptionsEditor } from '@/components/dashboard/products/WeightOptionsEditor';
 import { productTerm } from '@/lib/i18n/product-terminology';
 import { cn, getName } from '@/lib/utils';
+import {
+  ProductExtraImagesField,
+  type ProductGalleryFlush,
+} from '@/components/dashboard/products/ProductExtraImagesField';
 import { StorageImagePickerDialog } from '@/components/dashboard/products/StorageImagePickerDialog';
 import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
@@ -311,6 +315,11 @@ export default function ProductsPage() {
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [createSaving, setCreateSaving] = useState(false);
+  const [createGalleryBusy, setCreateGalleryBusy] = useState(false);
+  const [editGalleryBusy, setEditGalleryBusy] = useState(false);
+  const [createGallerySession, setCreateGallerySession] = useState(0);
+  const createGalleryFlushRef = useRef<ProductGalleryFlush | null>(null);
   const [storagePickerOpen, setStoragePickerOpen] = useState(false);
   const [storagePickerFormType, setStoragePickerFormType] = useState<'create' | 'edit'>('create');
   const [storagePickerSession, setStoragePickerSession] = useState(0);
@@ -409,6 +418,7 @@ export default function ProductsPage() {
   const openCreateDialog = () => {
     createForm.reset(defaultFormValues);
     setCreateSizeRows(createDefaultSizeRows());
+    setCreateGallerySession((session) => session + 1);
     setShowCreateDialog(true);
   };
 
@@ -487,27 +497,34 @@ export default function ProductsPage() {
   };
 
   const handleCreate = async (data: ProductForm) => {
-    createProduct.mutate(productFormToInput(data, isEcommerceStore), {
-      onSuccess: async (created) => {
-        if (isEcommerceStore) {
-          try {
-            await saveProductSizes.mutateAsync({
-              productId: created.id,
-              sizes: createSizeRows,
-            });
-          } catch (err) {
-            toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
-          }
+    setCreateSaving(true);
+    try {
+      const created = await createProduct.mutateAsync(productFormToInput(data, isEcommerceStore));
+      if (isEcommerceStore) {
+        try {
+          await createGalleryFlushRef.current?.(created.id);
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : t('galleryUploadFailed'));
         }
-        setShowCreateDialog(false);
-        createForm.reset(defaultFormValues);
-        setCreateSizeRows(createDefaultSizeRows());
-        toast.success('Product created successfully');
-      },
-      onError: (error) => {
-        toast.error(error.message || 'Failed to create product');
-      },
-    });
+        try {
+          await saveProductSizes.mutateAsync({
+            productId: created.id,
+            sizes: createSizeRows,
+          });
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+        }
+      }
+      setShowCreateDialog(false);
+      createForm.reset(defaultFormValues);
+      setCreateSizeRows(createDefaultSizeRows());
+      setCreateGallerySession((session) => session + 1);
+      toast.success('Product created successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to create product');
+    } finally {
+      setCreateSaving(false);
+    }
   };
 
   const handleEditSave = async (data: ProductForm) => {
@@ -897,6 +914,16 @@ export default function ProductsPage() {
               t={t}
               tCommon={tCommon}
             />
+            {isEcommerceStore ? (
+              <ProductExtraImagesField
+                key={createGallerySession}
+                mode="create"
+                coverUrl={createForm.watch('image_url') ?? null}
+                flushRef={createGalleryFlushRef}
+                onBusyChange={setCreateGalleryBusy}
+                t={t}
+              />
+            ) : null}
             <div className="space-y-2">
               <Label htmlFor="create-category">{t('category')} *</Label>
               <Select
@@ -1015,7 +1042,10 @@ export default function ProductsPage() {
               <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>
                 {tCommon('cancel')}
               </Button>
-              <Button type="submit" disabled={createProduct.isPending || uploading}>
+              <Button
+                type="submit"
+                disabled={createSaving || createProduct.isPending || uploading || createGalleryBusy}
+              >
                 {createProduct.isPending ? tCommon('processing') : t('addProduct')}
               </Button>
             </DialogFooter>
@@ -1082,6 +1112,16 @@ export default function ProductsPage() {
               t={t}
               tCommon={tCommon}
             />
+            {isEcommerceStore && editProduct ? (
+              <ProductExtraImagesField
+                key={editProduct.id}
+                mode="edit"
+                productId={editProduct.id}
+                coverUrl={editForm.watch('image_url') ?? null}
+                onBusyChange={setEditGalleryBusy}
+                t={t}
+              />
+            ) : null}
             <div className="space-y-2">
               <Label htmlFor="edit-category">{t('category')} *</Label>
               <Select
@@ -1200,7 +1240,10 @@ export default function ProductsPage() {
               <Button type="button" variant="outline" onClick={() => setEditProduct(null)}>
                 {tCommon('cancel')}
               </Button>
-              <Button type="submit" disabled={updateProduct.isPending || uploading}>
+              <Button
+                type="submit"
+                disabled={updateProduct.isPending || uploading || editGalleryBusy}
+              >
                 {updateProduct.isPending ? tCommon('saving') : tCommon('saveChanges')}
               </Button>
             </DialogFooter>
