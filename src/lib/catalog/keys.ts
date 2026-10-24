@@ -14,7 +14,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
   ),
   products:products!category_id(
     id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en,
-    image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller,
+    image_url, dining_price, takeaway_price, is_available, stock_qty, is_popular, is_new, is_bestseller,
     is_spicy, sort_order, created_at, updated_at,
     product_sizes:product_sizes(
       id, product_id, sort_order, code, label_ar, label_en, price, is_enabled, is_sold_out
@@ -25,7 +25,7 @@ export const CATALOG_WITH_PRODUCTS_SELECT = `
 
 /** Popular landing cards. Gallery columns stay narrow; do not reuse this for search or admin lists. */
 export const POPULAR_PRODUCTS_SELECT =
-  'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at, gallery:product_gallery(id, product_id, image_url, sort_order)';
+  'id, category_id, subcategory_id, name_ar, name_en, description_ar, description_en, image_url, dining_price, takeaway_price, is_available, stock_qty, is_popular, is_new, is_bestseller, is_spicy, sort_order, created_at, updated_at, gallery:product_gallery(id, product_id, image_url, sort_order)';
 
 export const categoryRelationNameFields = 'id, name_ar, name_en';
 

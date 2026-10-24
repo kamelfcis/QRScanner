@@ -123,6 +123,24 @@ describe('useCartStore', () => {
     expect(parsed.state.tableNumber).toBe('3');
   });
 
+  it('caps added quantity at stock across lines of the same product', () => {
+    useCartStore.getState().addItem({ ...sample, quantity: 2, stockQty: 3 });
+    useCartStore.getState().addItem({ ...sample, notes: 'Gift wrap', quantity: 2, stockQty: 3 });
+    const items = useCartStore.getState().items;
+    const total = items.reduce((sum, item) => sum + item.quantity, 0);
+    expect(total).toBe(3);
+    expect(items[0].quantity).toBe(2);
+    expect(items[1].quantity).toBe(1);
+  });
+
+  it('does not add another unit once stock is in the cart', () => {
+    useCartStore.getState().addItem({ ...sample, quantity: 2, stockQty: 2 });
+    useCartStore.getState().updateQty(useCartStore.getState().items[0].id, 9);
+    expect(useCartStore.getState().items[0].quantity).toBe(2);
+    useCartStore.getState().addItem({ ...sample, quantity: 1, stockQty: 2 });
+    expect(useCartStore.getState().items[0].quantity).toBe(2);
+  });
+
   it('setItemNotes re-keys and can merge into existing line', () => {
     useCartStore.getState().addItem({ ...sample, notes: '', quantity: 1 });
     useCartStore.getState().addItem({ ...sample, notes: 'Spicy', quantity: 1 });

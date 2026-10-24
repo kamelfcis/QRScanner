@@ -3,7 +3,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { hasExtendedProductSizes } from '@/i18n/config';
+import { isEcommerceStore } from '@/lib/store-config';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
+import { categoryKeys } from '@/lib/catalog/keys';
 import { orderKeys } from './useOrders';
 import type { OrderItem, OrderWithItems } from '@/types/database';
 import type { StaffPlaceOrderInput } from '@/types/schema';
@@ -38,6 +40,7 @@ export interface StaffCatalogProduct {
   price_per_kg: number | null;
   weight_options_g: number[] | null;
   is_available: boolean;
+  stock_qty?: number | null;
   sort_order: number;
 }
 
@@ -56,12 +59,14 @@ const staffExtendedSizeFields = hasExtendedProductSizes
   ? 'price_medium, price_family, size_small_enabled, size_medium_enabled, size_large_enabled, size_family_enabled, '
   : '';
 
+const staffStockField = isEcommerceStore ? 'stock_qty, ' : '';
+
 const STAFF_CATALOG_SELECT = `
   id, name_ar, name_en, name_fr, name_nl, sort_order, is_visible,
   products:products!category_id(
     id, category_id, name_ar, name_en, name_fr, name_nl, image_url,
     dining_price, takeaway_price, has_size_options, ${staffExtendedSizeFields}price_per_kg,
-    weight_options_g, is_available, sort_order
+    weight_options_g, is_available, ${staffStockField}sort_order
   )
 `;
 
@@ -155,6 +160,9 @@ export function usePlaceStaffOrder() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: categoryKeys.withProducts() });
+      queryClient.invalidateQueries({ queryKey: staffOrderCatalogKeys.all });
     },
   });
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -47,6 +48,8 @@ import {
   formatDeliveryLocationOption,
 } from '@/lib/order/delivery-location';
 import { formatPrepTimeEta, resolvePrepTimeDisplay } from '@/lib/order/prep-time';
+import { categoryKeys } from '@/lib/catalog/keys';
+import { productKeys } from '@/hooks/useProducts';
 import { isEcommerceStore, showDiningModeToggle } from '@/lib/store-config';
 import { instapayHandle, showInstapayDeliveryPrepay } from '@/lib/payment/instapay';
 import { generateOrderPaymentRef, hasInstapayProof } from '@/lib/payment/instapay-proof';
@@ -54,6 +57,7 @@ import { InstapayDeliverySection } from '@/components/checkout/InstapayDeliveryS
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { locale } = useI18n();
   const t = useTranslations('checkout');
   const tMenu = useTranslations('menu');
@@ -252,13 +256,18 @@ export default function CheckoutPage() {
         } | null;
 
         if (!validationResponse.ok || !validationPayload?.valid) {
-          const code = validationPayload?.codes?.[0];
+          const codes = validationPayload?.codes ?? [];
+          const code = codes.includes('insufficient_stock') ? 'insufficient_stock' : codes[0];
           const message =
-            code === 'product_unavailable'
-              ? t('productUnavailable')
-              : code === 'size_required' || code === 'size_invalid' || code === 'size_sold_out'
-                ? t('sizeSelectionInvalid')
-                : t('placeFailed');
+            code === 'insufficient_stock'
+              ? t.has('insufficientStock')
+                ? t('insufficientStock')
+                : t('placeFailed')
+              : code === 'product_unavailable'
+                ? t('productUnavailable')
+                : code === 'size_required' || code === 'size_invalid' || code === 'size_sold_out'
+                  ? t('sizeSelectionInvalid')
+                  : t('placeFailed');
           setErrors([message]);
           setSubmitting(false);
           return;
@@ -301,18 +310,22 @@ export default function CheckoutPage() {
         if (!response.ok && payload?.code !== 'feature_disabled') {
           const code = payload?.code;
           const message =
-            code === 'product_unavailable'
-              ? t('productUnavailable')
-              : code === 'orders_closed'
-                ? t('ordersClosed')
-                : code === 'min_order'
-                  ? t('minOrder', {
-                      amount: formatCurrencyNumber(settings.minimum_order ?? 0, currencyLocale),
-                      currency,
-                    })
-                  : code === 'address_required'
-                    ? t('addressRequired')
-                    : t('placeFailed');
+            code === 'insufficient_stock'
+              ? t.has('insufficientStock')
+                ? t('insufficientStock')
+                : t('placeFailed')
+              : code === 'product_unavailable'
+                ? t('productUnavailable')
+                : code === 'orders_closed'
+                  ? t('ordersClosed')
+                  : code === 'min_order'
+                    ? t('minOrder', {
+                        amount: formatCurrencyNumber(settings.minimum_order ?? 0, currencyLocale),
+                        currency,
+                      })
+                    : code === 'address_required'
+                      ? t('addressRequired')
+                      : t('placeFailed');
           setErrors([message]);
           setSubmitting(false);
           return;
@@ -394,6 +407,8 @@ export default function CheckoutPage() {
       }
 
       openWhatsAppUrl(built.whatsappUrl);
+      void queryClient.invalidateQueries({ queryKey: productKeys.all });
+      void queryClient.invalidateQueries({ queryKey: categoryKeys.withProducts() });
       router.push('/order-success?sent=1');
     } catch {
       setErrors([isEcommerceStore ? t('whatsappMissingStore') : t('whatsappMissing')]);

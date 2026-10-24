@@ -80,14 +80,52 @@ export function requiresSizeSelection(sizes: EcommerceProductSize[] | null | und
   return getEnabledSizes(sizes).length > 0;
 }
 
+function isTrackedStock(stockQty: number | null | undefined): stockQty is number {
+  return typeof stockQty === 'number' && Number.isFinite(stockQty);
+}
+
 export function isProductEffectivelySoldOut(
   isAvailable: boolean,
-  sizes: EcommerceProductSize[] | null | undefined
+  sizes: EcommerceProductSize[] | null | undefined,
+  stockQty?: number | null
 ): boolean {
   if (!isAvailable) return true;
+  if (isTrackedStock(stockQty) && stockQty <= 0) return true;
   const enabled = getEnabledSizes(sizes);
   if (!enabled.length) return false;
   return enabled.every((size) => size.is_sold_out);
+}
+
+/** Inclusive max for a quantity control. Null means stock is not tracked. */
+export function stockQuantityCap(stockQty: number | null | undefined): number | null {
+  if (!isTrackedStock(stockQty)) return null;
+  return Math.max(0, Math.floor(stockQty));
+}
+
+/** Units already allocated elsewhere. Null when this line is not capped. */
+export function maxAddableQuantity(
+  stockQty: number | null | undefined,
+  alreadyAllocated: number
+): number | null {
+  const cap = stockQuantityCap(stockQty);
+  if (cap == null) return null;
+  const used = Number.isFinite(alreadyAllocated) ? Math.max(0, Math.floor(alreadyAllocated)) : 0;
+  return Math.max(0, cap - used);
+}
+
+/** "Only N left" for 1–5. Null when stock is unlimited, zero, or above 5. */
+export function lowStockLabelCount(stockQty: number | null | undefined): number | null {
+  const cap = stockQuantityCap(stockQty);
+  if (cap == null || cap < 1 || cap > 5) return null;
+  return cap;
+}
+
+export function exceedsTrackedStock(
+  stockQty: number | null | undefined,
+  requestedQty: number
+): boolean {
+  if (!isTrackedStock(stockQty)) return false;
+  return requestedQty > stockQty;
 }
 
 export function getSizeByCode(

@@ -27,6 +27,8 @@ import {
   getSizeLabel,
   getSizePriceRange,
   isProductEffectivelySoldOut,
+  lowStockLabelCount,
+  maxAddableQuantity,
   requiresSizeSelection,
   toSelectedSizeSnapshot,
 } from '@/lib/catalog/ecommerce-sizes';
@@ -49,13 +51,33 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
   const t = (key: string, values?: Record<string, string | number | Date>) =>
     productTerm(tRaw, key, values);
   const tCart = useTranslations('cart');
+  const tProductsRaw = useTranslations('products');
+  const tProducts = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tProductsRaw, key, values);
   const { data: settings } = useRestaurantSettings();
   const addItem = useCartStore((s) => s.addItem);
+  const cartItems = useCartStore((s) => s.items);
 
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState('');
   const [weightGrams, setWeightGrams] = useState<number | null>(null);
   const [selectedSizeCode, setSelectedSizeCode] = useState<string | null>(null);
+
+  const stockRemaining =
+    product == null
+      ? null
+      : maxAddableQuantity(
+          product.stock_qty,
+          cartItems
+            .filter((item) => item.productId === product.id)
+            .reduce((sum, item) => sum + item.quantity, 0)
+        );
+
+  useEffect(() => {
+    if (stockRemaining == null) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- keep the stepper inside the stock cap
+    setQty((current) => Math.min(current, Math.max(1, stockRemaining)));
+  }, [stockRemaining]);
 
   useEffect(() => {
     if (product) {
@@ -96,9 +118,17 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
     : diningMode === 'dining'
       ? product.takeaway_price
       : product.dining_price;
-  const soldOut = isProductEffectivelySoldOut(product.is_available, productSizes);
+  const soldOut = isProductEffectivelySoldOut(
+    product.is_available,
+    productSizes,
+    product.stock_qty
+  );
+  const stockExhausted = typeof product.stock_qty === 'number' && product.stock_qty <= 0;
+  const lowStock = lowStockLabelCount(product.stock_qty);
+  const blockedByStock = stockRemaining === 0;
   const canAdd =
     !soldOut &&
+    !blockedByStock &&
     (!showWeightPicker || weightGrams != null) &&
     (!showSizePicker || (selectedSize != null && !selectedSize.is_sold_out));
   const badges = pickBadges(product);
@@ -111,6 +141,8 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
 
   const handleAdd = () => {
     if (!canAdd) return;
+    const quantity = stockRemaining == null ? qty : Math.min(qty, stockRemaining);
+    if (quantity < 1) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
@@ -123,7 +155,8 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
       weightGrams: showWeightPicker ? weightGrams : null,
       sizeCode: showSizePicker && selectedSize ? selectedSize.code : null,
       selectedSize: showSizePicker && selectedSize ? toSelectedSizeSnapshot(selectedSize) : null,
-      quantity: qty,
+      stockQty: product.stock_qty ?? null,
+      quantity,
       notes,
     });
     trackAddToCart(product.id, qty, diningMode);
@@ -304,6 +337,11 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
                 })
               : formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
           </p>
+          {lowStock != null && !soldOut ? (
+            <p className="pb-1 text-xs text-[var(--menu-ink-soft)]">
+              {tProducts('onlyNLeft', { count: lowStock })}
+            </p>
+          ) : null}
           {showDiningModeToggle && otherPrice != null && otherPrice !== activePrice && (
             <p className="pb-1 text-xs tabular-nums text-[var(--menu-ink-soft)]">
               {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
@@ -335,7 +373,7 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         </div>
       ) : (
         <p className="rounded-lg bg-[var(--menu-paper-deep)] px-3 py-2 text-sm text-[var(--menu-ink-soft)]">
-          {t('currentlyUnavailable')}
+          {stockExhausted ? tProducts('outOfStock') : t('currentlyUnavailable')}
         </p>
       )}
     </div>
@@ -365,9 +403,12 @@ export function ProductSheet({ product, diningMode, onClose, onAdded }: ProductS
         </span>
         <button
           type="button"
-          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-          onClick={() => setQty((q) => q + 1)}
+          className="flex w-11 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
+          onClick={() =>
+            setQty((q) => (stockRemaining == null ? q + 1 : Math.min(stockRemaining, q + 1)))
+          }
           aria-label={tCart('increaseQty')}
+          disabled={stockRemaining != null && qty >= stockRemaining}
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
         </button>

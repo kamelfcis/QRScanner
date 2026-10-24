@@ -164,10 +164,12 @@ CREATE TABLE "public"."products" (
   "is_bestseller" boolean DEFAULT false,
   "is_spicy" boolean DEFAULT false,
   "sort_order" integer DEFAULT 0,
+  "stock_qty" integer,
   "created_at" timestamp with time zone DEFAULT now(),
   "updated_at" timestamp with time zone DEFAULT now(),
   CONSTRAINT "products_dining_price_check" CHECK (dining_price >= 0::numeric),
   CONSTRAINT "products_takeaway_price_check" CHECK (takeaway_price >= 0::numeric),
+  CONSTRAINT "products_stock_qty_check" CHECK (stock_qty IS NULL OR stock_qty >= 0),
   CONSTRAINT "products_pkey" PRIMARY KEY (id)
 );
 

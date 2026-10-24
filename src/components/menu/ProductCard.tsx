@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +27,8 @@ import { cn, getName } from '@/lib/utils';
 import {
   getSizePriceRange,
   isProductEffectivelySoldOut,
+  lowStockLabelCount,
+  maxAddableQuantity,
   requiresSizeSelection,
 } from '@/lib/catalog/ecommerce-sizes';
 import { productTerm } from '@/lib/i18n/product-terminology';
@@ -57,8 +59,12 @@ export function ProductCard({
     productTerm(tRaw, key, values);
   const tCart = useTranslations('cart');
   const tCommon = useTranslations('common');
+  const tProductsRaw = useTranslations('products');
+  const tProducts = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tProductsRaw, key, values);
   const { data: settings } = useRestaurantSettings();
   const addItem = useCartStore((s) => s.addItem);
+  const cartItems = useCartStore((s) => s.items);
 
   const [qty, setQty] = useState(1);
   const [notesOpen, setNotesOpen] = useState(false);
@@ -77,7 +83,25 @@ export function ProductCard({
   const fromPrice = minWeightPrice(product) ?? sizeRange?.min ?? null;
   const activePrice =
     fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
-  const soldOut = isProductEffectivelySoldOut(product.is_available, productSizes);
+  const soldOut = isProductEffectivelySoldOut(
+    product.is_available,
+    productSizes,
+    product.stock_qty
+  );
+  const stockExhausted = typeof product.stock_qty === 'number' && product.stock_qty <= 0;
+  const lowStock = lowStockLabelCount(product.stock_qty);
+  const inCart = cartItems
+    .filter((item) => item.productId === product.id)
+    .reduce((sum, item) => sum + item.quantity, 0);
+  const stockRemaining = maxAddableQuantity(product.stock_qty, inCart);
+  const blockedByStock = stockRemaining === 0;
+
+  useEffect(() => {
+    if (stockRemaining == null) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- keep the stepper inside the stock cap
+    setQty((current) => Math.min(current, Math.max(1, stockRemaining)));
+  }, [stockRemaining]);
+
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
   const badges = pickBadges(product);
   const productName = getName(locale, product.name_en, product.name_ar);
@@ -86,11 +110,13 @@ export function ProductCard({
     : '';
 
   const handleAdd = (withNotes: string) => {
-    if (soldOut) return;
+    if (soldOut || blockedByStock) return;
     if (hasSizes || weighted) {
       onImageClick(product);
       return;
     }
+    const quantity = stockRemaining == null ? qty : Math.min(qty, stockRemaining);
+    if (quantity < 1) return;
     addItem({
       productId: product.id,
       name_en: product.name_en,
@@ -98,10 +124,11 @@ export function ProductCard({
       image_url: product.image_url,
       dining_price: product.dining_price,
       takeaway_price: product.takeaway_price,
-      quantity: qty,
+      stockQty: product.stock_qty ?? null,
+      quantity,
       notes: withNotes,
     });
-    trackAddToCart(product.id, qty, diningMode);
+    trackAddToCart(product.id, quantity, diningMode);
     setPulse(true);
     window.setTimeout(() => setPulse(false), 400);
     setQty(1);
@@ -211,7 +238,7 @@ export function ProductCard({
                 variant="secondary"
                 className="bg-[var(--menu-ink)] text-[11px] text-[var(--menu-paper)]"
               >
-                {t('currentlyUnavailable')}
+                {stockExhausted ? tProducts('outOfStock') : t('currentlyUnavailable')}
               </Badge>
             </div>
           )}
@@ -245,6 +272,11 @@ export function ProductCard({
                     })
                   : formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
               </p>
+              {lowStock != null && !soldOut ? (
+                <p className="mt-0.5 text-[11px] text-[var(--menu-ink-soft)]">
+                  {tProducts('onlyNLeft', { count: lowStock })}
+                </p>
+              ) : null}
               {showDiningModeToggle && !weighted && otherPrice !== activePrice && (
                 <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
                   {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
@@ -255,6 +287,7 @@ export function ProductCard({
 
             {!soldOut && (
               <motion.button
+                disabled={blockedByStock}
                 type="button"
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                 animate={pulse && !prefersReducedMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
@@ -267,7 +300,7 @@ export function ProductCard({
                   e.stopPropagation();
                   handleMobileAddClick();
                 }}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] sm:hidden"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--menu-wine)] text-[#FDF7F0] shadow-[0_2px_10px_-4px_rgba(107,15,26,0.7)] disabled:pointer-events-none disabled:opacity-40 sm:hidden"
                 aria-label={weighted || hasSizes ? t('selectSize') : tCart('addToCart')}
                 data-testid={
                   weighted || hasSizes ? 'open-product-sheet-mobile' : 'add-to-cart-mobile'
@@ -305,9 +338,14 @@ export function ProductCard({
                     </span>
                     <button
                       type="button"
-                      className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)]"
-                      onClick={() => setQty((q) => q + 1)}
+                      className="flex w-9 items-center justify-center text-[var(--menu-ink)] transition-colors hover:bg-[var(--menu-gold-wash)] disabled:pointer-events-none disabled:opacity-40"
+                      onClick={() =>
+                        setQty((q) =>
+                          stockRemaining == null ? q + 1 : Math.min(stockRemaining, q + 1)
+                        )
+                      }
                       aria-label={tCart('increaseQty')}
+                      disabled={stockRemaining != null && qty >= stockRemaining}
                     >
                       <Plus className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
@@ -323,6 +361,7 @@ export function ProductCard({
                     type="button"
                     className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
                     onClick={() => (weighted ? onImageClick(product) : handleAdd(''))}
+                    disabled={!weighted && blockedByStock}
                     data-testid={weighted ? 'open-product-sheet' : 'add-to-cart'}
                     aria-label={weighted ? t('selectWeight') : tCart('addToCart')}
                   >

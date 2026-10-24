@@ -17,7 +17,9 @@ import { cn, getName } from '@/lib/utils';
 import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-currency';
 import type { Product } from '@/types/database';
 import { buildProductSlides, readProductGallery } from '@/lib/catalog/product-slides';
-import { getMenuEntryPath, isEcommerceStore } from '@/lib/store-config';
+import { isProductEffectivelySoldOut, lowStockLabelCount } from '@/lib/catalog/ecommerce-sizes';
+import { productTerm } from '@/lib/i18n/product-terminology';
+import { getMenuEntryPath } from '@/lib/store-config';
 
 function preferImageUrl(products: Product[]): Product[] {
   const withImage: Product[] = [];
@@ -41,6 +43,9 @@ export function FeaturedDishes() {
   const { data: products, isLoading } = usePopularProducts();
   const t = useTranslations('landing');
   const menuT = useTranslations('menu');
+  const productsTRaw = useTranslations('products');
+  const productsT = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(productsTRaw, key, values);
   const { locale } = useI18n();
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);
@@ -97,7 +102,14 @@ export function FeaturedDishes() {
               const name = getName(locale, product.name_en, product.name_ar);
               const secondaryName = locale === 'ar' ? product.name_en : product.name_ar;
               const badge = pickBadge(product);
-              const soldOut = isEcommerceStore && !product.is_available;
+              const soldOut = isProductEffectivelySoldOut(
+                product.is_available,
+                product.product_sizes,
+                product.stock_qty
+              );
+              const stockExhausted =
+                typeof product.stock_qty === 'number' && product.stock_qty <= 0;
+              const lowStock = lowStockLabelCount(product.stock_qty);
 
               const slides = buildProductSlides(product.image_url, readProductGallery(product));
 
@@ -138,7 +150,9 @@ export function FeaturedDishes() {
                       {soldOut && (
                         <div className="bg-background/75 pointer-events-none absolute inset-0 z-[2] flex items-center justify-center">
                           <Badge variant="secondary" className="text-[10px] sm:text-xs">
-                            {menuT('currentlyUnavailable')}
+                            {stockExhausted
+                              ? productsT('outOfStock')
+                              : menuT('currentlyUnavailable')}
                           </Badge>
                         </div>
                       )}
@@ -161,6 +175,11 @@ export function FeaturedDishes() {
                           locale: currencyLocale,
                         })}
                       </p>
+                      {lowStock != null && !soldOut ? (
+                        <p className="text-muted-foreground text-xs">
+                          {productsT('onlyNLeft', { count: lowStock })}
+                        </p>
+                      ) : null}
                     </div>
                   </Link>
                 </MotionCard>

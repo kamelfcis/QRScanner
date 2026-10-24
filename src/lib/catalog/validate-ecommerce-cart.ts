@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   getEcommerceUnitPrice,
   getSizeByCode,
+  exceedsTrackedStock,
   isProductEffectivelySoldOut,
   isValidSizeSelection,
   requiresSizeSelection,
@@ -29,7 +30,12 @@ export interface ValidatedEcommerceCartLine {
 }
 
 export type EcommerceCartValidationCode =
-  'product_not_found' | 'product_unavailable' | 'size_required' | 'size_invalid' | 'size_sold_out';
+  | 'product_not_found'
+  | 'product_unavailable'
+  | 'insufficient_stock'
+  | 'size_required'
+  | 'size_invalid'
+  | 'size_sold_out';
 
 export interface EcommerceCartValidationResult {
   valid: boolean;
@@ -44,6 +50,7 @@ type ProductRow = {
   dining_price: number;
   takeaway_price: number;
   is_available: boolean;
+  stock_qty?: number | null;
   product_sizes: EcommerceProductSize[] | null;
 };
 
@@ -63,7 +70,7 @@ export async function validateEcommerceCartItems(
     .from('products')
     .select(
       `
-      id, name_en, name_ar, dining_price, takeaway_price, is_available,
+      id, name_en, name_ar, dining_price, takeaway_price, is_available, stock_qty,
       product_sizes:product_sizes(
         id, product_id, sort_order, code, label_ar, label_en, price, is_enabled, is_sold_out
       )
@@ -74,6 +81,11 @@ export async function validateEcommerceCartItems(
   if (error) throw error;
 
   const byId = new Map((data as ProductRow[] | null)?.map((row) => [row.id, row]) ?? []);
+  const requestedByProduct = new Map<string, number>();
+  for (const item of items) {
+    const qty = Number.isFinite(item.quantity) ? Math.max(1, Math.floor(item.quantity)) : 1;
+    requestedByProduct.set(item.productId, (requestedByProduct.get(item.productId) ?? 0) + qty);
+  }
 
   for (const item of items) {
     const product = byId.get(item.productId);
@@ -83,7 +95,13 @@ export async function validateEcommerceCartItems(
     }
 
     const sizes = product.product_sizes ?? [];
-    if (isProductEffectivelySoldOut(product.is_available, sizes)) {
+    const requested = requestedByProduct.get(item.productId) ?? item.quantity;
+    if (exceedsTrackedStock(product.stock_qty, requested)) {
+      codes.add('insufficient_stock');
+      continue;
+    }
+
+    if (isProductEffectivelySoldOut(product.is_available, sizes, product.stock_qty)) {
       codes.add('product_unavailable');
       continue;
     }

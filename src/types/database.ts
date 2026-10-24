@@ -71,6 +71,7 @@ export interface Product {
   name_fr?: string | null;
   name_nl?: string | null;
   is_available: boolean;
+  stock_qty?: number | null;
   is_popular: boolean;
   is_new: boolean;
   is_bestseller: boolean;

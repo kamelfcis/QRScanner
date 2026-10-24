@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { playSound } from '@/lib/ux/sound';
 import { triggerHaptic } from '@/lib/ux/haptic';
-import { sizeCartKey } from '@/lib/catalog/ecommerce-sizes';
+import { maxAddableQuantity, sizeCartKey } from '@/lib/catalog/ecommerce-sizes';
 import type { SelectedSizeSnapshot } from '@/types/database';
 import { defaultDiningMode, isEcommerceStore } from '@/lib/store-config';
 
@@ -30,6 +30,8 @@ export interface CartItem {
   sizeCode?: string | null;
   selectedSize?: SelectedSizeSnapshot | null;
   weightGrams?: number | null;
+  /** Null or omitted means unlimited. A number caps this product across cart lines. */
+  stockQty?: number | null;
   quantity: number;
   notes: string;
 }
@@ -93,19 +95,29 @@ export const useCartStore = create<CartState>()(
       ...initialMeta,
 
       addItem: (item) => {
-        const qty = Math.max(1, item.quantity ?? 1);
+        const requested = Math.max(1, item.quantity ?? 1);
         const notes = item.notes?.trim() ?? '';
         const weightGrams = item.weightGrams ?? null;
         const sizeCode = item.sizeCode ?? null;
         const id = makeCartLineId(item.productId, notes, weightGrams, sizeCode);
+        const current = get().items;
+        const existing = current.find((i) => i.id === id);
+        const resolvedStock =
+          item.stockQty !== undefined ? item.stockQty : (existing?.stockQty ?? null);
+        const allocated = current
+          .filter((i) => i.productId === item.productId)
+          .reduce((sum, i) => sum + i.quantity, 0);
+        const room = maxAddableQuantity(resolvedStock, allocated);
+        if (room != null && room <= 0) return;
+        const addQty = room == null ? requested : Math.min(requested, room);
         triggerHaptic('light');
         playSound('add');
         set((state) => {
-          const existing = state.items.find((i) => i.id === id);
-          if (existing) {
+          const line = state.items.find((i) => i.id === id);
+          if (line) {
             return {
               items: state.items.map((i) =>
-                i.id === id ? { ...i, quantity: i.quantity + qty } : i
+                i.id === id ? { ...i, quantity: i.quantity + addQty, stockQty: resolvedStock } : i
               ),
             };
           }
@@ -129,7 +141,8 @@ export const useCartStore = create<CartState>()(
                 sizeCode,
                 selectedSize: item.selectedSize ?? null,
                 weightGrams,
-                quantity: qty,
+                stockQty: resolvedStock,
+                quantity: addQty,
                 notes,
               },
             ],
@@ -142,9 +155,19 @@ export const useCartStore = create<CartState>()(
           get().removeItem(id);
           return;
         }
-        set((state) => ({
-          items: state.items.map((i) => (i.id === id ? { ...i, quantity } : i)),
-        }));
+        set((state) => {
+          const current = state.items.find((i) => i.id === id);
+          if (!current) return state;
+          const others = state.items
+            .filter((i) => i.productId === current.productId && i.id !== id)
+            .reduce((sum, i) => sum + i.quantity, 0);
+          const room = maxAddableQuantity(current.stockQty, others);
+          const next = room == null ? quantity : Math.min(quantity, room);
+          if (next <= 0) return state;
+          return {
+            items: state.items.map((i) => (i.id === id ? { ...i, quantity: next } : i)),
+          };
+        });
       },
 
       removeItem: (id) => {

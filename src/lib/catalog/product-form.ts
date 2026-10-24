@@ -50,6 +50,14 @@ const ecommerceBaseFields = {
 /** Dashboard product form for ecommerce stores — single price field, no spicy. */
 export const ecommerceProductFormSchema = productSchema.pick(ecommerceBaseFields).extend({
   price: z.number().min(0, 'Price must be positive'),
+  /** Empty string saves NULL. Digits save that count, including 0. */
+  stock_qty: z
+    .string()
+    .trim()
+    .refine((value) => value === '' || /^\d+$/.test(value), {
+      message: 'Stock must be a whole number',
+    })
+    .optional(),
 });
 
 export type EcommerceProductFormInput = z.input<typeof ecommerceProductFormSchema>;
@@ -85,8 +93,16 @@ export function getProductFormSchema(isEcommerce: boolean) {
 export function productFormToInput(data: ProductFormInput, isEcommerce: boolean): ProductInput {
   if (isEcommerce) {
     const parsed = ecommerceProductFormSchema.parse(data);
-    const { price, ...rest } = parsed;
-    return { ...rest, dining_price: price, takeaway_price: price, is_spicy: false };
+    const { price, stock_qty: stockRaw, ...rest } = parsed;
+    const stockText = (stockRaw ?? '').trim();
+    const stock_qty = stockText === '' ? null : Number(stockText);
+    return {
+      ...rest,
+      dining_price: price,
+      takeaway_price: price,
+      is_spicy: false,
+      stock_qty,
+    };
   }
   const parsed = restaurantProductFormSchema.parse(data);
   const { use_weight_pricing, weight_options_g, price_per_kg, ...rest } = parsed;
@@ -128,7 +144,7 @@ export function getDefaultProductFormValues(isEcommerce: boolean): ProductFormIn
   };
 
   if (isEcommerce) {
-    return { ...shared, price: 0 };
+    return { ...shared, price: 0, stock_qty: '' };
   }
 
   return {
@@ -161,6 +177,7 @@ export function productToFormValues(product: Product, isEcommerce: boolean): Pro
     return {
       ...shared,
       price: product.dining_price ?? product.takeaway_price ?? 0,
+      stock_qty: product.stock_qty == null ? '' : String(product.stock_qty),
     };
   }
 

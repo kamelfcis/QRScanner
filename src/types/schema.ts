@@ -47,6 +47,7 @@ export const productSchema = z.object({
 export type ProductInput = z.infer<typeof productSchema> & {
   price_per_kg?: number | null;
   weight_options_g?: number[] | null;
+  stock_qty?: number | null;
 };
 
 export const offerSchema = z

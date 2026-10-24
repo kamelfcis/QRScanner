@@ -12,6 +12,7 @@ import {
   parseWeightOptionsG,
   productFormToInput,
   productToFormValues,
+  type EcommerceProductFormInput,
   type ProductFormInput,
   type RestaurantProductFormInput,
 } from '@/lib/catalog/product-form';
@@ -195,6 +196,36 @@ function RestaurantPriceSection({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function EcommerceStockField({
+  form,
+  idPrefix,
+  t,
+}: {
+  form: UseFormReturn<EcommerceProductFormInput>;
+  idPrefix: 'create' | 'edit';
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const stockError = form.formState.errors.stock_qty;
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={`${idPrefix}-stock`}>{t('stock')}</Label>
+      <Input
+        id={`${idPrefix}-stock`}
+        type="number"
+        min={0}
+        step={1}
+        inputMode="numeric"
+        {...form.register('stock_qty')}
+      />
+      <p className="text-muted-foreground text-xs">{t('stockHint')}</p>
+      {stockError?.message ? (
+        <p className="text-destructive text-sm">{stockError.message}</p>
+      ) : null}
     </div>
   );
 }
@@ -696,6 +727,11 @@ export default function ProductsPage() {
                   <th className="text-muted-foreground p-3 text-start font-medium">
                     {isEcommerceStore ? t('price') : t('pricesColumn')}
                   </th>
+                  {isEcommerceStore ? (
+                    <th className="text-muted-foreground p-3 text-start font-medium">
+                      {t('stock')}
+                    </th>
+                  ) : null}
                   <th className="text-muted-foreground hidden p-3 text-start font-medium md:table-cell">
                     {t('statusColumn')}
                   </th>
@@ -811,6 +847,20 @@ export default function ProductsPage() {
                           </div>
                         )}
                       </td>
+                      {isEcommerceStore ? (
+                        <td className="p-3">
+                          {product.stock_qty == null ? (
+                            <span className="text-muted-foreground">—</span>
+                          ) : (
+                            <div className="space-y-0.5">
+                              <p className="font-semibold tabular-nums">{product.stock_qty}</p>
+                              {product.stock_qty === 0 ? (
+                                <p className="text-muted-foreground text-xs">{t('outOfStock')}</p>
+                              ) : null}
+                            </div>
+                          )}
+                        </td>
+                      ) : null}
                       <td className="hidden p-3 md:table-cell">
                         <Badge variant={product.is_available ? 'default' : 'secondary'}>
                           {product.is_available ? t('available') : t('unavailable')}
@@ -969,6 +1019,11 @@ export default function ProductsPage() {
                     </p>
                   )}
                 </div>
+                <EcommerceStockField
+                  form={createForm as UseFormReturn<EcommerceProductFormInput>}
+                  idPrefix="create"
+                  t={t}
+                />
                 <ProductSizesEditor
                   rows={createSizeRows}
                   onChange={setCreateSizeRows}
@@ -1167,6 +1222,11 @@ export default function ProductsPage() {
                     </p>
                   )}
                 </div>
+                <EcommerceStockField
+                  form={editForm as UseFormReturn<EcommerceProductFormInput>}
+                  idPrefix="edit"
+                  t={t}
+                />
                 <ProductSizesEditor
                   rows={editSizeRows}
                   onChange={setEditSizeRows}

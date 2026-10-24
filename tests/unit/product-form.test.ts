@@ -44,6 +44,32 @@ describe('product-form (ecommerce)', () => {
     const input = productFormToInput(validEcommerceForm, true);
     expect(input.dining_price).toBe(199);
     expect(input.takeaway_price).toBe(199);
+    expect(input.stock_qty).toBeNull();
+    expect(input.is_available).toBe(true);
+  });
+
+  it('replaces stock with null, zero, or a positive integer and leaves availability alone', () => {
+    const empty = productFormToInput({ ...validEcommerceForm, stock_qty: '' }, true);
+    expect(empty.stock_qty).toBeNull();
+    expect(empty.is_available).toBe(true);
+
+    const zero = productFormToInput(
+      { ...validEcommerceForm, stock_qty: '0', is_available: true },
+      true
+    );
+    expect(zero.stock_qty).toBe(0);
+    expect(zero.is_available).toBe(true);
+
+    const five = productFormToInput({ ...validEcommerceForm, stock_qty: '5' }, true);
+    expect(five.stock_qty).toBe(5);
+    expect(five.is_available).toBe(true);
+
+    expect(
+      ecommerceProductFormSchema.safeParse({ ...validEcommerceForm, stock_qty: '-1' }).success
+    ).toBe(false);
+    expect(
+      ecommerceProductFormSchema.safeParse({ ...validEcommerceForm, stock_qty: '1.5' }).success
+    ).toBe(false);
   });
 
   it('always saves is_spicy false for ecommerce', () => {
@@ -77,8 +103,11 @@ describe('product-form (ecommerce)', () => {
       updated_at: '',
     } as Product;
 
-    const form = productToFormValues(product, true);
-    expect(form).toMatchObject({ price: 150 });
+    const form = productToFormValues({ ...product, stock_qty: null }, true);
+    expect(form).toMatchObject({ price: 150, stock_qty: '' });
+
+    const counted = productToFormValues({ ...product, stock_qty: 4 }, true);
+    expect(counted).toMatchObject({ stock_qty: '4' });
     expect(form).not.toHaveProperty('is_spicy');
   });
 
@@ -106,6 +135,7 @@ describe('product-form (restaurant)', () => {
     const input = productFormToInput(validRestaurantForm, false);
     expect(input.dining_price).toBe(25);
     expect(input.takeaway_price).toBe(22);
+    expect(input).not.toHaveProperty('stock_qty');
   });
 
   it('returns default restaurant form with both price fields', () => {

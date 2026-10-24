@@ -14,6 +14,8 @@ import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
+import { lowStockLabelCount, maxAddableQuantity } from '@/lib/catalog/ecommerce-sizes';
+import { productTerm } from '@/lib/i18n/product-terminology';
 import { isEcommerceStore } from '@/lib/store-config';
 import { Image } from '@/components/shared/Image';
 
@@ -31,6 +33,9 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const { locale } = useI18n();
   const t = useTranslations('cart');
   const tMenu = useTranslations('menu');
+  const tProductsRaw = useTranslations('products');
+  const tProducts = (key: string, values?: Record<string, string | number | Date>) =>
+    productTerm(tProductsRaw, key, values);
   const tCommon = useTranslations('accessibility');
   const { data: settings } = useRestaurantSettings();
   const items = useCartStore((s) => s.items);
@@ -123,6 +128,15 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                 {pricedItems.map((item) => {
                   const name = getName(locale, item.name_en, item.name_ar);
                   const lineTotal = item.unitPrice * item.quantity;
+                  const othersQty = items
+                    .filter(
+                      (candidate) =>
+                        candidate.productId === item.productId && candidate.id !== item.id
+                    )
+                    .reduce((sum, candidate) => sum + candidate.quantity, 0);
+                  const lineCap = maxAddableQuantity(item.stockQty, othersQty);
+                  const atStockCap = lineCap != null && item.quantity >= lineCap;
+                  const lowStock = lowStockLabelCount(item.stockQty);
                   return (
                     <div
                       key={item.id}
@@ -198,13 +212,19 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                             </span>
                             <button
                               type="button"
-                              className={stepperButton}
+                              className={`${stepperButton} disabled:pointer-events-none disabled:opacity-40`}
                               onClick={() => updateQty(item.id, item.quantity + 1)}
                               aria-label={t('increaseQty')}
+                              disabled={atStockCap}
                             >
                               <Plus className="h-3.5 w-3.5" aria-hidden="true" />
                             </button>
                           </div>
+                          {lowStock != null ? (
+                            <p className="text-[11px] text-[var(--menu-ink-soft)]">
+                              {tProducts('onlyNLeft', { count: lowStock })}
+                            </p>
+                          ) : null}
                         </div>
 
                         {!isEcommerceStore && (

@@ -67,6 +67,7 @@ import {
   type ProductSizeId,
 } from '@/lib/catalog/product-sizes';
 import { computeWeightPrice, hasWeightOptions } from '@/lib/order/weight-price';
+import { maxAddableQuantity } from '@/lib/catalog/ecommerce-sizes';
 import { cn, getName } from '@/lib/utils';
 import type { OrderWithItems } from '@/types/database';
 import type { StaffPlaceOrderInput } from '@/types/schema';
@@ -93,6 +94,7 @@ interface StaffTicketLine {
   size_large_enabled?: boolean | null;
   size_family_enabled?: boolean | null;
   price_per_kg: number | null;
+  stockQty: number | null;
   quantity: number;
   sizeOption: SizeOption | null;
   weightGrams: number | null;
@@ -166,6 +168,7 @@ function productFromCatalog(
     size_family_enabled: product.size_family_enabled,
     has_size_options: getEnabledProductSizes(product).length > 0,
     price_per_kg: product.price_per_kg != null ? Number(product.price_per_kg) : null,
+    stockQty: typeof product.stock_qty === 'number' ? product.stock_qty : null,
     quantity: partial.quantity ?? 1,
     sizeOption: partial.sizeOption ?? null,
     weightGrams: partial.weightGrams ?? null,
@@ -374,11 +377,20 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
         quantity: 1,
       });
       setLines((prev) => {
+        const allocated = prev
+          .filter((item) => item.productId === product.id)
+          .reduce((sum, item) => sum + item.quantity, 0);
+        const room = maxAddableQuantity(product.stock_qty, allocated);
+        if (room != null && room < 1) return prev;
         const existing = prev.find((item) => item.lineId === line.lineId);
         if (existing) {
           return prev.map((item) =>
             item.lineId === line.lineId
-              ? { ...item, quantity: Math.min(99, item.quantity + 1) }
+              ? {
+                  ...item,
+                  quantity: Math.min(99, item.quantity + 1),
+                  stockQty: line.stockQty,
+                }
               : item
           );
         }
@@ -472,6 +484,14 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
       setPrintOrder(fullOrder);
     } catch (err) {
       const code = err instanceof Error ? err.message : 'place_failed';
+      if (code === 'insufficient_stock') {
+        toast.error(
+          tCheckout.has('insufficientStock')
+            ? tCheckout('insufficientStock')
+            : tCheckout('placeFailed')
+        );
+        return;
+      }
       const known = [
         'invalid_coupon',
         'min_order',
@@ -854,6 +874,14 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                 ]
                   .filter(Boolean)
                   .join(' · ');
+                const othersQty = lines
+                  .filter(
+                    (item) => item.productId === line.productId && item.lineId !== line.lineId
+                  )
+                  .reduce((sum, item) => sum + item.quantity, 0);
+                const lineCap = maxAddableQuantity(line.stockQty, othersQty);
+                const atStockCap =
+                  line.quantity >= 99 || (lineCap != null && line.quantity >= lineCap);
                 return (
                   <li
                     key={line.lineId}
@@ -899,14 +927,22 @@ export function StaffOrderComposer({ open, onOpenChange }: StaffOrderComposerPro
                         size="icon-sm"
                         className="min-h-11 min-w-11"
                         aria-label={tCart('increaseQty')}
-                        disabled={line.quantity >= 99}
+                        disabled={atStockCap}
                         onClick={() =>
                           setLines((prev) =>
-                            prev.map((item) =>
-                              item.lineId === line.lineId
-                                ? { ...item, quantity: Math.min(99, item.quantity + 1) }
-                                : item
-                            )
+                            prev.map((item) => {
+                              if (item.lineId !== line.lineId) return item;
+                              const siblingQty = prev
+                                .filter(
+                                  (sibling) =>
+                                    sibling.productId === item.productId &&
+                                    sibling.lineId !== item.lineId
+                                )
+                                .reduce((sum, sibling) => sum + sibling.quantity, 0);
+                              const cap = maxAddableQuantity(item.stockQty, siblingQty);
+                              const nextCap = cap == null ? 99 : Math.min(99, cap);
+                              return { ...item, quantity: Math.min(nextCap, item.quantity + 1) };
+                            })
                           )
                         }
                       >
