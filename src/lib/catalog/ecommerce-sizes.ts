@@ -36,6 +36,15 @@ export function isPresetSizeCode(code: string): code is PresetSizeCode {
   return (PRESET_SIZE_CODES as readonly string[]).includes(code);
 }
 
+function storedPrice(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return null;
+}
+
 export function createDefaultSizeRows(basePrice = 0): EcommerceProductSize[] {
   return PRESET_SIZE_CODES.map((code) => ({
     sort_order: PRESET_SIZE_DEFAULTS[code].sort_order,
@@ -48,13 +57,23 @@ export function createDefaultSizeRows(basePrice = 0): EcommerceProductSize[] {
   }));
 }
 
-export function mergeSizeRows(
-  existing: EcommerceProductSize[],
-  basePrice = 0
-): EcommerceProductSize[] {
-  const preset = createDefaultSizeRows(basePrice).map((row) => {
+/** Preset rows missing from the database stay disabled with no invented price. */
+export function mergeSizeRows(existing: EcommerceProductSize[]): EcommerceProductSize[] {
+  const preset = createDefaultSizeRows(0).map((row) => {
     const found = existing.find((item) => item.code === row.code);
-    return found ? { ...row, ...found, code: row.code } : row;
+    if (!found) return row;
+    const price = storedPrice(found.price);
+    return {
+      ...row,
+      ...found,
+      code: row.code,
+      label_ar: found.label_ar || row.label_ar,
+      label_en: found.label_en || row.label_en,
+      sort_order: found.sort_order ?? row.sort_order,
+      price: price ?? 0,
+      is_enabled: found.is_enabled,
+      is_sold_out: found.is_sold_out,
+    };
   });
   const custom = existing
     .filter((item) => !isPresetSizeCode(item.code))
@@ -67,6 +86,10 @@ export function getEnabledSizes(
 ): EcommerceProductSize[] {
   return (sizes ?? [])
     .filter((size) => size.is_enabled)
+    .map((size) => {
+      const price = storedPrice(size.price);
+      return price == null ? size : { ...size, price };
+    })
     .sort((a, b) => a.sort_order - b.sort_order);
 }
 

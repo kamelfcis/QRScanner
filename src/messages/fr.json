@@ -640,6 +640,7 @@
     "description": "Tableau cuisine en direct. Les nouveaux tickets apparaissent sans actualiser.",
     "liveEyebrow": "Tableau cuisine",
     "liveNow": "En direct",
+    "liveRefreshHint": "Actualisation automatique toutes les {seconds} secondes",
     "todayOrders": "{count, plural, one {# commande} other {# commandes}}",
     "todayRevenue": "{amount}",
     "awaitingAck": "En attente",

@@ -31,6 +31,8 @@ interface OrdersCommandHeaderProps {
   onNewStaffOrder: () => void;
   onCleanup?: () => void;
   compact?: boolean;
+  /** Seconds between automatic refreshes. Omitted when the board uses realtime. */
+  autoRefreshSeconds?: number;
 }
 
 export function OrdersCommandHeader({
@@ -46,6 +48,7 @@ export function OrdersCommandHeader({
   onNewStaffOrder,
   onCleanup,
   compact = false,
+  autoRefreshSeconds,
 }: OrdersCommandHeaderProps) {
   const t = useTranslations('orders');
   const tone = compact ? COLUMN_TONE_POS : COLUMN_TONE;
@@ -89,6 +92,11 @@ export function OrdersCommandHeader({
                 </span>
                 {t('liveNow')}
               </span>
+              {autoRefreshSeconds ? (
+                <p className="text-muted-foreground text-xs font-medium normal-case tracking-normal">
+                  {t('liveRefreshHint', { seconds: autoRefreshSeconds })}
+                </p>
+              ) : null}
               {compact ? (
                 <p className="text-foreground/80 min-w-0 text-sm">
                   <span className="tabular-nums">{t('todayOrders', { count: todayCount })}</span>

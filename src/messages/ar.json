@@ -673,6 +673,7 @@
     "description": "لوحة المطبخ المباشرة. تظهر الطلبات الجديدة دون تحديث.",
     "liveEyebrow": "لوحة المطبخ",
     "liveNow": "مباشر",
+    "liveRefreshHint": "تتحدث تلقائياً كل {seconds} ثوانٍ",
     "todayOrders": "{count, plural, one {# طلب} other {# طلبات}}",
     "todayRevenue": "{amount}",
     "awaitingAck": "بانتظار الاطلاع",

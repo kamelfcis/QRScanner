@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -18,6 +18,7 @@ import { isEcommerceStore } from '@/lib/store-config';
 import { hasDynamicProductSizes } from '@/i18n/config';
 import {
   createDefaultSizeRows,
+  mergeSizeRows,
   syncProductBasePricesFromSizes,
   type EcommerceProductSize,
 } from '@/lib/catalog/ecommerce-sizes';
@@ -73,6 +74,25 @@ import { Pagination } from '@/components/shared/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 
 type ProductForm = ProductFormInput;
+
+function CategorySelectValue({
+  placeholder,
+  labelFor,
+}: {
+  placeholder: string;
+  labelFor: (categoryId: string) => string | null;
+}) {
+  return (
+    <SelectValue placeholder={placeholder}>
+      {(value: string | null) => {
+        if (typeof value !== 'string' || value.length === 0) return placeholder;
+        const label = labelFor(value)?.trim();
+        if (!label || label === value) return placeholder;
+        return label;
+      }}
+    </SelectValue>
+  );
+}
 
 const productFormSchema = getProductFormSchema(isEcommerceStore);
 const defaultFormValues = getDefaultProductFormValues(isEcommerceStore);
@@ -314,7 +334,11 @@ export default function ProductsPage() {
   const { locale } = useI18n();
 
   const { data: products, isLoading, error, refetch } = useAllProducts();
-  const { data: categories } = useAllCategories();
+  const {
+    data: categories,
+    error: categoriesError,
+    isLoading: categoriesLoading,
+  } = useAllCategories();
   const { data: settings } = useRestaurantSettings();
   const currency = getRestaurantCurrency(settings?.currency);
   const deleteProduct = useDeleteProduct();
@@ -324,7 +348,10 @@ export default function ProductsPage() {
   const saveProductSizes = useSaveProductSizes();
   const [createSizeRows, setCreateSizeRows] =
     useState<EcommerceProductSize[]>(createDefaultSizeRows());
-  const [editSizeRows, setEditSizeRows] = useState<EcommerceProductSize[]>(createDefaultSizeRows());
+  const [editSizeDraft, setEditSizeDraft] = useState<{
+    productId: string;
+    rows: EcommerceProductSize[];
+  } | null>(null);
 
   const createForm = useForm<ProductForm>({
     resolver: zodResolver(productFormSchema),
@@ -336,14 +363,35 @@ export default function ProductsPage() {
     defaultValues: defaultFormValues,
   });
 
-  const editBasePrice = editProduct ? getEcommerceDisplayPrice(editProduct) : 0;
-  const { data: loadedEditSizes } = useProductSizes(editProduct?.id ?? null, editBasePrice);
+  const {
+    data: loadedEditSizes,
+    isSuccess: editSizesLoaded,
+    isPending: editSizesPending,
+    isError: editSizesFailed,
+    error: editSizesError,
+  } = useProductSizes(editProduct?.id ?? null);
 
-  useEffect(() => {
-    if (loadedEditSizes) {
-      setEditSizeRows(loadedEditSizes);
+  const categoryLabelById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const category of categories ?? []) {
+      const label = getName(locale, category.name_en, category.name_ar).trim();
+      if (label && label !== category.id) map.set(category.id, label);
     }
-  }, [loadedEditSizes]);
+    return map;
+  }, [categories, locale]);
+
+  const resolveCategoryLabel = (categoryId: string) => categoryLabelById.get(categoryId) ?? null;
+
+  const embeddedEditSizes =
+    editProduct && Array.isArray(editProduct.product_sizes)
+      ? mergeSizeRows(editProduct.product_sizes)
+      : null;
+  const settledEditSizes = editSizesLoaded ? (loadedEditSizes ?? null) : null;
+  const editSizeRows =
+    editProduct && editSizeDraft?.productId === editProduct.id
+      ? editSizeDraft.rows
+      : (settledEditSizes ?? embeddedEditSizes);
+  const editSizesReady = Boolean(editProduct) && editSizesLoaded && editSizeRows != null;
 
   const filteredProducts = products?.filter((product) => {
     const matchesSearch =
@@ -401,9 +449,14 @@ export default function ProductsPage() {
   };
 
   const openEditDialog = (product: Product) => {
+    setEditSizeDraft(null);
     setEditProduct(product);
     editForm.reset(productToFormValues(product, isEcommerceStore));
-    setEditSizeRows(createDefaultSizeRows(getEcommerceDisplayPrice(product)));
+  };
+
+  const handleEditSizesChange = (rows: EcommerceProductSize[]) => {
+    if (!editProduct) return;
+    setEditSizeDraft({ productId: editProduct.id, rows });
   };
 
   const syncBasePricesFromSizes = async (productId: string, sizes: EcommerceProductSize[]) => {
@@ -511,14 +564,18 @@ export default function ProductsPage() {
         input: productFormToInput(data, isEcommerceStore),
       });
       if (hasDynamicProductSizes) {
-        try {
-          await saveProductSizes.mutateAsync({
-            productId: editProduct.id,
-            sizes: editSizeRows,
-          });
-          await syncBasePricesFromSizes(editProduct.id, editSizeRows);
-        } catch (err) {
-          toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+        if (!editSizesReady || !editSizeRows) {
+          if (editSizesFailed) toast.error(t('sizeSaveFailed'));
+        } else {
+          try {
+            await saveProductSizes.mutateAsync({
+              productId: editProduct.id,
+              sizes: editSizeRows,
+            });
+            await syncBasePricesFromSizes(editProduct.id, editSizeRows);
+          } catch (err) {
+            toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+          }
         }
       }
       setEditProduct(null);
@@ -537,6 +594,36 @@ export default function ProductsPage() {
           toast.error(error.message || 'Failed to update availability');
         },
       }
+    );
+  };
+
+  const renderEditSizes = (idPrefix: string) => {
+    if (!hasDynamicProductSizes) return null;
+    if (!editSizeRows) {
+      if (editSizesFailed) {
+        return (
+          <p className="text-destructive text-sm">
+            {editSizesError instanceof Error ? editSizesError.message : t('sizeSaveFailed')}
+          </p>
+        );
+      }
+      return <p className="text-muted-foreground text-sm">{tCommon('loading')}</p>;
+    }
+    return (
+      <div className="space-y-2">
+        {editSizesFailed ? (
+          <p className="text-destructive text-sm">
+            {editSizesError instanceof Error ? editSizesError.message : t('sizeSaveFailed')}
+          </p>
+        ) : null}
+        <ProductSizesEditor
+          rows={editSizeRows}
+          onChange={handleEditSizesChange}
+          currency={currency}
+          t={t}
+          idPrefix={idPrefix}
+        />
+      </div>
     );
   };
 
@@ -894,8 +981,11 @@ export default function ProductsPage() {
                   createForm.setValue('category_id', val ?? '', { shouldValidate: true })
                 }
               >
-                <SelectTrigger id="create-category">
-                  <SelectValue placeholder={t('selectCategory')} />
+                <SelectTrigger id="create-category" className="w-full">
+                  <CategorySelectValue
+                    placeholder={t('selectCategory')}
+                    labelFor={resolveCategoryLabel}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
@@ -905,6 +995,12 @@ export default function ProductsPage() {
                   ))}
                 </SelectContent>
               </Select>
+              {categoriesError ? (
+                <p className="text-destructive text-sm">{categoriesError.message}</p>
+              ) : null}
+              {!categoriesLoading && !categoriesError && categories?.length === 0 ? (
+                <p className="text-muted-foreground text-sm">{t('selectCategory')}</p>
+              ) : null}
               {createForm.formState.errors.category_id && (
                 <p className="text-destructive text-sm">
                   {createForm.formState.errors.category_id.message}
@@ -1034,7 +1130,10 @@ export default function ProductsPage() {
       <Dialog
         open={!!editProduct}
         onOpenChange={(open) => {
-          if (!open) setEditProduct(null);
+          if (!open) {
+            setEditProduct(null);
+            setEditSizeDraft(null);
+          }
         }}
       >
         <DialogContent className="max-h-[90vh] max-w-full overflow-y-auto sm:max-w-lg">
@@ -1090,8 +1189,11 @@ export default function ProductsPage() {
                   editForm.setValue('category_id', val ?? '', { shouldValidate: true })
                 }
               >
-                <SelectTrigger id="edit-category">
-                  <SelectValue />
+                <SelectTrigger id="edit-category" className="w-full">
+                  <CategorySelectValue
+                    placeholder={t('selectCategory')}
+                    labelFor={resolveCategoryLabel}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((c) => (
@@ -1101,6 +1203,12 @@ export default function ProductsPage() {
                   ))}
                 </SelectContent>
               </Select>
+              {categoriesError ? (
+                <p className="text-destructive text-sm">{categoriesError.message}</p>
+              ) : null}
+              {!categoriesLoading && !categoriesError && categories?.length === 0 ? (
+                <p className="text-muted-foreground text-sm">{t('selectCategory')}</p>
+              ) : null}
               {editForm.formState.errors.category_id && (
                 <p className="text-destructive text-sm">
                   {editForm.formState.errors.category_id.message}
@@ -1125,15 +1233,7 @@ export default function ProductsPage() {
                     </p>
                   )}
                 </div>
-                {hasDynamicProductSizes ? (
-                  <ProductSizesEditor
-                    rows={editSizeRows}
-                    onChange={setEditSizeRows}
-                    currency={currency}
-                    t={t}
-                    idPrefix="edit"
-                  />
-                ) : null}
+                {renderEditSizes('edit')}
               </>
             ) : (
               <>
@@ -1143,15 +1243,7 @@ export default function ProductsPage() {
                   idPrefix="edit"
                   t={t}
                 />
-                {hasDynamicProductSizes ? (
-                  <ProductSizesEditor
-                    rows={editSizeRows}
-                    onChange={setEditSizeRows}
-                    currency={currency}
-                    t={t}
-                    idPrefix="edit"
-                  />
-                ) : null}
+                {renderEditSizes('edit')}
               </>
             )}
             <div className="grid grid-cols-2 gap-4">
@@ -1211,8 +1303,18 @@ export default function ProductsPage() {
               <Button type="button" variant="outline" onClick={() => setEditProduct(null)}>
                 {tCommon('cancel')}
               </Button>
-              <Button type="submit" disabled={updateProduct.isPending || uploading}>
-                {updateProduct.isPending ? tCommon('saving') : tCommon('saveChanges')}
+              <Button
+                type="submit"
+                disabled={
+                  updateProduct.isPending ||
+                  uploading ||
+                  saveProductSizes.isPending ||
+                  (hasDynamicProductSizes && editSizesPending)
+                }
+              >
+                {updateProduct.isPending || saveProductSizes.isPending
+                  ? tCommon('saving')
+                  : tCommon('saveChanges')}
               </Button>
             </DialogFooter>
           </form>

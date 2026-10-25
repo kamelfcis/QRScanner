@@ -640,6 +640,7 @@
     "description": "Live keukenbord. Nieuwe tickets verschijnen zonder te vernieuwen.",
     "liveEyebrow": "Keukenbord",
     "liveNow": "Live",
+    "liveRefreshHint": "Vernieuwt zichzelf elke {seconds} seconden",
     "todayOrders": "{count, plural, one {# bestelling} other {# bestellingen}}",
     "todayRevenue": "{amount}",
     "awaitingAck": "Wacht op bevestiging",

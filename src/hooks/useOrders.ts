@@ -41,10 +41,22 @@ function isMissingOrdersTable(error: { code?: string; message?: string } | null)
   return /Could not find the table 'public\.orders'/.test(error.message ?? '');
 }
 
-export function useOrders() {
+const ORDERS_POLL_MS = 5000;
+/** Orders board only. Other screens keep the slower poll. */
+export const ORDERS_BOARD_POLL_MS = 3000;
+
+type UseOrdersOptions = {
+  /** Faster polling while the orders board is mounted. Ignored when realtime is on. */
+  pollIntervalMs?: number;
+};
+
+export function useOrders(options: UseOrdersOptions = {}) {
   const adminReady = useAdminQueryEnabled();
   const { data: features } = useFeatureSettings();
   const enabled = adminReady && features?.dashboard_orders === true;
+  const pollMs = options.pollIntervalMs ?? ORDERS_POLL_MS;
+  const polling = enabled && !isSupabaseRealtimeEnabled();
+  const boardMounted = polling && options.pollIntervalMs === ORDERS_BOARD_POLL_MS;
 
   return useQuery({
     queryKey: orderKeys.lists(),
@@ -62,8 +74,9 @@ export function useOrders() {
       }
       return asOrders(data as Array<Order & { order_items?: RawOrderItem[] }>);
     },
-    staleTime: 5 * 1000,
-    refetchInterval: enabled && !isSupabaseRealtimeEnabled() ? 5000 : false,
+    staleTime: 2 * 1000,
+    refetchInterval: polling ? pollMs : false,
+    refetchIntervalInBackground: boardMounted,
   });
 }
 

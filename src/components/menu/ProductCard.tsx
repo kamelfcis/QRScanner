@@ -24,7 +24,12 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
-import { getSizePriceRange, requiresSizeSelection } from '@/lib/catalog/ecommerce-sizes';
+import {
+  getEnabledSizes,
+  getSizeLabel,
+  getSizePriceRange,
+  requiresSizeSelection,
+} from '@/lib/catalog/ecommerce-sizes';
 import { hasDynamicProductSizes } from '@/i18n/config';
 import { showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
@@ -66,6 +71,7 @@ export function ProductCard({
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const weighted = hasWeightOptions(product);
   const productSizes = product.product_sizes ?? null;
+  const enabledSizes = hasDynamicProductSizes ? getEnabledSizes(productSizes) : [];
   const hasSizes = hasDynamicProductSizes && requiresSizeSelection(productSizes);
   const sizeRange = getSizePriceRange(productSizes);
   const fromPrice = minWeightPrice(product) ?? sizeRange?.min ?? null;
@@ -233,6 +239,24 @@ export function ProductCard({
                     })
                   : formatCurrencyAmount(activePrice, currency, { locale: currencyLocale })}
               </p>
+              {hasSizes ? (
+                <ul className="mt-1 space-y-0.5" aria-label={t('selectSize')}>
+                  {enabledSizes.map((size) => (
+                    <li
+                      key={size.code}
+                      className="flex items-baseline justify-between gap-2 text-[11px] text-[var(--menu-ink-soft)]"
+                    >
+                      <span className="truncate">{getSizeLabel(size, locale)}</span>
+                      <span
+                        className="shrink-0 font-medium tabular-nums text-[var(--menu-wine)]"
+                        dir="ltr"
+                      >
+                        {formatCurrencyAmount(size.price, currency, { locale: currencyLocale })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
               {showDiningModeToggle && !weighted && otherPrice !== activePrice && (
                 <p className="mt-0.5 hidden text-[10.5px] tabular-nums text-[var(--menu-ink-soft)] sm:block">
                   {diningMode === 'dining' ? tCart('takeawayPrice') : tCart('diningPrice')}:{' '}
@@ -247,10 +271,10 @@ export function ProductCard({
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                 animate={pulse && !prefersReducedMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                onPointerDown={weighted ? undefined : startLongPress}
-                onPointerUp={weighted ? undefined : clearLongPress}
-                onPointerLeave={weighted ? undefined : clearLongPress}
-                onPointerCancel={weighted ? undefined : clearLongPress}
+                onPointerDown={weighted || hasSizes ? undefined : startLongPress}
+                onPointerUp={weighted || hasSizes ? undefined : clearLongPress}
+                onPointerLeave={weighted || hasSizes ? undefined : clearLongPress}
+                onPointerCancel={weighted || hasSizes ? undefined : clearLongPress}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleMobileAddClick();
@@ -267,7 +291,7 @@ export function ProductCard({
           {product.is_available && (
             <div className="mt-3 hidden flex-col gap-1.5 sm:flex">
               <div className="flex items-stretch gap-2">
-                {!weighted && (
+                {!weighted && !hasSizes && (
                   <div
                     className="inline-flex h-10 shrink-0 items-stretch overflow-hidden rounded-full border border-[var(--menu-line-strong)] bg-[var(--menu-surface)]"
                     role="group"
@@ -308,17 +332,19 @@ export function ProductCard({
                   <Button
                     type="button"
                     className="h-10 w-full rounded-full bg-[var(--menu-wine)] text-[13px] font-medium text-[#FDF7F0] hover:bg-[var(--menu-wine-deep)]"
-                    onClick={() => (weighted ? onImageClick(product) : handleAdd(''))}
-                    data-testid={weighted ? 'open-product-sheet' : 'add-to-cart'}
-                    aria-label={weighted ? t('selectWeight') : tCart('addToCart')}
+                    onClick={() => (weighted || hasSizes ? onImageClick(product) : handleAdd(''))}
+                    data-testid={weighted || hasSizes ? 'open-product-sheet' : 'add-to-cart'}
+                    aria-label={
+                      weighted ? t('selectWeight') : hasSizes ? t('selectSize') : tCart('addToCart')
+                    }
                   >
                     <ShoppingCart className="me-1.5 h-3.5 w-3.5" aria-hidden="true" />
-                    {weighted ? t('selectWeight') : tCart('addToCart')}
+                    {weighted ? t('selectWeight') : hasSizes ? t('selectSize') : tCart('addToCart')}
                   </Button>
                 </motion.div>
               </div>
 
-              {!weighted && (
+              {!weighted && !hasSizes && (
                 <button
                   type="button"
                   className="self-start text-[11px] text-[var(--menu-ink-soft)] underline-offset-4 transition-colors hover:text-[var(--menu-ink)] hover:underline"

@@ -673,6 +673,7 @@
     "description": "Live kitchen board. New tickets appear without refresh.",
     "liveEyebrow": "Kitchen board",
     "liveNow": "Live",
+    "liveRefreshHint": "Refreshes itself every {seconds} seconds",
     "todayOrders": "{count, plural, one {# order} other {# orders}}",
     "todayRevenue": "{amount}",
     "awaitingAck": "Awaiting review",

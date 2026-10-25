@@ -45,5 +45,5 @@ export function stripUnsupportedProductWriteFields(
 
 export const categoryRelationNameFields = 'id, name_ar, name_en';
 
-export const CATALOG_STALE_TIME = 5 * 60 * 1000; // 5 minutes for public catalog
+export const CATALOG_STALE_TIME = 30 * 1000; // 30s — admin saves show after refresh/focus
 export const CATALOG_GC_TIME = 30 * 60 * 1000;

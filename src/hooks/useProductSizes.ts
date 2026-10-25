@@ -13,7 +13,7 @@ export const productSizeKeys = {
   detail: (productId: string) => [...productSizeKeys.all, productId] as const,
 };
 
-export function useProductSizes(productId: string | null, basePrice = 0) {
+export function useProductSizes(productId: string | null) {
   return useQuery({
     queryKey: productSizeKeys.detail(productId ?? ''),
     enabled: Boolean(productId),
@@ -25,7 +25,7 @@ export function useProductSizes(productId: string | null, basePrice = 0) {
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      return mergeSizeRows((data ?? []) as EcommerceProductSize[], basePrice);
+      return mergeSizeRows((data ?? []) as EcommerceProductSize[]);
     },
   });
 }

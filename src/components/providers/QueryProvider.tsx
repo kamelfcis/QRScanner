@@ -10,7 +10,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: CATALOG_STALE_TIME, // 5 min — better for public catalog CWV
+            staleTime: CATALOG_STALE_TIME,
             gcTime: 30 * 60 * 1000,
             refetchOnWindowFocus: false,
             retry: 1,

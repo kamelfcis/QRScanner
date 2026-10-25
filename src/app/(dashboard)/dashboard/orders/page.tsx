@@ -18,6 +18,7 @@ import {
   useMarkOrderWhatsAppSent,
   useOrders,
   useUpdateOrderStatus,
+  ORDERS_BOARD_POLL_MS,
 } from '@/hooks/useOrders';
 import { useOrderAlerts } from '@/hooks/useOrderAlerts';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
@@ -42,6 +43,7 @@ import {
   COLUMN_TONE,
   COLUMN_TONE_POS,
 } from '@/components/dashboard/orders/column-tone';
+import { isSupabaseRealtimeEnabled } from '@/lib/supabase/realtime';
 import { hasDailyOps } from '@/i18n/config';
 import { useStaffRole } from '@/hooks/useStaffRole';
 import { canHardDeleteOrders } from '@/lib/staff/roles';
@@ -70,7 +72,13 @@ export default function OrdersPage() {
   const { unacknowledged, soundBlocked, enableSound, prefersReducedMotion } = useOrderAlerts();
   const { data: features, isLoading: featuresLoading } = useFeatureSettings();
   const { data: settings } = useRestaurantSettings();
-  const { data: orders, isLoading, error, refetch } = useOrders();
+  const ordersAutoRefresh = !isSupabaseRealtimeEnabled();
+  const {
+    data: orders,
+    isLoading,
+    error,
+    refetch,
+  } = useOrders(ordersAutoRefresh ? { pollIntervalMs: ORDERS_BOARD_POLL_MS } : {});
   const updateStatus = useUpdateOrderStatus();
   const acknowledgeOrder = useAcknowledgeOrder();
   const markWhatsApp = useMarkOrderWhatsAppSent();
@@ -350,6 +358,7 @@ export default function OrdersPage() {
         onCleanup={allowHardDelete ? () => setCleanupOpen(true) : undefined}
         onNewStaffOrder={() => setComposerOpen(true)}
         compact={hasDailyOps}
+        autoRefreshSeconds={ordersAutoRefresh ? ORDERS_BOARD_POLL_MS / 1000 : undefined}
       />
 
       {tab === 'cancelled' ? (

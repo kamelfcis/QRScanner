@@ -27,6 +27,7 @@ export function useCategories() {
     },
     staleTime: CATALOG_STALE_TIME,
     gcTime: CATALOG_GC_TIME,
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -64,6 +65,8 @@ export function useCategoriesWithProducts() {
     queryFn: () => fetchCategoriesWithProducts(supabase),
     staleTime: CATALOG_STALE_TIME,
     gcTime: CATALOG_GC_TIME,
+    refetchOnWindowFocus: 'always',
+    refetchOnMount: 'always',
   });
 }
 
