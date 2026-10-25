@@ -2,7 +2,7 @@ import type { RestaurantSettings, ThemeSettings } from '@/types';
 import { loginThemes } from './themes';
 import type { LoginBrandConfig, LoginTenantId } from './types';
 
-const TENANT_IDS: readonly LoginTenantId[] = ['harameen', 'aklet', 'warda'];
+const TENANT_IDS: readonly LoginTenantId[] = ['harameen', 'aklet', 'warda', 'makhboz'];
 
 const HEX_COLOR = /^#[0-9A-Fa-f]{6}$/;
 
@@ -45,11 +45,12 @@ export function resolveLoginTenant(): LoginTenantId {
     .join(' ')
     .toLowerCase();
 
+  if (/makhboz|مخبوز/.test(haystack)) return 'makhboz';
   if (/aklet|أكلة|akla|gambary|gambari/.test(haystack)) return 'aklet';
   if (/warda|وردة|shamya|شامية/.test(haystack)) return 'warda';
   if (/harameen|الحرمين/.test(haystack)) return 'harameen';
 
-  return 'harameen';
+  return 'makhboz';
 }
 
 function resolveHeroImageUrl(

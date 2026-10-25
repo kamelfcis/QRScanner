@@ -69,7 +69,7 @@ export const OSTOL_LINKS_QR_TEMPLATE = 'ostolSeafood';
 export const OSTOL_QR_TEMPLATES: Record<string, QRTemplate> = {
   [OSTOL_LINKS_QR_TEMPLATE]: {
     name: OSTOL_LINKS_QR_TEMPLATE,
-    label: 'Ostol Seafood',
+    label: 'مخبوز',
     primaryColor: '#2DD4BF',
     secondaryColor: '#0B3A42',
     bgColor: '#07141F',

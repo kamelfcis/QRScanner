@@ -6,6 +6,26 @@ import type { LoginBrandConfig, LoginTenantId } from './types';
  * No stock photography -- Harameen/Aklet stay CSS panels unless a real upload exists.
  */
 export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
+  makhboz: {
+    tenantId: 'makhboz',
+    nameAr: 'مخبوز',
+    nameEn: 'Makhboz',
+    taglineAr: 'مخبوز',
+    taglineEn: 'Makhboz',
+    logoUrl: null,
+    heroImageUrl: null,
+    tokens: {
+      primary: '#8C4A2F',
+      accent: '#C47B4A',
+      background: '#F6F1E8',
+      surface: '#FFFCF7',
+      foreground: '#1A2226',
+      muted: '#5C676E',
+      border: '#DDD4C6',
+      panelBackground: '#3E2418',
+      panelForeground: '#F4EFE6',
+    },
+  },
   harameen: {
     tenantId: 'harameen',
     nameAr: 'سوق الجملة شركة الحرمين',

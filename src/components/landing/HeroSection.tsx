@@ -14,7 +14,6 @@ import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
 import { cn, getName } from '@/lib/utils';
 import { getMenuEntryPath } from '@/lib/store-config';
 
-const DEFAULT_HERO = '/hero/warda-storefront.jpg';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -43,7 +42,7 @@ export function HeroSection() {
 
   const featuredImages = gallery?.filter((item) => item.is_featured && item.image_url) || [];
   const hasCarousel = featuredImages.length > 0;
-  const heroImage = settings?.hero_image_url || DEFAULT_HERO;
+  const heroImage = settings?.hero_image_url?.trim() || '';
 
   const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
   const heroAriaLabel = `${t('heroWelcome')} ${name}`;
@@ -127,7 +126,7 @@ export function HeroSection() {
               />
             </motion.div>
           </AnimatePresence>
-        ) : (
+        ) : heroImage ? (
           <NextImage
             src={heroImage}
             alt={name}
@@ -136,6 +135,8 @@ export function HeroSection() {
             sizes="100%"
             className="object-cover object-center"
           />
+        ) : (
+          <div className="absolute inset-0 bg-[#1c1410]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/45" />
       </div>

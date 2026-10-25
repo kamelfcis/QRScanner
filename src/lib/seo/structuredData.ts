@@ -2,7 +2,7 @@ import type { RestaurantSettings } from '@/types/database';
 import { defaultLocale, type Locale } from '@/i18n/config';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Store';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'مخبوز';
 
 export function generateRestaurantSchema(
   settings?: RestaurantSettings | null,

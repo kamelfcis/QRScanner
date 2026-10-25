@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "MAZEN STORE",
+    "appName": "مخبوز",
     "loading": "Laden…",
     "saving": "Opslaan…",
     "save": "Opslaan",
@@ -90,13 +90,13 @@
     "coupons": "Coupons"
   },
   "landing": {
-    "heroTitle": "MAZEN STORE",
+    "heroTitle": "مخبوز",
     "heroWelcome": "Welkom bij",
     "heroSubtitle": "Premium portemonnees en accessoires — luxe voor elke dag",
     "viewMenu": "Shop bekijken",
     "ourStory": "Ons verhaal",
     "storyTitle": "Ons verhaal",
-    "storyP1": "MAZEN STORE biedt premium portemonnees en accessoires voor liefhebbers van verfijnd vakmanschap.",
+    "storyP1": "مخبوز biedt premium portemonnees en accessoires voor liefhebbers van verfijnd vakmanschap.",
     "storyP2": "Elk item in onze collectie is geselecteerd op materiaalkwaliteit en tijdloos design.",
     "signatureDishes": "Uitgelichte portemonnees",
     "signatureDishesSubtitle": "Ontdek onze populairste portemonnees en accessoires.",
@@ -406,7 +406,7 @@
     "removeStoryImage": "Verwijderen story image",
     "storyUploadFailed": "Failed to upload story image",
     "headline": "Headline",
-    "headlinePlaceholder": "e.g. Welkom to MAZEN STORE",
+    "headlinePlaceholder": "e.g. Welkom to مخبوز",
     "subtitle": "Subtitle",
     "subtitlePlaceholder": "e.g. A culinary journey...",
     "contactInfo": "Contact Information",
@@ -1423,7 +1423,7 @@
   "welcome": {
     "welcomeTo": "Welkom bij {name}",
     "chooseOrderType": "Kies uw besteltype",
-    "title": "Welkom bij MAZEN STORE",
+    "title": "Welkom bij مخبوز",
     "subtitle": "Kies uw besteltype",
     "dineIn": "Ter plaatse",
     "dineInEn": "Ter plaatse",

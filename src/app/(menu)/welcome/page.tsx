@@ -29,8 +29,6 @@ import {
   tapScale,
 } from '@/lib/motion';
 
-const WELCOME_HERO = '/hero/warda-storefront.jpg';
-
 export default function WelcomePage() {
   return (
     <Suspense fallback={<WelcomeSkeleton />}>
@@ -110,14 +108,18 @@ function WelcomeContent() {
               : { duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }
           }
         >
-          <NextImage
-            src={WELCOME_HERO}
-            alt={safeFormatMessage(t, 'heroAlt', { name: restaurantName })}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
+          {settings?.hero_image_url ? (
+            <NextImage
+              src={settings.hero_image_url}
+              alt={safeFormatMessage(t, 'heroAlt', { name: restaurantName })}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[#1c1410]" />
+          )}
         </motion.div>
 
         {/* Layered overlays for readability + night-kitchen mood */}

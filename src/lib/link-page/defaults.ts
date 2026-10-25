@@ -1,9 +1,6 @@
 import type { LinkPageLinkItem, LinkPageSettings } from '@/types';
 
-const OSTOL_FACEBOOK = 'https://www.facebook.com/share/18yJx3VgWC/';
-const OSTOL_INSTAGRAM = 'https://www.instagram.com/as.seafood/';
-const OSTOL_TIKTOK = 'https://www.tiktok.com/@as.seafood';
-const OSTOL_PHONE = '01127244074';
+const EMPTY = '';
 
 function linkItem(overrides: Partial<LinkPageLinkItem> & { enabled: boolean }): LinkPageLinkItem {
   return { enabled: overrides.enabled, url: overrides.url, value: overrides.value };
@@ -12,10 +9,10 @@ function linkItem(overrides: Partial<LinkPageLinkItem> & { enabled: boolean }): 
 export function getDefaultLinkPageSettings(): LinkPageSettings {
   return {
     enabled: true,
-    title_ar: 'أسطول سي فود',
-    title_en: 'Ostol Seafood',
-    subtitle_ar: 'تابعنا وتواصل معنا',
-    subtitle_en: 'Follow us & get in touch',
+    title_ar: 'مخبوز',
+    title_en: 'Makhboz',
+    subtitle_ar: 'تصفّح القائمة',
+    subtitle_en: 'Browse the menu',
     background: '#0a1628',
     button_color: '#1E3A5F',
     button_radius: 'pill',
@@ -24,11 +21,11 @@ export function getDefaultLinkPageSettings(): LinkPageSettings {
     overlay_strength: 'medium',
     motion_enabled: true,
     links: {
-      facebook: linkItem({ enabled: true, url: OSTOL_FACEBOOK }),
-      instagram: linkItem({ enabled: true, url: OSTOL_INSTAGRAM }),
-      tiktok: linkItem({ enabled: true, url: OSTOL_TIKTOK }),
-      phone: linkItem({ enabled: true, value: OSTOL_PHONE }),
-      whatsapp: linkItem({ enabled: false, value: OSTOL_PHONE }),
+      facebook: linkItem({ enabled: false, url: EMPTY }),
+      instagram: linkItem({ enabled: false, url: EMPTY }),
+      tiktok: linkItem({ enabled: false, url: EMPTY }),
+      phone: linkItem({ enabled: false, value: EMPTY }),
+      whatsapp: linkItem({ enabled: false, value: EMPTY }),
       menu: linkItem({ enabled: true }),
     },
   };
