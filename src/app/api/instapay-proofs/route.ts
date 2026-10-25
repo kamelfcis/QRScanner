@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { isValidInstapayReference, normalizeInstapayReference } from '@/lib/payment/instapay-proof';
+import { getStoragePublicUrl } from '@/lib/storage-public-url';
 import { ImageValidationError, validateImageFile } from '@/lib/upload-validation';
 
 const BUCKET = 'instapay-proofs';
@@ -104,8 +105,7 @@ export async function POST(request: Request) {
           { status: 500 }
         );
       }
-      const { data: urlData } = admin.storage.from(BUCKET).getPublicUrl(path);
-      screenshotUrl = urlData.publicUrl;
+      screenshotUrl = getStoragePublicUrl(BUCKET, path);
       storedPath = path;
     }
 

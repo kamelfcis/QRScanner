@@ -179,11 +179,17 @@ const upload = await fetch(`${base}/storage/v1/object/products/contract-test.png
 });
 const uploadJson = await upload.json().catch(() => null);
 const uploaded = await fetch(`${base}/storage/v1/object/public/products/contract-test.png`);
+const cdnBase = (process.env.STORAGE_PUBLIC_URL || process.env.R2_PUBLIC_BASE_URL || '').replace(/\/$/, '');
+const cdnUrl = cdnBase ? `${cdnBase}/products/contract-test.png` : '';
+const cdnStatus = cdnUrl ? (await fetch(cdnUrl)).status : null;
 record(
   'storage upload',
   upload.status === 200 && uploadJson?.Key === 'products/contract-test.png' && uploaded.status === 200,
-  `upload=${upload.status} public=${uploaded.status}`
+  `upload=${upload.status} public=${uploaded.status}${cdnStatus ? ` cdn=${cdnStatus}` : ''}`
 );
+if (cdnUrl) {
+  record('cdn public url', cdnStatus === 200, cdnUrl.slice(0, 80));
+}
 
 const anonUpload = await fetch(`${base}/storage/v1/object/products/anon.png`, {
   method: 'POST',
@@ -196,7 +202,9 @@ const oldHost = await request('/rest/v1/settings?key=eq.restaurant&select=value'
 const logo = oldHost.json?.[0]?.value?.logo_url || '';
 record(
   'rewritten storage url',
-  logo.startsWith(base) || logo.includes('api.mazen-store.engazqr.com'),
+  logo.includes('r2.dev/') ||
+    logo.startsWith(base) ||
+    logo.includes('api.mazen-store.engazqr.com'),
   logo.slice(0, 80)
 );
 

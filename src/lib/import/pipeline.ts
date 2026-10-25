@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client';
+import { getStoragePublicUrl } from '@/lib/storage-public-url';
 import type { TextExtractionResult } from './text-extraction';
 import type { ImportJob, ImportExtractedData } from '@/types/database';
 import type { StorageBucket } from '@/lib/upload';
@@ -20,16 +21,12 @@ export async function startImportPipeline(file: File): Promise<ImportJob> {
 
   if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`);
 
-  const { data: urlData } = supabase.storage
-    .from('imports' as StorageBucket)
-    .getPublicUrl(filePath);
-
   const { data: job, error: jobError } = await supabase
     .from('import_jobs')
     .insert({
       status: 'processing',
       file_name: file.name,
-      file_url: urlData.publicUrl,
+      file_url: getStoragePublicUrl('imports', filePath),
       file_type: fileType,
       file_size: file.size,
     })

@@ -1,6 +1,7 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
+import { getStoragePublicUrl } from '@/lib/storage-public-url';
 import { validateImageFile } from '@/lib/upload-validation';
 
 export {
@@ -43,8 +44,7 @@ export async function uploadImage({ bucket, path, file }: UploadOptions): Promis
 
   if (error) throw new Error(error.message);
 
-  const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
-  return { url: urlData.publicUrl, path: data.path };
+  return { url: getStoragePublicUrl(bucket, data.path), path: data.path };
 }
 
 export async function deleteImage(bucket: StorageBucket, path: string): Promise<void> {
@@ -64,8 +64,7 @@ export async function replaceImage({ bucket, path, file }: UploadOptions): Promi
 
   if (error) throw new Error(error.message);
 
-  const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
-  return { url: urlData.publicUrl, path: data.path };
+  return { url: getStoragePublicUrl(bucket, data.path), path: data.path };
 }
 
 export function generateStoragePath(bucket: StorageBucket, filename: string): string {
@@ -109,14 +108,11 @@ export async function listStorageImages(
   const hasMore = files.length > limit;
   const page = hasMore ? files.slice(0, limit) : files;
 
-  const items = page.map((file) => {
-    const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(file.name);
-    return {
-      name: file.name,
-      url: urlData.publicUrl,
-      createdAt: file.created_at ?? null,
-    };
-  });
+  const items = page.map((file) => ({
+    name: file.name,
+    url: getStoragePublicUrl(bucket, file.name),
+    createdAt: file.created_at ?? null,
+  }));
 
   return { items, hasMore };
 }

@@ -19,6 +19,21 @@ const nextConfig: NextConfig = {
         hostname: '*.supabase.in',
         pathname: '/storage/v1/object/public/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.mazen-store.engazqr.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.mazen-store.engazqr.com',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.r2.dev',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },

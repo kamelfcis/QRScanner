@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { extensionForMime, type GeneratedImageBytes } from '@/lib/ai/product-image';
+import { getStoragePublicUrl } from '@/lib/storage-public-url';
 
 const PRODUCTS_BUCKET = 'products';
 
@@ -18,8 +19,7 @@ export async function uploadImageToProductsBucket(
   if (error) {
     throw new Error(error.message);
   }
-  const { data: urlData } = supabase.storage.from(PRODUCTS_BUCKET).getPublicUrl(data.path);
-  return { path: data.path, url: urlData.publicUrl };
+  return { path: data.path, url: getStoragePublicUrl(PRODUCTS_BUCKET, data.path) };
 }
 
 export async function uploadAiCandidates(
