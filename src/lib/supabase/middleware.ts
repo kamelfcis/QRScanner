@@ -32,10 +32,16 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refresh session — important for Server Components
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Refresh session — important for Server Components.
+  // Cap wait time so a dead Supabase proxy cannot hang Edge middleware (504).
+  const getUserResult = await Promise.race([
+    supabase.auth.getUser(),
+    new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('supabase auth timeout')), 8_000);
+    }),
+  ]).catch(() => ({ data: { user: null }, error: null }));
+
+  const user = getUserResult.data?.user ?? null;
 
   return { supabaseResponse, user };
 }

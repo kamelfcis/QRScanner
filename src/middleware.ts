@@ -9,10 +9,18 @@ import {
 } from '@/lib/store-config';
 import { LINK_PAGE_DASHBOARD_PATH, showLinkPage } from '@/lib/tenant-config';
 
+function needsAuthSession(pathname: string): boolean {
+  return (
+    pathname.startsWith('/dashboard') || pathname.startsWith('/kitchen') || pathname === '/login'
+  );
+}
+
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, user } = await updateSession(request);
-  const response = supabaseResponse;
   const { pathname } = request.nextUrl;
+  const { supabaseResponse, user } = needsAuthSession(pathname)
+    ? await updateSession(request)
+    : { supabaseResponse: NextResponse.next({ request }), user: null };
+  const response = supabaseResponse;
 
   // Locale detection / persistence
   const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
