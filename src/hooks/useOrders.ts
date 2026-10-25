@@ -4,7 +4,9 @@ import { useCallback, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
+import { isSupabaseRealtimeEnabled } from '@/lib/supabase/realtime';
 import { useAdminQueryEnabled } from './useAdminQueryEnabled';
+import { useFeatureSettings } from './useSettings';
 import { salesReportKeys } from './useSalesReport';
 import { rangeUpperExclusive, toRangeBounds } from '@/lib/order/delete-range';
 import type { Order, OrderItem, OrderStatus, OrderWithItems } from '@/types/database';
@@ -33,8 +35,16 @@ function asOrders(rows: Array<Order & { order_items?: RawOrderItem[] }> | null):
   });
 }
 
+function isMissingOrdersTable(error: { code?: string; message?: string } | null) {
+  if (!error) return false;
+  if (error.code === 'PGRST205') return true;
+  return /Could not find the table 'public\.orders'/.test(error.message ?? '');
+}
+
 export function useOrders() {
-  const enabled = useAdminQueryEnabled();
+  const adminReady = useAdminQueryEnabled();
+  const { data: features } = useFeatureSettings();
+  const enabled = adminReady && features?.dashboard_orders === true;
 
   return useQuery({
     queryKey: orderKeys.lists(),
@@ -46,10 +56,14 @@ export function useOrders() {
         .select('*, order_items(*, products(image_url))')
         .order('created_at', { ascending: false })
         .limit(200);
-      if (error) throw error;
+      if (error) {
+        if (isMissingOrdersTable(error)) return [];
+        throw error;
+      }
       return asOrders(data as Array<Order & { order_items?: RawOrderItem[] }>);
     },
     staleTime: 5 * 1000,
+    refetchInterval: enabled && !isSupabaseRealtimeEnabled() ? 5000 : false,
   });
 }
 
@@ -69,7 +83,9 @@ function notifyOrderBoardListeners() {
 
 export function useRealtimeOrders() {
   const queryClient = useQueryClient();
-  const enabled = useAdminQueryEnabled();
+  const adminReady = useAdminQueryEnabled();
+  const { data: features } = useFeatureSettings();
+  const enabled = adminReady && features?.dashboard_orders === true && isSupabaseRealtimeEnabled();
 
   const invalidate = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: orderKeys.all });
@@ -110,7 +126,7 @@ export function useRealtimeOrders() {
         orderBoardSubscription = null;
       }
     };
-  }, [enabled, invalidate]);
+  }, [enabled, invalidate, features?.dashboard_orders]);
 }
 
 export function useUpdateOrderStatus() {
