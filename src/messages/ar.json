@@ -1118,7 +1118,7 @@
     "diningPrice": "سعر المطاعم",
     "takeawayPrice": "سعر التيك أواي",
     "enableSizeOptions": "تفعيل أحجام (صغير / كبير)",
-    "sizeOptionsTitle": "خيارات الأحجام",
+    "sizeOptionsTitle": "تفعيل الأحجام",
     "sizeOptionsHint": "فعّل S/M/L/XL وحدّد سعراً لكل حجم. يجب على العميل اختيار حجم عند تفعيل أي منها.",
     "sizePreset": {
       "s": "صغير",

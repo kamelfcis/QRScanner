@@ -1,4 +1,5 @@
 import { isEcommerceStore } from '@/lib/store-config';
+import { isMakhbozHost } from '@/lib/tenant-config';
 
 export const locales = ['en', 'ar'] as const;
 export type Locale = (typeof locales)[number];
@@ -47,8 +48,17 @@ export const hasExtendedProductSizes = tenantId === 'ala-keefak';
 /** Per-kg gram picker on restaurant menus. Ecommerce keeps a single price. */
 export const hasProductWeightOptions = !isEcommerceStore;
 
+function isMakhbozTenant(): boolean {
+  if (tenantId === 'makhboz') return true;
+  if (isMakhbozHost) return true;
+  if (typeof window !== 'undefined') {
+    return /makhboz\.engazqr\.com/i.test(window.location.hostname);
+  }
+  return false;
+}
+
 /** Per-size pricing (makhboz restaurant + ecommerce stores). */
-export const hasDynamicProductSizes = tenantId === 'makhboz' || isEcommerceStore;
+export const hasDynamicProductSizes = isMakhbozTenant() || isEcommerceStore;
 
 export const isAlaKeefakTenant = tenantId === 'ala-keefak';
 
