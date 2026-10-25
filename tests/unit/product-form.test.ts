@@ -106,6 +106,8 @@ describe('product-form (restaurant)', () => {
     const input = productFormToInput(validRestaurantForm, false);
     expect(input.dining_price).toBe(25);
     expect(input.takeaway_price).toBe(22);
+    expect(input.price_per_kg).toBeUndefined();
+    expect(input.weight_options_g).toBeUndefined();
   });
 
   it('returns default restaurant form with both price fields', () => {

@@ -2,6 +2,7 @@ import { calculateOrderTotals, getCartLineUnitPrice, type OrderTotals } from './
 import { getRestaurantCurrency } from './format-currency';
 import { buildWhatsAppMessage, type MessageLocale } from './whatsapp-message';
 import { getLocalizedText } from '@/lib/utils';
+import { getSizeLabel as getEcommerceSizeLabel } from '@/lib/catalog/ecommerce-sizes';
 import { getSizeLabel, type ProductSizeId } from '@/lib/catalog/product-sizes';
 import type { Order, OrderItem } from '@/types/database';
 import { buildWhatsAppUrl } from './whatsapp-url';
@@ -50,17 +51,19 @@ export function buildOrderPayload(input: BuildOrderInput): BuiltOrder {
   const currency = getRestaurantCurrency(input.settings.currency);
   const priced = input.items.map((item) => ({
     ...item,
-    unitPrice: getCartLineUnitPrice(
-      {
-        dining_price: item.dining_price,
-        takeaway_price: item.takeaway_price,
-        has_size_options: item.has_size_options ?? false,
-        sizeOption: item.sizeOption ?? null,
-        price_per_kg: item.price_per_kg,
-        weightGrams: item.weightGrams,
-      },
-      input.diningMode
-    ),
+    unitPrice:
+      item.selectedSize?.price ??
+      getCartLineUnitPrice(
+        {
+          dining_price: item.dining_price,
+          takeaway_price: item.takeaway_price,
+          has_size_options: item.has_size_options ?? false,
+          sizeOption: item.sizeOption ?? null,
+          price_per_kg: item.price_per_kg,
+          weightGrams: item.weightGrams,
+        },
+        input.diningMode
+      ),
     name: formatCartItemName(item, input.locale),
   }));
 
@@ -176,6 +179,10 @@ function formatWeightLabel(locale: MessageLocale, grams: number): string {
 
 function formatCartItemName(item: CartItem, locale: 'en' | 'ar'): string {
   const base = locale === 'ar' ? item.name_ar || item.name_en : item.name_en;
+  if (item.selectedSize) {
+    const sizeLabel = getEcommerceSizeLabel(item.selectedSize, locale);
+    return `${base} (${sizeLabel})`;
+  }
   if (item.weightGrams != null) {
     return `${base} (${formatWeightLabel(locale, item.weightGrams)})`;
   }

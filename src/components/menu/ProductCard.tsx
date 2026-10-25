@@ -24,6 +24,8 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { hasWeightOptions, minWeightPrice } from '@/lib/order/weight-price';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { cn, getName } from '@/lib/utils';
+import { getSizePriceRange, requiresSizeSelection } from '@/lib/catalog/ecommerce-sizes';
+import { hasDynamicProductSizes } from '@/i18n/config';
 import { showDiningModeToggle } from '@/lib/store-config';
 import type { Product } from '@/types/database';
 
@@ -63,7 +65,10 @@ export function ProductCard({
   const currencyLocale = locale === 'ar' ? 'ar' : 'en';
   const maxNotes = settings?.max_order_notes_length ?? 200;
   const weighted = hasWeightOptions(product);
-  const fromPrice = minWeightPrice(product);
+  const productSizes = product.product_sizes ?? null;
+  const hasSizes = hasDynamicProductSizes && requiresSizeSelection(productSizes);
+  const sizeRange = getSizePriceRange(productSizes);
+  const fromPrice = minWeightPrice(product) ?? sizeRange?.min ?? null;
   const activePrice =
     fromPrice ?? (diningMode === 'dining' ? product.dining_price : product.takeaway_price);
   const otherPrice = diningMode === 'dining' ? product.takeaway_price : product.dining_price;
@@ -75,6 +80,10 @@ export function ProductCard({
 
   const handleAdd = (withNotes: string) => {
     if (!product.is_available) return;
+    if (hasSizes || weighted) {
+      onImageClick(product);
+      return;
+    }
     addItem({
       productId: product.id,
       name_en: product.name_en,
@@ -115,7 +124,7 @@ export function ProductCard({
       longPressFired.current = false;
       return;
     }
-    if (weighted) {
+    if (weighted || hasSizes) {
       onImageClick(product);
       return;
     }

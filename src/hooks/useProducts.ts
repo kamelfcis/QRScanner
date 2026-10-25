@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Product, ProductInput, ProductWithGallery } from '@/types';
 import { categoryKeys } from './useCategories';
+import { PRODUCT_SIZES_EMBED, stripUnsupportedProductWriteFields } from '@/lib/catalog/keys';
 
 const supabase = createClient();
 
@@ -30,7 +31,7 @@ export function useProducts(categoryId?: string) {
     queryFn: async () => {
       let query = supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(`*, category:categories(id, name_en, name_ar), ${PRODUCT_SIZES_EMBED}`)
         .order('sort_order', { ascending: true });
 
       if (categoryId) {
@@ -50,7 +51,7 @@ export function useAllProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*, category:categories(id, name_en, name_ar)')
+        .select(`*, category:categories(id, name_en, name_ar), ${PRODUCT_SIZES_EMBED}`)
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
@@ -70,6 +71,7 @@ export function useProduct(id: string) {
           *,
           category:categories(id, name_en, name_ar),
           subcategory:subcategories(id, name_en, name_ar),
+          ${PRODUCT_SIZES_EMBED},
           gallery:product_gallery(*)
         `
         )
@@ -148,7 +150,8 @@ export function useCreateProduct() {
 
   return useMutation({
     mutationFn: async (input: ProductInput) => {
-      const { data, error } = await supabase.from('products').insert(input).select().single();
+      const payload = stripUnsupportedProductWriteFields(input);
+      const { data, error } = await supabase.from('products').insert(payload).select().single();
 
       if (error) throw error;
       return data as Product;
@@ -165,9 +168,10 @@ export function useUpdateProduct() {
 
   return useMutation({
     mutationFn: async ({ id, input }: { id: string; input: Partial<ProductInput> }) => {
+      const payload = stripUnsupportedProductWriteFields(input);
       const { data, error } = await supabase
         .from('products')
-        .update(input)
+        .update(payload)
         .eq('id', id)
         .select()
         .single();

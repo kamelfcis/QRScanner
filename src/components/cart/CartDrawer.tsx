@@ -12,6 +12,7 @@ import { formatCurrencyAmount, getRestaurantCurrency } from '@/lib/order/format-
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
+import { getSizeLabel } from '@/lib/catalog/ecommerce-sizes';
 import { getName } from '@/lib/utils';
 import { trackCheckoutStart } from '@/lib/analytics';
 import { isEcommerceStore } from '@/lib/store-config';
@@ -46,17 +47,19 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
 
   const pricedItems = items.map((item) => ({
     ...item,
-    unitPrice: getCartLineUnitPrice(
-      {
-        dining_price: item.dining_price,
-        takeaway_price: item.takeaway_price,
-        has_size_options: item.has_size_options ?? false,
-        sizeOption: item.sizeOption ?? null,
-        price_per_kg: item.price_per_kg,
-        weightGrams: item.weightGrams,
-      },
-      diningMode
-    ),
+    unitPrice:
+      item.selectedSize?.price ??
+      getCartLineUnitPrice(
+        {
+          dining_price: item.dining_price,
+          takeaway_price: item.takeaway_price,
+          has_size_options: item.has_size_options ?? false,
+          sizeOption: item.sizeOption ?? null,
+          price_per_kg: item.price_per_kg,
+          weightGrams: item.weightGrams,
+        },
+        diningMode
+      ),
   }));
   const totals = calculateOrderTotals(
     pricedItems.map((i) => ({ quantity: i.quantity, unitPrice: i.unitPrice })),
@@ -152,6 +155,11 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                             <p className="truncate text-sm font-medium text-[var(--menu-ink)]">
                               {name}
                             </p>
+                            {item.selectedSize ? (
+                              <p className="text-xs text-[var(--menu-ink-soft)]">
+                                {getSizeLabel(item.selectedSize, locale)}
+                              </p>
+                            ) : null}
                             {item.weightGrams != null ? (
                               <p className="text-xs text-[var(--menu-ink-soft)]">
                                 {tMenu('grams', { grams: item.weightGrams })}

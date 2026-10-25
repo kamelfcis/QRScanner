@@ -1,0 +1,3 @@
+ALTER TABLE public.products
+  ADD COLUMN IF NOT EXISTS price_per_kg DECIMAL(10, 2) NULL,
+  ADD COLUMN IF NOT EXISTS weight_options_g INTEGER[] NULL;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -15,6 +15,12 @@ import {
   type RestaurantProductFormInput,
 } from '@/lib/catalog/product-form';
 import { isEcommerceStore } from '@/lib/store-config';
+import { hasDynamicProductSizes } from '@/i18n/config';
+import {
+  createDefaultSizeRows,
+  syncProductBasePricesFromSizes,
+  type EcommerceProductSize,
+} from '@/lib/catalog/ecommerce-sizes';
 import {
   useAllProducts,
   useCreateProduct,
@@ -22,6 +28,8 @@ import {
   useDeleteProduct,
   useToggleProductAvailability,
 } from '@/hooks/useProducts';
+import { useProductSizes, useSaveProductSizes } from '@/hooks/useProductSizes';
+import { ProductSizesEditor } from '@/components/dashboard/products/ProductSizesEditor';
 import { useAllCategories } from '@/hooks/useCategories';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { Button } from '@/components/ui/button';
@@ -313,6 +321,10 @@ export default function ProductsPage() {
   const updateProduct = useUpdateProduct();
   const createProduct = useCreateProduct();
   const toggleAvailability = useToggleProductAvailability();
+  const saveProductSizes = useSaveProductSizes();
+  const [createSizeRows, setCreateSizeRows] =
+    useState<EcommerceProductSize[]>(createDefaultSizeRows());
+  const [editSizeRows, setEditSizeRows] = useState<EcommerceProductSize[]>(createDefaultSizeRows());
 
   const createForm = useForm<ProductForm>({
     resolver: zodResolver(productFormSchema),
@@ -323,6 +335,15 @@ export default function ProductsPage() {
     resolver: zodResolver(productFormSchema),
     defaultValues: defaultFormValues,
   });
+
+  const editBasePrice = editProduct ? getEcommerceDisplayPrice(editProduct) : 0;
+  const { data: loadedEditSizes } = useProductSizes(editProduct?.id ?? null, editBasePrice);
+
+  useEffect(() => {
+    if (loadedEditSizes) {
+      setEditSizeRows(loadedEditSizes);
+    }
+  }, [loadedEditSizes]);
 
   const filteredProducts = products?.filter((product) => {
     const matchesSearch =
@@ -375,12 +396,20 @@ export default function ProductsPage() {
 
   const openCreateDialog = () => {
     createForm.reset(defaultFormValues);
+    setCreateSizeRows(createDefaultSizeRows());
     setShowCreateDialog(true);
   };
 
   const openEditDialog = (product: Product) => {
     setEditProduct(product);
     editForm.reset(productToFormValues(product, isEcommerceStore));
+    setEditSizeRows(createDefaultSizeRows(getEcommerceDisplayPrice(product)));
+  };
+
+  const syncBasePricesFromSizes = async (productId: string, sizes: EcommerceProductSize[]) => {
+    const basePrices = syncProductBasePricesFromSizes(sizes);
+    if (!basePrices) return;
+    await updateProduct.mutateAsync({ id: productId, input: basePrices });
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -452,33 +481,52 @@ export default function ProductsPage() {
   };
 
   const handleCreate = async (data: ProductForm) => {
-    createProduct.mutate(productFormToInput(data, isEcommerceStore), {
-      onSuccess: () => {
-        setShowCreateDialog(false);
-        createForm.reset(defaultFormValues);
-        toast.success('Product created successfully');
-      },
-      onError: (error) => {
-        toast.error(error.message || 'Failed to create product');
-      },
-    });
+    try {
+      const created = await createProduct.mutateAsync(productFormToInput(data, isEcommerceStore));
+      if (hasDynamicProductSizes) {
+        try {
+          await saveProductSizes.mutateAsync({
+            productId: created.id,
+            sizes: createSizeRows,
+          });
+          await syncBasePricesFromSizes(created.id, createSizeRows);
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+        }
+      }
+      setShowCreateDialog(false);
+      createForm.reset(defaultFormValues);
+      setCreateSizeRows(createDefaultSizeRows());
+      toast.success('Product created successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to create product');
+    }
   };
 
   const handleEditSave = async (data: ProductForm) => {
     if (!editProduct) return;
-    updateProduct.mutate(
-      { id: editProduct.id, input: productFormToInput(data, isEcommerceStore) },
-      {
-        onSuccess: () => {
-          setEditProduct(null);
-          editForm.reset(defaultFormValues);
-          toast.success('Product updated successfully');
-        },
-        onError: (error) => {
-          toast.error(error.message || 'Failed to update product');
-        },
+    try {
+      await updateProduct.mutateAsync({
+        id: editProduct.id,
+        input: productFormToInput(data, isEcommerceStore),
+      });
+      if (hasDynamicProductSizes) {
+        try {
+          await saveProductSizes.mutateAsync({
+            productId: editProduct.id,
+            sizes: editSizeRows,
+          });
+          await syncBasePricesFromSizes(editProduct.id, editSizeRows);
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : t('sizeSaveFailed'));
+        }
       }
-    );
+      setEditProduct(null);
+      editForm.reset(defaultFormValues);
+      toast.success('Product updated successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to update product');
+    }
   };
 
   const handleToggleAvailability = (product: Product) => {
@@ -864,29 +912,51 @@ export default function ProductsPage() {
               )}
             </div>
             {isEcommerceStore ? (
-              <div className="space-y-2">
-                <Label htmlFor="create-price">
-                  {t('price')} ({currency}) *
-                </Label>
-                <Input
-                  id="create-price"
-                  type="number"
-                  min={0}
-                  {...createForm.register('price', { valueAsNumber: true })}
-                />
-                {'price' in createForm.formState.errors && createForm.formState.errors.price && (
-                  <p className="text-destructive text-sm">
-                    {createForm.formState.errors.price.message}
-                  </p>
-                )}
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="create-price">
+                    {t('price')} ({currency}) *
+                  </Label>
+                  <Input
+                    id="create-price"
+                    type="number"
+                    min={0}
+                    {...createForm.register('price', { valueAsNumber: true })}
+                  />
+                  {'price' in createForm.formState.errors && createForm.formState.errors.price && (
+                    <p className="text-destructive text-sm">
+                      {createForm.formState.errors.price.message}
+                    </p>
+                  )}
+                </div>
+                {hasDynamicProductSizes ? (
+                  <ProductSizesEditor
+                    rows={createSizeRows}
+                    onChange={setCreateSizeRows}
+                    currency={currency}
+                    t={t}
+                    idPrefix="create"
+                  />
+                ) : null}
+              </>
             ) : (
-              <RestaurantPriceSection
-                form={createForm as UseFormReturn<RestaurantProductFormInput>}
-                currency={currency}
-                idPrefix="create"
-                t={t}
-              />
+              <>
+                <RestaurantPriceSection
+                  form={createForm as UseFormReturn<RestaurantProductFormInput>}
+                  currency={currency}
+                  idPrefix="create"
+                  t={t}
+                />
+                {hasDynamicProductSizes ? (
+                  <ProductSizesEditor
+                    rows={createSizeRows}
+                    onChange={setCreateSizeRows}
+                    currency={currency}
+                    t={t}
+                    idPrefix="create"
+                  />
+                ) : null}
+              </>
             )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
@@ -1038,29 +1108,51 @@ export default function ProductsPage() {
               )}
             </div>
             {isEcommerceStore ? (
-              <div className="space-y-2">
-                <Label htmlFor="edit-price">
-                  {t('price')} ({currency}) *
-                </Label>
-                <Input
-                  id="edit-price"
-                  type="number"
-                  min={0}
-                  {...editForm.register('price', { valueAsNumber: true })}
-                />
-                {'price' in editForm.formState.errors && editForm.formState.errors.price && (
-                  <p className="text-destructive text-sm">
-                    {editForm.formState.errors.price.message}
-                  </p>
-                )}
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-price">
+                    {t('price')} ({currency}) *
+                  </Label>
+                  <Input
+                    id="edit-price"
+                    type="number"
+                    min={0}
+                    {...editForm.register('price', { valueAsNumber: true })}
+                  />
+                  {'price' in editForm.formState.errors && editForm.formState.errors.price && (
+                    <p className="text-destructive text-sm">
+                      {editForm.formState.errors.price.message}
+                    </p>
+                  )}
+                </div>
+                {hasDynamicProductSizes ? (
+                  <ProductSizesEditor
+                    rows={editSizeRows}
+                    onChange={setEditSizeRows}
+                    currency={currency}
+                    t={t}
+                    idPrefix="edit"
+                  />
+                ) : null}
+              </>
             ) : (
-              <RestaurantPriceSection
-                form={editForm as UseFormReturn<RestaurantProductFormInput>}
-                currency={currency}
-                idPrefix="edit"
-                t={t}
-              />
+              <>
+                <RestaurantPriceSection
+                  form={editForm as UseFormReturn<RestaurantProductFormInput>}
+                  currency={currency}
+                  idPrefix="edit"
+                  t={t}
+                />
+                {hasDynamicProductSizes ? (
+                  <ProductSizesEditor
+                    rows={editSizeRows}
+                    onChange={setEditSizeRows}
+                    currency={currency}
+                    t={t}
+                    idPrefix="edit"
+                  />
+                ) : null}
+              </>
             )}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">

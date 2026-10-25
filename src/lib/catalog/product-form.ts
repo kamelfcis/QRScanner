@@ -104,11 +104,7 @@ export function productFormToInput(data: ProductFormInput, isEcommerce: boolean)
     };
   }
 
-  return {
-    ...rest,
-    price_per_kg: null,
-    weight_options_g: null,
-  };
+  return { ...rest };
 }
 
 export function getDefaultProductFormValues(isEcommerce: boolean): ProductFormInput {

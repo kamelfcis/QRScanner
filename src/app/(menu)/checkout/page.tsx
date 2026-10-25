@@ -112,17 +112,19 @@ export default function CheckoutPage() {
     () =>
       items.map((item) => ({
         ...item,
-        unitPrice: getCartLineUnitPrice(
-          {
-            dining_price: item.dining_price,
-            takeaway_price: item.takeaway_price,
-            has_size_options: item.has_size_options ?? false,
-            sizeOption: item.sizeOption ?? null,
-            price_per_kg: item.price_per_kg,
-            weightGrams: item.weightGrams,
-          },
-          diningMode
-        ),
+        unitPrice:
+          item.selectedSize?.price ??
+          getCartLineUnitPrice(
+            {
+              dining_price: item.dining_price,
+              takeaway_price: item.takeaway_price,
+              has_size_options: item.has_size_options ?? false,
+              sizeOption: item.sizeOption ?? null,
+              price_per_kg: item.price_per_kg,
+              weightGrams: item.weightGrams,
+            },
+            diningMode
+          ),
       })),
     [items, diningMode]
   );

@@ -47,6 +47,9 @@ export const hasExtendedProductSizes = tenantId === 'ala-keefak';
 /** Per-kg gram picker on restaurant menus. Ecommerce keeps a single price. */
 export const hasProductWeightOptions = !isEcommerceStore;
 
+/** Per-size pricing (makhboz restaurant + ecommerce stores). */
+export const hasDynamicProductSizes = tenantId === 'makhboz' || isEcommerceStore;
+
 export const isAlaKeefakTenant = tenantId === 'ala-keefak';
 
 export const alaKeefakTenantAttr = isAlaKeefakTenant
