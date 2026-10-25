@@ -7,9 +7,10 @@ import type { LoginBrandConfig } from '@/lib/login/types';
 interface LoginBrandPanelProps {
   brand: LoginBrandConfig;
   variant?: 'panel' | 'compact';
+  brandReady?: boolean;
 }
 
-export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelProps) {
+export function LoginBrandPanel({ brand, variant = 'panel', brandReady = true }: LoginBrandPanelProps) {
   const { locale } = useI18n();
   const name = locale === 'ar' ? brand.nameAr : brand.nameEn;
   const tagline = locale === 'ar' ? brand.taglineAr : brand.taglineEn;
@@ -29,8 +30,14 @@ export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelPro
           />
         ) : null}
         <div className="login-compact-copy">
-          <p className="login-eyebrow">{tagline}</p>
-          <p className="login-compact-name">{name}</p>
+          {tagline.trim() ? <p className="login-eyebrow">{tagline}</p> : null}
+          {brandReady ? (
+            <p className="login-compact-name">{name}</p>
+          ) : (
+            <p className="login-compact-name">
+              <span className="login-name-skeleton" aria-hidden />
+            </p>
+          )}
         </div>
       </header>
     );
@@ -50,8 +57,14 @@ export function LoginBrandPanel({ brand, variant = 'panel' }: LoginBrandPanelPro
       ) : null}
       <div className="login-brand-wash" />
       <div className="login-brand-lockup">
-        <p className="login-eyebrow">{tagline}</p>
-        <p className="login-lockup-name">{name}</p>
+        {tagline.trim() ? <p className="login-eyebrow">{tagline}</p> : null}
+        {brandReady ? (
+          <p className="login-lockup-name">{name}</p>
+        ) : (
+          <p className="login-lockup-name">
+            <span className="login-name-skeleton login-name-skeleton--panel" aria-hidden />
+          </p>
+        )}
       </div>
     </aside>
   );

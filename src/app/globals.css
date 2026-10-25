@@ -466,6 +466,20 @@ textarea,
   color: var(--login-foreground);
 }
 
+.login-name-skeleton {
+  display: inline-block;
+  width: min(12rem, 70vw);
+  height: 1.15em;
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--login-muted) 35%, transparent);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.login-name-skeleton--panel {
+  width: min(14rem, 55vw);
+  background: color-mix(in srgb, var(--login-panel-foreground) 35%, transparent);
+}
+
 .login-form-subtitle {
   margin: 0.4rem 0 0;
   font-size: 0.98rem;

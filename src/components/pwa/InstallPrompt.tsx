@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getRestaurantDisplayName } from '@/lib/appName';
+import { useTranslations } from '@/components/providers/RootI18nProvider';
+import { useSiteNameState } from '@/hooks/useSiteName';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
 import { cn } from '@/lib/utils';
 import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
@@ -22,11 +23,9 @@ export function InstallPrompt() {
     () => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
   );
   const prefersReducedMotion = useReducedMotion();
-  const { locale } = useI18n();
   const t = useTranslations('pwa');
-  const siteName = getRestaurantDisplayName(locale, null);
-
-  const installTitle = safeFormatMessage(t, 'installTitle', { name: siteName });
+  const { name: siteName, ready: isReady } = useSiteNameState();
+  const installTitle = isReady ? safeFormatMessage(t, 'installTitle', { name: siteName }) : '';
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -64,7 +63,7 @@ export function InstallPrompt() {
     sessionStorage.setItem('warda-pwa-dismissed', 'true');
   };
 
-  if (isInstalled || !showPrompt || !deferredPrompt) return null;
+  if (isInstalled || !showPrompt || !deferredPrompt || !isReady) return null;
   if (typeof window !== 'undefined' && sessionStorage.getItem('warda-pwa-dismissed')) return null;
 
   return (
@@ -84,7 +83,9 @@ export function InstallPrompt() {
               <Download className="text-brand-primary h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-foreground font-semibold">{installTitle}</p>
+              <p className="text-foreground font-semibold">
+                {isReady ? installTitle : <BrandNameSkeleton size="md" />}
+              </p>
               <p className="text-muted-foreground mt-1 text-sm">{t('installDescription')}</p>
               <div className="mt-3 flex gap-2">
                 <Button size="sm" onClick={handleInstall}>

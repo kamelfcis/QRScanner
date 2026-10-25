@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { Phone, MapPin, Camera, Globe, Smartphone, MessageCircle, Mail } from 'lucide-react';
 import { useRestaurantSettings } from '@/hooks/useSettings';
-import { useSiteName } from '@/hooks/useSiteName';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { useSiteNameState } from '@/hooks/useSiteName';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { resolveContactAddress } from '@/lib/contact/defaults';
 import { getMenuEntryPath } from '@/lib/store-config';
@@ -15,9 +16,7 @@ export function PublicFooter() {
   const { locale } = useI18n();
   const t = useTranslations('landing');
   const navT = useTranslations('nav');
-  const commonT = useTranslations('common');
-
-  const name = useSiteName();
+  const { name, ready: isReady } = useSiteNameState();
   const address = resolveContactAddress(settings, locale);
 
   return (
@@ -29,7 +28,11 @@ export function PublicFooter() {
               {settings?.logo_url && (
                 <img src={settings.logo_url} alt={name} className="h-8 w-auto object-contain" />
               )}
-              <h3 className="text-primary font-heading text-lg font-bold">{name}</h3>
+              {isReady ? (
+                <h3 className="text-primary font-heading text-lg font-bold">{name}</h3>
+              ) : (
+                <BrandNameSkeleton size="md" />
+              )}
             </div>
             <p className="text-muted-foreground mt-2 text-sm">{t('premiumDining')}</p>
           </div>
@@ -156,10 +159,12 @@ export function PublicFooter() {
 
         <div className="mt-8 border-t pt-8">
           <p className="text-muted-foreground text-center text-sm">
-            {safeFormatMessage(t, 'copyright', {
-              year: new Date().getFullYear(),
-              name: name || commonT('appName'),
-            })}
+            {isReady
+              ? safeFormatMessage(t, 'copyright', {
+                  year: new Date().getFullYear(),
+                  name,
+                })
+              : null}
           </p>
         </div>
       </div>

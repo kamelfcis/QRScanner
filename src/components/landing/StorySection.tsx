@@ -6,18 +6,19 @@ import { ParallaxSection } from '@/components/shared/motion';
 import { fadeInLeft, fadeInRight } from '@/lib/motion';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
 import { pickStoryText } from '@/lib/landing/story-text';
-import { getName } from '@/lib/utils';
 
 export function StorySection() {
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const { locale } = useI18n();
   const t = useTranslations('landing');
   const tSettings = useTranslations('settings');
 
-  const restaurantName = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
-  const logoInitial = restaurantName.charAt(0).toUpperCase();
+  const restaurantName = getLiveSiteName(locale, settings, isReady);
+  const logoInitial = restaurantName ? restaurantName.charAt(0).toUpperCase() : '';
   const storyTitle = pickStoryText(
     { ar: settings?.story_title_ar, en: settings?.story_title_en },
     locale,
@@ -70,11 +71,19 @@ export function StorySection() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <div className="bg-brand-primary/10 mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full">
-                        <span className="text-brand-primary font-heading text-5xl font-bold">
-                          {logoInitial}
-                        </span>
+                        {isReady && logoInitial ? (
+                          <span className="text-brand-primary font-heading text-5xl font-bold">
+                            {logoInitial}
+                          </span>
+                        ) : (
+                          <BrandNameSkeleton size="md" />
+                        )}
                       </div>
-                      <p className="text-muted-foreground text-sm">{restaurantName}</p>
+                      {isReady ? (
+                        <p className="text-muted-foreground text-sm">{restaurantName}</p>
+                      ) : (
+                        <BrandNameSkeleton size="sm" className="mx-auto" />
+                      )}
                     </div>
                   </div>
                 )}

@@ -16,7 +16,9 @@ import {
   useNotifications,
   useMarkAllNotificationsRead,
 } from '@/hooks/useNotifications';
-import { cn, getName } from '@/lib/utils';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
+import { cn } from '@/lib/utils';
 import { formatLocaleDate } from '@/lib/dateLocale';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getDashboardNav } from '@/lib/navigation/dashboardNav';
@@ -27,19 +29,15 @@ export function DashboardHeader() {
   const { signOut } = useAuth();
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const { locale } = useI18n();
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');
-  const tCommon = useTranslations('common');
   const tDashboard = useTranslations('dashboard');
   const tA11y = useTranslations('accessibility');
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getLiveSiteName(locale, settings, isReady);
 
   const { data: unreadCount } = useUnreadNotifications();
   const { data: notifications } = useNotifications(5);
@@ -73,7 +71,11 @@ export function DashboardHeader() {
                 />
               ) : null}
               <div className="min-w-0">
-                <h2 className="text-primary font-heading truncate text-lg font-bold">{name}</h2>
+                {isReady ? (
+                  <h2 className="text-primary font-heading truncate text-lg font-bold">{name}</h2>
+                ) : (
+                  <BrandNameSkeleton size="lg" />
+                )}
                 <p className="text-muted-foreground text-sm">{tDashboard('adminDashboard')}</p>
               </div>
             </div>

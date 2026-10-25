@@ -68,12 +68,12 @@ export const loginThemes: Record<LoginTenantId, LoginBrandConfig> = {
   },
   warda: {
     tenantId: 'warda',
-    nameAr: 'وردة شامية',
-    nameEn: 'Warda Shamya',
-    taglineAr: 'وردة شامية',
-    taglineEn: 'Warda Shamya',
+    nameAr: '',
+    nameEn: '',
+    taglineAr: '',
+    taglineEn: '',
     logoUrl: null,
-    heroImageUrl: '/hero/warda-storefront.jpg',
+    heroImageUrl: null,
     tokens: {
       primary: '#6B0F1A',
       accent: '#C49A2A',

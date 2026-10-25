@@ -11,7 +11,9 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useCartStore } from '@/stores/cart-store';
 import { useClientMounted } from '@/hooks/useClientMounted';
-import { cn, getName } from '@/lib/utils';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
+import { cn } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { showDiningModeToggle } from '@/lib/store-config';
@@ -36,25 +38,21 @@ export function MenuHeader({
   onCartOpen,
   favoriteCount,
 }: MenuHeaderProps) {
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const prefersReducedMotion = useReducedMotion();
   const isDesktop = useIsDesktop();
   const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
   const tCart = useTranslations('cart');
-  const tCommon = useTranslations('common');
   const tA11y = useTranslations('accessibility');
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useClientMounted();
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const showCartCount = mounted && cartCount > 0;
 
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getLiveSiteName(locale, settings, isReady);
 
   const headerClassName =
     'sticky top-0 z-40 bg-[var(--menu-paper)] pt-[env(safe-area-inset-top)] md:bg-background/92 md:backdrop-blur-md';
@@ -76,9 +74,13 @@ export function MenuHeader({
           ) : null}
 
           <div className="min-w-0">
-            <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
-              {name}
-            </h1>
+            {isReady ? (
+              <h1 className="font-heading truncate text-[15px] font-semibold leading-tight tracking-tight sm:text-lg">
+                {name}
+              </h1>
+            ) : (
+              <BrandNameSkeleton size="sm" />
+            )}
             <p className="menu-eyebrow truncate text-[var(--menu-ink-soft)]">
               {t('menuLead')}
               {tableParam ? ` · ${t('tableNumber', { number: tableParam })}` : ''}

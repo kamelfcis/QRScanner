@@ -4,7 +4,9 @@ import Link from 'next/link';
 import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LogOut } from 'lucide-react';
-import { cn, getName } from '@/lib/utils';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,16 +18,11 @@ import { sidebarItemLabel } from '@/lib/i18n/menu-label';
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { signOut } = useAuth();
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const { locale } = useI18n();
   const tSidebar = useTranslations('sidebar');
-  const tCommon = useTranslations('common');
-
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || tCommon('appName')
-  );
+  const name = getLiveSiteName(locale, settings, isReady);
 
   return (
     <aside className="bg-muted/40 hidden w-64 border-r md:block">
@@ -41,7 +38,11 @@ export function DashboardSidebar() {
                 className="h-9 w-9 shrink-0 object-contain"
               />
             ) : null}
-            <span className="text-primary font-heading truncate text-lg font-bold">{name}</span>
+            {isReady ? (
+              <span className="text-primary font-heading truncate text-lg font-bold">{name}</span>
+            ) : (
+              <BrandNameSkeleton size="lg" />
+            )}
           </Link>
         </div>
 

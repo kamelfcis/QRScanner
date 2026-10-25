@@ -12,7 +12,8 @@ import { generateMenuMetadata } from '@/lib/seo/metadata';
 export async function generateMetadata() {
   const headerStore = await headers();
   const locale = (headerStore.get('x-locale') || defaultLocale) as Locale;
-  return generateMenuMetadata(locale);
+  const settings = await fetchRestaurantSettings();
+  return generateMenuMetadata(locale, settings);
 }
 
 export default async function PublicMenuPage() {

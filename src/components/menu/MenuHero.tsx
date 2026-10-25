@@ -6,7 +6,8 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getName } from '@/lib/utils';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
 import { safeFormatMessage } from '@/lib/i18n/safeMessage';
 
 /**
@@ -14,21 +15,16 @@ import { safeFormatMessage } from '@/lib/i18n/safeMessage';
  * Image does a single slow ken-burns pass, then rests.
  */
 export function MenuHero() {
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const prefersReducedMotion = useReducedMotion();
   const isDesktop = useIsDesktop();
   const animateEntrance = isDesktop && !prefersReducedMotion;
   const { locale } = useI18n();
   const t = useTranslations('menu');
-  const tCommon = useTranslations('common');
-
-  const name = getName(
-    locale,
-    settings?.name_en || tCommon('appName'),
-    settings?.name_ar || 'وردة الشامية'
-  );
-
-  const headline = settings?.hero_headline?.trim() || name;
+  const name = getLiveSiteName(locale, settings, isReady);
+  const customHeadline = settings?.hero_headline?.trim();
+  const headline = customHeadline || (isReady ? name : '');
   const tagline = settings?.hero_subtitle?.trim() || t('heroTagline');
   const image = settings?.hero_image_url?.trim();
   const heroCopyClassName =
@@ -39,9 +35,13 @@ export function MenuHero() {
         <span aria-hidden className="h-px w-6 bg-[#E8D6AE]/70" />
         {t('menuLead')}
       </span>
-      <h2 className="font-heading max-w-[22ch] text-xl font-semibold leading-tight text-white drop-shadow-sm sm:text-3xl">
-        {headline}
-      </h2>
+      {customHeadline || isReady ? (
+        <h2 className="font-heading max-w-[22ch] text-xl font-semibold leading-tight text-white drop-shadow-sm sm:text-3xl">
+          {headline}
+        </h2>
+      ) : (
+        <BrandNameSkeleton size="lg" className="bg-white/20" />
+      )}
       <p className="mt-1 max-w-[36ch] text-xs leading-relaxed text-white/80 sm:mt-1.5 sm:text-sm">
         {tagline}
       </p>
@@ -50,7 +50,7 @@ export function MenuHero() {
 
   return (
     <section
-      aria-label={headline}
+      aria-label={headline || t('menuLead')}
       className="relative isolate w-full overflow-hidden bg-[var(--menu-paper-deep)]"
     >
       <div className="relative h-[132px] w-full md:h-[clamp(196px,26vh,256px)]">

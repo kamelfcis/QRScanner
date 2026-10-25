@@ -10,7 +10,8 @@ import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useVisibleGallery } from '@/hooks/useGallery';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
-import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
 import { cn, getName } from '@/lib/utils';
 import { getMenuEntryPath } from '@/lib/store-config';
 
@@ -31,7 +32,8 @@ const itemVariants: Variants = {
 const SLIDE_INTERVAL = 6000;
 
 export function HeroSection() {
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const { data: gallery } = useVisibleGallery();
   const prefersReducedMotion = useReducedMotion();
   const { locale } = useI18n();
@@ -44,8 +46,8 @@ export function HeroSection() {
   const hasCarousel = featuredImages.length > 0;
   const heroImage = settings?.hero_image_url?.trim() || '';
 
-  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
-  const heroAriaLabel = `${t('heroWelcome')} ${name}`;
+  const name = getLiveSiteName(locale, settings, isReady);
+  const heroAriaLabel = isReady ? `${t('heroWelcome')} ${name}` : t('heroWelcome');
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -168,9 +170,13 @@ export function HeroSection() {
           <span className="font-heading text-2xl font-medium tracking-wide text-white sm:text-3xl md:text-4xl">
             {t('heroWelcome')}
           </span>
-          <span className="font-heading text-brand-accent text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-            {name}
-          </span>
+          {isReady ? (
+            <span className="font-heading text-brand-accent text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
+              {name}
+            </span>
+          ) : (
+            <BrandNameSkeleton size="hero" className="mx-auto bg-white/20" />
+          )}
         </motion.h1>
 
         <motion.div variants={prefersReducedMotion ? undefined : itemVariants}>

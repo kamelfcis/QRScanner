@@ -7,9 +7,9 @@ import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RootI18nProvider } from '@/components/providers/RootI18nProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
-import { getSiteNameEn, getSiteNameForLocale } from '@/lib/appName';
 import { ServerBrandThemeStyles } from '@/components/providers/ServerBrandThemeStyles';
 import { fetchRestaurantSettings } from '@/lib/settings/fetchRestaurantSettings';
+import { generateSiteMetadata } from '@/lib/seo/metadata';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { isOstolSite, THEME_STORAGE_KEY } from '@/lib/tenant-config';
 import './globals.css';
@@ -48,65 +48,11 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wardashamya.com';
-
-function buildRootMetadata(
-  settings: Awaited<ReturnType<typeof fetchRestaurantSettings>>
-): Metadata {
-  const siteNameEn = getSiteNameEn(settings);
-  const siteNameAr = getSiteNameForLocale('ar', settings);
-  const title = `${siteNameEn} | Premium Wallets & Accessories`;
-
-  return {
-    metadataBase: new URL(SITE_URL),
-    title: {
-      default: title,
-      template: `%s | ${siteNameEn}`,
-    },
-    description: `${siteNameEn} — Premium wallets and accessories. Browse our collection and shop online.`,
-    keywords: ['wallets', 'accessories', 'luxury', 'shop', 'e-commerce', siteNameEn, siteNameAr],
-    authors: [{ name: siteNameEn }],
-    creator: siteNameEn,
-    alternates: {
-      languages: {
-        en: SITE_URL,
-        ar: SITE_URL,
-        'x-default': SITE_URL,
-      },
-    },
-    openGraph: {
-      type: 'website',
-      locale: 'en_US',
-      alternateLocale: ['ar_SA'],
-      url: SITE_URL,
-      siteName: siteNameEn,
-      title,
-      description: 'Premium wallets and accessories — browse and shop online.',
-      images: [
-        {
-          url: '/og-image.png',
-          width: 1200,
-          height: 630,
-          alt: siteNameEn,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description: 'Premium wallets and accessories — browse and shop online.',
-      images: ['/og-image.png'],
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-  };
-}
-
 export async function generateMetadata(): Promise<Metadata> {
+  const headerStore = await headers();
+  const locale = (headerStore.get('x-locale') || defaultLocale) as Locale;
   const settings = await fetchRestaurantSettings();
-  return buildRootMetadata(settings);
+  return generateSiteMetadata(undefined, locale, settings);
 }
 
 export const viewport: Viewport = {

@@ -71,8 +71,8 @@ export function mergeLiveLoginBrand(
   restaurant?: RestaurantSettings | null,
   theme?: ThemeSettings | null
 ): LoginBrandConfig {
-  const nameAr = firstNonEmpty(restaurant?.name_ar, base.nameAr) ?? base.nameAr;
-  const nameEn = firstNonEmpty(restaurant?.name_en, base.nameEn) ?? base.nameEn;
+  const nameAr = firstNonEmpty(restaurant?.name_ar) ?? '';
+  const nameEn = firstNonEmpty(restaurant?.name_en) ?? '';
   const tagline = firstNonEmpty(restaurant?.tagline);
   const liveHero = firstNonEmpty(restaurant?.hero_image_url);
 
@@ -80,10 +80,10 @@ export function mergeLiveLoginBrand(
     ...base,
     nameAr,
     nameEn,
-    taglineAr: tagline ?? base.taglineAr,
-    taglineEn: tagline ?? base.taglineEn,
-    logoUrl: firstNonEmpty(restaurant?.logo_url) ?? base.logoUrl,
-    heroImageUrl: resolveHeroImageUrl(base.tenantId, liveHero, base.heroImageUrl),
+    taglineAr: tagline ?? '',
+    taglineEn: tagline ?? '',
+    logoUrl: firstNonEmpty(restaurant?.logo_url),
+    heroImageUrl: resolveHeroImageUrl(base.tenantId, liveHero, null),
     tokens: {
       ...base.tokens,
       primary: overlayHex(theme?.primary_color, base.tokens.primary),

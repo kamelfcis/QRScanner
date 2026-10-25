@@ -9,10 +9,12 @@ import { useI18n, useTranslations } from '@/components/providers/RootI18nProvide
 import { loginSchema, type LoginInput } from '@/types/schema';
 import type { LoginBrandConfig } from '@/lib/login/types';
 import { LoginBrandPanel } from './LoginBrandPanel';
+import { LoginBrandName } from './LoginBrandName';
 import { LoginFormFields } from './LoginFormFields';
 
 interface PremiumLoginTemplateProps {
   brand: LoginBrandConfig;
+  brandReady?: boolean;
 }
 
 function loginTokenStyle(brand: LoginBrandConfig): CSSProperties {
@@ -30,7 +32,7 @@ function loginTokenStyle(brand: LoginBrandConfig): CSSProperties {
   } as CSSProperties;
 }
 
-export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
+export function PremiumLoginTemplate({ brand, brandReady = true }: PremiumLoginTemplateProps) {
   const { signIn } = useAuth();
   const t = useTranslations('auth');
   const { locale } = useI18n();
@@ -60,7 +62,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
     <div data-login-theme={brand.tenantId} className="login-shell" style={loginTokenStyle(brand)}>
       <section id="main-content" className="login-form-column" tabIndex={-1}>
         <div className="login-form-inner">
-          <LoginBrandPanel brand={brand} variant="compact" />
+          <LoginBrandPanel brand={brand} variant="compact" brandReady={brandReady} />
           <p className="login-mobile-kicker">{t('loginTitle')}</p>
 
           <div className="login-form-header">
@@ -74,7 +76,13 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
                 priority
               />
             ) : null}
-            <h1 className="login-form-title">{displayName}</h1>
+            {brandReady ? (
+              <LoginBrandName name={displayName} as="h1" className="login-form-title" />
+            ) : (
+              <div className="login-form-title">
+                <span className="login-name-skeleton" aria-hidden />
+              </div>
+            )}
             <p className="login-form-subtitle">{t('loginTitle')}</p>
           </div>
 
@@ -110,7 +118,7 @@ export function PremiumLoginTemplate({ brand }: PremiumLoginTemplateProps) {
         </div>
       </section>
 
-      <LoginBrandPanel brand={brand} variant="panel" />
+      <LoginBrandPanel brand={brand} variant="panel" brandReady={brandReady} />
     </div>
   );
 }

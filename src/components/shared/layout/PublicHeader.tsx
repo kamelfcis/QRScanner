@@ -20,8 +20,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useRestaurantSettings } from '@/hooks/useSettings';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
-import { getSiteNameAr, getSiteNameEn } from '@/lib/appName';
-import { cn, getName } from '@/lib/utils';
+import { BrandNameSkeleton } from '@/components/shared/BrandNameSkeleton';
+import { getLiveSiteName } from '@/hooks/useSiteName';
+import { cn } from '@/lib/utils';
 import { useI18n, useTranslations } from '@/components/providers/RootI18nProvider';
 import { getMenuEntryPath } from '@/lib/store-config';
 import { publicMenuLabel } from '@/lib/i18n/menu-label';
@@ -47,11 +48,11 @@ export function PublicHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings, isPending, isFetched } = useRestaurantSettings();
+  const isReady = isFetched && !isPending;
   const { resolvedTheme, setTheme } = useTheme();
   const { dir, locale } = useI18n();
   const t = useTranslations('nav');
-  const commonT = useTranslations('common');
   const accessibilityT = useTranslations('accessibility');
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export function PublicHeader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const name = getName(locale, getSiteNameEn(settings), getSiteNameAr(settings));
+  const name = getLiveSiteName(locale, settings, isReady);
   const isOverlay = !scrolled;
 
   const navLinks: NavLink[] = [
@@ -107,14 +108,21 @@ export function PublicHeader() {
               className="h-6 w-auto shrink-0 object-contain sm:h-8"
             />
           ) : null}
-          <span
-            className={cn(
-              'font-heading min-w-0 truncate whitespace-nowrap text-sm font-bold transition-colors sm:text-base md:text-xl',
-              isOverlay ? 'text-white' : 'text-primary'
-            )}
-          >
-            {name}
-          </span>
+          {isReady ? (
+            <span
+              className={cn(
+                'font-heading min-w-0 truncate whitespace-nowrap text-sm font-bold transition-colors sm:text-base md:text-xl',
+                isOverlay ? 'text-white' : 'text-primary'
+              )}
+            >
+              {name}
+            </span>
+          ) : (
+            <BrandNameSkeleton
+              size="md"
+              className={isOverlay ? 'bg-white/25' : undefined}
+            />
+          )}
         </Link>
 
         <nav
@@ -198,7 +206,11 @@ export function PublicHeader() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <p className="font-heading text-foreground truncate text-lg font-bold">{name}</p>
+                  {isReady ? (
+                    <p className="font-heading text-foreground truncate text-lg font-bold">{name}</p>
+                  ) : (
+                    <BrandNameSkeleton size="lg" />
+                  )}
                   <p className="text-muted-foreground text-xs">{publicMenuLabel(t)}</p>
                 </div>
               </div>
